@@ -6,6 +6,14 @@ http://xuan.im
 
 ![喧喧](https://raw.githubusercontent.com/easysoft/xuanxuan/master/doc/img/preview.png)
 
+## 最近更新
+
+🎉 1.3 版本带来了大家期待的扩展机制，提供了更灵活的方式将你到业务与喧喧进行集成；另外还带来了多个实用功能，包括聊天记录搜索、讨论组解散、按部门或角色分组查看联系人、修改密码等。
+
+🎉 扩展机制内置的暗黑主题，让你的体验焕然一新，快来试试吧！
+
+![喧喧](https://raw.githubusercontent.com/easysoft/xuanxuan/master/doc/img/extensions/dark-theme-preview.png)
+
 ## 特色功能
 
 * **开聊**：和服务器上的任何用户开聊，收发表情、图片、截屏、文件样样在行；
@@ -15,17 +23,26 @@ http://xuan.im
 * **通知及提醒**：与系统桌面环境集成，即时收到新消息通知；
 * **会话管理**：将任意会话（包括讨论组和公开讨论组）置顶，精彩内容不容错过，还可以重命名讨论组、为讨论组设置白名单及浏览会话的所有消息历史记录；
 * **通讯录**：浏览企业成员资料和联系信息；
+* **跨平台客户端**：目前已支持 Windows、Linux、Mac，并且还提供了浏览器客户端；
 * **轻量级服务器端**：轻松搭配[然之协同](http://ranzhico.com)使用。
 
 ## 使用
 
-### 客户端
+### 桌面客户端
 
 受益于 Electron 的跨平台特性，喧喧客户端提供了 Windows、MacOS 和 Linux 版本。
 
 下载地址见：http://xuan.im/#downloads
 
 更多帮助参见 [官方客户端使用指南](http://xuan.im/page/1.html)。
+
+### 浏览器客户端
+
+浏览器客户端试用请访问：https://easysoft.github.io/xuanxuan/1.2.0/
+
+注意：你需要为你的服务器端部署通过官方验证的证书才可以使用浏览器端客户端。
+
+更多帮助参见 [浏览器端部署和使用指南](https://github.com/easysoft/xuanxuan/blob/master/doc/browser-usage.md)
 
 ### 服务器端
 
@@ -73,6 +90,10 @@ http://xuan.im
 
 详情请参考：[客户端开发者指南](https://github.com/easysoft/xuanxuan/blob/master/doc/client-developer.md)
 
+### 扩展开发
+
+参见：https://github.com/easysoft/xuanxuan/blob/master/doc/extension.md
+
 ## 许可证
 
 喧喧使用 [ZPL](https://github.com/easysoft/xuanxuan/blob/master/LICENSE) 开源许可证，另外还使用了如下开源项目：
@@ -80,7 +101,5 @@ http://xuan.im
 * [Electron](http://electron.atom.io/)、[React](https://facebook.github.io/react/)、[Webpack](https://webpack.github.io)：跨平台客户端开发支持；
 * [electron-react-boilerplate](https://github.com/chentsulin/electron-react-boilerplate)：提供项目模板；
 * [EmojiOne](http://emojione.com/)：提供 Emoji 表情及图片资源支持；
-* [Material UI](http://www.material-ui.com/)：提供部分界面控件框架；
-* 其他重要开源项目包括：[draft.js](https://facebook.github.io/draft-js/)、[Babel](https://babeljs.io/)、[Moment](https://momentjs.com/)、[marked](https://github.com/chjj/marked)、[ion.sound](https://github.com/IonDen/ion.sound) 等。
-
+* 其他重要开源项目包括：[draft.js](https://facebook.github.io/draft-js/)、[Babel](https://babeljs.io/)、ß[marked](https://github.com/chjj/marked)、[ion.sound](https://github.com/IonDen/ion.sound) 等。
 
