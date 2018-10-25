@@ -587,6 +587,16 @@ export const enableGlobalShortcut = () => {
     registerShortcut();
 };
 
+window.addEventListener('hashchange', () => {
+    const hash = window.location.hash;
+    if (DEBUG) {
+        console.color('➜', 'orangeBg', hash.substr(1), 'orangePale');
+    }
+    if (hash.includes('/:filterType/')) {
+        window.location.hash = hash.replace('/:filterType/', '/recents/');
+    }
+}, false);
+
 export default {
     entryParams,
     get canQuit() {

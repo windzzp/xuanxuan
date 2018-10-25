@@ -38,7 +38,7 @@ class MenuList extends Component {
                 needForceUpdate = true;
             } else if (this.props.filter === 'contacts' && ((data.chats && Object.keys(data.chats).some(x => data.chats[x].isOne2One)) || data.members)) {
                 needForceUpdate = true;
-            } else if (this.props.filter === 'recents') {
+            } else {
                 needForceUpdate = true;
             }
             if (needForceUpdate) {
@@ -77,7 +77,7 @@ class MenuList extends Component {
         } else if (filter === 'groups') {
             return <MenuGroupList className={className} filter={filter} {...other} />;
         }
-        return <MenuRecentList className={className} filter={filter} {...other} />;
+        return <MenuRecentList className={className} filter="recents" {...other} />;
     }
 }
 

@@ -192,12 +192,6 @@ if (DEBUG) {
         }
         console.log('%c\t    Config: ', 'color: #ff6090', Config);
         console.groupEnd();
-
-        const showHashPath = () => {
-            console.color('➜', 'orangeBg', window.location.hash.substr(1), 'orangePale');
-        };
-        window.addEventListener('hashchange', showHashPath, false);
-        showHashPath();
     }
 
     global.$ = {};
