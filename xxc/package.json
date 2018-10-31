@@ -31,8 +31,7 @@
     "package-all": "npm run package -- --platform=all --arch=all --clean && npm run package -- --platform=mac,win --arch=x64 --debug",
     "package-all-beta": "npm run package -- --platform=all --arch=x64 --beta --clean && npm run package -- --platform=mac,win --arch=x64 --debug --beta",
     "package-browser": "npm run package -- --platform=browser",
-    "hot-server-browser": "npm run hot-server -- --target=browser",
-    "start-browser": "http-server ./app -a 127.0.0.1 -p 8088"
+    "hot-server-browser": "npm run hot-server -- --target=browser"
   },
   "build": {
     "extends": "./build/electron-builder.json"
