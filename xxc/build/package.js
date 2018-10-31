@@ -9,14 +9,31 @@ import fse from 'fs-extra';
 import pkg from '../package.json';
 import {formatDate} from '../app/utils/date-helper';
 import oldPkg from '../app/package.json';
+import cpx from 'cpx';
+import archiver from 'archiver';
 
 console.log(chalk.magentaBright(chalk.bold(`───────────────┤ ${pkg.name.toUpperCase()} ${pkg.version}`) + ' 打包工具 ├───────────────'));
 
-const PLATFORMS = new Set(['win', 'mac', 'linux']);
+const PLATFORMS = new Set(['win', 'mac', 'linux', 'browser']);
 const ARCHS = new Set(['x32', 'x64']);
 
 // 判断字符串或数组是否为空
 const isEmpty = val => val === undefined || val === null || !val.length;
+
+// 复制文件
+const copyFiles = (source, dest, options) => {
+    return new Promise((resolve, reject) => {
+        cpx.copy(source, dest, options, err => {
+            if (err) {
+                console.error(`复制文件失败，原路径：${source} 目标路径：${dest}`, err);
+                reject(err);
+            } else {
+                console.log(`    ${chalk.green(chalk.bold('✓'))} 复制 ${chalk.underline(source)} → ${chalk.underline(dest)}`);
+                resolve(dest);
+            }
+        });
+    });
+};
 
 // 获取当前操作系统平台类型
 const getCurrentPlatform = () => {
@@ -87,6 +104,7 @@ const formatArchs = (val) => {
     return Array.from(archsSet);
 };
 
+// 格式化消耗的时间
 const formatTime = ms => {
     if (ms < 1000) {
         return `${ms}ms`;
@@ -95,6 +113,20 @@ const formatTime = ms => {
     } else if (ms < 60000*60) {
         return `${(ms/(1000*60)).toFixed(2)}min`;
     }
+};
+
+const createZipFromDir = (file, dir, destDir = false) => {
+    return new Promise((resolve, reject) => {
+        const output = fse.createWriteStream(file);
+        const archive = archiver('zip', {
+            zlib: {level: 9}
+        });
+        archive.on('error', reject);
+        archive.on('end', resolve);
+        archive.pipe(output);
+        archive.directory(dir, destDir);
+        archive.finalize();
+    });
 };
 
 // 处理命令行参数
@@ -113,12 +145,12 @@ program
         return val;
     }, '')
     .option('-s, --skipbuild', '是否忽略构建最终安装包，仅仅生成用于构建所需的配置文件', false)
-    .option('-p, --platform <platform>', '需要打包的平台，可选值包括: "mac", "win", "linux", "current", 或者使用英文逗号拼接多个平台名称，例如 "win,mac", 特殊值 "current" 用于指定当前打包工具所运行的平台, 特殊值 "all" 或 "*" 用于指定所有平台（相当于 “mac,win,linux”）', formatPlatforms, 'current')
+    .option('-p, --platform <platform>', '需要打包的平台，可选值包括: "mac", "win", "linux", "browser", "current", 或者使用英文逗号拼接多个平台名称，例如 "win,mac", 特殊值 "current" 用于指定当前打包工具所运行的平台, 特殊值 "all" 或 "*" 用于指定所有平台（相当于 “mac,win,linux,browser”）', formatPlatforms, 'current')
     .option('-a, --arch <arch>', '需要打包的平台处理器架构类型, 可选值包括: "x32", "x64", 或者使用英文逗号拼接多个架构名称，例如 "x32,x64", 特殊值 "current" 用于快捷指定当前打包工具所运行的平台架构类型, 特殊值 "all" 或 "*" 用于指定所有架构类型（相当于 “x32,x64”）', formatArchs, 'current')
     .option('-d, --debug', '是否打包为方便调试的版本', false)
     .option('-b, --beta', '是否将版本标记为 Beta 版本', false)
     .option('-v, --verbose', '是否输出额外的信息', false)
-    .option('-C, --clean', '存储安装包之前是否清空旧的安装包文件', true)
+    .option('-C, --clean', '存储安装包之前是否清空旧的安装包文件', false)
     .parse(process.argv);
 
 const configName = program.config;
@@ -179,6 +211,7 @@ if (isCustomConfig) {
     }
 }
 
+// 输出打包配置
 console.log(`${chalk.cyanBright(chalk.bold('❖ 打包配置:'))}\n`);
 Object.keys(config).forEach((n) => {
     const nV = config[n];
@@ -270,10 +303,11 @@ const electronBuilder = {
     directories: {
         app: 'app',
         buildResources: config.resourcePath ? path.resolve(configDirPath || __dirname, config.resourcePath) : 'resources',
-        output: config.name === 'xuanxuan' ? `release/${config.version}${isBeta ? ' -beta' : ''}` : `release/${config.name}-${config.version}${isBeta ? ' -beta' : ''}`
+        output: config.name === 'xuanxuan' ? `release/${config.version}${isBeta ? '-beta' : ''}` : `release/${config.name}-${config.version}${isBeta ? '-beta' : ''}`
     }
 };
 
+// 输出打包配置文件
 const outputConfigFiles = () => {
     console.log(`${chalk.cyanBright(chalk.bold('❖ 创建打包配置文件:'))}\n`);
 
@@ -339,23 +373,25 @@ const revertConfigFiles = () => {
 };
 
 // 处理和编译应用源文件
-const buildApp = (isDebugMode = isDebug) => {
-    console.log(`${chalk.cyanBright(chalk.bold(`❖ 处理和编译应用源文件${isDebugMode ? ' [debug]' : ''}:`))}\n`);
+const buildApp = (isBrowser = false) => {
+    if (!isBrowser) {
+        console.log(`${chalk.cyanBright(chalk.bold(`❖ 处理和编译应用源文件${isBrowser ? '[browser]' : isDebug ? ' [debug]' : ''}:`))}\n`);
+    }
     return new Promise((resolve, reject) => {
         if (config.stylePath) {
-            console.log(`${chalk.yellow(chalk.bold(`    [处理自定义样式]`))}`);
+            console.log(`${chalk.yellow(chalk.bold(`    [${isBrowser ? '浏览器端：' : ''}处理自定义样式]`))}`);
             fse.outputFileSync(path.resolve(__dirname, '../app/style/custom.less'), `@import "${path.resolve(configDirPath || __dirname, config.stylePath)}";`);
             console.log(`    ${chalk.green(chalk.bold('✓'))} 合并自定义样式 ${chalk.underline(path.resolve(configDirPath || __dirname, config.stylePath))} → ${chalk.underline(path.resolve(__dirname, '../app/style/custom.less'))}`);
             console.log();
         }
-        console.log(`${chalk.yellow(chalk.bold(`    [使用 Webpack 进行编译]`))}`);
+        console.log(`${chalk.yellow(chalk.bold(`    [${isBrowser ? '浏览器端：' : ''}使用 Webpack 进行编译]`))}`);
         if (verbose) {
             console.log(chalk.yellow('══════════════════════════════════════════════════════════════'));
         } else {
             console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} ${'请耐心等待，这可能需要花费几分钟时间...'}`);
         }
         const startTime = new Date().getTime();
-        const cmd = spawn('npm', ['run', isDebugMode ? 'build-debug' : 'build'], {shell: true, env: process.env, stdio: verbose ? 'inherit' : 'ignore'});
+        const cmd = spawn('npm', ['run', isBrowser ? 'build-browser' : isDebug ? 'build-debug' : 'build'], {shell: true, env: process.env, stdio: verbose ? 'inherit' : 'ignore'});
         cmd.on('close', code => {
             if (verbose) {
                 console.log(chalk.yellow('══════════════════════════════════════════════════════════════'));
@@ -365,7 +401,6 @@ const buildApp = (isDebugMode = isDebug) => {
                 console.log(`    ${chalk.green(chalk.bold('✓'))} 移除自定义样式 ${chalk.underline(path.resolve(__dirname, '../app/style/custom.less'))}`);
             }
             console.log(`    ${chalk.green(chalk.bold('✓'))} 编译完成 [time: ${formatTime(new Date().getTime() - startTime)} result code: ${code}]`);
-            revertConfigFiles();
             console.log();
             resolve(code);
         });
@@ -395,11 +430,30 @@ const createPackage = (osType, arch, debug = isDebug) => {
     });
 };
 
+// 制作浏览器端安装包
+const buildBrowser = async (destRoot) => {
+    await buildApp(true);
+
+    const copyDist = () => copyFiles('./app/web-dist/**/*', `${destRoot}/dist`);
+    const copyMedia = () => copyFiles('./app/media/**/*', `${destRoot}/media`);
+    const copyAssets = () => copyFiles('./app/assets/**/*', `${destRoot}/assets`);
+    const copyIndexHTML = () => copyFiles('./app/index.html', destRoot);
+    const copyPKG = () => copyFiles('./app/package.json', destRoot);
+    const copyManifest = () => copyFiles('./app/manifest.json', destRoot);
+    const copyIcons = () => copyFiles('./resources/**/*', `${destRoot}/resources`);
+
+    await Promise.all([copyDist(), copyMedia(), copyAssets(), copyIndexHTML(), copyPKG(), copyManifest(), copyIcons()]);
+
+    // 创建 zip
+    const zipFile = path.resolve(destRoot, '../', `${config.name}.${config.version}.browser.zip`);
+    await createZipFromDir(zipFile, destRoot, false);
+    console.log(`    ${chalk.green(chalk.bold('✓'))} 创建压缩包 ${chalk.underline(zipFile)}`);
+};
+
 // 执行打包
 const build = async (callback) => {
     if (config.copyOriginMedia && config.mediaPath !== 'media/') {
         console.log(`${chalk.cyanBright(chalk.bold('❖ 处理自定义媒体文件:'))}\n`);
-        // console.log(`${chalk.yellow(chalk.bold('    [处理自定义媒体文件]'))}\n`);
         const mediaBuildPath = path.resolve(__dirname, '../app/media-build');
 
         await fse.emptyDir(mediaBuildPath);
@@ -414,12 +468,12 @@ const build = async (callback) => {
         console.log();
     }
 
-    await buildApp();
-
     let packageNum = 1, packedNum = 0;
     const buildPlatforms = platforms;
     const archTypes = archs;
     const packagesPath = path.join(__dirname, '../', electronBuilder.directories.output);
+    const needPackageBrowser = buildPlatforms.includes('browser');
+    const onlyPackageBrowser = needPackageBrowser && buildPlatforms.length === 1;
 
     console.log(`${chalk.cyanBright(chalk.bold('❖ 制作安装包:'))}\n`);
 
@@ -428,30 +482,51 @@ const build = async (callback) => {
         console.log(`    ${chalk.green(chalk.bold('✓'))} 已清空目录安装包存储目录 ${chalk.underline(packagesPath)}\n`);
     }
 
-    for (let i = 0; i < buildPlatforms.length; ++i) {
-        for (let j = 0; j < archTypes.length; ++j) {
-            const platform = buildPlatforms[i];
-            const arch = archTypes[j];
-            console.log(`${chalk.yellow(chalk.bold(`    [${packageNum}.正在制作安装包，平台 ${platform}，架构 ${arch}]`))}`);
+    if (needPackageBrowser) {
+        console.log(`${chalk.yellow(chalk.bold(`    [${packageNum++}.正在制作浏览器端部署包]`))}`);
+        const startTime = new Date().getTime();
+        await buildBrowser(path.join(packagesPath, 'browser'));
+        console.log(`    ${chalk.green(chalk.bold('✓'))} 已完成浏览器部署包 [time: ${formatTime(new Date().getTime() - startTime)}]\n`);
 
-            packageNum++;
-            if (buildPlatforms[i] === 'mac' && archTypes[j] === 'x32') {
-                console.log(`    ${chalk.red(chalk.bold('𐄂'))} 不支持制作此平台安装包： ${platform}-${arch}`);
+        packedNum++;
+    }
+
+    if (!onlyPackageBrowser) {
+        await buildApp();
+    }
+
+    revertConfigFiles();
+
+    if (!onlyPackageBrowser) {
+        for (let i = 0; i < buildPlatforms.length; ++i) {
+            const platform = buildPlatforms[i];
+            if (platform === 'browser') {
                 continue;
             }
 
-            if (verbose) {
-                console.log(chalk.yellow('══════════════════════════════════════════════════════════════'));
-            } else {
-                console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} ${'请耐心等待，这可能需要花费几分钟时间...'}`);
+            for (let j = 0; j < archTypes.length; ++j) {
+                const arch = archTypes[j];
+                console.log(`${chalk.yellow(chalk.bold(`    [${packageNum}.正在制作安装包，平台 ${platform}，架构 ${arch}]`))}`);
+
+                packageNum++;
+                if (buildPlatforms[i] === 'mac' && archTypes[j] === 'x32') {
+                    console.log(`    ${chalk.red(chalk.bold('𐄂'))} 不支持制作此平台安装包： ${platform}-${arch}`);
+                    continue;
+                }
+
+                if (verbose) {
+                    console.log(chalk.yellow('══════════════════════════════════════════════════════════════'));
+                } else {
+                    console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} ${'请耐心等待，这可能需要花费几分钟时间...'}`);
+                }
+                const startTime = new Date().getTime();
+                await createPackage(platform, arch, isDebug);
+                if (verbose) {
+                    console.log(chalk.yellow('══════════════════════════════════════════════════════════════'));
+                }
+                console.log(`    ${chalk.green(chalk.bold('✓'))} 已完成 ${chalk.bold(platform)}-${chalk.bold(arch)} [time: ${formatTime(new Date().getTime() - startTime)}]\n`);
+                packedNum++;
             }
-            const startTime = new Date().getTime();
-            await createPackage(platform, arch, isDebug);
-            if (verbose) {
-                console.log(chalk.yellow('══════════════════════════════════════════════════════════════'));
-            }
-            console.log(`    ${chalk.green(chalk.bold('✓'))} 已完成 ${chalk.bold(platform)}-${chalk.bold(arch)} [time: ${formatTime(new Date().getTime() - startTime)}]\n`);
-            packedNum++;
         }
     }
 
