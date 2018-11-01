@@ -1,0 +1,45 @@
+.icon {
+    min-width: 14px;
+    text-align: center;
+}
+
+.app-name-link > img {
+    width: 100px;
+}
+.sidebar ul,
+.sidebar .app-sub-sidebar {
+    margin: 0;
+    padding-left: 15px;
+}
+.sidebar li {
+    position: relative;
+}
+.sidebar li > a {
+    padding-left: 20px;
+}
+.sidebar .app-sub-sidebar li > a {
+    padding-left: 15px;
+}
+.sidebar .app-sub-sidebar li:before {
+    content: '';
+    left: 2px;
+    top: 12px;
+    display: block;
+    position: absolute;
+    background: rgba(0,0,0,.1);
+    width: 5px;
+    height: 5px;
+    padding: 0;
+}
+.sidebar-nav > ul > li > ul > li > ul.app-sub-sidebar,
+.sidebar-nav > ul > li > ul > li > a {
+    padding-left: 24px;
+}
+.sidebar li > a:hover {
+    background: rgba(0,0,0,.05);
+}
+.sidebar-nav .icon {
+    margin-right: 1px;
+    opacity: .65;
+    min-width: 20px;
+}
