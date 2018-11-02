@@ -117,6 +117,7 @@
     "less": "^3.7.1",
     "less-loader": "^4.1.0",
     "minimist": "^1.2.0",
+    "opn": "^5.4.0",
     "style-loader": "^0.21.0",
     "tcomb": "^3.2.27",
     "uglifyjs-webpack-plugin": "^1.2.7",

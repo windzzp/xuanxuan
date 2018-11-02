@@ -9,6 +9,8 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import {spawn} from 'child_process';
+import path from 'path';
+import opn from 'opn';
 
 import electronConfig from './webpack.config.development';
 import browserConfig from './webpack.config.browser.development';
@@ -27,9 +29,12 @@ const app = express();
 const compiler = webpack(config);
 const PORT = process.env.PORT || 3000;
 
-
 // 创建 Webpack 开发中间件
 const wdm = webpackDevMiddleware(compiler, {
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+    },
     publicPath: config.output.publicPath,
     stats: {
         colors: true
@@ -41,6 +46,10 @@ app.use(wdm);
 
 // 使用 Webpack 热更新中间件
 app.use(webpackHotMiddleware(compiler));
+
+if (isBrowserTarget) {
+    app.use(express.static(path.resolve(__dirname, '../app/')));
+}
 
 // 创建一个 Web server
 const server = app.listen(PORT, 'localhost', serverError => {
@@ -55,6 +64,10 @@ const server = app.listen(PORT, 'localhost', serverError => {
     }
 
     console.log(`Listening at http://localhost:${PORT}`);
+
+    if (isBrowserTarget) {
+        opn(`http://localhost:${PORT}?hot=1`);
+    }
 });
 
 // 终止服务

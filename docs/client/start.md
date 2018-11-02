@@ -237,31 +237,17 @@ $ npm run start-hot
 
 ## 启动浏览器端调试模式
 
-${displayName} 支持在浏览器环境下使用。参照如下步骤启动浏览器端调试模式。
-
-### 1. 启动浏览器端热更新服务
-
-在命令行窗口执行如下命令：
+${displayName} 支持在浏览器环境下使用。要启动浏览器端调试模式只需要在命令行窗口执行：
 
 ```bash
 $ npm run hot-server-browser
 ```
 
-### 2. 启动浏览器端页面服务
+正常情况下会使用操作系统默认浏览器打开${displayName}浏览器版页面（默认访问地址为：http://localhost:3000?hot=1）。如果要查看调试信息，需要打开浏览器的开发者工具（以 Chrome 浏览器为例，[在Chrome菜单中选择 **更多工具** > **开发者工具**](https://developers.google.com/web/tools/chrome-devtools/?hl=zh-cn)，其他浏览器类似）。
 
-打开一个新的命令行窗口（不要关闭之前打开的正在运行的热更新服务器命令行窗口）执行：
+?> 此步骤实际上是执行 [`${repository.clientSourceRoot}build/server.js`](${repository.sourceUrl}${repository.clientSourceRoot}build/server.js) 文件，使用 [`http-server`](https://github.com/indexzero/http-server) 启动了一个静态服务器来访问 [`${repository.clientSourceRoot}app/index.html`](${repository.sourceUrl}${repository.clientSourceRoot}app/index.html) 文件。
 
-```
-$ npm run start-hot-browser
-```
-
-正常情况下会使用操作系统默认浏览器打开${displayName}浏览器版页面（默认访问地址为：http://localhost:3001?hot=1&debug=1）。如果要查看调试信息，需要打开浏览器的开发者工具（以 Chrome 浏览器为例，[在Chrome菜单中选择 **更多工具** > **开发者工具**](https://developers.google.com/web/tools/chrome-devtools/?hl=zh-cn)，其他浏览器类似）。
-
-?> 此步骤实际上是执行 [`${repository.clientSourceRoot}build/start-hot-browser.js`](${repository.sourceUrl}${repository.clientSourceRoot}build/start-hot-browser.js) 文件，使用 [`http-server`](https://github.com/indexzero/http-server) 启动了一个静态服务器来访问 [`${repository.clientSourceRoot}app/index.html`](${repository.sourceUrl}${repository.clientSourceRoot}app/index.html) 文件。
-
-### 3. 退出浏览器端调试模式
-
-如果要退出调试模式，只需要将以上步骤中执行 `npm run hot-server-browser` 和 `npm run start-hot-browser` 命令的两个命令行窗口退出即可。
+如果要退出调试模式，只需要将以上步骤中执行 `npm run hot-server-browser` 的命令行窗口退出即可。
 
 ## 常见问题
 
