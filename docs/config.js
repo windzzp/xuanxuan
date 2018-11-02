@@ -18,6 +18,7 @@ window.$config = {
     repository: {
         type: 'git',
         url: 'https://github.com/easysoft/xuanxuan.git',
+        siteUrl: 'https://github.com/easysoft/xuanxuan/',
         sourceUrl: 'https://github.com/easysoft/xuanxuan/blob/master/',
         clientSourceRoot: 'xxc/'
     },

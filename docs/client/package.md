@@ -2,6 +2,10 @@
 
 本文将介绍如何将${displayName}源代码编译并打包为适合各个桌面平台的安装包以及生成浏览器端安装包。
 
+阅读本文需要你具备如下技能：
+
+* 能够简单使用命令行执行程序，如果遇到问题可以通过 [CodeCademy 上的免费课程](https://www.codecademy.com/learn/learn-the-command-line) 进行学习。
+
 ## 基本使用
 
 客户端端打包命令需要在客户端源码目录进行，首先进入客户端源码目录 [`${repository.clientSourceRoot}`](${repository.sourceUrl}${repository.clientSourceRoot})：
@@ -115,7 +119,7 @@ $ npm run package -- -b 'alpha.yyyy-MM-dd hh:mm'
 确保你的系统安装了 [brew](http://brew.sh/) 来安装跨平台打包的依赖工具，如果没有安装，执行如下命令进行安装：
 
 ```bash
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
 执行如下命令为打包 Windows 版本做准备：
@@ -177,7 +181,7 @@ $ npm run package -- --platform=all --arch=x64 --beta --clean && npm run package
 
 ## 高级打包配置
 
-有时我们需要打包定制版本，${displayName}的打包机制允许我们通过一个配置文件来定制最终打包的${displayName}应用程序。可供定制的内容非常丰富，包括应用名称、LOGO 图像、版本信息、界面配色以及界面上显示的语言文字，甚至可以配置最终程序是否启用某些特色功能。
+有时我们需要打包定制版本，${displayName}的打包机制允许我们通过一个配置文件来定制最终打包的${displayName}应用程序。可供定制的内容非常丰富，包括应用名称、LOGO 图像、版本信息、界面配色以及界面上显示的语言文字，甚至可以配置最终程序是否启用某些特色功能。此定制机制没有修改官方源码，并且可以与官方后续版本保持同步更新。
 
 !> ${displayName}使用 [${license} 开源许可协议](${repository.sourceUrl}LICENSE)，更改应用名称以及登录界面和关于界面上的 LOGO 图像需要取得我们的授权，详情请阅读   [官方网站定制开发页面](${contact})。如果仅仅是更改界面配色以及显示的语言文本，或者关闭某些功能则不需要获取我们的授权。
 

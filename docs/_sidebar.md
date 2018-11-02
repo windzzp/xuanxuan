@@ -9,8 +9,9 @@
 
   * [客户端安装](/client-install)
   * [浏览器端部署](/browser-deploy)
-  * [环境搭建](/client/dev-env)
+  * [环境搭建](/client/start)
   * [打包](client/package.md)
+  * [参与到官方开发](client/contribute.md)
   * [API](client/api.md)
   * [扩展机制](client/extension.md)
 
