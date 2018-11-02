@@ -29,7 +29,7 @@
           '<div style="overflow: auto">',
           '<p style="float: right"><a href="',
           docBase,
-          '" target="_blank" onclick="EditOnGithubPlugin.onClick(event)">',
+          '" target="_blank" onclick="EditOnGithubPlugin.onClick(event)" title="如果发现拼写错误或者有需要补充的内容，欢迎点击此处在 Github 上提交 Pull Request 来完善文档">',
           title,
           '</a></p>',
           '</div>'
