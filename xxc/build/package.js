@@ -12,8 +12,6 @@ import oldPkg from '../app/package.json';
 import cpx from 'cpx';
 import archiver from 'archiver';
 
-console.log(chalk.magentaBright(chalk.bold(`───────────────┤ ${pkg.name.toUpperCase()} ${pkg.version}`) + ' 打包工具 ├───────────────'));
-
 const PLATFORMS = new Set(['win', 'mac', 'linux', 'browser']);
 const ARCHS = new Set(['x32', 'x64']);
 
@@ -148,21 +146,23 @@ program
     .option('-p, --platform <platform>', '需要打包的平台，可选值包括: "mac", "win", "linux", "browser", "current", 或者使用英文逗号拼接多个平台名称，例如 "win,mac", 特殊值 "current" 用于指定当前打包工具所运行的平台, 特殊值 "all" 或 "*" 用于指定所有平台（相当于 “mac,win,linux,browser”）', formatPlatforms, 'current')
     .option('-a, --arch <arch>', '需要打包的平台处理器架构类型, 可选值包括: "x32", "x64", 或者使用英文逗号拼接多个架构名称，例如 "x32,x64", 特殊值 "current" 用于快捷指定当前打包工具所运行的平台架构类型, 特殊值 "all" 或 "*" 用于指定所有架构类型（相当于 “x32,x64”）', formatArchs, 'current')
     .option('-d, --debug', '是否打包为方便调试的版本', false)
-    .option('-b, --beta', '是否将版本标记为 Beta 版本', false)
+    .option('-b, --beta [beta]', '是否将版本标记为 Beta 版本', false)
     .option('-v, --verbose', '是否输出额外的信息', false)
     .option('-C, --clean', '存储安装包之前是否清空旧的安装包文件', false)
     .parse(process.argv);
+
+console.log(chalk.magentaBright(chalk.bold(`───────────────┤ ${pkg.name.toUpperCase()} ${pkg.version}`) + ' 打包工具 ├───────────────'));
 
 const configName = program.config;
 const isCustomConfig = configName && configName !== '-';
 const platforms = formatPlatforms(program.platform);
 const archs = formatArchs(program.arch);
 const isDebug = program.debug;
-const isBeta = program.beta;
+const isBeta = !!program.beta;
 const verbose = program.verbose;
 const isSkipBuild = program.skipbuild;
 const isClean = program.clean;
-const buildVersion = isBeta ? formatDate(new Date(), 'beta.yyyyMMddhhmm') : null;
+const buildVersion = isBeta ? formatDate(new Date(), program.beta === true ? 'beta.yyyyMMddhhmm' : program.beta) : null;
 
 // 输出配置选项
 console.log(`
