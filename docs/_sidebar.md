@@ -1,19 +1,21 @@
-* <i class="icon far fa-smile-beam"></i> 入门
+* <i class="icon far fa-smile-beam"></i> 开始
 
   * [介绍](README)
   * [架构](arch)
   * [项目](project)
   * [下载中心](download)
+  * [常见问题](faq)
 
 * <i class="icon fas fa-laptop-code"></i> 客户端
 
   * [客户端安装](client-install)
   * [浏览器端部署](browser-deploy)
+  * [客户端架构](client/arch)
   * [环境搭建](client/start)
   * [打包](client/package.md)
   * [参与到官方开发](client/contribute.md)
-  * [API](client/api.md)
   * [扩展机制](client/extension.md)
+  * [API](client/api.md)
 
 * <i class="icon fas fa-running"></i> 服务器
 

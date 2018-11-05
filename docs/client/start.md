@@ -64,7 +64,7 @@ $ git clone ${repository.url}
 
 上述命令执行完成后就会在你的系统创建一个名称为 `${name}` 的目录，该目录内就是${displayName}最新的源码。
 
-?> 无法你无法访问 [github.com](https://github.com)，你可以可以使用码云上的镜像库 `https://gitee.com/wwccss/xuanxuan.git`。
+?> 无法你无法访问 [github.com](https://github.com)，你可以可以使用码云上的镜像库 [`https://gitee.com/wwccss/xuanxuan.git`](https://gitee.com/wwccss/xuanxuan.git)。
 
 如果你还没有安装或使用过 [git](https://git-scm.com/) 也不用担心，你仍然可以访问 [${displayName}在 Github 上的页面](${repository.siteUrl})，直接点击 [“Download ZIP”](${repository.siteUrl}archive/master.zip) 来下载源码。下载完成后将 zip 文件解压到 `${name}` 目录下即可。
 
@@ -243,7 +243,7 @@ ${displayName} 支持在浏览器环境下使用。要启动浏览器端调试�
 $ npm run hot-server-browser
 ```
 
-正常情况下会使用操作系统默认浏览器打开${displayName}浏览器版页面（默认访问地址为：http://localhost:3000?hot=1）。如果要查看调试信息，需要打开浏览器的开发者工具（以 Chrome 浏览器为例，[在Chrome菜单中选择 **更多工具** > **开发者工具**](https://developers.google.com/web/tools/chrome-devtools/?hl=zh-cn)，其他浏览器类似）。
+正常情况下会使用操作系统默认浏览器打开${displayName}浏览器版页面（默认访问地址为：[http://localhost:3000?hot=1](http://localhost:3000?hot=1)）。如果要查看调试信息，需要打开浏览器的开发者工具（以 Chrome 浏览器为例，[在Chrome菜单中选择 **更多工具** > **开发者工具**](https://developers.google.com/web/tools/chrome-devtools/?hl=zh-cn)，其他浏览器类似）。
 
 ?> 此步骤实际上是执行 [`${repository.clientSourceRoot}build/server.js`](${repository.sourceUrl}${repository.clientSourceRoot}build/server.js) 文件，使用 [`http-server`](https://github.com/indexzero/http-server) 启动了一个静态服务器来访问 [`${repository.clientSourceRoot}app/index.html`](${repository.sourceUrl}${repository.clientSourceRoot}app/index.html) 文件。
 
