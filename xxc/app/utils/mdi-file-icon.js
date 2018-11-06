@@ -82,7 +82,7 @@ const icons = {
     py: ICON_language_python,
 };
 
-const getIcon = fileName => {
+export default fileName => {
     if (fileName.includes('.')) {
         const ext = fileName.substr(fileName.lastIndexOf('.') + 1);
         const icon = icons[ext.toLowerCase()];
@@ -91,8 +91,4 @@ const getIcon = fileName => {
         }
     }
     return 'file-outline';
-};
-
-export default {
-    getIcon
 };

@@ -2,7 +2,8 @@
  * 拼接元素类
  *
  * @param {...any} 参数
- *
+ * @return {String}
+ * @export
  * @example
  * const isActive = false;
  * const isHidden = true;
@@ -13,7 +14,8 @@ export const classes = (...args) => (
     args.map(arg => {
         if (Array.isArray(arg)) {
             return classes(arg);
-        } else if (arg !== null && typeof arg === 'object') {
+        }
+        if (arg !== null && typeof arg === 'object') {
             return Object.keys(arg).filter(className => {
                 const condition = arg[className];
                 if (typeof condition === 'function') {
@@ -55,6 +57,12 @@ export const getSearchParam = (key, search = null) => {
     return key ? params[key] : params;
 };
 
+/**
+ * 过滤掉 HTML 标签
+ * @param {String} html HTML 源码
+ * @return {String}
+ * @export
+ */
 export const strip = html => {
     return html.replace(/<(?:.|\n)*?>/gm, '');
 };
@@ -73,14 +81,14 @@ export const isWebUrl = url => {
 };
 
 export const linkify = (text) => {
-    return (text || "").replace(
-        /([^\S]|^)(((https?\:\/\/)|(www\.))(\S+))/gi,
+    return (text || '').replace(
+        /([^\S]|^)(((https?:\/\/)|(www\.))(\S+))/gi,
         (match, space, url) => {
-            var hyperlink = url;
-            if (!hyperlink.match('^https?:\/\/')) {
-                hyperlink = 'http://' + hyperlink;
+            let hyperlink = url;
+            if (!hyperlink.match('^https?://')) {
+                hyperlink = `http://${hyperlink}`;
             }
-            return space + '<a href="' + hyperlink + '">' + url + '</a>';
+            return `${space}<a href="${hyperlink}">${url}</a>`;
         }
     );
 };

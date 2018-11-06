@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Platform from 'Platform';
-import HTML from '../../utils/html-helper';
-import MDIFileIcon from '../../utils/mdi-file-icon';
-import StringHelper from '../../utils/string-helper';
-import DateHelper from '../../utils/date-helper';
+import {classes} from '../../utils/html-helper';
+import getFileIcon from '../../utils/mdi-file-icon';
+import {formatBytes} from '../../utils/string-helper';
+import {formatDate} from '../../utils/date-helper';
 import Icon from '../../components/icon';
 import Avatar from '../../components/avatar';
 import Messager from '../../components/messager';
@@ -16,7 +16,7 @@ import FileData from '../../core/models/file-data';
 
 const isBrowserPlatform = Platform.type === 'browser';
 
-class FileListItem extends Component {
+export default class FileListItem extends Component {
     static get FileListItem() {
         return replaceViews('common/file-list-item', FileListItem);
     }
@@ -58,7 +58,8 @@ class FileListItem extends Component {
 
     checkLocalPath() {
         const {localPath} = this.state;
-        const file = FileData.create(this.props.file);
+        let {file} = this.props;
+        file = FileData.create(file);
         if (!isBrowserPlatform && file.send === true && localPath !== false && !localPath) {
             App.im.files.checkCache(file).then(existsPath => {
                 this.setState({localPath: existsPath});
@@ -131,13 +132,14 @@ class FileListItem extends Component {
             if (isBrowserPlatform) {
                 actions = <div className="hint--top" data-hint={Lang.string('file.download')}><a href={file.url} download={fileName} target="_blank" className="btn iconbutton text-primary rounded"><Icon name="download" /></a></div>;
             } else {
-                if (this.state.download !== false) {
+                const {localPath, download} = this.state;
+                if (download !== false) {
                     fileStatus = <span className="text-primary small">{Lang.string('file.downloading')} </span>;
-                    actions = <Avatar className="avatar secondary outline small circle" label={Math.floor(this.state.download) + '%'} />;
-                } else if(this.state.localPath) {
+                    actions = <Avatar className="avatar secondary outline small circle" label={`${Math.floor(download)}%`} />;
+                } else if (localPath) {
                     actions = [
-                        <div key="action-open" className="hint--top" data-hint={Lang.string('file.open')}><button onClick={Platform.ui.openFileItem.bind(this, this.state.localPath)} type="button" className="btn iconbutton text-primary rounded"><Icon name="open-in-app" /></button></div>,
-                        <div key="action-open-folder" className="hint--top-left" data-hint={Lang.string('file.openFolder')}><button onClick={Platform.ui.showItemInFolder.bind(this, this.state.localPath)} type="button" className="btn iconbutton text-primary rounded"><Icon name="folder-outline" /></button></div>,
+                        <div key="action-open" className="hint--top" data-hint={Lang.string('file.open')}><button onClick={Platform.ui.openFileItem.bind(this, localPath)} type="button" className="btn iconbutton text-primary rounded"><Icon name="open-in-app" /></button></div>,
+                        <div key="action-open-folder" className="hint--top-left" data-hint={Lang.string('file.openFolder')}><button onClick={Platform.ui.showItemInFolder.bind(this, localPath)} type="button" className="btn iconbutton text-primary rounded"><Icon name="folder-outline" /></button></div>,
                         <div key="action-download" className="hint--top" data-hint={Lang.string('file.download')}><button onClick={this.handleDownloadBtnClick.bind(this, file)} type="button" className="btn iconbutton text-primary rounded"><Icon name="download" /></button></div>
                     ];
                 } else {
@@ -148,23 +150,23 @@ class FileListItem extends Component {
 
         const sender = showSender && file.senderId && App.members.get(file.senderId);
 
-        return (<div
-            {...other}
-            className={HTML.classes('app-file-list-item item row flex-middle single', className)}
-        >
-            {smallIcon ? null : <Avatar skin={{code: ext, pale: true}} className="flex-none" icon={MDIFileIcon.getIcon(ext)} />}
-            <div className="content">
-                <div className="title">{fileName}</div>
-                <div className="sub-content">
-                    {fileStatus}
-                    {sender ? <span><UserAvatar size={16} user={sender} /> <small className="muted">{sender.displayName}</small></span> : null}
-                    <span className="muted small">{StringHelper.formatBytes(file.size)}</span>
-                    {showDate && <span className="small muted">{DateHelper.formatDate(file.date)}</span>}
+        return (
+            <div
+                {...other}
+                className={classes('app-file-list-item item row flex-middle single', className)}
+            >
+                {smallIcon ? null : <Avatar skin={{code: ext, pale: true}} className="flex-none" icon={getFileIcon(ext)} />}
+                <div className="content">
+                    <div className="title">{fileName}</div>
+                    <div className="sub-content">
+                        {fileStatus}
+                        {sender ? <span><UserAvatar size={16} user={sender} /> <small className="muted">{sender.displayName}</small></span> : null}
+                        <span className="muted small">{formatBytes(file.size)}</span>
+                        {showDate && <span className="small muted">{formatDate(file.date)}</span>}
+                    </div>
                 </div>
+                {actions && <div className="actions">{actions}</div>}
             </div>
-            {actions && <div className="actions">{actions}</div>}
-        </div>);
+        );
     }
 }
-
-export default FileListItem;
