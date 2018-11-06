@@ -4,7 +4,23 @@ import HTML from '../utils/html-helper';
 import Icon from './icon';
 import Lang from '../lang';
 
-class Pager extends PureComponent {
+/**
+ * Pager 组件 ，显示一个分页控件
+ * @export
+ * @class Pager
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example @lang jsx
+ * <Pager />
+ */
+export default class Pager extends PureComponent {
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof Pager
+     * @return {Object}
+     */
     static propTypes = {
         page: PropTypes.number,
         recTotal: PropTypes.number,
@@ -14,6 +30,13 @@ class Pager extends PureComponent {
         onPageChange: PropTypes.func,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof Pager
+     * @static
+     */
     static defaultProps = {
         page: 1,
         recTotal: 0,
@@ -23,18 +46,40 @@ class Pager extends PureComponent {
         pageRecCount: 0,
     };
 
-    handlePrevBtnClick = () => {
+    /**
+     * 处理上一页按钮点击事件
+     * @param {Event} event 事件对象
+     * @memberof Pager
+     * @private
+     * @return {void}
+     */
+    handlePrevBtnClick = event => {
         if (this.props.page > 1) {
             this.props.onPageChange(this.props.page - 1);
         }
     }
 
-    handleNextBtnClick = () => {
+    /**
+     * 处理下一页按钮点击事件
+     * @param {Event} event 事件对象
+     * @memberof Pager
+     * @private
+     * @return {void}
+     */
+    handleNextBtnClick = event => {
         if (this.props.page < this.totalPage) {
             this.props.onPageChange(this.props.page + 1);
         }
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof Pager
+     * @return {ReactNode}
+     */
     render() {
         const {
             page,
@@ -59,5 +104,3 @@ class Pager extends PureComponent {
         </div>);
     }
 }
-
-export default Pager;

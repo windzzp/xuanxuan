@@ -1,24 +1,41 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../utils/html-helper';
+import {classes, rem} from '../utils/html-helper';
 
 /**
- * Material design icon componet
- * All icons @see http://materialdesignicons.com
- *
- * @example <caption>Create a star icon</caption>
- * <MDIcon name="star" />
- *
+ * Icon 组件 ，显示一个图标，目前支持 materialdesign 内的所有图标
+ * @see https://materialdesignicons.com/
  * @export
- * @class MDIcon
- * @extends {Component}
+ * @class Icon
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example <caption>创建一个星星图标</caption>
+ * <MDIcon name="star" />
  */
 export default class MDIcon extends PureComponent {
     /**
-     * Default values of properties
-     *
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
-     * @memberof MDIcon
+     * @memberof Icon
+     * @return {Object}
+     */
+    static propTypes = {
+        size: PropTypes.number,
+        style: PropTypes.object,
+        square: PropTypes.bool,
+        className: PropTypes.string,
+        color: PropTypes.string,
+        name: PropTypes.string,
+        children: PropTypes.any
+    }
+
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof Icon
+     * @static
      */
     static defaultProps = {
         size: 0,
@@ -31,22 +48,15 @@ export default class MDIcon extends PureComponent {
     };
 
     /**
-     * Properties types
-     *
+     * 创建一个图标组件
+     * @param {String|ReactNode|Object} icon 图标名称或者图标组件属性配置
+     * @param {Object?} props 图标组件属性配置
+     * @return {ReactNode.<MDIcon>}
      * @static
-     * @memberof MDIcon
+     * @memberof Icon
+     * @example <caption>创建一个星星图标</caption>
+     * const icon = MDIcon.render('star');
      */
-    static propTypes = {
-        size: PropTypes.number,
-        style: PropTypes.object,
-        square: PropTypes.bool,
-        className: PropTypes.string,
-        color: PropTypes.string,
-        name: PropTypes.string,
-        children: PropTypes.any
-    }
-
-
     static render(icon, props) {
         let iconView = null;
         if (icon) {
@@ -62,10 +72,12 @@ export default class MDIcon extends PureComponent {
     }
 
     /**
-     * React life cycle method: render
-     *
-     * @returns
-     * @memberof MDIcon
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof Icon
+     * @return {ReactNode}
      */
     render() {
         let {
@@ -81,7 +93,7 @@ export default class MDIcon extends PureComponent {
         style = Object.assign({}, style);
         if (size) {
             if (size < 12) size *= 12;
-            style.fontSize = HTML.rem(size);
+            style.fontSize = rem(size);
         }
         if (color) {
             style.color = color;
@@ -99,6 +111,6 @@ export default class MDIcon extends PureComponent {
         } else {
             iconName = `mdi mdi-${name}`;
         }
-        return <i style={style} {...other} className={HTML.classes(`icon ${iconName}`, className)}>{children}</i>;
+        return <i style={style} {...other} className={classes(`icon ${iconName}`, className)}>{children}</i>;
     }
 }

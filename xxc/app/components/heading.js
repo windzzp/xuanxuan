@@ -1,37 +1,22 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../utils/html-helper';
+import {classes} from '../utils/html-helper';
 import Icon from './icon';
 import Avatar from './avatar';
 
 /**
- * Heading component
- *
+ * Heading 组件 ，显示一个支持带头像或操作的标题
  * @export
  * @class Heading
- * @extends {Component}
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example @lang jsx
+ * <Heading />
  */
 export default class Heading extends PureComponent {
     /**
-     * Default properties values
-     *
-     * @static
-     * @memberof Heading
-     * @return {Object}
-     */
-    static defaultProps = {
-        avatar: null,
-        icon: null,
-        title: null,
-        children: null,
-        nav: null,
-        className: null,
-        type: 'a',
-    }
-
-    /**
-     * Properties types
-     *
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Heading
      * @return {Object}
@@ -47,10 +32,29 @@ export default class Heading extends PureComponent {
     }
 
     /**
-     * React render method
-     *
-     * @returns
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
      * @memberof Heading
+     * @static
+     */
+    static defaultProps = {
+        avatar: null,
+        icon: null,
+        title: null,
+        children: null,
+        nav: null,
+        className: null,
+        type: 'a',
+    }
+
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof Heading
+     * @return {ReactNode}
      */
     render() {
         const {
@@ -98,7 +102,7 @@ export default class Heading extends PureComponent {
         }
 
         return React.createElement(type, {
-            className: HTML.classes(
+            className: classes(
                 'app-heading',
                 className,
             ),

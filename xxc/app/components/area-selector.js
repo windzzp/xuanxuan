@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 /**
  * 判定一个点是否在矩形区域内
  *
- * @access private
- * @param {{left: Number, top: Number}} point 要判定的点位置
- * @param {{left: Number, top: Number, width: Number, height: Number}} rect 要判定对矩形区域
- * @return {Bool} 如果在矩形区域内则返回 <code>true</code> 否则 返回 <code>false</code>
+ * @private
+ * @param {{left: number, top: number}} point 要判定的点位置
+ * @param {{left: number, top: number, width: number, height: number}} rect 要判定对矩形区域
+ * @return {boolean} 如果在矩形区域内则返回 <code>true</code> 否则 返回 <code>false</code>
  */
 const isPiontInRect = (point, rect) => (
     rect.width > 0 && rect.height > 0
@@ -20,9 +20,9 @@ const isPiontInRect = (point, rect) => (
 /**
  * 判定一个点在矩形区域的方位
  *
- * @access private
- * @param {{left: Number, top: Number}} pos
- * @param {{left: Number, top: Number, width: Number, height: Number}} rect 要判定对矩形区域
+ * @private
+ * @param {{left: number, top: number}} pos
+ * @param {{left: number, top: number, width: number, height: number}} rect 要判定对矩形区域
  * @return {String}
  */
 const caculatePosition = (pos, area) => {
@@ -104,35 +104,22 @@ const caculatePosition = (pos, area) => {
 };
 
 /**
- * Range area selector component
- *
- * @public
- * @export
- * @class AreaSelector
- * @extends {Component}
- */
+* AreaSelector 组件 ，显示一个AreaSelector
+* @export
+* @class AreaSelector
+* @see https://react.docschina.org/docs/components-and-props.html
+* @extends {Component}
+* @example @lang jsx
+* <AreaSelector />
+*/
 export default class AreaSelector extends Component {
     /**
-     * Property default values
-     *
-     * @static
-     * @memberof AreaSelector
-     */
-    static defaultProps = {
-        onSelectArea: null,
-        toolbarStyle: null,
-        toolbarHeight: 40,
-        style: null,
-        toolbar: null,
-        img: null
-    };
-
-    /**
-     * Property types
-     *
-     * @static
-     * @memberof AreaSelector
-     */
+    * React 组件属性类型检查
+    * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+    * @static
+    * @memberof AreaSelector
+    * @return {Object}
+    */
     static propTypes = {
         onSelectArea: PropTypes.func,
         toolbarStyle: PropTypes.object,
@@ -143,17 +130,34 @@ export default class AreaSelector extends Component {
     };
 
     /**
-     * Creates an instance of AreaSelector.
-     *
-     * @public
-     * @param {Object} props
-     * @memberof AreaSelector
-     */
+    * React 组件默认属性
+    * @see https://react.docschina.org/docs/react-component.html#defaultprops
+    * @type {object}
+    * @memberof AreaSelector
+    * @static
+    */
+    static defaultProps = {
+        onSelectArea: null,
+        toolbarStyle: null,
+        toolbarHeight: 40,
+        style: null,
+        toolbar: null,
+        img: null
+    };
+
+    /**
+    * React 组件构造函数，创建一个 AreaSelector 组件实例，会在装配之前被调用。
+    * @see https://react.docschina.org/docs/react-component.html#constructor
+    * @param {Object?} props 组件属性对象
+    * @constructor
+    */
     constructor(props) {
         super(props);
 
         /**
-         * React state
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
          */
         this.state = {
             select: null,
@@ -165,7 +169,7 @@ export default class AreaSelector extends Component {
      * Set select range
      * 设置选择的范围
      *
-     * @param {{left: Number, top: Number, width: Number, height: Number}} select 选择对范围对象
+     * @param {{left: number, top: number, width: number, height: number}} select 选择对范围对象
      * @returns {Void}
      * @memberof AreaSelector
      */
@@ -178,17 +182,23 @@ export default class AreaSelector extends Component {
             select.left = Math.max(0, Math.min(this.contianer.clientWidth - select.width, select.left));
         }
 
+        const {onSelectArea} = this.props;
+
         if (!this.state.select || (this.state.select && (this.state.select.left !== select.left || this.state.select.top !== select.top || this.state.select.width !== select.width || this.state.select.height !== select.height))) {
             select.x = select.left;
             select.y = select.top;
             this.setState({select});
-            return this.props.onSelectArea && this.props.onSelectArea(select);
+            return onSelectArea && onSelectArea(select);
         }
     }
 
     /**
-     * @private
-     */
+    * 处理鼠标点击按下事件
+    * @param {Event} e 事件对象
+    * @memberof AreaSelector
+    * @private
+    * @return {void}
+    */
     handleMouseDown = e => {
         this.mouseDownPos = {left: e.clientX, top: e.clientY};
         this.mouseDownSelect = Object.assign({}, this.state.select);
@@ -198,8 +208,12 @@ export default class AreaSelector extends Component {
     }
 
     /**
-     * @private
-     */
+    * 处理鼠标移动事件
+    * @param {Event} e 事件对象
+    * @memberof AreaSelector
+    * @private
+    * @return {void}
+    */
     handleMouseMove = e => {
         if (this.mouseDownPos) {
             this.mouseMovePos = {left: e.clientX, top: e.clientY};
@@ -301,9 +315,13 @@ export default class AreaSelector extends Component {
     }
 
     /**
-     * @private
-     */
-    handleMouseUp = () => {
+    * 处理鼠标点击弹起事件
+    * @param {Event} event 事件对象
+    * @memberof AreaSelector
+    * @private
+    * @return {void}
+    */
+    handleMouseUp = event => {
         this.mouseDownPos = null;
         if (!this.state.resizeable && this.state.select) {
             this.setState({resizeable: true});
@@ -311,11 +329,13 @@ export default class AreaSelector extends Component {
     }
 
     /**
-     * React render
-     *
-     * @returns
-     * @memberof AreaSelector
-     */
+    * React 组件生命周期函数：Render
+    * @private
+    * @see https://doc.react-china.org/docs/react-component.html#render
+    * @see https://doc.react-china.org/docs/rendering-elements.html
+    * @memberof AreaSelector
+    * @return {ReactNode}
+    */
     render() {
         const STYLE = {
             main: {

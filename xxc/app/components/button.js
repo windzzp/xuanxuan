@@ -2,37 +2,22 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../utils/html-helper';
 import Skin from '../utils/skin';
-import Icon from '../components/icon';
+import Icon from './icon';
 
 /**
- * Button component
- *
+ * Button 组件 ，显示一个按钮
  * @export
  * @class Button
- * @extends {Component}
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example @lang jsx
+ * <Button />
  */
 export default class Button extends PureComponent {
-    /**
-     * Default properties values
-     *
-     * @static
-     * @memberof Button
-     * @return {Object}
-     */
-    static defaultProps = {
-        skin: null,
-        icon: null,
-        label: null,
-        className: null,
-        style: null,
-        children: null,
-        type: 'button',
-        btnClass: 'btn'
-    }
 
     /**
-     * Properties types
-     *
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Button
      * @return {Object}
@@ -49,11 +34,30 @@ export default class Button extends PureComponent {
     }
 
     /**
-     * React render method
-     *
-     * @returns
-     * @memberof Avatar
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof Button
+     * @static
      */
+    static defaultProps = {
+        skin: null,
+        icon: null,
+        label: null,
+        className: null,
+        style: null,
+        children: null,
+        btnClass: 'btn'
+    }
+
+    /**
+    * React 组件生命周期函数：Render
+    * @private
+    * @see https://doc.react-china.org/docs/react-component.html#render
+    * @see https://doc.react-china.org/docs/rendering-elements.html
+    * @memberof Button
+    * @return {ReactNode}
+    */
     render() {
         const {
             skin,

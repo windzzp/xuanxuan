@@ -7,7 +7,23 @@ import StringHelper from '../utils/string-helper';
 import DelayAction from '../utils/delay-action';
 import Lang from '../lang';
 
-class SearchControl extends PureComponent {
+/**
+ * SearchControl 组件 ，显示一个搜索框
+ * @export
+ * @class SearchControl
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example @lang jsx
+ * <SearchControl />
+ */
+export default class SearchControl extends PureComponent {
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof SearchControl
+     * @return {Object}
+     */
     static propTypes = {
         placeholder: PropTypes.any,
         changeDelay: PropTypes.number,
@@ -20,6 +36,13 @@ class SearchControl extends PureComponent {
         className: PropTypes.string,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof SearchControl
+     * @static
+     */
     static defaultProps = {
         placeholder: Lang.string('common.search'),
         changeDelay: 100,
@@ -32,35 +55,75 @@ class SearchControl extends PureComponent {
         children: null,
     };
 
+    /**
+     * React 组件构造函数，创建一个 SearchControl 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             value: props.defaultValue,
             focus: false,
             empty: StringHelper.isEmpty(props.defaultValue)
         };
 
-        if (this.props.onSearchChange) {
+        const {onSearchChange, changeDelay} = this.props;
+        if (onSearchChange) {
             this.delaySearchChangeTask = new DelayAction((searchValue) => {
-                this.props.onSearchChange(searchValue);
-            }, this.props.changeDelay);
+                onSearchChange(searchValue);
+            }, changeDelay);
         }
     }
 
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof SearchControl
+     * @return {void}
+     */
     componentWillUnmount() {
         if (this.delaySearchChangeTask) {
             this.delaySearchChangeTask.destroy();
         }
     }
 
+    /**
+     * 获取输入的值
+     * @memberof SearchControl
+     * @return {String}
+     */
     getValue() {
         return this.state.value;
     }
 
+    /**
+     * 检查搜索框是否为空
+     * @memberof SearchControl
+     * @return {boolean}
+     */
     isEmpty() {
         return this.state.empty;
     }
 
+    /**
+     * 处理搜索框获得焦点事件
+     * @param {Event} e 事件对象
+     * @memberof SearchControl
+     * @private
+     * @return {void}
+     */
     handleOnInputFocus = e => {
         this.setState({focus: true});
         if (this.props.onFocus) {
@@ -71,6 +134,13 @@ class SearchControl extends PureComponent {
         }
     };
 
+    /**
+     * 处理搜索框失去焦点事件
+     * @param {Event} e 事件对象
+     * @memberof SearchControl
+     * @private
+     * @return {void}
+     */
     handleOnInputBlur = e => {
         this.setState({focus: false});
         if (this.props.onBlur) {
@@ -81,6 +151,13 @@ class SearchControl extends PureComponent {
         }
     };
 
+    /**
+     * 设置搜索框值
+     * @param {String} value 输入框值
+     * @param {?Function} callback 操作完成时的回调函数
+     * @memberof SearchControl
+     * @return {void}
+     */
     setValue(value, callback) {
         this.setState({empty: StringHelper.isEmpty(value), value}, () => {
             if (this.delaySearchChangeTask) {
@@ -92,17 +169,39 @@ class SearchControl extends PureComponent {
         });
     }
 
+    /**
+     * 处理搜索框值变更事件
+     * @param {String} value 搜索框内的文本值
+     * @memberof SearchControl
+     * @private
+     * @return {void}
+     */
     handleOnInputChange = value => {
         value = typeof value === 'string' ? value.trim() : '';
         this.setValue(value);
     }
 
-    handleOnCloseBtnClick = () => {
+    /**
+     * 处理清除按钮点击事件
+     * @param {Event} event 事件对象
+     * @memberof SearchControl
+     * @private
+     * @return {void}
+     */
+    handleOnClearBtnClick = event => {
         this.setValue('', () => {
             this.inputControl.focus();
         });
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof SearchControl
+     * @return {ReactNode}
+     */
     render() {
         let {
             className,
@@ -132,10 +231,8 @@ class SearchControl extends PureComponent {
             ref={e => {this.inputControl = e;}}
             {...other}
         >
-            <Icon name="close" onClick={this.handleOnCloseBtnClick} className="close state" />
+            <Icon name="close" onClick={this.handleOnClearBtnClick} className="close state" />
             {children}
         </InputControl>);
     }
 }
-
-export default SearchControl;

@@ -17,7 +17,6 @@ import ClickOutsideWrapper from './click-outside-wrapper';
 import ImageViewer from './image-viewer';
 import Spinner from './spinner';
 import ContextMenu from './context-menu';
-import Index from './index';
 import TabPane from './tab-pane';
 import DisplayContainer from './display-container';
 import InputControl from './input-control';
@@ -25,6 +24,11 @@ import Tabs from './tabs';
 import DisplayLayer from './display-layer';
 import Messager from './messager';
 
+/**
+ * 导出所有公共组件
+ * @type {Object}
+ * @export
+ */
 export default {
     AppAvatar,
     Display,
@@ -45,7 +49,6 @@ export default {
     ImageViewer,
     Spinner,
     ContextMenu,
-    Index,
     TabPane,
     DisplayContainer,
     InputControl,

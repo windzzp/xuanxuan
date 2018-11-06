@@ -3,7 +3,22 @@ import PropTypes from 'prop-types';
 import HTML from '../utils/html-helper';
 import TabPane from './tab-pane';
 
-class Tabs extends PureComponent {
+export default class Tabs extends PureComponent {
+    /**
+     * 标签页面板组件
+     * @type {TabPane}
+     * @static
+     * @memberof Tabs
+     */
+    static TabPane = TabPane;
+
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof Tabs
+     * @return {Object}
+     */
     static propTypes = {
         navClassName: PropTypes.string,
         activeClassName: PropTypes.string,
@@ -16,6 +31,13 @@ class Tabs extends PureComponent {
         onPaneChange: PropTypes.func,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof Tabs
+     * @static
+     */
     static defaultProps = {
         navClassName: '',
         activeClassName: 'active',
@@ -28,13 +50,32 @@ class Tabs extends PureComponent {
         children: null,
     };
 
+    /**
+     * React 组件构造函数，创建一个 Tabs 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             activePaneKey: this.props.defaultActivePaneKey
         };
     }
 
+    /**
+     * 处理导航变更事件
+     * @param {String} key 变更后的当前标签页 Key 值
+     * @memberof Tabs
+     * @private
+     * @return {void}
+     */
     handleNavClick(key) {
         if (key !== this.state.activePaneKey) {
             const oldKey = this.state.activePaneKey;
@@ -46,6 +87,14 @@ class Tabs extends PureComponent {
         }
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof Tabs
+     * @return {ReactNode}
+     */
     render() {
         let {
             defaultActivePaneKey,
@@ -88,5 +137,3 @@ class Tabs extends PureComponent {
         </div>);
     }
 }
-
-export default {Tabs, TabPane};

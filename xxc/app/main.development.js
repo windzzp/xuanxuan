@@ -3,33 +3,43 @@ import pkg from './package.json';
 import application from './platform/electron/app-remote';
 import Lang from './lang';
 
+// 禁用自签发证书警告
 ElectronApp.commandLine.appendSwitch('ignore-certificate-errors');
 
+// 记录入口文件所在目录
 application.init(__dirname);
 
 if (process.env.NODE_ENV === 'production') {
+    // 启用 Source Map 支持，方便跟踪调试
     const sourceMapSupport = require('source-map-support'); // eslint-disable-line
     sourceMapSupport.install();
 }
 
 if (DEBUG && DEBUG !== 'production') {
+    // 启用 electron-debug https://github.com/sindresorhus/electron-debug
     require('electron-debug')(); // eslint-disable-line global-require
+
+    // 使得 app/node_modules 内的模块可以直接使用
     const path = require('path'); // eslint-disable-line
     const p = path.join(__dirname, '..', 'app', 'node_modules'); // eslint-disable-line
     require('module').globalPaths.push(p); // eslint-disable-line
 }
 
-// Quit when all windows are closed.
+// 当所有窗口关闭时退出应用
 ElectronApp.on('window-all-closed', () => {
     ElectronApp.quit();
 });
 
+/**
+ * 安装调试模式所使用的 Electron 开发工具扩展
+ * @private
+ */
 const installExtensions = async () => {
     if (process.env.SKIP_INSTALL_EXTENSIONS) {
-        console.log('>> Install electron development extensions. SKIPED.');
-        return; 
+        console.log('>> 已跳过安装 Electron 调试扩展。');
+        return;
     }
-    console.log('>> Install electron development extensions. This will take a few minutes. If it take too long time, try close the terminal window and skip install extension by execute command "npm run start-hot-fast".');
+    console.log('>> 正在安装 Electron 调试扩展...首次启动可能需要花费几分钟时间，如果长时间没有出现主界面窗口，请尝试退出此命令行任务，然后执行 "npm run start-hot-fast" 来代替 "npm run start-hot" 命令。');
     if (process.env.NODE_ENV === 'development') {
         const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
         const extensions = [
@@ -44,6 +54,10 @@ const installExtensions = async () => {
     }
 };
 
+/**
+ * 创建窗口菜单
+ * @private
+ */
 const createMenu = () => {
     // Create application menu
     if (process.platform === 'darwin') {
@@ -178,32 +192,30 @@ const createMenu = () => {
 
         const menu = Menu.buildFromTemplate(template);
         Menu.setApplicationMenu(menu);
-        if (DEBUG) {
-            console.log('Mac os menu created.');
-        }
-    } else if (DEBUG) {
-        console.log('\n>> Windows menu not avaliable now.');
     }
 };
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
+// 当 Electron 初始化完毕且创建完窗口时调用
 ElectronApp.on('ready', async () => {
+    // 安装 Electron 调试扩展
     await installExtensions();
+
+    // 通知应用管理程序就绪
     application.ready();
+
+    // 创建应用窗口菜单
     createMenu();
-    if (DEBUG) console.info('\n>> Electron app ready.');
 });
 
+// 当 Electron 应用被激活时调用
 ElectronApp.on('activate', () => {
-    // On OS X it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
+    // 在 OS X 系统上，可能存在所有应用窗口关闭了，但是程序还没关闭，此时如果收到激活应用请求需要
+    // 重新打开应用窗口并创建应用菜单
     application.openMainWindow();
     createMenu();
-    if (DEBUG) console.info('\n>> Electron app activate.');
 });
 
+// 设置关于窗口
 if (typeof ElectronApp.setAboutPanelOptions === 'function') {
     ElectronApp.setAboutPanelOptions({
         applicationName: Lang.title,
@@ -212,8 +224,4 @@ if (typeof ElectronApp.setAboutPanelOptions === 'function') {
         credits: `Licence: ${pkg.license}`,
         version: DEBUG ? '[debug]' : ''
     });
-}
-
-if (DEBUG) {
-    console.info('\n>> Electron main process finish.');
 }

@@ -2,7 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import DisplayContainer from './display-container';
 
+/**
+ * 弹出层管理组件 ID
+ * @private
+ * @type {String}
+ */
 const containerId = 'display-container';
+/**
+ * 弹出层管理组件渲染元素
+ * @private
+ * @type {Element}
+ */
 let container = document.getElementById(containerId);
 if (!container) {
     container = document.createElement('div');
@@ -11,52 +21,72 @@ if (!container) {
     document.body.appendChild(container);
 }
 
+/**
+ * 用于存储弹出层管理组件实例
+ * @type {DisplayContainer}
+ * @private
+ */
 let displayContainer = null;
 ReactDOM.render(<DisplayContainer ref={e => {displayContainer = e;}} />, container);
 
 /**
- * Show display layer with properties
- * @param {Object} props display layer properties
- * @param {?Function} callback
+ * 显示弹出层
+ * @param {Object} props 弹出层初始化对象
+ * @param {?Function} callback 操作完成后的回调函数
+ * @return {DisplayLayer}
+ * @export
  */
-const show = (props, callback) => (displayContainer && displayContainer.show(props, callback));
+export const displayShow = (props, callback) => (displayContainer && displayContainer.show(props, callback));
 
 /**
- * Hide display layer by the given id
- * @param {String} id display layer id
- * @param {?Function} callback
- * @param {?Bool} remove
+ * 隐藏指定 ID 的弹出层
+ * @param {String} id 弹出层 ID
+ * @param {?Function} callback 操作完成后的回调函数
+ * @param {?Bool} remove 是否在隐藏后从界面上移除元素
+ * @return {DisplayLayer}
+ * @export
  */
-const hide = (id, callback, remove) => (displayContainer && displayContainer.hide(id, callback, remove));
+export const displayHide = (id, callback, remove) => (displayContainer && displayContainer.hide(id, callback, remove));
 
 /**
- * Remove display layer by the given id
- * @param {String} id display layer id
- * @param {?Function} callback
+ * 隐藏并从界面上移除指定 ID 的弹出层
+ * @param {String} id 弹出层 ID
+ * @param {?Function} callback 操作完成后的回调函数
+ * @return {DisplayLayer}
+ * @export
  */
-const remove = (id, callback) => (displayContainer && displayContainer.remove(id, callback));
+export const displayRemove = (id, callback) => (displayContainer && displayContainer.remove(id, callback));
 
 /**
- * Get the display layer component refrence
- * @param {String} id display layer id
+ * 获取指定 ID 的弹出层组件实例
+ * @param {String} id 弹出层 ID
+ * @return {DisplayLayer}
+ * @export
  */
-const getRef = id => {
+export const displayGetRef = id => {
     const item = displayContainer && displayContainer.getItem(id);
     return item && item.ref;
 };
 
 /**
- * Set the display layer style
- * @param {String} id display layer id
- * @param {Object} id display layer style object
- * @param {?Function} callback
+ * 设置指定 ID 弹出层界面元素上的样式
+ * @param {String} id 弹出层 ID
+ * @param {Object} newStyle CSS 样式对象
+ * @param {?Function} callback 操作完成后的回调函数
+ * @return {DisplayLayer}
+ * @export
  */
-const setStyle = (id, newStyle, callback) => (displayContainer && displayContainer.setStyle(id, newStyle, callback));
+export const displaySetStyle = (id, newStyle, callback) => (displayContainer && displayContainer.setStyle(id, newStyle, callback));
 
+/**
+ * 到处所有可用方法
+ * @type {object}
+ * @export
+ */
 export default {
-    show,
-    hide,
-    remove,
-    getRef,
-    setStyle,
+    show: displayShow,
+    hide: displayHide,
+    remove: displayRemove,
+    getRef: displayGetRef,
+    setStyle: displaySetStyle,
 };

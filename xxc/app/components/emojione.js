@@ -1,13 +1,13 @@
-import Config from '../config';
 import Emojione from 'emojione';
+import Config from '../config';
 
 /**
- * Emojione png image path
+ * 设置 Emojione 图片资源路径
  */
 Emojione.imagePathPNG = Config.media['emojione.imagePathPNG'];
 
 /**
- * Emojione image type
+ * 设置 Emojione 图片资源类型
  */
 Emojione.imageType = Config.media['emojione.imageType'];
 

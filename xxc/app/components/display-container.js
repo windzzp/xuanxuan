@@ -3,16 +3,20 @@ import timeSequence from '../utils/time-sequence';
 import DisplayLayer from './display-layer';
 
 /**
- * Display container component
- *
+ * DisplayContainer 组件 ，显示一个弹出层容器组件，用于管理界面上一个或多个弹出层
+ * @export
  * @class DisplayContainer
+ * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
+ * @example @lang jsx
+ * <DisplayContainer />
  */
 export default class DisplayContainer extends Component {
     /**
-     * Creates an instance of DisplayContainer.
-     * @param {Object} props
-     * @memberof DisplayContainer
+     * React 组件构造函数，创建一个 DisplayContainer 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
      */
     constructor(props) {
         super(props);
@@ -22,10 +26,10 @@ export default class DisplayContainer extends Component {
     }
 
     /**
-     * Get display layer item by id
+     * 根据 ID 获取弹出层组件实例
      *
-     * @param {String} id the display layer id to get
-     * @returns
+     * @param {String} id 弹出层 ID
+     * @return {DisplayLayer}
      * @memberof DisplayContainer
      */
     getItem(id) {
@@ -33,11 +37,11 @@ export default class DisplayContainer extends Component {
     }
 
     /**
-     * Show display layer with props
+     * 显示一个弹出层，如果属性中弹出层 ID 已经存在，则显示之前的弹出层，否则根据属性创建一个新的弹出层
      *
-     * @param {Object} props
-     * @param {?Function} callback
-     * @returns
+     * @param {Object} props 弹出层配置
+     * @param {?Function} callback 完成时的回调函数
+     * @return {DisplayLayer}
      * @memberof DisplayContainer
      */
     show(props, callback) {
@@ -83,16 +87,16 @@ export default class DisplayContainer extends Component {
     }
 
     /**
-     * Hide display layer
+     * 隐藏弹出层
      *
-     * @param {string} id display layer id to hide
-     * @param {any} callback callback after hide
-     * @param {string|Bool} [remove='auto']
-     * @returns
+     * @param {string} id 要隐藏的弹出层 ID
+     * @param {any} callback 操作完成时的回调函数
+     * @param {string|Bool} [remove='auto'] 是否在隐藏后移除界面上的元素
+     * @return {DisplayLayer}
      * @memberof DisplayContainer
      */
     hide(id, callback, remove = 'auto') {
-        const all = this.state.all;
+        const {all} = this.state;
         const item = all[id];
         if (!item) {
             if (DEBUG) {
@@ -119,11 +123,11 @@ export default class DisplayContainer extends Component {
     }
 
     /**
-     * Remove display layer
+     * 隐藏并从界面上移除弹出层
      *
-     * @param {string} id display layer id to remove
-     * @param {?Function} callback callback after remove
-     * @returns
+     * @param {string} id 弹出层 ID
+     * @param {?Function} callback 操作完成时的回调函数
+     * @return {DisplayLayer}
      * @memberof DisplayContainer
      */
     remove(id, callback) {
@@ -131,16 +135,16 @@ export default class DisplayContainer extends Component {
     }
 
     /**
-     * Load new content in display layer
+     * 在指定 ID 的弹出层上加载新的内容
      *
-     * @param {string} id display layer id to load
-     * @param {any} newContent new content
-     * @param {?Function} callback callback after load
-     * @returns
+     * @param {string} id 弹出层 ID
+     * @param {String|ReactNode|Function} newContent 弹出层新的内容
+     * @param {?Function} callback 操作完成时的回调函数
+     * @return {DisplayLayer}
      * @memberof DisplayContainer
      */
     load(id, newContent, callback) {
-        const all = this.state.all;
+        const {all} = this.state;
         const item = all[id];
         if (!item) {
             if (DEBUG) {
@@ -153,16 +157,16 @@ export default class DisplayContainer extends Component {
     }
 
     /**
-     * Set display layer element style
+     * 为指定 ID 的弹出层设置新的 CSS 样式
      *
-     * @param {string} id display layer id to set style
-     * @param {object} newStyle new style object
-     * @param {?Function} callback callback after set style
-     * @returns
+     * @param {string} id 弹出层 ID
+     * @param {object} newStyle CSS 样式对象
+     * @param {?Function} callback 操作完成时的回调函数
+     * @return {DisplayLayer}
      * @memberof DisplayContainer
      */
     setStyle(id, newStyle, callback) {
-        const all = this.state.all;
+        const {all} = this.state;
         const item = all[id];
         if (!item) {
             if (DEBUG) {
@@ -175,20 +179,25 @@ export default class DisplayContainer extends Component {
     }
 
     /**
-     * React life cycle: render
-     *
-     * @returns
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof DisplayContainer
+     * @return {ReactNode}
      */
     render() {
-        return (<div className="display-container dock">
-            {
-                Object.keys(this.state.all).map(itemId => {
-                    const item = this.state.all[itemId];
-                    const props = item.props;
-                    return <DisplayLayer key={itemId} ref={e => {item.ref = e;}} {...props} />;
-                })
-            }
-        </div>);
+        const {all} = this.state;
+        return (
+            <div className="display-container dock">
+                {
+                    Object.keys(all).map(itemId => {
+                        const item = all[itemId];
+                        const {props} = item;
+                        return <DisplayLayer key={itemId} ref={e => {item.ref = e;}} {...props} />;
+                    })
+                }
+            </div>
+        );
     }
 }

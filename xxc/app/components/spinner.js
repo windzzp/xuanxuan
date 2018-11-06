@@ -1,9 +1,25 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../utils/html-helper';
+import {classes} from '../utils/html-helper';
 import Icon from './icon';
 
-class Spinner extends PureComponent {
+/**
+ * Spinner 组件 ，显示一个用于“正在加载中”图标
+ * @export
+ * @class Spinner
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example @lang jsx
+ * <Spinner />
+ */
+export default class Spinner extends PureComponent {
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof Spinner
+     * @return {Object}
+     */
     static propTypes = {
         iconSize: PropTypes.number,
         iconClassName: PropTypes.string,
@@ -13,6 +29,13 @@ class Spinner extends PureComponent {
         children: PropTypes.any,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof Spinner
+     * @static
+     */
     static defaultProps = {
         iconSize: 24,
         iconClassName: 'spin text-gray inline-block',
@@ -22,6 +45,14 @@ class Spinner extends PureComponent {
         children: null,
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof Spinner
+     * @return {ReactNode}
+     */
     render() {
         let {
             iconSize,
@@ -33,12 +64,12 @@ class Spinner extends PureComponent {
             ...other
         } = this.props;
 
-        return (<div className={HTML.classes('spinner text-center', className)} {...other}>
-            <Icon name={iconName} className={iconClassName} size={iconSize} />
-            {label && <div className="muted small title">{label}</div>}
-            {children}
-        </div>);
+        return (
+            <div className={classes('spinner text-center', className)} {...other}>
+                <Icon name={iconName} className={iconClassName} size={iconSize} />
+                {label && <div className="muted small title">{label}</div>}
+                {children}
+            </div>
+        );
     }
 }
-
-export default Spinner;

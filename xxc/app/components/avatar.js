@@ -1,12 +1,15 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../utils/html-helper';
+import {rem, classes} from '../utils/html-helper';
 import Skin from '../utils/skin';
 import Icon from './icon';
 
 /**
- * Avatar component
- *
+ * Avatar 组件 ，显示一个头像
+ * @export
+ * @class Avatar
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
  * @example <caption>Create a image avatar</caption>
  * <Avatar image="http://example.com/user-avatar.png" />
  *
@@ -18,38 +21,11 @@ import Icon from './icon';
  *
  * @example <caption>Set avatar size</caption>
  * <Avatar label="福" size="48" />
- *
- * @export
- * @class Avatar
- * @extends {Component}
  */
 export default class Avatar extends PureComponent {
     /**
-     * Default properties values
-     *
-     * @static
-     * @memberof Avatar
-     * @return {Object}
-     */
-    static defaultProps = {
-        skin: null,
-        image: null,
-        icon: null,
-        label: null,
-        size: null,
-        iconSize: null,
-        foreColor: null,
-        className: null,
-        imageClassName: null,
-        iconClassName: null,
-        style: null,
-        children: null,
-        auto: null,
-    }
-
-    /**
-     * Properties types
-     *
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Avatar
      * @return {Object}
@@ -70,6 +46,36 @@ export default class Avatar extends PureComponent {
         children: PropTypes.any
     }
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof Avatar
+     * @static
+     */
+    static defaultProps = {
+        skin: null,
+        image: null,
+        icon: null,
+        label: null,
+        size: null,
+        iconSize: null,
+        foreColor: null,
+        className: null,
+        imageClassName: null,
+        iconClassName: null,
+        style: null,
+        children: null,
+        auto: null,
+    }
+
+    /**
+     * 创建一个头像组件
+     * @param {any} avatar 头像内容
+     * @param {any} iconView 图标内容
+     * @return {ReactNode}
+     * @memberof Avatar
+     */
     static render(avatar, iconView) {
         let avatarView = null;
         if (avatar) {
@@ -87,10 +93,12 @@ export default class Avatar extends PureComponent {
     }
 
     /**
-     * React render method
-     *
-     * @returns
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof Avatar
+     * @return {ReactNode}
      */
     render() {
         let {
@@ -112,7 +120,7 @@ export default class Avatar extends PureComponent {
 
         style = Object.assign(skin ? Skin.style(skin) : {}, style);
         if (size) {
-            style.width = HTML.rem(size);
+            style.width = rem(size);
             style.height = style.width;
 
             if (!iconSize) {
@@ -163,11 +171,13 @@ export default class Avatar extends PureComponent {
             }
         }
 
-        return (<div className={HTML.classes('avatar', className)} {...other} style={style}>
-            {imageView}
-            {iconView}
-            {labelView}
-            {children}
-        </div>);
+        return (
+            <div className={classes('avatar', className)} {...other} style={style}>
+                {imageView}
+                {iconView}
+                {labelView}
+                {children}
+            </div>
+        );
     }
 }
