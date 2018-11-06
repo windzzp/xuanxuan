@@ -5,8 +5,9 @@ import timeSequence from '../../utils/time-sequence';
 /**
  * Entity
  */
-class Entity {
+export default class Entity {
     static NAME = 'Entity';
+
     static SCHEMA = new Schema({
         gid: {type: 'string', primaryKey: true},
         id: {type: 'int', indexed: true},
@@ -115,5 +116,3 @@ class Entity {
         return value;
     }
 }
-
-export default Entity;

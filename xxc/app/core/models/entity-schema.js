@@ -1,4 +1,5 @@
-import StringHelper from '../../utils/string-helper';
+import {isNotEmpty} from '../../utils/string-helper';
+
 
 const TYPES = {
     int: 'int',
@@ -87,7 +88,7 @@ const defaultValuesConveter = {
     },
     json: json => {
         if (typeof val === 'string') {
-            if (StringHelper.isNotEmpty(json)) {
+            if (isNotEmpty(json)) {
                 return JSON.parse(json);
             }
             return null;
@@ -105,7 +106,7 @@ class EntitySchema {
                 throw new Error(`Cannot create scheam, because the type(${meta.type}) is not a valid type.`);
             }
             if (meta.primaryKey) {
-                primaryKeyNumber++;
+                primaryKeyNumber += 1;
                 this.primaryKey = name;
             }
         });
@@ -125,7 +126,8 @@ class EntitySchema {
                 type: TYPES.any,
                 indexed: false,
             }, this.schema[name]);
-        } else if (useDefault) {
+        }
+        if (useDefault) {
             if (typeof useDefault === 'object') {
                 return useDefault;
             }

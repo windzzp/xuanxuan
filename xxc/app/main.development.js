@@ -1,3 +1,8 @@
+/**
+ * 入口文件：main.development.js
+ * 这是 Electron 主进程的入口文件
+ */
+
 import {app as ElectronApp, Menu, shell} from 'electron';
 import pkg from './package.json';
 import application from './platform/electron/app-remote';

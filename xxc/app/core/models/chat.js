@@ -3,7 +3,7 @@ import Entity from './entity';
 import Status from '../../utils/status';
 import Lang from '../../lang';
 import Pinyin from '../../utils/pinyin';
-import {ChatMessage} from './index';
+import ChatMessage from './chat-message';
 
 const STATUS = new Status({
     local: 0,

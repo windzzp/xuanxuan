@@ -6,7 +6,7 @@ import TabPane from './tab-pane';
 export default class Tabs extends PureComponent {
     /**
      * 标签页面板组件
-     * @type {TabPane}
+     * @constructor TabPane
      * @static
      * @memberof Tabs
      */

@@ -1,3 +1,8 @@
+/**
+ * 入口文件：index.js
+ * 这是 Electron 渲染进程启动的主窗口入口文件
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './style/app.less';
