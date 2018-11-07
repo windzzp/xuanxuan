@@ -31,7 +31,7 @@ const ipcSend = (eventName, ...args) => {
 
 /**
  * Bind event with ipc
- * @param  {String} event
+ * @param  {string} event
  * @param  {Function} listener
  * @return {Symbol}
  */
@@ -49,7 +49,7 @@ const ipcOn = (event, listener) => {
 
 /**
  * Bind once event with ipc
- * @param  {String} event
+ * @param  {string} event
  * @param  {Function} listener
  * @return {Symbol}
  */
@@ -71,9 +71,9 @@ const ipcOnce = (event, listener) => {
 
 /**
  * Bind remote(main process) event in renderer process
- * @param  {String}   event
+ * @param  {string}   event
  * @param  {Function} listener
- * @return {String}
+ * @return {string}
  */
 const remoteOn = (event, listener) => {
     const eventId = `${EVENT.remote_on}.${event}.${idSeed++}`;
@@ -101,7 +101,7 @@ const remoteOn = (event, listener) => {
 
 /**
  * Emit remote event in renderer process
- * @param  {String}    event
+ * @param  {string}    event
  * @param  {...any}    args
  * @return {void}
  */

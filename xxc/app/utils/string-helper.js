@@ -1,8 +1,8 @@
 /**
  * 格式化字符串
- * @param {String} str 要格式化的字符串
+ * @param {string} str 要格式化的字符串
  * @param  {...any} args 格式化参数
- * @return  {String}
+ * @return  {string}
  * @example <caption>通过参数序号格式化</caption>
  *     var hello = $.format('{0} {1}!', 'Hello', 'world');
  *     // hello 值为 'Hello world!'
@@ -51,9 +51,9 @@ export const BYTE_UNITS = {
  * 格式化字节值为包含单位的字符串
  * @param {number} size 字节大小
  * @param {number} [fixed=2] 保留的小数点尾数
- * @param {String} [unit=''] 单位，如果留空，则自动使用最合适的单位
- * @return {String}
- * @export
+ * @param {string} [unit=''] 单位，如果留空，则自动使用最合适的单位
+ * @return {string}
+
  */
 export const formatBytes = (size, fixed = 2, unit = '') => {
     if (!unit) {
@@ -77,7 +77,7 @@ export const formatBytes = (size, fixed = 2, unit = '') => {
  * 检查字符串是否为未定义（`null` 或者 `undefined`）或者为空字符串
  * @param  {string} s 要检查的字符串
  * @return {boolean}
- * @export
+
  */
 export const isEmptyString = s => (s === undefined || s === null || s === '');
 
@@ -85,7 +85,7 @@ export const isEmptyString = s => (s === undefined || s === null || s === '');
  * 检查字符串是否不是空字符串
  * @param  {string} s 要检查的字符串
  * @return {boolean}
- * @export
+
  */
 export const isNotEmptyString = s => (s !== undefined && s !== null && s !== '');
 
@@ -94,7 +94,7 @@ export const isNotEmptyString = s => (s !== undefined && s !== null && s !== '')
  * @param  {string} s 要检查的字符串
  * @param  {string} thenStr 如果为空字符串时要返回的字符串
  * @return {boolean}
- * @export
+
  */
 export const ifEmptyStringThen = (str, thenStr) => {
     return isEmptyString(str) ? thenStr : str;

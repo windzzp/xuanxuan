@@ -24,7 +24,7 @@ const string = (name, defaultValue) => {
 /**
  * Format language string
  *
- * @param {String} name
+ * @param {string} name
  * @param {Array} args
  */
 const format = (name, ...args) => {

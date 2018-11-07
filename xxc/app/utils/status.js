@@ -1,13 +1,15 @@
+/** @module xxc/utils */
+
 /**
  * 状态存储类
  *
  * @class StatusKeeper
- * @export
+
  */
 export class StatusKeeper {
     /**
      * 创建一个状态存储类实例
-     * @param {number|String} status 当前状态
+     * @param {number|string} status 当前状态
      * @param {Status} mapper 状态表对象
      * @memberof StatusKeeper
      */
@@ -21,7 +23,7 @@ export class StatusKeeper {
 
     /**
      * 获取当前状态名称
-     * @type {String}
+     * @type {string}
      * @readonly
      * @memberof StatusKeeper
      */
@@ -78,7 +80,7 @@ export class StatusKeeper {
     /**
      * 变更状态
      *
-     * @param {String|Number} nameOrValue 新的状态值或名称
+     * @param {string|number} nameOrValue 新的状态值或名称
      * @memberof StatusKeeper
      * @return {void}
      */
@@ -99,8 +101,8 @@ export class StatusKeeper {
 
     /**
      * 检查当前状态是否为给定的状态
-     * @param {String|Number} nameOrValue
-     * @return {Boolean}
+     * @param {string|number} nameOrValue
+     * @return {boolean}
      * @memberof StatusKeeper
      */
     is(nameOrValue) {
@@ -112,14 +114,14 @@ export class StatusKeeper {
 /**
  * 状态管理类（状态表）
  *
- * @export
+
  * @class Status
  */
 export default class Status {
     /**
      * 创建一个状态管理类
-     * @param {Object} statuses 状态表对象
-     * @param {String|Number} defaultStatus 默认状态
+     * @param {Object.<string, number>} statuses 状态表对象
+     * @param {string|number} defaultStatus 默认状态
      * @memberof Status
      */
     constructor(statuses, defaultStatus) {
@@ -157,7 +159,7 @@ export default class Status {
 
     /**
      * 获取所有状态名称
-     * @type {Array.<String>}
+     * @type {Array.<string>}
      * @readonly
      * @memberof Status
      */
@@ -167,7 +169,7 @@ export default class Status {
 
     /**
      * 获取所有状态值
-     * @type {Array.<Number>}
+     * @type {Array.<number>}
      * @readonly
      * @memberof Status
      */
@@ -177,7 +179,7 @@ export default class Status {
 
     /**
      * 获取默认状态名称
-     * @type {String}
+     * @type {string}
      * @readonly
      * @memberof Status
      */
@@ -187,7 +189,7 @@ export default class Status {
 
     /**
      * 获取默认状态值
-     * @type {Number}
+     * @type {number}
      * @readonly
      * @memberof Status
      */
@@ -197,9 +199,9 @@ export default class Status {
 
     /**
      * 获取指定状态的名称
-     * @param {String|Number} valueOrName 状态值或名称
-     * @param {String} defaultName 默认状态名称
-     * @return {String}
+     * @param {string|number} valueOrName 状态值或名称
+     * @param {string} defaultName 默认状态名称
+     * @return {string}
      * @memberof Status
      */
     getName(valueOrName, defaultName) {
@@ -214,9 +216,9 @@ export default class Status {
 
     /**
      * 获取指定状态的值
-     * @param {String|Number} valueOrName 状态值或值
-     * @param {Number} defaultName 默认状态值
-     * @return {Number}
+     * @param {string|number} valueOrName 状态值或值
+     * @param {number} defaultName 默认状态值
+     * @return {number}
      * @memberof Status
      */
     getValue(valueOrName, defaultValue) {
@@ -231,9 +233,9 @@ export default class Status {
 
     /**
      * 判断两个状态是否相同
-     * @param {String|Number} status1 状态1
-     * @param {String|Number} status2 状态2
-     * @return {Boolean}
+     * @param {string|number} status1 状态1
+     * @param {string|number} status2 状态2
+     * @return {boolean}
      * @memberof Status
      */
     isSame(status1, status2) {
@@ -243,7 +245,7 @@ export default class Status {
     /**
      * 创建一个状态存储类实例
      *
-     * @param {String|Number} status 状态值或名称
+     * @param {string|number} status 状态值或名称
      * @returns {StatusKeeper}
      * @memberof Status
      */

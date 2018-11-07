@@ -1,3 +1,5 @@
+/** @module xxc/utils */
+
 /**
  * 十六进制匹配正则表达式
  * @type {RegExp}
@@ -51,11 +53,11 @@ const convertToRgbInt = x => (Number.parseInt(clampNumber(x, 255), 10));
 
 /**
  * 将 16 进制颜色值字符串转换为 RGB 对象
- * @param {String} hex 16 进制字符串
+ * @param {string} hex 16 进制字符串
  * @return {{r: number, g: number, b: number, a: number}}
- * @export
+ * @private
  */
-export const hexToRgb = hex => {
+const hexToRgb = hex => {
     if (hex && hexReg.test(hex)) {
         hex = hex.toLowerCase();
         if (hex.length === 4) {
@@ -82,19 +84,19 @@ export const hexToRgb = hex => {
 
 /**
  * 判断一个字符串是否是颜色值的有效表示方式
- * @param {String} hex 要判断的字符串
+ * @param {string} hex 要判断的字符串
  * @return {boolean}
- * @export
+ * @private
  */
-export const isColor = hex => (typeof hex === 'string' && (hex.toLowerCase() === 'transparent' || hexReg.test(hex.trim().toLowerCase())));
+const isColor = hex => (typeof hex === 'string' && (hex.toLowerCase() === 'transparent' || hexReg.test(hex.trim().toLowerCase())));
 
 /**
  * 将一个 hsl 颜色表示对象转换为 rgb 表示对象
  * @param {{h: number, s: number, l: number, a: number}} hsl hsl 表示对象
  * @return {{r: number, g: number, b: number, a: number}}
- * @export
+ * @private
  */
-export const hslToRgb = hsl => {
+const hslToRgb = hsl => {
     const hue = h => {
         h = h < 0 ? h + 1 : (h > 1 ? h - 1 : h);
         if (h * 6 < 1) {
@@ -134,7 +136,7 @@ export const hslToRgb = hsl => {
 /**
  * 将数值转换为 16 进制形式，如果不足 2 位，则在字符串前面补充 0
  * @param {number} x 要转换的数值
- * @return {String}
+ * @return {string}
  * @private
  */
 const toHexValue = x => {
@@ -145,23 +147,23 @@ const toHexValue = x => {
 /**
  * 颜色类
  *
- * @export
+
  * @class Color
  */
 export default class Color {
     /**
      * 判断一个字符串是否是颜色值的有效表示方式
-     * @param {String} hex 要判断的字符串
+     * @param {string} hex 要判断的字符串
      * @return {boolean}
-     * @export
+
      */
     static isColor = isColor;
 
     /**
      * 将 16 进制颜色值字符串转换为 RGB 对象
-     * @param {String} hex 16 进制字符串
+     * @param {string} hex 16 进制字符串
      * @return {{r: number, g: number, b: number, a: number}}
-     * @export
+
      */
     static hexToRgb = hexToRgb;
 
@@ -169,7 +171,7 @@ export default class Color {
      * 将一个 hsl 颜色表示对象转换为 rgb 表示对象
      * @param {{h: number, s: number, l: number, a: number}} hsl hsl 表示对象
      * @return {{r: number, g: number, b: number, a: number}}
-     * @export
+
      */
     static hslToRgb = hslToRgb;
 
@@ -490,7 +492,7 @@ export default class Color {
      * 获取颜色以 16 进制表示的字符串
      * @memberof Color
      * @readonly
-     * @type {String}
+     * @type {string}
      */
     get hex() {
         return `#${toHexValue(this.r)}${toHexValue(this.g)}${toHexValue(this.b)}`;
@@ -500,7 +502,7 @@ export default class Color {
      * 获取颜色以 CSS 允许的形式表示的字符串
      * @memberof Color
      * @readonly
-     * @type {String}
+     * @type {string}
      */
     get css() {
         if (this.a > 0) {

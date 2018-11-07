@@ -37,8 +37,8 @@ class AppSocket extends Socket {
 
     /**
      * Set socket message handler
-     * @param {String} moduleName
-     * @param {String} methodName
+     * @param {string} moduleName
+     * @param {string} methodName
      * @param {Function} func
      */
     setHandler(pathname, func) {

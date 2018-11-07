@@ -22,7 +22,7 @@ class Events extends EventEmitter {
 
     /**
      * Bind event
-     * @param  {String} event
+     * @param  {string} event
      * @param  {Function} listener
      * @return {Symbol}
      */
@@ -44,7 +44,7 @@ class Events extends EventEmitter {
 
     /**
      * Bind once event
-     * @param  {String} event
+     * @param  {string} event
      * @param  {Function} listener
      * @return {Symbol}
      */

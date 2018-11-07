@@ -1,6 +1,6 @@
 import {getChatMessages} from './im-chats';
 import profile from '../profile';
-import API from '../../network/api';
+import API from '../network/api';
 import FileData from '../models/file-data';
 
 /**
@@ -14,7 +14,7 @@ const MIN_PROGRESS_CHANGE_INTERVAL = 1000;
  * 检查文件大小是否支持上传到当前服务器
  * @param {number} size 文件大小，单位字节
  * @return {boolean}
- * @export
+
  */
 export const checkUploadFileSize = (size) => {
     if (typeof size === 'object') {
@@ -26,13 +26,13 @@ export const checkUploadFileSize = (size) => {
 
 /**
  * 查询指定类型的文件
- * @param {String} category 文件类别，包括 doc（文档），image（图片），program（程序）
+ * @param {string} category 文件类别，包括 doc（文档），image（图片），program（程序）
  * @param {number} [limit=0] 返回结果的最大数目限制
  * @param {number} [offset=0] 查询时略过的结果数目
  * @param {boolean} [reverse=true] 是否以倒序返回结果
  * @param {boolean} [returnCount=true] 是否仅仅返回结果数目
  * @return {{Promise<Array<FileData>>}}
- * @export
+
  */
 export const loadFiles = (category = '', limit = 0, offset = 0, reverse = true, returnCount = false) => {
     category = category ? category.toLowerCase() : false;
@@ -47,10 +47,10 @@ export const loadFiles = (category = '', limit = 0, offset = 0, reverse = true, 
 
 /**
  * 搜索文件
- * @param {String} keys 搜索关键字，包括 doc（文档），image（图片），program（程序）
- * @param {String} category 文件类别
+ * @param {string} keys 搜索关键字，包括 doc（文档），image（图片），program（程序）
+ * @param {string} category 文件类别
  * @return {{Promise<Array<FileData>>}}
- * @export
+
  */
 export const searchFiles = (keys, category = '') => {
     return loadFiles(category).then(files => {
@@ -76,7 +76,7 @@ export const searchFiles = (keys, category = '') => {
  * @param {Function(progress: number, file: FileData)} onProgress 文件上传进度变更回调函数
  * @param {boolean} copyCache 是否将文件拷贝到用户缓存目录
  * @return {{Promise<Object>}}
- * @export
+
  */
 export const uploadFile = (file, onProgress, copyCache) => {
     file = FileData.create(file);
@@ -99,7 +99,7 @@ export const uploadFile = (file, onProgress, copyCache) => {
  * @param {Object|FileData} file 要上传的文件对象
  * @param {Function(progress: number, file: FileData)} onProgress 文件上传进度变更回调函数
  * @return {{Promise<Object>}}
- * @export
+
  */
 export const uploadImageFile = (file, onProgress) => {
     return uploadFile(file, onProgress, true);
@@ -110,7 +110,7 @@ export const uploadImageFile = (file, onProgress) => {
  * @param {Object|FileData} file 要下载的文件对象
  * @param {Function(progress: number, file: FileData)} onProgress 文件下载进度变更回调函数
  * @return {{Promise<Object>}}
- * @export
+
  */
 export const downloadFile = (file, onProgress) => {
     file = FileData.create(file);
@@ -121,7 +121,7 @@ export const downloadFile = (file, onProgress) => {
  * 检查文件是否已缓存
  * @param {Object|FileData} file 要检查的文件对象
  * @return {{Promise<boolean>}}
- * @export
+
  */
 export const checkFileCache = file => {
     return API.checkFileCache(file, profile.user);

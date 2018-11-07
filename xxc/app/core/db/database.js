@@ -36,7 +36,7 @@ export default class Database {
      * 创建数据库实例
      *
      * @static
-     * @param {String} userIdentify 数据库标识
+     * @param {string} userIdentify 数据库标识
      * @returns {Database}
      * @memberof Database
      */
@@ -55,7 +55,7 @@ export default class Database {
 
     /**
      * 创建一个数据库管理类实例
-     * @param {String} userIdentify 数据库标识
+     * @param {string} userIdentify 数据库标识
      * @constructor
      * @memberof Database
      */
@@ -67,7 +67,7 @@ export default class Database {
         /**
          * 数据库标识
          * @private
-         * @type {String}
+         * @type {string}
          */
         this._userIdentify = userIdentify;
 
@@ -111,7 +111,7 @@ export default class Database {
      *
      * @readonly
      * @memberof Database
-     * @type {String}
+     * @type {string}
      */
     get identify() {
         return this._userIdentify;

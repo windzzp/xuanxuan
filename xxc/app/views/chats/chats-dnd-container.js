@@ -4,7 +4,7 @@ import {classes} from '../../utils/html-helper';
 import StringHelper from '../../utils/string-helper';
 import Lang from '../../lang';
 import App from '../../core';
-import API from '../../network/api';
+import API from '../../core/network/api';
 import Emojione from '../../components/emojione';
 import replaceViews from '../replace-views';
 

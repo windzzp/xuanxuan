@@ -62,7 +62,7 @@ const calcConditionScore = (condition, key, obj) => {
  * ];
  *
  * @param {Array} conditions
- * @param {Array[String]} keys
+ * @param {Array<String>} keys
  */
 const matchScore = (conditions, obj, keys) => {
     if (!Array.isArray(keys)) {

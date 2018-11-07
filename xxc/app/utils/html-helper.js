@@ -2,8 +2,8 @@
  * 拼接元素类
  *
  * @param {...any} 参数
- * @return {String}
- * @export
+ * @return {string}
+
  * @example
  * const isActive = false;
  * const isHidden = true;
@@ -59,9 +59,9 @@ export const getSearchParam = (key, search = null) => {
 
 /**
  * 过滤掉 HTML 标签
- * @param {String} html HTML 源码
- * @return {String}
- * @export
+ * @param {string} html HTML 源码
+ * @return {string}
+
  */
 export const strip = html => {
     return html.replace(/<(?:.|\n)*?>/gm, '');

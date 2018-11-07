@@ -96,8 +96,8 @@ export default class Entity {
 
     /**
      * Get inner value
-     * @param  {String} key
-     * @param  {String} defaultValue
+     * @param  {string} key
+     * @param  {string} defaultValue
      * @return {any}
      */
     $get(key, defaultValue) {

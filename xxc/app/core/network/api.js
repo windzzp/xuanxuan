@@ -1,5 +1,4 @@
 import Platform from 'Platform'; // eslint-disable-line
-import md5 from 'md5';
 import Config from '../config';
 
 /**

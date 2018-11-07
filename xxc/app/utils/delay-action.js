@@ -1,7 +1,7 @@
 /**
  * 延时操作类
  *
- * @export
+
  * @class DelayAction
  */
 export default class DelayAction {
