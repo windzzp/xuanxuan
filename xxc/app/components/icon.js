@@ -5,7 +5,6 @@ import {classes, rem} from '../utils/html-helper';
 /**
  * Icon 组件 ，显示一个图标，目前支持 materialdesign 内的所有图标
  * @see https://materialdesignicons.com/
- * @export
  * @class Icon
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}

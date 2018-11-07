@@ -4,13 +4,14 @@ import HTML from '../utils/html-helper';
 import Icon from './icon';
 import timeSequence from '../utils/time-sequence';
 
+/** @module messager */
+
 /**
  * 显示浮动的提示消息
  * @param {String|ReactNode} message 消息内容
  * @param {?Object} props DisplayLayer 组件属性
  * @param {?Function} callback 操作完成时的回调函数
  * @return {DisplayLayer}
- * @export
  */
 export const showMessager = (message, props = {}, callback = null) => {
     let {

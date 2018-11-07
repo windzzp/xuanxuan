@@ -36,12 +36,27 @@ const newZIndex = () => {
 
 /**
  * DisplayLayer 组件 ，显示一个弹出层
- * @export
+ * 所有可用的动画名称包括：
+ * - scale-from-top
+ * - scale-from-bottom
+ * - scale-from-left
+ * - scale-from-right
+ * - scale-from-center
+ * - enter-from-top
+ * - enter-from-bottom
+ * - enter-from-left
+ * - enter-from-right
+ * - enter-from-center
  * @class DisplayLayer
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
  * @example @lang jsx
  * <DisplayLayer />
+ * @property {string} plugName 组件名称，会影响 CSS 类名
+ * @property {string} animation 动画效果类型
+ * @property {boolean} [modal=false] 是否以模态形式显示，如果设置为 true，点击背景层不会自动隐藏
+ * @property {boolean} [show=true] 是否在初始化之后立即显示
+ * @property {String|ReactNode|function} content 内容，可以为一个函数返回一个 Promise 来实现内容的懒加载
  */
 export default class DisplayLayer extends PureComponent {
     /**
@@ -97,44 +112,10 @@ export default class DisplayLayer extends PureComponent {
      * @static
      */
     static defaultProps = {
-        /**
-         * 组件名称，会影响 CSS 类名
-         * @type {string}
-         */
         plugName: null,
-
-        /**
-         * 动画效果名称，所有可用的动画名称包括：
-         * - scale-from-top
-         * - scale-from-bottom
-         * - scale-from-left
-         * - scale-from-right
-         * - scale-from-center
-         * - enter-from-top
-         * - enter-from-bottom
-         * - enter-from-left
-         * - enter-from-right
-         * - enter-from-center
-         * @type {string}
-         */
         animation: 'scale-from-top',
-
-        /**
-         * 是否以模态形式显示，如果设置为 true，点击背景层不会自动隐藏
-         * @type {boolean}
-         */
         modal: false,
-
-        /**
-         * 是否在初始化之后立即显示
-         * @type {boolean}
-         */
         show: true,
-
-        /**
-         * 内容，可以为一个函数返回一个 Promise 来实现内容的懒加载
-         * @type {String|ReactNode|Function}
-         */
         content: '',
         contentLoadFail: null,
         contentClassName: '',
@@ -183,7 +164,7 @@ export default class DisplayLayer extends PureComponent {
 
         /**
          * 控件 ID
-         * @type {String}
+         * @type {string}
          */
         this.id = props.id || `display-${timeSequence()}`;
     }
@@ -230,7 +211,7 @@ export default class DisplayLayer extends PureComponent {
 
     /**
      * 获取组件名称
-     * @type {String}
+     * @type {string}
      * @memberof DisplayLayer
      */
     get stageName() {

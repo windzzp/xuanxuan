@@ -7,7 +7,6 @@ import {classes} from '../utils/html-helper';
 
 /**
  * ImageHolder 组件 ，显示一个图片占位元素
- * @export
  * @class ImageHolder
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}

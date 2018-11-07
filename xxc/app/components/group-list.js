@@ -9,7 +9,6 @@ import Config from '../config';
 
 /**
  * GroupList 组件 ，显示一个分组列表
- * @export
  * @class GroupList
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}

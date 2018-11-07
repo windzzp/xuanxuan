@@ -9,7 +9,6 @@ import Lang from '../lang';
 
 /**
  * SearchControl 组件 ，显示一个搜索框
- * @export
  * @class SearchControl
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
@@ -102,7 +101,7 @@ export default class SearchControl extends PureComponent {
     /**
      * 获取输入的值
      * @memberof SearchControl
-     * @return {String}
+     * @return {string}
      */
     getValue() {
         return this.state.value;
@@ -153,7 +152,7 @@ export default class SearchControl extends PureComponent {
 
     /**
      * 设置搜索框值
-     * @param {String} value 输入框值
+     * @param {string} value 输入框值
      * @param {?Function} callback 操作完成时的回调函数
      * @memberof SearchControl
      * @return {void}
@@ -171,7 +170,7 @@ export default class SearchControl extends PureComponent {
 
     /**
      * 处理搜索框值变更事件
-     * @param {String} value 搜索框内的文本值
+     * @param {string} value 搜索框内的文本值
      * @memberof SearchControl
      * @private
      * @return {void}

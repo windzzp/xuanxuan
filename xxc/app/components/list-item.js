@@ -6,7 +6,6 @@ import Avatar from './avatar';
 
 /**
  * ListItem 组件 ，显示一个列表项
- * @export
  * @class ListItem
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}

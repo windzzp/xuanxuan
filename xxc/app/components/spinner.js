@@ -5,7 +5,6 @@ import Icon from './icon';
 
 /**
  * Spinner 组件 ，显示一个用于“正在加载中”图标
- * @export
  * @class Spinner
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}

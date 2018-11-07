@@ -24,11 +24,6 @@ import Tabs from './tabs';
 import DisplayLayer from './display-layer';
 import Messager from './messager';
 
-/**
- * 导出所有公共组件
- * @type {Object}
- * @export
- */
 export default {
     AppAvatar,
     Display,

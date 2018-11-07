@@ -7,7 +7,6 @@ import Lang from '../lang';
 
 /**
  * HotkeyInputControl 组件 ，显示一个快捷键输入框
- * @export
  * @class HotkeyInputControl
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
@@ -65,7 +64,7 @@ export default class HotkeyInputControl extends Component {
 
     /**
      * 更改输入框内的值
-     * @param {String} value 输入框内的值
+     * @param {string} value 输入框内的值
      * @param {String|ReactNode} error 设置错误提示
      * @memberof HotkeyInputControl
      * @return {void}
@@ -116,7 +115,7 @@ export default class HotkeyInputControl extends Component {
     /**
      * 获取输入框内的值
      * @memberof HotkeyInputControl
-     * @return {String}
+     * @return {string}
      */
     getValue() {
         return this.state.value;

@@ -22,7 +22,6 @@ hotkeys.filter = event => {
 
 /**
  * InputControl 组件 ，显示一个输入框控件
- * @export
  * @class InputControl
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
@@ -108,13 +107,13 @@ export default class InputControl extends PureComponent {
 
         /**
          * 控件名称
-         * @type {String}
+         * @type {string}
          */
         this.controlName = name || `inputControl-${timeSequence()}`;
 
         /**
          * 快捷键范围名称
-         * @type {String}
+         * @type {string}
          */
         this.hotkeyScope = (hotkeyScope || hotKeys) ? (hotkeyScope || this.controlName) : '';
     }
@@ -183,7 +182,7 @@ export default class InputControl extends PureComponent {
 
     /**
      * 获取文本框值
-     * @type {String}
+     * @type {string}
      * @memberof InputControl
      */
     get value() {

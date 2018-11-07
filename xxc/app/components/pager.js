@@ -6,7 +6,6 @@ import Lang from '../lang';
 
 /**
  * Pager 组件 ，显示一个分页控件
- * @export
  * @class Pager
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}

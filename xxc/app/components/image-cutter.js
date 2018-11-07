@@ -9,7 +9,6 @@ import ImageHelper from '../utils/image';
 
 /**
  * ImageCutter 组件 ，显示一个图片剪切控件
- * @export
  * @class ImageCutter
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}

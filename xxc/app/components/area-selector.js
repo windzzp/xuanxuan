@@ -23,7 +23,7 @@ const isPiontInRect = (point, rect) => (
  * @private
  * @param {{left: number, top: number}} pos
  * @param {{left: number, top: number, width: number, height: number}} rect 要判定对矩形区域
- * @return {String}
+ * @return {string}
  */
 const caculatePosition = (pos, area) => {
     const halfHotSize = 5;

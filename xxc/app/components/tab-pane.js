@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 /**
  * TabPane 组件 ，显示一个标签页内容控件
- * @export
  * @class TabPane
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}

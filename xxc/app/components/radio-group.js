@@ -6,7 +6,6 @@ import Radio from './radio';
 
 /**
  * RadioGroup 组件 ，显示一个单选组
- * @export
  * @class RadioGroup
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}

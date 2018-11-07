@@ -6,7 +6,6 @@ import Icon from './icon';
 
 /**
  * Button 组件 ，显示一个按钮
- * @export
  * @class Button
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
@@ -14,7 +13,6 @@ import Icon from './icon';
  * <Button />
  */
 export default class Button extends PureComponent {
-
     /**
      * React 组件属性类型检查
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html

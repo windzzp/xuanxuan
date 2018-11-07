@@ -4,14 +4,16 @@ import {classes} from '../utils/html-helper';
 import Icon from './icon';
 import timeSequence from '../utils/time-sequence';
 
+/** @module context-menu */
+
 /**
  * 显示上下文菜单
  * @param {{x: Number, y: Number}} position 菜单显示位置，需要提供 X 和 Y 轴坐标
- * @param {Array.<Object>} menus 菜单项列表
+ * @param {!Object[]} menus 菜单项列表
  * @param {?Object} props DisplayLayer 组件属性
- * @param {?Function} callback 操作完成时的回调函数
+ * @param {?function} callback 操作完成时的回调函数
  * @return {DisplayLayer}
- * @export
+ * @function
  */
 export const showContextMenu = (position, menus, props = {}, callback = null) => {
     let {

@@ -5,7 +5,6 @@ import timeSequence from '../utils/time-sequence';
 
 /**
  * Radio 组件 ，显示一个单选控件
- * @export
  * @class Radio
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
@@ -63,7 +62,7 @@ export default class Radio extends Component {
         /**
          * 控件 ID
          * @private
-         * @type {String}
+         * @type {string}
          */
         this._controlId = `radio-${timeSequence()}`;
     }
