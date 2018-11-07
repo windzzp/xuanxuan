@@ -30,5 +30,6 @@ zentao:
 	sed -i 's/im_/zt_im_/' ./build/db/xuanxuan.sql
 	sed -i 's/sys_user/zt_user/' ./build/db/xuanxuan.sql
 	sed -i 's/sys_file/zt_file/' ./build/db/xuanxuan.sql
+	sed -i '/sys_entry/d' ./build/db/xuanxuan.sql
 	zip -rqm -9 xuanxuan.zentao.$(VERSION).zip ./build/*
 	rm -rf ./build
