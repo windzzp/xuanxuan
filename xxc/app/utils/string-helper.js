@@ -53,7 +53,6 @@ export const BYTE_UNITS = {
  * @param {number} [fixed=2] 保留的小数点尾数
  * @param {string} [unit=''] 单位，如果留空，则自动使用最合适的单位
  * @return {string}
-
  */
 export const formatBytes = (size, fixed = 2, unit = '') => {
     if (!unit) {
@@ -77,7 +76,6 @@ export const formatBytes = (size, fixed = 2, unit = '') => {
  * 检查字符串是否为未定义（`null` 或者 `undefined`）或者为空字符串
  * @param  {string} s 要检查的字符串
  * @return {boolean}
-
  */
 export const isEmptyString = s => (s === undefined || s === null || s === '');
 
@@ -85,7 +83,6 @@ export const isEmptyString = s => (s === undefined || s === null || s === '');
  * 检查字符串是否不是空字符串
  * @param  {string} s 要检查的字符串
  * @return {boolean}
-
  */
 export const isNotEmptyString = s => (s !== undefined && s !== null && s !== '');
 
@@ -94,7 +91,6 @@ export const isNotEmptyString = s => (s !== undefined && s !== null && s !== '')
  * @param  {string} s 要检查的字符串
  * @param  {string} thenStr 如果为空字符串时要返回的字符串
  * @return {boolean}
-
  */
 export const ifEmptyStringThen = (str, thenStr) => {
     return isEmptyString(str) ? thenStr : str;

@@ -12,10 +12,10 @@ import Avatar from './avatar';
 * import AppAvatar from './components/app-avatar';
 * @example
 * <AppAvatar />
-* @property {string|Object|ReactNode} avatar 头像或者用于创建头像的值
-* @property {string|ReactNode} label 应用名称
-* @property {string} className CSS 类名
-* @property {string} children 子组件
+* @reactProps {string|Object|ReactNode} avatar 头像或者用于创建头像的值
+* @reactProps {string|ReactNode} label 应用名称
+* @reactProps {string} className CSS 类名
+* @reactProps {string} children 子组件
 */
 export default class AppAvatar extends PureComponent {
     /**

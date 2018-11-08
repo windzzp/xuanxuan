@@ -38,8 +38,8 @@ export const setCommandContext = (data) => {
  * 获取当前命令上下文参数
  * (Get current command context data)
  *
- * @param {?object} [newContext=null] 新的上下文参数 (New command context)
- * @return {object}
+ * @param {?Object} [newContext=null] 新的上下文参数 (New command context)
+ * @return {Object}
  */
 export const getCommandContext = (newContext) => {
     return Object.assign({}, context, newContext);
@@ -49,7 +49,7 @@ export const getCommandContext = (newContext) => {
  * 执行命令
  * (Execute command)
  *
- * @param {string|object} command 命令名称或命令对象 (Command name or command object)
+ * @param {string|Object} command 命令名称或命令对象 (Command name or command object)
  * @param {...string} params 命令参数 (Command params)
  * @return {Promise<any, Error>} 通过 Promise 返回命令执行结果 (Return result with Promise)
  */
@@ -102,7 +102,8 @@ export const execute = (command, ...params) => {
 
         if (result instanceof Promise) {
             return result;
-        } else if (result instanceof Error) {
+        }
+        if (result instanceof Error) {
             return Promise.reject(result);
         }
         return Promise.resolve(result);

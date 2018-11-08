@@ -39,7 +39,6 @@ const deserialize = value => {
  * @param {string} key 键
  * @param {any} value 值
  * @return {void}
-
  */
 export const setStoreItem = (key, value) => {
     storage.setItem(key, serialize(value));
@@ -50,7 +49,6 @@ export const setStoreItem = (key, value) => {
  * @param {string} key 键
  * @param {any} defaultValue 默认值
  * @return {any}
-
  */
 export const getStoreItem = (key, defaultValue) => {
     const val = deserialize(storage.getItem(key));
@@ -61,7 +59,6 @@ export const getStoreItem = (key, defaultValue) => {
  * 移除本地存储值
  * @param {string} key 键
  * @return {void}
-
  */
 export const removeStoreItem = key => storage.removeItem(key);
 
@@ -75,7 +72,6 @@ export const clearStore = () => storage.clear();
 /**
  * 获取本地存储条目数目
  * @return {number}
-
  */
 export const getStoreLength = () => storage.length;
 
@@ -83,7 +79,6 @@ export const getStoreLength = () => storage.length;
  * 遍历本地存储所有条目
  * @param {function} callback 遍历回调函数
  * @return {void}
-
  */
 export const storeForEach = callback => {
     const length = getStoreLength();
@@ -98,7 +93,6 @@ export const storeForEach = callback => {
 /**
  * 通过对象返回本地存储中的所有键值对
  * @return {Object.<string, any>}
-
  */
 export const storeGetAll = () => {
     const all = {};

@@ -168,6 +168,13 @@ export default class DisplayLayer extends PureComponent {
          * @type {string}
          */
         this.id = props.id || `display-${timeSequence()}`;
+
+        /**
+         * 显示动画计时器任务 ID
+         * @private
+         * @type {number}
+         */
+        this.showTimerTask = null;
     }
 
     /**

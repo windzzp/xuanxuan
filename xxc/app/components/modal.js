@@ -12,6 +12,7 @@ import InputControl from './input-control';
  * 检查应用运行的操作系统类型是否是 Windows
  * @type {boolean}
  * @private
+ * @constant
  */
 const isWindowsOS = window.navigator.userAgent.includes('Windows');
 

@@ -59,7 +59,7 @@ const calcConditionScore = (condition, key, obj) => {
 /**
  * 根据条件权值表获取给定对象与关键字的匹配程度，返回一个分值作为比较，分值越大表示越匹配
  *
- * @example <caption>A conditions can be like this:</caption>
+ * @example <caption>条件描述对象例子</caption>
  * const conditions = [
  *     {name: 'name', equal: 100, include: 50},
  *     {name: 'displayName', equal: 100, include: 50},
@@ -71,10 +71,10 @@ const calcConditionScore = (condition, key, obj) => {
  *     {name: 'homepage', include: 25},
  * ];
  *
- * @param {Array} conditions
- * @param {Array<String>} keys
+ * @param {Array} conditions 条件描述对象
+ * @param {Array<String>} keys 搜索关键词组
  * @function
- * @return {number}
+ * @return {number} 返回一个分值作为比较，分值越大表示越匹配
  */
 export const matchScore = (conditions, obj, keys) => {
     if (!Array.isArray(keys)) {
