@@ -18,6 +18,7 @@
 }
 .sidebar li > a {
     padding-left: 20px;
+    border-radius: 4px 0 0 4px;
 }
 .sidebar .app-sub-sidebar li > a {
     padding-left: 15px;

@@ -15,9 +15,7 @@
   * [打包](client/package.md)
   * [参与到官方开发](client/contribute.md)
   * [扩展机制](client/extension.md)
-  * API
-    * [`components`](client/api/components)
-    * [`utils`](client/api/utils)
+  * [API](client/api.md)
 
 * <i class="icon fas fa-running"></i> 服务器
 

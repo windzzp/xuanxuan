@@ -46,7 +46,6 @@
   <script src="./config.js"></script>
   <script src="./lib/docsify/plugins/edit-on-github.js"></script>
   <script src="./lib/docsify/plugins/text-holder.js"></script>
-  <script src="./lib/docsify/plugins/jsdoc2md.js"></script>
   <script>
     window.$docsify = {
       name: '喧喧 DEV',
@@ -76,8 +75,7 @@
       },
       plugins: [
         TextHolder.create(),
-        EditOnGithubPlugin.create('https://github.com/easysoft/xuanxuan/tree/master/docs/', 'https://github.com/easysoft/xuanxuan/tree/master/docs/', '<i class="fas fa-pen-square"></i> 在 Github 上编辑'),
-        jsdoc2md.create()
+        EditOnGithubPlugin.create('https://github.com/easysoft/xuanxuan/tree/master/docs/', 'https://github.com/easysoft/xuanxuan/tree/master/docs/', '<i class="fas fa-pen-square"></i> 在 Github 上编辑')
       ]
     };
   </script>
