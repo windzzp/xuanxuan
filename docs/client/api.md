@@ -14,9 +14,19 @@
     bottom: 0;
     border: none;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     margin: 0;
     background: #fff;
 }
 .docsify-pagination-container {display: none}
+@media (max-width: 768px) {
+    main {
+        overflow: visible;
+    }
+    .content {
+        position: absolute;
+        background: red;
+
+    }
+}
 </style>
