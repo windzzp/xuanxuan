@@ -1,5 +1,5 @@
 import Platform from 'Platform'; // eslint-disable-line
-import Config from '../config';
+import Config from '../../config';
 
 /**
  * Request server infomation with https request

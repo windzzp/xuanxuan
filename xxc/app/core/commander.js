@@ -53,7 +53,7 @@ export const getCommandContext = (newContext) => {
  * @param {...string} params 命令参数 (Command params)
  * @return {Promise<any, Error>} 通过 Promise 返回命令执行结果 (Return result with Promise)
  */
-export const execute = (command, ...params) => {
+export const executeCommand = (command, ...params) => {
     let commandName = null;
     if (typeof command !== 'object') {
         commandName = command;
@@ -115,13 +115,13 @@ export const execute = (command, ...params) => {
  * 根据命令文本字符串执行命令
  * (Execute command from command text string)
  *
- * @param {string} commandText 命令文本字符串 (Command text string)
+ * @param {string} commandLine 命令文本字符串 (Command text string)
  * @param {object} [commandContext=null] 命令上下文参数 (Command context data)
  * @return {Promise<any, Error>} 通过 Promise 返回命令执行结果 (Return result with Promise)
  */
-export const executeCommand = (commandText, commandContext = null) => {
+export const executeCommandLine = (commandLine, commandContext = null) => {
     setCommandContext(commandContext);
-    const params = commandText.split('/');
+    const params = commandLine.split('/');
     return execute(...params.map((p, idx) => {
         if (p[0] === '?' && idx === (params.length - 1)) {
             return p;
@@ -136,7 +136,7 @@ export const executeCommand = (commandText, commandContext = null) => {
  *
  * @param {string|object} name 命令名称或者命令配置对象 (Command name or command config object)
  * @param {?function(context: object, params: any)} [func=null] 命令操作函数 (Command function)
- * @param {?object|function(context: object, params: any)} [commandContext=null] 命令上下文参数 (Command context data)
+ * @param {?(object|function(context: object, params: any))} [commandContext=null] 命令上下文参数 (Command context data)
  * @return {{name: string, func: function, context: ?object}} 返回创建的命令对象
  */
 export const createCommandObject = (name, func = null, commandContext = null) => {
@@ -176,7 +176,7 @@ export const registerCommand = (name, func = null, commandContext = null) => {
  * (Unregister command)
  *
  * @param {string} name 命令名称 (Command name)
- * @return {booean} 如果为 true，表示成功取消注册命令；否则取消注册失败，通常失败的原因是该名称的命令从没有注册过，或者已经被取消 (If return true, then unregister success，else fail)
+ * @return {boolean} 如果为 true，表示成功取消注册命令；否则取消注册失败，通常失败的原因是该名称的命令从没有注册过，或者已经被取消 (If return true, then unregister success，else fail)
  */
 export const unregisterCommand = name => {
     if (commands[name]) {
@@ -188,6 +188,7 @@ export const unregisterCommand = name => {
 
 export default {
     executeCommand,
+    executeCommandLine,
     setCommandContext,
     registerCommand,
     unregisterCommand

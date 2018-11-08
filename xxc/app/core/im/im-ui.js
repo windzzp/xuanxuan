@@ -23,13 +23,20 @@ import ChatAddCategoryDialog from '../../views/chats/chat-add-category-dialog';
 import TodoEditorDialog from '../../views/todo/todo-editor-dialog';
 import Todo from '../todo';
 import {strip, linkify, escape} from '../../utils/html-helper';
-import {addContextMenuCreator, getMenuItemsForContext, tryAddDividerItem, tryRemoveLastDivider} from '../context-menu';
+import {
+    addContextMenuCreator, getMenuItemsForContext, tryAddDividerItem, tryRemoveLastDivider
+} from '../context-menu';
 import ui from '../ui';
-import {registerCommand, executeCommand} from '../commander';
+import {registerCommand, executeCommandLine} from '../commander';
 
 let activedChatId = null;
 let activeCaches = {};
 
+/**
+ * 事件表
+ * @type {Object<string, string>}
+ * @private
+ */
 const EVENT = {
     activeChat: 'im.chats.activeChat',
     sendContentToChat: 'im.chats.sendContentToChat',
@@ -739,7 +746,7 @@ const onSuggestSendImage = (listener) => {
 const emitChatSendboxFocus = (chat, sendboxContent) => {
     Events.emit(EVENT.sendboxFocus, chat, sendboxContent);
     if (profile.userConfig.listenClipboardImage && StringHelper.isEmpty(sendboxContent)) {
-        executeCommand('suggestClipboardImage');
+        executeCommandLine('suggestClipboardImage');
     }
 };
 

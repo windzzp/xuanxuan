@@ -19,6 +19,7 @@ if (!String.prototype.endsWith) {
     'summary': '总览',
     'Manual': '文档',
     'Source': '源码',
+    'Variable': '变量',
     'You can directly use an instance of this class.': '你能够直接使用这个类的实例。',
     'Example:': '示例：',
     'Directories': '目录结构',
@@ -42,6 +43,8 @@ if (!String.prototype.endsWith) {
     'Static Public Summary': '静态公共成员(全局成员)总览',
     'Static Public ': '静态公共成员(全局成员)',
     'Static Private': '静态私有成员',
+    'Static Method Summary': '静态方法总览',
+    'Static Public Methods': '静态公共方法',
     'File': '文件',
     'Identifier': '标识',
     'Document': '文档',
@@ -53,6 +56,7 @@ if (!String.prototype.endsWith) {
     'React Props:': 'React 属性：',
     'Properties:': '对象属性：',
     'See:': '了解更多：',
+    'Override:': '重载',
     'Static Member Summary': '静态成员总览',
     'Static Public Members': '静态公共成员',
     'Inherited Summary': '继承的成员总览',
@@ -89,8 +93,11 @@ if (!String.prototype.endsWith) {
   document.addEventListener('DOMContentLoaded', function() {
     translate();
 
+    var origin = window.location.origin;
     document.querySelectorAll('a[href^="http"]').forEach(function(link) {
-      link.target = '_blank';
+      if (link.href.indexOf(origin) < 0) {
+        link.target = '_blank';
+      }
     });
 
     document.querySelector('.search-input').setAttribute('placeholder', '搜索 API');

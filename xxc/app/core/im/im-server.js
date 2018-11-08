@@ -11,7 +11,7 @@ import Chat from '../models/chat';
 import Messager from '../../components/messager';
 import StringHelper from '../../utils/string-helper';
 import DateHelper from '../../utils/date-helper';
-import ChatMessage from '../../core/models/chat-message';
+import ChatMessage from '../models/chat-message';
 import Lang from '../../lang';
 import ImageHelper from '../../utils/image';
 import FileData from '../models/file-data';

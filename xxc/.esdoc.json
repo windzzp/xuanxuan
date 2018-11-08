@@ -1,5 +1,5 @@
 {
-    "source": "./app/utils/",
+    "source": "./app/core/",
     "destination": "../docs/client/api",
     "includes": ["\\.js$"],
     "excludes": ["bundle\\.js$", "main\\.js$"],

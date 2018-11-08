@@ -1,8 +1,13 @@
 import removeMarkdown from 'remove-markdown';
-import Server from '../server';
+import {socket} from '../server';
 import Markdown from '../../utils/markdown';
 
-const createTodo = todo => {
+/**
+ * 将待办存储对象提交到服务器进行存储
+ * @param {Object} todo 待办存储对象
+ * @return {Promise}
+ */
+export const createTodo = todo => {
     if (!todo.type) {
         todo.type = 'custom';
     }
@@ -10,14 +15,19 @@ const createTodo = todo => {
         todo.desc = `${Markdown(todo.desc)}<div class="hidden xxc-todo-source" style="display: none">${todo.desc}</div>`;
     }
 
-    return Server.socket.sendAndListen({
+    return socket.sendAndListen({
         method: 'upserttodo',
         params: [todo]
     });
 };
 
-const createTodoFromMessage = message => {
-    const content = message.content;
+/**
+ * 请求将聊天消息转换为待办
+ * @param {ChatMessage} message 聊天消息
+ * @return {Object} 待办存储对象
+ */
+export const createTodoFromMessage = message => {
+    const {content} = message;
     const todo = {desc: content};
     const plainContent = removeMarkdown(content);
     const selectedText = document.getSelection().toString();
@@ -35,9 +45,4 @@ const createTodoFromMessage = message => {
     }
     todo.name = todoName;
     return todo;
-};
-
-export default {
-    createTodo,
-    createTodoFromMessage
 };

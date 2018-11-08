@@ -1,3 +1,7 @@
+/**
+ * 默认用户个人配置
+ * @type {Object<string, any>}
+ */
 export default {
     version: 3,
     lastSaveTime: 0,

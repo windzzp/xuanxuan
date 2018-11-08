@@ -12,10 +12,15 @@ import profile from './profile';
 import Notice from './notice';
 import ImageViewer from '../components/image-viewer';
 import Store from '../utils/store';
-import {executeCommand, registerCommand} from './commander';
+import {executeCommandLine, registerCommand} from './commander';
 import WebViewDialog from '../views/common/webview-dialog';
 import {addContextMenuCreator, showContextMenu} from './context-menu';
 
+/**
+ * 事件表
+ * @type {Object<string, string>}
+ * @private
+ */
 const EVENT = {
     app_link: 'app.link',
     net_online: 'app.net.online',
@@ -165,7 +170,7 @@ Server.onUserLoginout((user, code, reason, unexpected) => {
 document.body.classList.add(`os-${Platform.env.os}`);
 
 export const openUrlInApp = (url, appName) => {
-    executeCommand(`openInApp/${appName}/${encodeURIComponent(appName)}`, {appName, url});
+    executeCommandLine(`openInApp/${appName}/${encodeURIComponent(appName)}`, {appName, url});
 };
 
 export const openUrlInDialog = (url, options, callback) => {
@@ -223,7 +228,7 @@ export const openUrl = (url, targetElement, event) => {
         emitAppLinkClick(targetElement, ...params);
         return true;
     } else if (url[0] === '!') {
-        executeCommand(url.substr(1), {targetElement, event});
+        executeCommandLine(url.substr(1), {targetElement, event});
         return true;
     }
 };
@@ -512,7 +517,7 @@ const registerShortcut = (loginUser, loginError) => {
         Object.keys(globalHotkeys).forEach(name => {
             Platform.shortcut.registerGlobalShortcut(name, globalHotkeys[name], () => {
                 if (!isGlobalShortcutDisabled) {
-                    executeCommand(`shortcut.${name}`);
+                    executeCommandLine(`shortcut.${name}`);
                 } else if (DEBUG) {
                     console.log(`Global shortcut command '${name}' skiped.`);
                 }

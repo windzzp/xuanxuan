@@ -1,5 +1,5 @@
 import Platform from 'Platform';
-import chats from './im-chats';
+import {saveChatMessages, onChatMessages, forEachChat} from './im-chats';
 import ui from './im-ui';
 import DelayAction from '../../utils/delay-action';
 import notice from '../notice';
@@ -27,7 +27,7 @@ const getPlainTextOfChatMessage = (chatMessage, limitLength = 255, ignoreBreak =
 let lastNoticeChat = null;
 let lastNoticeInfo = {};
 const updateChatNoticeTask = new DelayAction(() => {
-    const userConfig = profile.userConfig;
+    const {userConfig} = profile;
     if (!userConfig) {
         return;
     }
@@ -36,14 +36,14 @@ const updateChatNoticeTask = new DelayAction(() => {
     let lastChatMessage = null;
     let notMuteCount = 0;
 
-    chats.forEach(chat => {
+    forEachChat(chat => {
         if (chat.noticeCount) {
-            const isWindowFocus = Platform.ui.isWindowFocus;
+            const {isWindowFocus} = Platform.ui;
             const isActiveChat = ui.isActiveChat(chat.gid);
             if (isWindowFocus && isActiveChat) {
                 const mutedMessages = chat.muteNotice();
                 if (mutedMessages && mutedMessages.length) {
-                    chats.saveChatMessages(chat.messages, chat);
+                    saveChatMessages(chat.messages, chat);
                 }
             } else {
                 total += chat.noticeCount;
@@ -86,28 +86,30 @@ const updateChatNoticeTask = new DelayAction(() => {
 
     let sound = false;
     if (
-        total &&
-        notMuteCount > 0 &&
-        lastNoticeInfo.total < total &&
-        lastNoticeInfo.notMuteCount < notMuteCount &&
-        userConfig.enableSound &&
-        (!userConfig.muteOnUserIsBusy || !profile.user.isBusy) &&
-        notice.isMatchWindowCondition(userConfig.playSoundCondition)) {
+        total
+        && notMuteCount > 0
+        && lastNoticeInfo.total < total
+        && lastNoticeInfo.notMuteCount < notMuteCount
+        && userConfig.enableSound
+        && (!userConfig.muteOnUserIsBusy || !profile.user.isBusy)
+        && notice.isMatchWindowCondition(userConfig.playSoundCondition)) {
         sound = true;
     }
 
     const tray = {label: total ? Lang.format('notification.receviedMessages.format', total) : ''};
     if (
-        total &&
-        notMuteCount > 0 &&
-        lastNoticeInfo.notMuteCount < notMuteCount &&
-        userConfig.flashTrayIcon &&
-        notice.isMatchWindowCondition(userConfig.flashTrayIconCondition)
+        total
+        && notMuteCount > 0
+        && lastNoticeInfo.notMuteCount < notMuteCount
+        && userConfig.flashTrayIcon
+        && notice.isMatchWindowCondition(userConfig.flashTrayIconCondition)
     ) {
         tray.flash = true;
     }
 
-    lastNoticeInfo = {total, chats: total, message, sound, tray, notMuteCount}
+    lastNoticeInfo = {
+        total, chats: total, message, sound, tray, notMuteCount,
+    };
     notice.update(lastNoticeInfo);
 }, 200);
 
@@ -115,13 +117,13 @@ const runChatNoticeTask = () => {
     updateChatNoticeTask.do();
 };
 
-chats.onChatMessages(runChatNoticeTask);
+onChatMessages(runChatNoticeTask);
 
 Platform.ui.onWindowFocus(() => {
     const activedChat = ui.currentActiveChat;
     if (activedChat && activedChat.noticeCount) {
         activedChat.muteNotice();
-        chats.saveChatMessages(activedChat.messages, activedChat);
+        saveChatMessages(activedChat.messages, activedChat);
     }
 });
 

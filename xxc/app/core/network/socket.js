@@ -1,7 +1,7 @@
-import md5 from 'md5';
 import {Socket} from 'Platform';
+import md5 from 'md5';
 import SocketMessage from './socket-message';
-import Events from '../core/events';
+import Events from '../events';
 
 const PING_INTERVAL = DEBUG ? (1000 * 60) : (1000 * 60 * 2);
 const LISTEN_TIMEOUT = 1000 * 15;
@@ -121,6 +121,7 @@ class AppSocket extends Socket {
                 } else {
                     reject();
                 }
+                return result;
             }).catch(reject);
             this.send(msg);
         });
