@@ -12,7 +12,7 @@ import Lang from '../lang';
  * @class SearchControl
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <SearchControl />
  */
 export default class SearchControl extends PureComponent {
@@ -91,6 +91,7 @@ export default class SearchControl extends PureComponent {
      * @private
      * @memberof SearchControl
      * @return {void}
+     * @instance
      */
     componentWillUnmount() {
         if (this.delaySearchChangeTask) {
@@ -102,6 +103,7 @@ export default class SearchControl extends PureComponent {
      * 获取输入的值
      * @memberof SearchControl
      * @return {string}
+     * @instance
      */
     getValue() {
         return this.state.value;
@@ -111,6 +113,7 @@ export default class SearchControl extends PureComponent {
      * 检查搜索框是否为空
      * @memberof SearchControl
      * @return {boolean}
+     * @instance
      */
     isEmpty() {
         return this.state.empty;
@@ -122,6 +125,7 @@ export default class SearchControl extends PureComponent {
      * @memberof SearchControl
      * @private
      * @return {void}
+     * @instance
      */
     handleOnInputFocus = e => {
         this.setState({focus: true});
@@ -139,6 +143,7 @@ export default class SearchControl extends PureComponent {
      * @memberof SearchControl
      * @private
      * @return {void}
+     * @instance
      */
     handleOnInputBlur = e => {
         this.setState({focus: false});
@@ -156,6 +161,7 @@ export default class SearchControl extends PureComponent {
      * @param {?Function} callback 操作完成时的回调函数
      * @memberof SearchControl
      * @return {void}
+     * @instance
      */
     setValue(value, callback) {
         this.setState({empty: StringHelper.isEmpty(value), value}, () => {
@@ -174,6 +180,7 @@ export default class SearchControl extends PureComponent {
      * @memberof SearchControl
      * @private
      * @return {void}
+     * @instance
      */
     handleOnInputChange = value => {
         value = typeof value === 'string' ? value.trim() : '';
@@ -186,6 +193,7 @@ export default class SearchControl extends PureComponent {
      * @memberof SearchControl
      * @private
      * @return {void}
+     * @instance
      */
     handleOnClearBtnClick = event => {
         this.setValue('', () => {
@@ -200,6 +208,7 @@ export default class SearchControl extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof SearchControl
      * @return {ReactNode}
+     * @instance
      */
     render() {
         let {

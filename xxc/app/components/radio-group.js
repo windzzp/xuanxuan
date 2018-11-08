@@ -9,7 +9,7 @@ import Radio from './radio';
  * @class RadioGroup
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <RadioGroup />
  */
 export default class RadioGroup extends PureComponent {
@@ -61,6 +61,7 @@ export default class RadioGroup extends PureComponent {
      * @memberof RadioGroup
      * @private
      * @return {void}
+     * @instance
      */
     handeOnChange = e => {
         const {onChange} = this.props;
@@ -76,6 +77,7 @@ export default class RadioGroup extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof RadioGroup
      * @return {ReactNode}
+     * @instance
      */
     render() {
         const {

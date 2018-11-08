@@ -9,7 +9,7 @@ import Avatar from './avatar';
  * @class ListItem
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <ListItem />
  */
 export default class ListItem extends PureComponent {
@@ -58,6 +58,7 @@ export default class ListItem extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof ListItem
      * @return {ReactNode}
+     * @instance
      */
     render() {
         const {

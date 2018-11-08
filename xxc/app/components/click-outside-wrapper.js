@@ -53,6 +53,7 @@ export default class ClickOutsideWrapper extends PureComponent {
     * @private
     * @memberof ClickOutsideWrapper
     * @return {void}
+    * @instance
     */
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside);
@@ -67,6 +68,7 @@ export default class ClickOutsideWrapper extends PureComponent {
     * @private
     * @memberof ClickOutsideWrapper
     * @return {void}
+    * @instance
     */
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
@@ -78,6 +80,7 @@ export default class ClickOutsideWrapper extends PureComponent {
      * @memberof ClickOutsideWrapper
      * @private
      * @return {void}
+     * @instance
      */
     handleClickOutside = event => {
         const {onClickOutside} = this.props;
@@ -93,6 +96,7 @@ export default class ClickOutsideWrapper extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof ClickOutsideWrapper
      * @return {ReactNode}
+     * @instance
      */
     render() {
         const {

@@ -7,7 +7,7 @@ import DisplayLayer from './display-layer';
  * @class DisplayContainer
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * <DisplayContainer />
  */
 export default class DisplayContainer extends Component {
@@ -30,6 +30,7 @@ export default class DisplayContainer extends Component {
      * @param {string} id 弹出层 ID
      * @return {DisplayLayer}
      * @memberof DisplayContainer
+     * @instance
      */
     getItem(id) {
         return this.state.all[id];
@@ -42,6 +43,7 @@ export default class DisplayContainer extends Component {
      * @param {?Function} callback 完成时的回调函数
      * @return {DisplayLayer}
      * @memberof DisplayContainer
+     * @instance
      */
     show(props, callback) {
         const all = this.state.all;
@@ -93,6 +95,7 @@ export default class DisplayContainer extends Component {
      * @param {string|Bool} [remove='auto'] 是否在隐藏后移除界面上的元素
      * @return {DisplayLayer}
      * @memberof DisplayContainer
+     * @instance
      */
     hide(id, callback, remove = 'auto') {
         const {all} = this.state;
@@ -128,6 +131,7 @@ export default class DisplayContainer extends Component {
      * @param {?Function} callback 操作完成时的回调函数
      * @return {DisplayLayer}
      * @memberof DisplayContainer
+     * @instance
      */
     remove(id, callback) {
         return this.hide(id, callback, true);
@@ -141,6 +145,7 @@ export default class DisplayContainer extends Component {
      * @param {?Function} callback 操作完成时的回调函数
      * @return {DisplayLayer}
      * @memberof DisplayContainer
+     * @instance
      */
     load(id, newContent, callback) {
         const {all} = this.state;
@@ -163,6 +168,7 @@ export default class DisplayContainer extends Component {
      * @param {?Function} callback 操作完成时的回调函数
      * @return {DisplayLayer}
      * @memberof DisplayContainer
+     * @instance
      */
     setStyle(id, newStyle, callback) {
         const {all} = this.state;
@@ -184,6 +190,7 @@ export default class DisplayContainer extends Component {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof DisplayContainer
      * @return {ReactNode}
+     * @instance
      */
     render() {
         const {all} = this.state;

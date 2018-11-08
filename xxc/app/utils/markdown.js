@@ -1,12 +1,20 @@
-import Config from '../config';
 import Marked from 'marked';
 import HighlightJS from 'highlight.js';
 import HTMLParser from 'htmlparser';
+import Config from '../config';
 import Lang from '../lang';
 import {strip} from './html-helper';
 
+/** @module markdown */
+
+/**
+ * Marked 渲染实例
+ * @constant
+ * @see https://github.com/markedjs/marked
+ */
 export const renderer = new Marked.Renderer();
 
+// 重构代码块的渲染
 renderer.code = (code, lang) => {
     let fileName = null;
     if (lang) {
@@ -24,7 +32,10 @@ renderer.code = (code, lang) => {
     return `<pre class="code-block" ${fileName ? (` data-name="${fileName}"`) : ''}><div class="hint--left btn-copy-code app-link" data-url="!copyCode/${lang || ''}" data-hint="${Lang.string('common.copyCode')}"><button class="btn iconbutton rounded primary-pale text-primary" type="button"><i class="icon mdi mdi-code-not-equal-variant icon-2x"></i></button></div><code data-lang="${lang || ''}" class="lang-${result.language}">${result.value}</code></pre>`;
 };
 
+// 通用属性
 const commonAttrs = new Set(['class']);
+
+// Markdown 中允许的标签
 const allowedTags = {
     a: new Set(['class', 'href', 'title']),
     b: commonAttrs,
@@ -77,6 +88,7 @@ const allowedTags = {
     caption: commonAttrs,
 };
 
+// see https://github.com/tautologistics/node-htmlparser
 const htmlParserHandler = new HTMLParser.DefaultHandler();
 const sanitizer = tag => {
     const isCloseTag = tag.startsWith('</');
@@ -115,7 +127,7 @@ const sanitizer = tag => {
 };
 
 /**
- * Init markdown helpers
+ * 初始化 Marked
  */
 Marked.setOptions({
     renderer,
@@ -128,4 +140,10 @@ Marked.setOptions({
     smartypants: true, // If true, use "smart" typographic punctuation for things like quotes and dashes.
 });
 
+/**
+ * Marked 模块
+ * @name Marked
+ * @see https://github.com/markedjs/marked
+ * @static
+ */
 export default Marked;

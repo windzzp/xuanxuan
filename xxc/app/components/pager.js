@@ -9,7 +9,7 @@ import Lang from '../lang';
  * @class Pager
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <Pager />
  */
 export default class Pager extends PureComponent {
@@ -51,6 +51,7 @@ export default class Pager extends PureComponent {
      * @memberof Pager
      * @private
      * @return {void}
+     * @instance
      */
     handlePrevBtnClick = event => {
         if (this.props.page > 1) {
@@ -64,6 +65,7 @@ export default class Pager extends PureComponent {
      * @memberof Pager
      * @private
      * @return {void}
+     * @instance
      */
     handleNextBtnClick = event => {
         if (this.props.page < this.totalPage) {
@@ -78,6 +80,7 @@ export default class Pager extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof Pager
      * @return {ReactNode}
+     * @instance
      */
     render() {
         const {

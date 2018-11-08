@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
  * @class TabPane
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <TabPane />
  */
 export default class TabPane extends PureComponent {
@@ -41,6 +41,7 @@ export default class TabPane extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof TabPane
      * @return {ReactNode}
+     * @instance
      */
     render() {
         const {

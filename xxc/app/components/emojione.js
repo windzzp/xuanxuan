@@ -11,4 +11,10 @@ Emojione.imagePathPNG = Config.media['emojione.imagePathPNG'];
  */
 Emojione.imageType = Config.media['emojione.imageType'];
 
+/**
+ * Emojione 模块
+ * @name Emojione
+ * @static
+ * @see https://github.com/emojione/emojione
+ */
 export default Emojione;

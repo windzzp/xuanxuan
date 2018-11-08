@@ -134,8 +134,8 @@ export const executeCommand = (commandText, commandContext = null) => {
  * (Register a command)
  *
  * @param {string|object} name 命令名称或者命令配置对象 (Command name or command config object)
- * @param {?function(context: object, params: ...string)} [func=null] 命令操作函数 (Command function)
- * @param {?object|?function(context: object, params: ...string} [commandContext=null] 命令上下文参数 (Command context data)
+ * @param {?function(context: object, params: any)} [func=null] 命令操作函数 (Command function)
+ * @param {?object|function(context: object, params: any)} [commandContext=null] 命令上下文参数 (Command context data)
  * @return {{name: string, func: function, context: ?object}} 返回创建的命令对象
  */
 export const createCommandObject = (name, func = null, commandContext = null) => {
@@ -154,8 +154,8 @@ export const createCommandObject = (name, func = null, commandContext = null) =>
  * (Register a command)
  *
  * @param {string|object} name 命令名称或者命令配置对象 (Command name or command config object)
- * @param {?function(context: object, params: ...string)} [func=null] 命令操作函数 (Command function)
- * @param {?object|?function(context: object, params: ...string} [commandContext=null] 命令上下文参数 (Command context data)
+ * @param {?function(context: object, params: any)} [func=null] 命令操作函数 (Command function)
+ * @param {?object|function(context: object, params: any)} [commandContext=null] 命令上下文参数 (Command context data)
  * @return {boolean} 如果为 true，则命令注册成功；否则注册失败，通常失败的原因是已有相同名称的命令注册过 (If return true, then register success, else fail)
  */
 export const registerCommand = (name, func = null, commandContext = null) => {

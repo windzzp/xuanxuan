@@ -1,7 +1,6 @@
 /**
  * 延时操作类
  *
-
  * @class DelayAction
  */
 export default class DelayAction {
@@ -10,7 +9,7 @@ export default class DelayAction {
      * @param {!function} 延时操作函数
      * @param {number} [delay=100] 延迟时间，单位毫秒
      * @param {?function} [callback=null] 操作完成时的回调函数
-     * @memberof DelayAction
+     * @constructor
      */
     constructor(action, delay = 100, callback = null) {
         /**
@@ -47,6 +46,7 @@ export default class DelayAction {
      * @param {...any} params 操作函数参数
      * @memberof DelayAction
      * @return {void}
+     * @instance
      */
     do(...params) {
         this.done = false;
@@ -61,8 +61,9 @@ export default class DelayAction {
     /**
      * 立即执行操作（没有延时）
      * @param {...any} params 操作函数参数
-     * @memberof DelayAction
      * @return {void}
+     * @memberof DelayAction
+     * @instance
      */
     doIm(...params) {
         const actionResult = this.action(...params);
@@ -78,6 +79,7 @@ export default class DelayAction {
      * @type {boolean}
      * @readonly
      * @memberof DelayAction
+     * @instance
      */
     get isDone() {
         return this.done;
@@ -88,6 +90,7 @@ export default class DelayAction {
      *
      * @memberof DelayAction
      * @return {void}
+     * @instance
      */
     destroy() {
         clearTimeout(this.actionCallTask);

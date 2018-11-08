@@ -10,7 +10,7 @@ import {classes} from '../utils/html-helper';
  * @class ImageHolder
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <ImageHolder />
  */
 export default class ImageHolder extends PureComponent {
@@ -65,6 +65,7 @@ export default class ImageHolder extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof ImageHolder
      * @return {ReactNode}
+     * @instance
      */
     render() {
         let {

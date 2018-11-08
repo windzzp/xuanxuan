@@ -8,7 +8,7 @@ import StringHelper from '../utils/string-helper';
  * @class SelectBox
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * <SelectBox />
  */
 export default class Selectbox extends Component {
@@ -76,6 +76,7 @@ export default class Selectbox extends Component {
      * @memberof SelectBox
      * @private
      * @return {void}
+     * @instance
      */
     handleSelectChange = e => {
         const value = e.target.value;
@@ -91,6 +92,7 @@ export default class Selectbox extends Component {
      * @memberof SelectBox
      * @private
      * @return {void}
+     * @instance
      */
     handleOnSelectFocus = e => {
         this.setState({focus: true});
@@ -105,6 +107,7 @@ export default class Selectbox extends Component {
      * @memberof SelectBox
      * @private
      * @return {void}
+     * @instance
      */
     handleOnSelectBlur = e => {
         this.setState({focus: false});
@@ -117,6 +120,7 @@ export default class Selectbox extends Component {
      * 使选择框获得焦点
      * @memberof SelectBox
      * @return {void}
+     * @instance
      */
     focus() {
         this.selectBox.focus();
@@ -129,6 +133,7 @@ export default class Selectbox extends Component {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof SelectBox
      * @return {ReactNode}
+     * @instance
      */
     render() {
         const {

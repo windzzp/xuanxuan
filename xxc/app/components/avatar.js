@@ -74,6 +74,7 @@ export default class Avatar extends PureComponent {
      * @param {any} iconView 图标内容
      * @return {ReactNode}
      * @memberof Avatar
+     * @instance
      */
     static render(avatar, iconView) {
         let avatarView = null;
@@ -98,6 +99,7 @@ export default class Avatar extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof Avatar
      * @return {ReactNode}
+     * @instance
      */
     render() {
         let {

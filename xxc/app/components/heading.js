@@ -9,7 +9,7 @@ import Avatar from './avatar';
  * @class Heading
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <Heading />
  */
 export default class Heading extends PureComponent {
@@ -54,6 +54,7 @@ export default class Heading extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof Heading
      * @return {ReactNode}
+     * @instance
      */
     render() {
         const {

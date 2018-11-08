@@ -1,5 +1,3 @@
-/** @module xxc/utils */
-
 /**
  * 十六进制匹配正则表达式
  * @type {RegExp}
@@ -147,7 +145,6 @@ const toHexValue = x => {
 /**
  * 颜色类
  *
-
  * @class Color
  */
 export default class Color {
@@ -155,7 +152,9 @@ export default class Color {
      * 判断一个字符串是否是颜色值的有效表示方式
      * @param {string} hex 要判断的字符串
      * @return {boolean}
-
+     * @static
+     * @function
+     * @memberof Color
      */
     static isColor = isColor;
 
@@ -163,7 +162,9 @@ export default class Color {
      * 将 16 进制颜色值字符串转换为 RGB 对象
      * @param {string} hex 16 进制字符串
      * @return {{r: number, g: number, b: number, a: number}}
-
+     * @static
+     * @function
+     * @memberof Color
      */
     static hexToRgb = hexToRgb;
 
@@ -171,9 +172,29 @@ export default class Color {
      * 将一个 hsl 颜色表示对象转换为 rgb 表示对象
      * @param {{h: number, s: number, l: number, a: number}} hsl hsl 表示对象
      * @return {{r: number, g: number, b: number, a: number}}
-
+     * @static
+     * @function
+     * @memberof Color
      */
     static hslToRgb = hslToRgb;
+
+    /**
+     * 创建一个颜色实例
+     * @static
+     * @param {Color|sting|object|number} r 可以为 Red 通道值或者 hsla 对象或者 rgba 对象或者表示颜色的字符串
+     * @param {?number} g Green 通道值
+     * @param {?number} b Blue 通道值
+     * @param {?number} [a=1] Alpha 通道值
+     * @return {color}
+     * @memberof Color
+     * @function
+     */
+    static create(r, g, b, a) {
+        if (r instanceof Color) {
+            return r;
+        }
+        return new Color(r, g, b, a);
+    }
 
     /**
      * 创建一个颜色类实例
@@ -182,7 +203,7 @@ export default class Color {
      * @param {?number} g Green 通道值
      * @param {?number} b Blue 通道值
      * @param {?number} [a=1] Alpha 通道值
-     * @memberof Color
+     * @constructor
      */
     constructor(r, g, b, a = 1) {
         this.init(r, g, b, a);
@@ -197,6 +218,7 @@ export default class Color {
      * @param {?number} [a=1] Alpha 通道值
      * @memberof Color
      * @return {void}
+     * @instance
      */
     init(r, g, b, a = 1) {
         this.r = 0;
@@ -239,6 +261,7 @@ export default class Color {
      * 获取颜色以 RGB 格式表示的 Red 通道值
      * @memberof Color
      * @type {number}
+     * @instance
      */
     get R() {
         return this.r;
@@ -248,6 +271,7 @@ export default class Color {
      * 以 RGB 格式设置颜色 Red 通道值
      * @memberof Color
      * @param {number} r Red 通道值
+     * @instance
      */
     set R(r) {
         this.r = convertToRgbInt(r);
@@ -257,6 +281,7 @@ export default class Color {
      * 获取颜色以 RGB 格式表示的 Green 通道值
      * @memberof Color
      * @type {number}
+     * @instance
      */
     get G() {
         return this.g;
@@ -266,6 +291,7 @@ export default class Color {
      * 以 RGB 格式设置颜色 Green 通道值
      * @memberof Color
      * @param {number} r Green 通道值
+     * @instance
      */
     set G(g) {
         this.g = convertToRgbInt(g);
@@ -275,6 +301,7 @@ export default class Color {
      * 获取颜色以 RGB 格式表示的 Blue 通道值
      * @memberof Color
      * @type {number}
+     * @instance
      */
     get B() {
         return this.b;
@@ -284,6 +311,7 @@ export default class Color {
      * 以 RGB 格式设置颜色 Blue 通道值
      * @memberof Color
      * @param {number} r Blue 通道值
+     * @instance
      */
     set B(b) {
         this.b = convertToRgbInt(b);
@@ -293,6 +321,7 @@ export default class Color {
      * 获取颜色以 RGB 格式表示的 Alpha 通道值
      * @memberof Color
      * @type {number}
+     * @instance
      */
     get A() {
         return this.a;
@@ -302,6 +331,7 @@ export default class Color {
      * 以 RGB 格式设置颜色 Alpha 通道值
      * @memberof Color
      * @param {number} r Alpha 通道值
+     * @instance
      */
     set A(a) {
         this.a = clampNumber(a, 1);
@@ -311,6 +341,7 @@ export default class Color {
      * 获取颜色以 RGB 格式表示的对象
      * @memberof Color
      * @type {{r: number, g: number, b: number, a: number}}
+     * @instance
      */
     get rbg() {
         return {
@@ -325,6 +356,7 @@ export default class Color {
      * 使用 RGB 格式更新颜色值
      * @memberof Color
      * @param {{r: ?number, g: ?number, b: ?number, a: ?number}} rgb
+     * @instance
      */
     set rgb(rgb) {
         if (rgb.r !== undefined) this.R = rgb.r;
@@ -339,6 +371,7 @@ export default class Color {
      * @memberof Color
      * @param {{r: ?number, g: ?number, b: ?number, a: ?number}} rgb
      * @return {Color}
+     * @instance
      */
     setRgb(rgb) {
         this.rgb = rgb;
@@ -349,6 +382,7 @@ export default class Color {
      * 获取颜色以 HSL 形式表示的对象
      * @memberof Color
      * @type {{h: number, s: number, l: number, a: number}}
+     * @instance
      */
     get hsl() {
         const r = this.r / 255;
@@ -394,6 +428,7 @@ export default class Color {
      * 使用 HSL 形式更新颜色值
      * @memberof Color
      * @param {{h: number, s: number, l: number, a: number}} hsl
+     * @instance
      */
     set hsl(hsl) {
         this.rgb = hslToRgb(hsl);
@@ -404,6 +439,7 @@ export default class Color {
      * @memberof Color
      * @param {{h: number, s: number, l: number, a: number}} hsl
      * @return {Color}
+     * @instance
      */
     setHsl(hsl) {
         this.hsl = Object.assign(this.hsl, hsl);
@@ -414,6 +450,7 @@ export default class Color {
      * 获取颜色以 HSL 格式表示的 Hue 通道值
      * @memberof Color
      * @type {number}
+     * @instance
      */
     get H() {
         return this.hsl.h;
@@ -423,6 +460,7 @@ export default class Color {
      * 以 HSL 格式设置颜色 Hue 通道值
      * @memberof Color
      * @param {number} r Hue 通道值
+     * @instance
      */
     set H(hue) {
         const {hsl} = this;
@@ -434,6 +472,7 @@ export default class Color {
      * 获取颜色以 HSL 格式表示的 Saturate 通道值
      * @memberof Color
      * @type {number}
+     * @instance
      */
     get S() {
         return this.hsl.s;
@@ -443,6 +482,7 @@ export default class Color {
      * 以 HSL 格式设置颜色 Saturate 通道值
      * @memberof Color
      * @param {number} r Saturate 通道值
+     * @instance
      */
     set S(s) {
         const {hsl} = this;
@@ -454,6 +494,7 @@ export default class Color {
      * 获取颜色以 HSL 格式表示的 Lightness 通道值
      * @memberof Color
      * @type {number}
+     * @instance
      */
     get L() {
         return this.hsl.l;
@@ -463,6 +504,7 @@ export default class Color {
      * 以 HSL 格式设置颜色 Lightness 通道值
      * @memberof Color
      * @param {number} r Lightness 通道值
+     * @instance
      */
     set L(l) {
         const {hsl} = this;
@@ -475,6 +517,7 @@ export default class Color {
      * @memberof Color
      * @readonly
      * @type {number}
+     * @instance
      */
     get luma() {
         let r = this.r / 255;
@@ -493,6 +536,7 @@ export default class Color {
      * @memberof Color
      * @readonly
      * @type {string}
+     * @instance
      */
     get hex() {
         return `#${toHexValue(this.r)}${toHexValue(this.g)}${toHexValue(this.b)}`;
@@ -503,6 +547,7 @@ export default class Color {
      * @memberof Color
      * @readonly
      * @type {string}
+     * @instance
      */
     get css() {
         if (this.a > 0) {
@@ -519,6 +564,7 @@ export default class Color {
      * @param {number} amount 0～100 表示的百分比，数值越大则越暗，如果设置为负数（-100~0）,则会使颜色变得更亮，数值越小则越亮
      * @returns {Color} 返回自身便于链式调用
      * @memberof Color
+     * @instance
      */
     darken(amount) {
         const {hsl} = this;
@@ -535,6 +581,7 @@ export default class Color {
      * @param {number} amount 0～100 表示的百分比，数值越大则越亮，如果设置为负数（-100~0）,则会使颜色变得更暗，数值越小则越暗
      * @returns {Color} 返回自身便于链式调用
      * @memberof Color
+     * @instance
      */
     lighten(amount) {
         return this.darken(-amount);
@@ -546,6 +593,7 @@ export default class Color {
      * @param {number} amount 0~100 表示的透明度百分比，0 为完全透明，100 为完全不透明
      * @memberof Color
      * @returns {Color} 返回自身便于链式调用
+     * @instance
      */
     fade(amount) {
         this.A = clamp(amount / 100, 1);
@@ -558,6 +606,7 @@ export default class Color {
      * @param {number} amount 旋转的值
      * @return {Color} 返回自身便于链式调用
      * @memberof Color
+     * @instance
      */
     spin(amount) {
         const {hsl} = this;
@@ -574,6 +623,7 @@ export default class Color {
      * @param {number} amount 色相值 -100~100
      * @return {Color} 返回自身便于链式调用
      * @memberof Color
+     * @instance
      */
     saturate(amount) {
         const {hsl} = this;
@@ -591,6 +641,7 @@ export default class Color {
      * @param {number} amount 亮度值 -100~100
      * @return {Color} 返回自身便于链式调用
      * @memberof Color
+     * @instance
      */
     lightness(amount) {
         const {hsl} = this;
@@ -610,6 +661,7 @@ export default class Color {
      * @param {number} [threshold=0.43] 判断是否为深色的阈值，可选范围 0～1
      * @return {Color} 返回自身便于链式调用
      * @memberof Color
+     * @instance
      */
     contrast(dark, light, threshold = 0.43) {
         if (light === undefined) {
@@ -646,6 +698,7 @@ export default class Color {
      * @param {number} [threshold=0.43] 判断是否为深色的阈值，可选范围 0～1
      * @return {Color} 返回自身便于链式调用
      * @memberof Color
+     * @instance
      */
     isDark(threshold = 0.43) {
         return this.luma < threshold;
@@ -656,25 +709,9 @@ export default class Color {
      *
      * @return {Color}
      * @memberof Color
+     * @instance
      */
     clone() {
         return new Color(this.r, this.g, this.b, this.a);
-    }
-
-    /**
-     * 创建一个颜色实例
-     * @static
-     * @param {Color|sting|object|number} r 可以为 Red 通道值或者 hsla 对象或者 rgba 对象或者表示颜色的字符串
-     * @param {?number} g Green 通道值
-     * @param {?number} b Blue 通道值
-     * @param {?number} [a=1] Alpha 通道值
-     * @return {color}
-     * @memberof Color
-     */
-    static create(r, g, b, a) {
-        if (r instanceof Color) {
-            return r;
-        }
-        return new Color(r, g, b, a);
     }
 }

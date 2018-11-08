@@ -1,3 +1,13 @@
+/** @module search-score */
+
+/**
+ * 根据条件描述对象获取给定对象与关键字的匹配分值
+ * @param {{name: !string, equal: number, include: boolean, array: boolean, prefix: string}} condition 条件描述
+ * @param {string} key 关键字
+ * @param {Object} obj 要计算分值的对象
+ * @return {string}
+ * @private
+ */
 const calcConditionScore = (condition, key, obj) => {
     let score = 0;
     let source = obj[condition.name];
@@ -47,7 +57,7 @@ const calcConditionScore = (condition, key, obj) => {
 };
 
 /**
- * Get search match score from conditions and keys
+ * 根据条件权值表获取给定对象与关键字的匹配程度，返回一个分值作为比较，分值越大表示越匹配
  *
  * @example <caption>A conditions can be like this:</caption>
  * const conditions = [
@@ -63,8 +73,10 @@ const calcConditionScore = (condition, key, obj) => {
  *
  * @param {Array} conditions
  * @param {Array<String>} keys
+ * @function
+ * @return {number}
  */
-const matchScore = (conditions, obj, keys) => {
+export const matchScore = (conditions, obj, keys) => {
     if (!Array.isArray(keys)) {
         keys = [keys];
     }

@@ -9,7 +9,7 @@ import Icon from './icon';
  * @class Button
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <Button />
  */
 export default class Button extends PureComponent {
@@ -55,6 +55,7 @@ export default class Button extends PureComponent {
     * @see https://doc.react-china.org/docs/rendering-elements.html
     * @memberof Button
     * @return {ReactNode}
+    * @instance
     */
     render() {
         const {

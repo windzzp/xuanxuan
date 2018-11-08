@@ -8,7 +8,7 @@ import timeSequence from '../utils/time-sequence';
  * @class Radio
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * <Radio />
  */
 export default class Radio extends Component {
@@ -73,6 +73,7 @@ export default class Radio extends Component {
      * @memberof Radio
      * @private
      * @return {void}
+     * @instance
      */
     handleRadioChange = e => {
         const {onChange, name, value} = this.props;
@@ -88,6 +89,7 @@ export default class Radio extends Component {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof Radio
      * @return {ReactNode}
+     * @instance
      */
     render() {
         const {

@@ -10,7 +10,7 @@ import Avatar from './avatar';
 * @extends {PureComponent}
 * @example <caption>导入组件</caption>
 * import AppAvatar from './components/app-avatar';
-* @example @lang jsx
+* @example
 * <AppAvatar />
 * @property {string|Object|ReactNode} avatar 头像或者用于创建头像的值
 * @property {string|ReactNode} label 应用名称
@@ -53,6 +53,7 @@ export default class AppAvatar extends PureComponent {
     * @see https://doc.react-china.org/docs/rendering-elements.html
     * @memberof AppAvatar
     * @return {ReactNode}
+    * @instance
     */
     render() {
         const {

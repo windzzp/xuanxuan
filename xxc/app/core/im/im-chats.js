@@ -563,7 +563,7 @@ export const getAllChats = () => {
 
 /**
  * 从缓存中查询聊天实例
- * @param {Object|Function(chat: Chat)|Array.<Function(chat: Chat)>} condition 查询条件
+ * @param {Object|Function(chat: Chat)|Array<Function(chat: Chat)>} condition 查询条件
  * @param {*} sortList 是否对结果进行排序
  * @return {Array.<Chat>}
 
@@ -1144,7 +1144,7 @@ const updatePublicChats = (serverPublicChats) => {
 
 /**
  * 监听缓存聊天初始化事件（第一次从服务器获得到聊天列表）
- * @param {Function(chats: Array.<Chat>)} listener 事件回调函数
+ * @param {Function(chats: Array<Chat>)} listener 事件回调函数
  * @return {Symbol}
 
  */
@@ -1154,7 +1154,7 @@ export const onChatsInit = listener => {
 
 /**
  * 监听聊天消息变更事件（例如用户收到了新消息）
- * @param {Function(chats: Array.<ChatMessage>)} listener 事件回调函数
+ * @param {Function(chats: Array<ChatMessage>)} listener 事件回调函数
  * @return {Symbol}
 
  */

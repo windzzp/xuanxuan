@@ -8,7 +8,7 @@ import Icon from './icon';
  * @class Spinner
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <Spinner />
  */
 export default class Spinner extends PureComponent {
@@ -51,6 +51,7 @@ export default class Spinner extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof Spinner
      * @return {ReactNode}
+     * @instance
      */
     render() {
         let {

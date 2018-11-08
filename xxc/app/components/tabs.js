@@ -9,7 +9,7 @@ import TabPane from './tab-pane';
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
  * @property {string}  navClassName 导航类名
- * @example @lang jsx
+ * @example
  * <Tabs />
  */
 export default class Tabs extends PureComponent {
@@ -84,6 +84,7 @@ export default class Tabs extends PureComponent {
      * @memberof Tabs
      * @private
      * @return {void}
+     * @instance
      */
     handleNavClick(key) {
         const {activePaneKey} = this.state;
@@ -105,6 +106,7 @@ export default class Tabs extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof Tabs
      * @return {ReactNode}
+     * @instance
      */
     render() {
         let {
