@@ -28,7 +28,7 @@ const EVENT = {
 /**
  * 检查用户密码字符串是否包含 MD5 存储前缀
  * @param {string} password 用户密码
- * @return {boolean}
+ * @return {boolean} 如果为 `true` 表示给定的密码字符串包含 MD5 存储前缀，否则不是
  */
 export const isPasswordWithMD5Flag = password => password && password.startsWith(PASSWORD_WITH_MD5_FLAG);
 
@@ -86,7 +86,7 @@ export default class User extends Member {
 
     /**
      * 创建一个用户类实例
-     * @param {Object<string, any>} data
+     * @param {Object<string, any>} data 属性对象
      * @memberof User
      */
     constructor(data) {
@@ -170,7 +170,7 @@ export default class User extends Member {
     /**
      * 获取当前用户实例存储数据对象
      *
-     * @return {Object<string, any>}
+     * @return {Object<string, any>} 数据对象
      * @memberof User
      */
     plain() {
@@ -214,6 +214,7 @@ export default class User extends Member {
      * 设置用户上次登录时间
      *
      * @memberof User
+     * @param {number} time 上次登录时间戳
      */
     set signed(time) {
         return this.$set('signed', time);
@@ -224,7 +225,7 @@ export default class User extends Member {
      *
      * @readonly
      * @memberof User
-     * @return {Object<string, any>}
+     * @return {Object<string, any>} 配置数据对象
      */
     get config() {
         if (!this._config) {
@@ -247,7 +248,7 @@ export default class User extends Member {
      *
      * @readonly
      * @memberof User
-     * @return {boolean}
+     * @return {boolean} 如果为 `true` 则表示用户处于离线状态，否则为为通过验证或在线状态
      */
     get isDisconnect() {
         return this._status.is(Member.STATUS.disconnect);
@@ -258,7 +259,7 @@ export default class User extends Member {
      *
      * @readonly
      * @memberof User
-     * @return {boolean}
+     * @return {boolean} 如果为 `true` 则表示用户处于未通过验证状态
      */
     get isUnverified() {
         return this.status <= Member.STATUS.unverified;

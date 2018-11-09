@@ -1,23 +1,105 @@
+// eslint-disable-next-line import/no-unresolved
 import {Socket} from 'Platform';
 import md5 from 'md5';
 import SocketMessage from './socket-message';
-import Events from '../events';
+import events from '../events';
+import {langString} from '../../lang';
 
+/**
+ * Ping 消息发送间隔，单位毫秒
+ * @type {number}
+ * @private
+ */
 const PING_INTERVAL = DEBUG ? (1000 * 60) : (1000 * 60 * 2);
+
+/**
+ * 等待消息回应判定为超时的事件，单位毫秒
+ * @type {number}
+ * @private
+ */
 const LISTEN_TIMEOUT = 1000 * 15;
 
+/**
+ * 事件名称表
+ * @type {Object}
+ * @private
+ */
 const EVENT = {
     message: 'app_socket.message',
 };
 
-class AppSocket extends Socket {
+/**
+ * 监听消息回应
+ * @param {string} moduleName 消息操作模块名称
+ * @param {string} methodName 消息操作方法名称
+ * @param {number} [timeout=LISTEN_TIMEOUT]
+ * @return {Promise}
+ * @private
+ */
+const listenMessage = (moduleName, methodName, timeout = LISTEN_TIMEOUT) => {
+    return new Promise((resolve, reject) => {
+        let listenHandler = null;
+        const listenTimer = setTimeout(() => {
+            if (listenHandler) {
+                events.off(listenHandler);
+            }
+            reject();
+        }, timeout);
+        listenHandler = events.on(EVENT.message, (msg, result) => {
+            if (msg.module === moduleName && msg.method === methodName) {
+                if (listenTimer) {
+                    clearTimeout(listenTimer);
+                }
+                if (listenHandler) {
+                    events.off(listenHandler);
+                }
+                resolve(result);
+            }
+        });
+    });
+};
+
+/**
+ * Socket 服务管理类
+ *
+ * @export
+ * @class AppSocket
+ * @extends {Socket}
+ */
+export default class AppSocket extends Socket {
+    /**
+     * 创建一个 Socket 服务器管理类实例
+     * @memberof AppSocket
+     */
     constructor() {
         super();
+
+        /**
+         * 当前用户
+         * @type {User}
+         */
+        this.user = null;
+
+        /**
+         * Ping 消息发送间隔，单位毫秒
+         * @type {number}
+         */
         this.pingInterval = PING_INTERVAL;
 
+        /**
+         * Socket 消息接收处理函数
+         * @type {Object<string, Function>}
+         */
         this.handlers = {};
     }
 
+    /**
+     * 发送 SocketMessage
+     *
+     * @param {Object<string, any>|SocketMessage} msg 要发送的 SocketMessage 实例或者用于创建 SocketMessage 实例的属性对象
+     * @returns {Promise} 使用 Promise 异步返回处理结果
+     * @memberof AppSocket
+     */
     send(msg) {
         return new Promise((resolve) => {
             msg = SocketMessage.create(msg);
@@ -36,10 +118,12 @@ class AppSocket extends Socket {
     }
 
     /**
-     * Set socket message handler
-     * @param {string} moduleName
-     * @param {string} methodName
-     * @param {Function} func
+     * 设置 Socket 消息接收处理函数
+     * @param {string} moduleName 要处理的操作模块名称
+     * @param {string} methodName 要处理的操作方法名称
+     * @param {Function(msg: SocketMessage, socket: Socket)} func 处理函数
+     * @return {void}
+     * @memberof Socket
      */
     setHandler(pathname, func) {
         if (typeof pathname === 'object') {
@@ -52,14 +136,23 @@ class AppSocket extends Socket {
     }
 
     /**
-     * Get socketmessage handler
-     * @return {Function}
+     * 获取消息接收处理函数
+     * @param {...string} pathnames 操作路径
+     * @return {Function(msg: SocketMessage, socket: Socket)}
+     * @memberof Socket
      */
     getHandler(...pathnames) {
         const pathname = pathnames.join('/').toLowerCase();
         return this.handlers[pathname];
     }
 
+    /**
+     * 使用消息接收处理函数处理接收到的消息
+     *
+     * @param {SocketMessage} msg 要处理的消息实例
+     * @memberof AppSocket
+     * @return {void}
+     */
     handleMessage(msg) {
         if (DEBUG) {
             console.collapse('SOCKET Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale');
@@ -83,36 +176,20 @@ class AppSocket extends Socket {
         if (result === undefined) {
             result = msg.isSuccess;
         }
-        Events.emit(EVENT.message, msg, result);
+        events.emit(EVENT.message, msg, result);
     }
 
-    listenMessage(moduleName, methodName, timeout = LISTEN_TIMEOUT) {
-        return new Promise((resolve, reject) => {
-            let listenHandler = null;
-            const listenTimer = setTimeout(() => {
-                if (listenHandler) {
-                    Events.off(listenHandler);
-                }
-                reject();
-            }, timeout);
-            listenHandler = Events.on(EVENT.message, (msg, result) => {
-                if (msg.module === moduleName && msg.method === methodName) {
-                    if (listenTimer) {
-                        clearTimeout(listenTimer);
-                    }
-                    if (listenHandler) {
-                        Events.off(listenHandler);
-                    }
-                    resolve(result);
-                }
-            });
-        });
-    }
-
+    /**
+     * 通过 Socket 发送消息并监听服务器对此消息的回应
+     * @param {Object<string, any>|SocketMessage} msg 要发送的 SocketMessage 实例或者用于创建 SocketMessage 实例的属性对象
+     * @param {Function(result: any): any} check 用于检查服务器返回结果的函数
+     * @return {Promise}
+     * @memberof AppSocket
+     */
     sendAndListen(msg, check) {
         return new Promise((resolve, reject) => {
             msg = SocketMessage.create(msg);
-            this.listenMessage(msg.module, msg.method).then((result) => {
+            listenMessage(msg.module, msg.method).then((result) => {
                 if (check) {
                     result = check(result);
                 }
@@ -127,11 +204,26 @@ class AppSocket extends Socket {
         });
     }
 
+    /**
+     * 当 Socket 初始化时执行的操作
+     * @private
+     * @return {void}
+     * @memberof AppSocket
+     */
     onInit() {
         this.lastHandTime = 0;
         this.lastHandTime = 0;
     }
 
+    /**
+     * 当 Socket 关闭时执行的操作
+     * @param {number} code 关闭代码
+     * @param {string} reason 关闭原因
+     * @param {boolean} unexpected 是否是意外关闭
+     * @private
+     * @return {void}
+     * @memberof AppSocket
+     */
     onClose(code, reason, unexpected) {
         this.stopPing();
         if (this.user && this.user.isOnline) {
@@ -139,6 +231,14 @@ class AppSocket extends Socket {
         }
     }
 
+    /**
+     * 当 Socket 接收到数据时执行的操作
+     * @param {string} data Socket 接收到的数据（通常是JSON 字符串形式）
+     * @param {object} flags 数据标识
+     * @private
+     * @return {void}
+     * @memberof AppSocket
+     */
     onData(data, flags) {
         const msg = SocketMessage.fromJSON(data);
         if (!msg) {
@@ -157,27 +257,37 @@ class AppSocket extends Socket {
         }
     }
 
+    /**
+     * 发起登录请求
+     *
+     * @param {User} user 当前要进行登录的用户
+     * @param {Object<string,any>} options 登录选项
+     * @returns {Promise} 使用 Promise 异步返回处理结果
+     * @memberof AppSocket
+     */
     login(user, options) {
         this.isLogging = true;
         return new Promise((resolve, reject) => {
             if (user) {
                 this.user = user;
             } else {
+                // eslint-disable-next-line prefer-destructuring
                 user = this.user;
             }
             if (!user) {
-                return Promise.reject('User is not defined.');
+                return Promise.reject(new Error('User is not defined.'));
             }
             const onConnect = () => {
-                this.listenMessage('chat', 'login').then((result, msg) => {
+                listenMessage('chat', 'login').then((result, msg) => {
                     if (result) {
                         this.startPing();
                         this.syncUserSettings();
                         resolve(user);
                     } else {
-                        reject('Login result is not success.');
+                        reject(new Error('Login result is not success.'));
                     }
                     this.isLogging = false;
+                    return result;
                 }).catch(reject);
                 this.send({
                     module: 'chat',
@@ -202,6 +312,12 @@ class AppSocket extends Socket {
         });
     }
 
+    /**
+     * 发起退出登录请求
+     *
+     * @return {void}
+     * @memberof AppSocket
+     */
     logout() {
         if (this.isConnected) {
             this.uploadUserSettings();
@@ -215,21 +331,35 @@ class AppSocket extends Socket {
         }
     }
 
+    /**
+     * 发起上传用户个人配置请求
+     *
+     * @returns {Promise} 使用 Promise 异步返回处理结果
+     * @memberof AppSocket
+     */
     uploadUserSettings() {
-        const needSaveId = this.user.config.needSave;
+        const {user} = this;
+        const needSaveId = user.config.needSave;
         return this.sendAndListen({
             method: 'settings',
             params: [
-                this.user.account,
-                this.user.config.exportCloud()
+                user.account,
+                user.config.exportCloud()
             ]
         }).then(() => {
-            if (this.user.config.needSave === needSaveId) {
-                this.user.config.makeSave();
+            if (user.config.needSave === needSaveId) {
+                user.config.makeSave();
             }
+            return user;
         });
     }
 
+    /**
+     * 从服务器同步个人配置
+     *
+     * @returns {Promise} 使用 Promise 异步返回处理结果
+     * @memberof AppSocket
+     */
     syncUserSettings() {
         return this.sendAndListen({
             method: 'settings',
@@ -240,10 +370,24 @@ class AppSocket extends Socket {
         });
     }
 
+    /**
+     * 变更当前用户状态
+     *
+     * @param {string} status 状态名称
+     * @returns {Promise} 使用 Promise 异步返回处理结果
+     * @memberof AppSocket
+     */
     changeUserStatus(status) {
         return this.changeUser({status});
     }
 
+    /**
+     * 变更用户信息
+     *
+     * @param {Object<string,any>} userChangeData 要变更的属性对象
+     * @returns {Promise} 使用 Promise 异步返回处理结果
+     * @memberof AppSocket
+     */
     changeUser(userChangeData) {
         userChangeData.account = this.user.account;
         return this.sendAndListen({
@@ -252,15 +396,28 @@ class AppSocket extends Socket {
         });
     }
 
+    /**
+     * 修改用户密码
+     *
+     * @param {string} password 新的密码
+     * @returns {Promise} 使用 Promise 异步返回处理结果
+     * @memberof AppSocket
+     */
     changeUserPassword(password) {
         if (this.user.ldap) {
-            return Promise.reject(Lang.string('user.changePassword.notSupport'));
+            return Promise.reject(langString('user.changePassword.notSupport'));
         }
         return this.changeUser({
             password: this.user.isVersionSupport('changePwdWithMD5') ? md5(password) : md5(`${md5(password)}${this.user.account}`)
         });
     }
 
+    /**
+     * 向服务器发送 ping 消息
+     *
+     * @returns {Promise} 使用 Promise 异步返回处理结果
+     * @memberof AppSocket
+     */
     ping() {
         const now = new Date().getTime();
         if ((now - this.lastHandTime) > PING_INTERVAL * 2) {
@@ -272,7 +429,9 @@ class AppSocket extends Socket {
     }
 
     /**
-     * Stop cyclical ping
+     * 停止自动向服务器发送 ping 消息
+     *
+     * @memberof AppSocket
      * @return {void}
      */
     stopPing() {
@@ -282,6 +441,13 @@ class AppSocket extends Socket {
         }
     }
 
+    /**
+     * 处理从服务器接收到的 ping 消息
+     *
+     * @memberof AppSocket
+     * @return {void}
+     * @private
+     */
     onPing() {
         const now = new Date().getTime();
         if (DEBUG) {
@@ -290,12 +456,21 @@ class AppSocket extends Socket {
         this.lastHandTime = new Date().getTime();
     }
 
+    /**
+     * 处理从服务器接收到的 pong 消息
+     *
+     * @memberof AppSocket
+     * @return {void}
+     * @private
+     */
     onPong() {
         this.onPing();
     }
 
     /**
-     * Start cyclical ping
+     * 开始自动向服务器发送 ping 消息
+     *
+     * @memberof AppSocket
      * @return {void}
      */
     startPing() {
@@ -312,5 +487,3 @@ class AppSocket extends Socket {
         }
     }
 }
-
-export default AppSocket;

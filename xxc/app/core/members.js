@@ -1,5 +1,5 @@
 import Member from './models/member';
-import profile from './profile';
+import {getCurrentUser, onSwapUser} from './profile';
 import events from './events';
 import Lang from '../lang';
 
@@ -47,11 +47,12 @@ export const updateMembers = memberArr => {
 
     memberArr.forEach(member => {
         member = Member.create(member);
-        const isMe = profile.user && member.id === profile.user.id;
+        const user = getCurrentUser();
+        const isMe = user && member.id === user.id;
         member.isMe = isMe;
         newMembers[member.id] = member;
         if (isMe) {
-            profile.user.assign({realname: member.realname, avatar: member.avatar});
+            user.assign({realname: member.realname, avatar: member.avatar});
         }
     });
 
@@ -251,7 +252,8 @@ export const queryMembers = (condition, sortList) => {
         result = getAllMembers();
     }
     if (sortList && result && result.length) {
-        Member.sort(result, sortList, profile.user && profile.user.id);
+        const user = getCurrentUser();
+        Member.sort(result, sortList, user && user.id);
     }
     return result || [];
 };
@@ -285,7 +287,7 @@ export const getRoleName = role => ((role && roles) ? (roles[role] || Lang.strin
 export const getDept = deptId => depts[deptId];
 
 // 当当前登录的用户账户变更时清空缓存中的用户数据
-profile.onSwapUser(user => {
+onSwapUser(user => {
     members = {};
     roles = null;
     depts = null;
