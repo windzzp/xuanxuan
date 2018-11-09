@@ -5,11 +5,11 @@ const program = require('commander');
 const path = require('path');
 const fse = require('fs-extra');
 
-var defualtConversions = {
-    upperCase: function(text) {
+const defualtConversions = {
+    upperCase(text) {
         return text.toUpperCase();
     },
-    lowerCase: function(text) {
+    lowerCase(text) {
         return text.toLowerCase();
     },
 };
