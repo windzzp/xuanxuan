@@ -72,17 +72,8 @@ export const getRanzhiServerInfo = (user) => {
     return Promise.reject(new Error('RANZHI_SERVER_NOTSET'));
 };
 
-const API = {
+export default {
     downloadFile: Platform.net.downloadFile,
     uploadFile: Platform.net.uploadFile,
-    requestServerInfo,
-    checkUploadFileSize,
-    getRanzhiServerInfo,
     checkFileCache: Platform.net.checkFileCache || (() => false)
 };
-
-if (DEBUG) {
-    global.$.API = API;
-}
-
-export default API;

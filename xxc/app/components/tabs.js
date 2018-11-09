@@ -154,3 +154,5 @@ export default class Tabs extends PureComponent {
         );
     }
 }
+
+export {TabPane, Tabs};

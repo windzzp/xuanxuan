@@ -187,7 +187,7 @@ export const saveChatMessages = (messages, chat) => {
 
 /**
  * 更新缓存中的聊天消息
- * @param {Array} messages 聊天消息列表
+ * @param {Object[]} messages 聊天消息列表
  * @param {boolean} [muted=false] 是否忽略未读提示
  * @param {boolean} [skipOld=false] 是否跳过已更新的消息
  * @return {Promise}
@@ -1096,7 +1096,7 @@ export const getPublicChats = () => (publicChats || []);
  * @param {Array.<Object>|Object} serverPublicChats 要更新的公共聊天
  * @return {void}
  */
-const updatePublicChats = (serverPublicChats) => {
+export const updatePublicChats = (serverPublicChats) => {
     publicChats = [];
     if (serverPublicChats) {
         if (!Array.isArray(serverPublicChats)) {

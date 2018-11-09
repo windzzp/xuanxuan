@@ -28,7 +28,7 @@ export default class Button extends PureComponent {
         style: PropTypes.object,
         children: PropTypes.any,
         btnClass: PropTypes.string,
-        type: PropTypes.string.isRequired
+        type: PropTypes.string
     }
 
     /**
@@ -45,7 +45,8 @@ export default class Button extends PureComponent {
         className: null,
         style: null,
         children: null,
-        btnClass: 'btn'
+        btnClass: 'btn',
+        type: 'button',
     }
 
     /**

@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../../utils/html-helper';
+import {classes} from '../../utils/html-helper';
 import App from '../../core';
 import {ChatView} from './chat-view';
 import replaceViews from '../replace-views';
 
-class ChatsCache extends Component {
+export default class ChatsCache extends Component {
     static propTypes = {
         className: PropTypes.string,
         chatId: PropTypes.any,
@@ -33,24 +33,26 @@ class ChatsCache extends Component {
             ...other
         } = this.props;
 
-        return (<div
-            {...other}
-            className={HTML.classes('app-chats-cache', className)}
-        >
-            {
-                App.im.ui.activeAndMapCacheChats(chatId, cgid => {
-                    if (cgid) {
-                        return <ChatView key={cgid} chatGid={cgid} hidden={!App.im.ui.isActiveChat(cgid)} />;
-                    }
-                    if (DEBUG) {
-                        console.warn('Cannot render undefined chat cache.');
-                    }
-                    return null;
-                })
-            }
-            {children}
-        </div>);
+        App.im.ui.activeChat(chatId);
+
+        return (
+            <div
+                {...other}
+                className={classes('app-chats-cache', className)}
+            >
+                {
+                    App.im.ui.getActivedCacheChatsGID().map(cgid => {
+                        if (cgid) {
+                            return <ChatView key={cgid} chatGid={cgid} hidden={!App.im.ui.isActiveChat(cgid)} />;
+                        }
+                        if (DEBUG) {
+                            console.warn('Cannot render undefined chat cache.');
+                        }
+                        return null;
+                    })
+                }
+                {children}
+            </div>
+        );
     }
 }
-
-export default ChatsCache;

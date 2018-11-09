@@ -1,5 +1,5 @@
 import Platform from 'Platform';
-import Events from '../events';
+import events from '../events';
 import profile from '../profile';
 import chats from './im-chats';
 import Lang from '../../lang';
@@ -29,7 +29,18 @@ import {
 import ui from '../ui';
 import {registerCommand, executeCommandLine} from '../commander';
 
+/**
+ * 当前激活的聊天实例 ID
+ * @type {number}
+ * @private
+ */
 let activedChatId = null;
+
+/**
+ * 当前激活过的聊天缓存
+ * @type {Object<string, Chat>}
+ * @private
+ */
 let activeCaches = {};
 
 /**
@@ -44,14 +55,19 @@ const EVENT = {
     sendboxFocus: 'im.chat.sendbox.focus'
 };
 
-const activeChat = chat => {
+/**
+ * 在界面上激活聊天
+ * @param {Chat|string} chat 聊天实例或者聊天 GID
+ * @return {void}
+ */
+export const activeChat = chat => {
     if ((typeof chat === 'string') && chat.length) {
         chat = chats.get(chat);
     }
     if (chat) {
         if (!activedChatId || chat.gid !== activedChatId) {
             activedChatId = chat.gid;
-            Events.emit(EVENT.activeChat, chat);
+            events.emit(EVENT.activeChat, chat);
             ui.showMobileChatsMenu(false);
         }
         const urlHash = window.location.hash;
@@ -66,45 +82,64 @@ const activeChat = chat => {
     }
 };
 
-const activeLastChat = () => {
+/**
+ * 激活最后一个有更新的聊天
+ * @return {void}
+ */
+export const activeLastChat = () => {
     const lastChat = chats.getLastRecentChat();
     if (lastChat) {
         activeChat(lastChat);
     }
 };
 
-const isActiveChat = chatGid => {
-    return activedChatId === chatGid;
-};
+/**
+ * 判断给定的聊天是否是当前激活的聊天
+ * @param {string} chatGid 聊天 GID
+ * @returns {boolean} 如果返回 `true` 则为是当前激活的聊天，否则为不是当前激活的聊天
+ */
+export const isActiveChat = chatGid => activedChatId === chatGid;
 
-const onActiveChat = listener => {
-    return Events.on(EVENT.activeChat, listener);
-};
+/**
+ * 绑定聊天激活事件
+ * @param {Funcion} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
+export const onActiveChat = listener => events.on(EVENT.activeChat, listener);
 
-const sendContentToChat = (content, type = 'text', cgid = null) => {
+/**
+ * 向聊天发送框添加内容
+ * @param {string|FileData} content 文本或图片文件内容
+ * @param {string} type 内容类型，可以为 `'text'` 或 `'image'`
+ * @param {string} cgid 聊天 GID
+ * @return {void}
+ */
+export const sendContentToChat = (content, type = 'text', cgid = null) => {
     if (!cgid) {
         cgid = activedChatId;
     }
     if (type === 'file') {
         Server.sendFileMessage(content, chats.get(cgid));
     } else {
-        return Events.emit(`${EVENT.sendContentToChat}.${cgid}`, {content, type});
+        return events.emit(`${EVENT.sendContentToChat}.${cgid}`, {content, type});
     }
 };
 
-const onSendContentToChat = (cgid, listener) => {
-    return Events.on(`${EVENT.sendContentToChat}.${cgid}`, listener);
-};
+/**
+ * 绑定聊天发送框接收到新内容事件
+ * @param {string} cgid 聊天 GID
+ * @param {funcion} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
+export const onSendContentToChat = (cgid, listener) => events.on(`${EVENT.sendContentToChat}.${cgid}`, listener);
 
-const mapCacheChats = callback => {
-    return Object.keys(activeCaches).map(callback);
-};
+/**
+ * 获取缓存中的聊天消息 GID 列表
+ * @return {string[]} 聊天消息 GID 列表
+ */
+export const getActivedCacheChatsGID = () => Object.keys(activeCaches);
 
-const activeAndMapCacheChats = (chat, callback) => {
-    activeChat(chat);
-    return mapCacheChats(callback);
-};
-
+// 添加聊天工具栏邮件菜单生成器
 addContextMenuCreator('chat.toolbar', context => {
     let {chat, showSidebarIcon = 'auto'} = context;
     const items = [];
@@ -168,7 +203,12 @@ addContextMenuCreator('chat.toolbar', context => {
     return items;
 });
 
-const captureAndCutScreenImage = (hiddenWindows = false) => {
+/**
+ * 请求开始截屏操作
+ * @param {boolean} [hiddenWindows=false] 是否隐藏窗口再截屏
+ * @return {void}
+ */
+export const captureAndCutScreenImage = (hiddenWindows = false) => {
     if (Platform.screenshot) {
         const captureScreenChatId = activedChatId;
         Platform.screenshot.captureAndCutScreenImage(0, hiddenWindows).then(image => {
@@ -184,7 +224,11 @@ const captureAndCutScreenImage = (hiddenWindows = false) => {
     }
 };
 
-const createCatureScreenContextMenuItems = () => {
+/**
+ * 创建截屏按钮右键菜单项清单
+ * @return {Object[]} 右键菜单项清单
+ */
+export const createCatureScreenContextMenuItems = () => {
     if (!Platform.screenshot) {
         throw new Error(`The platform(${Platform.type}) not support take screenshots.`);
     }
@@ -214,6 +258,7 @@ const createCatureScreenContextMenuItems = () => {
     return items;
 };
 
+// 添加发送框工具栏菜单项目生成器
 addContextMenuCreator('chat.sendbox.toolbar', context => {
     const {chatGid, openMessagePreview} = context;
     const {userConfig} = profile;
@@ -315,7 +360,12 @@ addContextMenuCreator('chat.sendbox.toolbar', context => {
     return items;
 });
 
-const chatRenamePrompt = chat => {
+/**
+ * 显示重命名聊天对话框
+ * @param {Chat} chat 要重命名的聊天
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const chatRenamePrompt = chat => {
     return Modal.prompt(Lang.string('chat.rename.title'), chat.name, {
         placeholder: Lang.string('chat.rename.newTitle'),
     }).then(newName => {
@@ -325,7 +375,12 @@ const chatRenamePrompt = chat => {
     });
 };
 
-const chatExitConfirm = chat => {
+/**
+ * 显示确认退出聊天对话框
+ * @param {Chat} chat 要退出的聊天
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const chatExitConfirm = chat => {
     return Modal.confirm(Lang.format('chat.group.exitConfirm', chat.getDisplayName({members, user: profile.user}))).then(result => {
         if (result) {
             Server.exitChat(chat);
@@ -333,7 +388,12 @@ const chatExitConfirm = chat => {
     });
 };
 
-const chatDismissConfirm = chat => {
+/**
+ * 显示确认解散聊天对话框
+ * @param {Chat} chat 要解散的聊天
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const chatDismissConfirm = chat => {
     return Modal.confirm(Lang.format('chat.group.dismissConfirm', chat.getDisplayName({members, user: profile.user}))).then(result => {
         if (result) {
             return Server.dimissChat(chat).then(theChat => {
@@ -346,6 +406,7 @@ const chatDismissConfirm = chat => {
     });
 };
 
+// 添加聊天上小文菜单生成器
 addContextMenuCreator('chat.menu', context => {
     const {chat, menuType = null, viewType = null} = context;
     const menu = [];
@@ -433,6 +494,7 @@ addContextMenuCreator('chat.menu', context => {
     return tryRemoveLastDivider(menu);
 });
 
+// 添加聊天工具栏更多菜单生成器
 addContextMenuCreator('chat.toolbar.more', ({chat}) => {
     if (chat.isOne2One) return [];
     const menu = [];
@@ -497,6 +559,7 @@ addContextMenuCreator('chat.toolbar.more', ({chat}) => {
     return menu;
 });
 
+// 添加聊天成员上下文件菜单生成器
 addContextMenuCreator('chat.member', ({member, chat}) => {
     const menu = [];
     if (member.account !== profile.userAccount && chat.isGroupOrSystem) {
@@ -534,15 +597,22 @@ addContextMenuCreator('chat.member', ({member, chat}) => {
     return menu;
 });
 
-const linkMembersInText = (text, {format = '<a class="app-link {className}" data-url="@Member/{id}">@{displayName}</a>'}) => {
+/**
+ * 将文本中的 `@member` 转换为 HTML 链接
+ * @param {string} text 文本内容
+ * @param {{format: string}} param1 格式化选项
+ * @return {string} 转换后的文本
+ */
+export const linkMembersInText = (text, {format = '<a class="app-link {className}" data-url="@Member/{id}">@{displayName}</a>'}) => {
     if (text && text.indexOf('@') > -1) {
         const langAtAll = Lang.string('chat.message.atAll');
-        const userAccount = profile.userAccount;
+        const {userAccount} = profile;
         text = text.replace(/@([\w\u4e00-\u9fa5]+)/g, (mentionAt, mention) => {
             const m = members.guess(mention);
             if (m) {
                 return StringHelper.format(format, {displayName: m.displayName, id: m.id, account: m.account, className: m.account === userAccount ? 'at-me' : ''});
-            } else if (mention === 'all' || mention === langAtAll) {
+            }
+            if (mention === 'all' || mention === langAtAll) {
                 return `<span class="at-all">@${langAtAll}</span>`;
             }
             return mentionAt;
@@ -551,8 +621,20 @@ const linkMembersInText = (text, {format = '<a class="app-link {className}" data
     return text;
 };
 
+/**
+ * 转换消息内容回调函数
+ * @type {string}
+ * @private
+ */
 let onRenderChatMessageContentListener = null;
-const renderChatMessageContent = (messageContent, {renderMarkdown = false}) => {
+
+/**
+ * 将聊天消息内容转换为适合显示的 HTML 文本
+ * @param {string} messageContent 聊天消息内容
+ * @param {{renderMarkdown: boolean}} param1 转换选项
+ * @return {string} 转换后的聊天消息内容文本
+ */
+export const renderChatMessageContent = (messageContent, {renderMarkdown = false}) => {
     if (typeof messageContent === 'string' && messageContent.length) {
         if (renderMarkdown) {
             messageContent = Markdown(messageContent);
@@ -567,11 +649,21 @@ const renderChatMessageContent = (messageContent, {renderMarkdown = false}) => {
     return messageContent;
 };
 
-const onRenderChatMessageContent = listener => {
+/**
+ * 绑定转换消息内容事件
+ * @param {Funcion} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
+export const onRenderChatMessageContent = listener => {
     onRenderChatMessageContentListener = listener;
 };
 
-const createGroupChat = (groupMembers) => {
+/**
+ * 根据成员清单创建讨论组
+ * @param {Set<number>|number[]} groupMembers 聊天成员
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const createGroupChat = (groupMembers) => {
     return Modal.prompt(Lang.string('chat.create.newChatNameTip'), '', {
         inputProps: {placeholder: Lang.string('chat.rename.newTitle')},
         onSubmit: newName => {
@@ -588,7 +680,14 @@ const createGroupChat = (groupMembers) => {
     });
 };
 
-const renameChatCategory = (group, type = 'contact', newCategoryName = null) => {
+/**
+ * 重命名讨论组
+ * @param {{id: number, title: string}} group 要重命名的讨论组
+ * @param {string} type 讨论组类型
+ * @param {string} newCategoryName 新的讨论组名称
+ * @return {void}
+ */
+export const renameChatCategory = (group, type = 'contact', newCategoryName = null) => {
     if (newCategoryName === null) {
         return Modal.prompt(Lang.string('chats.menu.group.renameTip'), group.title).then(name => {
             return renameChatCategory(group, type, name);
@@ -613,6 +712,7 @@ const renameChatCategory = (group, type = 'contact', newCategoryName = null) => 
     }
 };
 
+// 添加讨论组上下文菜单生成器
 addContextMenuCreator('chat.group', ({group, type = 'contact'}) => {
     const menus = [];
     if (!group.system) {
@@ -639,10 +739,7 @@ addContextMenuCreator('chat.group', ({group, type = 'contact'}) => {
     return menus;
 });
 
-const hasMessageContextMenu = message => {
-    return message.isTextContent && Platform.clipboard && Platform.clipboard.writeText;
-};
-
+// 添加文本消息上下文菜单生成器
 addContextMenuCreator('message.text', ({message}) => {
     const items = [];
     if (message.isTextContent && Platform.clipboard && Platform.clipboard.writeText) {
@@ -697,11 +794,13 @@ addContextMenuCreator('message.text', ({message}) => {
     return items;
 });
 
+// 绑定用户切换事件
 profile.onSwapUser(user => {
     activedChatId = null;
     activeCaches = {};
 });
 
+// 绑定聊天列表初始化事件
 chats.onChatsInit(initChats => {
     if (!activedChatId) {
         const lastActiveChat = chats.getLastActiveChat();
@@ -721,12 +820,14 @@ chats.onChatsInit(initChats => {
     }
 });
 
+// 如果平台支持截图，绑定截图全局快捷键
 if (Platform.screenshot) {
     registerCommand('shortcut.captureScreenHotkey', () => {
         captureAndCutScreenImage();
     });
 }
 
+// 如果平台支持读取剪切板图片则绑定推荐发送剪切板图片命令
 if (Platform.clipboard && Platform.clipboard.getNewImage) {
     registerCommand('suggestClipboardImage', () => {
         if (!profile.userConfig.listenClipboardImage) {
@@ -734,33 +835,46 @@ if (Platform.clipboard && Platform.clipboard.getNewImage) {
         }
         const newImage = Platform.clipboard.getNewImage();
         if (newImage) {
-            Events.emit(EVENT.suggestSendImage, newImage);
+            events.emit(EVENT.suggestSendImage, newImage);
         }
     });
 }
 
-const onSuggestSendImage = (listener) => {
-    return Events.on(EVENT.suggestSendImage, listener);
-};
+/**
+ * 绑定推荐发送剪切板图片事件
+ * @param {Funcion} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
+export const onSuggestSendImage = (listener) => events.on(EVENT.suggestSendImage, listener);
 
-const emitChatSendboxFocus = (chat, sendboxContent) => {
-    Events.emit(EVENT.sendboxFocus, chat, sendboxContent);
+/**
+ * 激活聊天发送框并可以选择性的发送文本内容到聊天发送框
+ * @param {Chat} chat 聊天实例
+ * @param {string} [sendboxContent=null] 要发送到聊天框的内容
+ * @return {void}
+ */
+export const emitChatSendboxFocus = (chat, sendboxContent = null) => {
+    events.emit(EVENT.sendboxFocus, chat, sendboxContent);
     if (profile.userConfig.listenClipboardImage && StringHelper.isEmpty(sendboxContent)) {
         executeCommandLine('suggestClipboardImage');
     }
 };
 
-const onChatSendboxFocus = (listener) => {
-    return Events.on(EVENT.sendboxFocus, listener);
+/**
+ * 绑定聊天发送框激活事件
+ * @param {funcion} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
+export const onChatSendboxFocus = (listener) => {
+    return events.on(EVENT.sendboxFocus, listener);
 };
 
 export default {
     activeChat,
     activeLastChat,
     onActiveChat,
-    mapCacheChats,
     isActiveChat,
-    activeAndMapCacheChats,
+    getActivedCacheChatsGID,
     linkMembersInText,
     renderChatMessageContent,
     chatExitConfirm,
@@ -770,7 +884,6 @@ export default {
     onSendContentToChat,
     onRenderChatMessageContent,
     onSuggestSendImage,
-    hasMessageContextMenu,
     emitChatSendboxFocus,
     onChatSendboxFocus,
 

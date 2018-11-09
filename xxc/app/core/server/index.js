@@ -7,7 +7,7 @@ import serverHandlers from './server-handlers';
 import {
     onSwapUser, createUser, setCurrentUser, getCurrentUser,
 } from '../profile';
-import API from '../network/api';
+import {requestServerInfo} from '../network/api';
 import notice from '../notice';
 import events from '../events';
 import limitTimePromise from '../../utils/limit-time-promise';
@@ -129,7 +129,7 @@ export const login = (user) => {
     // 标记后台登录开始
     user.beginLogin();
 
-    return limitTimePromise(API.requestServerInfo(user), TIMEOUT).then(user => {
+    return limitTimePromise(requestServerInfo(user), TIMEOUT).then(user => {
         const versionError = checkServerVersion(user.serverVersion);
         if (versionError) {
             return Promise.reject(versionError);

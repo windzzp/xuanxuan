@@ -7,7 +7,7 @@ import ContextMenu from '../components/context-menu';
 import modal from '../components/modal';
 import {isWebUrl, getSearchParam} from '../utils/html-helper';
 import Lang from '../lang';
-import Events from './events';
+import events from './events';
 import profile from './profile';
 import Notice from './notice';
 import ImageViewer from '../components/image-viewer';
@@ -28,6 +28,7 @@ const EVENT = {
     ready: 'app.ready'
 };
 
+// 添加图片上下文菜单生成器
 addContextMenuCreator('image', ({url, dataType}) => {
     const items = [{
         label: Lang.string('menu.image.view'),
@@ -85,6 +86,7 @@ addContextMenuCreator('image', ({url, dataType}) => {
     return items;
 });
 
+// 添加成员上下文菜单生成器
 addContextMenuCreator('member', ({member}) => {
     return [{
         label: Lang.string('member.profile.view'),
@@ -94,20 +96,41 @@ addContextMenuCreator('member', ({member}) => {
     }];
 });
 
-const onAppLinkClick = (type, listener) => {
-    return Events.on(`${EVENT.app_link}.${type}`, listener);
+/**
+ * 绑定界面上链接点击事件
+ * @param {string} type 链接目标类型
+ * @param {function(target, element)} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
+export const onAppLinkClick = (type, listener) => {
+    return events.on(`${EVENT.app_link}.${type}`, listener);
 };
 
-const emitAppLinkClick = (element, type, target, ...params) => {
-    return Events.emit(`${EVENT.app_link}.${type}`, target, element, ...params);
+/**
+ * 触发界面上链接点击事件
+ * @param {Element} element 触发元素
+ * @param {string} type 链接目标类型
+ * @param {string} target  链接目标
+ * @param  {...any} params 其他参数
+ * @return {void}
+ */
+export const emitAppLinkClick = (element, type, target, ...params) => {
+    return events.emit(`${EVENT.app_link}.${type}`, target, element, ...params);
 };
 
+// 处理点击成员名称链接事件（弹出个人资料对话框）
 onAppLinkClick('Member', target => {
     MemberProfileDialog.show(target);
 });
 
+/**
+ * 自动清除拷贝成功提示计时器 ID
+ * @type {number}
+ * @private
+ */
 let clearCopyCodeTip = null;
 if (Platform.clipboard && Platform.clipboard.writeText) {
+    // 注册处理拷贝代码命令
     registerCommand('copyCode', context => {
         const element = context.targetElement;
         if (element) {
@@ -130,6 +153,7 @@ if (Platform.clipboard && Platform.clipboard.writeText) {
     });
 }
 
+// 处理用户登录事件
 Server.onUserLogin((user, loginError) => {
     if (!loginError && user.isFirstSignedToday) {
         Messager.show(Lang.string('login.signed'), {
@@ -143,6 +167,7 @@ Server.onUserLogin((user, loginError) => {
     }
 });
 
+// 处理用户退出登录事件
 Server.onUserLoginout((user, code, reason, unexpected) => {
     if (user) {
         let errorCode = null;
@@ -167,17 +192,32 @@ Server.onUserLoginout((user, code, reason, unexpected) => {
     }
 });
 
+// 为 `<body>` 添加操作系统辅助类，例如 `'os-mac'` 或 `'os-win'`
 document.body.classList.add(`os-${Platform.env.os}`);
 
+/**
+ * 在扩展应用中功能打开链接
+ * @param {string} url 要打开的地址
+ * @param {string} appName 应用名称
+ * @return {void}
+ */
 export const openUrlInApp = (url, appName) => {
     executeCommandLine(`openInApp/${appName}/${encodeURIComponent(appName)}`, {appName, url});
 };
 
+/**
+ * 在对话框中打开链接
+ * @param {string} url 要打开的链接
+ * @param {Object} options 选项
+ * @param {function} callback 对话框显示后的回调函数
+ * @return {void}
+ */
 export const openUrlInDialog = (url, options, callback) => {
     options = Object.assign({url}, options);
     WebViewDialog.show(url, options, callback);
 };
 
+// 注册在对话框中打开链接命令
 registerCommand('openUrlInDialog', (context, url) => {
     if (!url && context.options && context.options.url) {
         url = context.options.url;
@@ -190,10 +230,16 @@ registerCommand('openUrlInDialog', (context, url) => {
     return false;
 });
 
+/**
+ * 在系统默认浏览器中打开链接
+ * @param {stirng} url 要打开的链接
+ * @return {void}
+ */
 export const openUrlInBrowser = url => {
     return Platform.ui.openExternal(url);
 };
 
+// 注册在系统默认浏览器中打开链接命令
 registerCommand('openUrlInBrowser', (context, url) => {
     if (!url && context.options && context.options.url) {
         url = context.options.url;
@@ -205,6 +251,13 @@ registerCommand('openUrlInBrowser', (context, url) => {
     return false;
 });
 
+/**
+ * 根据界面事件打开链接，自动选择打开的方式
+ * @param {string} url 要打开的链接
+ * @param {Element} targetElement 触发事件元素
+ * @param {Event} event 界面事件对象
+ * @returns {boolean} 如果返回 `true` 则打开成功，否则为打开失败
+ */
 export const openUrl = (url, targetElement, event) => {
     if (isWebUrl(url)) {
         if (global.ExtsRuntime) {
@@ -233,8 +286,9 @@ export const openUrl = (url, targetElement, event) => {
     }
 };
 
+// 监听页面上的点击事件
 document.addEventListener('click', e => {
-    let target = e.target;
+    let {target} = e;
     while (target && !((target.classList && target.classList.contains('app-link')) || (target.tagName === 'A' && target.attributes.href))) {
         target = target.parentNode;
     }
@@ -247,6 +301,7 @@ document.addEventListener('click', e => {
     }
 });
 
+// 监听网络成功连接事件
 window.addEventListener('online', () => {
     if (profile.user) {
         if (!Server.socket.isLogging) {
@@ -254,6 +309,8 @@ window.addEventListener('online', () => {
         }
     }
 });
+
+// 监听网络连接断开事件
 window.addEventListener('offline', () => {
     if (profile.isUserOnline) {
         profile.user.markDisconnect();
@@ -261,8 +318,18 @@ window.addEventListener('offline', () => {
     }
 });
 
-
+/**
+ * 检查拖拽结束计时任务 ID
+ * @type {number}
+ * @private
+ */
 let dragLeaveTask;
+
+/**
+ * 完成拖拽事件
+ * @return {void}
+ * @private
+ */
 const completeDragNDrop = () => {
     document.body.classList.remove('drag-n-drop-over-in');
     setTimeout(() => {
@@ -270,6 +337,7 @@ const completeDragNDrop = () => {
     }, 350);
 };
 
+// 监听界面上拖拽过程中事件
 window.ondragover = e => {
     clearTimeout(dragLeaveTask);
     if (e.dataTransfer && e.dataTransfer.types.includes('Files')) {
@@ -281,12 +349,16 @@ window.ondragover = e => {
     e.preventDefault();
     return false;
 };
+
+// 监听界面上拖拽离开
 window.ondragleave = e => {
     clearTimeout(dragLeaveTask);
     dragLeaveTask = setTimeout(completeDragNDrop, 300);
     e.preventDefault();
     return false;
 };
+
+// 监听界面上拖拽完成
 window.ondrop = e => {
     clearTimeout(dragLeaveTask);
     completeDragNDrop();
@@ -299,7 +371,7 @@ window.ondrop = e => {
     return false;
 };
 
-
+// 如果平台支持自主处理退出策略则询问用户如何退出
 if (Platform.ui.onRequestQuit) {
     Platform.ui.onRequestQuit(closeReason => {
         if (closeReason !== 'quit') {
@@ -327,9 +399,14 @@ if (Platform.ui.onRequestQuit) {
     });
 }
 
-let quit = null;
+/**
+ * 立即退出应用
+ * @private
+ * @type {function}
+ */
+let _quit = null;
 if (Platform.ui.quit) {
-    quit = (delay = 1000, ignoreListener = true) => {
+    _quit = (delay = 1000, ignoreListener = true) => {
         if (ignoreListener) {
             Server.logout();
         }
@@ -337,25 +414,37 @@ if (Platform.ui.quit) {
     };
 }
 
+/**
+ * 立即退出应用
+ * @type {function}
+ */
+export const quit = _quit;
+
+// 监听应用窗口最小化事件
 if (Platform.ui.onWindowMinimize) {
     Platform.ui.onWindowMinimize(() => {
-        const userConfig = profile.userConfig;
+        const {userConfig} = profile;
         if (userConfig && userConfig.removeFromTaskbarOnHide) {
             Platform.ui.setShowInTaskbar(false);
         }
     });
 }
 
+// 监听应用窗口失去焦点事件
 if (Platform.ui.onWindowBlur && Platform.ui.hideWindow) {
     Platform.ui.onWindowBlur(() => {
-        const userConfig = profile.userConfig;
+        const {userConfig} = profile;
         if (userConfig && userConfig.hideWindowOnBlur) {
             Platform.ui.hideWindow();
         }
     });
 }
 
-const reloadWindow = () => {
+/**
+ * 重新加载窗口
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const reloadWindow = () => {
     return modal.confirm(Lang.string('dialog.reloadWindowConfirmTip'), {title: Lang.string('dialog.reloadWindowConfirm')}).then(confirmed => {
         if (confirmed) {
             Server.logout();
@@ -372,6 +461,10 @@ const reloadWindow = () => {
     });
 };
 
+/**
+ * 判断是否在下次启动自动登录
+ * @returns {boolean} 如果返回 `true` 则为下次启动自动登录，否则为不自动登录
+ */
 export const isAutoLoginNextTime = () => {
     const autoLoginNextTime = Store.get('autoLoginNextTime');
     if (autoLoginNextTime) {
@@ -380,25 +473,61 @@ export const isAutoLoginNextTime = () => {
     return autoLoginNextTime;
 };
 
-// Decode url params
-const entryParams = getSearchParam();
+/**
+ * 通过浏览器查询字符串传入的登录参数
+ * @type {object}
+ */
+export const entryParams = getSearchParam();
 
+/**
+ * 触发界面准备就绪事件
+ * @return {void}
+ */
 export const triggerReady = () => {
-    Events.emit(EVENT.ready);
+    events.emit(EVENT.ready);
 };
 
+/**
+ * 绑定界面准备就绪事件
+ * @param {funcion} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
 export const onReady = listener => {
-    return Events.on(EVENT.ready, listener);
+    return events.on(EVENT.ready, listener);
 };
 
-const setTitle = title => {
+/**
+ * 设置应用窗口标题
+ * @param {string} title 窗口标题
+ * @return {void}
+ */
+export const setTitle = title => {
     document.title = title;
 };
 
+// 设置默认标题
 setTitle(Lang.string('app.title'));
 
+/**
+ * 浏览器地址解析缓存
+ * @private
+ * @type {Object}
+ */
 const urlMetaCaches = {};
+
+/**
+ * 最大浏览器解析缓存大小
+ * @type {number}
+ * @private
+ */
 const maxUrlCacheSize = 20;
+
+/**
+ * 解析浏览器地址信息
+ * @param {string} url 要解析的地址
+ * @param {boolean} [disableCache=false] 是否禁止使用缓存
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
 export const getUrlMeta = (url, disableCache = false) => {
     if (!Config.ui['chat.urlInspector']) {
         return Promise.resolve({url, title: url});
@@ -501,9 +630,27 @@ export const getUrlMeta = (url, disableCache = false) => {
     return Promise.resolve({url, title: url});
 };
 
+/**
+ * 全局快捷键是否可用
+ * @type {boolean}
+ * @private
+ */
 let isGlobalShortcutDisabled = false;
 
+/**
+ * 全局快捷键表
+ * @private
+ * @type {Object}
+ */
 let globalHotkeys = null;
+
+/**
+ * 注册全局快捷键
+ * @param {User} loginUser 当前登录的用户
+ * @param {Error} loginError 登录错误信息
+ * @return {void}
+ * @private
+ */
 const registerShortcut = (loginUser, loginError) => {
     if (!Platform.shortcut) {
         return;
@@ -511,8 +658,9 @@ const registerShortcut = (loginUser, loginError) => {
     if (loginError) {
         return;
     }
-    const userConfig = profile.userConfig;
+    const {userConfig} = profile;
     if (userConfig) {
+        // eslint-disable-next-line prefer-destructuring
         globalHotkeys = userConfig.globalHotkeys;
         Object.keys(globalHotkeys).forEach(name => {
             Platform.shortcut.registerGlobalShortcut(name, globalHotkeys[name], () => {
@@ -525,6 +673,12 @@ const registerShortcut = (loginUser, loginError) => {
         });
     }
 };
+
+/**
+ * 取消注册全局快捷键
+ * @return {void}
+ * @private
+ */
 const unregisterGlobalShortcut = () => {
     if (!Platform.shortcut) {
         return;
@@ -536,6 +690,8 @@ const unregisterGlobalShortcut = () => {
         globalHotkeys = null;
     }
 };
+
+// 处理全局快捷键注册和反注册
 if (Platform.shortcut) {
     profile.onUserConfigChange((change, config) => {
         if (change && Object.keys(change).some(x => x.startsWith('shortcut.'))) {
@@ -559,16 +715,26 @@ if (Platform.shortcut) {
     }
 }
 
+// 注册显示上下文菜单命令
 registerCommand('showContextMenu', (context, name) => {
     const {options, event} = context;
     showContextMenu(name, {options, event})
 });
 
+/**
+ * 判断当前应用窗口是否是小窗口模式
+ * @returns {boolean} 如果返回 `true` 则为是小窗口模式，否则为不是小窗口模式
+ */
 export const isSmallScreen = () => {
     return window.innerWidth < 768;
 };
 
-export const showMobileChatsMenu = (toggle) => {
+/**
+ * 切换显示小窗口模式，实际是在 `<body>` 元素上切换添加 `'app-show-chats-menu'` 类，用于应用不同的 CSS 样式
+ * @param {boolean} [toggle=null] 是否显示小窗口模式，如果为 `true` 则切换为小窗口模式，如果为 `false` 则取消切换小窗口模式，如果为其他值则根据当前的模式自动切换（到另一种模式）
+ * @return {void}
+ */
+export const showMobileChatsMenu = (toggle = null) => {
     if (!isSmallScreen()) {
         return;
     }
@@ -582,16 +748,26 @@ export const showMobileChatsMenu = (toggle) => {
     }
 };
 
+/**
+ * 禁用全局快捷键
+ * @param {boolean} [disabled=true] 是否禁用全局快捷键，如果为 `false` 则为取消禁用，否则为禁用
+ * @return {void}
+ */
 export const disableGlobalShortcut = (disabled = true) => {
     isGlobalShortcutDisabled = disabled;
     unregisterGlobalShortcut();
 };
 
+/**
+ * 启用全局快捷键
+ * @return {void}
+ */
 export const enableGlobalShortcut = () => {
     isGlobalShortcutDisabled = false;
     registerShortcut();
 };
 
+// 监听浏览器地址栏 hash 参数变更事件
 window.addEventListener('hashchange', () => {
     const hash = window.location.hash;
     if (DEBUG) {
