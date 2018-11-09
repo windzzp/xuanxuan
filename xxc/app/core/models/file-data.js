@@ -75,7 +75,7 @@ export default class FileData extends Entity {
     static NAME = 'FileData';
 
     /**
-     * 数据库存储对象大纲
+     * 数据库存储实体属性结构管理器
      *
      * @type {EntitySchema}
      * @static
@@ -251,7 +251,7 @@ export default class FileData extends Entity {
     }
 
     /**
-     * 获取数据库存储对象大纲
+     * 获取数据库存储实体属性结构管理器
      *
      * @readonly
      * @memberof FileData

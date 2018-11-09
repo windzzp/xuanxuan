@@ -56,7 +56,7 @@ export default class Member extends Entity {
     static STATUS = STATUS;
 
     /**
-     * 数据库存储对象大纲
+     * 数据库存储实体属性结构管理器
      *
      * @type {EntitySchema}
      * @static
@@ -94,10 +94,10 @@ export default class Member extends Entity {
     }
 
     /**
-     * 获取数据库存储对象大纲
+     * 获取数据库存储实体属性结构管理器
      *
      * @readonly
-     * @memberof FileData
+     * @memberof Member
      * @type {EntitySchema}
      */
     // eslint-disable-next-line class-methods-use-this
@@ -186,7 +186,7 @@ export default class Member extends Entity {
     /**
      * 判断成员账号是否为给定的值
      *
-     * @param {string} account 要判断的账户
+     * @param {string} account 要判断的用户名
      * @return {boolean} 如果为 `true` 则为给定的值，否则不是
      * @memberof Member
      */
@@ -413,7 +413,7 @@ export default class Member extends Entity {
 
     /**
      * 获取成员与给定的关键字匹配分值
-     * @memberof FileData
+     * @memberof Member
      * @param {string[]} keys 关键字列表
      * @return {number} 匹配的分值
      */
@@ -446,6 +446,8 @@ export default class Member extends Entity {
      * @param  {array|string|function(m1: Member, m2: Member):number}  orders 排序规则
      * @param  {{id: number}|number} userMe 当前登录的用户 ID 或者用户对象
      * @return {Member[]} 排序后的成员列表
+     * @static
+     * @memberof Member
      */
     static sort(members, orders, userMe) {
         if (members.length < 2) {

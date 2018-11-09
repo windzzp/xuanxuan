@@ -19,7 +19,7 @@ export default class HotkeyInputControl extends Component {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof HotkeyInputControl
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         defaultValue: PropTypes.string,

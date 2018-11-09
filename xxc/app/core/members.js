@@ -214,7 +214,7 @@ export const guessMember = (search) => {
  * 查询缓存中的用户数据，查询条件可以为：
  * - `Object`，包含属性值的对象；
  * - `Function`，使用函数判断是否符合要求；
- * - `string[]`，用户账户或 ID 组成的字符串数组
+ * - `string[]`，用户用户名或 ID 组成的字符串数组
  * @param {Object|Function|string[]} condition 查询条件
  * @param {string|boolean} sortList 排序依据，如果为 `true` 则使用默认排序依据
  * @return {Member[]} 查询结果
@@ -260,7 +260,7 @@ export const queryMembers = (condition, sortList) => {
 
 /**
  * 从缓存数据中移除指定的用户
- * @param {Member|string} member 用户对象实例或用户账户或 ID
+ * @param {Member|string} member 用户对象实例或用户用户名或 ID
  * @return {boolean} 如果为 `true` 移除成功，如果为 `false` 移除失败，通常是找不到对应的用户
  */
 export const removeMember = member => {
@@ -286,7 +286,7 @@ export const getRoleName = role => ((role && roles) ? (roles[role] || Lang.strin
  */
 export const getDept = deptId => depts[deptId];
 
-// 当当前登录的用户账户变更时清空缓存中的用户数据
+// 当当前登录的用户用户名变更时清空缓存中的用户数据
 onSwapUser(user => {
     members = {};
     roles = null;

@@ -18,7 +18,7 @@ export default class Pager extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Pager
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         page: PropTypes.number,

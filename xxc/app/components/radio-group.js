@@ -24,7 +24,7 @@ export default class RadioGroup extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof RadioGroup
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         checked: PropTypes.bool,

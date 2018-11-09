@@ -78,7 +78,7 @@ export default class DisplayLayer extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof DisplayLayer
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         content: PropTypes.any,

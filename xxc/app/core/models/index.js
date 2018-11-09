@@ -11,7 +11,7 @@ import EntitySchema from './entity-schema';
  * @property {Class} Member 成员类
  * @property {Class} Chat 聊天类
  * @property {Class} ChatMessage 聊天消息类
- * @property {Class} EntitySchema 存储实体大纲类
+ * @property {Class} EntitySchema 存储实体结构类
  */
 export default {
     Entity, Member, Chat, ChatMessage, EntitySchema,

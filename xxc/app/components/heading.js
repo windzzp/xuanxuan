@@ -18,7 +18,7 @@ export default class Heading extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Heading
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         avatar: PropTypes.any,

@@ -21,7 +21,7 @@ export default class SearchControl extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof SearchControl
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         placeholder: PropTypes.any,

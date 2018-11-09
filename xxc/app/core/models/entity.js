@@ -18,11 +18,11 @@ export default class Entity {
     static NAME = 'Entity';
 
     /**
-     * 数据库存储对象大纲
+     * 数据库存储实体属性结构管理器
      *
      * @type {EntitySchema}
      * @static
-     * @memberof Member
+     * @memberof Entity
      */
     static SCHEMA = new Schema({
         gid: {type: 'string', primaryKey: true},
@@ -157,7 +157,7 @@ export default class Entity {
     }
 
     /**
-     * 获取数据库存储对象大纲
+     * 获取数据库存储实体属性结构管理器
      *
      * @readonly
      * @memberof Entity

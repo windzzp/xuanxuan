@@ -18,7 +18,7 @@ export default class ListItem extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof ListItem
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         type: PropTypes.string,

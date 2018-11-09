@@ -21,7 +21,7 @@ export default class GroupList extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof GroupList
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         headingCreator: PropTypes.func,

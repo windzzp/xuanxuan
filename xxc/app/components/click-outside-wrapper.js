@@ -25,7 +25,7 @@ export default class ClickOutsideWrapper extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof ClickOutsideWrapper
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         onClickOutside: PropTypes.func,

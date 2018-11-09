@@ -17,7 +17,7 @@ export default class MDIcon extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Icon
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         size: PropTypes.number,

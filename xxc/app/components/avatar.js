@@ -27,7 +27,7 @@ export default class Avatar extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Avatar
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         auto: PropTypes.any,

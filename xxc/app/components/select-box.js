@@ -17,7 +17,7 @@ export default class Selectbox extends Component {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof SelectBox
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         value: PropTypes.any,

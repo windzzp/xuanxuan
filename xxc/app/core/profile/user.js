@@ -48,7 +48,7 @@ export default class User extends Member {
     static EVENT = EVENT;
 
     /**
-     * 数据库存储对象大纲
+     * 数据库存储实体属性结构管理器
      *
      * @type {EntitySchema}
      * @static
@@ -125,7 +125,7 @@ export default class User extends Member {
 
 
     /**
-     * 获取用户类数据库存储对象大纲
+     * 获取用户类数据库存储实体属性结构管理器
      *
      * @readonly
      * @memberof User

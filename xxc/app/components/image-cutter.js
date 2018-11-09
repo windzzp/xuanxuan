@@ -21,7 +21,7 @@ export default class ImageCutter extends Component {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof ImageCutter
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         sourceImage: PropTypes.string,

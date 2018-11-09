@@ -26,7 +26,7 @@ export default class Tabs extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Tabs
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         navClassName: PropTypes.string,

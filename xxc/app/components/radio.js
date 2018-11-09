@@ -17,7 +17,7 @@ export default class Radio extends Component {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Radio
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         checked: PropTypes.bool,

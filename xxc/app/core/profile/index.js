@@ -178,7 +178,7 @@ export default {
     },
 
     /**
-     * 获取当前用户账户
+     * 获取当前用户用户名
      */
     get userAccount() {
         return user ? user.account : '';

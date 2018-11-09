@@ -18,7 +18,7 @@ export default class Button extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Button
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         skin: PropTypes.any,

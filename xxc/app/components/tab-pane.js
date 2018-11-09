@@ -15,7 +15,7 @@ export default class TabPane extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof TabPane
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         label: PropTypes.any,

@@ -34,7 +34,7 @@ export default class InputControl extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof InputControl
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         value: PropTypes.string,

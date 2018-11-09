@@ -1,6 +1,10 @@
-import {isNotEmpty} from '../../utils/string-helper';
+import {isNotEmptyString} from '../../utils/string-helper';
 
-
+/**
+ * 默认类型表
+ * @type {Object<string, string>}
+ * @private
+ */
 const TYPES = {
     int: 'int',
     float: 'float',
@@ -15,10 +19,10 @@ const TYPES = {
     json: 'json',
 };
 
-
 /**
- * Default entity values converters
- * @type {Object}
+ * 默认值转换器
+ * @type {Object<string, function(val: any):any>}
+ * @private
  */
 const defaultValuesConveter = {
     int: val => {
@@ -88,7 +92,7 @@ const defaultValuesConveter = {
     },
     json: json => {
         if (typeof val === 'string') {
-            if (isNotEmpty(json)) {
+            if (isNotEmptyString(json)) {
                 return JSON.parse(json);
             }
             return null;
@@ -97,7 +101,18 @@ const defaultValuesConveter = {
     }
 };
 
-class EntitySchema {
+/**
+ * 数据库存储实体属性结构管理类，用于定义实体内所有属性的定义
+ *
+ * @export
+ * @class EntitySchema
+ */
+export default class EntitySchema {
+    /**
+     * 创建一个数据库存储实体属性结构管理类
+     * @param {Object<string,Object<string, any>>} schema 属性结构管理对象
+     * @memberof EntitySchema
+     */
     constructor(schema) {
         let primaryKeyNumber = 0;
         Object.keys(schema).forEach(name => {
@@ -116,10 +131,23 @@ class EntitySchema {
             }
             throw new Error(`Cannot create scheam, because there has ${primaryKeyNumber} primary key(s).`);
         }
+
+        /**
+         * 属性定义表
+         * @type {Object<string, {type: string, unique: boolean, indexed: boolean, convertGetterValue: function(key: string, val: any, entity: Entity):any, convertSetterValue: function(key: string, val: any, entity: Entity):any}>}
+         */
         this.schema = schema;
     }
 
-    of(name, useDefault) {
+    /**
+     * 获取指定名称的属性定义对象
+     *
+     * @param {string} name 属性名称
+     * @param {boolean} [useDefault=false] 如果没有找定义是否使用默认定义
+     * @return {{type: string, unique: boolean, indexed: boolean, convertGetterValue: function(key: string, val: any, entity: Entity):any, convertSetterValue: function(key: string, val: any, entity: Entity):any}} 属性定义对象
+     * @memberof EntitySchema
+     */
+    of(name, useDefault = false) {
         const scheam = this.schema[name];
         if (scheam) {
             return Object.assign({
@@ -139,6 +167,15 @@ class EntitySchema {
         return null;
     }
 
+    /**
+     * 转换属性值
+     *
+     * @param {string} name 属性名称
+     * @param {any} value 属性值
+     * @param {?{type: string, unique: boolean, indexed: boolean, convertGetterValue: function(key: string, val: any, entity: Entity):any, convertSetterValue: function(key: string, val: any, entity: Entity):any}} meta 属性定义对象
+     * @return {any} 转换后的值
+     * @memberof EntitySchema
+     */
     convertValue(name, value, meta) {
         meta = meta || this.of(name);
         if (meta) {
@@ -152,6 +189,15 @@ class EntitySchema {
         return value;
     }
 
+    /**
+     * 转换用于读取的属性值
+     *
+     * @param {string} name 属性名称
+     * @param {any} value 属性值
+     * @param {Entity} thisObj 要转换的实体对象
+     * @return {any} 转换后的值
+     * @memberof EntitySchema
+     */
     convertGetterValue(name, value, thisObj) {
         const meta = this.of(name);
         if (meta) {
@@ -168,6 +214,15 @@ class EntitySchema {
         return value;
     }
 
+    /**
+     * 转换用于存储的属性值
+     *
+     * @param {string} name 属性名称
+     * @param {any} value 属性值
+     * @param {Entity} thisObj 要转换的实体对象
+     * @return {any} 转换后的值
+     * @memberof EntitySchema
+     */
     convertSetterValue(name, value, thisObj) {
         const meta = this.of(name);
         if (meta) {
@@ -184,10 +239,22 @@ class EntitySchema {
         return value;
     }
 
+    /**
+     * 扩展更多属性定义并返回一个新的属性结构管理类实例
+     *
+     * @param {Object<string,Object<string, any>>} newSchema 新的数学定义表
+     * @returns {EntitySchema} 新的属性结构管理类实例
+     * @memberof EntitySchema
+     */
     extend(newSchema) {
         return EntitySchema.extend(this, newSchema);
     }
 
+    /**
+     * 获取用于定义 Dexie 表的格式字符串
+     * @memberof EntitySchema
+     * @type {string}
+     */
     get dexieFormat() {
         const formats = [this.primaryKey];
         Object.keys(this.schema).forEach(name => {
@@ -205,9 +272,16 @@ class EntitySchema {
         return formats.join(',');
     }
 
+    /**
+     * 扩展一个属性结构管理器并返回一个新的属性结构管理类实例
+     *
+     * @static
+     * @param {EntitySchema} parent 要扩展的属性结构管理器实例
+     * @param {Object<string,Object<string, any>>} newSchema 新的数学定义表
+     * @returns {EntitySchema} 新的属性结构管理类实例
+     * @memberof EntitySchema
+     */
     static extend(parent, newSchema) {
         return new EntitySchema(Object.assign({}, parent.schema, newSchema));
     }
 }
-
-export default EntitySchema;

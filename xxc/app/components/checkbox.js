@@ -17,7 +17,7 @@ export default class Checkbox extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Checkbox
-     * @return {Object}
+     * @type {object}
      */
     static propTypes = {
         checked: PropTypes.bool,
