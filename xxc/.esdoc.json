@@ -1,8 +1,8 @@
 {
-    "source": "./app/core/",
+    "source": "./app/",
     "destination": "../docs/client/api",
     "includes": ["\\.js$"],
-    "excludes": ["bundle\\.js$", "main\\.js$"],
+    "excludes": ["bundle\\.js$", "main\\.js$", "jquery"],
     "plugins": [
         {"name": "./build/custom-esdoc.js"},
         {"name": "esdoc-jsx-plugin", "option": {"enable": true}},
