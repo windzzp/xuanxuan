@@ -1,14 +1,20 @@
-import clipboard from 'clipboard-js';
+import clipboard from 'clipboard-js'; // 考虑升级到 https://github.com/lgarron/clipboard-polyfill
 
-const saveImage = image => {
-    // clipboard.saveImage(image);
-};
-
-const writeText = text => {
+/**
+ * 将文本复制到剪切板
+ * @param {string} text 要复制的文本
+ * @return {void}
+ */
+export const writeText = text => {
     clipboard.copy(text);
 };
 
-const writeHTML = html => {
+/**
+ * 将 HTML 文本复制到剪切板
+ * @param {string} html 要复制的 HTML 文本
+ * @return {void}
+ */
+export const writeHTML = html => {
     clipboard.copy({'text/html': html});
 };
 

@@ -1,6 +1,17 @@
+/**
+ * 选择文件按钮
+ * @type {Element}
+ * @private
+ */
 const fileButton = document.getElementById('fileOpenButton');
 
-const showOpenDialog = (acceptExts = '', callback) => {
+/**
+ * 显示打开文件对话框
+ * @param {?string|{filters: string[]}} acceptExts 可用选择的文件扩展名
+ * @param {function(result: (Object[]|boolean))} callback 文件选择完成后的回调函数，如果返回 `false`，表示选择文件失败，否则为所选择的文件对象数组
+ * @return {void}
+ */
+export const showOpenDialog = (acceptExts = '', callback) => {
     if (typeof acceptExts === 'function') {
         callback = acceptExts;
         acceptExts = '';
@@ -25,7 +36,7 @@ const showOpenDialog = (acceptExts = '', callback) => {
 
     fileButton.accept = acceptExts;
     fileButton.onchange = () => {
-        const files = fileButton.files;
+        const {files} = fileButton;
         if (files.length) {
             callback(files);
             setTimeout(() => {

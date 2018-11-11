@@ -1,15 +1,15 @@
 import EventEmitter from './event-emitter';
 
 /**
- * Events emitter
- * Can be used in both main process and renderer process
+ * Electron 事件管理类
  *
  * @class Events
  * @extends {EventEmitter}
  */
 class Events extends EventEmitter {
     /**
-     * Event center constructor
+     * 创建一个Electron 事件管理类实例
+     * @memberof Events
      */
     constructor() {
         super();
@@ -21,10 +21,11 @@ class Events extends EventEmitter {
     }
 
     /**
-     * Bind event
-     * @param  {string} event
-     * @param  {Function} listener
-     * @return {Symbol}
+     * 绑定事件并返回一个 {Sysmbo} 作为事件绑定 ID 用于取消事件
+     * @param  {string} event 事件名称
+     * @param  {Function} listener 事件回调函数
+     * @return {Symbol} 事件绑定 ID
+     * @memberof Events
      */
     on(event, listener) {
         super.on(event, listener);
@@ -43,10 +44,11 @@ class Events extends EventEmitter {
     }
 
     /**
-     * Bind once event
-     * @param  {string} event
-     * @param  {Function} listener
-     * @return {Symbol}
+     * 绑定一个一次性事件，触发后会自动取消绑定，只会触发一次
+     * @param  {string} event 事件名称
+     * @param  {Function} listener 事件回调函数
+     * @return {Symbol} 事件绑定 ID
+     * @memberof Events
      */
     once(event, listener) {
         const name = Symbol(event);
@@ -69,9 +71,10 @@ class Events extends EventEmitter {
     }
 
     /**
-     * Unbind event
-     * @param  {...[Symbol]} names
-     * @return {Void}
+     * 取消绑定事件
+     * @param  {...Symbol} names 要取消的事件 ID
+     * @return {void}
+     * @memberof Events
      */
     off(...names) {
         if (this.eventsMap) {
@@ -95,7 +98,12 @@ class Events extends EventEmitter {
     }
 
     /**
-     * Emit event
+     * 触发一个事件
+     *
+     * @param {string} names 要触发的事件名称
+     * @param {...any} args 事件参数
+     * @memberof Events
+     * @return {void}
      */
     emit(names, ...args) {
         super.emit(names, ...args);
@@ -113,6 +121,10 @@ class Events extends EventEmitter {
     }
 }
 
+/**
+ * 全局事件触发器
+ * @type {Events}
+ */
 const events = new Events();
 
 export default events;

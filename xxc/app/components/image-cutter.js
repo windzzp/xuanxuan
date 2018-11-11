@@ -72,7 +72,6 @@ export default class ImageCutter extends Component {
      * @private
      * @memberof ImageCutter
      * @return {void}
-     * @instance
      */
     componentDidMount() {
         this.HotkeysScope = timeSequence();
@@ -94,7 +93,6 @@ export default class ImageCutter extends Component {
      * @private
      * @memberof ImageCutter
      * @return {void}
-     * @instance
      */
     componentWillUnmount() {
         hotkeys.deleteScope(this.HotkeysScope);
@@ -106,7 +104,6 @@ export default class ImageCutter extends Component {
      * @memberof ImageCutter
      * @private
      * @return {void}
-     * @instance
      */
     handleOkButtonClick = event => {
         if (this.select) {
@@ -129,7 +126,6 @@ export default class ImageCutter extends Component {
      * @memberof ImageCutter
      * @private
      * @return {void}
-     * @instance
      */
     handleCloseButtonClick = () => {
         if (this.props.onFinish) {
@@ -143,7 +139,6 @@ export default class ImageCutter extends Component {
      * @memberof ImageCutter
      * @private
      * @return {void}
-     * @instance
      */
     handleSelectArea = (select) => {
         this.select = select;
@@ -156,7 +151,6 @@ export default class ImageCutter extends Component {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof ImageCutter
      * @return {ReactNode}
-     * @instance
      */
     render() {
         let {

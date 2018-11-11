@@ -53,7 +53,6 @@ export default class AppAvatar extends PureComponent {
     * @see https://doc.react-china.org/docs/rendering-elements.html
     * @memberof AppAvatar
     * @return {ReactNode}
-    * @instance
     */
     render() {
         const {

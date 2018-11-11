@@ -1,23 +1,43 @@
 import RecordRTC from 'recordrtc';
-import {desktopCapturer, screen as Screen, remote as Remote, clipboard} from 'electron';
+import {
+    desktopCapturer, screen as Screen, remote as Remote, clipboard,
+} from 'electron';
 import ui from './ui';
-import Image from './image';
+import {saveImage} from './image';
 import env from './env';
 import Lang from '../../lang';
-import RemoteEvents from './remote';
+import RemoteEvents, {ipcOnce} from './remote';
 
 /* This is NEEDED because RecordRTC is badly written */
 global.html2canvas = (canvas, obj) => {
     obj.onrendered(canvas);
 };
 
+/**
+ * 保存上次获取的媒体流数据
+ * @type {MediaStream}
+ * @private
+ */
 let lastSteam = null;
+
+/**
+ * 停止媒体流
+ * @private
+ * @return {void}
+ */
 const stopStream = () => {
     if (lastSteam) {
         lastSteam.stop();
         lastSteam = null;
     }
 };
+
+/**
+ * 获取媒体流
+ * @param {number} sourceId 媒体 ID
+ * @private
+ * @returns {Promise<MediaStream>} 使用 Promise 异步返回处理结果
+ */
 const getStream = sourceId => {
     return new Promise((resolve, reject) => {
         stopStream();
@@ -52,6 +72,12 @@ const getStream = sourceId => {
     });
 };
 
+/**
+ * 获取视频流
+ * @param {MediaStream} stream 媒体流
+ * @private
+ * @returns {Promise<HTMLVideoElement>} 使用 Promise 异步返回处理结果
+ */
 const getVideo = stream => {
     return new Promise(resolve => {
         const video = document.createElement('video');
@@ -63,6 +89,13 @@ const getVideo = stream => {
     });
 };
 
+/**
+ * 创建 Canvas 元素
+ * @param {number} width Canvas 宽度
+ * @param {number} height Canvas 高度
+ * @return {HTMLCanvasElement} Canvas 元素
+ * @private
+ */
 const getCanvas = (width, height) => {
     const canvas = document.createElement('canvas');
     canvas.width = width;
@@ -70,14 +103,31 @@ const getCanvas = (width, height) => {
     return canvas;
 };
 
-const drawFrame = ({ctx, video, x, y, width, height, availTop = screen.availTop}) => {
+/**
+ * 在 Canvas 上绘制视频帧
+ * @param {{ctx: CanvasRenderingContext2D, video: HTMLVideoElement, x: number, y: number, width: number, height: number, availTop: number}} param0 帧参数
+ * @return {void}
+ */
+const drawFrame = ({
+    ctx, video, x, y, width, height, availTop = window.screen.availTop
+}) => {
     ctx.drawImage(video, x, y, width, height, 0, -availTop, width, height);
 };
 
+/**
+ * 获取 Canvas 元素上的图像
+ * @param {HTMLCanvasElement} canvas Canvas 元素
+ * @return {string} 以 DataUrl 格式返回图片内容
+ */
 const getFrameImage = canvas => {
     return canvas.toDataURL();
 };
 
+/**
+ * 获取媒体 Display 信息
+ * @param {number} id 媒体 ID
+ * @return {Electron.Display} Electron Display 对象
+ */
 const getDisplay = id => {
     if (id) {
         return Screen.getAllDisplays().find(item => item.id === id);
@@ -85,6 +135,11 @@ const getDisplay = id => {
     return Screen.getPrimaryDisplay();
 };
 
+/**
+ * 获取帧循环函数
+ * @param {function} fn 回调函数
+ * @return {function} 帧循环函数
+ */
 const getLoop = fn => {
     let requestId;
     const callFn = () => {
@@ -97,10 +152,19 @@ const getLoop = fn => {
     };
 };
 
-const startRecording = ({canvas, video, x, y, width, height, availTop}) => {
+/**
+ * 开始录屏
+ * @param {{canvas: HTMLCanvasElement, video: HTMLVideoElement, x: number, y: number, width: number, height: number, availTop: number}} param0 帧参数
+ * @return {{stop: function, pause: function, resume: function}} 录屏操作对象
+ */
+const startRecording = ({
+    canvas, video, x, y, width, height, availTop
+}) => {
     const recorder = RecordRTC(canvas, {type: 'canvas'});
     const ctx = canvas.getContext('2d');
-    const stopLoop = getLoop(() => drawFrame({ctx, video, x, y, width, height, availTop}));
+    const stopLoop = getLoop(() => drawFrame({
+        ctx, video, x, y, width, height, availTop
+    }));
 
     recorder.startRecording();
 
@@ -122,20 +186,35 @@ const startRecording = ({canvas, video, x, y, width, height, availTop}) => {
     };
 };
 
-const takeScreenshot = ({x = 0, y = 0, width = 0, height = 0, sourceId = 0}) => {
+/**
+ * 获取指定媒体屏幕快照
+ * @param {{x: number, y: number, width: number, height: number, sourceId: number}} param0 快照参数
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const takeScreenshot = ({
+    x = 0, y = 0, width = 0, height = 0, sourceId = 0
+}) => {
     const display = getDisplay(sourceId);
-    const availTop = screen.availTop - display.bounds.y;
+    const availTop = window.screen.availTop - display.bounds.y;
     sourceId = display.id;
 
-    if (!width) width = display.bounds.width;
-    if (!height) height = display.bounds.height;
+    if (!width) {
+        // eslint-disable-next-line prefer-destructuring
+        width = display.bounds.width;
+    }
+    if (!height) {
+        // eslint-disable-next-line prefer-destructuring
+        height = display.bounds.height;
+    }
 
     return getStream(sourceId)
         .then(getVideo)
         .then(video => {
             const canvas = getCanvas(width, height);
             const ctx = canvas.getContext('2d');
-            drawFrame({ctx, video, x, y, width, height, availTop});
+            drawFrame({
+                ctx, video, x, y, width, height, availTop,
+            });
             stopStream();
             return getFrameImage(canvas);
         }).catch(error => {
@@ -144,7 +223,12 @@ const takeScreenshot = ({x = 0, y = 0, width = 0, height = 0, sourceId = 0}) => 
         });
 };
 
-const takeAllScreenshots = (options) => {
+/**
+ * 获取所有媒体屏幕快照
+ * @param {{x: number, y: number, width: number, height: number, sourceId: number}[]} options 快照参数
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const takeAllScreenshots = (options) => {
     if (!options) {
         options = Screen.getAllDisplays().map(item => {
             return {
@@ -160,24 +244,39 @@ const takeAllScreenshots = (options) => {
         return Promise.all(options.map(option => {
             return takeScreenshot(option);
         }));
-    } else {
-        return takeScreenshot(options);
     }
+    return takeScreenshot(options);
 };
 
-const captureVideo = ({x, y, width, height, sourceId}) => {
+/**
+ * 获取指定媒体屏幕视频
+ * @param {{x: number, y: number, width: number, height: number, sourceId: number}} param0 屏幕视频参数
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const captureVideo = ({
+    x, y, width, height, sourceId
+}) => {
     const display = getDisplay(sourceId);
-    const availTop = screen.availTop - display.bounds.y;
+    const availTop = window.screen.availTop - display.bounds.y;
     sourceId = display.id;
     return getStream(sourceId)
         .then(getVideo)
         .then(video => {
             const canvas = getCanvas(width, height);
-            return startRecording({canvas, video, x, y, width, height, availTop});
+            return startRecording({
+                canvas, video, x, y, width, height, availTop
+            });
         });
 };
 
-const saveScreenshotImage = (options, filePath, hideCurrentWindow) => {
+/**
+ * 获取屏幕快照并保存为图片
+ * @param {{x: number, y: number, width: number, height: number, sourceId: number}} options 屏幕快照参数
+ * @param {string} filePath 图片保存路径
+ * @param {boolean} hideCurrentWindow 是否隐藏当前窗口
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const saveScreenshotImage = (options, filePath, hideCurrentWindow) => {
     if (!options) {
         options = {};
     }
@@ -188,7 +287,7 @@ const saveScreenshotImage = (options, filePath, hideCurrentWindow) => {
         if (hideCurrentWindow) {
             ui.browserWindow.show();
         }
-        return Image.saveImage(base64Image, filePath);
+        return saveImage(base64Image, filePath);
     };
     if (hideCurrentWindow && ui.browserWindow.isVisible()) {
         if (env.isWindowsOS) {
@@ -207,13 +306,20 @@ const saveScreenshotImage = (options, filePath, hideCurrentWindow) => {
     return takeScreenshot(options).then(processImage);
 };
 
-const openCaptureScreenWindow = (file, display, onClosed) => {
+/**
+ * 打开截图窗口
+ * @param {{path: string}|FileData} file 快照图片对象
+ * @param {Electron.Display} display Electron Display 对象
+ * @param {function} onClosed 窗口关闭时的回调函数
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const openCaptureScreenWindow = (file, display, onClosed) => {
     return new Promise((resolve, reject) => {
         const captureWindow = new Remote.BrowserWindow({
             x: display ? display.bounds.x : 0,
             y: display ? display.bounds.y : 0,
-            width: display ? display.bounds.width : screen.width,
-            height: display ? display.bounds.height : screen.height,
+            width: display ? display.bounds.width : window.screen.width,
+            height: display ? display.bounds.height : window.screen.height,
             alwaysOnTop: !DEBUG,
             fullscreen: true,
             frame: true,
@@ -237,11 +343,22 @@ const openCaptureScreenWindow = (file, display, onClosed) => {
     });
 };
 
+/**
+ * 存储当前是否正在截屏中
+ * @type {boolean}
+ * @private
+ */
 let isCapturing = false;
 
-const captureAndCutScreenImage = (screenSources = 0, hideCurrentWindow = false) => {
+/**
+ * 获取屏幕快照并进行截图操作
+ * @param {number|string} [screenSources=0] 如果为 `0` 或 `'all'` 则为所有屏幕截图，否则指定一个屏幕媒体 ID 针对指定的屏幕进行截图
+ * @param {boolean} [hideCurrentWindow=false] 获取屏幕快照时是否隐藏当前窗口
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const captureAndCutScreenImage = (screenSources = 0, hideCurrentWindow = false) => {
     if (isCapturing) {
-        return Promise.reject('The capture window is already opened.');
+        return Promise.reject(new Error('The capture window is already opened.'));
     }
     isCapturing = true;
     if (!screenSources || screenSources === 'all') {
@@ -257,7 +374,7 @@ const captureAndCutScreenImage = (screenSources = 0, hideCurrentWindow = false) 
     hideCurrentWindow = hideCurrentWindow && ui.browserWindow.isVisible();
     return new Promise((resolve, reject) => {
         const captureScreenWindows = [];
-        const eventId = RemoteEvents.ipcOnce(RemoteEvents.EVENT.capture_screen, (e, image) => {
+        const eventId = ipcOnce(RemoteEvents.EVENT.capture_screen, (e, image) => {
             if (captureScreenWindows) {
                 captureScreenWindows.forEach(captureWindow => {
                     captureWindow.close();
@@ -275,6 +392,7 @@ const captureAndCutScreenImage = (screenSources = 0, hideCurrentWindow = false) 
                     }
 
                     resolve(savedImage);
+                    return savedImage;
                 }).catch(reject);
             } else if (DEBUG) {
                 console.log('No capture image.');

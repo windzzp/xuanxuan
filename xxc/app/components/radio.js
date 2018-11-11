@@ -73,7 +73,6 @@ export default class Radio extends Component {
      * @memberof Radio
      * @private
      * @return {void}
-     * @instance
      */
     handleRadioChange = e => {
         const {onChange, name, value} = this.props;
@@ -89,7 +88,6 @@ export default class Radio extends Component {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof Radio
      * @return {ReactNode}
-     * @instance
      */
     render() {
         const {

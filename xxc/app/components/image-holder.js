@@ -65,7 +65,6 @@ export default class ImageHolder extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof ImageHolder
      * @return {ReactNode}
-     * @instance
      */
     render() {
         let {

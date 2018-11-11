@@ -186,7 +186,6 @@ export default class DisplayLayer extends PureComponent {
     * @private
     * @memberof DisplayLayer
     * @return {void}
-    * @instance
     */
     componentDidMount() {
         const {show, hotkey} = this.props;
@@ -209,7 +208,6 @@ export default class DisplayLayer extends PureComponent {
     * @private
     * @memberof DisplayLayer
     * @return {void}
-    * @instance
     */
     componentWillUnmount() {
         const {hotkey} = this.props;
@@ -223,7 +221,6 @@ export default class DisplayLayer extends PureComponent {
      * 获取组件名称
      * @type {string}
      * @memberof DisplayLayer
-     * @instance
      */
     get stageName() {
         const {stage} = this.state;
@@ -234,7 +231,6 @@ export default class DisplayLayer extends PureComponent {
      * 检查组件是否显示
      * @type {boolean}
      * @memberof DisplayLayer
-     * @instance
      */
     get isShow() {
         return this.isStage(STAGE.shown);
@@ -244,7 +240,6 @@ export default class DisplayLayer extends PureComponent {
      * 检查组件是否隐藏
      * @type {boolean}
      * @memberof DisplayLayer
-     * @instance
      */
     get isHide() {
         return this.isStage(STAGE.hidden);
@@ -256,7 +251,6 @@ export default class DisplayLayer extends PureComponent {
      * @param {String|Number} stage 要检查的状态序号或者名称
      * @return {boolean}
      * @memberof DisplayLayer
-     * @instance
      */
     isStage(stage) {
         return STAGE.isSame(stage, this.state.stage);
@@ -268,7 +262,6 @@ export default class DisplayLayer extends PureComponent {
      * @param {String|Number} stage 要变更的状态
      * @memberof DisplayLayer
      * @return {void}
-     * @instance
      */
     changeStage(stage) {
         const newState = {stage: STAGE.getValue(stage)};
@@ -285,7 +278,6 @@ export default class DisplayLayer extends PureComponent {
      * @param {?Function} callback 设置完成后的回调函数
      * @memberof DisplayLayer
      * @return {void}
-     * @instance
      */
     setStyle(style, callback) {
         this.setState({style}, callback);
@@ -297,7 +289,6 @@ export default class DisplayLayer extends PureComponent {
      * @param {?Function} callback 完成后的回调函数
      * @memberof DisplayLayer
      * @return {void}
-     * @instance
      */
     show(callback) {
         if (this.state.stage === STAGE.init) {
@@ -329,7 +320,6 @@ export default class DisplayLayer extends PureComponent {
      * @param {?Function} callback 完成后的回调函数
      * @memberof DisplayLayer
      * @return {void}
-     * @instance
      */
     hide(callback) {
         this.changeStage(STAGE.hidden);
@@ -359,7 +349,6 @@ export default class DisplayLayer extends PureComponent {
      * @param {?Function} callback 完成后的回调函数
      * @memberof DisplayLayer
      * @return {void}
-     * @instance
      */
     loadContent(newContent, callback) {
         let {content, contentLoadFail, onLoad} = this.props;
@@ -395,7 +384,6 @@ export default class DisplayLayer extends PureComponent {
      * @memberof DisplayLayer
      * @private
      * @return {void}
-     * @instance
      */
     handeWindowKeyup(e) {
         const {hotkey} = this.props;
@@ -410,7 +398,6 @@ export default class DisplayLayer extends PureComponent {
      * 重置状态为 init（需要初始化）
      * @memberof DisplayLayer
      * @return {void}
-     * @instance
      */
     reset() {
         this.setState({stage: STAGE.init});
@@ -422,7 +409,6 @@ export default class DisplayLayer extends PureComponent {
      * @memberof DisplayLayer
      * @private
      * @return {void}
-     * @instance
      */
     handleBackdropClick = event => {
         if (!this.props.modal) {
@@ -437,7 +423,6 @@ export default class DisplayLayer extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof DisplayLayer
      * @return {ReactNode}
-     * @instance
      */
     render() {
         let {

@@ -147,7 +147,6 @@ export default class GroupList extends PureComponent {
      * @param {?Function} callback 操作完成时的回调函数
      * @memberof GroupList
      * @return {void}
-     * @instance
      */
     toggle(expand, callback) {
         if (expand === undefined) {
@@ -169,7 +168,6 @@ export default class GroupList extends PureComponent {
      * @param {?Function} callback 操作完成时的回调函数
      * @memberof GroupList
      * @return {void}
-     * @instance
      */
     expand(callback) {
         this.toggle(true, callback);
@@ -180,7 +178,6 @@ export default class GroupList extends PureComponent {
      * @param {?Function} callback 操作完成时的回调函数
      * @memberof GroupList
      * @return {void}
-     * @instance
      */
     collapse(callback) {
         this.toggle(false, callback);
@@ -192,7 +189,6 @@ export default class GroupList extends PureComponent {
      * @memberof GroupList
      * @private
      * @return {void}
-     * @instance
      */
     handleHeadingClick = e => {
         this.toggle();
@@ -202,7 +198,6 @@ export default class GroupList extends PureComponent {
      * 检查是否展开
      * @type {boolean}
      * @memberof GroupList
-     * @instance
      */
     get isExpand() {
         return !this.props.forceCollapse && this.state.expand;
@@ -213,7 +208,6 @@ export default class GroupList extends PureComponent {
      * @memberof GroupList
      * @private
      * @return {void}
-     * @instance
      */
     handleRequestMorePage = () => {
         this.setState({page: this.state.page + 1});
@@ -226,7 +220,6 @@ export default class GroupList extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof GroupList
      * @return {ReactNode}
-     * @instance
      */
     render() {
         const {

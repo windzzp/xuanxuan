@@ -23,7 +23,6 @@ export class StatusKeeper {
      * @type {string}
      * @readonly
      * @memberof StatusKeeper
-     * @instance
      */
     get name() {
         return this.mapper.getName(this.status);
@@ -34,7 +33,6 @@ export class StatusKeeper {
      * @type {number}
      * @readonly
      * @memberof StatusKeeper
-     * @instance
      */
     get value() {
         return this.mapper.getValue(this.status);
@@ -44,7 +42,6 @@ export class StatusKeeper {
      * 获取当前状态变更事件回调函数
      * @type {Function}
      * @memberof StatusKeeper
-     * @instance
      */
     get onChange() {
         return this._onChange;
@@ -54,7 +51,6 @@ export class StatusKeeper {
      * 设置当前状态变更事件回调函数
      * @param {Function} callback 事件回调函数
      * @memberof StatusKeeper
-     * @instance
      */
     set onChange(callback) {
         this._onChange = callback;
@@ -64,7 +60,6 @@ export class StatusKeeper {
      * 获取检查状态是否允许变更回调函数
      * @type {Function}
      * @memberof StatusKeeper
-     * @instance
      */
     get canChange() {
         return this._canChange;
@@ -74,7 +69,6 @@ export class StatusKeeper {
      * 设置检查状态是否允许变更回调函数
      * @param {Function} callback 事件回调函数
      * @memberof StatusKeeper
-     * @instance
      */
     set canChange(callback) {
         this._canChange = callback;
@@ -86,7 +80,6 @@ export class StatusKeeper {
      * @param {string|number} nameOrValue 新的状态值或名称
      * @memberof StatusKeeper
      * @return {void}
-     * @instance
      */
     change(nameOrValue) {
         const value = this.mapper.getValue(nameOrValue);
@@ -108,7 +101,6 @@ export class StatusKeeper {
      * @param {string|number} nameOrValue
      * @return {boolean}
      * @memberof StatusKeeper
-     * @instance
      */
     is(nameOrValue) {
         const value = this.mapper.getValue(nameOrValue);
@@ -166,7 +158,6 @@ export default class Status {
      * @type {Array.<string>}
      * @readonly
      * @memberof Status
-     * @instance
      */
     get names() {
         return Object.values(this.$values);
@@ -177,7 +168,6 @@ export default class Status {
      * @type {Array.<number>}
      * @readonly
      * @memberof Status
-     * @instance
      */
     get values() {
         return Object.keys(this.$values);
@@ -188,7 +178,6 @@ export default class Status {
      * @type {string}
      * @readonly
      * @memberof Status
-     * @instance
      */
     get defaultName() {
         return this.getName(this.defaultStatus);
@@ -199,7 +188,6 @@ export default class Status {
      * @type {number}
      * @readonly
      * @memberof Status
-     * @instance
      */
     get defaultValue() {
         return this.getValue(this.defaultStatus);
@@ -211,7 +199,6 @@ export default class Status {
      * @param {string} defaultName 默认状态名称
      * @return {string}
      * @memberof Status
-     * @instance
      */
     getName(valueOrName, defaultName) {
         let name;
@@ -229,7 +216,6 @@ export default class Status {
      * @param {number} defaultName 默认状态值
      * @return {number}
      * @memberof Status
-     * @instance
      */
     getValue(valueOrName, defaultValue) {
         let value;
@@ -247,7 +233,6 @@ export default class Status {
      * @param {string|number} status2 状态2
      * @return {boolean}
      * @memberof Status
-     * @instance
      */
     isSame(status1, status2) {
         return this.getValue(status1) === this.getValue(status2);
@@ -259,7 +244,6 @@ export default class Status {
      * @param {string|number} status 状态值或名称
      * @returns {StatusKeeper}
      * @memberof Status
-     * @instance
      */
     create(status) {
         if (status === undefined) {

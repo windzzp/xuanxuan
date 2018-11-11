@@ -4,27 +4,31 @@ import fs from 'fs-extra';
 import env from './env';
 import Lang from '../../lang';
 import ui from './ui';
-import openFileButton from '../common/open-file-button';
+import {showOpenDialog} from '../common/open-file-button';
 import {downloadFileWithRequest} from './net';
 
+/**
+ * 上次在文件保存对话框中选择的文件保存位置
+ * @type {string}
+ * @private
+ */
 let lastFileSavePath = '';
 
 /**
- * Show save dialog
- * @param object   options
+ * 显示文件保存对话框
+ * @param {{sourceFilePath: string}} options 选项
+ * @param {function(result: boolean)} callback 保存完成后的回调函数，其中参数 `result` 为是否成功保存文件
+ * @return {void}
  */
-const showSaveDialog = (options, callback) => {
+export const showSaveDialog = (options, callback) => {
     if (options.sourceFilePath) {
-        const sourceFilePath = options.sourceFilePath;
+        const {sourceFilePath} = options;
         delete options.sourceFilePath;
         return showSaveDialog(options, filename => {
             if (filename) {
-                if (sourceFilePath === filename)
-                {
+                if (sourceFilePath === filename) {
                     callback(filename);
-                }
-                else
-                {
+                } else {
                     fs.copy(sourceFilePath, filename)
                         .then(() => {
                             if (callback) {
@@ -59,9 +63,12 @@ const showSaveDialog = (options, callback) => {
 };
 
 /**
- * Show open dialog
+ * 显示 Electron 内置的文件保存对话框
+ * @param {{title: string, defaultPath: string, properties: string[]}} options 选项
+ * @param {function(result: boolean)} callback 保存完成后的回调函数，其中参数 `result` 为是否成功保存文件
+ * @return {void}
  */
-const showRemoteOpenDialog = (options, callback) => {
+export const showRemoteOpenDialog = (options, callback) => {
     options = Object.assign({
         title: Lang.string('dialog.openFile'),
         defaultPath: env.desktopPath,
@@ -70,11 +77,17 @@ const showRemoteOpenDialog = (options, callback) => {
     Remote.dialog.showOpenDialog(ui.browserWindow, options, callback);
 };
 
-const saveAsImageFromUrl = (url, dataType) => new Promise((resolve, reject) => {
+/**
+ * 根据图片地址和存储类型保存图片
+ * @param {string} url 图片地址
+ * @param {string} dataType 图片类型
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const saveAsImageFromUrl = (url, dataType) => new Promise((resolve, reject) => {
     const isBase64Image = url.startsWith('data:image/') || dataType === 'base64';
     const isBlob = url.startsWith('blob:');
     if (isBlob) {
-
+        throw new Error('Cannot support save blob image in electron.');
     } else if (!isBase64Image && url.startsWith('file://')) {
         url = url.substr(7);
     }
@@ -101,6 +114,6 @@ const saveAsImageFromUrl = (url, dataType) => new Promise((resolve, reject) => {
 export default {
     showRemoteOpenDialog,
     showSaveDialog,
-    showOpenDialog: openFileButton.showOpenDialog,
+    showOpenDialog,
     saveAsImageFromUrl
 };

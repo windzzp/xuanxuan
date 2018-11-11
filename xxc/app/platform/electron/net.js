@@ -1,22 +1,49 @@
 import fse from 'fs-extra';
 import Path from 'path';
-import network from '../common/network';
+import network, {downloadFile as downloadFileOrigin, uploadFile as uploadFileOrigin} from '../common/network';
 import {createUserDataPath} from './ui';
 
-const downloadFileOrigin = network.downloadFile;
-const uploadFileOrigin = network.uploadFile;
-
+/**
+ * 下载文件
+ * @param {string} url 文件下载地址
+ * @param {string} fileSavePath 文件保存路径
+ * @param {function(progresss: number)} onProgress 下载进度变更事件回调函数
+ * @returns {Promise} 使用 Promise 异步返回处理文件下载结果
+ */
 export const downloadFileWithRequest = (url, fileSavePath, onProgress) => {
     return downloadFileOrigin(url, null, onProgress).then(fileBuffer => {
-        const buffer = new Buffer(new Uint8Array(fileBuffer));
+        const buffer = Buffer.from(new Uint8Array(fileBuffer));
         return fse.outputFile(fileSavePath, buffer);
     });
 };
 
+/**
+ * 文件缓存对象
+ * @private
+ * @type {Object}
+ */
 const filesCache = {};
+
+/**
+ * 创建文件缓存路径
+ * @param {{storageName: string}|FileData} file 文件对象
+ * @param {{identify: string}|User} user 用户实例
+ * @param {string} [dirName='image'] 缓存目录
+ * @return {string} 创建文件缓存路径
+ * @private
+ */
 const createCachePath = (file, user, dirName = 'images') => {
     return createUserDataPath(user, file.storageName, dirName);
 };
+
+/**
+ * 检查文件是否已经缓存
+ * @param {{localPath: string, path: string, gid: string}|FileData} file 文件对象
+ * @param {{identify: string}|User} user 用户实例
+ * @param {string} [dirName='image'] 缓存目录
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ * @private
+ */
 const checkFileCache = (file, user, dirName = 'images') => {
     if (file.path) {
         return Promise.resolve(false);
@@ -41,8 +68,14 @@ const checkFileCache = (file, user, dirName = 'images') => {
     });
 };
 
-
-const downloadFile = (user, file, onProgress) => {
+/**
+ * 下载并保存文件到本地缓存
+ * @param {User} user 用户实例
+ * @param {FileData} file 文件对象
+ * @param {function(progresss: number)} onProgress 下载进度变更事件回调函数
+ * @returns {Promise} 使用 Promise 异步返回处理文件下载结果
+ */
+export const downloadFile = (user, file, onProgress) => {
     return checkFileCache(file, user).then(cachePath => {
         const url = file.url || file.makeUrl(user);
         const fileSavePath = file.path || createCachePath(file, user);
@@ -74,8 +107,16 @@ const downloadFile = (user, file, onProgress) => {
     });
 };
 
-const uploadFile = (user, file, onProgress, copyCache = false) => {
-    const originFile = file.originFile;
+/**
+ * 上传文件
+ * @param {User} user 用户实例
+ * @param {FileData} file 文件对象
+ * @param {function(progresss: number)} onProgress 上传进度变更事件回调函数
+ * @param {boolean} [copyCache=false] 是否将原始文件拷贝到缓存目录
+ * @returns {Promise} 使用 Promise 异步返回处理上传文件结果
+ */
+export const uploadFile = (user, file, onProgress, copyCache = false) => {
+    const {originFile} = file;
     if (!originFile) {
         return console.warn('Upload file fail, cannot get origin file object.', file);
     }
@@ -108,7 +149,7 @@ const uploadFile = (user, file, onProgress, copyCache = false) => {
                     const reader = new FileReader();
                     reader.onload = () => {
                         if (reader.readyState === 2) {
-                            const buffer = new Buffer(reader.result);
+                            const buffer = Buffer.from(reader.result);
                             fse.outputFile(copyPath, buffer)
                                 .then(finishUpload)
                                 .then(resolve)

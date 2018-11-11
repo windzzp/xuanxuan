@@ -97,13 +97,15 @@ class ChangeFontView extends Component {
 
     render() {
         const currentConfig = CONFIGS[this.state.select];
-        return (<div className="box">
-            <div className="flex space space-between">
-                <strong>{Lang.string('chat.sendbox.toolbar.setFontSize')}</strong>
-                <small className="text-gray">{Lang.format('chat.fontSize.current.format', currentConfig.size)}px  {this.state.select !== 1 ? <a className="text-primary" onClick={this.handleResetBtnClick}>{Lang.string('chat.fontSize.resetDefault')}</a> : null}</small>
+        return (
+            <div className="box">
+                <div className="flex space space-between">
+                    <strong>{Lang.string('chat.sendbox.toolbar.setFontSize')}</strong>
+                    <small className="text-gray">{Lang.format('chat.fontSize.current.format', currentConfig.size)}px  {this.state.select !== 1 ? <a className="text-primary" onClick={this.handleResetBtnClick}>{Lang.string('chat.fontSize.resetDefault')}</a> : null}</small>
+                </div>
+                <input className="fluid" type="range" min="0" value={this.state.select} max={CONFIGS.length - 1} step="1" onChange={this.handleSliderChange} />
             </div>
-            <input className="fluid" type="range" min="0" value={this.state.select} max={CONFIGS.length - 1} step="1" onChange={this.handleSliderChange} />
-        </div>);
+        );
     }
 }
 

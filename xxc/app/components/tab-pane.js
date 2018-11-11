@@ -41,7 +41,6 @@ export default class TabPane extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof TabPane
      * @return {ReactNode}
-     * @instance
      */
     render() {
         const {

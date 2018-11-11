@@ -195,7 +195,7 @@ export const onChatHistoryEnd = listener => {
 
 /**
  * 请求服务器创建一个新的聊天
- * @param {Chat|{gid:string, name: string, type: string, members: (Set<number>|number[])}} chat 要创建的聊天对象
+ * @param {Chat|{gid:string, name: string, type: string, members: number[]}} chat 要创建的聊天对象
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
 export const createChat = chat => {

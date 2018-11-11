@@ -127,7 +127,6 @@ export default class InputControl extends PureComponent {
      * @private
      * @memberof InputControl
      * @return {void}
-     * @instance
      */
     componentDidMount() {
         const {autoFocus, hotKeys} = this.props;
@@ -155,7 +154,6 @@ export default class InputControl extends PureComponent {
      * @private
      * @memberof InputControl
      * @return {void}
-     * @instance
      */
     componentWillUnmount() {
         if (this.autoFocusTask) {
@@ -174,7 +172,6 @@ export default class InputControl extends PureComponent {
      * @memberof InputControl
      * @private
      * @return {void}
-     * @instance
      */
     handleChange = (event) => {
         const value = this.input.value;
@@ -187,7 +184,6 @@ export default class InputControl extends PureComponent {
      * 获取文本框值
      * @type {string}
      * @memberof InputControl
-     * @instance
      */
     get value() {
         return this.input.value;
@@ -197,7 +193,6 @@ export default class InputControl extends PureComponent {
      * 激活输入框
      * @memberof InputControl
      * @return {void}
-     * @instance
      */
     focus() {
         this.input.focus();
@@ -210,7 +205,6 @@ export default class InputControl extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof InputControl
      * @return {ReactNode}
-     * @instance
      */
     render() {
         const {

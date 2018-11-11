@@ -99,7 +99,7 @@ addContextMenuCreator('member', ({member}) => {
 /**
  * 绑定界面上链接点击事件
  * @param {string} type 链接目标类型
- * @param {function(target, element)} listener 事件回调函数
+ * @param {function(target: string, element: Element)} listener 事件回调函数
  * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
  */
 export const onAppLinkClick = (type, listener) => {

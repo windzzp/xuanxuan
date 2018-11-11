@@ -51,7 +51,6 @@ export default class Spinner extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof Spinner
      * @return {ReactNode}
-     * @instance
      */
     render() {
         let {

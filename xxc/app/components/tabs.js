@@ -84,7 +84,6 @@ export default class Tabs extends PureComponent {
      * @memberof Tabs
      * @private
      * @return {void}
-     * @instance
      */
     handleNavClick(key) {
         const {activePaneKey} = this.state;
@@ -106,7 +105,6 @@ export default class Tabs extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof Tabs
      * @return {ReactNode}
-     * @instance
      */
     render() {
         let {

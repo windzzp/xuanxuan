@@ -66,7 +66,6 @@ export default class Checkbox extends PureComponent {
      * @memberof Checkbox
      * @private
      * @return {void}
-     * @instance
      */
     handleCheckboxChange = e => {
         const {onChange} = this.props;
@@ -82,7 +81,6 @@ export default class Checkbox extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof Checkbox
      * @return {ReactNode}
-     * @instance
      */
     render() {
         const {

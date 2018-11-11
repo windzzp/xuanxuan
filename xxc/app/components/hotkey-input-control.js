@@ -68,7 +68,6 @@ export default class HotkeyInputControl extends Component {
      * @param {String|ReactNode} error 设置错误提示
      * @memberof HotkeyInputControl
      * @return {void}
-     * @instance
      */
     changeValue(value, error = null) {
         const {onChange} = this.props;
@@ -84,7 +83,6 @@ export default class HotkeyInputControl extends Component {
      * @memberof HotkeyInputControl
      * @private
      * @return {void}
-     * @instance
      */
     handleKeyDownEvent = e => {
         if (e.keyCode === 8 || e.cod === 'Backspace') {
@@ -107,7 +105,6 @@ export default class HotkeyInputControl extends Component {
      * @memberof HotkeyInputControl
      * @private
      * @return {void}
-     * @instance
      */
     handleBlurEvent = e => {
         if (isOnlyModifyKeys(this.state.value)) {
@@ -119,7 +116,6 @@ export default class HotkeyInputControl extends Component {
      * 获取输入框内的值
      * @memberof HotkeyInputControl
      * @return {string}
-     * @instance
      */
     getValue() {
         return this.state.value;
@@ -132,7 +128,6 @@ export default class HotkeyInputControl extends Component {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof HotkeyInputControl
      * @return {ReactNode}
-     * @instance
      */
     render() {
         const {

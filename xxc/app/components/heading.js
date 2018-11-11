@@ -54,7 +54,6 @@ export default class Heading extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof Heading
      * @return {ReactNode}
-     * @instance
      */
     render() {
         const {

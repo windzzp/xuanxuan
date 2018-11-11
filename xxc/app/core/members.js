@@ -194,7 +194,7 @@ export const getMember = (idOrAccount) => {
 /**
  * 根据用户的账号、ID 或真实姓名获取用户对象
  * @param {!string} search 用于辨识用户的字符串，可以为用户的账号、ID 或真实姓名
- * @return {Member}
+ * @return {Member} 成员实例
  */
 export const guessMember = (search) => {
     let member = members[search];

@@ -58,7 +58,6 @@ export default class ListItem extends PureComponent {
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof ListItem
      * @return {ReactNode}
-     * @instance
      */
     render() {
         const {

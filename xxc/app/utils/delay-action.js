@@ -46,7 +46,6 @@ export default class DelayAction {
      * @param {...any} params 操作函数参数
      * @memberof DelayAction
      * @return {void}
-     * @instance
      */
     do(...params) {
         this.done = false;
@@ -63,7 +62,6 @@ export default class DelayAction {
      * @param {...any} params 操作函数参数
      * @return {void}
      * @memberof DelayAction
-     * @instance
      */
     doIm(...params) {
         const actionResult = this.action(...params);
@@ -79,7 +77,6 @@ export default class DelayAction {
      * @type {boolean}
      * @readonly
      * @memberof DelayAction
-     * @instance
      */
     get isDone() {
         return this.done;
@@ -90,7 +87,6 @@ export default class DelayAction {
      *
      * @memberof DelayAction
      * @return {void}
-     * @instance
      */
     destroy() {
         clearTimeout(this.actionCallTask);

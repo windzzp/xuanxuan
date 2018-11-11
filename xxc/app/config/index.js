@@ -21,12 +21,13 @@ const config = {
 /**
  * 更新应用运行时配置
  * @param {Object} newConfig 新的配置项
- * @return {void}
+ * @return {Object} 应用运行时配置
  */
 export const updateConfig = (newConfig) => {
     Object.keys(newConfig).forEach(key => {
         Object.assign(config[key], newConfig[key]);
     });
+    return config;
 };
 
 const {configurations} = pkg;

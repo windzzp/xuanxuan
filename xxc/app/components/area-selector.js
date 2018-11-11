@@ -171,7 +171,6 @@ export default class AreaSelector extends Component {
      * @param {{left: number, top: number, width: number, height: number}} select 选择对范围对象
      * @returns {Void}
      * @memberof AreaSelector
-     * @instance
      */
     setSelect(select) {
         if (select) {
@@ -198,7 +197,6 @@ export default class AreaSelector extends Component {
     * @memberof AreaSelector
     * @private
     * @return {void}
-    * @instance
     */
     handleMouseDown = e => {
         this.mouseDownPos = {left: e.clientX, top: e.clientY};
@@ -214,7 +212,6 @@ export default class AreaSelector extends Component {
     * @memberof AreaSelector
     * @private
     * @return {void}
-    * @instance
     */
     handleMouseMove = e => {
         if (this.mouseDownPos) {
@@ -322,7 +319,6 @@ export default class AreaSelector extends Component {
     * @memberof AreaSelector
     * @private
     * @return {void}
-    * @instance
     */
     handleMouseUp = event => {
         this.mouseDownPos = null;
@@ -338,7 +334,6 @@ export default class AreaSelector extends Component {
     * @see https://doc.react-china.org/docs/rendering-elements.html
     * @memberof AreaSelector
     * @return {ReactNode}
-    * @instance
     */
     render() {
         const STYLE = {
