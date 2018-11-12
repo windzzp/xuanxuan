@@ -15,8 +15,13 @@ import {AppFiles} from './app-files';
 import {AppThemes} from './app-themes';
 import replaceViews from '../replace-views';
 import App from '../../core';
-import {ifEmptyThen} from '../../utils/string-helper';
+import {ifEmptyStringThen} from '../../utils/string-helper';
 
+/**
+ * 内置应用视图
+ * @type {Map<string, Class<Component>>}
+ * @private
+ */
 const buildInView = {
     home: AppHome,
     extensions: AppExtensions,
@@ -24,24 +29,69 @@ const buildInView = {
     themes: AppThemes
 };
 
+/**
+ * Index 组件 ，显示扩展主界面
+ * @class Index
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import Index from './index';
+ * <Index />
+ */
 export default class Index extends Component {
+    /**
+     * 获取 Index 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<Index>}
+     * @readonly
+     * @static
+     * @memberof Index
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {Index} from './index';
+     * <Index />
+     */
     static get Index() {
         return replaceViews('exts/index', Index);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof Index
+     * @type {Object}
+     */
     static propTypes = {
         match: PropTypes.object.isRequired,
         hidden: PropTypes.bool,
         className: PropTypes.string,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof Index
+     * @static
+     */
     static defaultProps = {
         hidden: false,
         className: null,
     };
 
+    /**
+     * React 组件构造函数，创建一个 Index 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             navScrolled: false,
             loading: {},
@@ -49,16 +99,44 @@ export default class Index extends Component {
         };
     }
 
+    /**
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof Index
+     * @return {void}
+     */
     componentDidMount() {
         this.checkAppNotFoundMessage();
         this.checkScrollToCurrentApp();
     }
 
+    /**
+     * React 组件生命周期函数：`componentDidUpdate`
+     * componentDidUpdate()会在更新发生后立即被调用。该方法并不会在初始化渲染时调用。
+     *
+     * @param {Object} prevProps 更新前的属性值
+     * @param {Object} prevState 更新前的状态值
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidUpdate
+     * @private
+     * @memberof Index
+     * @return {void}
+     */
     componentDidUpdate() {
         this.checkAppNotFoundMessage();
         this.checkScrollToCurrentApp();
     }
 
+    /**
+     * 如果要打开的应用没有找到显示提示消息
+     *
+     * @memberof Index
+     * @return {void}
+     * @private
+     */
     checkAppNotFoundMessage() {
         if (this.appNotFound) {
             Messager.show(Lang.format('exts.appNotFound.format', this.appNotFound), {type: 'warning', position: 'center'});
@@ -66,10 +144,23 @@ export default class Index extends Component {
         }
     }
 
+    /**
+     * 处理鼠标滚轮滚动事件
+     * @param {Event} e 事件对象
+     * @memberof Index
+     * @private
+     * @return {void}
+     */
     handleWheelEvent = e => {
         e.currentTarget.scrollLeft += e.deltaY;
     }
 
+    /**
+     * 滚动导航到当前显示的应用条目上
+     *
+     * @return {void}
+     * @memberof Index
+     */
     checkScrollToCurrentApp() {
         if (!this.appsNav) {
             return;
@@ -88,6 +179,13 @@ export default class Index extends Component {
         }
     }
 
+    /**
+     * 处理点击应用关闭按钮事件
+     * @param {Event} e 事件对象
+     * @memberof Index
+     * @private
+     * @return {void}
+     */
     handleAppCloseBtnClick = e => {
         const result = Exts.ui.closeApp(e.currentTarget.attributes['data-id'].value);
         if (result === 'refresh') {
@@ -97,22 +195,53 @@ export default class Index extends Component {
         e.preventDefault();
     }
 
+    /**
+     * 处理点击应用导航左右滚动按钮事件
+     * @param {string} direction 滚动方向，包括 `'left'`，`'right'`
+     * @memberof Index
+     * @private
+     * @return {void}
+     */
     handleNavArrowClick(direction) {
         this.appsNav.scrollLeft += (direction === 'left' ? -1 : 1) * Math.min(150, Math.floor(this.appsNav.clientWidth / 2));
     }
 
+    /**
+     * 处理应用加载状态更新事件
+     * @param {OpenedApp} openApp 打开的应用实例
+     * @param {boolean} isLoading 是否正在加载
+     * @memberof Index
+     * @private
+     * @return {void}
+     */
     handleAppLoadingChange(openApp, isLoading) {
         const {loading} = this.state;
         loading[openApp.id] = isLoading;
         this.setState({loading});
     }
 
+    /**
+     * 处理应用标题更新事件
+     * @param {OpenedApp} openApp 打开的应用实例
+     * @param {string} pageTitle 页面标题
+     * @memberof Index
+     * @private
+     * @return {void}
+     */
     handleAppPageTitleUpadted(openApp, pageTitle) {
         const {pageTitles} = this.state;
         pageTitles[openApp.id] = pageTitle;
         this.setState({pageTitles});
     }
 
+    /**
+     * 处理应用右键菜单事件
+     * @param {OpenedApp} openedApp 打开的应用实例
+     * @param {Event} e 事件对象
+     * @memberof Index
+     * @private
+     * @return {void}
+     */
     handleOpenedAppContextMenu(openedApp, e) {
         const menuItems = Exts.ui.createOpenedAppContextMenu(openedApp, () => {
             this.forceUpdate();
@@ -124,6 +253,14 @@ export default class Index extends Component {
         }
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof Index
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             hidden,
@@ -160,7 +297,7 @@ export default class Index extends Component {
                 {
                     openedApps.map(openedApp => {
                         const isCurrentApp = Exts.ui.isCurrentOpenedApp(openedApp.id);
-                        const displayName = ifEmptyThen(this.state.pageTitles[openedApp.id], openedApp.app.displayName);
+                        const displayName = ifEmptyStringThen(this.state.pageTitles[openedApp.id], openedApp.app.displayName);
                         return (<NavLink
                             onContextMenu={this.handleOpenedAppContextMenu.bind(this, openedApp)}
                             key={openedApp.id}

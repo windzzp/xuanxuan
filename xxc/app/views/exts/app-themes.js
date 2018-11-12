@@ -11,23 +11,68 @@ import App from '../../core';
 import replaceViews from '../replace-views';
 import Skin from '../../utils/skin';
 
+/**
+ * AppThemes 组件 ，显示应用“主题”界面
+ * @class AppThemes
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example @lang jsx
+ * import AppThemes from './app-themes';
+ * <AppThemes />
+ */
 export default class AppThemes extends PureComponent {
+    /**
+     * 获取 AppThemes 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<AppThemes>}
+     * @readonly
+     * @static
+     * @memberof AppThemes
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {AppThemes} from './app-themes';
+     * <AppThemes />
+     */
     static get AppThemes() {
         return replaceViews('exts/app-themes', AppThemes);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof AppThemes
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
         app: PropTypes.instanceOf(OpenedApp).isRequired,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof AppThemes
+     * @static
+     */
     static defaultProps = {
         className: null,
     };
 
+    /**
+     * React 组件构造函数，创建一个 AppThemes 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
         const {app} = props;
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             search: '',
             showInstalled: true,
@@ -35,6 +80,16 @@ export default class AppThemes extends PureComponent {
         };
     }
 
+    /**
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof AppThemes
+     * @return {void}
+     */
     componentDidMount() {
         this.onExtChangeHandler = Exts.all.onExtensionChange((changedExtensions) => {
             if (changedExtensions.some(x => x.isTheme)) {
@@ -43,14 +98,38 @@ export default class AppThemes extends PureComponent {
         });
     }
 
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof AppThemes
+     * @return {void}
+     */
     componentWillUnmount() {
         App.events.off(this.onExtChangeHandler);
     }
 
+    /**
+     * 处理搜索文本变更事件
+     * @param {string} search 搜索文本
+     * @memberof AppExtensions
+     * @private
+     * @return {void}
+     */
     handleSearchChange = search => {
         this.setState({search});
     };
 
+    /**
+     * 处理点击主题事件
+     * @param {ThemeExtension} theme 主题
+     * @memberof AppThemes
+     * @private
+     * @return {void}
+     */
     handleThemeClick = theme => {
         const error = Exts.themes.setCurrentTheme(theme);
         if (error) {
@@ -59,6 +138,14 @@ export default class AppThemes extends PureComponent {
         this.forceUpdate();
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof AppThemes
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             className,

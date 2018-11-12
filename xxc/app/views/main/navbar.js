@@ -92,6 +92,14 @@ class Navbar extends Component {
         UserSettingDialog.show();
     };
 
+    /**
+     * 处理导航条目点击事件
+     * 这个点击的作用主要是判断如果是小屏幕显示模式则将聊天列表以抽屉的形式显示出来，点击主导航界面切换是由内部的 NavLink 路由实现，为防止界面还没切换无法正确显示抽屉形式列表，所以会延迟一定时间登录路由切换完成。
+     *
+     * @memberof Navbar
+     * @private
+     * @return {void}
+     */
     handleMainNavItemClick = () => {
         setTimeout(() => {
             const hashFilters = window.location.hash.split('/');

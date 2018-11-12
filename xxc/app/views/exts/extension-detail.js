@@ -13,27 +13,82 @@ import Emojione from '../../components/emojione';
 import replaceViews from '../replace-views';
 import App from '../../core';
 
+/**
+ * ExtensionDetail 组件 ，显示扩展详情界面
+ * @class ExtensionDetail
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import ExtensionDetail from './extension-detail';
+ * <ExtensionDetail />
+ */
 export default class ExtensionDetail extends Component {
+    /**
+     * 获取 ExtensionDetail 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<ExtensionDetail>}
+     * @readonly
+     * @static
+     * @memberof ExtensionDetail
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {ExtensionDetail} from './extension-detail';
+     * <ExtensionDetail />
+     */
     static get ExtensionDetail() {
         return replaceViews('exts/extension-detail', ExtensionDetail);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof ExtensionDetail
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
         onRequestClose: PropTypes.func,
         extension: PropTypes.object.isRequired,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof ExtensionDetail
+     * @static
+     */
     static defaultProps = {
         className: null,
         onRequestClose: null,
     };
 
+    /**
+     * React 组件构造函数，创建一个 ExtensionDetail 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {loadingReadme: true};
     }
 
+    /**
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof ExtensionDetail
+     * @return {void}
+     */
     componentDidMount() {
         const {extension} = this.props;
         Exts.manager.loadReadmeMarkdown(extension).then(readme => {
@@ -52,10 +107,25 @@ export default class ExtensionDetail extends Component {
         });
     }
 
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof ExtensionDetail
+     * @return {void}
+     */
     componentWillUnmount() {
         App.events.off(this.onExtChangeHandler);
     }
 
+    /**
+     * 请求关闭父级对话框
+     * @private
+     * @return {void}
+     */
     requestClose() {
         const {onRequestClose} = this.props;
         if (onRequestClose) {
@@ -63,23 +133,59 @@ export default class ExtensionDetail extends Component {
         }
     }
 
+    /**
+     * 处理点击卸载按钮事件
+     * @param {BaseExtension} extension 要卸载的按钮
+     * @memberof ExtensionDetail
+     * @private
+     * @return {void}
+     */
     handleUninstallBtnClick(extension) {
         Exts.ui.uninstallExtension(extension, this.requestClose.bind(this));
     }
 
+    /**
+     * 处理点击打开应用扩展按钮事件
+     * @param {AppExtension} extension 要打开的按钮
+     * @memberof ExtensionDetail
+     * @private
+     * @return {void}
+     */
     handleOpenBtnClick(extension) {
         Exts.ui.openApp(extension.name);
         this.requestClose();
     }
 
+    /**
+     * 处理点击启用按钮事件
+     * @param {BaseExtension} extension 要启用的按钮
+     * @memberof ExtensionDetail
+     * @private
+     * @return {void}
+     */
     handleEnableBtnClick(extension) {
         Exts.manager.setExtensionDisabled(extension, false);
     }
 
+    /**
+     * 处理点击禁用按钮事件
+     * @param {BaseExtension} extension 要禁用的按钮
+     * @memberof ExtensionDetail
+     * @private
+     * @return {void}
+     */
     handleDisableBtnClick(extension) {
         Exts.manager.setExtensionDisabled(extension, true);
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof ExtensionDetail
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             extension,
