@@ -6,7 +6,12 @@ import DEFAULT_USER_CONFIG from '../../core/profile/user-default-config';
 import Messager from '../../components/messager';
 import UserSetting from './user-setting';
 
-const show = (callback) => {
+/**
+ * 显示个人设置对话框
+ * @param {function} callback 对话框显示回调函数
+ * @return {void}
+ */
+export const showUserSettingDialog = (callback) => {
     let userSetting = null;
     App.ui.disableGlobalShortcut();
     return Modal.show({
@@ -42,5 +47,5 @@ const show = (callback) => {
 };
 
 export default {
-    show,
+    show: showUserSettingDialog,
 };

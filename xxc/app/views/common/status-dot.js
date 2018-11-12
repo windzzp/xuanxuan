@@ -6,6 +6,11 @@ import Lang from '../../lang';
 import App from '../../core';
 import replaceViews from '../replace-views';
 
+/**
+ * 状态颜色表
+ * @type {Map<string, string>}
+ * @private
+ */
 const statusColors = {
     unverified: '#ccc',
     disconnect: '#ccc',
@@ -15,12 +20,37 @@ const statusColors = {
     away: '#ff1744',
 };
 
-
-class StatusDot extends PureComponent {
+/**
+ * StatusDot 组件 ，显示状态原典标识
+ * @class StatusDot
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example @lang jsx
+ * import StatusDot from './status-dot';
+ * <StatusDot />
+ */
+export default class StatusDot extends PureComponent {
+    /**
+     * 获取 StatusDot 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<StatusDot>}
+     * @readonly
+     * @static
+     * @memberof StatusDot
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {StatusDot} from './status-dot';
+     * <StatusDot />
+     */
     static get StatusDot() {
         return replaceViews('common/status-dot', StatusDot);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof StatusDot
+     * @type {Object}
+     */
     static propTypes = {
         size: PropTypes.number,
         className: PropTypes.string,
@@ -29,6 +59,13 @@ class StatusDot extends PureComponent {
         status: PropTypes.any,
     }
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof StatusDot
+     * @static
+     */
     static defaultProps = {
         size: 14,
         className: 'circle',
@@ -37,6 +74,14 @@ class StatusDot extends PureComponent {
         status: null,
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof StatusDot
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         let {
             size,
@@ -74,5 +119,3 @@ class StatusDot extends PureComponent {
         return dotView;
     }
 }
-
-export default StatusDot;

@@ -3,7 +3,13 @@ import Modal from '../../components/modal';
 import TodoEditor from './todo-editer';
 import Lang from '../../lang';
 
-const show = (todo, callback) => {
+/**
+ * 显示待办编辑对话框
+ * @param {Object} todo 待办对象
+ * @param {function} callback 回调函数
+ * @return {void}
+ */
+export const showTodoEditDialog = (todo, callback) => {
     const modalId = 'app-todo-editor-dialog';
     return Modal.show({
         title: Lang.string(todo.id ? 'todo.edit' : 'todo.create'),
@@ -15,5 +21,5 @@ const show = (todo, callback) => {
 };
 
 export default {
-    show,
+    show: showTodoEditDialog,
 };
