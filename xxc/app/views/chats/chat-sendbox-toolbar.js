@@ -9,11 +9,37 @@ import App from '../../core';
 import replaceViews from '../replace-views';
 import {getMenuItemsForContext} from '../../core/context-menu';
 
+/**
+ * ChatSendboxToolbar 组件 ，显示聊天发送框工具栏界面
+ * @class ChatSendboxToolbar
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import ChatSendboxToolbar from './chat-sendbox-toolbar';
+ * <ChatSendboxToolbar />
+ */
 export default class ChatSendboxToolbar extends PureComponent {
+    /**
+     * 获取 ChatSendboxToolbar 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<ChatSendboxToolbar>}
+     * @readonly
+     * @static
+     * @memberof ChatSendboxToolbar
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {ChatSendboxToolbar} from './chat-sendbox-toolbar';
+     * <ChatSendboxToolbar />
+     */
     static get ChatSendboxToolbar() {
         return replaceViews('chats/chat-sendbox-toolbar flex', ChatSendboxToolbar);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof ChatSendboxToolbar
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
         chatGid: PropTypes.string,
@@ -23,6 +49,13 @@ export default class ChatSendboxToolbar extends PureComponent {
         onPreviewButtonClick: PropTypes.func
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof ChatSendboxToolbar
+     * @static
+     */
     static defaultProps = {
         className: null,
         chatGid: null,
@@ -32,6 +65,13 @@ export default class ChatSendboxToolbar extends PureComponent {
         userConfigChangeTime: null,
     };
 
+    /**
+     * 处理发送按钮右键菜单事件
+     * @param {Event} e 事件对象
+     * @memberof ChatSendboxToolbar
+     * @private
+     * @return {void}
+     */
     handleSendBtnContextMenu = e => {
         const currentHotKey = formatKeyDecoration(App.profile.userConfig.sendMessageHotkey);
         let itemsChecked = false;
@@ -62,6 +102,14 @@ export default class ChatSendboxToolbar extends PureComponent {
         App.ui.showContextMenu({x: e.clientX, y: e.clientY}, items);
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof ChatSendboxToolbar
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {className, chatGid, sendButtonDisabled, onPreviewButtonClick, onSendButtonClick, userConfigChangeTime, ...other} = this.props;
         return (<div className={classes('app-chat-sendbox-toolbar flex', className)} {...other}>

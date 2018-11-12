@@ -3,7 +3,14 @@ import Modal from '../../components/modal';
 import Lang from '../../lang';
 import {MessageList} from './message-list';
 
-const show = (messages, props, callback) => {
+/**
+ * 显示聊天消息预览对话框
+ * @param {ChatMessage[]} messages 聊天消息列表
+ * @param {Object} props 对话框属性
+ * @param {function} callback 回调函数
+ * @return {void}
+ */
+export const showMessagesPreviewDialog = (messages, props, callback) => {
     const modalId = 'app-messages-preview-dialog';
     return Modal.show(Object.assign({
         id: modalId,
@@ -23,5 +30,5 @@ const show = (messages, props, callback) => {
 };
 
 export default {
-    show,
+    show: showMessagesPreviewDialog,
 };

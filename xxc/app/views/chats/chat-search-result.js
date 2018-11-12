@@ -12,7 +12,37 @@ import replaceViews from '../replace-views';
 const MANY_RESULT_COUNT = 200;
 const MAX_RESULT_COUNT = 500;
 
-class ChatSearchResult extends Component {
+/**
+ * ChatSearchResult 组件 ，显示聊天搜索结果界面
+ * @class ChatSearchResult
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import ChatSearchResult from './chat-search-result';
+ * <ChatSearchResult />
+ */
+export default class ChatSearchResult extends Component {
+    /**
+     * 获取 ChatSearchResult 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<ChatSearchResult>}
+     * @readonly
+     * @static
+     * @memberof ChatSearchResult
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {ChatSearchResult} from './chat-search-result';
+     * <ChatSearchResult />
+     */
+    static get ChatSearchResult() {
+        return replaceViews('chats/chat-search-result', ChatSearchResult);
+    }
+
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof ChatSearchResult
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
         children: PropTypes.any,
@@ -23,6 +53,13 @@ class ChatSearchResult extends Component {
         requestGoto: PropTypes.func,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof ChatSearchResult
+     * @static
+     */
     static defaultProps = {
         className: null,
         children: null,
@@ -33,13 +70,20 @@ class ChatSearchResult extends Component {
         searchFilterTime: 0,
     };
 
-    static get ChatSearchResult() {
-        return replaceViews('chats/chat-search-result', ChatSearchResult);
-    }
-
+    /**
+     * React 组件构造函数，创建一个 ChatSearchResult 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
 
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             loading: false,
             errMessage: '',
@@ -49,10 +93,31 @@ class ChatSearchResult extends Component {
         };
     }
 
+    /**
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof ChatSearchResult
+     * @return {void}
+     */
     componentDidMount() {
         this.loadMessages();
     }
 
+    /**
+     * React 组件生命周期函数：`componentDidUpdate`
+     * componentDidUpdate()会在更新发生后立即被调用。该方法并不会在初始化渲染时调用。
+     *
+     * @param {Object} prevProps 更新前的属性值
+     * @param {Object} prevState 更新前的状态值
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidUpdate
+     * @private
+     * @memberof ChatSearchResult
+     * @return {void}
+     */
     componentDidUpdate(prevProps, prevState) {
         if (this._createSearchId(this.props) !== this.searchId) {
             this.loadMessages();
@@ -62,11 +127,26 @@ class ChatSearchResult extends Component {
         }
     }
 
+    /**
+     * 创建搜索标识字符串
+     *
+     * @param {Object} props 组件属性
+     * @return {string} 搜索标识字符串
+     * @memberof ChatSearchResult
+     * @private
+     */
     _createSearchId(props) {
         const {searchKeys, searchFilterTime, chat} = props || this.props;
         return `${chat.gid}|${searchKeys}|${searchFilterTime}`;
     }
 
+    /**
+     * 加载消息
+     *
+     * @memberof ChatSearchResult
+     * @private
+     * @return {void}
+     */
     loadMessages() {
         const {searchKeys, searchFilterTime, searchCount, chat} = this.props;
         const searchId = this._createSearchId(this.props);
@@ -105,6 +185,13 @@ class ChatSearchResult extends Component {
         }
     }
 
+    /**
+     * 高亮替换消息内容
+     * @private
+     * @memberof ChatHistory
+     * @param {string} content 消息内容
+     * @return {string} 替换后的内容
+     */
     convertContent(content) {
         if (this.contentConvertPattern && this.contentConvertPattern.test(content)) {
             content = content.replace(this.contentConvertPattern, "<span class='highlight'>$1</span>");
@@ -112,6 +199,14 @@ class ChatSearchResult extends Component {
         return content;
     }
 
+    /**
+     * 处理聊天消息点击事件
+     * @param {ChatMessage} message 聊天消息
+     * @param {Event} e 事件对象
+     * @memberof ChatSearchResult
+     * @private
+     * @return {void}
+     */
     handleMessageItemClick(message, e) {
         this.setState({selectedMessage: message});
         if (this.props.requestGoto) {
@@ -122,6 +217,15 @@ class ChatSearchResult extends Component {
         }
     }
 
+    /**
+     * 消息列表项生成函数
+     *
+     * @param {ChatMessage} message 聊天消息
+     * @param {ChatMessage} lastMessage 上一个聊天消息
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     * @memberof ChatHistory
+     * @private
+     */
     listItemCreator(message, lastMessage) {
         return (<MessageListItem
             className={HTML.classes('state state-click-throuth', {active: this.state.selectedMessage && this.state.selectedMessage.gid === message.gid})}
@@ -138,6 +242,14 @@ class ChatSearchResult extends Component {
         />);
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof ChatSearchResult
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             chat,
@@ -187,5 +299,3 @@ class ChatSearchResult extends Component {
         </div>);
     }
 }
-
-export default ChatSearchResult;

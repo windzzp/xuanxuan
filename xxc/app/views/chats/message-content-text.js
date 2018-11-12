@@ -4,11 +4,37 @@ import {classes} from '../../utils/html-helper';
 import App from '../../core';
 import replaceViews from '../replace-views';
 
-class MessageContentText extends Component {
+/**
+ * MessageContentText 组件 ，显示聊天消息文本内容界面
+ * @class MessageContentText
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import MessageContentText from './message-content-text';
+ * <MessageContentText />
+ */
+export default class MessageContentText extends Component {
+    /**
+     * 获取 MessageContentText 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<MessageContentText>}
+     * @readonly
+     * @static
+     * @memberof MessageContentText
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {MessageContentText} from './message-content-text';
+     * <MessageContentText />
+     */
     static get MessageContentText() {
         return replaceViews('chats/message-content-text', MessageContentText);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof MessageContentText
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
         message: PropTypes.object.isRequired,
@@ -16,16 +42,40 @@ class MessageContentText extends Component {
         fontSize: PropTypes.any
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof MessageContentText
+     * @static
+     */
     static defaultProps = {
         className: null,
         contentConverter: null,
         fontSize: null
     };
 
+    /**
+     * React 组件生命周期函数：`shouldComponentUpdate`
+     * 让React知道当前状态或属性的改变是否不影响组件的输出。默认行为是在每一次状态的改变重渲，在大部分情况下你应该依赖于默认行为。
+     *
+     * @param {Object} nextProps 即将更新的属性值
+     * @param {Object} nextState 即将更新的状态值
+     * @returns {boolean} 如果返回 `true` 则继续渲染组件，否则为 `false` 而后的 `UNSAFE_componentWillUpdate()`，`render()`， 和 `componentDidUpdate()` 将不会被调用
+     * @memberof MessageContentText
+     */
     shouldComponentUpdate(nextProps) {
         return nextProps.className !== this.props.className || nextProps.contentConverter !== this.props.contentConverter || nextProps.message !== this.props.message || nextProps.message.content !== this.props.message.content || nextProps.fontSize !== this.props.fontSize;
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof MessageContentText
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             message,
@@ -46,5 +96,3 @@ class MessageContentText extends Component {
         />);
     }
 }
-
-export default MessageContentText;

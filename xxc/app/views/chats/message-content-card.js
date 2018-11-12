@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
-import App from '../../core';
+import {openUrl} from '../../core/ui';
 import replaceViews from '../replace-views';
 import Button from '../../components/button';
 import Avatar from '../../components/avatar';
@@ -9,8 +9,15 @@ import StringHelper from '../../utils/string-helper';
 import Lang from '../../lang';
 import WebView from '../common/webview';
 
+/**
+ * 处理动作按钮点击事件
+ * @param {{url: string}} action 动作对象
+ * @param {Event} e 事件对象
+ * @return {void}
+ * @private
+ */
 const handleActionButtonClick = (action, e) => {
-    if (action.url && App.ui.openUrl(action.url, e.target)) {
+    if (action.url && openUrl(action.url, e.target)) {
         e.stopPropagation();
     } else if (action.click) {
         action.click(e);
@@ -18,6 +25,13 @@ const handleActionButtonClick = (action, e) => {
     }
 };
 
+/**
+ * 处理菜单图标点击事件
+ * @param {{click: function(event: Event)}} menuItem 动作对象
+ * @param {Event} e 事件对象
+ * @return {void}
+ * @private
+ */
 const handleMenuIconClick = (menuItem, e) => {
     if (menuItem.click) {
         menuItem.click(e);
@@ -25,11 +39,37 @@ const handleMenuIconClick = (menuItem, e) => {
     }
 };
 
+/**
+ * MessageContentCard 组件 ，显示消息卡片界面
+ * @class MessageContentCard
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import MessageContentCard from './message-content-card';
+ * <MessageContentCard />
+ */
 export default class MessageContentCard extends Component {
+    /**
+     * 获取 MessageContentCard 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<MessageContentCard>}
+     * @readonly
+     * @static
+     * @memberof MessageContentCard
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {MessageContentCard} from './message-content-card';
+     * <MessageContentCard />
+     */
     static get MessageContentCard() {
         return replaceViews('chats/message-content-card', MessageContentCard);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof MessageContentCard
+     * @type {Object}
+     */
     static propTypes = {
         baseClassName: PropTypes.string,
         card: PropTypes.object.isRequired,
@@ -39,6 +79,13 @@ export default class MessageContentCard extends Component {
         style: PropTypes.object,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof MessageContentCard
+     * @static
+     */
     static defaultProps = {
         baseClassName: 'layer rounded shadow-2',
         className: '',
@@ -47,6 +94,14 @@ export default class MessageContentCard extends Component {
         children: null,
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof MessageContentCard
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             card,
@@ -58,15 +113,19 @@ export default class MessageContentCard extends Component {
             ...other
         } = this.props;
 
-        const {image, title, subtitle, content, icon, actions, url, htmlContent, webviewContent, contentType, contentUrl, originContentType, menu, provider, clickable} = card;
+        const {
+            image, title, subtitle, content, icon, actions, url, htmlContent, webviewContent, contentType, contentUrl, originContentType, menu, provider, clickable,
+        } = card;
         let topView = null;
         if (contentUrl) {
             if (contentType === 'image') {
                 topView = <img src={contentUrl} alt={contentUrl} />;
             } else if (contentType === 'video') {
-                topView = (<video controls>
-                    <source src={contentUrl} type={originContentType} />
-                </video>);
+                topView = (
+                    <video controls>
+                        <source src={contentUrl} type={originContentType} />
+                    </video>
+                );
             }
         }
         if (!topView && image) {

@@ -8,27 +8,81 @@ import API from '../../core/network/api';
 import Emojione from '../../components/emojione';
 import replaceViews from '../replace-views';
 
-class ChatsDndContainer extends PureComponent {
+/**
+ * ChatsDndContainer 组件 ，显示聊天拖放功能交互容器
+ * @class ChatsDndContainer
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import ChatsDndContainer from './chats-dnd-container';
+ * <ChatsDndContainer />
+ */
+export default class ChatsDndContainer extends PureComponent {
+    /**
+     * 获取 ChatsDndContainer 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<ChatsDndContainer>}
+     * @readonly
+     * @static
+     * @memberof ChatsDndContainer
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {ChatsDndContainer} from './chats-dnd-container';
+     * <ChatsDndContainer />
+     */
     static get ChatsDndContainer() {
         return replaceViews('chats/chats-dnd-container', ChatsDndContainer);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof ChatsDndContainer
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof ChatsDndContainer
+     * @static
+     */
     static defaultProps = {
         className: null,
     };
 
+    /**
+     * 处理拖放进入事件
+     * @param {Event} e 事件对象
+     * @memberof ChatsDndContainer
+     * @private
+     * @return {void}
+     */
     handleDndEnter = e => {
         e.target.classList.add('hover');
     }
 
+    /**
+     * 处理拖放离开事件
+     * @param {Event} e 事件对象
+     * @memberof ChatsDndContainer
+     * @private
+     * @return {void}
+     */
     handleDndLeave = e => {
         e.target.classList.remove('hover');
     }
 
+    /**
+     * 处理拖放完成事件
+     * @param {Event} e 事件对象
+     * @memberof ChatsDndContainer
+     * @private
+     * @return {void}
+     */
     handleDndDrop = e => {
         e.target.classList.remove('hover');
         if (e.dataTransfer.files && e.dataTransfer.files.length) {
@@ -51,6 +105,14 @@ class ChatsDndContainer extends PureComponent {
         }
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof ChatsDndContainer
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             className,
@@ -72,5 +134,3 @@ class ChatsDndContainer extends PureComponent {
         </div>);
     }
 }
-
-export default ChatsDndContainer;

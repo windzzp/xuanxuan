@@ -10,26 +10,76 @@ import replaceViews from '../replace-views';
 import ChatInviteDialog from './chat-invite-dialog';
 import {showContextMenu} from '../../core/context-menu';
 
+/**
+ * 处理聊天成员点击事件
+ * @param {Member} member 聊天成员
+ * @return {void}
+ * @private
+ */
 const handleMemberItemClick = member => {
     App.im.ui.sendContentToChat(`@${member.displayName} `);
 };
+
+/**
+ * ChatSidebarPeoples 组件 ，显示聊天侧边栏成员列表界面
+ * @class ChatSidebarPeoples
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import ChatSidebarPeoples from './chat-sidebar-peoples';
+ * <ChatSidebarPeoples />
+ */
 export default class ChatSidebarPeoples extends Component {
+    /**
+     * 获取 ChatSidebarPeoples 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<ChatSidebarPeoples>}
+     * @readonly
+     * @static
+     * @memberof ChatSidebarPeoples
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {ChatSidebarPeoples} from './chat-sidebar-peoples';
+     * <ChatSidebarPeoples />
+     */
+    static get ChatSidebarPeoples() {
+        return replaceViews('chats/chat-sidebar-peoples', ChatSidebarPeoples);
+    }
+
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof ChatSidebarPeoples
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
         chat: PropTypes.object,
         children: PropTypes.any,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof ChatSidebarPeoples
+     * @static
+     */
     static defaultProps = {
         className: null,
         chat: null,
         children: null,
     };
 
-    static get ChatSidebarPeoples() {
-        return replaceViews('chats/chat-sidebar-peoples', ChatSidebarPeoples);
-    }
-
+    /**
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof ChatSidebarPeoples
+     * @return {void}
+     */
     componentDidMount() {
         this.dataChangeEventHandler = App.events.onDataChange(data => {
             if (data && data.members) {
@@ -38,10 +88,28 @@ export default class ChatSidebarPeoples extends Component {
         });
     }
 
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof ChatSidebarPeoples
+     * @return {void}
+     */
     componentWillUnmount() {
         App.events.off(this.dataChangeEventHandler);
     }
 
+    /**
+     * 渲染成员列表项
+     *
+     * @param {Member} member 聊天成员
+     * @memberof ChatSidebarPeoples
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     * @private
+     */
     handleItemRender = member => {
         const {chat} = this.props;
         let committerIcon = null;
@@ -58,6 +126,14 @@ export default class ChatSidebarPeoples extends Component {
         return committerIcon || adminIcon;
     };
 
+    /**
+     * 处理聊天成员点击事件
+     * @param {Member} member 聊天成员
+     * @param {Event} event 事件对象
+     * @memberof ChatSidebarPeoples
+     * @private
+     * @return {void}
+     */
     handleItemContextMenu = (member, event) => {
         showContextMenu('chat.member', {
             member,
@@ -66,10 +142,25 @@ export default class ChatSidebarPeoples extends Component {
         });
     };
 
+    /**
+     * 处理邀请按钮点击事件
+     * @param {Event} e 事件对象
+     * @memberof ChatSidebarPeoples
+     * @private
+     * @return {void}
+     */
     handleInviteBtnClick = e => {
         ChatInviteDialog.show(this.props.chat);
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof ChatSidebarPeoples
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             chat,
