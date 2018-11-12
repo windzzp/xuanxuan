@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../utils/html-helper';
+import {classes} from '../utils/html-helper';
 import Icon from './icon';
 import Heading from './heading';
 import ListItem from './list-item';
@@ -8,19 +8,46 @@ import Lang from '../lang';
 import Config from '../config';
 
 /**
- * GroupList component
- *
- * @export
+ * GroupList 组件 ，显示一个分组列表
  * @class GroupList
- * @extends {Component}
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example
+ * <GroupList />
  */
 export default class GroupList extends PureComponent {
     /**
-     * Default properties values
-     *
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof GroupList
-     * @return {Object}
+     * @type {Object}
+     */
+    static propTypes = {
+        headingCreator: PropTypes.func,
+        checkIsGroup: PropTypes.func,
+        itemCreator: PropTypes.func,
+        onExpandChange: PropTypes.func,
+        group: PropTypes.object,
+        className: PropTypes.string,
+        children: PropTypes.any,
+        defaultExpand: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+        toggleWithHeading: PropTypes.bool,
+        forceCollapse: PropTypes.bool,
+        hideEmptyGroup: PropTypes.bool,
+        collapseIcon: PropTypes.string,
+        expandIcon: PropTypes.string,
+        startPageSize: PropTypes.number,
+        morePageSize: PropTypes.number,
+        defaultPage: PropTypes.number,
+    }
+
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof GroupList
+     * @static
      */
     static defaultProps = {
         headingCreator: null,
@@ -42,31 +69,15 @@ export default class GroupList extends PureComponent {
     }
 
     /**
-     * Properties types
-     *
+     * 渲染一个分组列表
+     * @param {Array.<Object>} list 列表项配置列表
+     * @param {Object} props 组件属性
+     * @param {number} page 页码
+     * @param {Function?} onRequestMore 当点击更多时的回调函数
+     * @return {ReactNode}
      * @static
      * @memberof GroupList
-     * @return {Object}
      */
-    static propTypes = {
-        headingCreator: PropTypes.func,
-        checkIsGroup: PropTypes.func,
-        itemCreator: PropTypes.func,
-        onExpandChange: PropTypes.func,
-        group: PropTypes.object,
-        className: PropTypes.string,
-        children: PropTypes.any,
-        defaultExpand: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
-        toggleWithHeading: PropTypes.bool,
-        forceCollapse: PropTypes.bool,
-        hideEmptyGroup: PropTypes.bool,
-        collapseIcon: PropTypes.string,
-        expandIcon: PropTypes.string,
-        startPageSize: PropTypes.number,
-        morePageSize: PropTypes.number,
-        defaultPage: PropTypes.number,
-    }
-
     static render(list, props, page = 0, onRequestMore = null) {
         const listViews = [];
         props = Object.assign({}, GroupList.defaultProps, props);
@@ -107,57 +118,108 @@ export default class GroupList extends PureComponent {
         return listViews;
     }
 
+    /**
+     * React 组件构造函数，创建一个 GroupList 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
         let {defaultExpand} = props;
         if (typeof defaultExpand === 'function') {
             defaultExpand = defaultExpand(props.group, this);
         }
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             expand: defaultExpand,
             page: props.defaultPage
         };
     }
 
+    /**
+     * 切换展开或折叠分组
+     * @param {?bool} expand 如果设置为 true，则展开分组，如果为 false，则折叠分组，否则自动切换
+     * @param {?Function} callback 操作完成时的回调函数
+     * @memberof GroupList
+     * @return {void}
+     */
     toggle(expand, callback) {
         if (expand === undefined) {
             expand = !this.state.expand;
         }
         this.setState({expand}, () => {
-            if (this.props.onExpandChange) {
-                this.props.onExpandChange(expand, this.props.group);
+            const {onExpandChange, group} = this.props;
+            if (onExpandChange) {
+                onExpandChange(expand, group);
             }
             if (callback) {
-                callback(expand, this.props.group);
+                callback(expand, group);
             }
         });
     }
 
+    /**
+     * 展开分组
+     * @param {?Function} callback 操作完成时的回调函数
+     * @memberof GroupList
+     * @return {void}
+     */
     expand(callback) {
         this.toggle(true, callback);
     }
 
+    /**
+     * 折叠分组
+     * @param {?Function} callback 操作完成时的回调函数
+     * @memberof GroupList
+     * @return {void}
+     */
     collapse(callback) {
         this.toggle(false, callback);
     }
 
+    /**
+     * 处理分组标题点击事件
+     * @param {Event} e 事件对象
+     * @memberof GroupList
+     * @private
+     * @return {void}
+     */
     handleHeadingClick = e => {
         this.toggle();
     }
 
+    /**
+     * 检查是否展开
+     * @type {boolean}
+     * @memberof GroupList
+     */
     get isExpand() {
         return !this.props.forceCollapse && this.state.expand;
     }
 
+    /**
+     * 处理请求显示更多列表项事件
+     * @memberof GroupList
+     * @private
+     * @return {void}
+     */
     handleRequestMorePage = () => {
         this.setState({page: this.state.page + 1});
     }
 
     /**
-     * React render method
-     *
-     * @returns
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof GroupList
+     * @return {ReactNode}
      */
     render() {
         const {
@@ -187,9 +249,11 @@ export default class GroupList extends PureComponent {
         } = group;
 
         if (root) {
-            return (<div className={HTML.classes('app-group-list-root list', className)} {...other}>
-                {GroupList.render(list, this.props, this.state.page, this.handleRequestMorePage)}
-            </div>);
+            return (
+                <div className={classes('app-group-list-root list', className)} {...other}>
+                    {GroupList.render(list, this.props, this.state.page, this.handleRequestMorePage)}
+                </div>
+            );
         }
 
         const expand = this.isExpand;
@@ -214,20 +278,24 @@ export default class GroupList extends PureComponent {
                         iconView = <Icon name={icon} />;
                     }
                 }
-                headingView = (<header onClick={toggleWithHeading ? this.handleHeadingClick : null} className="heading">
-                    {iconView}
-                    <div className="title">{title}</div>
-                </header>);
+                headingView = (
+                    <header onClick={toggleWithHeading ? this.handleHeadingClick : null} className="heading">
+                        {iconView}
+                        <div className="title">{title}</div>
+                    </header>
+                );
             }
         }
 
-        return (<div
-            className={HTML.classes('app-group-list list', className, {'is-expand': expand, 'is-collapse': !expand})}
-            {...other}
-        >
-            {headingView}
-            {expand && list && GroupList.render(list, this.props, this.state.page, this.handleRequestMorePage)}
-            {children}
-        </div>);
+        return (
+            <div
+                className={classes('app-group-list list', className, {'is-expand': expand, 'is-collapse': !expand})}
+                {...other}
+            >
+                {headingView}
+                {expand && list && GroupList.render(list, this.props, this.state.page, this.handleRequestMorePage)}
+                {children}
+            </div>
+        );
     }
 }

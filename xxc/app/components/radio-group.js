@@ -5,20 +5,44 @@ import timeSequence from '../utils/time-sequence';
 import Radio from './radio';
 
 /**
- * Radio component
- *
- * @export
- * @class Radio
- * @extends {Component}
+ * RadioGroup 组件 ，显示一个单选组
+ * @class RadioGroup
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example
+ * <RadioGroup />
  */
 export default class RadioGroup extends PureComponent {
+    /**
+     * 单选组件
+     * @type {Radio}
+     */
     static Radio = Radio;
 
     /**
-     * Default properties values
-     *
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
-     * @memberof Radio
+     * @memberof RadioGroup
+     * @type {Object}
+     */
+    static propTypes = {
+        checked: PropTypes.bool,
+        items: PropTypes.array,
+        name: PropTypes.string,
+        className: PropTypes.string,
+        radioProps: PropTypes.object,
+        onChange: PropTypes.func,
+        children: PropTypes.any,
+        label: PropTypes.any,
+    }
+
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof RadioGroup
+     * @static
      */
     static defaultProps = {
         checked: false,
@@ -32,21 +56,12 @@ export default class RadioGroup extends PureComponent {
     }
 
     /**
-     * Properties types
-     *
-     * @static
-     * @memberof Radio
+     * 处理值变更事件
+     * @param {Event} e 事件对象
+     * @memberof RadioGroup
+     * @private
+     * @return {void}
      */
-    static propTypes = {
-        checked: PropTypes.bool,
-        items: PropTypes.array,
-        name: PropTypes.string,
-        className: PropTypes.string,
-        radioProps: PropTypes.object,
-        onChange: PropTypes.func,
-        children: PropTypes.any,
-    }
-
     handeOnChange = e => {
         const {onChange} = this.props;
         if (onChange) {
@@ -55,10 +70,12 @@ export default class RadioGroup extends PureComponent {
     };
 
     /**
-     * React render method
-     *
-     * @returns
-     * @memberof Radio
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof RadioGroup
+     * @return {ReactNode}
      */
     render() {
         const {

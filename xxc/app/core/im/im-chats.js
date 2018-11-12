@@ -1,5 +1,5 @@
-import Config from '../../config';
 import Md5 from 'md5';
+import Config from '../../config';
 import Chat from '../models/chat';
 import ChatMessage from '../models/chat-message';
 import NotificationMessage from '../models/notification-message';
@@ -8,28 +8,68 @@ import Events from '../events';
 import members from '../members';
 import db from '../db';
 import StringHelper from '../../utils/string-helper';
-import DateHelper from '../../utils/date-helper';
+import {getTimeBeforeDesc} from '../../utils/date-helper';
 import TaskQueue from '../../utils/task-queue';
 import timeSequence from '../../utils/time-sequence';
 import Lang from '../../lang';
 import Server from '../server';
 
+/**
+ * 从运行时配置读取默认每次加载聊天记录条目的数目
+ * @type {number}
+ * @private
+ */
 const CHATS_LIMIT_DEFAULT = Config.ui['chat.flow.size'];
+
+/**
+ * 默认标记为最近聊天最大过去时间，单位毫秒
+ * @type {number}
+ * @private
+ */
 const MAX_RECENT_TIME = 1000 * 60 * 60 * 24 * 7;
+
+/**
+ * 搜索权值计算表
+ * @type {Object}
+ * @private
+ */
 const SEARCH_SCORE_MAP = {
     matchAll: 100,
     matchPrefix: 75,
     include: 50,
     similar: 10
 };
+
+/**
+ * 事件名称表
+ * @type {Object}
+ * @private
+ */
 const EVENT = {
     init: 'chats.init',
     messages: 'chats.messages',
     fetchQueueFinish: 'fetch.queue.finish.',
 };
+
+/**
+ * 所有聊天实例对象表
+ * @type {Object}
+ * @private
+ */
 let chats = null;
+
+/**
+ * 公开聊天实例对象表
+ * @type {Object}
+ * @private
+ */
 let publicChats = null;
 
+/**
+ * 用于方便获取用户信息的对象
+ * @type {Object}
+ * @private
+ */
 const app = {
     members,
     get user() {
@@ -37,7 +77,12 @@ const app = {
     }
 };
 
-const forEach = (callback) => {
+/**
+ * 遍历当前用户的每一个聊天
+ * @param {Function(chat: Chat)} callback 遍历回调函数
+ * @return {void}
+ */
+export const forEachChat = (callback) => {
     if (chats) {
         Object.keys(chats).forEach(gid => {
             callback(chats[gid]);
@@ -45,7 +90,12 @@ const forEach = (callback) => {
     }
 };
 
-const get = (gid) => {
+/**
+ * 根据 GID 获取聊天对象
+ * @param {string} gid 聊天 GID
+ * @return {Chat}
+ */
+export const getChat = (gid) => {
     if (!chats) {
         return null;
     }
@@ -59,12 +109,17 @@ const get = (gid) => {
             type: Chat.TYPES.one2one
         });
         chat.updateMembersSet(members);
-        update(chat);
+        updateChats(chat);
     }
     return chat;
 };
 
-const createChatMessage = message => {
+/**
+ * 创建一个聊天消息实例
+ * @param {ChatMessage|Object} message 聊天消息存储对象
+ * @return {ChatMessage}
+ */
+export const createChatMessage = message => {
     if (message instanceof ChatMessage) {
         return message;
     }
@@ -76,7 +131,12 @@ const createChatMessage = message => {
     return message;
 };
 
-const getOne2OneChatGid = members => {
+/**
+ * 获取一对一聊天 GID
+ * @param {Set|Array} members 一对一聊天成员 ID 列表
+ * @return {string}
+ */
+export const getOne2OneChatGid = members => {
     if (members instanceof Set) {
         members = Array.from(members);
     }
@@ -88,9 +148,13 @@ const getOne2OneChatGid = members => {
     return members.map(x => x.id || x).sort().join('&');
 };
 
-const getLastActiveChat = () => {
+/**
+ * 获取上次激活的聊天
+ * @return {Chat}
+ */
+export const getLastActiveChat = () => {
     let lastChat = null;
-    forEach(chat => {
+    forEachChat(chat => {
         if (!lastChat || lastChat.lastActiveTime < chat.lastActiveTime) {
             lastChat = chat;
         }
@@ -98,14 +162,20 @@ const getLastActiveChat = () => {
     return lastChat;
 };
 
-const saveChatMessages = (messages, chat) => {
+/**
+ * 保存聊天消息到数据库
+ * @param {Array.<ChatMessage>} messages 聊天消息列表
+ * @param {?Chat} chat 要保存的聊天对象
+ * @return {Promise}
+ */
+export const saveChatMessages = (messages, chat) => {
     if (!Array.isArray(messages)) {
         messages = [messages];
     }
 
     Events.emit(EVENT.messages, messages);
     if (chat) {
-        update(chat);
+        updateChats(chat);
     }
 
     // Save messages to database
@@ -115,7 +185,14 @@ const saveChatMessages = (messages, chat) => {
     return Promise.resolve(0);
 };
 
-const updateChatMessages = (messages, muted = false, skipOld = false) => {
+/**
+ * 更新缓存中的聊天消息
+ * @param {Object[]} messages 聊天消息列表
+ * @param {boolean} [muted=false] 是否忽略未读提示
+ * @param {boolean} [skipOld=false] 是否跳过已更新的消息
+ * @return {Promise}
+ */
+export const updateChatMessages = (messages, muted = false, skipOld = false) => {
     if (skipOld === true) {
         skipOld = 60 * 1000 * 60 * 24;
     }
@@ -135,7 +212,7 @@ const updateChatMessages = (messages, muted = false, skipOld = false) => {
 
     const updatedChats = {};
     Object.keys(chatsMessages).forEach(cgid => {
-        const chat = get(cgid);
+        const chat = getChat(cgid);
         if (chat && (chat.id || chat.isRobot) && chat.isMember(profile.userId)) {
             chat.addMessages(chatsMessages[cgid], profile.userId, muted, skipOld);
             if (muted) {
@@ -145,22 +222,33 @@ const updateChatMessages = (messages, muted = false, skipOld = false) => {
         }
     });
 
-    update(updatedChats);
+    updateChats(updatedChats);
 
     return saveChatMessages(messagesForUpdate);
 };
 
-const deleteLocalMessage = (message) => {
+/**
+ * 移除本地（未发送成功）的聊天消息
+ * @param {ChatMessage} message 要移除的聊天消息
+ * @return {Promise}
+ */
+export const deleteLocalMessage = (message) => {
     if (message.id) {
-        return Promise.reject('Cannot delete a remote chat message.');
+        return Promise.reject(new Error('Cannot delete a remote chat message.'));
     }
-    const chat = get(message.cgid);
+    const chat = getChat(message.cgid);
     chat.removeMessage(message.gid);
     Events.emitDataChange({chats: {[chat.gid]: chat}});
     return db.database.chatMessages.delete(message.gid);
 };
 
-const countChatMessages = (cgid, filter) => {
+/**
+ * 获取聊天消息数目
+ * @param {string} cgid 聊天 GID
+ * @param {function(message: ChatMessage)} filter 过滤回调函数
+ * @return {Promise<number>}
+ */
+export const countChatMessages = (cgid, filter) => {
     let collection = db.database.chatMessages.where({cgid});
     if (filter) {
         collection = collection.and(filter);
@@ -168,11 +256,23 @@ const countChatMessages = (cgid, filter) => {
     return collection.count();
 };
 
-const getChatMessages = (chat, queryCondition, limit = CHATS_LIMIT_DEFAULT, offset = 0, reverse = true, skipAdd = true, rawData = false, returnCount = false) => {
+/**
+ * 获取聊天消息
+ * @param {Chat} chat 聊天对象
+ * @param {function(message: ChatMessage)} queryCondition 查询过滤函数
+ * @param {number} [limit=CHATS_LIMIT_DEFAULT] 最多返回数目
+ * @param {number} [offset=0] 要略过的数目
+ * @param {boolean} [reverse=true] 是否已倒序返回
+ * @param {boolean} [skipAdd=true] 是否忽略添加到聊天消息缓存中
+ * @param {boolean} [rawData=false] 是否返回原始数据而不是 ChatMessage
+ * @param {boolean} [returnCount=false] 是否仅仅返回数目
+ * @return {Promise}
+ */
+export const getChatMessages = (chat, queryCondition, limit = CHATS_LIMIT_DEFAULT, offset = 0, reverse = true, skipAdd = true, rawData = false, returnCount = false) => {
     // console.log('getChatMessages', {chat, queryCondition, limit, offset, reverse, skipAdd, rawData, returnCount});
     if (!db.database || !db.database.chatMessages) {
         return Promise.resolve([]);
-    } 
+    }
     const cgid = chat ? chat.gid : null;
     let collection = db.database.chatMessages.orderBy('id').and(x => {
         return (!cgid || x.cgid === cgid) && (!queryCondition || queryCondition(x));
@@ -204,12 +304,35 @@ const getChatMessages = (chat, queryCondition, limit = CHATS_LIMIT_DEFAULT, offs
     });
 };
 
-
+/**
+ * 当前聊天消息查询任务队列是否正忙
+ * @type {boolean}
+ * @private
+ */
 let isGetChatMessagesQueueBusy = false;
+
+/**
+ * 当前聊天消息查询队列
+ * @type {Array}
+ * @private
+ */
 const fetchChatMessagesQueue = [];
-const onFetchQueueFinish = (queueId, listener) => {
+
+/**
+ * 监听当指定 ID 的消息查询任务完成事件
+ * @param {string} queueId 聊天消息查询任务 ID
+ * @param {Function} listener 事件回调函数
+ * @return {Symbol}
+ */
+export const onFetchQueueFinish = (queueId, listener) => {
     return Events.once(`${EVENT.fetchQueueFinish}${queueId}`, listener);
 };
+
+/**
+ * 处理聊天消息查询队列任务
+ * @private
+ * @return {void}
+ */
 const processChatMessageQueue = () => {
     if (isGetChatMessagesQueueBusy) {
         return;
@@ -217,18 +340,35 @@ const processChatMessageQueue = () => {
     if (fetchChatMessagesQueue.length) {
         isGetChatMessagesQueueBusy = true;
         const queueData = fetchChatMessagesQueue.pop();
-        const {queueId, chat, queryCondition, limit, offset, reverse, skipAdd, rawData, returnCount} = queueData;
+        const {
+            queueId, chat, queryCondition, limit, offset, reverse, skipAdd, rawData, returnCount,
+        } = queueData;
         const handleChatMessageQueueResult = result => {
             Events.emit(`${EVENT.fetchQueueFinish}${queueId}`, result);
             isGetChatMessagesQueueBusy = false;
             processChatMessageQueue();
         };
-        getChatMessages(get(chat), queryCondition, limit, offset, reverse, skipAdd, rawData, returnCount).then(handleChatMessageQueueResult).catch(handleChatMessageQueueResult);
+        getChatMessages(getChat(chat), queryCondition, limit, offset, reverse, skipAdd, rawData, returnCount).then(handleChatMessageQueueResult).catch(handleChatMessageQueueResult);
     }
 };
-const getChatMessagesInQueue = (chat, queryCondition, limit = CHATS_LIMIT_DEFAULT, offset = 0, reverse = true, skipAdd = true, rawData = false, returnCount = false) => {
+
+/**
+ * 通过消息查询任务队列获取聊天消息
+ * @param {Chat} chat 聊天对象
+ * @param {function(message: ChatMessage)} queryCondition 查询过滤函数
+ * @param {number} [limit=CHATS_LIMIT_DEFAULT] 最多返回数目
+ * @param {number} [offset=0] 要略过的数目
+ * @param {boolean} [reverse=true] 是否已倒序返回
+ * @param {boolean} [skipAdd=true] 是否忽略添加到聊天消息缓存中
+ * @param {boolean} [rawData=false] 是否返回原始数据而不是 ChatMessage
+ * @param {boolean} [returnCount=false] 是否仅仅返回数目
+ * @return {Promise}
+ */
+export const getChatMessagesInQueue = (chat, queryCondition, limit = CHATS_LIMIT_DEFAULT, offset = 0, reverse = true, skipAdd = true, rawData = false, returnCount = false) => {
     return new Promise((resolve, reject) => {
-        const queueData = {chat: chat.gid, queryCondition, limit, offset, reverse, skipAdd, rawData, returnCount};
+        const queueData = {
+            chat: chat.gid, queryCondition, limit, offset, reverse, skipAdd, rawData, returnCount,
+        };
         const queueId = Md5(JSON.stringify(queueData));
         queueData.queueId = queueId;
         if (!isGetChatMessagesQueueBusy || fetchChatMessagesQueue.every(x => x.queueId !== queueId)) {
@@ -236,7 +376,7 @@ const getChatMessagesInQueue = (chat, queryCondition, limit = CHATS_LIMIT_DEFAUL
         }
         onFetchQueueFinish(queueId, result => {
             if (result instanceof Error) {
-                reject(error);
+                reject(result);
             } else {
                 resolve(result);
             }
@@ -246,12 +386,14 @@ const getChatMessagesInQueue = (chat, queryCondition, limit = CHATS_LIMIT_DEFAUL
 };
 
 /**
- * Load chat messages
+ * 加载指定聊天消息
  *
- * @param {Chat} chat
+ * @param {Chat} chat 要加载的聊天实例
+ * @param {boolean} [inQueue=true] 是否通过任务队列模式
+ * @return {Promise}
  */
-const loadChatMessages = (chat, inQueue = true) => {
-    let loadingOffset = chat.loadingOffset;
+export const loadChatMessages = (chat, inQueue = true) => {
+    let {loadingOffset} = chat;
     if (loadingOffset === true) {
         return Promise.reject();
     }
@@ -270,9 +412,17 @@ const loadChatMessages = (chat, inQueue = true) => {
     });
 };
 
-const searchChatMessages = (chat, searchKeys = '', minDate = 0, returnCount = false) => {
+/**
+ * 搜索指定聊天记录
+ * @param {Chat} chat 要搜索的聊天实例
+ * @param {string} searchKeys 搜索关键词，多个关键字使用空格分隔
+ * @param {number} minDate 最小日期时间戳，只搜索此日期之后的聊天记录
+ * @param {bool} [returnCount=false] 是否只返回结果数目
+ * @return {Promise}
+ */
+export const searchChatMessages = (chat, searchKeys = '', minDate = 0, returnCount = false) => {
     if (typeof minDate === 'string') {
-        minDate = DateHelper.getTimeBeforeDesc(minDate);
+        minDate = getTimeBeforeDesc(minDate);
     }
     const keys = searchKeys.toLowerCase().split(' ');
     return getChatMessages(chat, msg => {
@@ -300,8 +450,15 @@ const searchChatMessages = (chat, searchKeys = '', minDate = 0, returnCount = fa
     }, 0, 0, true, true, false, returnCount);
 };
 
-const createCountMessagesTask = (countChats, searchKeys, minDateDesc = '') => {
-    const minDate = minDateDesc ? DateHelper.getTimeBeforeDesc(minDateDesc) : 0;
+/**
+ * 创建获取消息记录数目队列任务
+ * @param {Array.<Chat>} countChats 要获取消息记录数目的聊天对象实例
+ * @param {string} searchKeys 搜索关键字
+ * @param {number} minDateDesc 最小日期描述
+ * @return {TaskQueue}
+ */
+export const createCountMessagesTask = (countChats, searchKeys, minDateDesc = '') => {
+    const minDate = minDateDesc ? getTimeBeforeDesc(minDateDesc) : 0;
     const taskQueue = new TaskQueue();
     taskQueue.add(countChats.map(chat => {
         return {func: searchChatMessages.bind(null, chat, searchKeys, minDate, true), chat};
@@ -309,7 +466,12 @@ const createCountMessagesTask = (countChats, searchKeys, minDateDesc = '') => {
     return taskQueue;
 };
 
-const update = (chatArr) => {
+/**
+ * 更新缓存中的聊天对象实例
+ * @param {Array.<Chat|Object>} chatArr 要更新的聊天对象
+ * @return {void}
+ */
+export const updateChats = (chatArr) => {
     if (!chatArr) return;
 
     if (!Array.isArray(chatArr)) {
@@ -337,7 +499,13 @@ const update = (chatArr) => {
     }
 };
 
-const init = (chatArr, eachCallback) => {
+/**
+ * 初始化缓存中的聊天对象实例
+ * @param {Array.<Chat|Object>} chatArr 要更新的聊天对象
+ * @param {function(chat: Chat)} eachCallback 遍历每一个被缓存的聊天对象回调函数
+ * @return {void}
+ */
+export const initChats = (chatArr, eachCallback) => {
     publicChats = null;
     chats = {};
     if (chatArr && chatArr.length) {
@@ -348,8 +516,8 @@ const init = (chatArr, eachCallback) => {
             lastActiveTime: new Date().getTime() - Math.floor(MAX_RECENT_TIME / 2),
             members: [profile.user.id]
         });
-        update(chatArr);
-        forEach(chat => {
+        updateChats(chatArr);
+        forEachChat(chat => {
             if (chat.isOne2One) {
                 const member = chat.getTheOtherOne(app);
                 if (member.temp) {
@@ -367,11 +535,21 @@ const init = (chatArr, eachCallback) => {
     }
 };
 
-const getAll = () => {
+/**
+ * 获取缓存中所有聊天对象实例
+ * @return {Array.<Chat>}
+ */
+export const getAllChats = () => {
     return chats ? Object.keys(chats).map(x => chats[x]) : [];
 };
 
-const query = (condition, sortList) => {
+/**
+ * 从缓存中查询聊天实例
+ * @param {Object|Function(chat: Chat)|Array<Function(chat: Chat)>} condition 查询条件
+ * @param {*} sortList 是否对结果进行排序
+ * @return {Array.<Chat>}
+ */
+export const queryChats = (condition, sortList) => {
     if (!chats) {
         return [];
     }
@@ -390,7 +568,7 @@ const query = (condition, sortList) => {
     }
     if (typeof condition === 'function') {
         result = [];
-        forEach(chat => {
+        forEachChat(chat => {
             if (condition(chat)) {
                 result.push(chat);
             }
@@ -398,13 +576,13 @@ const query = (condition, sortList) => {
     } else if (Array.isArray(condition)) {
         result = [];
         condition.forEach(x => {
-            const chat = get(x);
+            const chat = getChat(x);
             if (chat) {
                 result.push(chat);
             }
         });
     } else {
-        result = getAll();
+        result = getAllChats();
     }
     if (sortList && result && result.length) {
         Chat.sort(result, sortList, app);
@@ -412,8 +590,14 @@ const query = (condition, sortList) => {
     return result || [];
 };
 
-const getRecents = (includeStar = true, sortList = true) => {
-    const all = getAll();
+/**
+ * 获取最近激活的聊天
+ * @param {bool} [includeStar=true] 是否包含收藏的聊天
+ * @param {boolean|String|Function} sortList 是否排序或者指定排序规则
+ * @return {Array.<Chat>}
+ */
+export const getRecentChats = (includeStar = true, sortList = true) => {
+    const all = getAllChats();
     let recents = null;
     if (all.length < 4) {
         recents = all;
@@ -432,28 +616,44 @@ const getRecents = (includeStar = true, sortList = true) => {
     return recents;
 };
 
-const getLastRecentChat = () => {
+/**
+ * 获取最近一次激活的聊天
+ * @return {Chat}
+ */
+export const getLastRecentChat = () => {
     let lastActiveTime = 0;
     let lastRecentChat = null;
-    forEach(chat => {
+    forEachChat(chat => {
         if (!chat.isDeleteOne2One && !chat.isDismissed && lastActiveTime < chat.lastActiveTime) {
+            // eslint-disable-next-line prefer-destructuring
             lastActiveTime = chat.lastActiveTime;
             lastRecentChat = chat;
         }
     });
     if (!lastRecentChat) {
-        lastRecentChat = getAll().find(x => x.isSystem);
+        lastRecentChat = getAllChats().find(x => x.isSystem);
     }
     return lastRecentChat;
 };
 
-const getContactChat = (member) => {
+/**
+ * 获取与指定联系人关联的一对一聊天
+ * @param {Member|Object} member 联系人
+ * @return {Chat}
+ */
+export const getContactChat = (member) => {
     const membersId = [member.id, profile.user.id].sort();
     const gid = membersId.join('&');
-    return get(gid);
+    return getChat(gid);
 };
 
-const getContactsChats = (sortList = 'onlineFirst', groupedBy = false) => {
+/**
+ * 获取一对一聊天
+ * @param {boolean|String|Function} sortList 是否排序或者指定排序规则
+ * @param {boolean} [groupedBy=false] 是否按分组返回结果
+ * @return {Object|Array.<Chat>}
+ */
+export const getContactsChats = (sortList = 'onlineFirst', groupedBy = false) => {
     const {user} = profile;
     let contactChats = [];
     if (!user) {
@@ -467,7 +667,7 @@ const getContactsChats = (sortList = 'onlineFirst', groupedBy = false) => {
         }
     });
 
-    query(x => x.isOne2One).forEach(theChat => {
+    queryChats(x => x.isOne2One).forEach(theChat => {
         if (!contactChatMap[theChat.id]) {
             const member = theChat.getTheOtherOne(app);
             contactChatMap[member.id] = theChat;
@@ -489,7 +689,9 @@ const getContactsChats = (sortList = 'onlineFirst', groupedBy = false) => {
             const groupName = isDeleteOne2One ? Lang.string('chats.menu.group.deleted') : members.getRoleName(role);
             const groupId = isDeleteOne2One ? '_delete' : role;
             if (!groupedContactChats[groupId]) {
-                groupedContactChats[groupId] = {id: groupId, title: groupName, list: [chat], onlineCount: isMemberOnline ? 1 : 0};
+                groupedContactChats[groupId] = {
+                    id: groupId, title: groupName, list: [chat], onlineCount: isMemberOnline ? 1 : 0
+                };
                 if (isDeleteOne2One) {
                     groupedContactChats[groupId].system = true;
                 }
@@ -517,7 +719,8 @@ const getContactsChats = (sortList = 'onlineFirst', groupedBy = false) => {
             }
             return -result;
         });
-    } else if (groupedBy === 'dept') {
+    }
+    if (groupedBy === 'dept') {
         const groupsMap = {};
         Object.keys(members.depts).forEach(deptId => {
             const dept = members.depts[deptId];
@@ -559,7 +762,7 @@ const getContactsChats = (sortList = 'onlineFirst', groupedBy = false) => {
         });
         const groupArr = Object.keys(groupsMap).map(deptId => {
             const group = groupsMap[deptId];
-            const dept = group.dept;
+            const {dept} = group;
             if (dept) {
                 if (dept.children) {
                     group.children = dept.children.map(x => groupsMap[x.id]);
@@ -599,7 +802,8 @@ const getContactsChats = (sortList = 'onlineFirst', groupedBy = false) => {
             }
             return x;
         }).filter(x => !x.hasParent).sort(deptsSorter);
-    } else if (groupedBy === 'category') {
+    }
+    if (groupedBy === 'category') {
         const groupedChats = {};
         contactChats.forEach(chat => {
             const member = chat.getTheOtherOne(app);
@@ -611,7 +815,9 @@ const getContactsChats = (sortList = 'onlineFirst', groupedBy = false) => {
             const categoryName = isDeleteOne2One ? Lang.string('chats.menu.group.deleted') : (categoryId || user.config.contactsDefaultCategoryName);
             const isMemberOnline = member.isOnline;
             if (!groupedChats[categoryId]) {
-                groupedChats[categoryId] = {id: categoryId, title: categoryName || Lang.string('chats.menu.group.default'), list: [chat], onlineCount: isMemberOnline ? 1 : 0};
+                groupedChats[categoryId] = {
+                    id: categoryId, title: categoryName || Lang.string('chats.menu.group.default'), list: [chat], onlineCount: isMemberOnline ? 1 : 0,
+                };
                 if (isDeleteOne2One) {
                     groupedChats[categoryId].system = true;
                 }
@@ -652,22 +858,29 @@ const getContactsChats = (sortList = 'onlineFirst', groupedBy = false) => {
             user.config.contactsCategories = categories;
         }
         return orderedGroups;
-    } else if (sortList) {
+    }
+    if (sortList) {
         Chat.sort(contactChats, sortList, app);
     }
     return contactChats;
 };
 
-const getGroups = (sortList = true, groupedBy = false) => {
+/**
+ * 获取讨论组聊天
+ * @param {boolean|String|Function} sortList 是否排序或者指定排序规则
+ * @param {boolean} [groupedBy=false] 是否按分组返回结果
+ * @return {Object|Array.<Chat>}
+ */
+export const getGroupsChats = (sortList = true, groupedBy = false) => {
     const {user} = profile;
     if (!user) {
         return [];
     }
-    const groupChats = query(chat => chat.isGroupOrSystem, sortList);
+    const groupChats = queryChats(chat => chat.isGroupOrSystem, sortList);
     if (groupedBy === 'category') {
         const groupedChats = {};
         groupChats.forEach(chat => {
-            const isDismissed = chat.isDismissed;
+            const {isDismissed} = chat;
             const isHidden = chat.hide;
             const categoryId = isDismissed ? '_dismissed' : isHidden ? '_hidden' : (chat.category || '');
             const categoryName = isDismissed ? Lang.string('chats.menu.group.dismissed') : isHidden ? Lang.string('chats.menu.group.hidden') : (categoryId || user.config.groupsDefaultCategoryName);
@@ -714,17 +927,21 @@ const getGroups = (sortList = true, groupedBy = false) => {
             user.config.groupsCategories = categories;
         }
         return orderedGroups;
-    } else {
-        
     }
     return groupChats;
 };
 
-const getChatCategories = (type = 'contact') => {
+/**
+ * 获取聊天分组信息
+ * @param {string} type 类型，包括 contact（联系人），group（讨论组）
+ * @return {Array.<Object>}
+ */
+export const getChatCategories = (type = 'contact') => {
     if (type === 'contact') {
         return getContactsChats(false, 'category');
-    } else if (type === 'group') {
-        const groups = getGroups(false, 'category');
+    }
+    if (type === 'group') {
+        const groups = getGroupsChats(false, 'category');
         if (groups.length && groups[0].entityType === 'Chat') {
             return [];
         }
@@ -733,7 +950,13 @@ const getChatCategories = (type = 'contact') => {
     return [];
 };
 
-const search = (searchKeys, chatType) => {
+/**
+ * 搜索聊天
+ * @param {string} searchKeys 搜索关键字，多个关键字使用空格分隔
+ * @param {string} chatType 聊天类型，包括 contacts（联系人），groups（讨论组）
+ * @return {Array.<Chat>}
+ */
+export const searchChats = (searchKeys, chatType) => {
     if (StringHelper.isEmpty(searchKeys)) {
         return [];
     }
@@ -761,7 +984,7 @@ const search = (searchKeys, chatType) => {
         return idx === 0 ? SEARCH_SCORE_MAP.matchPrefix : (idx > 0 ? SEARCH_SCORE_MAP.include : 0);
     };
 
-    return query(chat => {
+    return queryChats(chat => {
         const chatGid = chat.gid.toLowerCase();
         if (hasChatType) {
             if ((isContactsType && !chat.isOne2One) || (isGroupsType && !chat.isGroupOrSystem)) {
@@ -820,18 +1043,29 @@ const search = (searchKeys, chatType) => {
     }, ((x, y) => x.score - y.score));
 };
 
-const remove = gid => {
-    const removeChat = chats[gid];
-    if (removeChat) {
-        removeChat.delete = true;
+/**
+ * 从缓存中移除指定 GID 的聊天
+ * @param {string} gid 要移除的聊天 GID
+ * @return {boolean} 移除结果
+ */
+export const removeChat = gid => {
+    const removedChat = chats[gid];
+    if (removedChat) {
+        removedChat.delete = true;
         delete chats[gid];
-        Events.emitDataChange({chats: {[gid]: removeChat}});
+        Events.emitDataChange({chats: {[gid]: removedChat}});
         return true;
     }
     return false;
 };
 
-const getChatFiles = (chat, includeFailFile = false) => {
+/**
+ * 获取指定聊天中发送和接收的文件
+ * @param {string} chat 聊天实例
+ * @param {bool} [includeFailFile=false] 是否包含发送失败的文件
+ * @return {Promise}
+ */
+export const getChatFiles = (chat, includeFailFile = false) => {
     return getChatMessages(chat, (x => x.contentType === 'file'), 0).then(fileMessages => {
         let files = null;
         if (fileMessages && fileMessages.length) {
@@ -840,7 +1074,7 @@ const getChatFiles = (chat, includeFailFile = false) => {
             } else {
                 files = [];
                 fileMessages.forEach(fileMessage => {
-                    const fileContent = fileMessage.fileContent;
+                    const {fileContent} = fileMessage;
                     if (fileContent.send === true && fileContent.id) {
                         files.push(fileContent);
                     }
@@ -851,9 +1085,18 @@ const getChatFiles = (chat, includeFailFile = false) => {
     });
 };
 
-const getPublicChats = () => (publicChats || []);
+/**
+ * 获取缓存中所有公共聊天
+ * @return {Array.<chat>}
+ */
+export const getPublicChats = () => (publicChats || []);
 
-const updatePublicChats = (serverPublicChats) => {
+/**
+ * 更新缓存中的公共聊天
+ * @param {Array.<Object>|Object} serverPublicChats 要更新的公共聊天
+ * @return {void}
+ */
+export const updatePublicChats = (serverPublicChats) => {
     publicChats = [];
     if (serverPublicChats) {
         if (!Array.isArray(serverPublicChats)) {
@@ -869,37 +1112,50 @@ const updatePublicChats = (serverPublicChats) => {
     Events.emitDataChange({publicChats});
 };
 
-
-const onChatsInit = listener => {
+/**
+ * 监听缓存聊天初始化事件（第一次从服务器获得到聊天列表）
+ * @param {Function(chats: Array<Chat>)} listener 事件回调函数
+ * @return {Symbol}
+ */
+export const onChatsInit = listener => {
     return Events.on(EVENT.init, listener);
 };
 
-const onChatMessages = listener => {
+/**
+ * 监听聊天消息变更事件（例如用户收到了新消息）
+ * @param {Function(chats: Array<ChatMessage>)} listener 事件回调函数
+ * @return {Symbol}
+ */
+export const onChatMessages = listener => {
     return Events.on(EVENT.messages, listener);
 };
 
+// 监听用户资料变更事件，通常在用户登录之后
 profile.onSwapUser(user => {
-    init();
+    // 将上一个用户的聊天缓存数据清空
+    initChats();
 });
 
+// 监听用户成员变更事件
 members.onMembersChange(newMembers => {
-    forEach(chat => {
+    // 遍历每一个聊天，标记聊天已更新
+    forEachChat(chat => {
         chat._membersSet = null;
         chat.renewUpdateId();
     });
 });
 
 export default {
-    init,
-    update,
-    get,
-    getAll,
-    getRecents,
-    forEach,
+    init: initChats,
+    update: updateChats,
+    get: getChat,
+    getAll: getAllChats,
+    getRecents: getRecentChats,
+    forEach: forEachChat,
     getLastActiveChat,
-    query,
-    remove,
-    search,
+    query: queryChats,
+    remove: removeChat,
+    search: searchChats,
     getChatFiles,
     deleteLocalMessage,
     getChatMessages,
@@ -908,7 +1164,7 @@ export default {
     getPublicChats,
     updatePublicChats,
     getContactsChats,
-    getGroups,
+    getGroups: getGroupsChats,
     onChatsInit,
     onChatMessages,
     getOne2OneChatGid,

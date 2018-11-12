@@ -6,8 +6,21 @@ import timeSequence from '../utils/time-sequence';
 import Lang from '../lang';
 import InputControl from './input-control';
 
+/** @module modal */
+
+/**
+ * 检查应用运行的操作系统类型是否是 Windows
+ * @type {boolean}
+ * @private
+ * @constant
+ */
 const isWindowsOS = window.navigator.userAgent.includes('Windows');
 
+/**
+ * 默认按钮类名
+ * @type {Object}
+ * @private
+ */
 const DEFAULT_CLASS_NAMES = {
     submit: 'primary',
     primary: 'primary',
@@ -15,7 +28,14 @@ const DEFAULT_CLASS_NAMES = {
     cancel: 'primary-pale text-primary'
 };
 
-const show = (props = {}, callback = null) => {
+/**
+ * 显示对话框
+ * @param {?Object} props DisplayLayer 组件属性
+ * @param {?Function} callback 操作完成时的回调函数
+ * @return {DisplayLayer}
+ * @function
+ */
+export const showModal = (props = {}, callback = null) => {
     let {
         title,
         closeButton,
@@ -125,18 +145,34 @@ const show = (props = {}, callback = null) => {
     return Display.show(props, callback);
 };
 
-const alert = (content, props, callback) => {
-    return show(Object.assign({
+/**
+ * 显示警告对话框
+ * @param {String|ReactNode|Function} content 对话框内容
+ * @param {?Object} props DisplayLayer 组件属性
+ * @param {?Function} callback 操作完成时的回调函数
+ * @return {DisplayLayer}
+ * @function
+ */
+export const showAlert = (content, props, callback) => {
+    return showModal(Object.assign({
         modal: true,
         content,
         actions: 'submit'
     }, props), callback);
 };
 
-const confirm = (content, props, callback) => {
+/**
+ * 显示确认对话框
+ * @param {String|ReactNode|Function} content 对话框内容
+ * @param {?Object} props DisplayLayer 组件属性
+ * @param {?Function} callback 操作完成时的回调函数
+ * @return {DisplayLayer}
+ * @function
+ */
+export const showConfirm = (content, props, callback) => {
     return new Promise(resolve => {
         let resolved = false;
-        show(Object.assign({
+        showModal(Object.assign({
             closeButton: false,
             modal: true,
             content,
@@ -156,7 +192,16 @@ const confirm = (content, props, callback) => {
     });
 };
 
-const prompt = (title, defaultValue, props, callback) => {
+/**
+ * 显示询问用户输入值的对话框
+ * @param {String|ReactNode|Function} title 标题
+ * @param {string} defaultValue 默认值
+ * @param {?Object} props DisplayLayer 组件属性
+ * @param {?Function} callback 操作完成时的回调函数
+ * @return {DisplayLayer}
+ * @function
+ */
+export const showPrompt = (title, defaultValue, props, callback) => {
     const inputProps = props && props.inputProps;
     const onSubmit = props && props.onSubmit;
     if (inputProps) {
@@ -168,7 +213,7 @@ const prompt = (title, defaultValue, props, callback) => {
     return new Promise(resolve => {
         let resolved = false;
         let value = defaultValue;
-        show(Object.assign({
+        showModal(Object.assign({
             closeButton: false,
             modal: true,
             title,
@@ -200,10 +245,10 @@ const prompt = (title, defaultValue, props, callback) => {
 };
 
 export default {
-    show,
-    alert,
-    confirm,
-    prompt,
+    show: showModal,
+    alert: showAlert,
+    confirm: showConfirm,
+    prompt: showPrompt,
     hide: Display.hide,
     remove: Display.remove
 };

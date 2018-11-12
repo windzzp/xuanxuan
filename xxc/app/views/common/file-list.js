@@ -7,11 +7,37 @@ import ListItem from '../../components/list-item';
 import Lang from '../../lang';
 import Config from '../../config';
 
-class FileList extends Component {
+/**
+ * FileList 组件 ，显示文件列表界面
+ * @class FileList
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import FileList from './file-list';
+ * <FileList />
+ */
+export default class FileList extends Component {
+    /**
+     * 获取 FileList 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<FileList>}
+     * @readonly
+     * @static
+     * @memberof FileList
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {FileList} from './file-list';
+     * <FileList />
+     */
     static get FileList() {
         return replaceViews('common/file-list', FileList);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof FileList
+     * @type {Object}
+     */
     static propTypes = {
         files: PropTypes.array.isRequired,
         listItemProps: PropTypes.object,
@@ -21,6 +47,13 @@ class FileList extends Component {
         defaultPage: PropTypes.number,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof FileList
+     * @static
+     */
     static defaultProps = {
         className: null,
         listItemProps: null,
@@ -29,15 +62,42 @@ class FileList extends Component {
         defaultPage: 1,
     };
 
+    /**
+     * React 组件构造函数，创建一个 FileList 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {page: props.defaultPage};
     }
 
+    /**
+     * 处理显示更多事件
+     * @param {Event} event 事件对象
+     * @memberof FileList
+     * @private
+     * @return {void}
+     */
     handleRequestMorePage = () => {
         this.setState({page: this.state.page + 1});
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof FileList
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             files,
@@ -75,5 +135,3 @@ class FileList extends Component {
         >{listViews}</div>);
     }
 }
-
-export default FileList;

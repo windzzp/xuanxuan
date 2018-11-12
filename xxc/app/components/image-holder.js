@@ -6,12 +6,21 @@ import Lang from '../lang';
 import {classes} from '../utils/html-helper';
 
 /**
- * Image cutter component
- *
+ * ImageHolder 组件 ，显示一个图片占位元素
  * @class ImageHolder
- * @extends {Component}
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example
+ * <ImageHolder />
  */
 export default class ImageHolder extends PureComponent {
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof ImageHolder
+     * @type {Object}
+     */
     static propTypes = {
         style: PropTypes.object,
         source: PropTypes.string,
@@ -27,6 +36,13 @@ export default class ImageHolder extends PureComponent {
         children: PropTypes.any,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof ImageHolder
+     * @static
+     */
     static defaultProps = {
         style: null,
         source: null,
@@ -42,6 +58,14 @@ export default class ImageHolder extends PureComponent {
         children: null,
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof ImageHolder
+     * @return {ReactNode}
+     */
     render() {
         let {
             style,

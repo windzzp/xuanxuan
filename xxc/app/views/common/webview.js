@@ -5,13 +5,44 @@ import {classes} from '../../utils/html-helper';
 import timeSequence from '../../utils/time-sequence';
 import replaceViews from '../replace-views';
 
+/**
+ * 获取当前平台是否为 Electron 平台
+ * @type {boolean}
+ * @private
+ */
 const isElectron = Platform.type === 'electron';
 
+/**
+ * Webview 组件 ，显示 Webview 界面
+ * @class Webview
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import Webview from './webview';
+ * <Webview />
+ */
 export default class WebView extends Component {
+    /**
+     * 获取 Webview 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<Webview>}
+     * @readonly
+     * @static
+     * @memberof Webview
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {Webview} from './webview';
+     * <Webview />
+     */
     static get WebView() {
         return replaceViews('common/webview', WebView);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof Webview
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
         onLoadingChange: PropTypes.func,
@@ -29,6 +60,13 @@ export default class WebView extends Component {
         type: PropTypes.string,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof Webview
+     * @static
+     */
     static defaultProps = {
         className: null,
         onLoadingChange: null,
@@ -45,13 +83,43 @@ export default class WebView extends Component {
         type: 'auto'
     };
 
+    /**
+     * React 组件构造函数，创建一个 Webview 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
-        
+
+        /**
+         * Webview ID
+         * @type {string}
+         * @private
+         */
         this.webviewId = `webview-${timeSequence()}`;
+
         const {type} = props;
+
+        /**
+         * 是否使用 Electron 内置 Webview 实现
+         * @type {boolean}
+         * @private
+         */
         this.isWebview = (type === 'auto' && isElectron) || type === 'webview';
+
+        /**
+         * 是否使用 iframe 实现 Webview
+         * @type {boolean}
+         * @private
+         */
         this.isIframe = !this.isWebview;
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             errorCode: null,
             errorDescription: null,
@@ -59,6 +127,16 @@ export default class WebView extends Component {
         };
     }
 
+    /**
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof Webview
+     * @return {void}
+     */
     componentDidMount() {
         const {webview} = this;
         if (webview) {
@@ -89,6 +167,16 @@ export default class WebView extends Component {
         }
     }
 
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof Webview
+     * @return {void}
+     */
     componentWillUnmount() {
         const {webview} = this;
         if (webview) {
@@ -109,6 +197,11 @@ export default class WebView extends Component {
         }
     }
 
+    /**
+     * 获取 Webview 对象
+     * @memberof Webview
+     * @type {Object}
+     */
     get webview() {
         let webview = document.getElementById(this.webviewId);
         if (webview && this.isIframe) {
@@ -136,6 +229,12 @@ export default class WebView extends Component {
         return webview;
     }
 
+    /**
+     * 重新载入 Webview
+     *
+     * @memberof WebView
+     * @return {void}
+     */
     reloadWebview() {
         const {webview} = this;
         if (webview) {
@@ -143,6 +242,13 @@ export default class WebView extends Component {
         }
     }
 
+    /**
+     * 处理导航到其他页面事件
+     * @param {Event} e 事件对象
+     * @memberof Webview
+     * @private
+     * @return {void}
+     */
     handleWillNavigate = e => {
         const {onNavigate} = this.props;
         if (onNavigate) {
@@ -150,12 +256,26 @@ export default class WebView extends Component {
         }
     }
 
+    /**
+     * 处理在新窗口打开事件
+     * @param {Event} e 事件对象
+     * @memberof Webview
+     * @private
+     * @return {void}
+     */
     handleNewWindow = e => {
         if (Platform.ui.openExternal) {
             Platform.ui.openExternal(e.url);
         }
     };
 
+    /**
+     * 处理页面标题变更事件
+     * @param {Event} e 事件对象
+     * @memberof Webview
+     * @private
+     * @return {void}
+     */
     handlePageTitleChange = e => {
         const {onPageTitleUpdated} = this.props;
         if (onPageTitleUpdated) {
@@ -163,6 +283,12 @@ export default class WebView extends Component {
         }
     };
 
+    /**
+     * 处理开始加载事件
+     * @memberof Webview
+     * @private
+     * @return {void}
+     */
     handleLoadingStart = () => {
         const {onLoadingChange} = this.props;
         if (onLoadingChange) {
@@ -175,6 +301,13 @@ export default class WebView extends Component {
         });
     };
 
+    /**
+     * 处理加载失败事件
+     * @param {Event} e 事件对象
+     * @memberof Webview
+     * @private
+     * @return {void}
+     */
     handleLoadFail = (e) => {
         const {errorCode, errorDescription, validatedURL} = e;
         const {onLoadingChange} = this.props;
@@ -191,6 +324,12 @@ export default class WebView extends Component {
         }
     };
 
+    /**
+     * 处理停止加载事件
+     * @memberof Webview
+     * @private
+     * @return {void}
+     */
     handleLoadingStop = () => {
         const {onLoadingChange} = this.props;
         if (onLoadingChange) {
@@ -201,6 +340,12 @@ export default class WebView extends Component {
         });
     };
 
+    /**
+     * 处理 Dom 加载完毕事件
+     * @memberof Webview
+     * @private
+     * @return {void}
+     */
     handleDomReady = () => {
         const {webview} = this;
         const {onDomReady} = this.props;
@@ -280,6 +425,14 @@ export default class WebView extends Component {
         this.setState({domReady: true, loading: false});
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof Webview
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             className,

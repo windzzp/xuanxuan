@@ -1,46 +1,78 @@
-import chats from './im-chats';
+import {
+    updateChatMessages, getChat, updateChats, updatePublicChats, removeChat,
+} from './im-chats';
 import Chat from '../models/chat';
 import profile from '../profile';
 import members from '../members';
 import imServer from './im-server';
 import imUI from './im-ui';
 
+/**
+ * 处理服务器推送修改聊天名称消息
+ * @param {SocketMessage} msg Socket 消息对象
+ * @param {Socket} socket Socket 连接实例
+ * @return {Chat} 如果处理成功则返回修改名称后的聊天实例
+ * @private
+ */
 const chatChangename = (msg, socket) => {
     if (msg.isSuccess) {
-        const chat = chats.get(msg.data.gid);
+        const chat = getChat(msg.data.gid);
         if (chat) {
             chat.name = msg.data.name;
-            chats.update(chat);
+            updateChats(chat);
             return chat;
         }
     }
 };
 
+/**
+ * 处理服务器推送修改聊天白名单信息
+ * @param {SocketMessage} msg Socket 消息对象
+ * @param {Socket} socket Socket 连接实例
+ * @return {Chat} 如果处理成功则返回修改后的聊天实例
+ * @private
+ */
 const chatSetcomitters = (msg, socket) => {
     if (msg.isSuccess) {
-        const chat = chats.get(msg.data.gid);
+        const chat = getChat(msg.data.gid);
         if (chat) {
             chat.committers = msg.data.committers;
-            chats.update(chat);
+            updateChats(chat);
+            return chat;
         }
     }
 };
 
+/**
+ * 处理服务器推送修改聊天添加成员消息
+ * @param {SocketMessage} msg Socket 消息对象
+ * @param {Socket} socket Socket 连接实例
+ * @return {Chat} 如果处理成功则返回修改后的聊天实例
+ * @private
+ */
 const chatAddmember = (msg, socket) => {
     if (!msg.isSuccess) {
         return;
     }
-    let chat = chats.get(msg.data.gid);
+    let chat = getChat(msg.data.gid);
     if (chat) {
         const serverChatMembers = Chat.create(msg.data).members;
         chat.resetMembers(Array.from(serverChatMembers).map(x => members.get(x)));
-        chats.update(chat);
+        updateChats(chat);
         return chat;
     }
     chat = new Chat(msg.data);
-    chats.update(chat);
+    updateChats(chat);
+    return chat;
 };
 
+/**
+ * 处理服务器推送聊天列表消息
+ * @param {SocketMessage} msg Socket 消息对象
+ * @param {Socket} socket Socket 连接实例
+ * @return {boolean} 处理结果
+ * @private
+ */
 const chatGetlist = (msg, socket) => {
     if (msg.isSuccess) {
         let newChats = null;
@@ -50,17 +82,32 @@ const chatGetlist = (msg, socket) => {
             newChats = msg.data;
         }
         imServer.handleInitChats(newChats);
+        return true;
     }
 };
 
+/**
+ * 处理服务器推送创建聊天消息
+ * @param {SocketMessage} msg Socket 消息对象
+ * @param {Socket} socket Socket 连接实例
+ * @return {Chat} 如果处理成功则返回创建的聊天实例
+ * @private
+ */
 const chatCreate = (msg, socket) => {
     if (msg.isSuccess) {
         const chat = new Chat(msg.data);
-        chats.update(chat);
+        updateChats(chat);
         return chat;
     }
 };
 
+/**
+ * 处理服务器推送接收到的聊天消息
+ * @param {SocketMessage} msg Socket 消息对象
+ * @param {Socket} socket Socket 连接实例
+ * @return {boolean} 处理结果
+ * @private
+ */
 const chatMessage = (msg, socket) => {
     if (msg.isSuccess) {
         let messages = msg.data;
@@ -74,10 +121,18 @@ const chatMessage = (msg, socket) => {
 
         if (messages && messages.length) {
             imServer.handleReceiveChatMessages(messages);
+            return true;
         }
     }
 };
 
+/**
+ * 处理服务器推送修改聊天历史记录消息
+ * @param {SocketMessage} msg Socket 消息对象
+ * @param {Socket} socket Socket 连接实例
+ * @return {boolean} 处理结果
+ * @private
+ */
 const chatHistory = (msg, socket) => {
     if (!msg.isSuccess) {
         return;
@@ -92,48 +147,79 @@ const chatHistory = (msg, socket) => {
     }
 
     imServer.updateChatHistory((messages && messages.length) ? messages[0].cgid : null, messages, msg.pager, socket);
+    return true;
 };
 
+/**
+ * 处理服务器推送收藏聊天消息
+ * @param {SocketMessage} msg Socket 消息对象
+ * @param {Socket} socket Socket 连接实例
+ * @return {Chat} 如果处理成功则返回修改后的聊天实例
+ * @private
+ */
 const chatStar = (msg, socket) => {
     if (msg.isSuccess) {
-        const chat = chats.get(msg.data.gid);
+        const chat = getChat(msg.data.gid);
         if (chat) {
             chat.star = msg.data.star;
-            chats.update(chat);
+            updateChats(chat);
+            return chat;
         }
     }
 };
 
+/**
+ * 处理服务器推送设置消息免打扰设置消息
+ * @param {SocketMessage} msg Socket 消息对象
+ * @param {Socket} socket Socket 连接实例
+ * @return {Chat} 如果处理成功则返回修改后的聊天实例
+ * @private
+ */
 const chatMute = (msg, socket) => {
     if (msg.isSuccess) {
-        const chat = chats.get(msg.data.gid);
+        const chat = getChat(msg.data.gid);
         if (chat) {
             chat.mute = msg.data.mute;
-            chats.update(chat);
+            updateChats(chat);
+            return chat;
         }
     }
 };
 
+/**
+ * 处理服务器推送修改聊天分组设置消息
+ * @param {SocketMessage} msg Socket 消息对象
+ * @param {Socket} socket Socket 连接实例
+ * @return {boolean} 处理结果
+ * @private
+ */
 const chatCategory = (msg, socket) => {
     if (msg.isSuccess) {
         const {gids, category} = msg.data;
         if (gids && gids.length) {
             const chatsForUpdate = gids.map(gid => {
-                const chat = chats.get(gid);
+                const chat = getChat(gid);
                 chat.category = category;
                 return chat;
             });
-            chats.update(chatsForUpdate);
+            updateChats(chatsForUpdate);
         }
     }
 };
 
+/**
+ * 处理服务器推送加入聊天消息
+ * @param {SocketMessage} msg Socket 消息对象
+ * @param {Socket} socket Socket 连接实例
+ * @return {Chat} 如果处理成功则返回修改后的聊天实例
+ * @private
+ */
 const chatJoinchat = (msg, socket) => {
     if (!msg.isSuccess) {
         return;
     }
     if (msg.data.gid) {
-        let chat = chats.get(msg.data.gid);
+        let chat = getChat(msg.data.gid);
         if (chat) {
             chat.$set(msg.data);
         } else {
@@ -141,63 +227,99 @@ const chatJoinchat = (msg, socket) => {
         }
         if (chat.isMember(profile.user.id)) {
             chat.makeActive();
-            chats.update(chat);
+            updateChats(chat);
             if (chat.public && imServer.chatJoinTask) {
                 imUI.activeChat(chat);
             }
             return chat;
         }
-        chats.remove(chat.gid);
+        removeChat(chat.gid);
         return chat;
     }
     imServer.chatJoinTask = false;
 };
 
+/**
+ * 处理服务器推送设置消息隐藏操作结果
+ * @param {SocketMessage} msg Socket 消息对象
+ * @param {Socket} socket Socket 连接实例
+ * @return {Chat} 如果处理成功则返回修改后的聊天实例
+ * @private
+ */
 const chatHide = (msg, socket) => {
     if (msg.isSuccess) {
-        const chat = chats.get(msg.data.gid);
+        const chat = getChat(msg.data.gid);
         if (chat) {
             chat.hide = msg.data.hide;
-            chats.update(chat);
-        }
-    }
-};
-
-const chatDismiss = (msg, socket) => {
-    if (msg.isSuccess) {
-        const chat = chats.get(msg.data.gid);
-        if (chat) {
-            chat.dismissDate = msg.data.dismissDate;
-            chats.update(chat);
+            updateChats(chat);
             return chat;
         }
     }
 };
 
-const chatChangepublic = (msg, socket) => {
+/**
+ * 处理服务器推送解散聊天操作结果
+ * @param {SocketMessage} msg Socket 消息对象
+ * @param {Socket} socket Socket 连接实例
+ * @return {Chat} 如果处理成功则返回修改后的聊天实例
+ * @private
+ */
+const chatDismiss = (msg, socket) => {
     if (msg.isSuccess) {
-        const chat = chats.get(msg.data.gid);
+        const chat = getChat(msg.data.gid);
         if (chat) {
-            chat.public = msg.data.public;
-            chats.update(chat);
+            chat.dismissDate = msg.data.dismissDate;
+            updateChats(chat);
+            return chat;
         }
     }
 };
 
+/**
+ * 处理服务器推送设置聊天是否公开操作结果
+ * @param {SocketMessage} msg Socket 消息对象
+ * @param {Socket} socket Socket 连接实例
+ * @return {Chat} 如果处理成功则返回修改后的聊天实例
+ * @private
+ */
+const chatChangepublic = (msg, socket) => {
+    if (msg.isSuccess) {
+        const chat = getChat(msg.data.gid);
+        if (chat) {
+            chat.public = msg.data.public;
+            updateChats(chat);
+            return chat;
+        }
+    }
+};
+
+/**
+ * 处理服务器推送请求获取公开聊天列表操作结果
+ * @param {SocketMessage} msg Socket 消息对象
+ * @param {Socket} socket Socket 连接实例
+ * @return {Chat[]} 如果处理成功则返回获取到的公开聊天列表
+ * @private
+ */
 const chatGetpubliclist = (msg, socket) => {
-    let publicChats;
+    let publicChats = [];
     if (msg.isSuccess) {
         publicChats = msg.data.map(x => {
             const chat = new Chat(x);
             chat.updateMembersSet(members);
             return chat;
         });
-        return publicChats;
     }
-    publicChats = [];
-    chats.updatePublicChats(publicChats);
+    updatePublicChats(publicChats);
+    return publicChats;
 };
 
+/**
+ * 处理服务器推送通知消息操作
+ * @param {SocketMessage} msg Socket 消息对象
+ * @param {Socket} socket Socket 连接实例
+ * @return {boolean} 返回操作结果
+ * @private
+ */
 const chatNotify = (msg, socket) => {
     if (msg.isSuccess) {
         let messages = msg.data;
@@ -211,11 +333,16 @@ const chatNotify = (msg, socket) => {
 
         if (messages && messages.length) {
             messages.forEach(x => {x.type = 'notification';});
-            chats.updateChatMessages(messages);
+            updateChatMessages(messages);
         }
+        return true;
     }
 };
 
+/**
+ * Socket 服务器推送消息处理函数
+ * @type {Object<string, Function(msg: SocketMessage, socket: Socket)>}
+ */
 export default {
     'chat/changename': chatChangename,
     'chat/setcommitters': chatSetcomitters,

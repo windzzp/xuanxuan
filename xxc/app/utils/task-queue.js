@@ -9,7 +9,7 @@ const STATUS = new Status({
     canceled: 3
 }, 0);
 
-class TaskQueue {
+export default class TaskQueue {
     constructor(tasks, onTask, onTaskStart) {
         this._tasks = [];
         this._finished = [];
@@ -91,7 +91,7 @@ class TaskQueue {
     }
 
     add(...tasks) {
-        for (let task of tasks) {
+        for (const task of tasks) {
             if (Array.isArray(task)) {
                 this.add(...task);
             } else {
@@ -140,6 +140,7 @@ class TaskQueue {
             } else {
                 reject('canceled');
             }
+            return result;
         }).catch(reject);
     }
 
@@ -170,5 +171,3 @@ class TaskQueue {
         return this;
     }
 }
-
-export default TaskQueue;

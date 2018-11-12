@@ -3,7 +3,18 @@ import Display from './display';
 import {classes} from '../utils/html-helper';
 import timeSequence from '../utils/time-sequence';
 
-const show = (position, content, props = {}, callback = null) => {
+/** @module popover */
+
+/**
+ * 显示一个提示面板
+ * @param {{x: Number, y: Number}} position 提示面板显示位置，需要提供 X 和 Y 轴坐标
+ * @param {String|ReactNode|Function} content 提示面板内容
+ * @param {Object} props DisplayLayer 组件属性
+ * @param {?Function} callback 操作完成时的回调函数
+ * @return {DisplayLayer}
+ * @function
+ */
+export const showPopover = (position, content, props = {}, callback = null) => {
     let {
         className,
         arrow,
@@ -155,7 +166,7 @@ const show = (position, content, props = {}, callback = null) => {
 };
 
 export default {
-    show,
+    show: showPopover,
     hide: Display.hide,
     remove: Display.remove
 };

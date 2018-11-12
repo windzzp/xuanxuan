@@ -8,19 +8,54 @@ import HTML from '../../utils/html-helper';
 import StringHelper from '../../utils/string-helper';
 import Lang from '../../lang';
 
-class UserChangePassword extends Component {
+/**
+ * UserChangePassword-Dialog 组件 ，显示修改用户密码界面
+ * @class UserChangePassword-Dialog
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import UserChangePassword-Dialog from './user-change-password-dialog';
+ * <UserChangePassword-Dialog />
+ */
+export class UserChangePassword extends Component {
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof UserChangePassword-Dialog
+     * @type {Object}
+     */
     static propTypes = {
         onFinish: PropTypes.func,
         className: PropTypes.string,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof UserChangePassword-Dialog
+     * @static
+     */
     static defaultProps = {
         onFinish: null,
         className: null,
     };
 
+    /**
+     * React 组件构造函数，创建一个 UserChangePassword-Dialog 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             oldPassword: '',
             password1: '',
@@ -30,16 +65,36 @@ class UserChangePassword extends Component {
         };
     }
 
+    /**
+     * 处理输入框值变更事件
+     * @param {string} name 属性名称
+     * @param {string} value 属性值
+     * @memberof UserChangePassword-Dialog
+     * @private
+     * @return {void}
+     */
     handleInputChange(name, value) {
         this.setState({[name]: value, message: ''});
     }
 
+    /**
+     * 处理取消按钮点击事件
+     * @memberof UserChangePassword-Dialog
+     * @private
+     * @return {void}
+     */
     handleCancelBtnClick = () => {
         if (this.props.onFinish) {
             this.props.onFinish(false);
         }
     }
 
+    /**
+     * 处理确定按钮点击事件
+     * @memberof UserChangePassword-Dialog
+     * @private
+     * @return {void}
+     */
     handleConfirmBtnClick = () => {
         if (StringHelper.isEmpty(this.state.password1)) {
             return this.setState({message: Lang.format('user.changePassword.inputRequired', Lang.string('user.changePassword.newPassword'))});
@@ -67,6 +122,14 @@ class UserChangePassword extends Component {
         });
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof UserChangePassword-Dialog
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             onFinish,
@@ -86,7 +149,12 @@ class UserChangePassword extends Component {
     }
 }
 
-const show = (callback) => {
+/**
+ * 显示修改密码对话框
+ * @param {function} callback 对话框显示回调函数
+ * @return {void}
+ */
+export const showUserChangePasswordDialog = (callback) => {
     const modalId = 'user-change-pwd';
     const onFinish = result => {
         Modal.hide(modalId);
@@ -104,5 +172,5 @@ const show = (callback) => {
 };
 
 export default {
-    show,
+    show: showUserChangePasswordDialog,
 };

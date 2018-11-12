@@ -1,6 +1,11 @@
 import 'ion-sound';
 import Config from '../../config';
 
+/**
+ * 初始化 ion-sound 声音播放模块
+ * @param {string} soundPath 声音媒体文件路径
+ * @return {void}
+ */
 const init = soundPath => {
     window.ion.sound({
         sounds: [
@@ -18,12 +23,18 @@ const init = soundPath => {
     }
 };
 
-const play = sound => {
+/**
+ * 播放声音
+ * @param {string} sound 声音名称
+ * @return {void}
+ */
+export const playSound = sound => {
     window.ion.sound.play(typeof sound === 'string' ? sound : null);
 };
 
+// 初始化 ion-sound 声音播放模块
 init(Config.media['sound.path']);
 
 export default {
-    play
+    play: playSound
 };

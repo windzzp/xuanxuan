@@ -3,7 +3,13 @@ import Modal from '../../components/modal';
 import App from '../../core';
 import {MemberProfile} from './member-profile';
 
-const show = (memberId, callback) => {
+/**
+ * 显示成员个人资料对话框
+ * @param {number|{id: number}} memberId 成员 ID 或成员对象
+ * @param {function} callback 对话框显示完成时的回调函数
+ * @return {void}
+ */
+export const showProfileDialog = (memberId, callback) => {
     if (typeof memberId === 'object') {
         memberId = memberId.id;
     }
@@ -18,5 +24,5 @@ const show = (memberId, callback) => {
 };
 
 export default {
-    show,
+    show: showProfileDialog,
 };

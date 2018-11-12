@@ -1,14 +1,22 @@
 import React from 'react';
 import Modal from '../../components/modal';
 import HotkeyInputControl from '../../components/hotkey-input-control';
-import App from '../../core';
+import {enableGlobalShortcut, disableGlobalShortcut} from '../../core/ui';
 
-const show = (title, defaultHotkey, onKeySelect, callback) => {
+/**
+ * 显示快捷键设置对话框
+ * @param {string} title 对话框标题
+ * @param {string} defaultHotkey 默认快捷键
+ * @param {function} onKeySelect 有按键按下时的回调函数
+ * @param {function} callback 对话框显示完成时的回调函数
+ * @return {void}
+ */
+export const showHotkeySettingDialog = (title, defaultHotkey, onKeySelect, callback) => {
     let userHotKey = defaultHotkey;
-    App.ui.disableGlobalShortcut();
+    disableGlobalShortcut();
     return Modal.show({
         title,
-        onHidden: App.ui.enableGlobalShortcut,
+        onHidden: enableGlobalShortcut,
         onSubmit: () => {
             if (userHotKey !== defaultHotkey && onKeySelect) {
                 onKeySelect(userHotKey);
@@ -26,5 +34,5 @@ const show = (title, defaultHotkey, onKeySelect, callback) => {
 };
 
 export default {
-    show,
+    show: showHotkeySettingDialog,
 };

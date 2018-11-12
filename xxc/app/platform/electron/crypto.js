@@ -1,9 +1,11 @@
 import crypto from 'crypto';
 
 /**
- * Encrypt data with aes
- * @param  {string} data
- * @return {Buffer}
+ * 使用 AES 加密文本
+ * @param  {string} data 要加密的文本字符串
+ * @param  {string} token AES key
+ * @param  {string} cipherIV AES token
+ * @return {Buffer} 返回加密后的 Buffer 数据
  */
 const encrypt = (data, token, cipherIV) => {
     const cipher = crypto.createCipheriv('aes-256-cbc', token, cipherIV);
@@ -14,9 +16,11 @@ const encrypt = (data, token, cipherIV) => {
 };
 
 /**
- * Decrypt data
- * @param  {Buffer} data
- * @return {string}
+ * 使用 AES 解密文本
+ * @param  {Buffer} data 要解密的 Buffer 数据
+ * @param  {string} token AES key
+ * @param  {string} cipherIV AES token
+ * @return {string} 返回解密后的文本
  */
 const decrypt = (data, token, cipherIV) => {
     const decipher = crypto.createDecipheriv('aes-256-cbc', token, cipherIV);

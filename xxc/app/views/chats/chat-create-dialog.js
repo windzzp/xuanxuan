@@ -3,7 +3,12 @@ import Modal from '../../components/modal';
 import {ChatCreateView} from './chat-create';
 import Lang from '../../lang';
 
-const show = (chat, callback) => {
+/**
+ * 显示创建聊天对话框
+ * @param {function} callback 显示完成后的回调函数
+ * @return {void}
+ */
+const showCreateChatDialog = (callback) => {
     const modalId = 'app-chat-create-dialog';
     return Modal.show({
         id: modalId,
@@ -22,5 +27,5 @@ const show = (chat, callback) => {
 };
 
 export default {
-    show,
+    show: showCreateChatDialog,
 };

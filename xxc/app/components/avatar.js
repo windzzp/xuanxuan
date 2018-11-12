@@ -1,35 +1,56 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../utils/html-helper';
+import {rem, classes} from '../utils/html-helper';
 import Skin from '../utils/skin';
 import Icon from './icon';
 
 /**
- * Avatar component
- *
- * @example <caption>Create a image avatar</caption>
+ * Avatar 组件 ，显示一个头像
+ * @class Avatar
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example <caption>使用图片创建头像</caption>
  * <Avatar image="http://example.com/user-avatar.png" />
  *
- * @example <caption>Create a avatar with text</caption>
+ * @example <caption>使用文本创建头像</caption>
  * <Avatar label="福" />
  *
- * @example <caption>Set avatar skin color</caption>
+ * @example <caption>应用 skin 外观</caption>
  * <Avatar label="福" skin="23" />
  *
- * @example <caption>Set avatar size</caption>
+ * @example <caption>应用尺寸</caption>
  * <Avatar label="福" size="48" />
- *
- * @export
- * @class Avatar
- * @extends {Component}
  */
 export default class Avatar extends PureComponent {
     /**
-     * Default properties values
-     *
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Avatar
-     * @return {Object}
+     * @type {Object}
+     */
+    static propTypes = {
+        auto: PropTypes.any,
+        skin: PropTypes.any,
+        image: PropTypes.any,
+        icon: PropTypes.any,
+        label: PropTypes.any,
+        size: PropTypes.number,
+        iconSize: PropTypes.number,
+        className: PropTypes.string,
+        foreColor: PropTypes.string,
+        imageClassName: PropTypes.string,
+        iconClassName: PropTypes.string,
+        style: PropTypes.object,
+        children: PropTypes.any
+    }
+
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof Avatar
+     * @static
      */
     static defaultProps = {
         skin: null,
@@ -48,28 +69,12 @@ export default class Avatar extends PureComponent {
     }
 
     /**
-     * Properties types
-     *
-     * @static
+     * 创建一个头像组件
+     * @param {any} avatar 头像内容
+     * @param {any} iconView 图标内容
+     * @return {ReactNode}
      * @memberof Avatar
-     * @return {Object}
      */
-    static propTypes = {
-        auto: PropTypes.any,
-        skin: PropTypes.any,
-        image: PropTypes.any,
-        icon: PropTypes.any,
-        label: PropTypes.any,
-        size: PropTypes.number,
-        iconSize: PropTypes.number,
-        className: PropTypes.string,
-        foreColor: PropTypes.string,
-        imageClassName: PropTypes.string,
-        iconClassName: PropTypes.string,
-        style: PropTypes.object,
-        children: PropTypes.any
-    }
-
     static render(avatar, iconView) {
         let avatarView = null;
         if (avatar) {
@@ -87,10 +92,12 @@ export default class Avatar extends PureComponent {
     }
 
     /**
-     * React render method
-     *
-     * @returns
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof Avatar
+     * @return {ReactNode}
      */
     render() {
         let {
@@ -112,7 +119,7 @@ export default class Avatar extends PureComponent {
 
         style = Object.assign(skin ? Skin.style(skin) : {}, style);
         if (size) {
-            style.width = HTML.rem(size);
+            style.width = rem(size);
             style.height = style.width;
 
             if (!iconSize) {
@@ -163,11 +170,13 @@ export default class Avatar extends PureComponent {
             }
         }
 
-        return (<div className={HTML.classes('avatar', className)} {...other} style={style}>
-            {imageView}
-            {iconView}
-            {labelView}
-            {children}
-        </div>);
+        return (
+            <div className={classes('avatar', className)} {...other} style={style}>
+                {imageView}
+                {iconView}
+                {labelView}
+                {children}
+            </div>
+        );
     }
 }

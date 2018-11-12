@@ -1,8 +1,21 @@
-const format = (str, ...args) => {
+/**
+ * 格式化字符串
+ * @param {string} str 要格式化的字符串
+ * @param  {...any} args 格式化参数
+ * @return  {string}
+ * @example <caption>通过参数序号格式化</caption>
+ *     var hello = $.format('{0} {1}!', 'Hello', 'world');
+ *     // hello 值为 'Hello world!'
+ * @example <caption>通过对象名称格式化</caption>
+ *     var say = $.format('Say {what} to {who}', {what: 'hello', who: 'you'});
+ *     // say 值为 'Say hello to you'
+ */
+export const formatString = (str, ...args) => {
     let result = str;
     if (args.length > 0) {
         let reg;
         if (args.length === 1 && (typeof args[0] === 'object')) {
+            // eslint-disable-next-line prefer-destructuring
             args = args[0];
             Object.keys(args).forEach(key => {
                 if (args[key] !== undefined) {
@@ -22,14 +35,26 @@ const format = (str, ...args) => {
     return result;
 };
 
-const BYTE_UNITS = {
+/**
+ * 字节单位表
+ * @type {Object}
+ */
+export const BYTE_UNITS = {
     B: 1,
     KB: 1024,
     MB: 1024 * 1024,
     GB: 1024 * 1024 * 1024,
     TB: 1024 * 1024 * 1024 * 1024,
 };
-const formatBytes = (size, fixed = 2, unit = '') => {
+
+/**
+ * 格式化字节值为包含单位的字符串
+ * @param {number} size 字节大小
+ * @param {number} [fixed=2] 保留的小数点尾数
+ * @param {string} [unit=''] 单位，如果留空，则自动使用最合适的单位
+ * @return {string}
+ */
+export const formatBytes = (size, fixed = 2, unit = '') => {
     if (!unit) {
         if (size < BYTE_UNITS.KB) {
             unit = 'B';
@@ -48,37 +73,33 @@ const formatBytes = (size, fixed = 2, unit = '') => {
 };
 
 /**
- * Check whether the string is undefined or null or empty
- * @param  {string}  s
+ * 检查字符串是否为未定义（`null` 或者 `undefined`）或者为空字符串
+ * @param  {string} s 要检查的字符串
  * @return {boolean}
  */
-const isEmpty = (s) => {
-    return s === undefined || s === null || s === '';
-};
+export const isEmptyString = s => (s === undefined || s === null || s === '');
 
 /**
- * Check whether the string is not undefined and null and empty
- * @param  {string}  s
+ * 检查字符串是否不是空字符串
+ * @param  {string} s 要检查的字符串
  * @return {boolean}
  */
-const isNotEmpty = (s) => {
-    return s !== undefined && s !== null && s !== '';
-};
+export const isNotEmptyString = s => (s !== undefined && s !== null && s !== '');
 
 /**
- * Return default string if the first string is empty
- *
- * @param {String} str
- * @param {String} thenStr
+ * 检查字符串是否不是空字符串，如果为空则返回第二个参数给定的字符串，否则返回字符串自身
+ * @param  {string} s 要检查的字符串
+ * @param  {string} thenStr 如果为空字符串时要返回的字符串
+ * @return {boolean}
  */
-const ifEmptyThen = (str, thenStr) => {
-    return isEmpty(str) ? thenStr : str;
+export const ifEmptyStringThen = (str, thenStr) => {
+    return isEmptyString(str) ? thenStr : str;
 };
 
 export default {
-    format,
-    isEmpty,
-    isNotEmpty,
+    format: formatString,
+    isEmpty: isEmptyString,
+    isNotEmpty: isNotEmptyString,
     formatBytes,
-    ifEmptyThen,
+    ifEmptyThen: ifEmptyStringThen,
 };

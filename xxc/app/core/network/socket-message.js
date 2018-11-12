@@ -1,16 +1,67 @@
-import Config from '../config';
+import Config from '../../config';
 
 /**
- * SocketMessage
+ * Socket 服务消息类
+ *
+ * @export
+ * @class SocketMessage
  */
-class SocketMessage {
+export default class SocketMessage {
+    /**
+     * 创建一个 Socket 服务消息类
+     * @param {Object<string, any>} data 属性数据对象
+     * @memberof SocketMessage
+     */
     constructor(data) {
+        /**
+         * 操作模块名称
+         * @type {string}
+         */
+        this.module = null;
+
+        /**
+         * 操作方法名称
+         * @type {string}
+         */
+        this.method = null;
+
+        /**
+         * 操作方法的参数
+         * @type {Array}
+         */
+        this.params = null;
+
+        /**
+         * 操作数据
+         * @type {any}
+         */
+        this.data = null;
+
+        /**
+         * 操作结果
+         * @type {string}
+         */
+        this.result = null;
+
+        /**
+         * 版本号
+         * @type {string}
+         */
+        this.v = null;
+
         Object.assign(this, {
             module: 'chat',
             v: Config.pkg.version
         }, data);
     }
 
+    /**
+     * 获取路径名称
+     *
+     * @type {string}
+     * @readonly
+     * @memberof SocketMessage
+     */
     get pathname() {
         const pathnames = [this.module];
         if (this.method !== undefined) {
@@ -20,25 +71,32 @@ class SocketMessage {
     }
 
     /**
-     * Stringify as json
-     * @return {string}
+     * 获取 JSON 字符串形式
+     *
+     * @memberof SocketMessage
+     * @type {string}
+     * @readonly
      */
     get json() {
         return JSON.stringify(this);
     }
 
     /**
-     * Check whether the socket message is success
-     * @return {boolean}
+     * 获取此消息待办的操作是否成功
+     *
+     * @memberof SocketMessage
+     * @type {string}
+     * @readonly
      */
     get isSuccess() {
         return this.result === 'success' || (this.result === undefined);
     }
 
     /**
-     * Create Scoket message from json string
-     * @param  {string} json
-     * @return {ScoketMessage}
+     * 从 JSON 字符串创建 SocketMessage 类实例，如果 JSON 内容是一个数组，则返回一个 SocketMessage 实例数组
+     * @param  {string} json JSON 字符串
+     * @static
+     * @return {ScoketMessage|ScoketMessage[]} SocketMessage 类实例或 SocketMessage 实例数组
      */
     static fromJSON(json) {
         try {
@@ -52,9 +110,7 @@ class SocketMessage {
             }
             if (typeof json !== 'string') json = json.toString();
             json = json.trim();
-            let lastCharCode;
             while (json.length && (json[json.length - 1] === '\n' || json.charCodeAt(json.length - 1) === 8)) {
-                lastCharCode = json.length && json.charCodeAt(json.length - 1);
                 json = json.substring(0, json.length - 1);
             }
             const firstEOF = json.indexOf('\n');
@@ -96,6 +152,14 @@ class SocketMessage {
         }
     }
 
+    /**
+     * 创建一个 SocketMessage 实例
+     *
+     * @static
+     * @param {Object|SocketMessage} msg 一个 SocketMessage 实例或者用于创建实例的属性对象
+     * @return {SocketMessage} SocketMessage 实例
+     * @memberof SocketMessage
+     */
     static create(msg) {
         if (typeof msg === 'string') {
             msg = {method: msg};
@@ -105,5 +169,3 @@ class SocketMessage {
         return new SocketMessage(msg);
     }
 }
-
-export default SocketMessage;

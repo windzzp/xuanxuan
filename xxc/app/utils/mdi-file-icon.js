@@ -1,3 +1,5 @@
+/** @module mdi-file-icon */
+
 /* eslint-disable */
 const ICON_file_document = 'file-document';
 const ICON_file_excel = 'file-excel';
@@ -27,7 +29,14 @@ const ICON_language_typescript = 'language-typescript';
 const ICON_markdown = 'markdown';
 /* eslint-enable */
 
-const icons = {
+/**
+ * 文件扩展名对应的图标查询表
+ * @type {Object.<string, string>}
+ * @constant
+ * @example
+ * const txtIcon = fileIcons['txt'];
+ */
+export const fileIcons = {
     txt: ICON_file_document,
     md: ICON_markdown,
     doc: ICON_file_word,
@@ -82,17 +91,20 @@ const icons = {
     py: ICON_language_python,
 };
 
-const getIcon = fileName => {
+/**
+ * 根据文件名称获取对应的图标
+ *
+ * @function
+ * @param {string} fileName 文件名
+ * @return {string}
+ */
+export default fileName => {
     if (fileName.includes('.')) {
         const ext = fileName.substr(fileName.lastIndexOf('.') + 1);
-        const icon = icons[ext.toLowerCase()];
+        const icon = fileIcons[ext.toLowerCase()];
         if (icon) {
             return icon;
         }
     }
     return 'file-outline';
-};
-
-export default {
-    getIcon
 };

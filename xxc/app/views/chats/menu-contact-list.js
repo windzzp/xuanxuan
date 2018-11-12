@@ -12,6 +12,11 @@ import {MemberListItem} from '../common/member-list-item';
 import UserProfileDialog from '../common/user-profile-dialog';
 import replaceViews from '../replace-views';
 
+/**
+ * 讨论组聊天类型表
+ * @type {{label: string, data: string}[]}
+ * @private
+ */
 const GROUP_TYPES = [
     {label: Lang.string('chats.menu.groupType.normal'), data: 'normal'},
     {label: Lang.string('chats.menu.groupType.category'), data: 'category'},
@@ -19,11 +24,37 @@ const GROUP_TYPES = [
     {label: Lang.string('chats.menu.groupType.dept'), data: 'dept'},
 ];
 
+/**
+ * MenuContactList 组件 ，显示联系人列表界面
+ * @class MenuContactList
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import MenuContactList from './menu-contact-list';
+ * <MenuContactList />
+ */
 export default class MenuContactList extends Component {
+    /**
+     * 获取 MenuContactList 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<MenuContactList>}
+     * @readonly
+     * @static
+     * @memberof MenuContactList
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {MenuContactList} from './menu-contact-list';
+     * <MenuContactList />
+     */
     static get MenuContactList() {
         return replaceViews('chats/menu-contact-list', MenuContactList);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof MenuContactList
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
         search: PropTypes.string,
@@ -31,6 +62,13 @@ export default class MenuContactList extends Component {
         children: PropTypes.any,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof MenuContactList
+     * @static
+     */
     static defaultProps = {
         className: null,
         search: null,
@@ -38,9 +76,21 @@ export default class MenuContactList extends Component {
         children: null,
     };
 
+    /**
+     * React 组件构造函数，创建一个 MenuContactList 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
         const user = App.user;
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             groupType: user ? user.config.contactsGroupByType : 'normal',
             dragging: false,
@@ -48,10 +98,21 @@ export default class MenuContactList extends Component {
         };
     }
 
+    /**
+     * 获取讨论组类型
+     * @memberof MenuContactList
+     * @type {string}
+     */
     get groupType() {
+        // eslint-disable-next-line react/destructuring-assignment
         return this.state.groupType;
     }
 
+    /**
+     * 设置讨论组类型
+     * @param {string} groupType 讨论组类型
+     * @memberof MenuContactList
+     */
     set groupType(groupType) {
         this.setState({groupType}, () => {
             const user = App.user;
@@ -61,10 +122,23 @@ export default class MenuContactList extends Component {
         });
     }
 
+    /**
+     * 处理点击个人资料条目事件
+     * @memberof MenuContactList
+     * @private
+     * @return {void}
+     */
     handleUserItemClick = () => {
         UserProfileDialog.show();
     };
 
+    /**
+     * 处理列表设置按钮点击事件
+     * @param {Event} e 事件对象
+     * @memberof MenuContactList
+     * @private
+     * @return {void}
+     */
     handleSettingBtnClick = e => {
         const groupType = this.groupType;
         const menus = GROUP_TYPES.map(type => ({
@@ -82,6 +156,13 @@ export default class MenuContactList extends Component {
         e.stopPropagation();
     };
 
+    /**
+     * 处理联系人右键菜单事件
+     * @param {Event} event 事件对象
+     * @memberof MenuContactList
+     * @private
+     * @return {void}
+     */
     handleItemContextMenu = (event) => {
         const chat = App.im.chats.get(event.currentTarget.attributes['data-gid'].value);
         showContextMenu('chat.menu', {
@@ -92,20 +173,52 @@ export default class MenuContactList extends Component {
         });
     }
 
+    /**
+     * 渲染联系人聊天条目
+     *
+     * @param {Chat} chat 聊天对象
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     * @private
+     * @memberof MenuContactList
+     */
     itemCreator = chat => {
         return <ChatListItem onContextMenu={this.handleItemContextMenu} data-gid={chat.gid} key={chat.gid} filterType={this.props.filter} chat={chat} className="item" />;
     };
 
+    /**
+     * 处理分组标题右键菜单事件
+     * @param {Object} group 分组信息
+     * @param {Event} event 事件对象
+     * @memberof MenuContactList
+     * @private
+     * @return {void}
+     */
     handleHeadingContextMenu(group, event) {
         showContextMenu('chat.group', {group, event});
     }
 
+    /**
+     * 处理分组拖放事件
+     * @param {Object} group 分组信息
+     * @param {Event} e 事件对象
+     * @memberof MenuContactList
+     * @private
+     * @return {void}
+     */
     handleDragOver(group, e) {
         if (!this.state.dropTarget || this.state.dropTarget.id !== group.id) {
             this.setState({dropTarget: group});
         }
     }
 
+    /**
+     * 处理分组拖放完成事件
+     * @param {Object} group 分组信息
+     * @param {Event} e 事件对象
+     * @memberof MenuContactList
+     * @private
+     * @return {void}
+     */
     handleDrop(group, e) {
         const {dragging, dropTarget} = this.state;
         if (dragging && dropTarget && dragging.id !== dropTarget.id) {
@@ -125,6 +238,14 @@ export default class MenuContactList extends Component {
         e.stopPropagation();
     }
 
+    /**
+     * 处理分组拖放开始事件
+     * @param {Object} group 分组信息
+     * @param {Event} e 事件对象
+     * @memberof MenuContactList
+     * @private
+     * @return {void}
+     */
     handleDragStart(group, e) {
         this.setState({dragging: group});
         this.sortedGroups = this.groupChats;
@@ -132,12 +253,29 @@ export default class MenuContactList extends Component {
         return true;
     }
 
+    /**
+     * 处理分组拖放结束事件
+     * @param {Object} group 分组信息
+     * @param {Event} e 事件对象
+     * @memberof MenuContactList
+     * @private
+     * @return {void}
+     */
     handleDragEnd(group, e) {
         this.setState({dragging: false});
         e.stopPropagation();
         return true;
     }
 
+    /**
+     * 创建分组标题条目
+     *
+     * @param {Object} group 分组信息
+     * @param {Object} groupList 分组列表
+     * @memberof MenuContactList
+     * @private
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     headingCreator = (group, groupList) => {
         const icon = groupList.isExpand ? groupList.props.expandIcon : groupList.props.collapseIcon;
         let iconView = null;
@@ -179,6 +317,14 @@ export default class MenuContactList extends Component {
         </header>);
     };
 
+    /**
+     * 判断分组是否默认为展开状态
+     *
+     * @param {Object} group 分组信息
+     * @memberof MenuContactList
+     * @returns {boolean} 如果返回 `true` 则为是展开状态，否则为不是展开状态
+     * @private
+     */
     defaultExpand = (group) => {
         return !!group.list.find(item => {
             if (item.type === 'group') {
@@ -192,10 +338,27 @@ export default class MenuContactList extends Component {
         });
     };
 
+    /**
+     * 处理分组展开折叠变更事件
+     * @param {boolean} expanded 是否展开
+     * @param {Object} group 分组信息
+     * @memberof MenuContactList
+     * @private
+     * @return {void}
+     */
     onExpandChange = (expanded, group) => {
         App.profile.userConfig.setChatMenuGroupState('contacts', this.groupType, group.id, expanded);
     };
 
+    /**
+     * MenuContactList 组件 ，显示MenuContactList界面
+     * @class MenuContactList
+     * @see https://react.docschina.org/docs/components-and-props.html
+     * @extends {Component}
+     * @example @lang jsx
+     * import MenuContactList from './menu-contact-list';
+     * <MenuContactList />
+     */
     render() {
         const {
             search,

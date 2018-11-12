@@ -71,3 +71,6 @@ issues.md
 # xxd tmp files
 xxd/tmpfile
 
+# documentation
+docs/output
+

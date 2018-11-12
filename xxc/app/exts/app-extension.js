@@ -54,9 +54,9 @@ export default class AppExtension extends Extension {
         return this._webViewUrl;
     }
 
-    getEntryUrl(referer = null) {
+    getEntryUrl(referer = null, entryID = null) {
         if (this.hasServerEntry) {
-            return super.getEntryUrl(referer);
+            return super.getEntryUrl(referer, entryID);
         }
         return Promise.resolve(this.webViewUrl);
     }

@@ -1,10 +1,15 @@
 import React, {Component} from 'react';
 import Popover from '../../components/popover';
 import Lang from '../../lang';
-import App from '../../core';
+import profile from '../../core/profile';
 import DelayAction from '../../utils/delay-action';
 import replaceViews from '../replace-views';
 
+/**
+ * 默认字体设置
+ * @type {{size: number, lineHeight: number, title: number, titleLineHeight: number}}
+ * @private
+ */
 const DEFAULT_CONFIG = {
     size: 13,
     lineHeight: 1.5384615385,
@@ -12,6 +17,11 @@ const DEFAULT_CONFIG = {
     titleLineHeight: 1.53846153846
 };
 
+/**
+ * 所有字体设置
+ * @type {{size: number, lineHeight: number, title: number, titleLineHeight: number}[]}
+ * @private
+ */
 const CONFIGS = [
     {
         size: 12,
@@ -56,16 +66,41 @@ const CONFIGS = [
     }
 ];
 
-class ChangeFontView extends Component {
+/**
+ * ChatChangeFont-Popover 组件 ，显示一个聊天字体设置界面
+ * @class ChatChangeFont-Popover
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import ChatChangeFont-Popover from './chat-change-font-popover';
+ * <ChatChangeFont-Popover />
+ */
+export class ChangeFontView extends Component {
+    /**
+     * 获取 ChatChangeFont-Popover 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<ChatChangeFont-Popover>}
+     * @readonly
+     * @static
+     * @memberof ChatChangeFont-Popover
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {ChatChangeFont-Popover} from './chat-change-font-popover';
+     * <ChatChangeFont-Popover />
+     */
     static get ChangeFontView() {
         return replaceViews('chats/chat-change-font-popover', ChangeFontView);
     }
 
+    /**
+     * React 组件构造函数，创建一个 ChatChangeFont-Popover 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
         this.state = {select: 1};
 
-        const userFontSize = App.profile.userConfig.chatFontSize;
+        const userFontSize = profile.userConfig.chatFontSize;
         if (userFontSize) {
             const userIndex = CONFIGS.findIndex(x => x.size === userFontSize.size);
             if (userIndex > -1) {
@@ -74,40 +109,81 @@ class ChangeFontView extends Component {
         }
 
         this.changeFontSizeTask = new DelayAction(() => {
-            App.profile.userConfig.chatFontSize = CONFIGS[this.state.select];
+            const {select} = this.state;
+            profile.userConfig.chatFontSize = CONFIGS[select];
         }, 200);
     }
 
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof ChatChangeFont-Popover
+     * @return {void}
+     */
     componentWillUnmount() {
         if (!this.changeFontSizeTask.isDone) {
             this.changeFontSizeTask.doIm();
         }
     }
 
+    /**
+     * 处理刻度条变更事件
+     * @param {Event} e 事件对象
+     * @memberof ChatChangeFont-Popover
+     * @private
+     * @return {void}
+     */
     handleSliderChange = e => {
         const select = parseInt(e.target.value, 10);
         this.setState({select});
         this.changeFontSizeTask.do(select);
     }
 
-    handleResetBtnClick = () => {
+    /**
+     * 处理重置按钮点击事件
+     * @param {Event} event 事件对象
+     * @memberof ChatChangeFont-Popover
+     * @private
+     * @return {void}
+     */
+    handleResetBtnClick = (event) => {
         this.setState({select: 1});
         this.changeFontSizeTask.do(1);
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof ChatChangeFont-Popover
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
-        const currentConfig = CONFIGS[this.state.select];
-        return (<div className="box">
-            <div className="flex space space-between">
-                <strong>{Lang.string('chat.sendbox.toolbar.setFontSize')}</strong>
-                <small className="text-gray">{Lang.format('chat.fontSize.current.format', currentConfig.size)}px  {this.state.select !== 1 ? <a className="text-primary" onClick={this.handleResetBtnClick}>{Lang.string('chat.fontSize.resetDefault')}</a> : null}</small>
+        const {select} = this.state;
+        const currentConfig = CONFIGS[select];
+        return (
+            <div className="box">
+                <div className="flex space space-between">
+                    <strong>{Lang.string('chat.sendbox.toolbar.setFontSize')}</strong>
+                    <small className="text-gray">{Lang.format('chat.fontSize.current.format', currentConfig.size)}px  {select !== 1 ? <a className="text-primary" onClick={this.handleResetBtnClick}>{Lang.string('chat.fontSize.resetDefault')}</a> : null}</small>
+                </div>
+                <input className="fluid" type="range" min="0" value={select} max={CONFIGS.length - 1} step="1" onChange={this.handleSliderChange} />
             </div>
-            <input className="fluid" type="range" min="0" value={this.state.select} max={CONFIGS.length - 1} step="1" onChange={this.handleSliderChange} />
-        </div>);
+        );
     }
 }
 
-const show = (position, callback) => {
+/**
+ * 显示聊天字体设置弹出面板
+ * @param {{x: number, y: number}} position 显示位置
+ * @param {function} callback 显示完成后的回调函数
+ */
+export const showChangeFontPopover = (position, callback) => {
     const popoverId = 'app-chat-change-font-popover';
     return Popover.show(
         position,
@@ -118,5 +194,5 @@ const show = (position, callback) => {
 };
 
 export default {
-    show
+    show: showChangeFontPopover
 };

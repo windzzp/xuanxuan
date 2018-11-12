@@ -10,7 +10,37 @@ import {MemberList} from '../common/member-list';
 import ROUTES from '../common/routes';
 import replaceViews from '../replace-views';
 
-class ChatInvite extends Component {
+/**
+ * ChatInvite 组件 ，显示邀请其他成员加入聊天界面
+ * @class ChatInvite
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import ChatInvite from './chat-invite';
+ * <ChatInvite />
+ */
+export default class ChatInvite extends Component {
+    /**
+     * 获取 ChatInvite 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<ChatInvite>}
+     * @readonly
+     * @static
+     * @memberof ChatInvite
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {ChatInvite} from './chat-invite';
+     * <ChatInvite />
+     */
+    static get ChatInvite() {
+        return replaceViews('chats/chat-invite', ChatInvite);
+    }
+
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof ChatInvite
+     * @type {Object}
+     */
     static propTypes = {
         chat: PropTypes.object,
         className: PropTypes.string,
@@ -18,6 +48,13 @@ class ChatInvite extends Component {
         onRequestClose: PropTypes.func,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof ChatInvite
+     * @static
+     */
     static defaultProps = {
         chat: null,
         className: null,
@@ -25,22 +62,45 @@ class ChatInvite extends Component {
         onRequestClose: null,
     };
 
-    static get ChatInvite() {
-        return replaceViews('chats/chat-invite', ChatInvite);
-    }
-
+    /**
+     * React 组件构造函数，创建一个 ChatInvite 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             choosed: {},
             search: '',
         };
     }
 
+    /**
+     * 处理搜索框变更事件
+     *
+     * @param {string} search 搜索字符串
+     * @private
+     * @memberof ChatInvite
+     * @return {void}
+     */
     handleSearchChange = search => {
         this.setState({search});
     };
 
+    /**
+     * 处理成员点击事件
+     * @param {Member} member 成员
+     * @memberof ChatInvite
+     * @private
+     * @return {void}
+     */
     handleMemberItemClick(member) {
         const {choosed} = this.state;
         if (choosed[member.id]) {
@@ -51,12 +111,25 @@ class ChatInvite extends Component {
         this.setState({choosed});
     }
 
+    /**
+     * 处理请求关闭父级对话框
+     * @private
+     * @return {void}
+     * @memberof ChatInvite
+     */
     requestClose() {
         if (this.props.onRequestClose) {
             this.props.onRequestClose();
         }
     }
 
+    /**
+     * 处理邀请按钮点击事件
+     * @param {Event} e 事件对象
+     * @memberof ChatInvite
+     * @private
+     * @return {void}
+     */
     handleInviteBtnClick = e => {
         const {chat} = this.props;
         const {choosed} = this.state;
@@ -88,6 +161,14 @@ class ChatInvite extends Component {
         }
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof ChatInvite
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             chat,
@@ -131,5 +212,3 @@ class ChatInvite extends Component {
         </div>);
     }
 }
-
-export default ChatInvite;

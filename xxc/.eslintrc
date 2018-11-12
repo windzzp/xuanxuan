@@ -63,10 +63,11 @@
     "import/no-unresolved": "warn",
     "import/extensions": "off",
     "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
-    "compat/compat": "warn",
     "class-methods-use-this": "warn",
     "no-lonely-if": "warn",
-    "react/jsx-no-target-blank": "warn"
+    "react/jsx-no-target-blank": "warn",
+    "react/jsx-one-expression-per-line": "off",
+    "valid-jsdoc": "warn"
   },
   "plugins": [
     "import",

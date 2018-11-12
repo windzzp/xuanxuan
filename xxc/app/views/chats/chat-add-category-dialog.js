@@ -1,19 +1,19 @@
 import React from 'react';
 import Modal from '../../components/modal';
-import {ChatAddCategory} from './chat-add-category';
+import ChatAddCategory from './chat-add-category';
 import Lang from '../../lang';
-import App from '../../core';
+import {setChatCategory} from '../../core/im/im-server';
 
-const show = (chat, callback) => {
+const showChatAddCategoryDialog = (chat, callback) => {
     const modalId = 'app-chat-add-category-dialog';
     let chatAddCategory = null;
     return Modal.show({
         id: modalId,
         title: Lang.string('chats.menu.group.add'),
         style: {width: 400},
-        content: <ChatAddCategory ref={e => {chatAddCategory = e;}} chat={chat} />,
+        content: <ChatAddCategory.ChatAddCategory ref={e => {chatAddCategory = e;}} chat={chat} />,
         onSubmit: () => {
-            const category = chatAddCategory.category;
+            const {category} = chatAddCategory;
             const oldName = chat.category;
             if (category.name === oldName) {
                 return;
@@ -24,11 +24,11 @@ const show = (chat, callback) => {
                     return false;
                 }
             }
-            App.im.server.setChatCategory(chat, category.name);
+            setChatCategory(chat, category.name);
         }
     }, callback);
 };
 
 export default {
-    show,
+    show: showChatAddCategoryDialog,
 };

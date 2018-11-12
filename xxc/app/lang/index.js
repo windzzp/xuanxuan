@@ -1,34 +1,55 @@
 import LANG_ZH_CN from './zh-cn.json';
-import {format as formatString} from '../utils/string-helper';
+import {formatString} from '../utils/string-helper';
 
+/**
+ * 默认语言代号
+ * @type {string}
+ * @private
+ */
 const DEFAULT_LANG = 'zh-cn';
 
-const currentLangName = DEFAULT_LANG;
+/**
+ * 当前语言代号
+ * @type {string}
+ */
+export const currentLangName = DEFAULT_LANG;
+
+/**
+ * 语言表对象
+ * @private
+ * @type {Object<string, string>}
+ */
 let langData = Object.assign({}, LANG_ZH_CN);
 
-const update = (newLangData) => {
+/**
+ * 更新语言表
+ * @param {Object<string, string>} newLangData 新的语言表
+ * @return {void}
+ */
+export const updateLangData = (newLangData) => {
     langData = Object.assign(langData, newLangData);
 };
 
 /**
- * Get language setting and return string
- * @param  {string} name
- * @param  {string} defaultValue
- * @return {string}
+ * 根据语言配置名称获取语言文本
+ * @param  {string} name 语言配置名称
+ * @param  {string} defaultValue 默认语言文本，如果没有在语言表中找到语言文本则返回此值
+ * @return {string} 语言文本
  */
-const string = (name, defaultValue) => {
+export const langString = (name, defaultValue) => {
     const value = langData[name];
     return value === undefined ? defaultValue : value;
 };
 
 /**
- * Format language string
+ * 获取使用参数格式化的语言文本
  *
- * @param {String} name
- * @param {Array} args
+ * @param {string} name 语言配置名称
+ * @param {...any} args 格式化参数
+ * @return {string} 语言文本
  */
-const format = (name, ...args) => {
-    const str = string(name);
+export const langFormat = (name, ...args) => {
+    const str = langString(name);
     if (args && args.length) {
         try {
             return formatString(str, ...args);
@@ -40,21 +61,21 @@ const format = (name, ...args) => {
 };
 
 /**
- * Error
+ * 获取错误信息对应的语言文本
  *
- * @param {any} err
- * @memberof Lang
+ * @param {string|Error} err 错误信息或错误对象本身
+ * @return {string}
  */
-const error = err => {
+export const langError = err => {
     if (typeof err === 'string') {
-        return string(`error.${err}`, err);
+        return langString(`error.${err}`, err);
     }
     let message = '';
     if (err.code) {
-        message += string(`error.${err.code}`, `[Code: ${err.code}]`);
+        message += langString(`error.${err.code}`, `[Code: ${err.code}]`);
     }
     if (err.message && err.message !== err.code) {
-        message += '(' + string(`error.${err.message}`, err.message) + ')';
+        message += '(' + langString(`error.${err.message}`, err.message) + ')';
     }
     if (err.formats) {
         if (!Array.isArray(err.formats)) {
@@ -71,10 +92,10 @@ const error = err => {
 };
 
 export default {
-    update,
-    format,
-    string,
-    error,
+    update: updateLangData,
+    format: langFormat,
+    string: langString,
+    error: langError,
 
     get data() {
         return langData;

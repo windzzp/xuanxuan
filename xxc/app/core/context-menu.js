@@ -4,13 +4,28 @@ import timeSquence from '../utils/time-sequence';
 import Lang from '../lang';
 import {isWebUrl} from '../utils/html-helper';
 
-// Store all inner creators
+/**
+ * 存储所有上下文菜单生成器
+ * @type {Object<string, Object>}
+ * @private
+ */
 const contextMenuCreators = {};
 
+/**
+ * 判断一个上下文菜单项目是否是分隔线
+ * @param {string|Object} item 要判断的上下文菜单项
+ * @return {boolean}
+ * @private
+ */
 const isDividerItem = item => {
     return item === 'divider' || item === '-' || item === 'separator' || item.type === 'divider';
 };
 
+/**
+ * 判定上下文菜单项列表最后一项是否为分隔线，如果是则移除它
+ * @param {Object[]} items 上下文菜单项列表
+ * @return {Object[]} 修改后的上下文菜单项列表
+ */
 export const tryRemoveLastDivider = items => {
     if (items.length && isDividerItem(items[items.length - 1])) {
         items.pop();
@@ -18,6 +33,11 @@ export const tryRemoveLastDivider = items => {
     return items;
 };
 
+/**
+ * 判定上下文菜单项列表最后一项是否为分隔线，如果不是则添加一个分隔线项目到列表末尾
+ * @param {Object[]} items 上下文菜单项列表
+ * @return {Object[]} 修改后的上下文菜单项列表
+ */
 export const tryAddDividerItem = items => {
     if (items.length && !isDividerItem(items[items.length - 1])) {
         items.push('divider');
@@ -25,6 +45,17 @@ export const tryAddDividerItem = items => {
     return items;
 };
 
+/**
+ * 判定给定的上下文菜单生成器是否符合给定的名称
+ * @param {Object<string, any>} creator 要判断的上下文菜单生成器
+ * @param {?Function(context: Object)} creator.create 生成菜单项列表的回调函数，create 和 items 属性只能设置一个
+ * @param {?Object[]} creator.items 固定的菜单项列表，create 和 items 属性只能设置一个
+ * @param {?string} creator.id 生成器 ID，如果不指定则自动生成
+ * @param {string|string[]} creator.match 匹配的上下文名称，多个上下文名称通过字符串数组或者使用英文逗号拼接为一个字符串
+ * @param {?Function(context: Object)} createFunc 生成菜单项列表的回调函数
+ * @param {string} contextName 上下文菜单名称
+ * @return {boolean}
+ */
 export const isCreatorMatch = (creator, contextName) => {
     if (typeof creator.match === 'string') {
         creator.match = creator.match.split(',');
@@ -35,6 +66,17 @@ export const isCreatorMatch = (creator, contextName) => {
     return creator.match && creator.match.has(contextName);
 };
 
+/**
+ * 通过上下文菜单生成器生成菜单项列表
+ * @param {Object<string, any>} creator 上下文菜单生成器
+ * @param {?Function(context: Object)} creator.create 生成菜单项列表的回调函数，create 和 items 属性只能设置一个
+ * @param {?Object[]} creator.items 固定的菜单项列表，create 和 items 属性只能设置一个
+ * @param {?string} creator.id 生成器 ID，如果不指定则自动生成
+ * @param {string|string[]} creator.match 匹配的上下文名称，多个上下文名称通过字符串数组或者使用英文逗号拼接为一个字符串
+ * @param {?Function(context: Object)} createFunc 生成菜单项列表的回调函数
+ * @param {Object} context 上下文参数对象
+ * @return {Object[]}
+ */
 const getMenuItemsFromCreator = (creator, context) => {
     const menuItems = creator.items || [];
     if (creator.create) {
@@ -46,6 +88,12 @@ const getMenuItemsFromCreator = (creator, context) => {
     return menuItems;
 };
 
+/**
+ * 通过内部上下文菜单生成器获取指定上下文名称对应的上下文菜单项列表
+ * @param {sring} contextName 上下文名称
+ * @param {Object} context 上下文参数对象
+ * @return {Object[]}
+ */
 const getInnerMenuItemsForContext = (contextName, context) => {
     const items = [];
     Object.keys(contextMenuCreators).forEach(creatorId => {
@@ -60,6 +108,16 @@ const getInnerMenuItemsForContext = (contextName, context) => {
     return items;
 };
 
+/**
+ * 将一个上下文菜单生成器注册到系统
+ * @param {Object<string, any>} creator 上下文菜单生成器
+ * @param {?Function(context: Object)} creator.create 生成菜单项列表的回调函数，create 和 items 属性只能设置一个
+ * @param {?Object[]} creator.items 固定的菜单项列表，create 和 items 属性只能设置一个
+ * @param {?string} creator.id 生成器 ID，如果不指定则自动生成
+ * @param {string|string[]} creator.match 匹配的上下文名称，多个上下文名称通过字符串数组或者使用英文逗号拼接为一个字符串
+ * @param {?Function(context: Object)} createFunc 生成菜单项列表的回调函数
+ * @return {string} 生成器 ID
+ */
 export const addContextMenuCreator = (creator, createFunc) => {
     if (Array.isArray(creator)) {
         return creator.map(c => addContextMenuCreator(c));
@@ -85,6 +143,11 @@ export const addContextMenuCreator = (creator, createFunc) => {
     return creator.id;
 };
 
+/**
+ * 从系统移除一个上下文菜单生成器
+ * @param {string} creatorId 要移除的上下文生成器 ID
+ * @return {boolean}
+ */
 export const removeContextMenuCreator = creatorId => {
     if (contextMenuCreators[creatorId]) {
         delete contextMenuCreators[creatorId];
@@ -93,6 +156,12 @@ export const removeContextMenuCreator = creatorId => {
     return false;
 };
 
+/**
+ * 获取指定上下文名称对应的上下文菜单项列表
+ * @param {sring} contextName 上下文名称
+ * @param {Object} [context={}] 上下文参数对象
+ * @return {Object[]}
+ */
 export const getMenuItemsForContext = (contextName, context = {}) => {
     const {event, options} = context;
     const items = [];
@@ -169,6 +238,13 @@ export const getMenuItemsForContext = (contextName, context = {}) => {
     return items;
 };
 
+/**
+ * 在界面上显示上下文菜单
+ * @param {string} contextName 上下文名称
+ * @param {!Object} context 上下文参数对象
+ * @param {!Event} context.event 触发上下文菜单的界面事件（例如用户点击事件）
+ * @return {boolean} 如果为 `true` 则成功显示上下文菜单，如果为 `false` 则无法显示上下文菜单
+ */
 export const showContextMenu = (contextName, context) => {
     if (!context) {
         throw new Error('Context must be set.');
@@ -213,6 +289,7 @@ export const showContextMenu = (contextName, context) => {
     return false;
 };
 
+// 添加链接上下文菜单生成器
 addContextMenuCreator('link', context => {
     const {event, options} = context;
     const link = options && options.url ? options.url : event.target.href;
@@ -250,6 +327,7 @@ addContextMenuCreator('link', context => {
 });
 
 if (Platform.clipboard && Platform.clipboard.writeText) {
+    // 添加 Emoji 表情操作上下文菜单
     addContextMenuCreator('emoji', context => {
         const {emoji} = context;
         if (emoji) {

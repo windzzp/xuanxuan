@@ -1,13 +1,21 @@
 import Config from '../config';
 
+/**
+ * 是否为类浏览器环境
+ * @type {boolean}
+ * @private
+ * @const
+ */
+const isBrowserEnv = process.browser || process.type === 'renderer';
+
 if (typeof DEBUG === 'undefined') {
-    global.DEBUG = process.env.NODE_ENV === 'debug' || process.env.NODE_ENV === 'development';
+    global.DEBUG = process.env.NODE_ENV === 'debug' || process.env.NODE_ENV === 'development' || ((isBrowserEnv) && global.window.location.search.includes('debug=1'));
 } else {
     global.DEBUG = DEBUG;
 }
 
 if (DEBUG) {
-    // Mute react router warning.
+    // 移除 react router 的警告信息
     console._error = console.error;
     console.error = (errMessage, ...args) => {
         if (typeof errMessage === 'string' && (errMessage.indexOf('Warning: Hash history cannot PUSH the same path;') === 0 || errMessage.startsWith('Warning: Failed prop type: Prop paneStyle passed to SplitPane. Has invalid keys userSelect') || errMessage.startsWith('Warning: Failed prop type: Prop style passed'))) {
@@ -16,7 +24,7 @@ if (DEBUG) {
         return console._error(errMessage, ...args);
     };
 
-    // Mute react router warning.
+    // 移除 react router 的警告信息
     console._warn = console.warn;
     console.warn = (errMessage, ...args) => {
         if (typeof errMessage === 'string' && errMessage.startsWith('iterable.length has been deprecated, use iterable.size or iterable.count')) {
@@ -25,7 +33,8 @@ if (DEBUG) {
         return console._warn(errMessage, ...args);
     };
 
-    if (process.browser || process.type === 'renderer') {
+    // 美化浏览器端环境日志输出
+    if (isBrowserEnv) {
         const STYLE = {
             rounded: 'border-radius: 3px;',
             block: 'display: block;',

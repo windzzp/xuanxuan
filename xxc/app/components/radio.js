@@ -4,35 +4,20 @@ import HTML from '../utils/html-helper';
 import timeSequence from '../utils/time-sequence';
 
 /**
- * Radio component
- *
- * @export
+ * Radio 组件 ，显示一个单选控件
  * @class Radio
+ * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
+ * @example
+ * <Radio />
  */
 export default class Radio extends Component {
     /**
-     * Default properties values
-     *
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Radio
-     */
-    static defaultProps = {
-        checked: false,
-        label: null,
-        className: null,
-        inputProps: null,
-        onChange: null,
-        children: null,
-        innerView: null,
-        disabled: false,
-    }
-
-    /**
-     * Properties types
-     *
-     * @static
-     * @memberof Radio
+     * @type {Object}
      */
     static propTypes = {
         checked: PropTypes.bool,
@@ -48,19 +33,46 @@ export default class Radio extends Component {
     }
 
     /**
-     * Create an instance of radio component
-     * @param {any} props
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
      * @memberof Radio
+     * @static
+     */
+    static defaultProps = {
+        checked: false,
+        label: null,
+        className: null,
+        inputProps: null,
+        onChange: null,
+        children: null,
+        innerView: null,
+        disabled: false,
+    }
+
+    /**
+     * React 组件构造函数，创建一个 Radio 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
      */
     constructor(props) {
         super(props);
+
+        /**
+         * 控件 ID
+         * @private
+         * @type {string}
+         */
         this._controlId = `radio-${timeSequence()}`;
     }
 
     /**
-     * Handle radio change event
-     * @private
+     * 处理值变更事件
+     * @param {Event} e 事件对象
      * @memberof Radio
+     * @private
+     * @return {void}
      */
     handleRadioChange = e => {
         const {onChange, name, value} = this.props;
@@ -70,10 +82,12 @@ export default class Radio extends Component {
     };
 
     /**
-     * React render method
-     *
-     * @returns
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof Radio
+     * @return {ReactNode}
      */
     render() {
         const {

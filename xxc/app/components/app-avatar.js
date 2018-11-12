@@ -1,37 +1,30 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../utils/html-helper';
+import {classes} from '../utils/html-helper';
 import Avatar from './avatar';
 
 /**
- * AppAvatar component
- *
- * @export
- * @class AppAvatar
- * @extends {Component}
- */
+* AppAvatar 组件 ，显示一个应用图标
+* @class AppAvatar
+* @see https://react.docschina.org/docs/components-and-props.html
+* @extends {PureComponent}
+* @example <caption>导入组件</caption>
+* import AppAvatar from './components/app-avatar';
+* @example
+* <AppAvatar />
+* @reactProps {string|Object|ReactNode} avatar 头像或者用于创建头像的值
+* @reactProps {string|ReactNode} label 应用名称
+* @reactProps {string} className CSS 类名
+* @reactProps {string} children 子组件
+*/
 export default class AppAvatar extends PureComponent {
     /**
-     * Default properties values
-     *
-     * @static
-     * @memberof AppAvatar
-     * @return {Object}
-     */
-    static defaultProps = {
-        avatar: null,
-        label: null,
-        className: null,
-        children: null,
-    }
-
-    /**
-     * Properties types
-     *
-     * @static
-     * @memberof AppAvatar
-     * @return {Object}
-     */
+    * React 组件属性类型检查
+    * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+    * @static
+    * @memberof AppAvatar
+    * @return {Object}
+    */
     static propTypes = {
         avatar: PropTypes.any,
         label: PropTypes.any,
@@ -40,11 +33,27 @@ export default class AppAvatar extends PureComponent {
     }
 
     /**
-     * React render method
-     *
-     * @returns
-     * @memberof AppAvatar
-     */
+    * React 组件默认属性
+    * @see https://react.docschina.org/docs/react-component.html#defaultprops
+    * @type {object}
+    * @memberof AppAvatar
+    * @static
+    */
+    static defaultProps = {
+        avatar: null,
+        label: null,
+        className: null,
+        children: null,
+    }
+
+    /**
+    * React 组件生命周期函数：Render
+    * @private
+    * @see https://doc.react-china.org/docs/react-component.html#render
+    * @see https://doc.react-china.org/docs/rendering-elements.html
+    * @memberof AppAvatar
+    * @return {ReactNode}
+    */
     render() {
         const {
             avatar,
@@ -70,10 +79,15 @@ export default class AppAvatar extends PureComponent {
             labelView = <div className="text">{label}</div>;
         }
 
-        return (<a className={HTML.classes('app-avatar', className)} {...other}>
-            {avatarView}
-            {labelView}
-            {children}
-        </a>);
+        return (
+            <a
+                className={classes('app-avatar', className)}
+                {...other}
+            >
+                {avatarView}
+                {labelView}
+                {children}
+            </a>
+        );
     }
 }

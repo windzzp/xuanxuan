@@ -11,26 +11,73 @@ import {ChatsDndContainer} from './chats-dnd-container';
 import {ChatsSuggestPanel} from './chats-suggest-panel';
 import replaceViews from '../replace-views';
 
+/**
+ * Index 组件 ，显示聊天主界面
+ * @class Index
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import Index from './index';
+ * <Index />
+ */
 export default class Index extends Component {
+    /**
+     * 获取 Index 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<Index>}
+     * @readonly
+     * @static
+     * @memberof Index
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {Index} from './index';
+     * <Index />
+     */
     static get Index() {
         return replaceViews('chats/index', Index);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof Index
+     * @type {Object}
+     */
     static propTypes = {
         match: PropTypes.object.isRequired,
         hidden: PropTypes.bool,
         className: PropTypes.string,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof Index
+     * @static
+     */
     static defaultProps = {
         hidden: false,
         className: null,
     };
 
+    /**
+     * 处理聊天缓存界面点击点击事件
+     * @memberof Index
+     * @private
+     * @return {void}
+     */
     handChatsCacheClick = () => {
         App.ui.showMobileChatsMenu(false);
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof Index
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             hidden,

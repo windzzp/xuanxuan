@@ -38,8 +38,8 @@ export const setCommandContext = (data) => {
  * 获取当前命令上下文参数
  * (Get current command context data)
  *
- * @param {?object} [newContext=null] 新的上下文参数 (New command context)
- * @return {object}
+ * @param {?Object} [newContext=null] 新的上下文参数 (New command context)
+ * @return {Object}
  */
 export const getCommandContext = (newContext) => {
     return Object.assign({}, context, newContext);
@@ -49,11 +49,11 @@ export const getCommandContext = (newContext) => {
  * 执行命令
  * (Execute command)
  *
- * @param {string|object} command 命令名称或命令对象 (Command name or command object)
+ * @param {string|Object} command 命令名称或命令对象 (Command name or command object)
  * @param {...string} params 命令参数 (Command params)
  * @return {Promise<any, Error>} 通过 Promise 返回命令执行结果 (Return result with Promise)
  */
-export const execute = (command, ...params) => {
+export const executeCommand = (command, ...params) => {
     let commandName = null;
     if (typeof command !== 'object') {
         commandName = command;
@@ -102,7 +102,8 @@ export const execute = (command, ...params) => {
 
         if (result instanceof Promise) {
             return result;
-        } else if (result instanceof Error) {
+        }
+        if (result instanceof Error) {
             return Promise.reject(result);
         }
         return Promise.resolve(result);
@@ -114,13 +115,13 @@ export const execute = (command, ...params) => {
  * 根据命令文本字符串执行命令
  * (Execute command from command text string)
  *
- * @param {string} commandText 命令文本字符串 (Command text string)
+ * @param {string} commandLine 命令文本字符串 (Command text string)
  * @param {object} [commandContext=null] 命令上下文参数 (Command context data)
  * @return {Promise<any, Error>} 通过 Promise 返回命令执行结果 (Return result with Promise)
  */
-export const executeCommand = (commandText, commandContext = null) => {
+export const executeCommandLine = (commandLine, commandContext = null) => {
     setCommandContext(commandContext);
-    const params = commandText.split('/');
+    const params = commandLine.split('/');
     return execute(...params.map((p, idx) => {
         if (p[0] === '?' && idx === (params.length - 1)) {
             return p;
@@ -134,8 +135,8 @@ export const executeCommand = (commandText, commandContext = null) => {
  * (Register a command)
  *
  * @param {string|object} name 命令名称或者命令配置对象 (Command name or command config object)
- * @param {?function(context: object, params: ...string)} [func=null] 命令操作函数 (Command function)
- * @param {?object|?function(context: object, params: ...string} [commandContext=null] 命令上下文参数 (Command context data)
+ * @param {?function(context: object, params: any)} [func=null] 命令操作函数 (Command function)
+ * @param {?(object|function(context: object, params: any))} [commandContext=null] 命令上下文参数 (Command context data)
  * @return {{name: string, func: function, context: ?object}} 返回创建的命令对象
  */
 export const createCommandObject = (name, func = null, commandContext = null) => {
@@ -154,8 +155,8 @@ export const createCommandObject = (name, func = null, commandContext = null) =>
  * (Register a command)
  *
  * @param {string|object} name 命令名称或者命令配置对象 (Command name or command config object)
- * @param {?function(context: object, params: ...string)} [func=null] 命令操作函数 (Command function)
- * @param {?object|?function(context: object, params: ...string} [commandContext=null] 命令上下文参数 (Command context data)
+ * @param {?function(context: object, params: any)} [func=null] 命令操作函数 (Command function)
+ * @param {?object|function(context: object, params: any)} [commandContext=null] 命令上下文参数 (Command context data)
  * @return {boolean} 如果为 true，则命令注册成功；否则注册失败，通常失败的原因是已有相同名称的命令注册过 (If return true, then register success, else fail)
  */
 export const registerCommand = (name, func = null, commandContext = null) => {
@@ -175,7 +176,7 @@ export const registerCommand = (name, func = null, commandContext = null) => {
  * (Unregister command)
  *
  * @param {string} name 命令名称 (Command name)
- * @return {booean} 如果为 true，表示成功取消注册命令；否则取消注册失败，通常失败的原因是该名称的命令从没有注册过，或者已经被取消 (If return true, then unregister success，else fail)
+ * @return {boolean} 如果为 true，表示成功取消注册命令；否则取消注册失败，通常失败的原因是该名称的命令从没有注册过，或者已经被取消 (If return true, then unregister success，else fail)
  */
 export const unregisterCommand = name => {
     if (commands[name]) {
@@ -187,6 +188,7 @@ export const unregisterCommand = name => {
 
 export default {
     executeCommand,
+    executeCommandLine,
     setCommandContext,
     registerCommand,
     unregisterCommand

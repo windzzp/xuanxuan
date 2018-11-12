@@ -5,11 +5,37 @@ import {MessageListItem} from './message-list-item';
 import replaceViews from '../replace-views';
 import App from '../../core';
 
-class MessageList extends Component {
+/**
+ * MessageList 组件 ，显示聊天消息列表界面
+ * @class MessageList
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import MessageList from './message-list';
+ * <MessageList />
+ */
+export default class MessageList extends Component {
+    /**
+     * 获取 MessageList 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<MessageList>}
+     * @readonly
+     * @static
+     * @memberof MessageList
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {MessageList} from './message-list';
+     * <MessageList />
+     */
     static get MessageList() {
         return replaceViews('chats/message-list', MessageList);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof MessageList
+     * @type {Object}
+     */
     static propTypes = {
         messages: PropTypes.array.isRequired,
         stayBottom: PropTypes.bool,
@@ -25,6 +51,13 @@ class MessageList extends Component {
         sleepUrlCard: PropTypes.bool,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof MessageList
+     * @static
+     */
     static defaultProps = {
         showDateDivider: 0,
         stayBottom: true,
@@ -39,6 +72,16 @@ class MessageList extends Component {
         sleepUrlCard: null,
     };
 
+    /**
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof MessageList
+     * @return {void}
+     */
     componentDidMount() {
         this.onChatActiveHandler = App.im.ui.onActiveChat(chat => {
             if (this.lastMessage && (this.waitNewMessage || this.isScrollBottom) && this.lastMessage.cgid === chat.gid) {
@@ -49,6 +92,17 @@ class MessageList extends Component {
         });
     }
 
+    /**
+     * React 组件生命周期函数：`componentDidUpdate`
+     * componentDidUpdate()会在更新发生后立即被调用。该方法并不会在初始化渲染时调用。
+     *
+     * @param {Object} prevProps 更新前的属性值
+     * @param {Object} prevState 更新前的状态值
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidUpdate
+     * @private
+     * @memberof MessageList
+     * @return {void}
+     */
     componentDidUpdate() {
         if (this.props.stayBottom) {
             const {messages} = this.props;
@@ -65,14 +119,37 @@ class MessageList extends Component {
         }
     }
 
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof MessageList
+     * @return {void}
+     */
     componentWillUnmount() {
         App.events.off(this.onChatActiveHandler);
     }
 
+    /**
+     * 将消息列表滚动到底部
+     *
+     * @memberof MessageList
+     * @return {void}
+     */
     scrollToBottom = () => {
         this.element.scrollTop = this.element.scrollHeight - this.element.clientHeight;
     }
 
+    /**
+     * 检查消息列表是否有新的消息
+     *
+     * @param {ChatMessage[]} messages 消息列表
+     * @returns {boolean} 如果返回 `true` 则为有新的消息，否则为没有有新的消息
+     * @memberof MessageList
+     */
     checkHasNewMessages(messages) {
         const lastMessage = this.lastMessage;
         const thisLastMessage = messages && messages.length ? messages[messages.length - 1] : null;
@@ -83,6 +160,13 @@ class MessageList extends Component {
         return false;
     }
 
+    /**
+     * 检查消息列表是否有已显示的旧的消息
+     *
+     * @param {ChatMessage[]} messages 消息列表
+     * @returns {boolean} 如果返回 `true` 则为有已显示的旧的消息，否则为没有有已显示的旧的消息
+     * @memberof MessageList
+     */
     checkHasNewOlderMessages(messages) {
         const lastFirstMessage = this.lastFirstMessage;
         const thisFirstMessage = messages && messages.length ? messages[0] : null;
@@ -92,6 +176,13 @@ class MessageList extends Component {
         }
     }
 
+    /**
+     * 处理消息列表滚动事件
+     * @param {Event} e 事件对象
+     * @memberof MessageList
+     * @private
+     * @return {void}
+     */
     handleScroll = e => {
         const target = e.target;
         if (!target.classList.contains('app-message-list')) {
@@ -110,10 +201,23 @@ class MessageList extends Component {
         }
     }
 
+    /**
+     * 获取是否滚动到底部
+     * @memberof MessageList
+     * @type {boolean}
+     */
     get isScrollBottom() {
         return this.scrollInfo ? this.scrollInfo.isAtBottom : true;
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof MessageList
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             messages,
@@ -152,5 +256,3 @@ class MessageList extends Component {
         </div>);
     }
 }
-
-export default MessageList;

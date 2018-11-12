@@ -1,25 +1,37 @@
 import Platform from 'Platform'; // eslint-disable-line
 import Config from '../../config'; // eslint-disable-line
-import Server from '../server';
+import {socket} from '../server';
 import imServerHandlers from './im-server-handlers';
-import Events from '../events';
+import events from '../events';
 import profile from '../profile';
 import members from '../members';
-import chats from './im-chats';
 import PKG from '../../package.json';
 import Chat from '../models/chat';
 import Messager from '../../components/messager';
-import StringHelper from '../../utils/string-helper';
-import DateHelper from '../../utils/date-helper';
-import ChatMessage from '../../core/models/chat-message';
+import {formatBytes} from '../../utils/string-helper';
+import {createPhpTimestramp} from '../../utils/date-helper';
+import ChatMessage from '../models/chat-message';
 import Lang from '../../lang';
-import ImageHelper from '../../utils/image';
+import {getImageInfo} from '../../utils/image';
 import FileData from '../models/file-data';
-import IMFiles from './im-files';
+import {checkUploadFileSize, uploadFile} from './im-files';
 import {isWebUrl} from '../../utils/html-helper';
+import {
+    updateChatMessages, getChat, queryChats, initChats,
+} from './im-chats';
 
+/**
+ * 适合使用 Base64 格式发送图片的最大文件大小
+ * @type {number}
+ * @private
+ */
 const MAX_BASE64_IMAGE_SIZE = 1024 * 10;
 
+/**
+ * 事件名称表
+ * @type {Object}
+ * @private
+ */
 const EVENT = {
     history: 'im.chats.history',
     history_start: 'im.chats.history.start',
@@ -28,23 +40,45 @@ const EVENT = {
     message_receive: 'im.server.message.receive',
 };
 
+/**
+ * 聊天加入任务
+ * @type {number}
+ * @private
+ */
 let chatJoinTask = null;
 
-Server.socket.setHandler(imServerHandlers);
+// 设置 Socket 接收消息处理函数
+socket.setHandler(imServerHandlers);
 
+/**
+ * 获取消息历史记录分页器
+ * @type {Object}
+ * @private
+ */
 let historyFetchingPager = null;
 
-const isFetchingHistory = () => {
+/**
+ * 是否正在请求消息历史记录
+ * @returns {boolean} 如果返回 `true` 则为正在请求消息历史记录，否则为不是
+ */
+export const isFetchingHistory = () => {
     return historyFetchingPager;
 };
 
-const fetchChatsHistory = (pager, continued = false, startDate = 0) => {
+/**
+ * 请求从服务器获取聊天历史记录
+ * @param {Object} pager 分页器对象
+ * @param {boolean} continued 是否需要继续进行下一页的请求
+ * @param {number} startDate 消息记录的最早日期（时间戳形式）
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const fetchChatsHistory = (pager, continued = false, startDate = 0) => {
     if (continued instanceof Date || typeof continued === 'number') {
         startDate = continued;
         continued = false;
     }
     if (pager === 'all') {
-        pager = {queue: chats.query(x => !!x.id, true).map(x => x.gid)};
+        pager = {queue: queryChats(x => !!x.id, true).map(x => x.gid)};
     }
     if (typeof pager === 'string') {
         pager = {queue: [pager]};
@@ -59,7 +93,7 @@ const fetchChatsHistory = (pager, continued = false, startDate = 0) => {
         startDate,
     }, historyFetchingPager, pager);
     if (pager.startDate) {
-        pager.startDate = DateHelper.createPhpTimestramp(pager.startDate);
+        pager.startDate = createPhpTimestramp(pager.startDate);
     }
     if (!pager.queue || !pager.queue.length) {
         if (DEBUG) {
@@ -67,6 +101,7 @@ const fetchChatsHistory = (pager, continued = false, startDate = 0) => {
         }
         return;
     }
+    // eslint-disable-next-line prefer-destructuring
     pager.gid = pager.queue[0];
     if (pager.total === undefined) {
         pager.total = pager.finish.length + pager.queue.length;
@@ -78,18 +113,26 @@ const fetchChatsHistory = (pager, continued = false, startDate = 0) => {
             }
             return;
         }
-        Events.emit(EVENT.history_start, pager);
+        events.emit(EVENT.history_start, pager);
         historyFetchingPager = pager;
     }
-    return Server.socket.send({
+    return socket.send({
         method: 'history',
         params: [pager.gid, pager.recPerPage, pager.pageID, pager.recTotal, pager.continued, pager.startDate]
     });
 };
 
-const updateChatHistory = (cgid, messages, pager, socket) => {
+/**
+ * 将服务器推送的历史消息记录更新到数据库
+ * @param {string} cgid 聊天 GID
+ * @param {ChatMessage[]} messages 历史聊天消息列表
+ * @param {Object} pager 分页器对象
+ * @param {AppSocket} socket Socket 服务实例
+ * @return {void}
+ */
+export const updateChatHistory = (cgid, messages, pager, socket) => {
     if (messages && messages.length) {
-        chats.updateChatMessages(messages, true, true);
+        updateChatMessages(messages, true, true);
     }
 
     const isFetchOver = pager.pageID * pager.recPerPage >= pager.recTotal;
@@ -116,25 +159,47 @@ const updateChatHistory = (cgid, messages, pager, socket) => {
     }
     pager.total = pager.finish.length + pager.queue.length;
     pager.percent = 100 * (pager.finish.length / pager.total + (pager.recTotal ? ((Math.min(pager.recTotal, pager.pageID * pager.recPerPage) / pager.recTotal)) : 0) / pager.total);
-    Events.emit(EVENT.history, pager, messages);
+    events.emit(EVENT.history, pager, messages);
 
     if (pager.continued && !historyFetchingPager) {
-        Events.emit(EVENT.history_end, pager);
+        events.emit(EVENT.history_end, pager);
     }
 };
 
-const onChatHistory = listener => {
-    return Events.on(EVENT.history, listener);
-};
-const onChatHistoryStart = listener => {
-    return Events.on(EVENT.history_start, listener);
-};
-const onChatHistoryEnd = listener => {
-    return Events.on(EVENT.history_end, listener);
+/**
+ * 绑定接收到服务器推送的聊天消息记录事件
+ * @param {Funcion} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
+export const onChatHistory = listener => {
+    return events.on(EVENT.history, listener);
 };
 
-const createChat = chat => {
-    return Server.socket.sendAndListen({
+/**
+ * 绑定开始接收到服务器推送的聊天消息记录事件
+ * @param {Funcion} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
+export const onChatHistoryStart = listener => {
+    return events.on(EVENT.history_start, listener);
+};
+
+/**
+ * 绑定完成接收到服务器推送的聊天消息记录事件
+ * @param {Funcion} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
+export const onChatHistoryEnd = listener => {
+    return events.on(EVENT.history_end, listener);
+};
+
+/**
+ * 请求服务器创建一个新的聊天
+ * @param {Chat|{gid:string, name: string, type: string, members: number[]}} chat 要创建的聊天对象
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const createChat = chat => {
+    return socket.sendAndListen({
         method: 'create',
         params: [
             chat.gid,
@@ -155,6 +220,13 @@ const createChat = chat => {
     });
 };
 
+/**
+ * 在本地创建一个聊天实例
+ * @private
+ * @param {Set<number>|number[]} chatMembers 聊天成员
+ * @param {Object} chatSetting 聊天属性对象
+ * @return {Chat} 新创建的聊天实例
+ */
 const createLocalChatWithMembers = (chatMembers, chatSetting) => {
     if (!Array.isArray(chatMembers)) {
         chatMembers = [chatMembers];
@@ -172,7 +244,7 @@ const createLocalChatWithMembers = (chatMembers, chatSetting) => {
     let chat = null;
     if (chatMembers.length === 2) {
         const gid = chatMembers.sort().join('&');
-        chat = chats.get(gid);
+        chat = getChat(gid);
         if (!chat) {
             chat = new Chat(Object.assign({
                 members: chatMembers,
@@ -190,7 +262,14 @@ const createLocalChatWithMembers = (chatMembers, chatSetting) => {
     return chat;
 };
 
-const createChatWithMembers = (chatMembers, chatSettings) => {
+/**
+ * 根据给定的成员清单创建一个聊天实例，如果成员清单中只有自己和另一个人则创建一个一对一聊天，否则创建一个讨论组；
+ * 如果一对一聊天已经存在则直接返回之前的聊天实例，而不是请求服务器创建一个新的。
+ * @param {Set<number>|number[]} chatMembers 聊天成员
+ * @param {Object} chatSettings 聊天属性对象
+ * @return {Chat} 新创建的聊天实例
+ */
+export const createChatWithMembers = (chatMembers, chatSettings) => {
     const chat = createLocalChatWithMembers(chatMembers, chatSettings);
     if (chat.id) {
         return Promise.resolve(chat);
@@ -198,33 +277,53 @@ const createChatWithMembers = (chatMembers, chatSettings) => {
     return createChat(chat);
 };
 
-const fetchPublicChats = () => {
-    return Server.socket.sendAndListen('getpubliclist');
+/**
+ * 请求从服务器获取公开聊天列表
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const fetchPublicChats = () => {
+    return socket.sendAndListen('getpubliclist');
 };
 
-const setCommitters = (chat, committers) => {
+/**
+ * 设置聊天的白名单信息
+ * @param {Chat} chat 聊天实例
+ * @param {Set<string>|string[]|string} committers 白名单信息
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const setChatCommitters = (chat, committers) => {
     if (committers instanceof Set) {
         committers = Array.from(committers);
     }
     if (Array.isArray(committers)) {
         committers = committers.join(',');
     }
-    return Server.socket.send({
+    return socket.send({
         method: 'setCommitters',
         params: [chat.gid, committers]
     });
 };
 
-const toggleChatPublic = (chat) => {
-    return Server.socket.send({
+/**
+ * 切换聊天是否设置为公开
+ * @param {Chat} chat 聊天实例
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const toggleChatPublic = (chat) => {
+    return socket.send({
         method: 'changePublic',
         params: [chat.gid, !chat.public]
     });
 };
 
-const toggleChatStar = (chat) => {
+/**
+ * 切换聊天是否设置为已收藏
+ * @param {Chat} chat 聊天实例
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const toggleChatStar = (chat) => {
     const sendRequest = () => {
-        return Server.socket.send({
+        return socket.send({
             method: 'star',
             params: [chat.gid, !chat.star]
         });
@@ -235,9 +334,14 @@ const toggleChatStar = (chat) => {
     return sendRequest();
 };
 
-const toggleMuteChat = (chat) => {
+/**
+ * 切换聊天是否设置为免打扰
+ * @param {Chat} chat 聊天实例
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const toggleMuteChat = (chat) => {
     const sendRequest = () => {
-        return Server.socket.send({
+        return socket.send({
             method: 'mute',
             params: [chat.gid, !chat.mute]
         });
@@ -248,9 +352,14 @@ const toggleMuteChat = (chat) => {
     return sendRequest();
 };
 
-const toggleHideChat = (chat) => {
+/**
+ * 切换聊天是否设置为已隐藏（存档）
+ * @param {Chat} chat 聊天实例
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const toggleHideChat = (chat) => {
     const sendRequest = () => {
-        return Server.socket.send({
+        return socket.send({
             method: 'hide',
             params: [chat.gid, !chat.hide]
         });
@@ -263,12 +372,17 @@ const toggleHideChat = (chat) => {
     return sendRequest();
 };
 
-
-const setChatCategory = (chat, category) => {
+/**
+ * 设置聊天分组
+ * @param {Chat} chat 聊天实例
+ * @param {string} category 分组名称
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const setChatCategory = (chat, category) => {
     const isArray = Array.isArray(chat);
     const gids = isArray ? chat.map(x => x.gid) : [chat.gid];
     const sendRequest = () => {
-        return Server.socket.send({
+        return socket.send({
             method: 'category',
             params: [gids, category]
         });
@@ -281,16 +395,28 @@ const setChatCategory = (chat, category) => {
     return sendRequest();
 };
 
-const sendSocketMessageForChat = (socketMessage, chat) => {
+/**
+ * 向给定的聊天发送消息
+ * @param {ChatMessage} socketMessage 聊天消息
+ * @param {Chat} chat 聊天实例对象
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const sendSocketMessageForChat = (socketMessage, chat) => {
     if (chat.id) {
-        return Server.socket.send(socketMessage);
+        return socket.send(socketMessage);
     }
     return createChat(chat).then(() => {
-        return Server.socket.send(socketMessage);
+        return socket.send(socketMessage);
     });
 };
 
-const createBoardChatMessage = (message, chat) => {
+/**
+ * 创建一个广播聊天消息实例
+ * @param {string} message 广播消息内容
+ * @param {Chat|{gid: string}} chat 聊天实例对象
+ * @return {ChatMessage} 广播聊天消息实例
+ */
+export const createBoardChatMessage = (message, chat) => {
     return new ChatMessage({
         content: message,
         user: profile.userId,
@@ -299,11 +425,23 @@ const createBoardChatMessage = (message, chat) => {
     });
 };
 
-const sendBoardChatMessage = (message, chat) => {
+/**
+ * 发送广播消息
+ * @param {string} message 广播消息内容
+ * @param {Chat|{gid: string}} chat 聊天实例对象
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const sendBoardChatMessage = (message, chat) => {
     return sendChatMessage(createBoardChatMessage(message, chat), chat, true);
 };
 
-const createTextChatMessage = (message, chat) => {
+/**
+ * 创建一个文本聊天消息
+ * @param {string} message 消息内容
+ * @param {Chat|{gid:string}} chat 聊天对象
+ * @return {ChatMessage} 聊天消息实例
+ */
+export const createTextChatMessage = (message, chat) => {
     const {userConfig} = profile;
     return new ChatMessage({
         content: message,
@@ -313,20 +451,39 @@ const createTextChatMessage = (message, chat) => {
     });
 };
 
-const createUrlObjectMessage = (message, chat) => {
+/**
+ * 创建一个网址卡片消息
+ * @param {string} url 网址
+ * @param {Chat|{gid:string}} chat 聊天对象
+ * @return {ChatMessage} 聊天消息实例
+ * @private
+ */
+const createUrlObjectMessage = (url, chat) => {
     return new ChatMessage({
-        content: JSON.stringify({type: ChatMessage.OBJECT_TYPES.url, url: message}),
+        content: JSON.stringify({type: ChatMessage.OBJECT_TYPES.url, url}),
         user: profile.userId,
         cgid: chat.gid,
         contentType: ChatMessage.CONTENT_TYPES.object
     });
 };
 
-const sendTextMessage = (message, chat) => {
+/**
+ * 发送一个文本类聊天消息
+ * @param {string} message 文本消息内容
+ * @param {Chat|{gid:string}} chat 聊天对象
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const sendTextMessage = (message, chat) => {
     return sendChatMessage(message && isWebUrl(message.trim()) ? createUrlObjectMessage(message, chat) : createTextChatMessage(message, chat), chat);
 };
 
-const createEmojiChatMessage = (emojicon, chat) => {
+/**
+ * 创建一个 Emoji 聊天消息
+ * @param {string} emojicon Emojicon 表情名称
+ * @param {Chat|{gid:string}} chat 聊天对象
+ * @return {ChatMessage} 聊天消息实例
+ */
+export const createEmojiChatMessage = (emojicon, chat) => {
     return new ChatMessage({
         contentType: ChatMessage.CONTENT_TYPES.image,
         content: JSON.stringify({type: 'emoji', content: emojicon}),
@@ -335,41 +492,60 @@ const createEmojiChatMessage = (emojicon, chat) => {
     });
 };
 
-const sendEmojiMessage = (emojicon, chat) => {
+/**
+ * 发送 Emoji 聊天消息
+ * @param {string} emojicon Emojicon 表情名称
+ * @param {Chat|{gid:string}} chat 聊天对象
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const sendEmojiMessage = (emojicon, chat) => {
     return sendChatMessage(createEmojiChatMessage(emojicon, chat), chat, true);
 };
 
-const renameChat = (chat, newName) => {
+/**
+ * 重命名聊天
+ * @param {Chat} chat 聊天实例
+ * @param {string} newName 新的聊天名称
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const renameChat = (chat, newName) => {
     if (chat && chat.canRename(profile.user)) {
         if (chat.id) {
-            return Server.socket.sendAndListen({
+            return socket.sendAndListen({
                 method: 'changename',
                 params: [chat.gid, newName]
-            }).then(chat => {
-                if (chat) {
-                    sendBoardChatMessage(Lang.format('chat.rename.someRenameGroup.format', `@${profile.user.account}`, `**${newName}**`), chat);
+            }).then(theChat => {
+                if (theChat) {
+                    sendBoardChatMessage(Lang.format('chat.rename.someRenameGroup.format', `@${profile.user.account}`, `**${newName}**`), theChat);
                 }
-                return Promise.resolve(chat);
+                return Promise.resolve(theChat);
             });
         }
         chat.name = newName;
         if (DEBUG) {
             console.error('Cannot rename a local chat.', chat);
         }
-        return Promise.reject('Cannot rename a local chat.');
+        return Promise.reject(new Error('Cannot rename a local chat.'));
     }
-    return Promise.reject('You have no permission to rename the chat.');
+    return Promise.reject(new Error('You have no permission to rename the chat.'));
 };
 
-const sendChatMessage = async (messages, chat, isSystemMessage = false) => {
+/**
+ * 向服务器发送聊天消息
+ * @param {ChatMessage[]} messages 要发送聊天消息列表
+ * @param {Chat} chat 聊天实例
+ * @param {boolean} [isSystemMessage=false] 是否是系统消息
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const sendChatMessage = async (messages, chat, isSystemMessage = false) => {
     if (!Array.isArray(messages)) {
         messages = [messages];
     }
 
     if (!chat) {
-        chat = chats.get(messages[0].cgid);
+        chat = getChat(messages[0].cgid);
         if (!chat) {
-            return Promise.reject('Chat is not set before send messages.');
+            return Promise.reject(new Error('Chat is not set before send messages.'));
         }
     }
 
@@ -408,10 +584,10 @@ const sendChatMessage = async (messages, chat, isSystemMessage = false) => {
     });
 
     if (!isSystemMessage) {
-        Events.emit(EVENT.message_send, messages, chat);
+        events.emit(EVENT.message_send, messages, chat);
     }
 
-    chats.updateChatMessages(messages);
+    updateChatMessages(messages);
 
     return sendSocketMessageForChat({
         method: 'message',
@@ -427,6 +603,12 @@ const sendChatMessage = async (messages, chat, isSystemMessage = false) => {
     }, chat);
 };
 
+/**
+ * 将图片文件通过 Base64 编码发送
+ * @param {FileData} imageFile 图片文件
+ * @param {Chat} chat 聊天实例
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
 const sendImageAsBase64 = (imageFile, chat) => {
     return new Promise((resolve) => {
         const sendBase64 = base64Data => {
@@ -458,11 +640,18 @@ const sendImageAsBase64 = (imageFile, chat) => {
     });
 };
 
-const sendImageMessage = async (imageFile, chat, onProgress) => {
+/**
+ * 发送图片消息并上传图片到服务器
+ * @param {FileData} imageFile 图片文件
+ * @param {Chat} chat 聊天实例
+ * @param {function(progress: number)} onProgress 图片发送进度变更回调函数
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const sendImageMessage = async (imageFile, chat, onProgress) => {
     if (imageFile.size < MAX_BASE64_IMAGE_SIZE) {
         return sendImageAsBase64(imageFile, chat);
     }
-    if (IMFiles.checkUploadFileSize(imageFile.size)) {
+    if (checkUploadFileSize(imageFile.size)) {
         const message = new ChatMessage({
             user: profile.userId,
             cgid: chat.gid,
@@ -473,7 +662,7 @@ const sendImageMessage = async (imageFile, chat, onProgress) => {
         message.attachFile = imageFile;
         let info = imageFile.imageInfo;
         if (!info) {
-            info = await ImageHelper.getImageInfo(imageFile.viewUrl).catch(() => {
+            info = await getImageInfo(imageFile.viewUrl).catch(() => {
                 Messager.show(Lang.error('CANNOT_HANDLE_IMAGE'));
                 if (DEBUG) {
                     console.warn('Cannot get image information', imageFile);
@@ -486,7 +675,7 @@ const sendImageMessage = async (imageFile, chat, onProgress) => {
         delete imageObj.type;
         message.imageContent = imageObj;
         await sendChatMessage(message, chat);
-        return IMFiles.uploadFile(imageFile, progress => {
+        return uploadFile(imageFile, progress => {
             message.updateImageContent({send: progress});
             sendChatMessage(message, chat);
             if (onProgress) {
@@ -500,12 +689,18 @@ const sendImageMessage = async (imageFile, chat, onProgress) => {
             sendChatMessage(message, chat);
         });
     }
-    Messager.show(Lang.format('error.UPLOAD_FILE_IS_TOO_LARGE', StringHelper.formatBytes(imageFile.size)), {type: 'warning'});
+    Messager.show(Lang.format('error.UPLOAD_FILE_IS_TOO_LARGE', formatBytes(imageFile.size)), {type: 'warning'});
     return Promise.reject();
 };
 
-const sendFileMessage = (file, chat) => {
-    if (IMFiles.checkUploadFileSize(file.size)) {
+/**
+ * 发送文件消息并上传文件到服务器
+ * @param {FileData} file 文件
+ * @param {Chat} chat 聊天实例
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const sendFileMessage = (file, chat) => {
+    if (checkUploadFileSize(file.size)) {
         const message = new ChatMessage({
             user: profile.userId,
             cgid: chat.gid,
@@ -516,7 +711,7 @@ const sendFileMessage = (file, chat) => {
         file.cgid = chat.gid;
         message.fileContent = file.plain();
         sendChatMessage(message, chat);
-        IMFiles.uploadFile(file, progress => {
+        uploadFile(file, progress => {
             message.updateFileContent({send: progress});
             return sendChatMessage(message, chat);
         }).then(data => {
@@ -527,14 +722,21 @@ const sendFileMessage = (file, chat) => {
             return sendChatMessage(message, chat);
         });
     } else {
-        Messager.show(Lang.format('error.UPLOAD_FILE_IS_TOO_LARGE', StringHelper.formatBytes(file.size)), {type: 'warning'});
+        Messager.show(Lang.format('error.UPLOAD_FILE_IS_TOO_LARGE', formatBytes(file.size)), {type: 'warning'});
     }
 };
 
+/**
+ * 邀请其他成员到给定的聊天中
+ * @param {Chat} chat 聊天实例
+ * @param {Member[]} chatMembers 要邀请的成员列表
+ * @param {Object} newChatSetting 当需要创建新的聊天实例时的属性对象
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
 const inviteMembersToChat = (chat, chatMembers, newChatSetting) => {
     if (chat.canInvite(profile.user)) {
         if (!chat.isOne2One) {
-            return Server.socket.sendAndListen({
+            return socket.sendAndListen({
                 method: 'addmember',
                 params: [chat.gid, chatMembers.map(x => x.id), true]
             });
@@ -544,18 +746,30 @@ const inviteMembersToChat = (chat, chatMembers, newChatSetting) => {
     }
 };
 
-const kickOfMemberFromChat = (chat, kickOfWho) => {
+/**
+ * 将给定的成员从聊天中剔除
+ * @param {Chat} chat 聊天实例
+ * @param {Member} kickOfWho 要踢出的成员实例
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const kickOfMemberFromChat = (chat, kickOfWho) => {
     if (chat.canKickOff(profile.user, kickOfWho)) {
-        return Server.socket.sendAndListen({
+        return socket.sendAndListen({
             method: 'addmember',
             params: [chat.gid, [kickOfWho.id], false]
         });
     }
 };
 
-const joinChat = (chat, join = true) => {
+/**
+ * 加入或退出聊天
+ * @param {Chat} chat 聊天实例
+ * @param {boolean} [join=true] 如果为 `true`，则为加入聊天，否则为退出聊天
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const joinChat = (chat, join = true) => {
     chatJoinTask = true;
-    return Server.socket.sendAndListen({
+    return socket.sendAndListen({
         method: 'joinchat',
         params: [chat.gid, join]
     }).then(theChat => {
@@ -566,7 +780,12 @@ const joinChat = (chat, join = true) => {
     });
 };
 
-const exitChat = (chat) => {
+/**
+ * 退出指定的聊天
+ * @param {Chat} chat 聊天实例
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const exitChat = (chat) => {
     if (chat.canExit(profile.user)) {
         return joinChat(chat, false).then(theChat => {
             if (theChat && !theChat.isMember(profile.userId)) {
@@ -578,9 +797,14 @@ const exitChat = (chat) => {
     return Promise.reject();
 };
 
-const dimissChat = chat => {
+/**
+ * 解散聊天
+ * @param {Chat} chat 聊天实例
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const dimissChat = chat => {
     if (chat.canDismiss(profile.user)) {
-        return Server.socket.sendAndListen({
+        return socket.sendAndListen({
             method: 'dismiss',
             params: [chat.gid]
         });
@@ -588,25 +812,45 @@ const dimissChat = chat => {
     return Promise.reject();
 };
 
-const handleReceiveChatMessages = messages => {
-    chats.updateChatMessages(messages);
-    Events.emit(EVENT.message_receive, messages);
+/**
+ * 处理从服务器接收到的消息
+ * @param {Object[]} messages 接收到的消息列表
+ * @return {void}
+ */
+export const handleReceiveChatMessages = messages => {
+    updateChatMessages(messages);
+    events.emit(EVENT.message_receive, messages);
 };
 
-const handleInitChats = (newChats) => {
-    chats.init(newChats, chat => {
+/**
+ * 处理从服务器接收到的聊天
+ * @param {any[]} newChats 接收到的聊天列表
+ * @return {void}
+ */
+export const handleInitChats = (newChats) => {
+    initChats(newChats, chat => {
         if (chat.isOne2One && chat.hide) {
             toggleHideChat(chat);
         }
     });
 };
 
-const onSendChatMessages = listener => {
-    return Events.on(EVENT.message_send, listener);
+/**
+ * 绑定发送聊天消息事件
+ * @param {Funcion} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
+export const onSendChatMessages = listener => {
+    return events.on(EVENT.message_send, listener);
 };
 
-const onReceiveChatMessages = listener => {
-    return Events.on(EVENT.message_receive, listener);
+/**
+ * 绑定接收聊天消息事件
+ * @param {Funcion} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
+export const onReceiveChatMessages = listener => {
+    return events.on(EVENT.message_receive, listener);
 };
 
 export default {
@@ -618,7 +862,7 @@ export default {
     updateChatHistory,
     createChat,
     createChatWithMembers,
-    setCommitters,
+    setCommitters: setChatCommitters,
     toggleChatPublic,
     toggleChatStar,
     toggleHideChat,

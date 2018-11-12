@@ -1,6 +1,7 @@
 import system from './system.json';
-import config from '../../../config';
+import {updateConfig} from '../../../config';
 
-config.system = Object.assign(config.system, system);
+// 更新平台特有配置
+const config = updateConfig({system});
 
 export default config;

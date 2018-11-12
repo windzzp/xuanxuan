@@ -1,17 +1,33 @@
+// eslint-disable-next-line import/no-unresolved
 import Platform from 'Platform';
-import Events from '../events';
+import events from '../events';
 import UserConfig from './user-config';
 import User from './user';
 import Lang from '../../lang';
 import notice from '../notice';
 
+/**
+ * 事件表
+ * @type {Object<string, string>}
+ * @private
+ */
 const EVENT = {
     swap: 'profile.user.swap',
 };
 
+/**
+ * 存储当前登录的用户实例
+ * @type {User}
+ * @private
+ */
 let user = null;
 
-const createUser = userData => {
+/**
+ * 创建用户实例
+ * @param {Object} userData 用户存储数据对象
+ * @return {User}
+ */
+export const createUser = userData => {
     if (!(userData instanceof User)) {
         const newUser = new User(userData);
         newUser.$set(Object.assign({}, Platform.config.getUser(newUser.identify), userData));
@@ -23,7 +39,12 @@ const createUser = userData => {
     return userData;
 };
 
-const setUser = newUser => {
+/**
+ * 设置当前登录的用户实例
+ * @param {!User} newUser 新的用户实例
+ * @return {User}
+ */
+export const setCurrentUser = newUser => {
     if (!(newUser instanceof User)) {
         throw new Error('Cannot set user for profile, because the user param is not User instance.');
     }
@@ -42,49 +63,106 @@ const setUser = newUser => {
     }
     if (!oldUser || oldUser.identify !== user.identify) {
         notice.update();
-        Events.emit(EVENT.swap, user);
+        events.emit(EVENT.swap, user);
     }
     return user;
 };
 
-const onSwapUser = listener => (Events.on(EVENT.swap, listener));
+/**
+ * 绑定切换当前用户事件
+ * @param {Funcion} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
+export const onSwapUser = listener => (events.on(EVENT.swap, listener));
 
-const onUserStatusChange = listener => (Events.on(User.EVENT.status_change, listener));
+/**
+ * 绑定用户状态变更事件
+ * @param {Funcion} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
+export const onUserStatusChange = listener => (events.on(User.EVENT.status_change, listener));
 
-const onUserConfigChange = listener => (Events.on(User.EVENT.config_change, listener));
+/**
+ * 绑定用户配置变更事件
+ * @param {Funcion} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
+export const onUserConfigChange = listener => (events.on(User.EVENT.config_change, listener));
 
-const getLastSavedUser = () => (Platform.config.getUser());
+/**
+ * 获取上次保存的用户数据
+ * @return {Object}
+ */
+export const getLastSavedUser = () => Platform.config.getUser();
+
+/**
+ * 判定给定的用户或成员是否是当前登录用户
+ * @param {User|Member} theUser 要判断的用户或成员实例
+ * @return {boolean}
+ */
+export const isCurrentUser = theUser => (theUser && user && user.id === theUser.id);
+
+/**
+ * 获取当前登录的用户
+ * @return {User}
+ */
+export const getCurrentUser = () => user;
 
 export default {
     UserConfig,
     EVENT,
     createUser,
-    setUser,
+    setUser: setCurrentUser,
     onSwapUser,
     onUserStatusChange,
     onUserConfigChange,
     getLastSavedUser,
+    isCurrentUser,
 
+    /**
+     * 获取当前登录的用户实例
+     * @type {User}
+     */
     get user() {
         return user;
     },
 
+    /**
+     * 获取当前登录的用户 ID
+     * @type {number}
+     */
     get userId() {
         return user && user.id;
     },
 
+    /**
+     * 检查当前登录的用户是否在线
+     * @type {boolean}
+     */
     get isUserOnline() {
         return user && user.isOnline;
     },
 
+    /**
+     * 检查当前登录的用户是否验证通过过
+     * @type {boolean}
+     */
     get isUserVertified() {
         return user && user.isVertified;
     },
 
+    /**
+     * 获取当前登录的用户状态编号
+     * @type {number}
+     */
     get userStatus() {
         return user && user.status;
     },
 
+    /**
+     * 获取当前用户状态描述文本
+     * @type {string}
+     */
     get summaryText() {
         if (user) {
             return `${user.displayName} [${Lang.string(`member.status.${user.statusName}`)}]`;
@@ -92,15 +170,17 @@ export default {
         return '';
     },
 
+    /**
+     * 获取当前用户配置对象
+     */
     get userConfig() {
         return user ? user.config : {};
     },
 
+    /**
+     * 获取当前用户用户名
+     */
     get userAccount() {
-        return user ? user.account : {};
-    },
-
-    isCurrentUser(theUser) {
-        return theUser && user && user.id === theUser.id;
-    },
+        return user ? user.account : '';
+    }
 };

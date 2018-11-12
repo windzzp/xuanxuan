@@ -6,7 +6,9 @@ import timeSequence from '../utils/time-sequence';
 import Status from '../utils/status';
 
 /**
- * Display layer stages
+ * Display 状态
+ * @type {Status}
+ * @private
  */
 const STAGE = new Status({
     init: 0,
@@ -15,21 +17,69 @@ const STAGE = new Status({
     hidden: 3
 }, 0);
 
+/**
+ * z-index 序号
+ * @type {number}
+ * @private
+ */
 let zIndexSeed = 1100;
+
+/**
+ * 获取一个递增的 z-index 序号
+ * @return {number}
+ * @private
+ */
 const newZIndex = () => {
     zIndexSeed += 1;
     return zIndexSeed;
 };
 
+/**
+ * DisplayLayer 组件 ，显示一个弹出层
+ * 所有可用的动画名称包括：
+ * - scale-from-top
+ * - scale-from-bottom
+ * - scale-from-left
+ * - scale-from-right
+ * - scale-from-center
+ * - enter-from-top
+ * - enter-from-bottom
+ * - enter-from-left
+ * - enter-from-right
+ * - enter-from-center
+ *
+ * @class DisplayLayer
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example
+ * <DisplayLayer />
+ * @property {string} plugName 组件名称，会影响 CSS 类名
+ * @property {string} animation 动画效果类型
+ * @property {boolean} [modal=false] 是否以模态形式显示，如果设置为 true，点击背景层不会自动隐藏
+ * @property {boolean} [show=true] 是否在初始化之后立即显示
+ * @property {String|ReactNode|function} content 内容，可以为一个函数返回一个 Promise 来实现内容的懒加载
+ */
 export default class DisplayLayer extends PureComponent {
     /**
-     * State types
-     *
+     * DisplayLayer 显示状态
+     * 共 4 个状态
+     * - init，需要初始化
+     * - ready，准备好进行显示
+     * - shown，已经显示
+     * - hidden，已经隐藏
      * @static
      * @memberof DisplayLayer
+     * @type {Status}
      */
     static STAGE = STAGE;
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof DisplayLayer
+     * @type {Object}
+     */
     static propTypes = {
         content: PropTypes.any,
         contentLoadFail: PropTypes.any,
@@ -56,19 +106,17 @@ export default class DisplayLayer extends PureComponent {
     };
 
     /**
-     * Default properties values
-     *
-     * @static
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
      * @memberof DisplayLayer
+     * @static
      */
     static defaultProps = {
         plugName: null,
         animation: 'scale-from-top',
-        // if modal set true, user cannot close layer by click backdrop(if backdrop set true too)
         modal: false,
-        // Show on ready
         show: true,
-        // Content can be a function and return a promise to load lazy content
         content: '',
         contentLoadFail: null,
         contentClassName: '',
@@ -90,12 +138,19 @@ export default class DisplayLayer extends PureComponent {
     };
 
     /**
-     * Creates an instance of DisplayLayer.
-     * @param {Object} props
-     * @memberof DisplayLayer
+     * React 组件构造函数，创建一个 DisplayLayer 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
      */
     constructor(props) {
         super(props);
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             stage: STAGE.init,
             loading: true,
@@ -107,53 +162,74 @@ export default class DisplayLayer extends PureComponent {
             this.state.content = props.content;
             this.state.loading = false;
         }
-        this.id = this.props.id || `display-${timeSequence()}`;
+
+        /**
+         * 控件 ID
+         * @type {string}
+         */
+        this.id = props.id || `display-${timeSequence()}`;
+
+        /**
+         * 显示动画计时器任务 ID
+         * @private
+         * @type {number}
+         */
+        this.showTimerTask = null;
     }
 
     /**
-     * React life cycle: componentDidMount
-     *
-     * @private
-     * @memberof DisplayLayer
-     */
+    * React 组件生命周期函数：`componentDidMount`
+    * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+    *
+    * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+    * @private
+    * @memberof DisplayLayer
+    * @return {void}
+    */
     componentDidMount() {
-        if (this.props.show) {
+        const {show, hotkey} = this.props;
+        if (show) {
             this.show();
             this.loadContent();
         }
 
-        if (this.props.hotkey) {
+        if (hotkey) {
             window.addEventListener('keyup', this.handleWindowKeyup);
         }
     }
 
     /**
-     * React life cycle: componentWillUnmount
-     *
-     * @private
-     * @memberof DisplayLayer
-     */
+    * React 组件生命周期函数：`componentWillUnmount`
+    * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+    *
+    * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+    * @private
+    * @memberof DisplayLayer
+    * @return {void}
+    */
     componentWillUnmount() {
-        if (this.props.hotkey) {
+        const {hotkey} = this.props;
+        if (hotkey) {
             window.removeEventListener('keyup', this.handleWindowKeyup);
         }
         clearTimeout(this.showTimerTask);
     }
 
     /**
-     * Get stage name
-     *
-     * @readonly
+     * 获取组件名称
+     * @type {string}
      * @memberof DisplayLayer
      */
     get stageName() {
-        return STAGE.getName(this.state.stage);
+        const {stage} = this.state;
+        return STAGE.getName(stage);
     }
 
     /**
-     * Check whether the layer is show
-     *
-     * @readonly
+     * 检查组件是否显示
+     * @type {boolean}
      * @memberof DisplayLayer
      */
     get isShow() {
@@ -161,9 +237,8 @@ export default class DisplayLayer extends PureComponent {
     }
 
     /**
-     * Check whether the layer is hide
-     *
-     * @readonly
+     * 检查组件是否隐藏
+     * @type {boolean}
      * @memberof DisplayLayer
      */
     get isHide() {
@@ -171,10 +246,10 @@ export default class DisplayLayer extends PureComponent {
     }
 
     /**
-     * Check whether the stage is the given one
+     * 检查当前状态是否为指定的状态
      *
-     * @param {String|Number} stage
-     * @returns
+     * @param {String|Number} stage 要检查的状态序号或者名称
+     * @return {boolean}
      * @memberof DisplayLayer
      */
     isStage(stage) {
@@ -182,10 +257,11 @@ export default class DisplayLayer extends PureComponent {
     }
 
     /**
-     * Change state to the given one
+     * 变更状态
      *
-     * @param {String|Number} stage
+     * @param {String|Number} stage 要变更的状态
      * @memberof DisplayLayer
+     * @return {void}
      */
     changeStage(stage) {
         const newState = {stage: STAGE.getValue(stage)};
@@ -196,21 +272,23 @@ export default class DisplayLayer extends PureComponent {
     }
 
     /**
-     * Set display layer element style
+     * 设置界面元素上的样式
      *
-     * @param {Object} style
-     * @param {?Function} callback
+     * @param {Object} style 要设置的样式对象
+     * @param {?Function} callback 设置完成后的回调函数
      * @memberof DisplayLayer
+     * @return {void}
      */
     setStyle(style, callback) {
         this.setState({style}, callback);
     }
 
     /**
-     * Show the layer
+     * 显示 DisplayLayer
      *
-     * @param {?Function} callback
+     * @param {?Function} callback 完成后的回调函数
      * @memberof DisplayLayer
+     * @return {void}
      */
     show(callback) {
         if (this.state.stage === STAGE.init) {
@@ -237,25 +315,28 @@ export default class DisplayLayer extends PureComponent {
     }
 
     /**
-     * Hide the layer
+     * 隐藏 DisplayLayer
      *
-     * @param {?Function} callback
+     * @param {?Function} callback 完成后的回调函数
      * @memberof DisplayLayer
+     * @return {void}
      */
     hide(callback) {
         this.changeStage(STAGE.hidden);
         const afterHidden = () => {
-            if (this.props.cache) {
+            const {cache, onHidden} = this.props;
+            if (cache) {
                 this.reset();
             }
-            if (this.props.onHidden) {
-                this.props.onHidden(this);
+            if (onHidden) {
+                onHidden(this);
             }
             if (callback) {
                 callback(this);
             }
         };
-        if (this.props.animation) {
+        const {animation} = this.props;
+        if (animation) {
             setTimeout(afterHidden, 400);
         } else {
             afterHidden();
@@ -263,11 +344,11 @@ export default class DisplayLayer extends PureComponent {
     }
 
     /**
-     * Load new content for the layer
-     *
-     * @param {any} newContent
-     * @param {?Function} callback
+     * 在弹出层上加载新的内容
+     * @param {String|ReactNode|Function} newContent 新的内容
+     * @param {?Function} callback 完成后的回调函数
      * @memberof DisplayLayer
+     * @return {void}
      */
     loadContent(newContent, callback) {
         let {content, contentLoadFail, onLoad} = this.props;
@@ -298,11 +379,11 @@ export default class DisplayLayer extends PureComponent {
     }
 
     /**
-     * Handle window key up event
-     *
-     * @private
-     * @param {any} e
+     * 处理界面按键事件
+     * @param {Event} e 事件对象
      * @memberof DisplayLayer
+     * @private
+     * @return {void}
      */
     handeWindowKeyup(e) {
         const {hotkey} = this.props;
@@ -314,31 +395,34 @@ export default class DisplayLayer extends PureComponent {
     }
 
     /**
-     * Reset the state to init
-     *
+     * 重置状态为 init（需要初始化）
      * @memberof DisplayLayer
+     * @return {void}
      */
     reset() {
         this.setState({stage: STAGE.init});
     }
 
     /**
-     * Handle backdrop click event
-     *
-     * @private
+     * 处理背景遮罩层点击事件
+     * @param {Event} event 事件对象
      * @memberof DisplayLayer
+     * @private
+     * @return {void}
      */
-    handleBackdropClick = () => {
+    handleBackdropClick = event => {
         if (!this.props.modal) {
             this.hide();
         }
     }
 
     /**
-     * React life cycle: render
-     *
-     * @returns
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof DisplayLayer
+     * @return {ReactNode}
      */
     render() {
         let {
@@ -378,14 +462,16 @@ export default class DisplayLayer extends PureComponent {
             {'has-animation': animation}
         );
 
-        return (<div onKeyUp={this.handeWindowKeyup.bind(this)} className={rootClassName} style={{zIndex: this.state.zIndex}}>
-            {backdrop && <div onClick={this.handleBackdropClick} className={classes('display-backdrop', backdropClassName)} />}
-            <div id={this.id} className={classes('display', animation, className, {in: this.isStage(STAGE.shown)})} {...other} style={Object.assign({}, style, this.state.style)} ref={e => {this.displayElement = e;}}>
-                {header}
-                <div className={classes('content', contentClassName)}>{this.state.loading ? loadingContent : this.state.content}</div>
-                {children}
-                {footer}
+        return (
+            <div onKeyUp={this.handeWindowKeyup.bind(this)} className={rootClassName} style={{zIndex: this.state.zIndex}}>
+                {backdrop && <div onClick={this.handleBackdropClick} className={classes('display-backdrop', backdropClassName)} />}
+                <div id={this.id} className={classes('display', animation, className, {in: this.isStage(STAGE.shown)})} {...other} style={Object.assign({}, style, this.state.style)} ref={e => {this.displayElement = e;}}>
+                    {header}
+                    <div className={classes('content', contentClassName)}>{this.state.loading ? loadingContent : this.state.content}</div>
+                    {children}
+                    {footer}
+                </div>
             </div>
-        </div>);
+        );
     }
 }

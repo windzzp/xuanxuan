@@ -6,19 +6,60 @@ import Lang from '../../lang';
 import {BuildInfo} from '../common/build-info';
 import replaceViews from '../replace-views';
 
-class About extends PureComponent {
+/**
+ * About 组件 ，显示应用关于界面
+ * @class About
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example @lang jsx
+ * import About from './about';
+ * <About />
+ */
+export default class About extends PureComponent {
+    /**
+     * 获取 About 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<About>}
+     * @readonly
+     * @static
+     * @memberof About
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {About} from './about';
+     * <About />
+     */
     static get About() {
         return replaceViews('common/about', About);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof About
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof About
+     * @static
+     */
     static defaultProps = {
         className: null,
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof About
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             className,
@@ -41,5 +82,3 @@ class About extends PureComponent {
         </div>);
     }
 }
-
-export default About;

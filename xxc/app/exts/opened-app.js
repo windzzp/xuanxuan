@@ -17,7 +17,7 @@ export default class OpenedApp {
      * 创建一个打开的应用实例
      *
      * @param {AppExtension} app 要打开的应用实例
-     * @param {String} pageName 子界面名称
+     * @param {string} pageName 子界面名称
      * @param {?Object} params 界面访问参数
      */
     constructor(app, pageName = null, params = null) {
@@ -155,7 +155,7 @@ export default class OpenedApp {
     /**
      * 更新最后打开的时间
      *
-     * @param {Number} time
+     * @param {number} time
      */
     updateOpenTime(time) {
         this._openTime = time || new Date().getTime();
