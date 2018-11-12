@@ -13,7 +13,37 @@ import {MessageList} from './message-list';
 import {MessageListItem} from './message-list-item';
 import replaceViews from '../replace-views';
 
+/**
+ * ChatHistory 组件 ，显示一个查看聊天记录界面
+ * @class ChatHistory
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import ChatHistory from './chat-history';
+ * <ChatHistory />
+ */
 export default class ChatHistory extends Component {
+    /**
+     * 获取 ChatHistory 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<ChatHistory>}
+     * @readonly
+     * @static
+     * @memberof ChatHistory
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {ChatHistory} from './chat-history';
+     * <ChatHistory />
+     */
+    static get ChatHistory() {
+        return replaceViews('chats/chat-history', ChatHistory);
+    }
+
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof ChatHistory
+     * @type {Object}
+     */
     static propTypes = {
         chat: PropTypes.object,
         className: PropTypes.string,
@@ -22,10 +52,13 @@ export default class ChatHistory extends Component {
         searchKeys: PropTypes.string,
     };
 
-    static get ChatHistory() {
-        return replaceViews('chats/chat-history', ChatHistory);
-    }
-
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof ChatHistory
+     * @static
+     */
     static defaultProps = {
         chat: null,
         className: null,
@@ -34,9 +67,20 @@ export default class ChatHistory extends Component {
         searchKeys: null,
     };
 
+    /**
+     * React 组件构造函数，创建一个 ChatHistory 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
 
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             pager: {
                 page: 1,
@@ -48,9 +92,32 @@ export default class ChatHistory extends Component {
             loading: true,
             messages: []
         };
+
+        /**
+         * 页码标记
+         * @type {Map}
+         * @private
+         */
         this.pageMark = {};
+
+        /**
+         * 高亮内容替换正则表达式
+         * @type {Regex}
+         * @private
+         */
+        this.contentConvertPattern = null;
     }
 
+    /**
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof ChatHistory
+     * @return {void}
+     */
     componentDidMount() {
         this.chatHistoryHandler = App.im.server.onChatHistory((pager) => {
             if (pager.gid === this.props.chat.gid) {
@@ -70,6 +137,18 @@ export default class ChatHistory extends Component {
         this.loadFirstPage();
     }
 
+    /**
+     * React 组件生命周期函数：`componentWillUpdate`
+     * 当接收到新属性或状态时，UNSAFE_componentWillUpdate()为在渲染前被立即调用。
+     *
+     * @param {Object} nextProps 即将更新的属性值",
+     * @param {Object} nextState 即将更新的状态值",
+     * @see https://doc.react-china.org/docs/react-component.html#componentWillUpdate
+     * @private
+     * @memberof ChatHistory
+     * @return {void}
+     * @todo 考虑使用 `UNSAFE_componentWillUpdate` 替换 `componentWillUpdate`
+     */
     componentWillUpdate(nextProps, nextState) {
         if (nextProps.searchKeys !== this.props.searchKeys) {
             if (nextProps.searchKeys) {
@@ -80,6 +159,17 @@ export default class ChatHistory extends Component {
         }
     }
 
+    /**
+     * React 组件生命周期函数：`componentDidUpdate`
+     * componentDidUpdate()会在更新发生后立即被调用。该方法并不会在初始化渲染时调用。
+     *
+     * @param {Object} prevProps 更新前的属性值
+     * @param {Object} prevState 更新前的状态值
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidUpdate
+     * @private
+     * @memberof ChatHistory
+     * @return {void}
+     */
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.chat.gid !== this.props.chat.gid) {
             this.loadFirstPage();
@@ -102,12 +192,31 @@ export default class ChatHistory extends Component {
         }
     }
 
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof ChatHistory
+     * @return {void}
+     */
     componentWillUnmount() {
         App.events.off(this.chatHistoryHandler);
         clearTimeout(this.fetchOverTaskTimer);
     }
 
-
+    /**
+     * 根据分页设置查找消息具体所在的页面
+     *
+     * @param {Chat} chat 聊天实例
+     * @param {ChatMessage} gotoMessage 要查找的消息
+     * @param {{recTotal: number, recPerPage: number}} pager 分页设置
+     * @returns {Promise<{recTotal: number, recPerPage: number, page: number}>} 使用 Promise 异步返回处理结果
+     * @memberof ChatHistory
+     * @private
+     */
     findPageMark(chat, gotoMessage, pager) {
         const totalPage = Math.ceil(pager.recTotal / pager.recPerPage);
         if (totalPage < 2) {
@@ -121,6 +230,14 @@ export default class ChatHistory extends Component {
         });
     }
 
+    /**
+     * 从数据库获取历史消息
+     *
+     * @param {function} callback 回调函数
+     * @memberof ChatHistory
+     * @return {void}
+     * @private
+     */
     loadMessages(callback) {
         let {pager} = this.state;
         const {chat, gotoMessage} = this.props;
@@ -180,6 +297,14 @@ export default class ChatHistory extends Component {
         });
     }
 
+    /**
+     * 从数据库查找历史消息
+     *
+     * @param {function} callback 回调函数
+     * @memberof ChatHistory
+     * @return {void}
+     * @private
+     */
     findMessages(callback) {
         this.setState({loading: true});
         const {pager} = this.state;
@@ -204,6 +329,13 @@ export default class ChatHistory extends Component {
         });
     }
 
+    /**
+     * 处理页码变更事件
+     * @param {number} page 页码
+     * @memberof ChatHistory
+     * @private
+     * @return {void}
+     */
     handleOnPageChange = (page) => {
         if (!this.state.loading) {
             const {pager} = this.state;
@@ -213,6 +345,13 @@ export default class ChatHistory extends Component {
         }
     }
 
+    /**
+     * 处理点击拉去历史记录消息按钮事件
+     * @param {Event} e 事件对象
+     * @memberof ChatHistory
+     * @private
+     * @return {void}
+     */
     handleFecthBtnClick = e => {
         const chat = this.props.chat;
         if (chat.id) {
@@ -223,6 +362,13 @@ export default class ChatHistory extends Component {
         }
     }
 
+    /**
+     * 加载首页历史消息
+     *
+     * @memberof ChatHistory
+     * @return {void}
+     * @private
+     */
     loadFirstPage() {
         this.setState({
             pager: {
@@ -242,6 +388,13 @@ export default class ChatHistory extends Component {
         });
     }
 
+    /**
+     * 高亮替换消息内容
+     * @private
+     * @memberof ChatHistory
+     * @param {string} content 消息内容
+     * @return {string} 替换后的内容
+     */
     convertContent = content => {
         if (this.props.searchKeys && this.contentConvertPattern && this.contentConvertPattern.test(content)) {
             content = content.replace(this.contentConvertPattern, "<span class='highlight'>$1</span>");
@@ -249,6 +402,15 @@ export default class ChatHistory extends Component {
         return content;
     }
 
+    /**
+     * 消息列表项生成函数
+     *
+     * @param {ChatMessage} message 聊天消息
+     * @param {ChatMessage} lastMessage 上一个聊天消息
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     * @memberof ChatHistory
+     * @private
+     */
     listItemCreator(message, lastMessage) {
         const active = this.props.searchKeys && this.props.gotoMessage && this.props.gotoMessage.gid === message.gid;
         if (active) {
@@ -266,6 +428,14 @@ export default class ChatHistory extends Component {
         />);
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof ChatHistory
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             chat,

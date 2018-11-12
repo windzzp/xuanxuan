@@ -7,11 +7,37 @@ import {ChatTitle} from './chat-title';
 import replaceViews from '../replace-views';
 import {getMenuItemsForContext} from '../../core/context-menu';
 
-class ChatHeader extends Component {
+/**
+ * ChatHeader 组件 ，显示一个聊天头部界面
+ * @class ChatHeader
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import ChatHeader from './chat-header';
+ * <ChatHeader />
+ */
+export default class ChatHeader extends Component {
+    /**
+     * 获取 ChatHeader 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<ChatHeader>}
+     * @readonly
+     * @static
+     * @memberof ChatHeader
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {ChatHeader} from './chat-header';
+     * <ChatHeader />
+     */
     static get ChatHeader() {
         return replaceViews('chats/chat-header', ChatHeader);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof ChatHeader
+     * @type {Object}
+     */
     static propTypes = {
         chat: PropTypes.object,
         className: PropTypes.string,
@@ -19,6 +45,13 @@ class ChatHeader extends Component {
         showSidebarIcon: PropTypes.any,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof ChatHeader
+     * @static
+     */
     static defaultProps = {
         chat: null,
         className: null,
@@ -26,6 +59,15 @@ class ChatHeader extends Component {
         showSidebarIcon: 'auto'
     };
 
+    /**
+     * React 组件生命周期函数：`shouldComponentUpdate`
+     * 让React知道当前状态或属性的改变是否不影响组件的输出。默认行为是在每一次状态的改变重渲，在大部分情况下你应该依赖于默认行为。
+     *
+     * @param {Object} nextProps 即将更新的属性值
+     * @param {Object} nextState 即将更新的状态值
+     * @returns {boolean} 如果返回 `true` 则继续渲染组件，否则为 `false` 而后的 `UNSAFE_componentWillUpdate()`，`render()`， 和 `componentDidUpdate()` 将不会被调用
+     * @memberof ChatHeader
+     */
     shouldComponentUpdate(nextProps) {
         const {chat} = nextProps;
         return (this.props.className !== nextProps.className ||
@@ -36,6 +78,14 @@ class ChatHeader extends Component {
         );
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof ChatHeader
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             chat,
@@ -66,5 +116,3 @@ class ChatHeader extends Component {
         </div>);
     }
 }
-
-export default ChatHeader;
