@@ -14,16 +14,31 @@ import {StatusDot} from '../common/status-dot';
 import {UserMenu} from './user-menu';
 import replaceViews from '../replace-views';
 
+/**
+ * 导航项目列表
+ * @type {{to: string, label: string, icon: string, activeIcon: string}[]}
+ * @private
+ */
 const navbarItems = [
-    {to: ROUTES.chats.recents.__, label: Lang.string('navbar.chats.label'), icon: 'comment-outline', activeIcon: 'comment-processing'},
-    {to: ROUTES.chats.groups.__, label: Lang.string('navbar.groups.label'), icon: 'pound', activeIcon: 'pound-box'},
-    {to: ROUTES.chats.contacts.__, label: Lang.string('navbar.contacts.label'), icon: 'account-multiple-outline', activeIcon: 'account-multiple'},
+    {
+        to: ROUTES.chats.recents.__, label: Lang.string('navbar.chats.label'), icon: 'comment-outline', activeIcon: 'comment-processing'
+    }, {
+        to: ROUTES.chats.groups.__, label: Lang.string('navbar.groups.label'), icon: 'pound', activeIcon: 'pound-box'
+    }, {
+        to: ROUTES.chats.contacts.__, label: Lang.string('navbar.contacts.label'), icon: 'account-multiple-outline', activeIcon: 'account-multiple'
+    },
 ];
+
+// 如果扩展可用，在主导航上显示扩展条目
 if (ExtsRuntime) {
     navbarItems.push({to: ROUTES.exts._, label: Lang.string('navbar.exts.label'), icon: 'apps', activeIcon: 'apps'});
 }
 
-/* eslint-disable */
+/**
+ * 渲染导航条目
+ * @param {{item: {to: string, label: string, icon: string, activeIcon: string}}} param0 React 属性对象
+ * @return {ReactNode|string|number|null|boolean} React 渲染内容
+ */
 const NavLink = ({item}) => (
     <Route
         path={item.to}
@@ -34,31 +49,85 @@ const NavLink = ({item}) => (
         )}
     />
 );
-/* eslint-enable */
 
-class Navbar extends Component {
+/**
+ * Navbar 组件 ，显示主导航界面
+ * @class Navbar
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import Navbar from './navbar';
+ * <Navbar />
+ */
+export default class Navbar extends Component {
+    /**
+     * 获取 Navbar 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<Navbar>}
+     * @readonly
+     * @static
+     * @memberof Navbar
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {Navbar} from './navbar';
+     * <Navbar />
+     */
     static get Navbar() {
         return replaceViews('main/navbar', Navbar);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof Navbar
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
         userStatus: PropTypes.any,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof Navbar
+     * @static
+     */
     static defaultProps = {
         className: null,
         userStatus: null,
     };
 
+    /**
+     * React 组件构造函数，创建一个 Navbar 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             showUserMenu: false,
             noticeBadge: 0,
         };
     }
 
+    /**
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof Navbar
+     * @return {void}
+     */
     componentDidMount() {
         this.noticeUpdateHandler = App.notice.onNoticeUpdate(notice => {
             this.setState({noticeBadge: notice.total});
@@ -76,18 +145,46 @@ class Navbar extends Component {
         }
     }
 
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof Navbar
+     * @return {void}
+     */
     componentWillUnmount() {
         App.events.off(this.noticeUpdateHandler, this.dataChangeEventHandler);
     }
 
+    /**
+     * 处理点击个人头像事件
+     * @memberof Navbar
+     * @private
+     * @return {void}
+     */
     handleProfileAvatarClick = () => {
         this.setState({showUserMenu: true});
     };
 
+    /**
+     * 处理用户个人菜单面板请求关闭事件
+     * @memberof Navbar
+     * @private
+     * @return {void}
+     */
     handleUserMenuRequestClose = () => {
         this.setState({showUserMenu: false});
     };
 
+    /**
+     * 处理点击设置按钮像事件
+     * @memberof Navbar
+     * @private
+     * @return {void}
+     */
     handleSettingBtnClick = () => {
         UserSettingDialog.show();
     };
@@ -114,6 +211,14 @@ class Navbar extends Component {
         }, 200);
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof Navbar
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             className,
@@ -162,5 +267,3 @@ class Navbar extends Component {
         </div>);
     }
 }
-
-export default Navbar;

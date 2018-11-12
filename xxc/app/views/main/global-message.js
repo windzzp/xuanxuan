@@ -7,23 +7,73 @@ import Member from '../../core/models/member';
 import Avatar from '../../components/avatar';
 import replaceViews from '../replace-views';
 
+/**
+ * 自动连接登录最短时间计数
+ * @type {number}
+ * @private
+ */
 const CONNECT_TIME_TICK = 5;
 
-class GlobalMessage extends PureComponent {
+/**
+ * GlobalMessage 组件 ，显示全局提示消息界面（在主界面顶部显示）
+ * @class GlobalMessage
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example @lang jsx
+ * import GlobalMessage from './global-message';
+ * <GlobalMessage />
+ */
+export default class GlobalMessage extends PureComponent {
+    /**
+     * 获取 GlobalMessage 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<GlobalMessage>}
+     * @readonly
+     * @static
+     * @memberof GlobalMessage
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {GlobalMessage} from './global-message';
+     * <GlobalMessage />
+     */
     static get GlobalMessage() {
         return replaceViews('main/global-message', GlobalMessage);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof GlobalMessage
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof GlobalMessage
+     * @static
+     */
     static defaultProps = {
         className: null,
     };
 
+    /**
+     * React 组件构造函数，创建一个 GlobalMessage 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             userStatus: '',
             tick: 0,
@@ -33,6 +83,16 @@ class GlobalMessage extends PureComponent {
         };
     }
 
+    /**
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof GlobalMessage
+     * @return {void}
+     */
     componentDidMount() {
         this.onUserStatusChangeHandler = App.profile.onUserStatusChange(user => {
             const userStatus = App.profile.userStatus;
@@ -47,11 +107,26 @@ class GlobalMessage extends PureComponent {
         });
     }
 
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof GlobalMessage
+     * @return {void}
+     */
     componentWillUnmount() {
         App.events.off(this.onUserStatusChangeHandler);
         clearInterval(this.countTimer);
     }
 
+    /**
+     * 重新尝试连接到服务器
+     * @return {void}
+     * @memberof GlobalMessage
+     */
     connect() {
         this.setState({
             connecting: true,
@@ -70,6 +145,11 @@ class GlobalMessage extends PureComponent {
         });
     }
 
+    /**
+     * 开始自动重连
+     * @return {void}
+     * @memberof GlobalMessage
+     */
     startConnect() {
         this.connectTimes = 0;
         this.setState({
@@ -92,6 +172,11 @@ class GlobalMessage extends PureComponent {
         }, 1000);
     }
 
+    /**
+     * 停止自动重连
+     * @return {void}
+     * @memberof GlobalMessage
+     */
     stopConnect() {
         this.setState({
             connecting: false,
@@ -100,6 +185,11 @@ class GlobalMessage extends PureComponent {
         clearInterval(this.countTimer);
     }
 
+    /**
+     * ；立即自动重连
+     * @return {void}
+     * @memberof GlobalMessage
+     */
     reconnectNow() {
         if (!this.state.connecting) {
             this.connectTimes = Math.min(1, Math.floor(this.connectTimes / 2));
@@ -107,11 +197,24 @@ class GlobalMessage extends PureComponent {
         }
     }
 
+    /**
+     * 取消连接并退出
+     * @return {void}
+     * @memberof GlobalMessage
+     */
     logout() {
         this.stopConnect();
         App.server.logout();
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof GlobalMessage
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             className,
@@ -159,5 +262,3 @@ class GlobalMessage extends PureComponent {
         </div>);
     }
 }
-
-export default GlobalMessage;

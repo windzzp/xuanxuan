@@ -30,34 +30,34 @@ const buildInView = {
 };
 
 /**
- * Index 组件 ，显示扩展主界面
- * @class Index
+ * ExtsIndex 组件 ，显示扩展主界面
+ * @class ExtsIndex
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
  * @example @lang jsx
- * import Index from './index';
- * <Index />
+ * import ExtsIndex from './index';
+ * <ExtsIndex />
  */
-export default class Index extends Component {
+export default class ExtsIndex extends Component {
     /**
-     * 获取 Index 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<Index>}
+     * 获取 ExtsIndex 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<ExtsIndex>}
      * @readonly
      * @static
-     * @memberof Index
+     * @memberof ExtsIndex
      * @example <caption>可替换组件类调用方式</caption> @lang jsx
-     * import {Index} from './index';
-     * <Index />
+     * import {ExtsIndex} from './index';
+     * <ExtsIndex />
      */
-    static get Index() {
-        return replaceViews('exts/index', Index);
+    static get ExtsIndex() {
+        return replaceViews('exts/index', ExtsIndex);
     }
 
     /**
      * React 组件属性类型检查
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
-     * @memberof Index
+     * @memberof ExtsIndex
      * @type {Object}
      */
     static propTypes = {
@@ -70,7 +70,7 @@ export default class Index extends Component {
      * React 组件默认属性
      * @see https://react.docschina.org/docs/react-component.html#defaultprops
      * @type {object}
-     * @memberof Index
+     * @memberof ExtsIndex
      * @static
      */
     static defaultProps = {
@@ -79,7 +79,7 @@ export default class Index extends Component {
     };
 
     /**
-     * React 组件构造函数，创建一个 Index 组件实例，会在装配之前被调用。
+     * React 组件构造函数，创建一个 ExtsIndex 组件实例，会在装配之前被调用。
      * @see https://react.docschina.org/docs/react-component.html#constructor
      * @param {Object?} props 组件属性对象
      * @constructor
@@ -106,7 +106,7 @@ export default class Index extends Component {
      *
      * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
      * @private
-     * @memberof Index
+     * @memberof ExtsIndex
      * @return {void}
      */
     componentDidMount() {
@@ -122,7 +122,7 @@ export default class Index extends Component {
      * @param {Object} prevState 更新前的状态值
      * @see https://doc.react-china.org/docs/react-component.html#componentDidUpdate
      * @private
-     * @memberof Index
+     * @memberof ExtsIndex
      * @return {void}
      */
     componentDidUpdate() {
@@ -133,7 +133,7 @@ export default class Index extends Component {
     /**
      * 如果要打开的应用没有找到显示提示消息
      *
-     * @memberof Index
+     * @memberof ExtsIndex
      * @return {void}
      * @private
      */
@@ -147,7 +147,7 @@ export default class Index extends Component {
     /**
      * 处理鼠标滚轮滚动事件
      * @param {Event} e 事件对象
-     * @memberof Index
+     * @memberof ExtsIndex
      * @private
      * @return {void}
      */
@@ -159,7 +159,7 @@ export default class Index extends Component {
      * 滚动导航到当前显示的应用条目上
      *
      * @return {void}
-     * @memberof Index
+     * @memberof ExtsIndex
      */
     checkScrollToCurrentApp() {
         if (!this.appsNav) {
@@ -182,7 +182,7 @@ export default class Index extends Component {
     /**
      * 处理点击应用关闭按钮事件
      * @param {Event} e 事件对象
-     * @memberof Index
+     * @memberof ExtsIndex
      * @private
      * @return {void}
      */
@@ -198,7 +198,7 @@ export default class Index extends Component {
     /**
      * 处理点击应用导航左右滚动按钮事件
      * @param {string} direction 滚动方向，包括 `'left'`，`'right'`
-     * @memberof Index
+     * @memberof ExtsIndex
      * @private
      * @return {void}
      */
@@ -210,7 +210,7 @@ export default class Index extends Component {
      * 处理应用加载状态更新事件
      * @param {OpenedApp} openApp 打开的应用实例
      * @param {boolean} isLoading 是否正在加载
-     * @memberof Index
+     * @memberof ExtsIndex
      * @private
      * @return {void}
      */
@@ -224,7 +224,7 @@ export default class Index extends Component {
      * 处理应用标题更新事件
      * @param {OpenedApp} openApp 打开的应用实例
      * @param {string} pageTitle 页面标题
-     * @memberof Index
+     * @memberof ExtsIndex
      * @private
      * @return {void}
      */
@@ -238,7 +238,7 @@ export default class Index extends Component {
      * 处理应用右键菜单事件
      * @param {OpenedApp} openedApp 打开的应用实例
      * @param {Event} e 事件对象
-     * @memberof Index
+     * @memberof ExtsIndex
      * @private
      * @return {void}
      */
@@ -258,7 +258,7 @@ export default class Index extends Component {
      * @private
      * @see https://doc.react-china.org/docs/react-component.html#render
      * @see https://doc.react-china.org/docs/rendering-elements.html
-     * @memberof Index
+     * @memberof ExtsIndex
      * @return {ReactNode|string|number|null|boolean} React 渲染内容
      */
     render() {

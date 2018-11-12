@@ -4,11 +4,38 @@ import ImageCutterApp from './app-image-cutter';
 import {AppView} from './app-view';
 import replaceViews from '../replace-views';
 
-class Index extends PureComponent {
-    static get Index() {
-        return replaceViews('index/index', Index);
+/**
+ * HomeIndex 组件 ，显示喧喧应用窗口界面
+ * @class HomeIndex
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example @lang jsx
+ * import HomeIndex from './index';
+ * <HomeIndex />
+ */
+export default class HomeIndex extends PureComponent {
+    /**
+     * 获取 HomeIndex 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<HomeIndex>}
+     * @readonly
+     * @static
+     * @memberof HomeIndex
+     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * import {HomeIndex} from './index';
+     * <HomeIndex />
+     */
+    static get HomeIndex() {
+        return replaceViews('index/index', HomeIndex);
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof HomeIndex
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         return (<Router>
             <Switch>
@@ -18,5 +45,3 @@ class Index extends PureComponent {
         </Router>);
     }
 }
-
-export default Index;
