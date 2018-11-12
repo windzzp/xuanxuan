@@ -4,13 +4,53 @@ import Path from 'path';
 import server, {socket} from '../../core/server';
 import {createExtension} from '../extension';
 
+/**
+ * 服务器扩展变更回调函数
+ * @type {function}
+ * @private
+ */
 let onChangeListener = null;
+
+/**
+ * 当前登录的用户
+ * @type {User}
+ * @private
+ */
 let currentUser = null;
+
+/**
+ * 当前登录的用户拥有的服务器扩展列表
+ * @type {Extension[]}
+ * @private
+ */
 let exts = null;
+
+/**
+ * 是否正在处理服务器扩展
+ * @type {boolean}
+ * @private
+ */
 let isProcessing = false;
+
+/**
+ * 获取服务器扩展延迟任务 ID
+ * @type {number}
+ * @private
+ */
 let nextFetchTask = null;
+
+/**
+ * 获取服务器扩展延迟时间，单位毫秒
+ * @type {number}
+ * @private
+ */
 const fetchTaskInterval = 1000 * 60 * 60 * 1.5;
 
+/**
+ * 检查服务器扩展在本地是否存在
+ * @param {Extension} ext 扩展对象
+ * @returns {Promise<boolean>} 使用 Promise 异步返回处理结果
+ */
 const checkLocalCache = ext => {
     return new Promise(resolve => {
         // 检查是否存在本地扩展包目录
@@ -29,6 +69,11 @@ const checkLocalCache = ext => {
     });
 };
 
+/**
+ * 从服务器下载远程扩展
+ * @param {Extension} ext 服务器扩展配置
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
 const downloadRemoteExtension = ext => {
     return Platform.net.downloadFile(currentUser, {
         url: ext.download,
@@ -57,10 +102,19 @@ const downloadRemoteExtension = ext => {
     });
 };
 
+/**
+ * 加载服务器扩展在本地的 package.json 文件
+ * @param {Extension} ext 服务器扩展
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
 const loadRemoteExtension = ext => {
     return Platform.fs.readJson(Path.join(ext.localPath, 'package.json'), {throws: false});
 };
 
+/**
+ * 处理服务器推送的远程扩展
+ * @return {void}
+ */
 const processExtensions = async () => {
     if (!exts || !exts.length || isProcessing) {
         return;
@@ -118,6 +172,12 @@ const processExtensions = async () => {
     }
 };
 
+/**
+ * 获取远程扩展的免登录地址
+ * @param {Extension|string} extOrEntryID 远程扩展对象或者远程入口 ID
+ * @param {string} [referer=''] 要访问的链接，如果留空则使用远程扩展的主页链接
+ * @returns {Promise<string>} 使用 Promise 异步返回处理结果
+ */
 export const getEntryVisitUrl = (extOrEntryID, referer = '') => {
     return server.socket.sendAndListen({
         module: 'entry',
@@ -126,6 +186,11 @@ export const getEntryVisitUrl = (extOrEntryID, referer = '') => {
     });
 };
 
+/**
+ * 处理 Socket 推送的服务器扩展列表消息事件
+ * @param {SocketMessage} msg Socket 连接消息
+ * @return {void}
+ */
 const handleChatExtensions = msg => {
     if (currentUser && msg.isSuccess && msg.data.length) {
         const baseUserExtsDir = Platform.ui.createUserDataPath(currentUser, '', 'extensions');
@@ -162,6 +227,11 @@ const handleChatExtensions = msg => {
     }
 };
 
+/**
+ * 处理 Socket 推送的入口免登录地址消息事件
+ * @param {SocketMessage} msg Socket 连接消息
+ * @return {boolean|any} 如果返回 `false`，则表示处理失败，否则返回处理后的数据
+ */
 const handleEntryVisit = msg => {
     if (currentUser && msg.isSuccess && msg.data) {
         return msg.data;
@@ -169,11 +239,17 @@ const handleEntryVisit = msg => {
     return false;
 };
 
+// 设置 Socket 消息处理函数
 socket.setHandler({
     'chat/extensions': handleChatExtensions,
     'entry/visit': handleEntryVisit
 });
 
+/**
+ * 卸载已安装的服务器扩展
+ * @param {User} user 当前用户
+ * @return {void}
+ */
 export const detachServerExtensions = user => {
     currentUser = null;
     if (exts) {
@@ -187,6 +263,11 @@ export const detachServerExtensions = user => {
     }
 };
 
+/**
+ * 从服务器获取远程扩展清单并安装服务器扩展
+ * @param {User} user 当前用户
+ * @return {void}
+ */
 export const fetchServerExtensions = (user) => {
     if (nextFetchTask) {
         clearTimeout(nextFetchTask);
@@ -215,6 +296,11 @@ export const fetchServerExtensions = (user) => {
     }, fetchTaskInterval);
 };
 
+/**
+ * 设置服务器扩展变更事件回调函数
+ * @param {function} listener 回调函数
+ * @return {void}
+ */
 export const setServerOnChangeListener = listener => {
     onChangeListener = listener;
 };

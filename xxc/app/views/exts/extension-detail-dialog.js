@@ -4,7 +4,7 @@ import {ExtensionDetail} from './extension-detail';
 
 /**
  * 显示扩展详情对话框
- * @param {BaseExtension} extension 要显示的扩展对象
+ * @param {Extension} extension 要显示的扩展对象
  * @param {function} callback 对话框显示完成回调函数
  * @return {void}
  */

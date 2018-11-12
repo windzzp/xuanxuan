@@ -135,7 +135,7 @@ export default class ExtensionDetail extends Component {
 
     /**
      * 处理点击卸载按钮事件
-     * @param {BaseExtension} extension 要卸载的按钮
+     * @param {Extension} extension 要卸载的按钮
      * @memberof ExtensionDetail
      * @private
      * @return {void}
@@ -158,7 +158,7 @@ export default class ExtensionDetail extends Component {
 
     /**
      * 处理点击启用按钮事件
-     * @param {BaseExtension} extension 要启用的按钮
+     * @param {Extension} extension 要启用的按钮
      * @memberof ExtensionDetail
      * @private
      * @return {void}
@@ -169,7 +169,7 @@ export default class ExtensionDetail extends Component {
 
     /**
      * 处理点击禁用按钮事件
-     * @param {BaseExtension} extension 要禁用的按钮
+     * @param {Extension} extension 要禁用的按钮
      * @memberof ExtensionDetail
      * @private
      * @return {void}

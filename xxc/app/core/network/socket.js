@@ -91,6 +91,13 @@ export default class AppSocket extends Socket {
          * @type {Object<string, Function>}
          */
         this.handlers = {};
+
+        /**
+         * ping 循环任务 ID
+         * @type {number}
+         * @private
+         */
+        this.pingTask = null;
     }
 
     /**

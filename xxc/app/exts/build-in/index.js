@@ -1,8 +1,13 @@
+// eslint-disable-next-line import/no-unresolved
 import {env, fs as fse} from 'Platform';
-import Config, {updateConfig} from '../../config';
 import path from 'path';
+import Config, {updateConfig} from '../../config';
 import Lang from '../../lang';
 
+/**
+ * 内置扩展清单
+ * @type {Object[]}
+ */
 const exts = [{
     name: 'home',
     displayName: Lang.string('exts.home.label'),
@@ -44,16 +49,37 @@ const exts = [{
     appType: 'insideView',
 }];
 
-// Load internals extensions
+/**
+ * 从运行时配置中加载内置扩展
+ * @type {Object[]}
+ * @private
+ */
 const internals = Config.exts && Config.exts.internals;
 if (Array.isArray(internals) && internals.length) {
     exts.push(...internals);
 }
 
-// Load local build-in extensions
+/**
+ * 内置扩展存储根路径
+ * @type {string}
+ * @private
+ */
 const buildInsPath = path.join(process.env.HOT ? env.appRoot : env.appPath, 'build-in');
+
+/**
+ * 内置扩展清单文件路径：`extensions.json`
+ * @type {string}
+ * @private
+ */
 const buildInsFile = path.join(buildInsPath, 'extensions.json');
+
+/**
+ * 内置扩展清单文件读取的内置扩展列表
+ * @type {Object[]}
+ * @private
+ */
 const buildIns = fse.readJsonSync(buildInsFile, {throws: false});
+
 if (buildIns && Array.isArray(buildIns)) {
     buildIns.forEach(extConfig => {
         if (typeof extConfig === 'string') {
@@ -77,8 +103,21 @@ if (buildIns && Array.isArray(buildIns)) {
     });
 }
 
+/**
+ * 内置扩展存储根路径内的运行时配置文件路径
+ * @type {string}
+ * @private
+ */
 const buildInConfigFile = path.join(buildInsPath, 'config.json');
+
+/**
+ * 内置扩展存储根路径内的运行时配置
+ * @type {string}
+ * @private
+ */
 const buildInConfig = fse.readJsonSync(buildInConfigFile, {throws: false});
+
+// 更新扩展的运行时配置
 if (buildInConfig) {
     updateConfig(buildInConfig);
 }

@@ -147,7 +147,7 @@ export default class AppExtensions extends Component {
 
     /**
      * 处理点击设置按钮事件
-     * @param {BaseExtension} ext 点击的扩展对象
+     * @param {Extension} ext 点击的扩展对象
      * @param {Event} e 事件对象
      * @memberof AppExtensions
      * @private
@@ -162,7 +162,7 @@ export default class AppExtensions extends Component {
 
     /**
      * 处理点击扩展项条目事件
-     * @param {BaseExtension} ext 点击的扩展对象
+     * @param {Extension} ext 点击的扩展对象
      * @param {Event} e 事件对象
      * @memberof AppExtensions
      * @private

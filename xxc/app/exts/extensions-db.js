@@ -1,27 +1,69 @@
 import Store from '../utils/store';
 import {createExtension} from './extension';
 
+/**
+ * 扩展数据库本地存储前缀
+ * @type {string}
+ * @private
+ */
 const STORE_KEY = 'EXTENSIONS::database';
 
+/**
+ * 扩展变更回调函数
+ * @type {function}
+ * @private
+ */
 let onChangeListener = null;
 
+/**
+ * 存储本地数据中的所有扩展
+ * @type {Extension[]}
+ * @private
+ */
 const installs = Store.get(STORE_KEY, []).map(data => {
     return createExtension(data);
 });
 
-const saveToStore = () => {
+/**
+ * 获取已安装的所有扩展
+ * @return {Extension[]} 已安装的所有扩展列表
+ */
+export const getInstalls = () => installs;
+
+/**
+ * 将已安装的扩展保存到本地存储
+ * @return {void}
+ */
+export const saveToStore = () => {
     Store.set(STORE_KEY, installs.map(x => x.storeData));
 };
 
-const getInstall = name => {
+/**
+ * 获取指定名称的扩展
+ * @param {stirng} name 扩展名称
+ * @return {Extension} 扩展对象
+ */
+export const getInstall = name => {
     return installs.find(x => x.name === name);
 };
 
-const getInstallIndex = name => {
+/**
+ * 获取扩展存储索引
+ * @param {stirng} name 扩展名称
+ * @return {number} 扩展索引
+ */
+export const getInstallIndex = name => {
     return installs.findIndex(x => x.name === name);
 };
 
-const saveInstall = (extension, override = false, beforeSave = null) => {
+/**
+ * 安装扩展并保存到数据库
+ * @param {Extension} extension 扩展
+ * @param {boolean} [override=false] 是否覆盖已安装的同名扩展
+ * @param {function} beforeSave 在保存之前的回调函数
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const saveInstall = (extension, override = false, beforeSave = null) => {
     if (extension.isRemote) {
         if (onChangeListener) {
             onChangeListener(extension, 'update');
@@ -53,7 +95,12 @@ const saveInstall = (extension, override = false, beforeSave = null) => {
     return Promise.resolve(extension);
 };
 
-const removeInstall = extension => {
+/**
+ * 从已安装的扩展中移除
+ * @param {Extension} extension 扩展
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const removeInstall = extension => {
     const index = getInstallIndex(extension.name);
     if (index < 0) {
         return Promise.reject('EXT_NOT_FOUND');
@@ -66,7 +113,12 @@ const removeInstall = extension => {
     return Promise.resolve();
 };
 
-const removeInstallByName = name => {
+/**
+ * 根据名称从已安装的扩展中移除
+ * @param {string} name 扩展名称
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const removeInstallByName = name => {
     const extension = getInstall(name);
     if (extension) {
         return removeInstall(extension);
@@ -74,7 +126,12 @@ const removeInstallByName = name => {
     return Promise.reject('EXT_NOT_FOUND');
 };
 
-const setOnChangeListener = listener => {
+/**
+ * 设置扩展变更回调函数
+ * @param {function} listener 回调函数
+ * @return {void}
+ */
+export const setOnChangeListener = listener => {
     onChangeListener = listener;
 };
 
