@@ -1,48 +1,99 @@
+// eslint-disable-next-line import/no-unresolved
 import Platform from 'Platform';
 import Path from 'path';
-import {defaultApp, getApp, forEach as forEachExt} from './exts';
+import {defaultApp, getAppExt} from './exts';
 import OpenedApp from './opened-app';
 import Lang from '../lang';
-import manager from './manager';
+import {setExtensionDisabled, openInstallExtensionDialog, uninstallExtension} from './manager';
 import Modal from '../components/modal';
 import Messager from '../components/messager';
 import ExtensionDetailDialog from '../views/exts/extension-detail-dialog';
 
+/**
+ * 默认打开的应用
+ * @type {OpenedApp}
+ * @private
+ */
 const defaultOpenedApp = new OpenedApp(defaultApp);
 
+/**
+ * 已打开的应用清单
+ * @type {OpenedApp[]}
+ * @private
+ */
 const openedApps = [
     defaultOpenedApp,
 ];
 
-const isDefaultApp = id => {
-    return id === defaultOpenedApp.id;
-};
+/**
+ * 获取已打开的应用清单
+ * @return {OpenedApp[]} 已打开的应用清单
+ */
+export const getOpenedApps = () => openedApps;
 
-const isAppOpen = id => {
-    return openedApps.find(x => x.id === id);
-};
+/**
+ * 判断指定 ID 的应用是否是默认打开的应用
+ * @param {string} id 应用 ID
+ * @returns {boolean} 如果返回 `true` 则为是默认打开的应用，否则为不是默认打开的应用
+ */
+export const isDefaultOpenedApp = id => id === defaultOpenedApp.id;
 
-const getOpenedAppIndex = id => {
-    return openedApps.findIndex(x => x.id === id);
-};
+/**
+ * 判断应用是否已经打开
+ * @param {string} id 应用 ID
+ * @returns {boolean} 如果返回 `true` 则为已经打开，否则为没有打开
+ * @private
+ */
+const isAppOpen = id => openedApps.find(x => x.id === id);
 
+/**
+ * 获取打开的应用索引
+ * @param {string} id 应用 ID
+ * @returns {number} 应用索引
+ * @private
+ */
+const getOpenedAppIndex = id => openedApps.findIndex(x => x.id === id);
+
+/**
+ * 当前已经激活的应用
+ * @type {OpenedApp}
+ * @private
+ */
 let currentOpenedApp = null;
-const isCurrentOpenedApp = id => {
-    return currentOpenedApp && currentOpenedApp.id === id;
-};
 
-const openApp = (name, pageName = null, params = null) => {
+/**
+ * 判断给定 ID 的应用是否激活
+ * @param {string} id 应用 ID
+ * @returns {boolean} 如果返回 `true` 则为已经激活，否则为没有激活
+ */
+export const isCurrentOpenedApp = id => (currentOpenedApp && currentOpenedApp.id === id);
+
+/**
+ * 获取当前激活的应用
+ * @return {OpenedApp} 当前激活的应用
+ */
+export const getCurrentOpenedApp = () => currentOpenedApp;
+
+/**
+ * 打开应用，如果应用已经打开则激活应用
+ * @param {string} name 应用名称
+ * @param {?string} [pageName=null] 子界面名称
+ * @param {?(Object|string)} [params=null] 界面访问参数
+ * @returns {boolean} 如果返回 `true` 则为操作成功，否则为操作失败
+ */
+export const openApp = (name, pageName = null, params = null) => {
     if (name instanceof OpenedApp) {
         const app = name;
         name = app.appName;
         params = pageName;
+        // eslint-disable-next-line prefer-destructuring
         pageName = app.pageName;
     }
 
     const id = OpenedApp.createId(name, pageName);
     let theOpenedApp = isAppOpen(id);
     if (!theOpenedApp) {
-        const theApp = getApp(name);
+        const theApp = getAppExt(name);
         if (theApp) {
             theOpenedApp = new OpenedApp(theApp, pageName, params);
             openedApps.push(theOpenedApp);
@@ -57,10 +108,8 @@ const openApp = (name, pageName = null, params = null) => {
             }
             return false;
         }
-    } else {
-        if (params !== null) {
-            theOpenedApp.params = params;
-        }
+    } if (params !== null) {
+        theOpenedApp.params = params;
     }
     theOpenedApp.updateOpenTime();
     const appHashRoute = theOpenedApp.hashRoute;
@@ -76,11 +125,24 @@ const openApp = (name, pageName = null, params = null) => {
     return true;
 };
 
-const openAppWithUrl = (name, url, pageName = null) => {
+/**
+ * 打开应用指定地址，如果应用已经打开则激活应用
+ * @param {string} name 应用名称
+ * @param {string} url 应用内部地址
+ * @param {?string} [pageName=null] 子界面名称
+ * @returns {boolean} 如果返回 `true` 则为操作成功，否则为操作失败
+ */
+export const openAppWithUrl = (name, url, pageName = null) => {
     openApp(name, pageName, `DIRECT=${url}`);
 };
 
-const openAppById = (id, params = null) => {
+/**
+ * 根据应用 ID 打开应用，如果应用已经打开则激活应用
+ * @param {string} id 应用 ID
+ * @param {?(Object|string)} [params=null] 界面访问参数
+ * @returns {boolean} 如果返回 `true` 则为操作成功，否则为操作失败
+ */
+export const openAppById = (id, params = null) => {
     let name = id;
     let pageName = null;
     const indexOfAt = id.indexOf('@');
@@ -91,7 +153,11 @@ const openAppById = (id, params = null) => {
     return openApp(name, pageName, params);
 };
 
-const openNextApp = () => {
+/**
+ * 激活下一个打开的应用
+ * @return {void}
+ */
+export const openNextApp = () => {
     let theMaxOpenTimeApp = null;
     openedApps.forEach(theOpenedApp => {
         if (!theMaxOpenTimeApp || theOpenedApp.openTime > theMaxOpenTimeApp.openTime) {
@@ -102,7 +168,13 @@ const openNextApp = () => {
     openApp(theMaxOpenTimeApp);
 };
 
-const closeApp = (id, openNext = true) => {
+/**
+ * 关闭应用
+ * @param {string} id 应用 ID
+ * @param {boolean} [openNext=true] 是否关闭应用之后激活下一个打开的应用
+ * @returns {boolean} 如果返回 `true` 则为操作成功，否则为操作失败
+ */
+export const closeApp = (id, openNext = true) => {
     const theOpenedAppIndex = getOpenedAppIndex(id);
     if (theOpenedAppIndex > -1) {
         openedApps.splice(theOpenedAppIndex, 1);
@@ -118,7 +190,11 @@ const closeApp = (id, openNext = true) => {
     return false;
 };
 
-const closeAllApp = () => {
+/**
+ * 关闭所有已经打开的应用（除了在界面上固定的应用）
+ * @return {void}
+ */
+export const closeAllApp = () => {
     openedApps.map(x => x.name).forEach(theOpenedApp => {
         if (!theOpenedApp.fixed) {
             closeApp(theOpenedApp.name, false);
@@ -126,7 +202,14 @@ const closeAllApp = () => {
     });
 };
 
-const uninstallExtension = (extension, confirm = true, callback = null) => {
+/**
+ * 尝试卸载应用，默认会弹出对话框询问用户是否确定卸载
+ * @param {Extension} extension 要卸载的扩展
+ * @param {boolean} [confirm=true] 是否在卸载之前询问用户
+ * @param {function} callback 操作完成后的回调函数
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const tryUninstallExtension = (extension, confirm = true, callback = null) => {
     if (typeof confirm === 'function') {
         callback = confirm;
         confirm = true;
@@ -139,7 +222,7 @@ const uninstallExtension = (extension, confirm = true, callback = null) => {
             return Promise.reject();
         });
     }
-    return manager.uninstall(extension).then(x => {
+    return uninstallExtension(extension).then(() => {
         Messager.show(Lang.format('ext.uninstallSuccess.format', extension.displayName), {type: 'success'});
         if (callback) {
             callback();
@@ -151,8 +234,13 @@ const uninstallExtension = (extension, confirm = true, callback = null) => {
     });
 };
 
-const installExtension = (devMode = false) => {
-    manager.openInstallDialog((extension, error) => {
+/**
+ * 安装扩展
+ * @param {boolean} [devMode=false] 是否为开发模式
+ * @return {void}
+ */
+export const installExtension = (devMode = false) => {
+    openInstallExtensionDialog((extension, error) => {
         if (extension) {
             Messager.show(Lang.format('ext.installSuccess.format', extension.displayName), {type: 'success'});
         } else if (error) {
@@ -165,18 +253,27 @@ const installExtension = (devMode = false) => {
     }, devMode);
 };
 
-const showExtensionDetailDialog = (extension, callback) => {
-    return ExtensionDetailDialog.show(extension, callback);
-};
+/**
+ * 显示扩展详情对话框
+ * @param {Extension} extension 扩展对象
+ * @param {function} callback 对话框显示完成后的回调函数
+ * @return {void}
+ */
+export const showExtensionDetailDialog = (extension, callback) => ExtensionDetailDialog.show(extension, callback);
 
-const createSettingContextMenu = extension => {
+/**
+ * 创建扩展上下文菜单项清单
+ * @param {Extension} extension 扩展对象
+ * @return {Object[]} 上下文菜单项清单
+ */
+export const createSettingContextMenu = extension => {
     const items = [];
 
     if (extension.disabled) {
         if (!extension.buildIn && !extension.isRemote) {
             items.push({
                 label: Lang.string('ext.enable'),
-                click: manager.setExtensionDisabled.bind(null, extension, false, null)
+                click: setExtensionDisabled.bind(null, extension, false, null)
             });
         }
     } else {
@@ -192,7 +289,7 @@ const createSettingContextMenu = extension => {
         if (!extension.buildIn && !extension.isRemote) {
             items.push({
                 label: Lang.string('ext.disable'),
-                click: manager.setExtensionDisabled.bind(null, extension, true, null)
+                click: setExtensionDisabled.bind(null, extension, true, null)
             });
         }
     }
@@ -210,15 +307,20 @@ const createSettingContextMenu = extension => {
         items.push({
             label: Lang.string('ext.uninstall'),
             click: () => {
-                uninstallExtension(extension);
+                tryUninstallExtension(extension);
             }
         });
     }
     return items;
 };
 
-const showDevFolder = extension => {
-    const localPath = extension.localPath;
+/**
+ * 显示（在用户系统桌面打开）开发中的扩展所在的文件夹
+ * @param {Extension} extension 扩展对象
+ * @returns {boolean} 如果返回 `true` 则操作成功，否则操作失败
+ */
+export const showDevFolder = extension => {
+    const {localPath} = extension;
     if (localPath) {
         Platform.ui.showItemInFolder(Path.join(localPath, 'package.json'));
         return true;
@@ -226,7 +328,12 @@ const showDevFolder = extension => {
     return false;
 };
 
-const createAppContextMenu = appExt => {
+/**
+ * 创建应用扩展上下文菜单项清单
+ * @param {AppExtension} appExt 应用扩展
+ * @return {Object[]} 上下文菜单项清单
+ */
+export const createAppContextMenu = appExt => {
     const items = [];
     items.push({
         label: Lang.string('ext.app.open'),
@@ -250,7 +357,7 @@ const createAppContextMenu = appExt => {
         items.push({
             label: Lang.string('ext.uninstall'),
             click: () => {
-                uninstallExtension(appExt);
+                tryUninstallExtension(appExt);
             }
         });
     }
@@ -267,7 +374,13 @@ const createAppContextMenu = appExt => {
     return items;
 };
 
-const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
+/**
+ * 创建打开的应用上下文菜单项清单
+ * @param {OpenedApp} theOpenedApp 打开的应用
+ * @param {function} refreshUI 请求刷新界面的回调函数
+ * @return {Object[]} 上下文菜单项清单
+ */
+export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
     const items = [];
     if (theOpenedApp.webview) {
         items.push({
@@ -351,9 +464,8 @@ export default {
         return defaultOpenedApp;
     },
 
-    isDefaultApp,
+    isDefaultApp: isDefaultOpenedApp,
     isCurrentOpenedApp,
-    isAppOpen,
     openApp,
     openAppById,
     closeApp,
@@ -369,7 +481,7 @@ export default {
     },
 
     installExtension,
-    uninstallExtension,
+    uninstallExtension: tryUninstallExtension,
 
     showDevFolder,
     createAppContextMenu,

@@ -3,26 +3,42 @@ import Path from 'path';
 import compareVersions from 'compare-versions';
 import uuid from 'uuid/v4';
 import extractZip from 'extract-zip';
-import db from './extensions-db';
+import db, {removeInstalledExtension, saveInstalledExtension, getInstalledExtension} from './extensions-db';
 import {createExtension} from './extension';
 import Modal from '../components/modal';
 import Lang from '../lang';
 
-const createSavePath = extension => {
+/**
+ * 生成扩展本地保存路径
+ * @param {Extension} extension 扩展
+ * @return {string} 扩展本地保存路径
+ */
+export const createExtensionSavePath = extension => {
     return extension.localPath || Path.join(env.dataPath, 'xexts', extension.name);
 };
 
-const uninstall = extension => {
-    return db.removeInstall(extension).then(() => {
+/**
+ * 卸载扩展
+ * @param {Extension} extension 要卸载的扩展
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const uninstallExtension = extension => {
+    return removeInstalledExtension(extension).then(() => {
         extension.detach();
         if (extension.isDev) {
             return Promise.resolve();
         }
-        const savedPath = createSavePath(extension);
+        const savedPath = createExtensionSavePath(extension);
         return fse.remove(savedPath);
     });
 };
 
+/**
+ * 解压扩展压缩文件
+ * @param {string} filePath 扩展压缩文件路径
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ * @private
+ */
 const extractInstallFile = filePath => {
     return new Promise((resolve, reject) => {
         const tmpPath = Path.join(env.tmpPath, uuid());
@@ -37,17 +53,37 @@ const extractInstallFile = filePath => {
     });
 };
 
+/**
+ * 安装扩展，并尝试进行热加载
+ * @param {Extension} extension 要加载的扩展
+ * @param {boolean} [override=true] 是否覆盖数据库中已有的扩展
+ * @param {boolean} [tryHotAttach=true] 是否安装后尝试进行热加载
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ * @private
+ */
 const saveAndAttach = (extension, override = true, tryHotAttach = true) => {
-    return db.saveInstall(extension, override, tryHotAttach ? ext => {
+    return saveInstalledExtension(extension, override, tryHotAttach ? ext => {
         ext.hotAttach();
     } : null);
 };
 
+/**
+ * 安装扩展
+ * @param {Extension} extension 要加载的扩展
+ * @param {boolean} [override=true] 是否覆盖数据库中已有的扩展
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ * @private
+ */
 const saveExtension = (extension, override = true) => {
     return saveAndAttach(extension, override, false);
 };
 
-const reloadDevExtension = extension => {
+/**
+ * 重新加载正在开发的扩展
+ * @param {Extension} extension 要重新加载的扩展
+ * @returns {boolean|Extension} 如果返回 `Extension` 实例则操作成功，否则操作失败
+ */
+export const reloadDevExtension = extension => {
     const path = extension.localPath;
     if (extension.isModuleLoaded) {
         extension.detach();
@@ -69,6 +105,14 @@ const reloadDevExtension = extension => {
     return false;
 };
 
+/**
+ * 从指定目录安装扩展
+ * @param {string} dir 扩展目录
+ * @param {boolean} [deleteDir=false] 是否在安装完成后删除扩展目录
+ * @param {boolean} [devMode=false] 是否是开发模式
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ * @private
+ */
 const installFromDir = (dir, deleteDir = false, devMode = false) => {
     const pkgFilePath = Path.join(dir, 'package.json');
     let extension = null;
@@ -76,7 +120,7 @@ const installFromDir = (dir, deleteDir = false, devMode = false) => {
         extension = createExtension(pkg, {
             isDev: devMode
         });
-        const savedPath = devMode ? dir : createSavePath(extension);
+        const savedPath = devMode ? dir : createExtensionSavePath(extension);
         extension.localPath = savedPath;
         if (extension.hasModule) {
             return Modal.confirm(Lang.format('exts.installWarning', extension.displayName), {
@@ -90,7 +134,7 @@ const installFromDir = (dir, deleteDir = false, devMode = false) => {
         }
         return Promise.resolve(extension);
     }).then(() => {
-        const dbExt = db.getInstall(extension.name);
+        const dbExt = getInstalledExtension(extension.name);
         if (dbExt) {
             if (dbExt.version && extension.version && compareVersions(dbExt.version, extension.version) < 0) {
                 return Modal.confirm(Lang.format('ext.updateInstall.format', dbExt.displayName, dbExt.version, extension.version)).then(confirmed => {
@@ -133,20 +177,38 @@ const installFromDir = (dir, deleteDir = false, devMode = false) => {
     });
 };
 
-const installFromDevDir = (dir) => {
+/**
+ * 从扩展开发目录加载开发中的扩展
+ * @param {string} dir 扩展开发目录
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const installExtensionFromDevDir = (dir) => {
     return installFromDir(dir, false, true);
 };
 
-const installFromXextFile = (filePath, deleteXextfile = false) => {
+/**
+ * 从扩展压缩包文件安装扩展，支持 `.zip` 文件和 `.xext` 文件
+ * @param {string} filePath 扩展压缩包文件路径
+ * @param {boolean} [deleteFile=false] 是否在安装完成后删除扩展压缩包文件
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const installExtensionFromFile = (filePath, deleteFile = false) => {
     return extractInstallFile(filePath).then(tmpPath => {
-        if (deleteXextfile) {
+        if (deleteFile) {
             fse.removeSync(filePath);
         }
         return installFromDir(tmpPath, true);
     });
 };
 
-const openInstallDialog = (callback, devMode = false) => {
+/**
+ * 打开一个路径选择对话框从用户选择的路径安装扩展，支持从扩展压缩包文件（.zip 或 .xext）或 `package.json` 文件进行安装
+ * 如果启用开发模式安装，则必须选择开发目录内的 `package.json` 文件进行安装
+ * @param {function} callback 安装完成后的回调函数
+ * @param {boolean} [devMode=false] 是否是开发模式
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const openInstallExtensionDialog = (callback, devMode = false) => {
     dialog.showOpenDialog(devMode ? '.json' : '.xext,.zip', files => {
         if (files && files.length) {
             const filePath = files[0].path;
@@ -162,7 +224,7 @@ const openInstallDialog = (callback, devMode = false) => {
                     }
                 });
             } else if (extName === '.xext' || extName === '.zip') {
-                installFromXextFile(filePath).then(extension => {
+                installExtensionFromFile(filePath).then(extension => {
                     if (callback) {
                         callback(extension);
                     }
@@ -184,8 +246,13 @@ const openInstallDialog = (callback, devMode = false) => {
     });
 };
 
-const loadReadmeMarkdown = extension => {
-    const filePath = Path.join(createSavePath(extension), 'README.md');
+/**
+ * 加载扩展的 `README.md` 文件
+ * @param {Extension} extension 扩展
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const loadExtensionReadmeFile = extension => {
+    const filePath = Path.join(createExtensionSavePath(extension), 'README.md');
     return fse.readFile(filePath, 'utf8');
 };
 
@@ -195,7 +262,7 @@ const loadReadmeMarkdown = extension => {
  * @param {boolean} [disabled=true] 如果为 true，则启用扩展，否则禁用扩展
  * @return {void}
  */
-const setExtensionDisabled = (extension, disabled = true) => {
+export const setExtensionDisabled = (extension, disabled = true) => {
     disabled = !!disabled;
     if (extension.disabled !== disabled) {
         if (disabled) {
@@ -206,7 +273,7 @@ const setExtensionDisabled = (extension, disabled = true) => {
             extension.hotAttach();
         }
     }
-    db.saveInstall(extension, true);
+    saveInstalledExtension(extension, true);
 };
 
 /**
@@ -215,19 +282,19 @@ const setExtensionDisabled = (extension, disabled = true) => {
  * @param {Extension} extension 要启用的扩展对象
  * @return {void}
  */
-const setExtensionEnabled = extension => {
+export const setExtensionEnabled = extension => {
     return setExtensionDisabled(extension, false);
 };
 
 
 export default {
     db,
-    createSavePath,
-    uninstall,
-    installFromXextFile,
-    openInstallDialog,
-    loadReadmeMarkdown,
-    installFromDevDir,
+    createSavePath: createExtensionSavePath,
+    uninstall: uninstallExtension,
+    installExtensionFromFile,
+    openInstallDialog: openInstallExtensionDialog,
+    loadReadmeMarkdown: loadExtensionReadmeFile,
+    installFromDevDir: installExtensionFromDevDir,
     reloadDevExtension,
     setExtensionDisabled,
     setExtensionEnabled

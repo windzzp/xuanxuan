@@ -1,7 +1,7 @@
 import Config from '../config';
 import buildIns from './build-in';
 import {createExtension} from './extension';
-import {setOnChangeListener, getInstalls} from './extensions-db';
+import {setOnInstalledExtensionChangeListener, getInstalledExtensions} from './extensions-db';
 import events from '../core/events';
 import {setServerOnChangeListener} from './server';
 
@@ -43,7 +43,7 @@ buildIns.forEach((buildIn, idx) => {
 });
 
 // 从数据库中加载用户安装的扩展
-exts.push(...getInstalls());
+exts.push(...getInstalledExtensions());
 
 /**
  * 扩展排序函数
@@ -140,7 +140,7 @@ const onChangeListener = (changedExts, changeAction) => {
 };
 
 // 设置已安装扩展变更事件回调函数
-setOnChangeListener(onChangeListener);
+setOnInstalledExtensionChangeListener(onChangeListener);
 
 // 设置服务器扩展变更事件回调函数
 setServerOnChangeListener(onChangeListener);
@@ -169,9 +169,7 @@ export const getTypeList = type => {
  * @param {?string} type 扩展类型
  * @return {Extension} 扩展
  */
-export const getExt = (name, type) => {
-    return getTypeList(type).find(x => x.name === name);
-};
+export const getExt = (name, type) => getTypeList(type).find(x => x.name === name);
 
 /**
  * 默认扩展
@@ -184,21 +182,21 @@ export const defaultApp = apps.find(x => x.buildIn && x.buildIn.asDefault) || ex
  * @param {string} name 扩展名称
  * @return {AppExtension} 应用扩展
  */
-export const getApp = name => (getExt(name, 'app'));
+export const getAppExt = name => (getExt(name, 'app'));
 
 /**
  * 根据名称获取插件扩展
  * @param {string} name 扩展名称
  * @return {PluginExtension} 插件扩展
  */
-export const getPlugin = name => (getExt(name, 'plugin'));
+export const getPluginExt = name => (getExt(name, 'plugin'));
 
 /**
  * 根据名称获取主题扩展
  * @param {string} name 扩展名称
  * @return {ThemeExtension} 主题扩展
  */
-export const getTheme = name => (getExt(name, 'theme'));
+export const getThemeExt = name => (getExt(name, 'theme'));
 
 /**
  * 搜索扩展
@@ -224,18 +222,14 @@ export const searchExts = (keys, type = 'app') => {
  * @param {string} keys 搜索关键字
  * @return {AppExtension[]} 搜索到的应用扩展列表
  */
-export const searchApps = keys => {
-    return searchExts(keys);
-};
+export const searchApps = keys => searchExts(keys);
 
 /**
  * 绑定扩展变更事件
  * @param {funcion} listener 事件回调函数
  * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
  */
-export const onExtensionChange = listener => {
-    return events.on(EVENT.onChange, listener);
-};
+export const onExtensionChange = listener => events.on(EVENT.onChange, listener);
 
 /**
  * 遍历已安装的扩展
@@ -270,19 +264,19 @@ export const getExts = () => exts;
  * 获取应用扩展列表
  * @return {Extension[]} 应用扩展列表
  */
-export const getApps = () => apps;
+export const getAppExts = () => apps;
 
 /**
  * 获取主题扩展列表
  * @return {Extension[]} 主题扩展列表
  */
-export const getThemes = () => themes;
+export const getThemeExts = () => themes;
 
 /**
  * 获取插件扩展列表
  * @return {Extension[]} 插件扩展列表
  */
-export const getPlugins = () => plugins;
+export const getPluginExts = () => plugins;
 
 export default {
     get exts() {
@@ -303,9 +297,9 @@ export default {
 
     getTypeList,
     getExt,
-    getApp,
-    getPlugin,
-    getTheme,
+    getApp: getAppExt,
+    getPlugin: getPluginExt,
+    getTheme: getThemeExt,
 
     search: searchExts,
     searchApps,
