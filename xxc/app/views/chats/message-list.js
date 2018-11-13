@@ -10,7 +10,7 @@ import App from '../../core';
  * @class MessageList
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import MessageList from './message-list';
  * <MessageList />
  */
@@ -21,7 +21,7 @@ export default class MessageList extends Component {
      * @readonly
      * @static
      * @memberof MessageList
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {MessageList} from './message-list';
      * <MessageList />
      */

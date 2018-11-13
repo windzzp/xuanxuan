@@ -125,7 +125,7 @@ export default class DraftEditor extends PureComponent {
      * @readonly
      * @static
      * @memberof DraftEditor
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {DraftEditor} from './draft-editor';
      * <DraftEditor />
      */

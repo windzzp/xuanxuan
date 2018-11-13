@@ -16,7 +16,7 @@ import replaceViews from '../replace-views';
  * @class MemberProfile
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import MemberProfile from './member-profile';
  * <MemberProfile />
  */
@@ -27,7 +27,7 @@ export default class MemberProfile extends Component {
      * @readonly
      * @static
      * @memberof MemberProfile
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {MemberProfile} from './member-profile';
      * <MemberProfile />
      */

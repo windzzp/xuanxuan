@@ -14,7 +14,7 @@ import Config from '../../config';
  * @class MemberList
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import MemberList from './member-list';
  * <MemberList />
  */
@@ -25,7 +25,7 @@ export default class MemberList extends Component {
      * @readonly
      * @static
      * @memberof MemberList
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {MemberList} from './member-list';
      * <MemberList />
      */

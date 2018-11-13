@@ -9,7 +9,7 @@ import replaceViews from '../replace-views';
  * @class AppView
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * import AppView from './app-view';
  * <AppView />
  */
@@ -20,7 +20,7 @@ export default class AppView extends PureComponent {
      * @readonly
      * @static
      * @memberof AppView
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {AppView} from './app-view';
      * <AppView />
      */

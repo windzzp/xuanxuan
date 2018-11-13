@@ -34,7 +34,7 @@ const MAX_SHOW_FILES_COUNT = 200;
  * @class AppFiles
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * import AppFiles from './app-files';
  * <AppFiles />
  */
@@ -45,7 +45,7 @@ export default class AppFiles extends PureComponent {
      * @readonly
      * @static
      * @memberof AppFiles
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {AppFiles} from './app-files';
      * <AppFiles />
      */

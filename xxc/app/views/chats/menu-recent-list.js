@@ -11,7 +11,7 @@ import {showContextMenu} from '../../core/context-menu';
  * @class MenuRecentList
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import MenuRecentList from './menu-recent-list';
  * <MenuRecentList />
  */
@@ -22,7 +22,7 @@ export default class MenuRecentList extends Component {
      * @readonly
      * @static
      * @memberof MenuRecentList
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {MenuRecentList} from './menu-recent-list';
      * <MenuRecentList />
      */

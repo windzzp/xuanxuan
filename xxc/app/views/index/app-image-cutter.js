@@ -7,7 +7,7 @@ import ImageCutter from '../../components/image-cutter';
  * @class AppImageCutter
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import AppImageCutter from './app-image-cutter';
  * <AppImageCutter />
  */

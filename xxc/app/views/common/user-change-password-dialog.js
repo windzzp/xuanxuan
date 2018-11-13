@@ -13,7 +13,7 @@ import Lang from '../../lang';
  * @class UserChangePassword-Dialog
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import UserChangePassword-Dialog from './user-change-password-dialog';
  * <UserChangePassword-Dialog />
  */

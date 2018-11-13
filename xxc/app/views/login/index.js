@@ -12,7 +12,7 @@ import replaceViews from '../replace-views';
  * @class LoginIndex
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * import LoginIndex from './index';
  * <LoginIndex />
  */
@@ -23,7 +23,7 @@ export default class LoginIndex extends PureComponent {
      * @readonly
      * @static
      * @memberof LoginIndex
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {LoginIndex} from './index';
      * <LoginIndex />
      */

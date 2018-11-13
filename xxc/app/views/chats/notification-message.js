@@ -11,7 +11,7 @@ import Lang from '../../lang';
  * @class NotificationMessage
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import NotificationMessage from './notification-message';
  * <NotificationMessage />
  */
@@ -22,7 +22,7 @@ export default class NotificationMessage extends Component {
      * @readonly
      * @static
      * @memberof NotificationMessage
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {NotificationMessage} from './notification-message';
      * <NotificationMessage />
      */

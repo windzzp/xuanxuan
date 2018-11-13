@@ -39,7 +39,7 @@ export default class UserMenu extends Component {
      * @readonly
      * @static
      * @memberof UserMenu
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {UserMenu} from './user-menu';
      * <UserMenu />
      */

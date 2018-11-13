@@ -46,7 +46,7 @@ const simpleServerUrl = serverUrl => {
  * @class Form
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * import Form from './form';
  * <Form />
  */
@@ -57,7 +57,7 @@ export default class LoginForm extends PureComponent {
      * @readonly
      * @static
      * @memberof LoginForm
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {Form} from './form';
      * <Form />
      */

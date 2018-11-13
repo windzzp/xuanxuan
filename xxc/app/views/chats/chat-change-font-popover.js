@@ -71,7 +71,7 @@ const CONFIGS = [
  * @class ChatChangeFont-Popover
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import ChatChangeFont-Popover from './chat-change-font-popover';
  * <ChatChangeFont-Popover />
  */
@@ -82,7 +82,7 @@ export class ChangeFontView extends Component {
      * @readonly
      * @static
      * @memberof ChatChangeFont-Popover
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {ChatChangeFont-Popover} from './chat-change-font-popover';
      * <ChatChangeFont-Popover />
      */
@@ -182,6 +182,7 @@ export class ChangeFontView extends Component {
  * 显示聊天字体设置弹出面板
  * @param {{x: number, y: number}} position 显示位置
  * @param {function} callback 显示完成后的回调函数
+ * @return {void}
  */
 export const showChangeFontPopover = (position, callback) => {
     const popoverId = 'app-chat-change-font-popover';

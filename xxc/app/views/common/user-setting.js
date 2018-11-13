@@ -215,7 +215,7 @@ const configs = [
  * @class UserSetting
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import UserSetting from './user-setting';
  * <UserSetting />
  */

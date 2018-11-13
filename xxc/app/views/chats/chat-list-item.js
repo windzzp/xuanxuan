@@ -14,7 +14,7 @@ import replaceViews from '../replace-views';
  * @class ChatListItem
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import ChatListItem from './chat-list-item';
  * <ChatListItem />
  */
@@ -25,7 +25,7 @@ export default class ChatListItem extends Component {
      * @readonly
      * @static
      * @memberof ChatListItem
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {ChatListItem} from './chat-list-item';
      * <ChatListItem />
      */

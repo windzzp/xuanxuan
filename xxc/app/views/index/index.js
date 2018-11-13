@@ -9,7 +9,7 @@ import replaceViews from '../replace-views';
  * @class HomeIndex
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * import HomeIndex from './index';
  * <HomeIndex />
  */
@@ -20,7 +20,7 @@ export default class HomeIndex extends PureComponent {
      * @readonly
      * @static
      * @memberof HomeIndex
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {HomeIndex} from './index';
      * <HomeIndex />
      */

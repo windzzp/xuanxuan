@@ -14,7 +14,7 @@ import replaceViews from '../replace-views';
  * @class ChatAddCategory
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example <caption>组件类调用方式</caption> @lang jsx
+ * @example <caption>组件类调用方式</caption>
  * import ChatAddCategory from './chat-add-category';
  * <ChatAddCategory />
  */
@@ -25,7 +25,7 @@ export default class ChatAddCategory extends Component {
      * @readonly
      * @static
      * @memberof ChatAddCategory
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {ChatAddCategory} from './chat-add-category';
      * <ChatAddCategory />
      */

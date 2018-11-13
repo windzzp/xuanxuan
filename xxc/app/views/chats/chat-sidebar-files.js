@@ -47,7 +47,7 @@ const renderFileList = files => {
  * @class ChatSidebarFiles
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import ChatSidebarFiles from './chat-sidebar-files';
  * <ChatSidebarFiles />
  */
@@ -58,7 +58,7 @@ export default class ChatSidebarFiles extends Component {
      * @readonly
      * @static
      * @memberof ChatSidebarFiles
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {ChatSidebarFiles} from './chat-sidebar-files';
      * <ChatSidebarFiles />
      */

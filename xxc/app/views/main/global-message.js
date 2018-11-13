@@ -19,7 +19,7 @@ const CONNECT_TIME_TICK = 5;
  * @class GlobalMessage
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * import GlobalMessage from './global-message';
  * <GlobalMessage />
  */
@@ -30,7 +30,7 @@ export default class GlobalMessage extends PureComponent {
      * @readonly
      * @static
      * @memberof GlobalMessage
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {GlobalMessage} from './global-message';
      * <GlobalMessage />
      */

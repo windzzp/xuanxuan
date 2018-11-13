@@ -14,7 +14,7 @@ import replaceViews from '../replace-views';
  * @class MenuGroupList
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import MenuGroupList from './menu-group-list';
  * <MenuGroupList />
  */
@@ -25,7 +25,7 @@ export default class MenuGroupList extends Component {
      * @readonly
      * @static
      * @memberof MenuGroupList
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {MenuGroupList} from './menu-group-list';
      * <MenuGroupList />
      */

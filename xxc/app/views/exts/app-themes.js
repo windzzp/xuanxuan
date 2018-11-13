@@ -16,7 +16,7 @@ import Skin from '../../utils/skin';
  * @class AppThemes
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * import AppThemes from './app-themes';
  * <AppThemes />
  */
@@ -27,7 +27,7 @@ export default class AppThemes extends PureComponent {
      * @readonly
      * @static
      * @memberof AppThemes
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {AppThemes} from './app-themes';
      * <AppThemes />
      */

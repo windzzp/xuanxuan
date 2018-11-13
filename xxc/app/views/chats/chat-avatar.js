@@ -20,11 +20,11 @@ const chatIcons = {
 };
 
 /**
- * ChatAvatar 组件 ，显示一个聊天图标
+ * ChatAvatar 组件 ，显示聊天图标界面
  * @class ChatAvatar
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import ChatAvatar from './chat-avatar';
  * <ChatAvatar />
  */
@@ -35,7 +35,7 @@ export default class ChatAvatar extends Component {
      * @readonly
      * @static
      * @memberof ChatAvatar
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {ChatAvatar} from './chat-avatar';
      * <ChatAvatar />
      */
