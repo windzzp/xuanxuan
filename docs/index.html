@@ -73,6 +73,13 @@
         paths: 'auto',
         placeholder: '搜索'
       },
+      tabs: {
+        persist    : true,
+        sync       : true,
+        theme      : 'classic',
+        tabComments: true,
+        tabHeadings: true
+      },
       plugins: [
         TextHolder.create(),
         EditOnGithubPlugin.create('https://github.com/easysoft/xuanxuan/tree/master/docs/', 'https://github.com/easysoft/xuanxuan/tree/master/docs/', '<i class="fas fa-pen-square"></i> 在 Github 上编辑')
@@ -84,6 +91,7 @@
   <script src="./lib/docsify/plugins/zoom-image.min.js"></script>
   <script src="./lib/docsify/plugins/docsify-copy-code.min.js"></script>
   <script src="./lib/docsify/plugins/docsify-pagination.min.js"></script>
+  <script src="./lib/docsify/plugins/docsify-tabs.min.js"></script>
   <script src="./lib/prismjs/prism-markup-templating.js"></script>
   <script src="./lib/prismjs/prism-bash.js"></script>
   <script src="./lib/prismjs/prism-json.js"></script>

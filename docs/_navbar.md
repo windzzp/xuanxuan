@@ -2,15 +2,13 @@
   * [介绍](README)
   * [架构](arch)
   * [项目](project)
-  * [下载中心](download)
   * [常见问题](faq)
 * <i class="icon fas fa-laptop-code"></i>
-  * [客户端安装](client-install)
-  * [浏览器端部署](browser-deploy)
+  * [客户端安装](client/install)
+  * [浏览器端部署](client/browser-deploy)
   * [客户端架构](client/arch)
   * [环境搭建](client/start.md)
   * [打包](client/package.md)
-  * [参与到官方开发](client/contribute.md)
   * [扩展机制](client/extension.md)
   * [API](client/api.md)
 * <i class="icon fas fa-running"></i>
@@ -20,4 +18,5 @@
   * [XXB 数据库](server/xxb-api)
   * [XXB API](server/xxb-api)
 * <i class="icon far fa-compass"></i>
+  * [参与到官方开发](contribute.md)
   * [学习资料推荐](guide/learn)

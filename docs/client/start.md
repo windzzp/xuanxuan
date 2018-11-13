@@ -245,7 +245,7 @@ $ npm run hot-server-browser
 
 正常情况下会使用操作系统默认浏览器打开${displayName}浏览器版页面（默认访问地址为：[http://localhost:3000?hot=1](http://localhost:3000?hot=1)）。如果要查看调试信息，需要打开浏览器的开发者工具（以 Chrome 浏览器为例，[在Chrome菜单中选择 **更多工具** > **开发者工具**](https://developers.google.com/web/tools/chrome-devtools/?hl=zh-cn)，其他浏览器类似）。
 
-?> 此步骤实际上是执行 [`${repository.clientSourceRoot}build/server.js`](${repository.sourceUrl}${repository.clientSourceRoot}build/server.js) 文件，使用 [`http-server`](https://github.com/indexzero/http-server) 启动了一个静态服务器来访问 [`${repository.clientSourceRoot}app/index.html`](${repository.sourceUrl}${repository.clientSourceRoot}app/index.html) 文件。
+?> 此步骤实际上是执行 [`${repository.clientSourceRoot}build/server.js`](${repository.sourceUrl}${repository.clientSourceRoot}build/server.js) 文件，使用 [`express`](https://expressjs.com/zh-cn/) 启动了一个静态服务器来访问 [`${repository.clientSourceRoot}app/index.html`](${repository.sourceUrl}${repository.clientSourceRoot}app/index.html) 文件。
 
 如果要退出调试模式，只需要将以上步骤中执行 `npm run hot-server-browser` 的命令行窗口退出即可。
 
