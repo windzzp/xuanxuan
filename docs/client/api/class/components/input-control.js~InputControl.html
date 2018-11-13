@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">InputControl | API</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<link rel="stylesheet" href="./inject/css/0-vue.css"><link rel="stylesheet" href="./inject/css/0-app.css"><link rel="stylesheet" href="./inject/css/0-esdoc.css"><script src="./inject/script/0-custom.js"></script><meta name="description" content="&#x4F01;&#x4E1A;&#x5373;&#x65F6;&#x901A;&#x8BAF;&#x5E73;&#x53F0;"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="API"><meta property="twitter:description" content="&#x4F01;&#x4E1A;&#x5373;&#x65F6;&#x901A;&#x8BAF;&#x5E73;&#x53F0;"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/easysoft/xuanxuan.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/app-avatar.js~AppAvatar.html">AppAvatar</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/area-selector.js~AreaSelector.html">AreaSelector</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/avatar.js~Avatar.html">Avatar</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/button.js~Button.html">Button</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/checkbox.js~Checkbox.html">Checkbox</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/click-outside-wrapper.js~ClickOutsideWrapper.html">ClickOutsideWrapper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/display-container.js~DisplayContainer.html">DisplayContainer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/display-layer.js~DisplayLayer.html">DisplayLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/group-list.js~GroupList.html">GroupList</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/heading.js~Heading.html">Heading</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/hotkey-input-control.js~HotkeyInputControl.html">HotkeyInputControl</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/icon.js~MDIcon.html">MDIcon</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/image-cutter.js~ImageCutter.html">ImageCutter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/image-holder.js~ImageHolder.html">ImageHolder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/input-control.js~InputControl.html">InputControl</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/list-item.js~ListItem.html">ListItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/pager.js~Pager.html">Pager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/radio-group.js~RadioGroup.html">RadioGroup</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/radio.js~Radio.html">Radio</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/search-control.js~SearchControl.html">SearchControl</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/select-box.js~Selectbox.html">Selectbox</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/spinner.js~Spinner.html">Spinner</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/tab-pane.js~TabPane.html">TabPane</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/tabs.js~Tabs.html">Tabs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showContextMenu">showContextMenu</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-displayGetRef">displayGetRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-displayHide">displayHide</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-displayRemove">displayRemove</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-displaySetStyle">displaySetStyle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-displayShow">displayShow</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showImageViewer">showImageViewer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showMessager">showMessager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showAlert">showAlert</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showConfirm">showConfirm</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showModal">showModal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showPrompt">showPrompt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showPopover">showPopover</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="header-notice">
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import InputControl from &apos;<span><a href="file/components/input-control.js.html#lineNumber31">xuanxuan/components/input-control.js</a></span>&apos;</code></pre></div>
+  <span data-ice="access">public</span>
+  <span data-ice="kind">class</span>
+  
+  
+  
+  <span data-ice="source">| <span><a href="file/components/input-control.js.html#lineNumber31">source</a></span></span>
+</div>
+
+<div class="self-detail detail">
+  <h1 data-ice="name">InputControl</h1>
+
+  
+
+  
+  
+  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span>PureComponent</span> &#x2192; InputControl</div></div>
+  
+  
+  
+  
+  
+  
+
+  
+  
+  <div class="description" data-ice="description"><p>InputControl &#x7EC4;&#x4EF6; &#xFF0C;&#x663E;&#x793A;&#x4E00;&#x4E2A;&#x8F93;&#x5165;&#x6846;&#x63A7;&#x4EF6;</p>
+</div>
+  
+
+  <div data-ice="see"><h4>See:</h4><ul><li><span><a href="https://react.docschina.org/docs/components-and-props.html">https://react.docschina.org/docs/components-and-props.html</a></span></li></ul></div>
+
+  <div data-ice="exampleDocs">
+    <h4>Example:</h4>
+    
+  <div class="example-doc" data-ice="exampleDoc">
+      
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">&lt;InputControl /&gt;</code></pre>
+    </div>
+</div>
+
+  
+
+  
+</div>
+
+<div data-ice="staticMemberSummary"><h2>Static Member Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Static Public Members</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/components/input-control.js~InputControl.html#static-member-defaultProps">defaultProps</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>React &#x7EC4;&#x4EF6;&#x9ED8;&#x8BA4;&#x5C5E;&#x6027;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/components/input-control.js~InputControl.html#static-member-propTypes">propTypes</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>React &#x7EC4;&#x4EF6;&#x5C5E;&#x6027;&#x7C7B;&#x578B;&#x68C0;&#x67E5;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<div data-ice="constructorSummary"><h2>Constructor Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Constructor</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/components/input-control.js~InputControl.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(props: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>React &#x7EC4;&#x4EF6;&#x6784;&#x9020;&#x51FD;&#x6570;&#xFF0C;&#x521B;&#x5EFA;&#x4E00;&#x4E2A; InputControl &#x7EC4;&#x4EF6;&#x5B9E;&#x4F8B;&#xFF0C;&#x4F1A;&#x5728;&#x88C5;&#x914D;&#x4E4B;&#x524D;&#x88AB;&#x8C03;&#x7528;&#x3002;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<div data-ice="memberSummary"><h2>Member Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Members</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/components/input-control.js~InputControl.html#instance-member-autoFocusTask">autoFocusTask</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/components/input-control.js~InputControl.html#instance-member-controlName">controlName</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x63A7;&#x4EF6;&#x540D;&#x79F0;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/components/input-control.js~InputControl.html#instance-member-controled">controled</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x662F;&#x5426;&#x6CA1;&#x6709;&#x8BBE;&#x7F6E;&#x9ED8;&#x8BA4;&#x503C;&#xFF0C;&#x5E76;&#x7531;&#x7EC4;&#x4EF6;&#x81EA;&#x8EAB;&#x7BA1;&#x7406;&#x503C;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/components/input-control.js~InputControl.html#instance-member-hotkeyScope">hotkeyScope</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x5FEB;&#x6377;&#x952E;&#x8303;&#x56F4;&#x540D;&#x79F0;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/components/input-control.js~InputControl.html#instance-member-input">input</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/components/input-control.js~InputControl.html#instance-get-value">value</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x83B7;&#x53D6;&#x6587;&#x672C;&#x6846;&#x503C;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+<table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Private Members</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/components/input-control.js~InputControl.html#instance-member-handleChange">handleChange</a></span></span><span class="code" data-ice="signature">(event: <span>Event</span>): <span>void</span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x5904;&#x7406;&#x6587;&#x672C;&#x8F93;&#x5165;&#x4E8B;&#x4EF6;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<div data-ice="methodSummary"><h2>Method Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Methods</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/components/input-control.js~InputControl.html#instance-method-focus">focus</a></span></span><span class="code" data-ice="signature">(): <span>void</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x6FC0;&#x6D3B;&#x8F93;&#x5165;&#x6846;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+<table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Private Methods</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/components/input-control.js~InputControl.html#instance-method-componentDidMount">componentDidMount</a></span></span><span class="code" data-ice="signature">(): <span>void</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>React &#x7EC4;&#x4EF6;&#x751F;&#x547D;&#x5468;&#x671F;&#x51FD;&#x6570;&#xFF1A;<code>componentDidMount</code>
+&#x5728;&#x7EC4;&#x4EF6;&#x88AB;&#x88C5;&#x914D;&#x540E;&#x7ACB;&#x5373;&#x8C03;&#x7528;&#x3002;&#x521D;&#x59CB;&#x5316;&#x4F7F;&#x5F97;DOM&#x8282;&#x70B9;&#x5E94;&#x8BE5;&#x8FDB;&#x884C;&#x5230;&#x8FD9;&#x91CC;&#x3002;&#x82E5;&#x4F60;&#x9700;&#x8981;&#x4ECE;&#x8FDC;&#x7AEF;&#x52A0;&#x8F7D;&#x6570;&#x636E;&#xFF0C;&#x8FD9;&#x662F;&#x4E00;&#x4E2A;&#x9002;&#x5408;&#x5B9E;&#x73B0;&#x7F51;&#x7EDC;&#x8BF7;
+&#x6C42;&#x7684;&#x5730;&#x65B9;&#x3002;&#x5728;&#x8BE5;&#x65B9;&#x6CD5;&#x91CC;&#x8BBE;&#x7F6E;&#x72B6;&#x6001;&#x5C06;&#x4F1A;&#x89E6;&#x53D1;&#x91CD;&#x6E32;&#x3002;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/components/input-control.js~InputControl.html#instance-method-componentWillUnmount">componentWillUnmount</a></span></span><span class="code" data-ice="signature">(): <span>void</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>React &#x7EC4;&#x4EF6;&#x751F;&#x547D;&#x5468;&#x671F;&#x51FD;&#x6570;&#xFF1A;<code>componentWillUnmount</code>
+&#x5728;&#x7EC4;&#x4EF6;&#x88AB;&#x5378;&#x8F7D;&#x548C;&#x9500;&#x6BC1;&#x4E4B;&#x524D;&#x7ACB;&#x523B;&#x8C03;&#x7528;&#x3002;&#x53EF;&#x4EE5;&#x5728;&#x8BE5;&#x65B9;&#x6CD5;&#x91CC;&#x5904;&#x7406;&#x4EFB;&#x4F55;&#x5FC5;&#x8981;&#x7684;&#x6E05;&#x7406;&#x5DE5;&#x4F5C;&#xFF0C;&#x4F8B;&#x5982;&#x89E3;&#x7ED1;&#x5B9A;&#x65F6;&#x5668;&#xFF0C;&#x53D6;&#x6D88;&#x7F51;&#x7EDC;&#x8BF7;&#x6C42;&#xFF0C;&#x6E05;&#x7406;
+&#x4EFB;&#x4F55;&#x5728;componentDidMount&#x73AF;&#x8282;&#x521B;&#x5EFA;&#x7684;DOM&#x5143;&#x7D20;&#x3002;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/components/input-control.js~InputControl.html#instance-method-render">render</a></span></span><span class="code" data-ice="signature">(): <span>ReactNode</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>React &#x7EC4;&#x4EF6;&#x751F;&#x547D;&#x5468;&#x671F;&#x51FD;&#x6570;&#xFF1A;Render</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+
+
+<div data-ice="staticMemberDetails"><h2 data-ice="title">Static Public Members</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-member-defaultProps">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">defaultProps</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/components/input-control.js.html#lineNumber68">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>React &#x7EC4;&#x4EF6;&#x9ED8;&#x8BA4;&#x5C5E;&#x6027;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <div data-ice="see"><h4>See:</h4><ul><li><span><a href="https://react.docschina.org/docs/react-component.html#defaultprops">https://react.docschina.org/docs/react-component.html#defaultprops</a></span></li></ul></div>
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-member-propTypes">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">propTypes</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/components/input-control.js.html#lineNumber39">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>React &#x7EC4;&#x4EF6;&#x5C5E;&#x6027;&#x7C7B;&#x578B;&#x68C0;&#x67E5;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <div data-ice="see"><h4>See:</h4><ul><li><span><a href="https://react.docschina.org/docs/typechecking-with-proptypes.html">https://react.docschina.org/docs/typechecking-with-proptypes.html</a></span></li></ul></div>
+  
+</div>
+</div>
+
+<div data-ice="constructorDetails"><h2 data-ice="title">Public Constructors</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-constructor-constructor">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(props: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>)</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/components/input-control.js.html#lineNumber96">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>React &#x7EC4;&#x4EF6;&#x6784;&#x9020;&#x51FD;&#x6570;&#xFF0C;&#x521B;&#x5EFA;&#x4E00;&#x4E2A; InputControl &#x7EC4;&#x4EF6;&#x5B9E;&#x4F8B;&#xFF0C;&#x4F1A;&#x5728;&#x88C5;&#x914D;&#x4E4B;&#x524D;&#x88AB;&#x8C03;&#x7528;&#x3002;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">props</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x7EC4;&#x4EF6;&#x5C5E;&#x6027;&#x5BF9;&#x8C61;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <div data-ice="see"><h4>See:</h4><ul><li><span><a href="https://react.docschina.org/docs/react-component.html#constructor">https://react.docschina.org/docs/react-component.html#constructor</a></span></li></ul></div>
+  
+</div>
+</div>
+<div data-ice="memberDetails"><h2 data-ice="title">Public Members</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-autoFocusTask">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">autoFocusTask</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/components/input-control.js.html#lineNumber136">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-controlName">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">controlName</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/components/input-control.js.html#lineNumber112">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x63A7;&#x4EF6;&#x540D;&#x79F0;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-controled">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">controled</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/components/input-control.js.html#lineNumber106">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x662F;&#x5426;&#x6CA1;&#x6709;&#x8BBE;&#x7F6E;&#x9ED8;&#x8BA4;&#x503C;&#xFF0C;&#x5E76;&#x7531;&#x7EC4;&#x4EF6;&#x81EA;&#x8EAB;&#x7BA1;&#x7406;&#x503C;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-hotkeyScope">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">hotkeyScope</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/components/input-control.js.html#lineNumber118">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x5FEB;&#x6377;&#x952E;&#x8303;&#x56F4;&#x540D;&#x79F0;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-input">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">input</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/components/input-control.js.html#lineNumber244">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-get-value">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">value</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/components/input-control.js.html#lineNumber192">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x83B7;&#x53D6;&#x6587;&#x672C;&#x6846;&#x503C;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<h2 data-ice="title">Private Members</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-handleChange">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">handleChange</span><span class="code" data-ice="signature">(event: <span>Event</span>): <span>void</span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/components/input-control.js.html#lineNumber179">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x5904;&#x7406;&#x6587;&#x672C;&#x8F93;&#x5165;&#x4E8B;&#x4EF6;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>void</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+<div data-ice="methodDetails"><h2 data-ice="title">Public Methods</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-focus">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">focus</span><span class="code" data-ice="signature">(): <span>void</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/components/input-control.js.html#lineNumber202">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x6FC0;&#x6D3B;&#x8F93;&#x5165;&#x6846;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>void</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<h2 data-ice="title">Private Methods</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-componentDidMount">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">componentDidMount</span><span class="code" data-ice="signature">(): <span>void</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/components/input-control.js.html#lineNumber132">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>React &#x7EC4;&#x4EF6;&#x751F;&#x547D;&#x5468;&#x671F;&#x51FD;&#x6570;&#xFF1A;<code>componentDidMount</code>
+&#x5728;&#x7EC4;&#x4EF6;&#x88AB;&#x88C5;&#x914D;&#x540E;&#x7ACB;&#x5373;&#x8C03;&#x7528;&#x3002;&#x521D;&#x59CB;&#x5316;&#x4F7F;&#x5F97;DOM&#x8282;&#x70B9;&#x5E94;&#x8BE5;&#x8FDB;&#x884C;&#x5230;&#x8FD9;&#x91CC;&#x3002;&#x82E5;&#x4F60;&#x9700;&#x8981;&#x4ECE;&#x8FDC;&#x7AEF;&#x52A0;&#x8F7D;&#x6570;&#x636E;&#xFF0C;&#x8FD9;&#x662F;&#x4E00;&#x4E2A;&#x9002;&#x5408;&#x5B9E;&#x73B0;&#x7F51;&#x7EDC;&#x8BF7;
+&#x6C42;&#x7684;&#x5730;&#x65B9;&#x3002;&#x5728;&#x8BE5;&#x65B9;&#x6CD5;&#x91CC;&#x8BBE;&#x7F6E;&#x72B6;&#x6001;&#x5C06;&#x4F1A;&#x89E6;&#x53D1;&#x91CD;&#x6E32;&#x3002;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>void</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <div data-ice="see"><h4>See:</h4><ul><li><span><a href="https://doc.react-china.org/docs/react-component.html#componentDidMount">https://doc.react-china.org/docs/react-component.html#componentDidMount</a></span></li></ul></div>
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-componentWillUnmount">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">componentWillUnmount</span><span class="code" data-ice="signature">(): <span>void</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/components/input-control.js.html#lineNumber160">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>React &#x7EC4;&#x4EF6;&#x751F;&#x547D;&#x5468;&#x671F;&#x51FD;&#x6570;&#xFF1A;<code>componentWillUnmount</code>
+&#x5728;&#x7EC4;&#x4EF6;&#x88AB;&#x5378;&#x8F7D;&#x548C;&#x9500;&#x6BC1;&#x4E4B;&#x524D;&#x7ACB;&#x523B;&#x8C03;&#x7528;&#x3002;&#x53EF;&#x4EE5;&#x5728;&#x8BE5;&#x65B9;&#x6CD5;&#x91CC;&#x5904;&#x7406;&#x4EFB;&#x4F55;&#x5FC5;&#x8981;&#x7684;&#x6E05;&#x7406;&#x5DE5;&#x4F5C;&#xFF0C;&#x4F8B;&#x5982;&#x89E3;&#x7ED1;&#x5B9A;&#x65F6;&#x5668;&#xFF0C;&#x53D6;&#x6D88;&#x7F51;&#x7EDC;&#x8BF7;&#x6C42;&#xFF0C;&#x6E05;&#x7406;
+&#x4EFB;&#x4F55;&#x5728;componentDidMount&#x73AF;&#x8282;&#x521B;&#x5EFA;&#x7684;DOM&#x5143;&#x7D20;&#x3002;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>void</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <div data-ice="see"><h4>See:</h4><ul><li><span><a href="https://doc.react-china.org/docs/react-component.html#componentwillunmount">https://doc.react-china.org/docs/react-component.html#componentwillunmount</a></span></li></ul></div>
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-render">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">render</span><span class="code" data-ice="signature">(): <span>ReactNode</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/components/input-control.js.html#lineNumber215">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>React &#x7EC4;&#x4EF6;&#x751F;&#x547D;&#x5468;&#x671F;&#x51FD;&#x6570;&#xFF1A;Render</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>ReactNode</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <div data-ice="see"><h4>See:</h4><ul><li><span><a href="https://doc.react-china.org/docs/react-component.html#render">https://doc.react-china.org/docs/react-component.html#render</a></span></li>
+<li><span><a href="https://doc.react-china.org/docs/rendering-elements.html">https://doc.react-china.org/docs/rendering-elements.html</a></span></li></ul></div>
+  
+</div>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
