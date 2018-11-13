@@ -51,3 +51,8 @@ $ npm run docs
 ### 文档修改
 
 直接修改对应 JS 文件内的 [jsdoc 格式注释](http://usejsdoc.org/)，然后使用上述方法重新生成文档即可。
+
+## 参考
+
+* [React 中文网址](https://react.docschina.org/)
+* [Electron 官方网址](https://electronjs.org/)
