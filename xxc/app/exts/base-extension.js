@@ -894,7 +894,7 @@ export default class Extension {
      *
      * @param {string} methodName 方法名称
      * @param {...any} params 方法参数
-     * @return {any} 如果返回 `false`，表示调用方法失败，否则返回方法返回值
+     * @return {any} 如果返回所调用的方法返回值
      * @memberof Extension
      */
     callModuleMethod(methodName, ...params) {
@@ -902,7 +902,7 @@ export default class Extension {
             if (DEBUG) {
                 console.warn('The extension has been disbaled.', this);
             }
-            return false;
+            return;
         }
         const extModule = this._module;
         if (extModule && extModule[methodName]) {
@@ -919,7 +919,6 @@ export default class Extension {
                 }
             }
         }
-        return false;
     }
 
     /**
