@@ -81,7 +81,6 @@ const app = {
  * 遍历当前用户的每一个聊天
  * @param {Function(chat: Chat)} callback 遍历回调函数
  * @return {void}
- * @export
  */
 export const forEachChat = (callback) => {
     if (chats) {
@@ -93,9 +92,8 @@ export const forEachChat = (callback) => {
 
 /**
  * 根据 GID 获取聊天对象
- * @param {String} gid 聊天 GID
+ * @param {string} gid 聊天 GID
  * @return {Chat}
- * @export
  */
 export const getChat = (gid) => {
     if (!chats) {
@@ -120,7 +118,6 @@ export const getChat = (gid) => {
  * 创建一个聊天消息实例
  * @param {ChatMessage|Object} message 聊天消息存储对象
  * @return {ChatMessage}
- * @export
  */
 export const createChatMessage = message => {
     if (message instanceof ChatMessage) {
@@ -137,8 +134,7 @@ export const createChatMessage = message => {
 /**
  * 获取一对一聊天 GID
  * @param {Set|Array} members 一对一聊天成员 ID 列表
- * @return {String}
- * @export
+ * @return {string}
  */
 export const getOne2OneChatGid = members => {
     if (members instanceof Set) {
@@ -155,7 +151,6 @@ export const getOne2OneChatGid = members => {
 /**
  * 获取上次激活的聊天
  * @return {Chat}
- * @export
  */
 export const getLastActiveChat = () => {
     let lastChat = null;
@@ -172,7 +167,6 @@ export const getLastActiveChat = () => {
  * @param {Array.<ChatMessage>} messages 聊天消息列表
  * @param {?Chat} chat 要保存的聊天对象
  * @return {Promise}
- * @export
  */
 export const saveChatMessages = (messages, chat) => {
     if (!Array.isArray(messages)) {
@@ -193,11 +187,10 @@ export const saveChatMessages = (messages, chat) => {
 
 /**
  * 更新缓存中的聊天消息
- * @param {Array} messages 聊天消息列表
+ * @param {Object[]} messages 聊天消息列表
  * @param {boolean} [muted=false] 是否忽略未读提示
  * @param {boolean} [skipOld=false] 是否跳过已更新的消息
  * @return {Promise}
- * @export
  */
 export const updateChatMessages = (messages, muted = false, skipOld = false) => {
     if (skipOld === true) {
@@ -238,7 +231,6 @@ export const updateChatMessages = (messages, muted = false, skipOld = false) => 
  * 移除本地（未发送成功）的聊天消息
  * @param {ChatMessage} message 要移除的聊天消息
  * @return {Promise}
- * @export
  */
 export const deleteLocalMessage = (message) => {
     if (message.id) {
@@ -252,10 +244,9 @@ export const deleteLocalMessage = (message) => {
 
 /**
  * 获取聊天消息数目
- * @param {String} cgid 聊天 GID
+ * @param {string} cgid 聊天 GID
  * @param {function(message: ChatMessage)} filter 过滤回调函数
  * @return {Promise<number>}
- * @export
  */
 export const countChatMessages = (cgid, filter) => {
     let collection = db.database.chatMessages.where({cgid});
@@ -276,7 +267,6 @@ export const countChatMessages = (cgid, filter) => {
  * @param {boolean} [rawData=false] 是否返回原始数据而不是 ChatMessage
  * @param {boolean} [returnCount=false] 是否仅仅返回数目
  * @return {Promise}
- * @export
  */
 export const getChatMessages = (chat, queryCondition, limit = CHATS_LIMIT_DEFAULT, offset = 0, reverse = true, skipAdd = true, rawData = false, returnCount = false) => {
     // console.log('getChatMessages', {chat, queryCondition, limit, offset, reverse, skipAdd, rawData, returnCount});
@@ -330,10 +320,9 @@ const fetchChatMessagesQueue = [];
 
 /**
  * 监听当指定 ID 的消息查询任务完成事件
- * @param {String} queueId 聊天消息查询任务 ID
+ * @param {string} queueId 聊天消息查询任务 ID
  * @param {Function} listener 事件回调函数
  * @return {Symbol}
- * @export
  */
 export const onFetchQueueFinish = (queueId, listener) => {
     return Events.once(`${EVENT.fetchQueueFinish}${queueId}`, listener);
@@ -374,7 +363,6 @@ const processChatMessageQueue = () => {
  * @param {boolean} [rawData=false] 是否返回原始数据而不是 ChatMessage
  * @param {boolean} [returnCount=false] 是否仅仅返回数目
  * @return {Promise}
- * @export
  */
 export const getChatMessagesInQueue = (chat, queryCondition, limit = CHATS_LIMIT_DEFAULT, offset = 0, reverse = true, skipAdd = true, rawData = false, returnCount = false) => {
     return new Promise((resolve, reject) => {
@@ -403,7 +391,6 @@ export const getChatMessagesInQueue = (chat, queryCondition, limit = CHATS_LIMIT
  * @param {Chat} chat 要加载的聊天实例
  * @param {boolean} [inQueue=true] 是否通过任务队列模式
  * @return {Promise}
- * @export
  */
 export const loadChatMessages = (chat, inQueue = true) => {
     let {loadingOffset} = chat;
@@ -428,11 +415,10 @@ export const loadChatMessages = (chat, inQueue = true) => {
 /**
  * 搜索指定聊天记录
  * @param {Chat} chat 要搜索的聊天实例
- * @param {String} searchKeys 搜索关键词，多个关键字使用空格分隔
+ * @param {string} searchKeys 搜索关键词，多个关键字使用空格分隔
  * @param {number} minDate 最小日期时间戳，只搜索此日期之后的聊天记录
  * @param {bool} [returnCount=false] 是否只返回结果数目
  * @return {Promise}
- * @export
  */
 export const searchChatMessages = (chat, searchKeys = '', minDate = 0, returnCount = false) => {
     if (typeof minDate === 'string') {
@@ -467,10 +453,9 @@ export const searchChatMessages = (chat, searchKeys = '', minDate = 0, returnCou
 /**
  * 创建获取消息记录数目队列任务
  * @param {Array.<Chat>} countChats 要获取消息记录数目的聊天对象实例
- * @param {String} searchKeys 搜索关键字
+ * @param {string} searchKeys 搜索关键字
  * @param {number} minDateDesc 最小日期描述
  * @return {TaskQueue}
- * @export
  */
 export const createCountMessagesTask = (countChats, searchKeys, minDateDesc = '') => {
     const minDate = minDateDesc ? getTimeBeforeDesc(minDateDesc) : 0;
@@ -485,7 +470,6 @@ export const createCountMessagesTask = (countChats, searchKeys, minDateDesc = ''
  * 更新缓存中的聊天对象实例
  * @param {Array.<Chat|Object>} chatArr 要更新的聊天对象
  * @return {void}
- * @export
  */
 export const updateChats = (chatArr) => {
     if (!chatArr) return;
@@ -520,7 +504,6 @@ export const updateChats = (chatArr) => {
  * @param {Array.<Chat|Object>} chatArr 要更新的聊天对象
  * @param {function(chat: Chat)} eachCallback 遍历每一个被缓存的聊天对象回调函数
  * @return {void}
- * @export
  */
 export const initChats = (chatArr, eachCallback) => {
     publicChats = null;
@@ -555,7 +538,6 @@ export const initChats = (chatArr, eachCallback) => {
 /**
  * 获取缓存中所有聊天对象实例
  * @return {Array.<Chat>}
- * @export
  */
 export const getAllChats = () => {
     return chats ? Object.keys(chats).map(x => chats[x]) : [];
@@ -563,10 +545,9 @@ export const getAllChats = () => {
 
 /**
  * 从缓存中查询聊天实例
- * @param {Object|Function(chat: Chat)|Array.<Function(chat: Chat)>} condition 查询条件
+ * @param {Object|Function(chat: Chat)|Array<Function(chat: Chat)>} condition 查询条件
  * @param {*} sortList 是否对结果进行排序
  * @return {Array.<Chat>}
- * @export
  */
 export const queryChats = (condition, sortList) => {
     if (!chats) {
@@ -614,7 +595,6 @@ export const queryChats = (condition, sortList) => {
  * @param {bool} [includeStar=true] 是否包含收藏的聊天
  * @param {boolean|String|Function} sortList 是否排序或者指定排序规则
  * @return {Array.<Chat>}
- * @export
  */
 export const getRecentChats = (includeStar = true, sortList = true) => {
     const all = getAllChats();
@@ -639,7 +619,6 @@ export const getRecentChats = (includeStar = true, sortList = true) => {
 /**
  * 获取最近一次激活的聊天
  * @return {Chat}
- * @export
  */
 export const getLastRecentChat = () => {
     let lastActiveTime = 0;
@@ -661,7 +640,6 @@ export const getLastRecentChat = () => {
  * 获取与指定联系人关联的一对一聊天
  * @param {Member|Object} member 联系人
  * @return {Chat}
- * @export
  */
 export const getContactChat = (member) => {
     const membersId = [member.id, profile.user.id].sort();
@@ -674,7 +652,6 @@ export const getContactChat = (member) => {
  * @param {boolean|String|Function} sortList 是否排序或者指定排序规则
  * @param {boolean} [groupedBy=false] 是否按分组返回结果
  * @return {Object|Array.<Chat>}
- * @export
  */
 export const getContactsChats = (sortList = 'onlineFirst', groupedBy = false) => {
     const {user} = profile;
@@ -893,7 +870,6 @@ export const getContactsChats = (sortList = 'onlineFirst', groupedBy = false) =>
  * @param {boolean|String|Function} sortList 是否排序或者指定排序规则
  * @param {boolean} [groupedBy=false] 是否按分组返回结果
  * @return {Object|Array.<Chat>}
- * @export
  */
 export const getGroupsChats = (sortList = true, groupedBy = false) => {
     const {user} = profile;
@@ -957,9 +933,8 @@ export const getGroupsChats = (sortList = true, groupedBy = false) => {
 
 /**
  * 获取聊天分组信息
- * @param {String} type 类型，包括 contact（联系人），group（讨论组）
+ * @param {string} type 类型，包括 contact（联系人），group（讨论组）
  * @return {Array.<Object>}
- * @export
  */
 export const getChatCategories = (type = 'contact') => {
     if (type === 'contact') {
@@ -977,10 +952,9 @@ export const getChatCategories = (type = 'contact') => {
 
 /**
  * 搜索聊天
- * @param {String} searchKeys 搜索关键字，多个关键字使用空格分隔
- * @param {String} chatType 聊天类型，包括 contacts（联系人），groups（讨论组）
+ * @param {string} searchKeys 搜索关键字，多个关键字使用空格分隔
+ * @param {string} chatType 聊天类型，包括 contacts（联系人），groups（讨论组）
  * @return {Array.<Chat>}
- * @export
  */
 export const searchChats = (searchKeys, chatType) => {
     if (StringHelper.isEmpty(searchKeys)) {
@@ -1071,9 +1045,8 @@ export const searchChats = (searchKeys, chatType) => {
 
 /**
  * 从缓存中移除指定 GID 的聊天
- * @param {String} gid 要移除的聊天 GID
+ * @param {string} gid 要移除的聊天 GID
  * @return {boolean} 移除结果
- * @export
  */
 export const removeChat = gid => {
     const removedChat = chats[gid];
@@ -1088,10 +1061,9 @@ export const removeChat = gid => {
 
 /**
  * 获取指定聊天中发送和接收的文件
- * @param {String} chat 聊天实例
+ * @param {string} chat 聊天实例
  * @param {bool} [includeFailFile=false] 是否包含发送失败的文件
  * @return {Promise}
- * @export
  */
 export const getChatFiles = (chat, includeFailFile = false) => {
     return getChatMessages(chat, (x => x.contentType === 'file'), 0).then(fileMessages => {
@@ -1116,7 +1088,6 @@ export const getChatFiles = (chat, includeFailFile = false) => {
 /**
  * 获取缓存中所有公共聊天
  * @return {Array.<chat>}
- * @export
  */
 export const getPublicChats = () => (publicChats || []);
 
@@ -1124,9 +1095,8 @@ export const getPublicChats = () => (publicChats || []);
  * 更新缓存中的公共聊天
  * @param {Array.<Object>|Object} serverPublicChats 要更新的公共聊天
  * @return {void}
- * @export
  */
-const updatePublicChats = (serverPublicChats) => {
+export const updatePublicChats = (serverPublicChats) => {
     publicChats = [];
     if (serverPublicChats) {
         if (!Array.isArray(serverPublicChats)) {
@@ -1144,9 +1114,8 @@ const updatePublicChats = (serverPublicChats) => {
 
 /**
  * 监听缓存聊天初始化事件（第一次从服务器获得到聊天列表）
- * @param {Function(chats: Array.<Chat>)} listener 事件回调函数
+ * @param {Function(chats: Array<Chat>)} listener 事件回调函数
  * @return {Symbol}
- * @export
  */
 export const onChatsInit = listener => {
     return Events.on(EVENT.init, listener);
@@ -1154,9 +1123,8 @@ export const onChatsInit = listener => {
 
 /**
  * 监听聊天消息变更事件（例如用户收到了新消息）
- * @param {Function(chats: Array.<ChatMessage>)} listener 事件回调函数
+ * @param {Function(chats: Array<ChatMessage>)} listener 事件回调函数
  * @return {Symbol}
- * @export
  */
 export const onChatMessages = listener => {
     return Events.on(EVENT.messages, listener);

@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 
 /**
  * TabPane 组件 ，显示一个标签页内容控件
- * @export
  * @class TabPane
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <TabPane />
  */
 export default class TabPane extends PureComponent {
@@ -16,7 +15,7 @@ export default class TabPane extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof TabPane
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         label: PropTypes.any,

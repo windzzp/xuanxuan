@@ -2,6 +2,11 @@ import Platform from 'Platform'; // eslint-disable-line
 
 const {isWindowsOS, isOSX} = Platform.env;
 
+/**
+ * 按键代码与按键名称表
+ * @type {Object.<number,string>}
+ * @private
+ */
 const specialKeys = {
     8: 'Backspace',
     9: 'Tab',
@@ -55,8 +60,20 @@ const specialKeys = {
     191: '/',
     224: 'Meta'
 };
+
+/**
+ * 修饰键集合
+ * @type {Set}
+ * @private
+ */
 const modifyKeys = new Set(['Alt', 18, 'Meta', 224, 'Ctrl', 17, 'Shift', 16, 'Option', 'Windows', 'Command']);
 
+/**
+ * 格式化快捷键组合字符串
+ * @param {string} decoration 快捷键组合字符串
+ * @return {string}
+ * @function
+ */
 export const formatKeyDecoration = decoration => {
     if (decoration) {
         if (isWindowsOS) {
@@ -70,6 +87,12 @@ export const formatKeyDecoration = decoration => {
     return decoration;
 };
 
+/**
+ * 根据键盘按键事件对象获取快捷键组合字符串
+ * @param {Event} event 键盘按键事件对象
+ * @return {string}
+ * @function
+ */
 export const getKeyDecoration = event => {
     const {keyCode} = event;
     const shortcut = [];
@@ -95,6 +118,12 @@ export const getKeyDecoration = event => {
     return formatKeyDecoration(shortcut.join('+'));
 };
 
+/**
+ * 快捷键组合字符串中是否仅仅包含修饰键
+ * @param {string} decoration 快捷键组合字符串
+ * @return {boolean}
+ * @function
+ */
 export const isOnlyModifyKeys = decoration => {
     if (!decoration) {
         return false;

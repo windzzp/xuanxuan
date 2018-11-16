@@ -16,7 +16,12 @@ import timeSequence from '../../utils/time-sequence';
 import Lang from '../../lang';
 import replaceViews from '../replace-views';
 
-/* eslint-disable */
+/**
+ * DraftJS Atomic 组件
+ * @param {Object} props React 组件属性
+ * @return {ReactNode|string|number|null|boolean} React 渲染内容
+ * @private
+ */
 const AtomicComponent = props => {
     const key = props.block.getEntityAt(0);
     if (!key) {
@@ -39,6 +44,14 @@ const AtomicComponent = props => {
     return null;
 };
 
+/**
+ * 使用正则表达式查找内容
+ * @param {Regex} regex 正则表达式
+ * @param {Object} contentBlock 内容块
+ * @param {function} callback 回调函数
+ * @return {void}
+ * @private
+ */
 const findWithRegex = (regex, contentBlock, callback) => {
     const text = contentBlock.getText();
     let matchArr;
@@ -48,7 +61,19 @@ const findWithRegex = (regex, contentBlock, callback) => {
         callback(start, start + matchArr[0].length);
     }
 };
+
+/**
+ * @所有人文本
+ * @type {string}
+ * @private
+ */
 const langAtAll = Lang.string('chat.message.atAll');
+
+/**
+ * DraftJS CompositeDecorator 对象
+ * @type {CompositeDecorator}
+ * @private
+ */
 const draftDecorator = new CompositeDecorator([{
     strategy: (contentBlock, callback, contentState) => {
         findWithRegex(Emojione.regUnicode, contentBlock, callback);
@@ -91,13 +116,30 @@ const draftDecorator = new CompositeDecorator([{
         return <a className="text-primary" data-offset-key={props.offsetKey} href={url}>{props.children}</a>;
     }
 }]);
-/* eslint-enable */
 
-class DraftEditor extends PureComponent {
+
+export default class DraftEditor extends PureComponent {
+    /**
+     * 获取 DraftEditor 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<DraftEditor>}
+     * @readonly
+     * @static
+     * @memberof DraftEditor
+     * @example <caption>可替换组件类调用方式</caption>
+     * import {DraftEditor} from './draft-editor';
+     * <DraftEditor />
+     */
     static get DraftEditor() {
         return replaceViews('common/draft-editor', DraftEditor);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof DraftEditor
+     * @type {Object}
+     */
     static propTypes = {
         placeholder: PropTypes.string,
         onChange: PropTypes.func,
@@ -107,6 +149,13 @@ class DraftEditor extends PureComponent {
         onPastedFiles: PropTypes.func,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof DraftEditor
+     * @static
+     */
     static defaultProps = {
         placeholder: null,
         onChange: null,
@@ -116,8 +165,20 @@ class DraftEditor extends PureComponent {
         handleKey: false,
     };
 
+    /**
+     * React 组件构造函数，创建一个 DraftEditor 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {editorState: EditorState.createEmpty(draftDecorator)};
 
         this.onChange = this.onChange.bind(this);
@@ -128,14 +189,35 @@ class DraftEditor extends PureComponent {
         this.handlePastedFiles = this.handlePastedFiles.bind(this);
     }
 
+    /**
+     * 获取输入框文本内容
+     *
+     * @return {string} 输入框文本内容
+     * @memberof DraftEditor
+     */
     getContent() {
         return this.state.editorState.getCurrentContent().getPlainText();
     }
 
+    /**
+     * 清空输入框文本内容
+     *
+     * @return {void}
+     * @memberof DraftEditor
+     */
     clearContent() {
         this.onChange(EditorState.createEmpty(draftDecorator));
     }
 
+    /**
+     * 向输入框添加文本内容
+     *
+     * @param {string} content 文本内容
+     * @param {boolean} asNewLine 是否添加到新的一行
+     * @param {function} callback 回调函数
+     * @memberof DraftEditor
+     * @return {void}
+     */
     appendContent(content, asNewLine, callback) {
         if (content !== null && content !== undefined) {
             const editorState = this.state.editorState;
@@ -147,10 +229,26 @@ class DraftEditor extends PureComponent {
         }
     }
 
+    /**
+     * 向输入框添加 Emoji 表情
+     *
+     * @param {Object|{shortname: string}} emoji Emojione 表情对象
+     * @param {function} callback 回调函数
+     * @memberof DraftEditor
+     * @return {void}
+     */
     appendEmojione(emoji, callback) {
         this.appendContent(Emojione.shortnameToUnicode(emoji.shortname), callback);
     }
 
+    /**
+     * 向输入框添加图片
+     *
+     * @param {FileData|Blob|File|{path: string}|{url:string}} image 图片
+     * @param {function} callback 回调函数
+     * @memberof DraftEditor
+     * @return {void}
+     */
     appendImage(image, callback) {
         const {editorState} = this.state;
         const contentState = editorState.getCurrentContent();
@@ -177,6 +275,11 @@ class DraftEditor extends PureComponent {
         this.onChange(AtomicBlockUtils.insertAtomicBlock(newEditorState, entityKey, ' '), callback);
     }
 
+    /**
+     * 获取输入框内容列表
+     * @memberof DraftEditor
+     * @return {{type: string, content: string, image: Object}[]} 内容列表
+     */
     getContentList() {
         const contents = [];
         const editorState = this.state.editorState;
@@ -206,12 +309,25 @@ class DraftEditor extends PureComponent {
         return contents;
     }
 
+    /**
+     * 激活输入框
+     * @param {number} [delay=100] 延迟事件，单位毫秒
+     * @return {void}
+     */
     focus(delay = 100) {
         setTimeout(() => {
             this.editor.focus();
         }, delay);
     }
 
+    /**
+     * 处理输入框值变更事件
+     * @param {EditorState} editorState DraftJS EditorState 对象
+     * @param {function} callback 回调函数
+     * @memberof DraftEditor
+     * @private
+     * @return {void}
+     */
     onChange(editorState, callback) {
         const contentState = editorState.getCurrentContent();
         this.setState({editorState}, () => {
@@ -224,6 +340,13 @@ class DraftEditor extends PureComponent {
         });
     }
 
+    /**
+     * 处理键盘命令事件
+     * @param {string} command 命令名称
+     * @memberof DraftEditor
+     * @private
+     * @return {void}
+     */
     handleKeyCommand(command) {
         if (!this.props.handleKey) {
             return;
@@ -236,6 +359,13 @@ class DraftEditor extends PureComponent {
         return 'not-handled';
     }
 
+    /**
+     * 处理回车键按下事件
+     * @param {Event} e 事件对象
+     * @memberof DraftEditor
+     * @private
+     * @return {void}
+     */
     handleReturn(e) {
         if (this.props.onReturnKeyDown) {
             return this.props.onReturnKeyDown(e);
@@ -243,6 +373,14 @@ class DraftEditor extends PureComponent {
         return 'not-handled';
     }
 
+    /**
+     * 处理粘贴文本事件
+     * @param {string} text 要粘贴的纯文本
+     * @param {string} html 要粘贴的 HTML 文本
+     * @memberof DraftEditor
+     * @private
+     * @return {void}
+     */
     handlePastedText(text, html) {
         if (this.props.onPastedText) {
             this.props.onPastedText(text, html);
@@ -252,6 +390,13 @@ class DraftEditor extends PureComponent {
         return 'handled';
     }
 
+    /**
+     * 处理粘贴文件事件
+     * @param {Blob[]} files 文件列表
+     * @memberof DraftEditor
+     * @private
+     * @return {void}
+     */
     handlePastedFiles(files) {
         if (this.props.onPastedFiles) {
             this.props.onPastedFiles(files);
@@ -273,6 +418,13 @@ class DraftEditor extends PureComponent {
         return 'handled';
     }
 
+    /**
+     * DrafJS blockRendererFn 回调函数
+     * @param {Object} contentBlock 内容块对象
+     * @memberof DraftEditor
+     * @private
+     * @return {Object} 内容对象
+     */
     blockRendererFn(contentBlock) {
         const type = contentBlock.getType();
         let result = null;
@@ -287,6 +439,14 @@ class DraftEditor extends PureComponent {
         return result;
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof DraftEditor
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             placeholder,
@@ -312,5 +472,3 @@ class DraftEditor extends PureComponent {
         </div>);
     }
 }
-
-export default DraftEditor;

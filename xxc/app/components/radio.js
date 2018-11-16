@@ -5,11 +5,10 @@ import timeSequence from '../utils/time-sequence';
 
 /**
  * Radio 组件 ，显示一个单选控件
- * @export
  * @class Radio
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * <Radio />
  */
 export default class Radio extends Component {
@@ -18,7 +17,7 @@ export default class Radio extends Component {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Radio
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         checked: PropTypes.bool,
@@ -63,7 +62,7 @@ export default class Radio extends Component {
         /**
          * 控件 ID
          * @private
-         * @type {String}
+         * @type {string}
          */
         this._controlId = `radio-${timeSequence()}`;
     }

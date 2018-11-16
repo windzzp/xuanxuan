@@ -1,24 +1,32 @@
+// eslint-disable-next-line import/no-unresolved
 import Platform from 'Platform';
-import StringHelper from '../utils/string-helper';
-import HTML from '../utils/html-helper';
+import {ifEmptyStringThen} from '../utils/string-helper';
+import {getSearchParam} from '../utils/html-helper';
 
 /**
- * 打开的应用实例 ID
+ * 用户打开的扩展应用类
+ *
+ * @export
+ * @class OpenedApp
  */
 export default class OpenedApp {
     /**
-     * 创建打开的应用实例 ID
+     * 创建用户打开的应用 ID
+     *
+     * @static
+     * @memberof OpenedApp
+     * @param {string} name 应用名称
+     * @param {string} pageName 子界面页面名称
+     * @return {string} 用户打开的应用 ID
      */
-    static createId = (name, pageName) => {
-        return pageName ? `${name}@${pageName}` : name;
-    };
+    static createId = (name, pageName) => (pageName ? `${name}@${pageName}` : name);
 
     /**
      * 创建一个打开的应用实例
      *
      * @param {AppExtension} app 要打开的应用实例
-     * @param {String} pageName 子界面名称
-     * @param {?Object} params 界面访问参数
+     * @param {?string} [pageName=null] 子界面名称
+     * @param {?(Object|string)} [params=null] 界面访问参数
      */
     constructor(app, pageName = null, params = null) {
         this._app = app;
@@ -31,7 +39,9 @@ export default class OpenedApp {
     }
 
     /**
-     * 获取应用打开的 ID
+     * 获取打开的应用 ID
+     * @memberof OpenedApp
+     * @type {string}
      */
     get id() {
         if (!this._id) {
@@ -42,6 +52,8 @@ export default class OpenedApp {
 
     /**
      * 获取子界面名称
+     * @memberof OpenedApp
+     * @type {string}
      */
     get pageName() {
         return this._pageName;
@@ -49,7 +61,9 @@ export default class OpenedApp {
 
     /**
      * 获取标识名称
-     * @deprecated
+     * @deprecated 使用 `id` 属性代替
+     * @memberof OpenedApp
+     * @type {string}
      */
     get name() {
         return this.id;
@@ -57,6 +71,8 @@ export default class OpenedApp {
 
     /**
      * 获取应用对象
+     * @memberof OpenedApp
+     * @type {AppExtension}
      */
     get app() {
         return this._app;
@@ -64,6 +80,8 @@ export default class OpenedApp {
 
     /**
      * 获取应用名
+     * @memberof OpenedApp
+     * @type {string}
      */
     get appName() {
         return this._app.name;
@@ -71,13 +89,17 @@ export default class OpenedApp {
 
     /**
      * 获取在界面上显示的名称
+     * @memberof OpenedApp
+     * @type {string}
      */
     get displayName() {
-        return StringHelper.ifEmptyThen(this._displayName, this._app.displayName);
+        return ifEmptyStringThen(this._displayName, this._app.displayName);
     }
 
     /**
      * 设置显示的名称
+     * @memberof OpenedApp
+     * @param {string} displayName 示的名称
      */
     set displayName(displayName) {
         this._displayName = displayName;
@@ -85,6 +107,8 @@ export default class OpenedApp {
 
     /**
      * 获取上次打开的时间戳
+     * @memberof OpenedApp
+     * @type {number}
      */
     get openTime() {
         return this._openTime;
@@ -92,20 +116,26 @@ export default class OpenedApp {
 
     /**
      * 获取第一次打开的时间戳
+     * @memberof OpenedApp
+     * @type {number}
      */
     get createTime() {
         return this._createTime;
     }
 
     /**
-     * 是否是固定的应用（无法被关闭）
+     * 获取是否是固定的应用（无法被关闭）
+     * @memberof OpenedApp
+     * @type {boolean}
      */
     get isFixed() {
         return this._app.isFixed;
     }
 
     /**
-     * 是否是默认打开的应用
+     * 获取是否默认打开的应用
+     * @memberof OpenedApp
+     * @type {boolean}
      */
     get isDefault() {
         return this._app.isDefault;
@@ -113,6 +143,8 @@ export default class OpenedApp {
 
     /**
      * 获取界面访问参数
+     * @memberof OpenedApp
+     * @type {Object}
      */
     get params() {
         return this._params;
@@ -120,16 +152,20 @@ export default class OpenedApp {
 
     /**
      * 设置应用访问的参数
+     * @memberof OpenedApp
+     * @param {Object|string} params 访问的参数对象或者 `key=val1&key=val2` 格式的参数字符串
      */
     set params(params) {
         if (typeof params === 'string') {
-            params = HTML.getSearchParam(null, params);
+            params = getSearchParam(null, params);
         }
         this._params = params;
     }
 
     /**
      * 获取 Hash 格式的路由地址
+     * @memberof OpenedApp
+     * @type {string}
      */
     get hashRoute() {
         return `#${this.routePath}`;
@@ -137,6 +173,8 @@ export default class OpenedApp {
 
     /**
      * 获取路由地址
+     * @memberof OpenedApp
+     * @type {string}
      */
     get routePath() {
         let route = `/exts/app/${this.id}`;
@@ -147,6 +185,11 @@ export default class OpenedApp {
         return route;
     }
 
+    /**
+     * 获取直接访问地址
+     * @memberof OpenedApp
+     * @type {string}
+     */
     get directUrl() {
         const direct = this.params && this.params.DIRECT;
         return direct || this.app.webViewUrl;
@@ -155,16 +198,28 @@ export default class OpenedApp {
     /**
      * 更新最后打开的时间
      *
-     * @param {Number} time
+     * @param {number} time 最后打开的时间戳
+     * @memberof OpenedApp
+     * @return {void}
      */
     updateOpenTime(time) {
         this._openTime = time || new Date().getTime();
     }
 
+    /**
+     * 获取应用对应的 Webview 对象
+     * @memberof OpenedApp
+     * @type {Electron.Webview}
+     */
     get webview() {
         return this._webview;
     }
 
+    /**
+     * 设置应用对应的 Webview 对象
+     * @memberof OpenedApp
+     * @param {Electron.Webview} webview Webview 对象
+     */
     set webview(webview) {
         if (!this._webview && Platform.webview) {
             Platform.webview.initWebview(webview);

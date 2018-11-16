@@ -7,11 +7,10 @@ import {classes} from '../utils/html-helper';
 
 /**
  * ImageHolder 组件 ，显示一个图片占位元素
- * @export
  * @class ImageHolder
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <ImageHolder />
  */
 export default class ImageHolder extends PureComponent {
@@ -20,7 +19,7 @@ export default class ImageHolder extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof ImageHolder
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         style: PropTypes.object,

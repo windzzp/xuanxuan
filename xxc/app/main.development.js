@@ -38,6 +38,8 @@ ElectronApp.on('window-all-closed', () => {
 /**
  * 安装调试模式所使用的 Electron 开发工具扩展
  * @private
+ * @ignore
+ * @return {void}
  */
 const installExtensions = async () => {
     if (process.env.SKIP_INSTALL_EXTENSIONS) {
@@ -62,6 +64,8 @@ const installExtensions = async () => {
 /**
  * 创建窗口菜单
  * @private
+ * @ignore
+ * @return {void}
  */
 const createMenu = () => {
     // Create application menu

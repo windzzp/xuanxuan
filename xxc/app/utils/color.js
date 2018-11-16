@@ -51,11 +51,11 @@ const convertToRgbInt = x => (Number.parseInt(clampNumber(x, 255), 10));
 
 /**
  * 将 16 进制颜色值字符串转换为 RGB 对象
- * @param {String} hex 16 进制字符串
+ * @param {string} hex 16 进制字符串
  * @return {{r: number, g: number, b: number, a: number}}
- * @export
+ * @private
  */
-export const hexToRgb = hex => {
+const hexToRgb = hex => {
     if (hex && hexReg.test(hex)) {
         hex = hex.toLowerCase();
         if (hex.length === 4) {
@@ -82,19 +82,19 @@ export const hexToRgb = hex => {
 
 /**
  * 判断一个字符串是否是颜色值的有效表示方式
- * @param {String} hex 要判断的字符串
+ * @param {string} hex 要判断的字符串
  * @return {boolean}
- * @export
+ * @private
  */
-export const isColor = hex => (typeof hex === 'string' && (hex.toLowerCase() === 'transparent' || hexReg.test(hex.trim().toLowerCase())));
+const isColor = hex => (typeof hex === 'string' && (hex.toLowerCase() === 'transparent' || hexReg.test(hex.trim().toLowerCase())));
 
 /**
  * 将一个 hsl 颜色表示对象转换为 rgb 表示对象
  * @param {{h: number, s: number, l: number, a: number}} hsl hsl 表示对象
  * @return {{r: number, g: number, b: number, a: number}}
- * @export
+ * @private
  */
-export const hslToRgb = hsl => {
+const hslToRgb = hsl => {
     const hue = h => {
         h = h < 0 ? h + 1 : (h > 1 ? h - 1 : h);
         if (h * 6 < 1) {
@@ -134,7 +134,7 @@ export const hslToRgb = hsl => {
 /**
  * 将数值转换为 16 进制形式，如果不足 2 位，则在字符串前面补充 0
  * @param {number} x 要转换的数值
- * @return {String}
+ * @return {string}
  * @private
  */
 const toHexValue = x => {
@@ -145,23 +145,26 @@ const toHexValue = x => {
 /**
  * 颜色类
  *
- * @export
  * @class Color
  */
 export default class Color {
     /**
      * 判断一个字符串是否是颜色值的有效表示方式
-     * @param {String} hex 要判断的字符串
+     * @param {string} hex 要判断的字符串
      * @return {boolean}
-     * @export
+     * @static
+     * @function
+     * @memberof Color
      */
     static isColor = isColor;
 
     /**
      * 将 16 进制颜色值字符串转换为 RGB 对象
-     * @param {String} hex 16 进制字符串
+     * @param {string} hex 16 进制字符串
      * @return {{r: number, g: number, b: number, a: number}}
-     * @export
+     * @static
+     * @function
+     * @memberof Color
      */
     static hexToRgb = hexToRgb;
 
@@ -169,9 +172,29 @@ export default class Color {
      * 将一个 hsl 颜色表示对象转换为 rgb 表示对象
      * @param {{h: number, s: number, l: number, a: number}} hsl hsl 表示对象
      * @return {{r: number, g: number, b: number, a: number}}
-     * @export
+     * @static
+     * @function
+     * @memberof Color
      */
     static hslToRgb = hslToRgb;
+
+    /**
+     * 创建一个颜色实例
+     * @static
+     * @param {Color|sting|object|number} r 可以为 Red 通道值或者 hsla 对象或者 rgba 对象或者表示颜色的字符串
+     * @param {?number} g Green 通道值
+     * @param {?number} b Blue 通道值
+     * @param {?number} [a=1] Alpha 通道值
+     * @return {color}
+     * @memberof Color
+     * @function
+     */
+    static create(r, g, b, a) {
+        if (r instanceof Color) {
+            return r;
+        }
+        return new Color(r, g, b, a);
+    }
 
     /**
      * 创建一个颜色类实例
@@ -180,7 +203,7 @@ export default class Color {
      * @param {?number} g Green 通道值
      * @param {?number} b Blue 通道值
      * @param {?number} [a=1] Alpha 通道值
-     * @memberof Color
+     * @constructor
      */
     constructor(r, g, b, a = 1) {
         this.init(r, g, b, a);
@@ -490,7 +513,7 @@ export default class Color {
      * 获取颜色以 16 进制表示的字符串
      * @memberof Color
      * @readonly
-     * @type {String}
+     * @type {string}
      */
     get hex() {
         return `#${toHexValue(this.r)}${toHexValue(this.g)}${toHexValue(this.b)}`;
@@ -500,7 +523,7 @@ export default class Color {
      * 获取颜色以 CSS 允许的形式表示的字符串
      * @memberof Color
      * @readonly
-     * @type {String}
+     * @type {string}
      */
     get css() {
         if (this.a > 0) {
@@ -657,22 +680,5 @@ export default class Color {
      */
     clone() {
         return new Color(this.r, this.g, this.b, this.a);
-    }
-
-    /**
-     * 创建一个颜色实例
-     * @static
-     * @param {Color|sting|object|number} r 可以为 Red 通道值或者 hsla 对象或者 rgba 对象或者表示颜色的字符串
-     * @param {?number} g Green 通道值
-     * @param {?number} b Blue 通道值
-     * @param {?number} [a=1] Alpha 通道值
-     * @return {color}
-     * @memberof Color
-     */
-    static create(r, g, b, a) {
-        if (r instanceof Color) {
-            return r;
-        }
-        return new Color(r, g, b, a);
     }
 }

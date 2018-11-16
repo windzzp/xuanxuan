@@ -1,9 +1,11 @@
+/** @module date-helper */
+
 import {formatString} from './string-helper';
 
 /**
  * 一天的总毫秒数
  * @type {number}
- * @export
+ * @const
  */
 export const TIME_DAY = 24 * 60 * 60 * 1000;
 
@@ -11,7 +13,7 @@ export const TIME_DAY = 24 * 60 * 60 * 1000;
  * 创建一个 Date 对象
  * @param {Date|number|String} [date=null] 用于创建 Date 对象的日期时间表达值，如果留空则创建当前系统时间对象
  * @return {Date}
- * @export
+ * @function
  */
 export const createDate = (date = null) => {
     if (!date) {
@@ -30,7 +32,7 @@ export const createDate = (date = null) => {
  * 生成 PHP 时间戳
  * @param {Date|number|String} date 日期时间表达值
  * @return {number}
- * @export
+ * @function
  */
 export const createPhpTimestramp = date => {
     return Math.floor(createDate(date).getTime() / 1000);
@@ -41,7 +43,7 @@ export const createPhpTimestramp = date => {
  * @param {Date|number|String} date1 第一个日期时间表达值
  * @param {?Date|number|String} date2 第二个日期时间表达值，如果留空则使用当前系统时间
  * @return {boolean}
- * @export
+ * @function
  */
 export const isSameDay = (date1, date2) => {
     if (!date2) {
@@ -57,7 +59,7 @@ export const isSameDay = (date1, date2) => {
  * @param {Date|number|String} date1 第一个日期时间表达值
  * @param {?Date|number|String} date2 第二个日期时间表达值，如果留空则使用当前系统时间
  * @return {boolean}
- * @export
+ * @function
  */
 export const isSameYear = (date1, date2) => {
     if (!date2) {
@@ -71,7 +73,7 @@ export const isSameYear = (date1, date2) => {
  * @param {Date|number|String} date1 第一个日期时间表达值
  * @param {?Date|number|String} date2 第二个日期时间表达值，如果留空则使用当前系统时间
  * @return {boolean}
- * @export
+ * @function
  */
 export const isSameMonth = (date1, date2) => {
     if (!date2) {
@@ -87,7 +89,7 @@ export const isSameMonth = (date1, date2) => {
  * @param {Date|number|String} date 要判断的日期时间表达值
  * @param {Date|number|String} [now=null] 作为今天判断依据的日期，如果留空则使用当前系统时间
  * @return {boolean}
- * @export
+ * @function
  */
 export const isToday = (date, now = null) => (isSameDay(now || new Date(), date));
 
@@ -96,7 +98,7 @@ export const isToday = (date, now = null) => (isSameDay(now || new Date(), date)
  * @param {Date|number|String} date 要判断的日期时间表达值
  * @param {Date|number|String} [now=null] 作为今天判断依据的日期，如果留空则使用当前系统时间
  * @return {boolean}
- * @export
+ * @function
  */
 export const isYestoday = (date, now) => (isSameDay((now || new Date()).getTime() - TIME_DAY, date));
 
@@ -115,10 +117,11 @@ export const isYestoday = (date, now) => (isSameDay((now || new Date()).getTime(
  * - ss，例如：'5'，表示两位数字表示的秒数，不足两位在起始用 0 填充
  * - s，例如：'05'，表示一位或两位数字表示的秒数
  * - S，例如：'236'，表示毫秒数
+ * @summary 格式化日期时间值为字符串
  * @param {Date|number|String} date 要格式化的日期时间表达值
- * @param {String} [format='yyyy-MM-dd hh:ss'] 格式化字符串
- * @return {String}
- * @export
+ * @param {string} [format='yyyy-MM-dd hh:ss'] 格式化字符串
+ * @return {string}
+ * @function
  */
 export const formatDate = (date, format = 'yyyy-MM-dd hh:ss') => {
     date = createDate(date);
@@ -149,8 +152,8 @@ export const formatDate = (date, format = 'yyyy-MM-dd hh:ss') => {
  * @param {String|Date|number} date1 起始时间
  * @param {String|Date|number} date2 结束时间
  * @param {Object} format 格式化参数
- * @return {String}
- * @export
+ * @return {string}
+ * @function
  */
 export const formatSpan = (date1, date2, format) => {
     format = Object.assign({
@@ -166,9 +169,9 @@ export const formatSpan = (date1, date2, format) => {
 
 /**
  * 根据描述获取当前时间与指定描述之间的毫秒数
- * @param {String} desc 起始时间
+ * @param {string} desc 起始时间
  * @return {number}
- * @export
+ * @function
  */
 export const getTimeBeforeDesc = desc => {
     const now = new Date().getTime();

@@ -1,4 +1,10 @@
-const sortList = (list, orders) => {
+/**
+ * 根据排序依据属性对一个对象数组进行排序
+ * @param {!any[]} list 要排序的列表
+ * @param {!(string|string[])} orders 排序依据的属性或者多个属性组成的数组
+ * @return {any[]}
+ */
+export const sortList = (list, orders) => {
     if (!orders) {
         if (DEBUG) {
             console.error('Param orders cannot be null on call Helper.sortList(list, orders)');
@@ -22,7 +28,7 @@ const sortList = (list, orders) => {
             if (typeof order === 'function') {
                 result = order(y, x);
             } else {
-                let isInverse = order[0] === '-';
+                const isInverse = order[0] === '-';
                 if (isInverse) order = order.substr(1);
                 let xValue = x[order];
                 let yValue = y[order];
@@ -36,4 +42,4 @@ const sortList = (list, orders) => {
     });
 };
 
-export default sortList;
+export default {sortList};

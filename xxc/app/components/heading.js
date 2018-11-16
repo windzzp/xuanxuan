@@ -6,11 +6,10 @@ import Avatar from './avatar';
 
 /**
  * Heading 组件 ，显示一个支持带头像或操作的标题
- * @export
  * @class Heading
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <Heading />
  */
 export default class Heading extends PureComponent {
@@ -19,7 +18,7 @@ export default class Heading extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Heading
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         avatar: PropTypes.any,

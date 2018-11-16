@@ -3,6 +3,11 @@ import Config from '../../config';
 import crypto from './crypto';
 import Status from '../../utils/status';
 
+/**
+ * Socket 连接状态管理器
+ * @type {Status}
+ * @private
+ */
 const STATUS = new Status({
     CONNECTING: 0, // 连接还没开启。
     OPEN: 1, // 连接已开启并准备好进行通信。
@@ -11,9 +16,27 @@ const STATUS = new Status({
     UNCONNECT: 4, // 未连接
 }, 4);
 
-class Socket {
+/**
+ * Socket 连接管理类（Electron）
+ *
+ * @export
+ * @class Socket
+ */
+export default class Socket {
+    /**
+     * Socket 连接状态管理器
+     * @type {Status}
+     * @static
+     * @memberof Socket
+     */
     static STATUS = STATUS;
 
+    /**
+     * 创建一个 Socket 类实例
+     * @param {string} url Socket 连接地址
+     * @param {Object} options Socket 连接选项
+     * @memberof Socket
+     */
     constructor(url, options) {
         this._status = STATUS.create(STATUS.UNCONNECT);
         this._status.onChange = (newStatus, oldStatus) => {
@@ -27,6 +50,12 @@ class Socket {
         }
     }
 
+    /**
+     * 初始化 Socket 连接
+     * @param {string} url Socket 连接地址
+     * @param {Object} options Socket 连接选项
+     * @return {void}
+     */
     init(url, options) {
         // Close socket before init
         this.close();
@@ -57,30 +86,68 @@ class Socket {
         }
     }
 
+    /**
+     * 获取状态值
+     * @memberof Member
+     * @type {number}
+     */
     get status() {
         return this._status.value;
     }
 
+    /**
+     * 获取状态名称
+     * @memberof Member
+     * @type {string}
+     * @readonly
+     */
     get statusName() {
         return this._status.name;
     }
 
+    /**
+     * 设置状态
+     * @param {string|number} newStatus 状态值或名称
+     * @memberof Member
+     */
     set status(newStatus) {
         this._status.change(newStatus);
     }
 
+    /**
+     * 获取是否连接成功
+     * @memberof Socket
+     * @type {boolean}
+     */
     get isConnected() {
         return this.isStatus(STATUS.OPEN);
     }
 
+    /**
+     * 获取是否正在连接中
+     * @memberof Socket
+     * @type {boolean}
+     */
     get isConnecting() {
         return this.isStatus(STATUS.CONNECTING);
     }
 
+    /**
+     * 判断当前状态是否是给定的状态
+     * @memberof Member
+     * @param {number|string} status 要判断的状态值或状态名称
+     * @return {boolean} 如果为 `true` 则为给定的状态，否则不是
+     */
     isStatus(status) {
         return this._status.is(status);
     }
 
+    /**
+     * 从 WebSocket 实例更新状态信息
+     *
+     * @memberof Socket
+     * @return {void}
+     */
     updateStatusFromClient() {
         if (this.client) {
             this.status = this.client.readyState;
@@ -89,6 +156,12 @@ class Socket {
         }
     }
 
+    /**
+     * 开始连接
+     *
+     * @memberof Socket
+     * @return {void}
+     */
     connect() {
         this.close();
 
@@ -113,10 +186,23 @@ class Socket {
         this.client.on('ping', this.handlePing.bind(this));
     }
 
+    /**
+     * 重新连接
+     *
+     * @return {void}
+     * @memberof Socket
+     */
     reconnect() {
         return this.connect();
     }
 
+    /**
+     * 处理 ping 事件
+     * @param {string|Buffer} data ping 数据
+     * @memberof Socket
+     * @return {void}
+     * @protected
+     */
     handlePing(data) {
         if (this.onPing) {
             this.onPing(data);
@@ -127,6 +213,13 @@ class Socket {
         }
     }
 
+    /**
+     * 处理 pong 事件
+     * @param {string|Buffer} data pong 数据
+     * @memberof Socket
+     * @return {void}
+     * @protected
+     */
     handlePong(data) {
         if (this.onPong) {
             this.onPong(data);
@@ -137,6 +230,12 @@ class Socket {
         }
     }
 
+    /**
+     * 处理连接成功事件
+     * @memberof Socket
+     * @return {void}
+     * @protected
+     */
     handleConnect() {
         this.updateStatusFromClient();
 
@@ -155,6 +254,15 @@ class Socket {
         }
     }
 
+    /**
+     * 处理连接关闭事件
+     *
+     * @param {number} code 关闭代码
+     * @param {string} reason 关闭原因
+     * @memberof Socket
+     * @protected
+     * @return {void}
+     */
     handleClose(code, reason) {
         if (!this.isConnected) {
             this.handleConnectFail({code, message: reason});
@@ -182,6 +290,13 @@ class Socket {
         }
     }
 
+    /**
+     * 处理连接失败事件
+     * @param {Event} e 连接失败事件对象
+     * @memberof Socket
+     * @return {void}
+     * @protected
+     */
     handleConnectFail(e) {
         if (this.onConnectFail) {
             this.onConnectFail(e);
@@ -191,6 +306,14 @@ class Socket {
         }
     }
 
+    /**
+     * 处理连接发生错误
+     *
+     * @param {Error} error 连接错误对象
+     * @memberof Socket
+     * @return {void}
+     * @protected
+     */
     handleError(error) {
         this.updateStatusFromClient();
 
@@ -210,6 +333,15 @@ class Socket {
         }
     }
 
+    /**
+     * 处理接收到数据
+     *
+     * @param {Buffer|String} rawdata 接收到的数据
+     * @param {Options} flags 数据参数
+     * @memberof Socket
+     * @return {void}
+     * @protected
+     */
     handleData(rawdata, flags) {
         this.updateStatusFromClient();
         let data = null;
@@ -230,6 +362,14 @@ class Socket {
         }
     }
 
+    /**
+     * 通过 Socket 连接向服务器发送数据
+     *
+     * @param {string|Buffer} rawdata 要发送的数据
+     * @param {function} callback 发送完成后的回调函数
+     * @memberof Socket
+     * @return {void}
+     */
     send(rawdata, callback) {
         let data = null;
         if (this.options.encryptEnable) {
@@ -247,14 +387,32 @@ class Socket {
         }, callback);
     }
 
+    /**
+     * 将连接标记为关闭
+     *
+     * @memberof Socket
+     * @return {void}
+     */
     markClose() {
         this.status = STATUS.CLOSING;
     }
 
+    /**
+     * 移除所有监听的事件
+     * @private
+     * @memberof Socket
+     * @return {void}
+     */
     removeAllListeners() {
         this.client.removeAllListeners();
     }
 
+    /**
+     * 关闭 Socket 连接
+     * @param {number} code 关闭代码
+     * @param {string} reason 关闭原因
+     * @return {void}
+     */
     close(code, reason) {
         if (this.client) {
             if (reason === 'close' || reason === 'KICKOFF') {
@@ -270,5 +428,3 @@ class Socket {
         }
     }
 }
-
-export default Socket;

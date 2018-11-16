@@ -3,6 +3,13 @@ import AppExtension from './app-extension';
 import PluginExtension from './plugin-extension';
 import ThemeExtension from './theme-extension';
 
+/**
+ * 创建一个扩展类实例
+ * @param {Object} pkg 扩展的 package.json 文件数据
+ * @param {Object} [data=null] 扩展的运行时数据
+ * @param {boolean} [buildIn=false] 是否为内置扩展
+ * @return {Extension|AppExtension|PluginExtension|ThemeExtension} 扩展类实例
+ */
 export const createExtension = (pkg, data = null, buildIn = false) => {
     if (pkg.pkg && !data) {
         data = pkg.data;
@@ -36,6 +43,11 @@ export const createExtension = (pkg, data = null, buildIn = false) => {
     }
 };
 
+/**
+ * 设置扩展所属的用户
+ * @param {User} user 用户对象
+ * @return {void}
+ */
 export const setExtensionUser = user => {
     Extension.user = user;
 };

@@ -6,10 +6,13 @@ import timeSequence from '../utils/time-sequence';
 import Lang from '../lang';
 import InputControl from './input-control';
 
+/** @module modal */
+
 /**
  * 检查应用运行的操作系统类型是否是 Windows
  * @type {boolean}
  * @private
+ * @constant
  */
 const isWindowsOS = window.navigator.userAgent.includes('Windows');
 
@@ -30,7 +33,7 @@ const DEFAULT_CLASS_NAMES = {
  * @param {?Object} props DisplayLayer 组件属性
  * @param {?Function} callback 操作完成时的回调函数
  * @return {DisplayLayer}
- * @export
+ * @function
  */
 export const showModal = (props = {}, callback = null) => {
     let {
@@ -148,10 +151,10 @@ export const showModal = (props = {}, callback = null) => {
  * @param {?Object} props DisplayLayer 组件属性
  * @param {?Function} callback 操作完成时的回调函数
  * @return {DisplayLayer}
- * @export
+ * @function
  */
-const showAlert = (content, props, callback) => {
-    return show(Object.assign({
+export const showAlert = (content, props, callback) => {
+    return showModal(Object.assign({
         modal: true,
         content,
         actions: 'submit'
@@ -164,12 +167,12 @@ const showAlert = (content, props, callback) => {
  * @param {?Object} props DisplayLayer 组件属性
  * @param {?Function} callback 操作完成时的回调函数
  * @return {DisplayLayer}
- * @export
+ * @function
  */
-const showConfirm = (content, props, callback) => {
+export const showConfirm = (content, props, callback) => {
     return new Promise(resolve => {
         let resolved = false;
-        show(Object.assign({
+        showModal(Object.assign({
             closeButton: false,
             modal: true,
             content,
@@ -192,13 +195,13 @@ const showConfirm = (content, props, callback) => {
 /**
  * 显示询问用户输入值的对话框
  * @param {String|ReactNode|Function} title 标题
- * @param {String} defaultValue 默认值
+ * @param {string} defaultValue 默认值
  * @param {?Object} props DisplayLayer 组件属性
  * @param {?Function} callback 操作完成时的回调函数
  * @return {DisplayLayer}
- * @export
+ * @function
  */
-const showPrompt = (title, defaultValue, props, callback) => {
+export const showPrompt = (title, defaultValue, props, callback) => {
     const inputProps = props && props.inputProps;
     const onSubmit = props && props.onSubmit;
     if (inputProps) {
@@ -210,7 +213,7 @@ const showPrompt = (title, defaultValue, props, callback) => {
     return new Promise(resolve => {
         let resolved = false;
         let value = defaultValue;
-        show(Object.assign({
+        showModal(Object.assign({
             closeButton: false,
             modal: true,
             title,

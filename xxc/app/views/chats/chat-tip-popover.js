@@ -2,9 +2,15 @@ import React from 'react';
 import Config from '../../config';
 import Popover from '../../components/popover';
 import Icon from '../../components/icon';
-import App from '../../core';
+import profile from '../../core/profile';
 
-const show = (position, chat, callback) => {
+/**
+ * 显示聊天功能提示面板
+ * @param {{x: number, y: number}} position 提示面板显示位置
+ * @param {function} callback 回调函数
+ * @return {void}
+ */
+export const showChatTipPopoer = (position, callback) => {
     const popoverId = 'app-chat-tip-popover';
     const onRequestClose = () => {
         Popover.hide(popoverId);
@@ -16,7 +22,7 @@ const show = (position, chat, callback) => {
                 <a
                     className="text-gray small"
                     onClick={() => {
-                        App.profile.userConfig.showMessageTip = false;
+                        profile.userConfig.showMessageTip = false;
                         onRequestClose();
                     }}
                 ><Icon name="close" /> 关闭并不再提示</a>
@@ -35,5 +41,5 @@ const show = (position, chat, callback) => {
 };
 
 export default {
-    show,
+    show: showChatTipPopoer,
 };

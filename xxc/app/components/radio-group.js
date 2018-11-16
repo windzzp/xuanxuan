@@ -6,11 +6,10 @@ import Radio from './radio';
 
 /**
  * RadioGroup 组件 ，显示一个单选组
- * @export
  * @class RadioGroup
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <RadioGroup />
  */
 export default class RadioGroup extends PureComponent {
@@ -25,7 +24,7 @@ export default class RadioGroup extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof RadioGroup
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         checked: PropTypes.bool,

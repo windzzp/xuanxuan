@@ -6,20 +6,19 @@ import Icon from './icon';
 
 /**
  * Avatar 组件 ，显示一个头像
- * @export
  * @class Avatar
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example <caption>Create a image avatar</caption>
+ * @example <caption>使用图片创建头像</caption>
  * <Avatar image="http://example.com/user-avatar.png" />
  *
- * @example <caption>Create a avatar with text</caption>
+ * @example <caption>使用文本创建头像</caption>
  * <Avatar label="福" />
  *
- * @example <caption>Set avatar skin color</caption>
+ * @example <caption>应用 skin 外观</caption>
  * <Avatar label="福" skin="23" />
  *
- * @example <caption>Set avatar size</caption>
+ * @example <caption>应用尺寸</caption>
  * <Avatar label="福" size="48" />
  */
 export default class Avatar extends PureComponent {
@@ -28,7 +27,7 @@ export default class Avatar extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Avatar
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         auto: PropTypes.any,

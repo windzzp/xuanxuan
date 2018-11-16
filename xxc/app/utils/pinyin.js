@@ -1,11 +1,15 @@
 import PinYin from 'pinyin';
 
+/** @module pinyin */
+
 /**
- * Convert str to pin str
- * @param  {string} str
- * @param  {array|string} styles
- * @param  {string} separator
+ * 将文本字符串中的中文转换为拼音形式
+ * @param  {string} str 要转换的字符串
+ * @param  {string|string[]} [styles='default'] 样式类型，包括 'STYLE_NORMAL'，'STYLE_FIRST_LETTER'，'STYLE_INITIALS'
+ * @param  {string} [separator=' '] 拼音分隔符
  * @return {string}
+ * @function
+ * @see https://github.com/hotoo/pinyin
  */
 export default (str, styles = 'default', separator = ' ') => {
     if (!styles || styles === 'default') {

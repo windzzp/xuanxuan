@@ -23,7 +23,7 @@ const isPiontInRect = (point, rect) => (
  * @private
  * @param {{left: number, top: number}} pos
  * @param {{left: number, top: number, width: number, height: number}} rect 要判定对矩形区域
- * @return {String}
+ * @return {string}
  */
 const caculatePosition = (pos, area) => {
     const halfHotSize = 5;
@@ -105,11 +105,10 @@ const caculatePosition = (pos, area) => {
 
 /**
 * AreaSelector 组件 ，显示一个AreaSelector
-* @export
 * @class AreaSelector
 * @see https://react.docschina.org/docs/components-and-props.html
 * @extends {Component}
-* @example @lang jsx
+* @example
 * <AreaSelector />
 */
 export default class AreaSelector extends Component {

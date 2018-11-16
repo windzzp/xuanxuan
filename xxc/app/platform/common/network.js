@@ -1,7 +1,7 @@
 import limitTimePromise from '../../utils/limit-time-promise';
 
 const TIMEOUT_DEFAULT = 15 * 1000;
-let fetch = window.fetch;
+let {fetch} = window;
 let optionsFilter = null;
 const getOptions = options => {
     return optionsFilter ? optionsFilter(options) : options;

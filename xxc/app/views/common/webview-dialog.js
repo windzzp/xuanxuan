@@ -3,7 +3,14 @@ import Modal from '../../components/modal';
 import WebViewFrame from './webview-frame';
 import timeSequence from '../../utils/time-sequence';
 
-const show = (sourceUrl, options, callback) => {
+/**
+ * 在对话框中显示一个网页
+ * @param {string} sourceUrl 网页源地址
+ * @param {Object} options Webview 选项
+ * @param {function} callback 对话框显示完成回调函数
+ * @return {void}
+ */
+export const showWebviewDialog = (sourceUrl, options, callback) => {
     let width = (options && options.width);
     let height = (options && options.height);
     if (options && options.size) {
@@ -34,5 +41,5 @@ const show = (sourceUrl, options, callback) => {
 };
 
 export default {
-    show,
+    show: showWebviewDialog,
 };

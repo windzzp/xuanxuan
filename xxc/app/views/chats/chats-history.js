@@ -11,11 +11,41 @@ import {ChatListItem} from './chat-list-item';
 import {ChatHistory} from './chat-history';
 import {ChatSearchResult} from './chat-search-result';
 import replaceViews from '../replace-views';
-import DateHelper from '../../utils/date-helper';
+import {getTimeBeforeDesc} from '../../utils/date-helper';
 import ListItem from '../../components/list-item';
 import Config from '../../config';
 
-class ChatsHistory extends Component {
+/**
+ * ChatsHistory 组件 ，显示聊天历史记录界面
+ * @class ChatsHistory
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example
+ * import ChatsHistory from './chats-history';
+ * <ChatsHistory />
+ */
+export default class ChatsHistory extends Component {
+    /**
+     * 获取 ChatsHistory 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<ChatsHistory>}
+     * @readonly
+     * @static
+     * @memberof ChatsHistory
+     * @example <caption>可替换组件类调用方式</caption>
+     * import {ChatsHistory} from './chats-history';
+     * <ChatsHistory />
+     */
+    static get ChatsHistory() {
+        return replaceViews('chats/chats-hitory', ChatsHistory);
+    }
+
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof ChatsHistory
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
         chat: PropTypes.object,
@@ -24,6 +54,13 @@ class ChatsHistory extends Component {
         morePageSize: PropTypes.number,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof ChatsHistory
+     * @static
+     */
     static defaultProps = {
         className: null,
         chat: null,
@@ -32,20 +69,46 @@ class ChatsHistory extends Component {
         morePageSize: Config.ui['page.more.size'] || 20,
     };
 
-    static get ChatsHistory() {
-        return replaceViews('chats/chats-hitory', ChatsHistory);
-    }
-
+    /**
+     * React 组件构造函数，创建一个 ChatsHistory 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
 
-        const chat = props.chat;
+        const {chat} = props;
+
+        /**
+         * 搜索聊天类型
+         * @type {{name: string, chats: Chat[]}[]}
+         * @private
+         */
         this.chats = [
             {name: 'contacts', chats: App.im.chats.getContactsChats()},
             {name: 'groups', chats: App.im.chats.getGroups()}
         ];
+
+        /**
+         * 搜索过滤聊天时间范围
+         * @type {string}
+         * @private
+         */
         this.searchFilterTime = 'oneMonth';
+
+        /**
+         * 搜索过滤聊天类型
+         * @type {string}
+         * @private
+         */
         this.searchFilterType = 'choosed';
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             isFetching: false,
             choosed: chat,
@@ -65,6 +128,16 @@ class ChatsHistory extends Component {
         };
     }
 
+    /**
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof ChatsHistory
+     * @return {void}
+     */
     componentDidMount() {
         const updateFetchingMessage = (pager) => {
             const message = `${Lang.string('chats.history.fetchingMessages')} ${Math.floor(pager.percent || 0)}%`;
@@ -77,16 +150,40 @@ class ChatsHistory extends Component {
         this.handleHistory = App.im.server.onChatHistory(updateFetchingMessage);
     }
 
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof ChatsHistory
+     * @return {void}
+     */
     componentWillUnmount() {
         App.events.off(this.handleHistoryStart, this.handleHistoryEnd, this.handleHistory);
     }
 
+    /**
+     * 处理分组标题点击事件
+     * @param {string} name 分组标题
+     * @memberof ChatsHistory
+     * @private
+     * @return {void}
+     */
     handleGroupHeaderClick(name) {
         const {expanded} = this.state;
         expanded[name] = !expanded[name];
         this.setState({expanded});
     }
 
+    /**
+     * 处理聊天条目点击事件
+     * @param {Chat} chat 聊天对象
+     * @memberof ChatsHistory
+     * @private
+     * @return {void}
+     */
     handleChatItemClick(chat) {
         this.setState({choosed: chat}, () => {
             if (this.state.search) {
@@ -95,6 +192,13 @@ class ChatsHistory extends Component {
         });
     }
 
+    /**
+     * 处理点击获取所有历史记录按钮事件
+     * @param {Event} e 事件对象
+     * @memberof ChatsHistory
+     * @private
+     * @return {void}
+     */
     handleFetchAllBtnClick = e => {
         App.ui.showContextMenu({x: e.clientX, y: e.clientY, target: e.target}, [
             {label: Lang.string('chats.history.selectFetchTime'), disabled: true},
@@ -104,31 +208,61 @@ class ChatsHistory extends Component {
             {label: Lang.string('time.oneYear'), data: 'oneYear'},
             {label: Lang.string('time.twoYear'), data: 'twoYear'},
             {label: `${Lang.string('time.all')} (${Lang.string('chats.history.sync.slow')})`, data: 'all'},
-        ], {onItemClick: (item) => {
-            if (item.data) {
-                const startDate = item.data === 'all' ? 0 : DateHelper.getTimeBeforeDesc(item.data);
-                App.im.server.fetchChatsHistory('all', startDate);
+        ], {
+            onItemClick: (item) => {
+                if (item.data) {
+                    const startDate = item.data === 'all' ? 0 : getTimeBeforeDesc(item.data);
+                    App.im.server.fetchChatsHistory('all', startDate);
+                }
             }
-        }});
+        });
     }
 
+    /**
+     * 处理搜索关键字变更事件
+     * @param {string} search 搜索字符串
+     * @memberof ChatsHistory
+     * @private
+     * @return {void}
+     */
     handleSearchChange = search => {
         this.setState({search});
         this.startSearch();
     }
 
+    /**
+     * 处理聊天类型变更事件
+     * @param {string} searchFilterType 聊天类型
+     * @memberof ChatsHistory
+     * @private
+     * @return {void}
+     */
     handleSearchFilterTypeChange = searchFilterType => {
         this.setState({searchFilterType});
         this.searchFilterType = searchFilterType;
         this.startSearch();
     }
 
+    /**
+     * 处理聊天时间范围值变更事件
+     * @param {string} searchFilterTime 聊天时间范围
+     * @memberof ChatsHistory
+     * @private
+     * @return {void}
+     */
     handleSearchFilterTimeChange = searchFilterTime => {
         this.setState({searchFilterTime});
         this.searchFilterTime = searchFilterTime;
         this.startSearch();
     }
 
+    /**
+     * 处理跳转到指定消息事件
+     * @param {ChatMessage} messageGoto 要跳转的消息
+     * @memberof ChatsHistory
+     * @private
+     * @return {void}
+     */
     handleRequestGoto = messageGoto => {
         this.setState({messageGoto: messageGoto && {
             time: new Date().getTime(),
@@ -138,6 +272,12 @@ class ChatsHistory extends Component {
         }});
     }
 
+    /**
+     * 开始搜索
+     *
+     * @memberof ChatsHistory
+     * @return {void}
+     */
     startSearch() {
         if (!this.searchControl.isEmpty()) {
             const search = this.searchControl.getValue();
@@ -229,12 +369,27 @@ class ChatsHistory extends Component {
         }
     }
 
+    /**
+     * 处理显示请求下一页事件
+     *
+     * @param {string} group 分组名称
+     * @memberof ChatsHistory
+     * @return {void}
+     * @private
+     */
     handleRequestMorePage(group) {
         const {groupPage} = this.state;
         groupPage[group] += 1;
         this.setState({groupPage});
     }
 
+    /**
+     * 渲染聊天分组
+     *
+     * @param {{name: string, chats: Chat[]}} group 分组
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     * @memberof ChatsHistory
+     */
     renderChatsGroup(group) {
         const {searchResult, searchFilterType} = this.state;
         if (searchResult && searchFilterType && searchFilterType !== group.name && searchFilterType !== 'choosed') {
@@ -281,6 +436,13 @@ class ChatsHistory extends Component {
         </div>);
     }
 
+    /**
+     * 渲染聊天条目
+     *
+     * @param {Chat} chat 聊天对象
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     * @memberof ChatsHistory
+     */
     renderChatItem(chat) {
         const {searchResult, searchFilterType} = this.state;
         const isChoosed = this.state.choosed && this.state.choosed.gid === chat.gid;
@@ -307,6 +469,14 @@ class ChatsHistory extends Component {
         />);
     }
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof ChatsHistory
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             chat,
@@ -386,5 +556,3 @@ class ChatsHistory extends Component {
         </div>);
     }
 }
-
-export default ChatsHistory;

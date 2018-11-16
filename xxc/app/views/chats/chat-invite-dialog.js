@@ -1,11 +1,15 @@
 import React from 'react';
 import Modal from '../../components/modal';
-// import {ChatInvite} from './chat-invite';
 import {ChatInvite} from './chat-invite';
 import Lang from '../../lang';
-import HTML from '../../utils/html-helper';
 
-const show = (chat, callback) => {
+/**
+ * 显示邀请其他成员加入聊天对话框
+ * @param {Chat} chat 聊天实例
+ * @param {function} callback 显示完成后的回调函数
+ * @return {void}
+ */
+export const showChatInviteDialog = (chat, callback) => {
     const modalId = 'app-chat-invite-dialog';
     const onRequestClose = () => {
         Modal.hide(modalId);
@@ -20,5 +24,5 @@ const show = (chat, callback) => {
 };
 
 export default {
-    show,
+    show: showChatInviteDialog,
 };

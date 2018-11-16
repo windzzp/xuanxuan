@@ -1,15 +1,14 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../utils/html-helper';
+import {classes} from '../utils/html-helper';
 import timeSequence from '../utils/time-sequence';
 
 /**
  * Checkbox 组件 ，显示一个复选框
- * @export
  * @class Checkbox
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <Checkbox />
  */
 export default class Checkbox extends PureComponent {
@@ -18,7 +17,7 @@ export default class Checkbox extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Checkbox
-     * @return {Object}
+     * @type {object}
      */
     static propTypes = {
         checked: PropTypes.bool,
@@ -56,7 +55,7 @@ export default class Checkbox extends PureComponent {
         /**
          * 控件 ID
          * @private
-         * @type {String}
+         * @type {string}
          */
         this._controlId = `checkbox-${timeSequence()}`;
     }
@@ -94,9 +93,11 @@ export default class Checkbox extends PureComponent {
             ...other
         } = this.props;
 
-        return (<div className={HTML.classes('checkbox', className, {checked})} {...other}>
-            <input id={this._controlId} checked={checked} type="checkbox" onChange={this.handleCheckboxChange} {...inputProps} />
-            {label && <label htmlFor={this.controlId}>{label}</label>}
-        </div>);
+        return (
+            <div className={classes('checkbox', className, {checked})} {...other}>
+                <input id={this._controlId} checked={checked} type="checkbox" onChange={this.handleCheckboxChange} {...inputProps} />
+                {label && <label htmlFor={this.controlId}>{label}</label>}
+            </div>
+        );
     }
 }

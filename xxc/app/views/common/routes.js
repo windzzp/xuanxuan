@@ -1,3 +1,7 @@
+/**
+ * 路由名称配置表
+ * @type {Map}
+ */
 export default {
     chats: {
         _: '/chats',

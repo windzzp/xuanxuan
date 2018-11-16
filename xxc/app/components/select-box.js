@@ -5,21 +5,19 @@ import StringHelper from '../utils/string-helper';
 
 /**
  * SelectBox 组件 ，显示一个选择框
- * @export
  * @class SelectBox
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * <SelectBox />
  */
-
 export default class Selectbox extends Component {
     /**
      * React 组件属性类型检查
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof SelectBox
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         value: PropTypes.any,

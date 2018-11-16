@@ -5,13 +5,17 @@ import Avatar from './avatar';
 
 /**
 * AppAvatar 组件 ，显示一个应用图标
-*
-* @export
 * @class AppAvatar
 * @see https://react.docschina.org/docs/components-and-props.html
 * @extends {PureComponent}
-* @example @lang jsx
+* @example <caption>导入组件</caption>
+* import AppAvatar from './components/app-avatar';
+* @example
 * <AppAvatar />
+* @reactProps {string|Object|ReactNode} avatar 头像或者用于创建头像的值
+* @reactProps {string|ReactNode} label 应用名称
+* @reactProps {string} className CSS 类名
+* @reactProps {string} children 子组件
 */
 export default class AppAvatar extends PureComponent {
     /**

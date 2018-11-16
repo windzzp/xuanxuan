@@ -4,11 +4,10 @@ import DisplayLayer from './display-layer';
 
 /**
  * DisplayContainer 组件 ，显示一个弹出层容器组件，用于管理界面上一个或多个弹出层
- * @export
  * @class DisplayContainer
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * <DisplayContainer />
  */
 export default class DisplayContainer extends Component {
@@ -16,10 +15,15 @@ export default class DisplayContainer extends Component {
      * React 组件构造函数，创建一个 DisplayContainer 组件实例，会在装配之前被调用。
      * @see https://react.docschina.org/docs/react-component.html#constructor
      * @param {Object?} props 组件属性对象
-     * @constructor
      */
     constructor(props) {
         super(props);
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             all: {}
         };
@@ -28,7 +32,7 @@ export default class DisplayContainer extends Component {
     /**
      * 根据 ID 获取弹出层组件实例
      *
-     * @param {String} id 弹出层 ID
+     * @param {string} id 弹出层 ID
      * @return {DisplayLayer}
      * @memberof DisplayContainer
      */

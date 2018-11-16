@@ -23,4 +23,5 @@ window.$config = {
         clientSourceRoot: 'xxc/'
     },
     buildTime: '2018-11-01T06:58:25.303Z',
+    downloadUrl: 'http://dl.cnezsoft.com/xuanxuan/'
 };

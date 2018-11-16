@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../../utils/html-helper';
+import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import {Tabs, TabPane} from '../../components/tabs';
 import Lang from '../../lang';
@@ -10,7 +10,37 @@ import {ChatSidebarFiles} from './chat-sidebar-files';
 import {ChatSidebarProfile} from './chat-sidebar-profile';
 import replaceViews from '../replace-views';
 
-class ChatSidebar extends Component {
+/**
+ * ChatSidebar 组件 ，显示一个聊天侧边栏界面
+ * @class ChatSidebar
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example
+ * import ChatSidebar from './chat-sidebar';
+ * <ChatSidebar />
+ */
+export default class ChatSidebar extends Component {
+    /**
+     * 获取 ChatSidebar 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<ChatSidebar>}
+     * @readonly
+     * @static
+     * @memberof ChatSidebar
+     * @example <caption>可替换组件类调用方式</caption>
+     * import {ChatSidebar} from './chat-sidebar';
+     * <ChatSidebar />
+     */
+    static get ChatSidebar() {
+        return replaceViews('chats/chat-sidebar', ChatSidebar);
+    }
+
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof ChatSidebar
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
         chat: PropTypes.object,
@@ -18,6 +48,13 @@ class ChatSidebar extends Component {
         closeButton: PropTypes.bool,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof ChatSidebar
+     * @static
+     */
     static defaultProps = {
         className: null,
         chat: null,
@@ -25,18 +62,37 @@ class ChatSidebar extends Component {
         closeButton: true,
     };
 
-    static get ChatSidebar() {
-        return replaceViews('chats/chat-sidebar', ChatSidebar);
-    }
-
+    /**
+     * React 组件生命周期函数：`shouldComponentUpdate`
+     * 让React知道当前状态或属性的改变是否不影响组件的输出。默认行为是在每一次状态的改变重渲，在大部分情况下你应该依赖于默认行为。
+     *
+     * @param {Object} nextProps 即将更新的属性值
+     * @param {Object} nextState 即将更新的状态值
+     * @returns {boolean} 如果返回 `true` 则继续渲染组件，否则为 `false` 而后的 `UNSAFE_componentWillUpdate()`，`render()`， 和 `componentDidUpdate()` 将不会被调用
+     * @memberof ChatSidebar
+     */
     shouldComponentUpdate(nextProps) {
         return this.props.className !== nextProps.className || this.props.children !== nextProps.children || this.props.closeButton !== nextProps.closeButton || this.props.chat !== nextProps.chat || this.lastChatId !== nextProps.updateId || (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId);
     }
 
+    /**
+     * 处理侧边栏关闭按钮点击事件
+     * @memberof ChatSidebar
+     * @private
+     * @return {void}
+     */
     handleCloseBtnClick = () => {
         App.profile.userConfig.setChatSidebarHidden(this.props.chat.gid, true);
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof ChatSidebar
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             chat,
@@ -51,26 +107,26 @@ class ChatSidebar extends Component {
             this.lastOtherOneUpdateId = chat.getTheOtherOne(App).updateId;
         }
 
-        return (<div
-            {...other}
-            className={HTML.classes('app-chat-sidebar dock', className)}
-        >
-            {closeButton !== false && <div className="dock-right dock-top has-padding app-chat-sidebar-close hint--bottom-left dock" data-hint={Lang.string('chat.sidebar.close')}>
-                <button className="iconbutton btn rounded" type="button" onClick={this.handleCloseBtnClick}><Icon name="close" /></button>
-            </div>}
-            <Tabs className="dock column single" defaultActivePaneKey={chat.isOne2One ? 'profile' : 'peoples'} navClassName="shadow-divider flex-none" contentClassName="flex-auto scroll-y">
-                {chat.isOne2One ? <TabPane key="profile" label={Lang.string('chat.sidebar.tab.profile.label')}>
-                    <ChatSidebarProfile chat={chat} />
-                </TabPane> : <TabPane key="peoples" label={`${Lang.string('chat.sidebar.tab.peoples.label')}`}>
-                    <ChatSidebarPeoples chat={chat} />
-                </TabPane>}
-                <TabPane key="files" label={`${Lang.string('chat.sidebar.tab.files.label')}`}>
-                    <ChatSidebarFiles chat={chat} />
-                </TabPane>
-            </Tabs>
-            {children}
-        </div>);
+        return (
+            <div
+                {...other}
+                className={classes('app-chat-sidebar dock', className)}
+            >
+                {closeButton !== false && <div className="dock-right dock-top has-padding app-chat-sidebar-close hint--bottom-left dock" data-hint={Lang.string('chat.sidebar.close')}>
+                    <button className="iconbutton btn rounded" type="button" onClick={this.handleCloseBtnClick}><Icon name="close" /></button>
+                </div>}
+                <Tabs className="dock column single" defaultActivePaneKey={chat.isOne2One ? 'profile' : 'peoples'} navClassName="shadow-divider flex-none" contentClassName="flex-auto scroll-y">
+                    {chat.isOne2One ? <TabPane key="profile" label={Lang.string('chat.sidebar.tab.profile.label')}>
+                        <ChatSidebarProfile chat={chat} />
+                    </TabPane> : <TabPane key="peoples" label={`${Lang.string('chat.sidebar.tab.peoples.label')}`}>
+                        <ChatSidebarPeoples chat={chat} />
+                    </TabPane>}
+                    <TabPane key="files" label={`${Lang.string('chat.sidebar.tab.files.label')}`}>
+                        <ChatSidebarFiles chat={chat} />
+                    </TabPane>
+                </Tabs>
+                {children}
+            </div>
+        );
     }
 }
-
-export default ChatSidebar;

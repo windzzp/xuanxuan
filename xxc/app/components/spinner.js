@@ -5,11 +5,10 @@ import Icon from './icon';
 
 /**
  * Spinner 组件 ，显示一个用于“正在加载中”图标
- * @export
  * @class Spinner
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <Spinner />
  */
 export default class Spinner extends PureComponent {
@@ -18,7 +17,7 @@ export default class Spinner extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Spinner
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         iconSize: PropTypes.number,

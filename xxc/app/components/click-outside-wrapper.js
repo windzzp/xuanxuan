@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 /**
  * ClickOutsideWrapper 组件 ，显示一个ClickOutsideWrapper（允许监听元素外点击事件的容器元素，可以很方便的使用此组件制作点击外部即关闭的弹出层）
- * @export
  * @class ClickOutsideWrapper
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
@@ -26,7 +25,7 @@ export default class ClickOutsideWrapper extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof ClickOutsideWrapper
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         onClickOutside: PropTypes.func,

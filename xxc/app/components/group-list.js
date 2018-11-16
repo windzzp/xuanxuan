@@ -9,11 +9,10 @@ import Config from '../config';
 
 /**
  * GroupList 组件 ，显示一个分组列表
- * @export
  * @class GroupList
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <GroupList />
  */
 export default class GroupList extends PureComponent {
@@ -22,7 +21,7 @@ export default class GroupList extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof GroupList
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         headingCreator: PropTypes.func,

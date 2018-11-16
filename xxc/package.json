@@ -32,7 +32,8 @@
     "package-all": "npm run package -- --platform=all --arch=all --clean && npm run package -- --platform=mac,win --arch=x64 --debug",
     "package-all-beta": "npm run package -- --platform=all --arch=x64 --beta --clean && npm run package -- --platform=mac,win --arch=x64 --debug --beta",
     "package-browser": "npm run package -- --platform=browser",
-    "hot-server-browser": "npm run hot-server -- --target=browser"
+    "hot-server-browser": "npm run hot-server -- --target=browser",
+    "docs": "./node_modules/.bin/esdoc"
   },
   "build": {
     "extends": "./build/electron-builder.json"
@@ -93,9 +94,17 @@
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
+    "dmd-plugin-zh-cn": "0.0.7",
     "electron": "^2.0.5",
     "electron-builder": "20.24.4",
     "electron-devtools-installer": "^2.2.4",
+    "esdoc": "^1.1.0",
+    "esdoc-ecmascript-proposal-plugin": "^1.0.0",
+    "esdoc-inject-script-plugin": "^1.0.0",
+    "esdoc-inject-style-plugin": "^1.0.0",
+    "esdoc-jsx-plugin": "^1.0.0",
+    "esdoc-react-plugin": "^1.0.1",
+    "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^5.2.0",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-formatter-pretty": "^1.1.0",

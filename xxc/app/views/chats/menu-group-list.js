@@ -9,11 +9,37 @@ import GroupList from '../../components/group-list';
 import {ChatListItem} from './chat-list-item';
 import replaceViews from '../replace-views';
 
+/**
+ * MenuGroupList 组件 ，显示讨论组列表界面
+ * @class MenuGroupList
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example
+ * import MenuGroupList from './menu-group-list';
+ * <MenuGroupList />
+ */
 export default class MenuGroupList extends Component {
+    /**
+     * 获取 MenuGroupList 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<MenuGroupList>}
+     * @readonly
+     * @static
+     * @memberof MenuGroupList
+     * @example <caption>可替换组件类调用方式</caption>
+     * import {MenuGroupList} from './menu-group-list';
+     * <MenuGroupList />
+     */
     static get MenuGroupList() {
         return replaceViews('chats/menu-group-list', MenuGroupList);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof MenuGroupList
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
         search: PropTypes.string,
@@ -21,6 +47,13 @@ export default class MenuGroupList extends Component {
         children: PropTypes.any,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof MenuGroupList
+     * @static
+     */
     static defaultProps = {
         className: null,
         search: null,
@@ -28,14 +61,33 @@ export default class MenuGroupList extends Component {
         children: null,
     };
 
+    /**
+     * React 组件构造函数，创建一个 MenuGroupList 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             dragging: false,
             dropTarget: null
         };
     }
 
+    /**
+     * 处理讨论组右键菜单事件
+     * @param {Event} event 事件对象
+     * @memberof MenuGroupList
+     * @private
+     * @return {void}
+     */
     handleItemContextMenu(event) {
         const chat = App.im.chats.get(event.currentTarget.attributes['data-gid'].value);
         showContextMenu('chat.menu', {
@@ -46,24 +98,64 @@ export default class MenuGroupList extends Component {
         });
     }
 
+    /**
+     * 检查列表条目是否为分组
+     *
+     * @param {Object} item 列表条目
+     * @memberof MenuGroupList
+     * @returns {boolean} 如果返回 `true` 则为是分组，否则为不是分组
+     * @private
+     */
     checkIsGroup = item => {
         return item.list && item.entityType !== 'Chat';
     };
 
+    /**
+     * 渲染讨论组列表聊天条目
+     *
+     * @param {Chat} chat 聊天对象
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     * @private
+     * @memberof MenuContactList
+     */
     itemCreator = chat => {
         return <ChatListItem onContextMenu={this.handleItemContextMenu} data-gid={chat.gid} key={chat.gid} filterType={this.props.filter} chat={chat} className="item" />;
     };
 
+    /**
+     * 处理分组标题右键菜单事件
+     * @param {Object} group 分组信息
+     * @param {Event} event 事件对象
+     * @memberof MenuContactList
+     * @private
+     * @return {void}
+     */
     handleHeadingContextMenu(group, event) {
         showContextMenu('chat.group', {group, event, type: 'group'});
     }
 
+    /**
+     * 处理分组拖放事件
+     * @param {Object} group 分组信息
+     * @param {Event} e 事件对象
+     * @memberof MenuContactList
+     * @private
+     * @return {void}
+     */
     handleDragOver(group, e) {
         if (!this.state.dropTarget || this.state.dropTarget.id !== group.id) {
             this.setState({dropTarget: group});
         }
     }
 
+    /**
+     * 处理分组拖放完成事件
+     * @param {Object} group 分组信息
+     * @param {Event} e 事件对象
+     * @memberof MenuContactList
+     * @private
+     * @return {void}
+     */
     handleDrop(group, e) {
         const {dragging, dropTarget} = this.state;
         if (dragging && dropTarget && dragging.id !== dropTarget.id) {
@@ -83,6 +175,14 @@ export default class MenuGroupList extends Component {
         e.stopPropagation();
     }
 
+    /**
+     * 处理分组拖放开始事件
+     * @param {Object} group 分组信息
+     * @param {Event} e 事件对象
+     * @memberof MenuContactList
+     * @private
+     * @return {void}
+     */
     handleDragStart(group, e) {
         this.setState({dragging: group});
         this.sortedGroups = this.groupChats;
@@ -90,12 +190,29 @@ export default class MenuGroupList extends Component {
         return true;
     }
 
+    /**
+     * 处理分组拖放结束事件
+     * @param {Object} group 分组信息
+     * @param {Event} e 事件对象
+     * @memberof MenuContactList
+     * @private
+     * @return {void}
+     */
     handleDragEnd(group, e) {
         this.setState({dragging: false});
         e.stopPropagation();
         return true;
     }
 
+    /**
+     * 创建分组标题条目
+     *
+     * @param {Object} group 分组信息
+     * @param {Object} groupList 分组列表
+     * @memberof MenuContactList
+     * @private
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     headingCreator = (group, groupList) => {
         const icon = groupList.isExpand ? groupList.props.expandIcon : groupList.props.collapseIcon;
         let iconView = null;
@@ -130,6 +247,14 @@ export default class MenuGroupList extends Component {
         </header>);
     };
 
+    /**
+     * 判断分组是否默认为展开状态
+     *
+     * @param {Object} group 分组信息
+     * @memberof MenuContactList
+     * @returns {boolean} 如果返回 `true` 则为是展开状态，否则为不是展开状态
+     * @private
+     */
     defaultExpand = (group) => {
         return group.list && !!group.list.find(item => {
             let isExpand = App.im.ui.isActiveChat(item.gid);
@@ -140,10 +265,26 @@ export default class MenuGroupList extends Component {
         });
     };
 
+    /**
+     * 处理分组展开折叠变更事件
+     * @param {boolean} expanded 是否展开
+     * @param {Object} group 分组信息
+     * @memberof MenuContactList
+     * @private
+     * @return {void}
+     */
     onExpandChange = (expanded, group) => {
         App.profile.userConfig.setChatMenuGroupState('groups', this.groupType, group.id, expanded);
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof MenuGroupList
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             search,

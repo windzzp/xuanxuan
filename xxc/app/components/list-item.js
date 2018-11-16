@@ -6,11 +6,10 @@ import Avatar from './avatar';
 
 /**
  * ListItem 组件 ，显示一个列表项
- * @export
  * @class ListItem
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <ListItem />
  */
 export default class ListItem extends PureComponent {
@@ -19,7 +18,7 @@ export default class ListItem extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof ListItem
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         type: PropTypes.string,

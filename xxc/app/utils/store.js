@@ -1,3 +1,5 @@
+/** @module utils/store */
+
 /**
  * 本地存储对象
  * @type {Storage}
@@ -8,7 +10,7 @@ const storage = window.localStorage;
 /**
  * 将 JS 值序列化为 JSON 字符串
  * @param {any} value 要序列化的值
- * @return {String}
+ * @return {string}
  * @private
  */
 const serialize = value => {
@@ -18,7 +20,7 @@ const serialize = value => {
 
 /**
  * 将 JSON 字符串反序列化为 JS 值
- * @param {String} value 要反序列化的字符串
+ * @param {string} value 要反序列化的字符串
  * @return {any}
  * @private
  */
@@ -34,10 +36,9 @@ const deserialize = value => {
 
 /**
  * 设置本地存储值
- * @param {String} key 键
+ * @param {string} key 键
  * @param {any} value 值
  * @return {void}
- * @export
  */
 export const setStoreItem = (key, value) => {
     storage.setItem(key, serialize(value));
@@ -45,10 +46,9 @@ export const setStoreItem = (key, value) => {
 
 /**
  * 获取本地存储值
- * @param {String} key 键
+ * @param {string} key 键
  * @param {any} defaultValue 默认值
  * @return {any}
- * @export
  */
 export const getStoreItem = (key, defaultValue) => {
     const val = deserialize(storage.getItem(key));
@@ -57,31 +57,28 @@ export const getStoreItem = (key, defaultValue) => {
 
 /**
  * 移除本地存储值
- * @param {String} key 键
+ * @param {string} key 键
  * @return {void}
- * @export
  */
 export const removeStoreItem = key => storage.removeItem(key);
 
 /**
  * 清空本地存储
  * @return {void}
- * @export
+
  */
 export const clearStore = () => storage.clear();
 
 /**
  * 获取本地存储条目数目
  * @return {number}
- * @export
  */
 export const getStoreLength = () => storage.length;
 
 /**
  * 遍历本地存储所有条目
- * @param {Function(value: any, key: String, index: number)} callback 遍历回调函数
+ * @param {function} callback 遍历回调函数
  * @return {void}
- * @export
  */
 export const storeForEach = callback => {
     const length = getStoreLength();
@@ -95,8 +92,7 @@ export const storeForEach = callback => {
 
 /**
  * 通过对象返回本地存储中的所有键值对
- * @return {Object}
- * @export
+ * @return {Object.<string, any>}
  */
 export const storeGetAll = () => {
     const all = {};

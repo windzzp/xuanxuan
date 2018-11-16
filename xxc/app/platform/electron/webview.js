@@ -1,13 +1,23 @@
-import contextMenu from './contextmenu';
+import {createContextMenu, popupContextMenu} from './contextmenu';
 import Lang from '../../lang';
 
-const SELECT_MENU = contextMenu.createContextMenu([
+/**
+ * 文本选择右键菜单
+ * @type {Menu}
+ * @private
+ */
+const SELECT_MENU = createContextMenu([
     {role: 'copy', label: Lang.string('menu.copy')},
     {type: 'separator'},
     {role: 'selectall', label: Lang.string('menu.selectAll')}
 ]);
 
-const INPUT_MENU = contextMenu.createContextMenu([
+/**
+ * 文本输入框右键菜单
+ * @type {Menu}
+ * @private
+ */
+const INPUT_MENU = createContextMenu([
     {role: 'undo', label: Lang.string('menu.undo')},
     {role: 'redo', label: Lang.string('menu.redo')},
     {type: 'separator'},
@@ -18,15 +28,20 @@ const INPUT_MENU = contextMenu.createContextMenu([
     {role: 'selectall', label: Lang.string('menu.selectAll')}
 ]);
 
-const initWebview = (webview) => {
+/**
+ * 初始化 WebView 上的右键菜单
+ * @param {WebView} webview WebView 实例
+ * @return {void}
+ */
+export const initWebview = (webview) => {
     const webContents = webview.getWebContents();
     if (webContents) {
         webContents.on('context-menu', (e, props) => {
             const {selectionText, isEditable} = props;
             if (isEditable) {
-                contextMenu.popupContextMenu(INPUT_MENU, e.clientX, e.clientY);
+                popupContextMenu(INPUT_MENU, e.clientX, e.clientY);
             } else if (selectionText && selectionText.trim() !== '') {
-                contextMenu.popupContextMenu(SELECT_MENU, e.clientX, e.clientY);
+                popupContextMenu(SELECT_MENU, e.clientX, e.clientY);
             }
         });
     }

@@ -2,9 +2,14 @@ import React from 'react';
 import EmojiPicker from 'emojione-picker';
 import Popover from '../../components/popover';
 import Lang from '../../lang';
-import App from '../../core';
+import profile from '../../core/profile';
 import Emojione from '../../components/emojione';
 
+/**
+ * Emoji 分类信息
+ * @type {Map<string, {title: string, emoji: string}>}
+ * @private
+ */
 const emojioneCategories = {
     people: {
         title: Lang.string('emoji.category.people', '表情与人物'),
@@ -40,9 +45,16 @@ const emojioneCategories = {
     }
 };
 
-const show = (position, onSelectEmoji, callback) => {
+/**
+ * 显示 Emoji 选择提示面板
+ * @param {{x: number, y: number}} position 提示框显示位置
+ * @param {function(data: Object)} onSelectEmoji 当选择 Emoji 表情时的回调函数
+ * @param {function} callback 回调函数
+ * @return {void}
+ */
+export const showEmojiPopover = (position, onSelectEmoji, callback) => {
     const popoverId = 'app-emoji-popover';
-    const enableSearchInEmojionePicker = App.profile.userConfig.enableSearchInEmojionePicker;
+    const {enableSearchInEmojionePicker} = profile.userConfig;
     return Popover.show(
         position,
         <EmojiPicker
@@ -58,11 +70,13 @@ const show = (position, onSelectEmoji, callback) => {
                 Popover.hide(popoverId);
             }}
         />,
-        {id: popoverId, width: 280, height: 261, cache: true},
+        {
+            id: popoverId, width: 280, height: 261, cache: true
+        },
         callback
     );
 };
 
 export default {
-    show,
+    show: showEmojiPopover,
 };

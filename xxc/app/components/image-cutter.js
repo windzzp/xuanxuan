@@ -9,11 +9,10 @@ import ImageHelper from '../utils/image';
 
 /**
  * ImageCutter 组件 ，显示一个图片剪切控件
- * @export
  * @class ImageCutter
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * <ImageCutter />
  */
 export default class ImageCutter extends Component {
@@ -22,7 +21,7 @@ export default class ImageCutter extends Component {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof ImageCutter
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         sourceImage: PropTypes.string,

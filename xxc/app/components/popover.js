@@ -3,6 +3,8 @@ import Display from './display';
 import {classes} from '../utils/html-helper';
 import timeSequence from '../utils/time-sequence';
 
+/** @module popover */
+
 /**
  * 显示一个提示面板
  * @param {{x: Number, y: Number}} position 提示面板显示位置，需要提供 X 和 Y 轴坐标
@@ -10,7 +12,7 @@ import timeSequence from '../utils/time-sequence';
  * @param {Object} props DisplayLayer 组件属性
  * @param {?Function} callback 操作完成时的回调函数
  * @return {DisplayLayer}
- * @export
+ * @function
  */
 export const showPopover = (position, content, props = {}, callback = null) => {
     let {

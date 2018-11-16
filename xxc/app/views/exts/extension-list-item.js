@@ -47,7 +47,7 @@ export default class ExtensionListItem extends Component {
             className,
             onSettingBtnClick,
             showType,
-            ...other,
+            ...other
         } = this.props;
 
         const isDev = extension.isDev;

@@ -10,6 +10,12 @@ import SelectBox from '../../components/select-box';
 import Button from '../../components/button';
 import App from '../../core';
 
+/**
+ * 将时间字符串转换为秒数
+ * @param {string} time 时间字符串，例如 `'12:00'`
+ * @return {number} 秒数
+ * @private
+ */
 const timeToInt = time => {
     if (time) {
         const timeNums = time.split(':').map(x => {
@@ -20,36 +26,90 @@ const timeToInt = time => {
     return 0;
 };
 
-class TodoEditor extends PureComponent {
+/**
+ * TodoEditer 组件 ，显示待办编辑界面
+ * @class TodoEditer
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example
+ * import TodoEditer from './todo-editer';
+ * <TodoEditer />
+ */
+export default class TodoEditor extends PureComponent {
+    /**
+     * 获取 TodoEditer 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<TodoEditer>}
+     * @readonly
+     * @static
+     * @memberof TodoEditer
+     * @example <caption>可替换组件类调用方式</caption>
+     * import {TodoEditer} from './todo-editer';
+     * <TodoEditer />
+     */
+    static get TodoEditor() {
+        return replaceViews('todo/todo-editor', TodoEditor);
+    }
+
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof TodoEditer
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
         defaultTodo: PropTypes.object,
         onRequestClose: PropTypes.func,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof TodoEditer
+     * @static
+     */
     static defaultProps = {
         className: null,
         defaultTodo: null,
         onRequestClose: null,
     };
 
-    static get TodoEditor() {
-        return replaceViews('todo/todo-editor', TodoEditor);
-    }
-
+    /**
+     * React 组件构造函数，创建一个 TodoEditer 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         this.state = {
             todo: props.defaultTodo || {},
             loading: false,
             errorMessage: '',
             errorControl: ''
         };
+
         if (!this.state.todo.date) {
             this.state.todo.date = DateHelper.formatDate(new Date(), 'yyyy-MM-dd');
         }
     }
 
+    /**
+     * 处理待办属性变更事件
+     * @param {string} name 属性名称
+     * @param {string} val 属性值
+     * @memberof TodoEditer
+     * @private
+     * @return {void}
+     */
     handleTodoChange(name, val) {
         const {todo, errorControl} = this.state;
         todo[name] = val;
@@ -60,6 +120,12 @@ class TodoEditor extends PureComponent {
         this.setState(newState);
     }
 
+    /**
+     * 检查待办属性
+     * @memberof TodoEditer
+     * @private
+     * @return {void}
+     */
     checkTodo() {
         const {todo} = this.state;
         if (StringHelper.isEmpty(todo.name)) {
@@ -88,6 +154,12 @@ class TodoEditor extends PureComponent {
         return true;
     }
 
+    /**
+     * 处理提交代码按钮点击事件
+     * @memberof TodoEditer
+     * @private
+     * @return {void}
+     */
     handleSubmitBtnClick = () => {
         if (this.checkTodo()) {
             this.setState({loading: true}, () => {
@@ -108,6 +180,14 @@ class TodoEditor extends PureComponent {
         }
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof TodoEditer
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             className,
@@ -188,5 +268,3 @@ class TodoEditor extends PureComponent {
         </div>);
     }
 }
-
-export default TodoEditor;

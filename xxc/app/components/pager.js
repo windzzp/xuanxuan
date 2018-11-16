@@ -6,11 +6,10 @@ import Lang from '../lang';
 
 /**
  * Pager 组件 ，显示一个分页控件
- * @export
  * @class Pager
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <Pager />
  */
 export default class Pager extends PureComponent {
@@ -19,7 +18,7 @@ export default class Pager extends PureComponent {
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Pager
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         page: PropTypes.number,

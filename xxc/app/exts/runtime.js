@@ -1,21 +1,30 @@
 import Xext from './external-api';
-import Exts from './exts';
+import Exts, {forEachExtension, getExt, getExts} from './exts';
 import ui from './ui';
-import manager from './manager';
+import {reloadDevExtension} from './manager';
 import App from '../core';
 import {setExtensionUser} from './extension';
-import {registerCommand, execute, createCommandObject} from '../core/commander';
+import {registerCommand, executeCommand, createCommandObject} from '../core/commander';
 import {fetchServerExtensions, detachServerExtensions, getEntryVisitUrl} from './server';
 
+// 将开放给扩展的模块设置为全局可访问
 global.Xext = Xext;
 
+/**
+ * 保存扩展中提供的所有可替换组件类
+ * @type {Map<string, Class<Component>>}
+ * @private
+ */
 const replaceViews = {};
 
-// load exts modules
-const loadModules = () => {
-    Exts.forEach(ext => {
+/**
+ * 加载所有扩展模块
+ * @return {void}
+ */
+export const loadExtensionsModules = () => {
+    forEachExtension(ext => {
         if (ext.isDev) {
-            const reloadExt = manager.reloadDevExtension(ext);
+            const reloadExt = reloadDevExtension(ext);
             if (reloadExt) {
                 ext = reloadExt;
             }
@@ -28,51 +37,57 @@ const loadModules = () => {
     });
 };
 
+// 监听应用的准备就绪事件，触发扩展的 `onReady` 回调函数
 App.ui.onReady(() => {
-    Exts.forEach(ext => {
+    forEachExtension(ext => {
         ext.callModuleMethod('onReady', ext);
     });
 });
 
-// Listen events
+// 监听用户登录事件，触发扩展的 `onUserLogin` 回调函数
 App.server.onUserLogin((user, error) => {
     if (!error) {
         setExtensionUser(user);
-        Exts.forEach(ext => {
+        forEachExtension(ext => {
             ext.callModuleMethod('onUserLogin', user);
         });
     }
     fetchServerExtensions(user);
 });
 
+// 监听用户退出事件，触发扩展的 `onUserLoginout` 回调函数
 App.server.onUserLoginout((user, code, reason, unexpected) => {
     setExtensionUser(null);
-    Exts.forEach(ext => {
+    forEachExtension(ext => {
         ext.callModuleMethod('onUserLoginout', user, code, reason, unexpected);
     });
     detachServerExtensions(user);
 });
 
+// 监听用户状态变更事件，触发扩展的 `onUserStatusChange` 回调函数
 App.profile.onUserStatusChange((status, oldStatus, user) => {
-    Exts.forEach(ext => {
+    forEachExtension(ext => {
         ext.callModuleMethod('onUserStatusChange', status, oldStatus, user);
     });
 });
 
+// 监听用户发送聊天消息事件，触发扩展的 `onSendChatMessages` 回调函数
 App.im.server.onSendChatMessages((messages, chat) => {
-    Exts.forEach(ext => {
+    forEachExtension(ext => {
         ext.callModuleMethod('onSendChatMessages', messages, chat, App.profile.user);
     });
 });
 
+// 监听用户接收到聊天消息事件，触发扩展的 `onReceiveChatMessages` 回调函数
 App.im.server.onReceiveChatMessages((messages) => {
-    Exts.forEach(ext => {
+    forEachExtension(ext => {
         ext.callModuleMethod('onReceiveChatMessages', messages, App.profile.user);
     });
 });
 
+// 监听界面渲染消息事件，触发扩展的 `onRenderChatMessageContent` 回调函数
 App.im.ui.onRenderChatMessageContent(content => {
-    Exts.forEach(ext => {
+    forEachExtension(ext => {
         const result = ext.callModuleMethod('onRenderChatMessageContent', content);
         if (result !== undefined) {
             content = result;
@@ -81,14 +96,15 @@ App.im.ui.onRenderChatMessageContent(content => {
     return content;
 });
 
-// Register 'extension' command
+// 注册扩展命令
 registerCommand('extension', (context, extName, commandName, ...params) => {
-    const ext = Exts.getExt(extName);
+    const ext = getExt(extName);
     if (ext) {
         const command = ext.getCommand(commandName);
         if (command) {
-            return execute(createCommandObject(command, null, {extension: ext}), ...params);
-        } else if (DEBUG) {
+            return executeCommand(createCommandObject(command, null, {extension: ext}), ...params);
+        }
+        if (DEBUG) {
             console.collapse('Command.execute.extension', 'redBg', commandName, 'redPale', 'command not found', 'redBg');
             console.log('ext', ext);
             console.log('params', params);
@@ -104,20 +120,30 @@ registerCommand('extension', (context, extName, commandName, ...params) => {
     }
 });
 
+// 注册 `showExtensionDialog` 命令，用于使用命令显示扩展详情对话框
 registerCommand('showExtensionDialog', (context, extName) => {
-    const ext = Exts.getExt(extName);
+    const ext = getExt(extName);
     if (ext) {
         return ui.showExtensionDetailDialog(ext);
     }
 });
 
+// 注册 `openInApp` 命令，用于使用命令在扩展应用中打开链接
 registerCommand('openInApp', (context, appName, url) => {
     ui.openAppWithUrl(appName, url);
 });
 
-const getUrlInspector = (url, type = 'inspect') => {
+/**
+ * 获取扩展中定义的网址解析器
+ *
+ * @param {string} url 要解析的网址
+ * @param {string} [type='inspect'] 解析类型，包括 `'inspect'` 和 `'open'`
+ * @return {any} 网址解析器对象
+ * @memberof Extension
+ */
+export const getExtensionUrlInspector = (url, type = 'inspect') => {
     let urlInspector = null;
-    if (Exts.exts.some(x => {
+    if (getExts().some(x => {
         if (!x.disabled) {
             const xInspector = x.getUrlInspector(url, type);
             if (xInspector) {
@@ -131,18 +157,25 @@ const getUrlInspector = (url, type = 'inspect') => {
     }
 };
 
-const getUrlOpener = url => {
-    return getUrlInspector(url, 'open');
+/**
+ * 获取扩展中定义的网址打开处理器
+ *
+ * @param {string} url 要打开的网址
+ * @return {any} 网址打开处理器对象
+ * @memberof Extension
+ */
+export const getExtensionUrlOpener = url => {
+    return getExtensionUrlInspector(url, 'open');
 };
 
-// Set replaceViews to global
+// 将扩展中提供的所有可替换组件类设置为全局可访问
 global.replaceViews = Object.assign(global.replaceViews || {}, replaceViews);
 
 export default {
-    loadModules,
+    loadModules: loadExtensionsModules,
     ui,
-    getUrlInspector,
-    getUrlOpener,
+    getUrlInspector: getExtensionUrlInspector,
+    getUrlOpener: getExtensionUrlOpener,
     exts: Exts,
     getEntryVisitUrl
 };

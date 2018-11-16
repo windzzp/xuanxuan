@@ -1,16 +1,15 @@
 /**
  * 延时操作类
  *
- * @export
  * @class DelayAction
  */
 export default class DelayAction {
     /**
      * 创建一个延时操作类实例
-     * @param {!function} 延时操作函数
+     * @param {!function} action 延时操作函数
      * @param {number} [delay=100] 延迟时间，单位毫秒
-     * @param {?function} [callback=null] 操作完成时的回调函数
-     * @memberof DelayAction
+     * @param {?function(result:any)} [callback=null] 操作完成时的回调函数
+     * @constructor
      */
     constructor(action, delay = 100, callback = null) {
         /**
@@ -61,8 +60,8 @@ export default class DelayAction {
     /**
      * 立即执行操作（没有延时）
      * @param {...any} params 操作函数参数
-     * @memberof DelayAction
      * @return {void}
+     * @memberof DelayAction
      */
     doIm(...params) {
         const actionResult = this.action(...params);

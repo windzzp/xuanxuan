@@ -6,21 +6,19 @@ import Icon from './icon';
 
 /**
  * Button 组件 ，显示一个按钮
- * @export
  * @class Button
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * <Button />
  */
 export default class Button extends PureComponent {
-
     /**
      * React 组件属性类型检查
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
      * @memberof Button
-     * @return {Object}
+     * @type {Object}
      */
     static propTypes = {
         skin: PropTypes.any,
@@ -30,7 +28,7 @@ export default class Button extends PureComponent {
         style: PropTypes.object,
         children: PropTypes.any,
         btnClass: PropTypes.string,
-        type: PropTypes.string.isRequired
+        type: PropTypes.string
     }
 
     /**
@@ -47,7 +45,8 @@ export default class Button extends PureComponent {
         className: null,
         style: null,
         children: null,
-        btnClass: 'btn'
+        btnClass: 'btn',
+        type: 'button',
     }
 
     /**

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">utils/date-helper.js | API</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<link rel="stylesheet" href="./inject/css/0-vue.css"><link rel="stylesheet" href="./inject/css/0-app.css"><link rel="stylesheet" href="./inject/css/0-esdoc.css"><script src="./inject/script/0-custom.js"></script><meta name="description" content="&#x4F01;&#x4E1A;&#x5373;&#x65F6;&#x901A;&#x8BAF;&#x5E73;&#x53F0;"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="API"><meta property="twitter:description" content="&#x4F01;&#x4E1A;&#x5373;&#x65F6;&#x901A;&#x8BAF;&#x5E73;&#x53F0;"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/easysoft/xuanxuan.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/utils/color.js~Color.html">Color</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/utils/delay-action.js~DelayAction.html">DelayAction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/utils/status.js~Status.html">Status</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/utils/status.js~StatusKeeper.html">StatusKeeper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/utils/task-queue.js~TaskQueue.html">TaskQueue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createDate">createDate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createPhpTimestramp">createPhpTimestramp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-formatDate">formatDate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-formatSpan">formatSpan</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getTimeBeforeDesc">getTimeBeforeDesc</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isSameDay">isSameDay</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isSameMonth">isSameMonth</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isSameYear">isSameYear</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isToday">isToday</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isYestoday">isYestoday</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-classes">classes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escape">escape</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getSearchParam">getSearchParam</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isWebUrl">isWebUrl</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-linkify">linkify</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-rem">rem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-strip">strip</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cutImage">cutImage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getImageInfo">getImageInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-limittimepromise">limittimepromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mdifileicon">mdifileicon</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pinyin">pinyin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-plain">plain</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-matchScore">matchScore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-formatKeyDecoration">formatKeyDecoration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getKeyDecoration">getKeyDecoration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isOnlyModifyKeys">isOnlyModifyKeys</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getCodeFromString">getCodeFromString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-longShadow">longShadow</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-skinStyle">skinStyle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sortList">sortList</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clearStore">clearStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getStoreItem">getStoreItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getStoreLength">getStoreLength</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-removeStoreItem">removeStoreItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setStoreItem">setStoreItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-storeForEach">storeForEach</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-storeGetAll">storeGetAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-formatBytes">formatBytes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-formatString">formatString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-ifEmptyStringThen">ifEmptyStringThen</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isEmptyString">isEmptyString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isNotEmptyString">isNotEmptyString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-timesequence">timesequence</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TIME_DAY">TIME_DAY</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-renderer">renderer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-fileIcons">fileIcons</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BYTE_UNITS">BYTE_UNITS</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">utils/date-helper.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/** @module date-helper */
+
+import {formatString} from &apos;./string-helper&apos;;
+
+/**
+ * &#x4E00;&#x5929;&#x7684;&#x603B;&#x6BEB;&#x79D2;&#x6570;
+ * @type {number}
+ * @const
+ */
+export const TIME_DAY = 24 * 60 * 60 * 1000;
+
+/**
+ * &#x521B;&#x5EFA;&#x4E00;&#x4E2A; Date &#x5BF9;&#x8C61;
+ * @param {Date|number|String} [date=null] &#x7528;&#x4E8E;&#x521B;&#x5EFA; Date &#x5BF9;&#x8C61;&#x7684;&#x65E5;&#x671F;&#x65F6;&#x95F4;&#x8868;&#x8FBE;&#x503C;&#xFF0C;&#x5982;&#x679C;&#x7559;&#x7A7A;&#x5219;&#x521B;&#x5EFA;&#x5F53;&#x524D;&#x7CFB;&#x7EDF;&#x65F6;&#x95F4;&#x5BF9;&#x8C61;
+ * @return {Date}
+ * @function
+ */
+export const createDate = (date = null) =&gt; {
+    if (!date) {
+        return new Date();
+    }
+    if (!(date instanceof Date)) {
+        if (typeof date === &apos;number&apos; &amp;&amp; date &lt; 10000000000) {
+            date *= 1000;
+        }
+        date = new Date(date);
+    }
+    return date;
+};
+
+/**
+ * &#x751F;&#x6210; PHP &#x65F6;&#x95F4;&#x6233;
+ * @param {Date|number|String} date &#x65E5;&#x671F;&#x65F6;&#x95F4;&#x8868;&#x8FBE;&#x503C;
+ * @return {number}
+ * @function
+ */
+export const createPhpTimestramp = date =&gt; {
+    return Math.floor(createDate(date).getTime() / 1000);
+};
+
+/**
+ * &#x5224;&#x65AD;&#x4E24;&#x4E2A;&#x65E5;&#x671F;&#x662F;&#x5426;&#x662F;&#x5728;&#x540C;&#x4E00;&#x5929;
+ * @param {Date|number|String} date1 &#x7B2C;&#x4E00;&#x4E2A;&#x65E5;&#x671F;&#x65F6;&#x95F4;&#x8868;&#x8FBE;&#x503C;
+ * @param {?Date|number|String} date2 &#x7B2C;&#x4E8C;&#x4E2A;&#x65E5;&#x671F;&#x65F6;&#x95F4;&#x8868;&#x8FBE;&#x503C;&#xFF0C;&#x5982;&#x679C;&#x7559;&#x7A7A;&#x5219;&#x4F7F;&#x7528;&#x5F53;&#x524D;&#x7CFB;&#x7EDF;&#x65F6;&#x95F4;
+ * @return {boolean}
+ * @function
+ */
+export const isSameDay = (date1, date2) =&gt; {
+    if (!date2) {
+        date2 = new Date();
+    }
+    date1 = createDate(date1);
+    date2 = createDate(date2);
+    return date1.getFullYear() === date2.getFullYear() &amp;&amp; date1.getMonth() === date2.getMonth() &amp;&amp; date1.getDate() === date2.getDate();
+};
+
+/**
+ * &#x5224;&#x65AD;&#x4E24;&#x4E2A;&#x65E5;&#x671F;&#x662F;&#x5426;&#x662F;&#x5728;&#x540C;&#x4E00;&#x5E74;
+ * @param {Date|number|String} date1 &#x7B2C;&#x4E00;&#x4E2A;&#x65E5;&#x671F;&#x65F6;&#x95F4;&#x8868;&#x8FBE;&#x503C;
+ * @param {?Date|number|String} date2 &#x7B2C;&#x4E8C;&#x4E2A;&#x65E5;&#x671F;&#x65F6;&#x95F4;&#x8868;&#x8FBE;&#x503C;&#xFF0C;&#x5982;&#x679C;&#x7559;&#x7A7A;&#x5219;&#x4F7F;&#x7528;&#x5F53;&#x524D;&#x7CFB;&#x7EDF;&#x65F6;&#x95F4;
+ * @return {boolean}
+ * @function
+ */
+export const isSameYear = (date1, date2) =&gt; {
+    if (!date2) {
+        date2 = new Date();
+    }
+    return createDate(date1).getFullYear() === createDate(date2).getFullYear();
+};
+
+/**
+ * &#x5224;&#x65AD;&#x4E24;&#x4E2A;&#x65E5;&#x671F;&#x662F;&#x5426;&#x662F;&#x5728;&#x540C;&#x4E00;&#x4E2A;&#x6708;
+ * @param {Date|number|String} date1 &#x7B2C;&#x4E00;&#x4E2A;&#x65E5;&#x671F;&#x65F6;&#x95F4;&#x8868;&#x8FBE;&#x503C;
+ * @param {?Date|number|String} date2 &#x7B2C;&#x4E8C;&#x4E2A;&#x65E5;&#x671F;&#x65F6;&#x95F4;&#x8868;&#x8FBE;&#x503C;&#xFF0C;&#x5982;&#x679C;&#x7559;&#x7A7A;&#x5219;&#x4F7F;&#x7528;&#x5F53;&#x524D;&#x7CFB;&#x7EDF;&#x65F6;&#x95F4;
+ * @return {boolean}
+ * @function
+ */
+export const isSameMonth = (date1, date2) =&gt; {
+    if (!date2) {
+        date2 = new Date();
+    }
+    date1 = createDate(date1);
+    date2 = createDate(date2);
+    return date1.getFullYear() === date2.getFullYear() &amp;&amp; date1.getMonth() === date2.getMonth();
+};
+
+/**
+ * &#x5224;&#x65AD;&#x6307;&#x5B9A;&#x7684;&#x65E5;&#x671F;&#x662F;&#x5426;&#x662F;&#x5728;&#x4ECA;&#x5929;
+ * @param {Date|number|String} date &#x8981;&#x5224;&#x65AD;&#x7684;&#x65E5;&#x671F;&#x65F6;&#x95F4;&#x8868;&#x8FBE;&#x503C;
+ * @param {Date|number|String} [now=null] &#x4F5C;&#x4E3A;&#x4ECA;&#x5929;&#x5224;&#x65AD;&#x4F9D;&#x636E;&#x7684;&#x65E5;&#x671F;&#xFF0C;&#x5982;&#x679C;&#x7559;&#x7A7A;&#x5219;&#x4F7F;&#x7528;&#x5F53;&#x524D;&#x7CFB;&#x7EDF;&#x65F6;&#x95F4;
+ * @return {boolean}
+ * @function
+ */
+export const isToday = (date, now = null) =&gt; (isSameDay(now || new Date(), date));
+
+/**
+ * &#x5224;&#x65AD;&#x6307;&#x5B9A;&#x7684;&#x65E5;&#x671F;&#x662F;&#x5426;&#x662F;&#x5728;&#x6628;&#x5929;
+ * @param {Date|number|String} date &#x8981;&#x5224;&#x65AD;&#x7684;&#x65E5;&#x671F;&#x65F6;&#x95F4;&#x8868;&#x8FBE;&#x503C;
+ * @param {Date|number|String} [now=null] &#x4F5C;&#x4E3A;&#x4ECA;&#x5929;&#x5224;&#x65AD;&#x4F9D;&#x636E;&#x7684;&#x65E5;&#x671F;&#xFF0C;&#x5982;&#x679C;&#x7559;&#x7A7A;&#x5219;&#x4F7F;&#x7528;&#x5F53;&#x524D;&#x7CFB;&#x7EDF;&#x65F6;&#x95F4;
+ * @return {boolean}
+ * @function
+ */
+export const isYestoday = (date, now) =&gt; (isSameDay((now || new Date()).getTime() - TIME_DAY, date));
+
+/**
+ * &#x683C;&#x5F0F;&#x5316;&#x65E5;&#x671F;&#x65F6;&#x95F4;&#x503C;&#x4E3A;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x6240;&#x6709;&#x53EF;&#x7528;&#x7684;&#x683C;&#x5F0F;&#x5316;&#x53C2;&#x6570;&#x6709;&#xFF1A;
+ * - yyyy&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;&apos;2018&apos;&#xFF0C;&#x8868;&#x793A;&#x56DB;&#x4F4D;&#x6570;&#x5B57;&#x8868;&#x793A;&#x7684;&#x5E74;&#x4EFD;
+ * - yy&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;&apos;18&apos;&#xFF0C;&#x8868;&#x793A;&#x4E24;&#x4F4D;&#x6570;&#x5B57;&#x8868;&#x793A;&#x7684;&#x5E74;&#x4EFD;
+ * - MM&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;&apos;07&apos;&#xFF0C;&#x8868;&#x793A;&#x4E24;&#x4F4D;&#x6570;&#x5B57;&#x8868;&#x793A;&#x7684;&#x6708;&#x4EFD;&#xFF0C;&#x4E0D;&#x8DB3;&#x4E24;&#x4F4D;&#x5728;&#x8D77;&#x59CB;&#x7528; 0 &#x586B;&#x5145;
+ * - M&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;&apos;10&apos;&#xFF0C;&#x8868;&#x793A;&#x4E00;&#x4F4D;&#x6216;&#x4E24;&#x4F4D;&#x6570;&#x5B57;&#x8868;&#x793A;&#x7684;&#x6708;&#x4EFD;
+ * - dd&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;&apos;05&apos;&#xFF0C;&#x8868;&#x793A;&#x4E24;&#x4F4D;&#x6570;&#x5B57;&#x8868;&#x793A;&#x7684;&#x65E5;&#x671F;&#xFF0C;&#x4E0D;&#x8DB3;&#x4E24;&#x4F4D;&#x5728;&#x8D77;&#x59CB;&#x7528; 0 &#x586B;&#x5145;
+ * - d&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;&apos;5&apos;&#xFF0C;&#x8868;&#x793A;&#x4E00;&#x4F4D;&#x6216;&#x4E24;&#x4F4D;&#x6570;&#x5B57;&#x8868;&#x793A;&#x7684;&#x65E5;&#x671F;
+ * - hh&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;&apos;08&apos;&#xFF0C;&#x8868;&#x793A;&#x4E24;&#x4F4D;&#x6570;&#x5B57;&#x8868;&#x793A;&#x7684;&#x5C0F;&#x65F6;&#xFF0C;&#x4E0D;&#x8DB3;&#x4E24;&#x4F4D;&#x5728;&#x8D77;&#x59CB;&#x7528; 0 &#x586B;&#x5145;
+ * - h&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;&apos;8&apos;&#xFF0C;&#x8868;&#x793A;&#x4E00;&#x4F4D;&#x6216;&#x4E24;&#x4F4D;&#x6570;&#x5B57;&#x8868;&#x793A;&#x7684;&#x5C0F;&#x65F6;
+ * - mm&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;&apos;3&apos;&#xFF0C;&#x8868;&#x793A;&#x4E24;&#x4F4D;&#x6570;&#x5B57;&#x8868;&#x793A;&#x7684;&#x5206;&#x949F;&#xFF0C;&#x4E0D;&#x8DB3;&#x4E24;&#x4F4D;&#x5728;&#x8D77;&#x59CB;&#x7528; 0 &#x586B;&#x5145;
+ * - m&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;&apos;03&apos;&#xFF0C;&#x8868;&#x793A;&#x4E00;&#x4F4D;&#x6216;&#x4E24;&#x4F4D;&#x6570;&#x5B57;&#x8868;&#x793A;&#x7684;&#x5206;&#x949F;
+ * - ss&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;&apos;5&apos;&#xFF0C;&#x8868;&#x793A;&#x4E24;&#x4F4D;&#x6570;&#x5B57;&#x8868;&#x793A;&#x7684;&#x79D2;&#x6570;&#xFF0C;&#x4E0D;&#x8DB3;&#x4E24;&#x4F4D;&#x5728;&#x8D77;&#x59CB;&#x7528; 0 &#x586B;&#x5145;
+ * - s&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;&apos;05&apos;&#xFF0C;&#x8868;&#x793A;&#x4E00;&#x4F4D;&#x6216;&#x4E24;&#x4F4D;&#x6570;&#x5B57;&#x8868;&#x793A;&#x7684;&#x79D2;&#x6570;
+ * - S&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;&apos;236&apos;&#xFF0C;&#x8868;&#x793A;&#x6BEB;&#x79D2;&#x6570;
+ * @summary &#x683C;&#x5F0F;&#x5316;&#x65E5;&#x671F;&#x65F6;&#x95F4;&#x503C;&#x4E3A;&#x5B57;&#x7B26;&#x4E32;
+ * @param {Date|number|String} date &#x8981;&#x683C;&#x5F0F;&#x5316;&#x7684;&#x65E5;&#x671F;&#x65F6;&#x95F4;&#x8868;&#x8FBE;&#x503C;
+ * @param {string} [format=&apos;yyyy-MM-dd hh:ss&apos;] &#x683C;&#x5F0F;&#x5316;&#x5B57;&#x7B26;&#x4E32;
+ * @return {string}
+ * @function
+ */
+export const formatDate = (date, format = &apos;yyyy-MM-dd hh:ss&apos;) =&gt; {
+    date = createDate(date);
+
+    const dateInfo = {
+        &apos;M+&apos;: date.getMonth() + 1,
+        &apos;d+&apos;: date.getDate(),
+        &apos;h+&apos;: date.getHours(),
+        // &apos;H+&apos;: date.getHours() % 12,
+        &apos;m+&apos;: date.getMinutes(),
+        &apos;s+&apos;: date.getSeconds(),
+        // &apos;q+&apos;: Math.floor((date.getMonth() + 3) / 3),
+        &apos;S+&apos;: date.getMilliseconds()
+    };
+    if (/(y+)/i.test(format)) {
+        format = format.replace(RegExp.$1, (`${date.getFullYear()}`).substr(4 - RegExp.$1.length));
+    }
+    Object.keys(dateInfo).forEach(k =&gt; {
+        if (new RegExp(`(${k})`).test(format)) {
+            format = format.replace(RegExp.$1, RegExp.$1.length === 1 ? dateInfo[k] : (`00${dateInfo[k]}`).substr((`${dateInfo[k]}`).length));
+        }
+    });
+    return format;
+};
+
+/**
+ * &#x683C;&#x5F0F;&#x5316;&#x65E5;&#x671F;&#x65F6;&#x95F4;&#x8303;&#x56F4;
+ * @param {String|Date|number} date1 &#x8D77;&#x59CB;&#x65F6;&#x95F4;
+ * @param {String|Date|number} date2 &#x7ED3;&#x675F;&#x65F6;&#x95F4;
+ * @param {Object} format &#x683C;&#x5F0F;&#x5316;&#x53C2;&#x6570;
+ * @return {string}
+ * @function
+ */
+export const formatSpan = (date1, date2, format) =&gt; {
+    format = Object.assign({
+        full: &apos;yyyy-M-d&apos;, month: &apos;M-d&apos;, day: &apos;d&apos;, str: &apos;{0} ~ {1}&apos;,
+    }, format);
+    const date1Str = formatDate(date1, isSameYear(date1) ? format.month : format.full);
+    if (isSameDay(date1, date2)) {
+        return date1Str;
+    }
+    const date2Str = formatDate(date2, isSameYear(date1, date2) ? (isSameMonth(date1, date2) ? format.day : format.month) : format.full);
+    return formatString(format.str, date1Str, date2Str);
+};
+
+/**
+ * &#x6839;&#x636E;&#x63CF;&#x8FF0;&#x83B7;&#x53D6;&#x5F53;&#x524D;&#x65F6;&#x95F4;&#x4E0E;&#x6307;&#x5B9A;&#x63CF;&#x8FF0;&#x4E4B;&#x95F4;&#x7684;&#x6BEB;&#x79D2;&#x6570;
+ * @param {string} desc &#x8D77;&#x59CB;&#x65F6;&#x95F4;
+ * @return {number}
+ * @function
+ */
+export const getTimeBeforeDesc = desc =&gt; {
+    const now = new Date().getTime();
+    switch (desc) {
+    case &apos;oneWeek&apos;:
+        return now - (TIME_DAY * 7);
+    case &apos;oneMonth&apos;:
+        return now - (TIME_DAY * 31);
+    case &apos;threeMonth&apos;:
+        return now - (TIME_DAY * 31 * 3);
+    case &apos;halfYear&apos;:
+        return now - (TIME_DAY * 183);
+    case &apos;oneYear&apos;:
+        return now - (TIME_DAY * 365);
+    case &apos;twoYear&apos;:
+        return now - (2 * (TIME_DAY * 365));
+    default:
+        return 0;
+    }
+};
+
+export default {
+    createDate,
+    formatDate,
+    isSameDay,
+    isSameMonth,
+    isSameYear,
+    isToday,
+    isYestoday,
+    formatSpan,
+    getTimeBeforeDesc,
+    createPhpTimestramp
+};
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
