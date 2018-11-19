@@ -3,6 +3,7 @@
     "productName": "xuanxuan",
     "version": "2.1.0",
     "description": "企业即时通讯平台",
+    "main": "./main.js",
     "author": {
         "name": "青岛易软天创网络科技有限公司",
         "email": "sunhao@cnezsoft.com"
@@ -20,7 +21,5 @@
     "dependencies": {
         "jquery": "^3.3.1"
     },
-    "displayName": "喧喧",
-    "buildTime": "2018-11-01T06:58:25.303Z",
-    "buildVersion": null
+    "displayName": " 喧喧"
 }
