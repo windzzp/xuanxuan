@@ -1,12 +1,13 @@
 * <i class="icon far fa-smile-beam"></i>
   * [介绍](README)
-  * [架构](arch)
-  * [项目](project)
-  * [常见问题](faq)
+  * [架构](start/arch)
+  * [项目](start/project)
+  * [常见问题](start/faq)
 * <i class="icon fas fa-laptop-code"></i>
   * [客户端安装](client/install)
   * [浏览器端部署](client/browser-deploy)
   * [客户端架构](client/arch)
+  * [项目源码结构](client/project)
   * [环境搭建](client/start.md)
   * [打包](client/package.md)
   * [扩展机制](client/extension.md)
