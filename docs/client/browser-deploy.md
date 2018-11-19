@@ -47,7 +47,33 @@ $ http-server ./ --port=80
 
 要了解 http-server 更多功能选项请参考 [https://github.com/indexzero/http-server](https://github.com/indexzero/http-server)。
 
-### ** 方式二：now **
+### ** 方式二：Github Pages **
+
+如果你正在使用 [Github](https://github.com/)，则可以使用 [Github Pages](https://pages.github.com/) 将喧喧部署到云端。，将${displayName}浏览器端版本部署到云端可以让任何人都可以通过公开的网址进行访问。
+
+首先在 [Github](https://github.com/) 上创建一个名称为 `username.github.io` 的版本库，其中 `username` 为你的 Github 用户名。
+
+![user-repo](https://pages.github.com/images/user-repo@2x.png)
+
+克隆版本库到本地，在命令行窗口执行：
+
+```bash
+$ git clone https://github.com/username/username.github.io
+```
+
+下载并解压${displayName}浏览器端部署包（假设解压后的目录为 `${name}.${version}.browser/`），将目录 `${name}.${version}.browser/` 内的所有文件复制到新创建的版本库目录 `username.github.io/`。
+
+将文件推送到 Github，在命令行执行：
+
+```bash
+$ git add --all
+$ git commit -m "Initial commit"
+$ git push -u origin master
+```
+
+然后就可以在 `https://username.github.io` 上访问喧喧浏览器版了。
+
+### ** 方式三：now **
 
 使用 [now](https://zeit.co/now) 可以快捷的在云端部署一个的静态站点，将${displayName}浏览器端版本部署到 `now` 可以让任何人都可以通过公开的网址进行访问。
 
