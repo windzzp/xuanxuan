@@ -3,9 +3,8 @@
   "productName": "喧喧",
   "version": "2.1.0",
   "description": "企业即时通讯平台",
-  "main": "main.js",
   "scripts": {
-    "hot-server": "cross-env NODE_ENV=development node --max_old_space_size=2096 -r babel-register ./build/server.js",
+    "hot-server": "cross-env NODE_ENV=development node --max_old_space_size=2096 -r babel-register ./tools/server.js",
     "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./tools/webpack.config.electron.js --progress --profile --colors",
     "build-renderer": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./tools/webpack.config.production.js --progress --profile --colors",
     "build-renderer-debug": "cross-env NODE_ENV=debug node -r babel-register ./node_modules/webpack/bin/webpack --config ./tools/webpack.config.debug.js --progress --profile --colors",
@@ -17,7 +16,6 @@
     "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./app/main.development",
     "start-hot-fast": "cross-env HOT=1 NODE_ENV=development SKIP_INSTALL_EXTENSIONS=1 electron -r babel-register -r babel-polyfill ./app/main.development",
     "postinstall": "npm run package -- --skipbuild && concurrently \"electron-builder install-app-deps\" \"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\"",
-    "copy-browser-files": "cross-env NODE_ENV=development node --max_old_space_size=2096 -r babel-register ./build/package-browser.js",
     "package": "node --max_old_space_size=2096 -r babel-register ./build/package.js",
     "package-beta": "npm run package -- --beta",
     "package-debug": "npm run package -- --debug",
@@ -33,14 +31,15 @@
     "package-all-beta": "npm run package -- --platform=all --arch=x64 --beta --clean && npm run package -- --platform=mac,win --arch=x64 --debug --beta",
     "package-browser": "npm run package -- --platform=browser",
     "hot-server-browser": "npm run hot-server -- --target=browser",
-    "docs": "./node_modules/.bin/esdoc"
+    "docs": "./node_modules/.bin/esdoc",
+    "eslint": "eslint ./app"
   },
   "build": {
     "extends": "./build/electron-builder.json"
   },
   "bin": {
     "electron": "./node_modules/.bin/electron",
-    "xxbuild": "./build/build.js"
+    "eslint": "./node_modules/.bin/eslint"
   },
   "repository": {
     "type": "git",
@@ -105,7 +104,7 @@
     "esdoc-jsx-plugin": "^1.0.0",
     "esdoc-react-plugin": "^1.0.1",
     "esdoc-standard-plugin": "^1.0.0",
-    "eslint": "^5.2.0",
+    "eslint": "^5.9.0",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-formatter-pretty": "^1.1.0",
     "eslint-import-resolver-babel-module": "^4.0.0-beta.3",
@@ -171,12 +170,12 @@
     "wolfy87-eventemitter": "^5.2.2",
     "ws": "^2.2.3"
   },
-  "devEngines": {
-    "node": ">=8.x",
-    "npm": ">=5.x"
-  },
   "optionalDependencies": {
     "bufferutil": "^4.0.0",
     "utf-8-validate": "^5.0.1"
+  },
+  "devEngines": {
+    "node": ">=8.x",
+    "npm": ">=5.x"
   }
 }

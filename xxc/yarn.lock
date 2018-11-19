@@ -4113,7 +4113,7 @@ eslint-visitor-keys@^1.0.0:
   resolved "http://registry.npm.taobao.org/eslint-visitor-keys/download/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
   integrity sha1-PzGA+y4pEBdxastMnW1bXDSmqB0=
 
-eslint@^5.2.0:
+eslint@^5.9.0:
   version "5.9.0"
   resolved "http://registry.npm.taobao.org/eslint/download/eslint-5.9.0.tgz#b234b6d15ef84b5849c6de2af43195a2d59d408e"
   integrity sha1-sjS20V74S1hJxt4q9DGVotWdQI4=

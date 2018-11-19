@@ -3,7 +3,6 @@
     "productName": "xuanxuan",
     "version": "2.1.0",
     "description": "企业即时通讯平台",
-    "main": "./main.js",
     "author": {
         "name": "青岛易软天创网络科技有限公司",
         "email": "sunhao@cnezsoft.com"
