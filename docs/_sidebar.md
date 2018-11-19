@@ -11,7 +11,7 @@
   * [客户端安装](client/install)
   * [浏览器端部署](client/browser-deploy)
   * [客户端架构](client/arch)
-  * [项目源码结构](client/project)
+  * [项目文件结构](client/project)
   * [环境搭建](client/start)
   * [打包](client/package.md)
   * [扩展机制](client/extension.md)

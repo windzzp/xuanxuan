@@ -20,7 +20,7 @@
 
 * `main.development.js`：Electron 主进程入口文件；
 * `index.html`：Electron 渲染进程加载的 HTML 文件；
-* `index.js`：Electron 渲染进程加载 JS 文件；
+* `index.js`：Electron 渲染进程窗口在 `index.html` 文件中加载 JS 文件；
 * `package.json`：Electron 加载的 package.json 文件。
 
 ### 其他资源文件
