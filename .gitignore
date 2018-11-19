@@ -73,4 +73,5 @@ xxd/tmpfile
 
 # documentation
 docs/output
+docs/*/*-convert.md
 
