@@ -598,6 +598,4 @@ class AppRemote {
  */
 const app = new AppRemote();
 
-if (DEBUG) console.info('App created.');
-
 export default app;
