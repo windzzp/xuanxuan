@@ -72,12 +72,6 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "xuanxuan/app/views/common/draft-editor.js~atomiccomponent",
-    "function/index.html#static-function-AtomicComponent",
-    "<span>AtomicComponent</span> <span class=\"search-result-import-path\">xuanxuan/app/views/common/draft-editor.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/components/avatar.js~avatar",
     "class/app/components/avatar.js~Avatar.html",
     "<span>Avatar</span> <span class=\"search-result-import-path\">xuanxuan/app/components/avatar.js</span>",
@@ -100,42 +94,6 @@ window.esdocSearchIndex = [
     "class/app/components/button.js~Button.html",
     "<span>Button</span> <span class=\"search-result-import-path\">xuanxuan/app/components/button.js</span>",
     "class"
-  ],
-  [
-    "xuanxuan/app/core/models/file-data.js~categories",
-    "variable/index.html#static-variable-CATEGORIES",
-    "<span>CATEGORIES</span> <span class=\"search-result-import-path\">xuanxuan/app/core/models/file-data.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/im/im-chats.js~chats_limit_default",
-    "variable/index.html#static-variable-CHATS_LIMIT_DEFAULT",
-    "<span>CHATS_LIMIT_DEFAULT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-chats.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/models/chat.js~committers_types",
-    "variable/index.html#static-variable-COMMITTERS_TYPES",
-    "<span>COMMITTERS_TYPES</span> <span class=\"search-result-import-path\">xuanxuan/app/core/models/chat.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/views/chats/chat-change-font-popover.js~configs",
-    "variable/index.html#static-variable-CONFIGS",
-    "<span>CONFIGS</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/chat-change-font-popover.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/views/main/global-message.js~connect_time_tick",
-    "variable/index.html#static-variable-CONNECT_TIME_TICK",
-    "<span>CONNECT_TIME_TICK</span> <span class=\"search-result-import-path\">xuanxuan/app/views/main/global-message.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/models/chat-message.js~content_types",
-    "variable/index.html#static-variable-CONTENT_TYPES",
-    "<span>CONTENT_TYPES</span> <span class=\"search-result-import-path\">xuanxuan/app/core/models/chat-message.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/views/main/cache-container.js~cachecontainer",
@@ -330,54 +288,6 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "xuanxuan/app/core/events.js~data_change_delay",
-    "variable/index.html#static-variable-DATA_CHANGE_DELAY",
-    "<span>DATA_CHANGE_DELAY</span> <span class=\"search-result-import-path\">xuanxuan/app/core/events.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/db/database.js~db_version",
-    "variable/index.html#static-variable-DB_VERSION",
-    "<span>DB_VERSION</span> <span class=\"search-result-import-path\">xuanxuan/app/core/db/database.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/notice.js~default",
-    "variable/index.html#static-variable-DEFAULT",
-    "<span>DEFAULT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/notice.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/components/modal.js~default_class_names",
-    "variable/index.html#static-variable-DEFAULT_CLASS_NAMES",
-    "<span>DEFAULT_CLASS_NAMES</span> <span class=\"search-result-import-path\">xuanxuan/app/components/modal.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/views/chats/chat-change-font-popover.js~default_config",
-    "variable/index.html#static-variable-DEFAULT_CONFIG",
-    "<span>DEFAULT_CONFIG</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/chat-change-font-popover.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/lang/index.js~default_lang",
-    "variable/index.html#static-variable-DEFAULT_LANG",
-    "<span>DEFAULT_LANG</span> <span class=\"search-result-import-path\">xuanxuan/app/lang/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/skin.js~default_options",
-    "variable/index.html#static-variable-DEFAULT_OPTIONS",
-    "<span>DEFAULT_OPTIONS</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/skin.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/models/chat.js~dismiss_visible_time",
-    "variable/index.html#static-variable-DISMISS_VISIBLE_TIME",
-    "<span>DISMISS_VISIBLE_TIME</span> <span class=\"search-result-import-path\">xuanxuan/app/core/models/chat.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/core/db/database.js~database",
     "class/app/core/db/database.js~Database.html",
     "<span>Database</span> <span class=\"search-result-import-path\">xuanxuan/app/core/db/database.js</span>",
@@ -411,84 +321,6 @@ window.esdocSearchIndex = [
     "xuanxuan/app/core/events.js~event",
     "variable/index.html#static-variable-EVENT",
     "<span>EVENT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/events.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/im/im-chats.js~event",
-    "variable/index.html#static-variable-EVENT",
-    "<span>EVENT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-chats.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server.js~event",
-    "variable/index.html#static-variable-EVENT",
-    "<span>EVENT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/im/im-ui.js~event",
-    "variable/index.html#static-variable-EVENT",
-    "<span>EVENT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-ui.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/members.js~event",
-    "variable/index.html#static-variable-EVENT",
-    "<span>EVENT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/members.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/network/socket.js~event",
-    "variable/index.html#static-variable-EVENT",
-    "<span>EVENT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/network/socket.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/notice.js~event",
-    "variable/index.html#static-variable-EVENT",
-    "<span>EVENT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/notice.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/profile/index.js~event",
-    "variable/index.html#static-variable-EVENT",
-    "<span>EVENT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/profile/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/profile/user.js~event",
-    "variable/index.html#static-variable-EVENT",
-    "<span>EVENT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/profile/user.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/runtime.js~event",
-    "variable/index.html#static-variable-EVENT",
-    "<span>EVENT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/runtime.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/server/index.js~event",
-    "variable/index.html#static-variable-EVENT",
-    "<span>EVENT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/server/server-handlers.js~event",
-    "variable/index.html#static-variable-EVENT",
-    "<span>EVENT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/server-handlers.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/ui.js~event",
-    "variable/index.html#static-variable-EVENT",
-    "<span>EVENT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/ui.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/exts.js~event",
-    "variable/index.html#static-variable-EVENT",
-    "<span>EVENT</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/exts.js</span>",
     "variable"
   ],
   [
@@ -564,12 +396,6 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "xuanxuan/app/views/chats/menu-contact-list.js~group_types",
-    "variable/index.html#static-variable-GROUP_TYPES",
-    "<span>GROUP_TYPES</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/menu-contact-list.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/views/main/global-message.js~globalmessage",
     "class/app/views/main/global-message.js~GlobalMessage.html",
     "<span>GlobalMessage</span> <span class=\"search-result-import-path\">xuanxuan/app/views/main/global-message.js</span>",
@@ -600,192 +426,6 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_apple",
-    "variable/index.html#static-variable-ICON_apple",
-    "<span>ICON_apple</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_console",
-    "variable/index.html#static-variable-ICON_console",
-    "<span>ICON_console</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_disk",
-    "variable/index.html#static-variable-ICON_disk",
-    "<span>ICON_disk</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_file_document",
-    "variable/index.html#static-variable-ICON_file_document",
-    "<span>ICON_file_document</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_file_excel",
-    "variable/index.html#static-variable-ICON_file_excel",
-    "<span>ICON_file_excel</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_file_image",
-    "variable/index.html#static-variable-ICON_file_image",
-    "<span>ICON_file_image</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_file_music",
-    "variable/index.html#static-variable-ICON_file_music",
-    "<span>ICON_file_music</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_file_pdf",
-    "variable/index.html#static-variable-ICON_file_pdf",
-    "<span>ICON_file_pdf</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_file_powerpoint",
-    "variable/index.html#static-variable-ICON_file_powerpoint",
-    "<span>ICON_file_powerpoint</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_file_video",
-    "variable/index.html#static-variable-ICON_file_video",
-    "<span>ICON_file_video</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_file_word",
-    "variable/index.html#static-variable-ICON_file_word",
-    "<span>ICON_file_word</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_file_xml",
-    "variable/index.html#static-variable-ICON_file_xml",
-    "<span>ICON_file_xml</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_language_c",
-    "variable/index.html#static-variable-ICON_language_c",
-    "<span>ICON_language_c</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_language_cpp",
-    "variable/index.html#static-variable-ICON_language_cpp",
-    "<span>ICON_language_cpp</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_language_csharp",
-    "variable/index.html#static-variable-ICON_language_csharp",
-    "<span>ICON_language_csharp</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_language_css3",
-    "variable/index.html#static-variable-ICON_language_css3",
-    "<span>ICON_language_css3</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_language_go",
-    "variable/index.html#static-variable-ICON_language_go",
-    "<span>ICON_language_go</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_language_html5",
-    "variable/index.html#static-variable-ICON_language_html5",
-    "<span>ICON_language_html5</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_language_javascript",
-    "variable/index.html#static-variable-ICON_language_javascript",
-    "<span>ICON_language_javascript</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_language_php",
-    "variable/index.html#static-variable-ICON_language_php",
-    "<span>ICON_language_php</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_language_python",
-    "variable/index.html#static-variable-ICON_language_python",
-    "<span>ICON_language_python</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_language_swift",
-    "variable/index.html#static-variable-ICON_language_swift",
-    "<span>ICON_language_swift</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_language_typescript",
-    "variable/index.html#static-variable-ICON_language_typescript",
-    "<span>ICON_language_typescript</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_markdown",
-    "variable/index.html#static-variable-ICON_markdown",
-    "<span>ICON_markdown</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_windows",
-    "variable/index.html#static-variable-ICON_windows",
-    "<span>ICON_windows</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/mdi-file-icon.js~icon_zip_box",
-    "variable/index.html#static-variable-ICON_zip_box",
-    "<span>ICON_zip_box</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/theme.js~inject_type",
-    "variable/index.html#static-variable-INJECT_TYPE",
-    "<span>INJECT_TYPE</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/theme.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/app-remote.js~input_menu",
-    "variable/index.html#static-variable-INPUT_MENU",
-    "<span>INPUT_MENU</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/app-remote.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/contextmenu.js~input_menu",
-    "variable/index.html#static-variable-INPUT_MENU",
-    "<span>INPUT_MENU</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/contextmenu.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/webview.js~input_menu",
-    "variable/index.html#static-variable-INPUT_MENU",
-    "<span>INPUT_MENU</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/webview.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/app-remote.js~is_mac_osx",
-    "variable/index.html#static-variable-IS_MAC_OSX",
-    "<span>IS_MAC_OSX</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/app-remote.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/components/image-cutter.js~imagecutter",
     "class/app/components/image-cutter.js~ImageCutter.html",
     "<span>ImageCutter</span> <span class=\"search-result-import-path\">xuanxuan/app/components/image-cutter.js</span>",
@@ -810,30 +450,6 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "xuanxuan/app/exts/extension-config.js~key_ext_prefix",
-    "variable/index.html#static-variable-KEY_EXT_PREFIX",
-    "<span>KEY_EXT_PREFIX</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/extension-config.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/common/config.js~key_user_list",
-    "variable/index.html#static-variable-KEY_USER_LIST",
-    "<span>KEY_USER_LIST</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/common/config.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/common/config.js~key_user_prefix",
-    "variable/index.html#static-variable-KEY_USER_PREFIX",
-    "<span>KEY_USER_PREFIX</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/common/config.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/network/socket.js~listen_timeout",
-    "variable/index.html#static-variable-LISTEN_TIMEOUT",
-    "<span>LISTEN_TIMEOUT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/network/socket.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/components/list-item.js~listitem",
     "class/app/components/list-item.js~ListItem.html",
     "<span>ListItem</span> <span class=\"search-result-import-path\">xuanxuan/app/components/list-item.js</span>",
@@ -852,76 +468,10 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "xuanxuan/app/views/chats/chat-search-result.js~many_result_count",
-    "variable/index.html#static-variable-MANY_RESULT_COUNT",
-    "<span>MANY_RESULT_COUNT</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/chat-search-result.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/models/file-data.js~match_score_map",
-    "variable/index.html#static-variable-MATCH_SCORE_MAP",
-    "<span>MATCH_SCORE_MAP</span> <span class=\"search-result-import-path\">xuanxuan/app/core/models/file-data.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/models/member.js~match_score_map",
-    "variable/index.html#static-variable-MATCH_SCORE_MAP",
-    "<span>MATCH_SCORE_MAP</span> <span class=\"search-result-import-path\">xuanxuan/app/core/models/member.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/base-extension.js~match_score_map",
-    "variable/index.html#static-variable-MATCH_SCORE_MAP",
-    "<span>MATCH_SCORE_MAP</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/base-extension.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/theme.js~match_score_map",
-    "variable/index.html#static-variable-MATCH_SCORE_MAP",
-    "<span>MATCH_SCORE_MAP</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/theme.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server.js~max_base64_image_size",
-    "variable/index.html#static-variable-MAX_BASE64_IMAGE_SIZE",
-    "<span>MAX_BASE64_IMAGE_SIZE</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/im/im-chats.js~max_recent_time",
-    "variable/index.html#static-variable-MAX_RECENT_TIME",
-    "<span>MAX_RECENT_TIME</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-chats.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/views/chats/chat-search-result.js~max_result_count",
-    "variable/index.html#static-variable-MAX_RESULT_COUNT",
-    "<span>MAX_RESULT_COUNT</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/chat-search-result.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/views/exts/app-files.js~max_show_files_count",
-    "variable/index.html#static-variable-MAX_SHOW_FILES_COUNT",
-    "<span>MAX_SHOW_FILES_COUNT</span> <span class=\"search-result-import-path\">xuanxuan/app/views/exts/app-files.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/components/icon.js~mdicon",
     "class/app/components/icon.js~MDIcon.html",
     "<span>MDIcon</span> <span class=\"search-result-import-path\">xuanxuan/app/components/icon.js</span>",
     "class"
-  ],
-  [
-    "xuanxuan/app/core/im/im-files.js~min_progress_change_interval",
-    "variable/index.html#static-variable-MIN_PROGRESS_CHANGE_INTERVAL",
-    "<span>MIN_PROGRESS_CHANGE_INTERVAL</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-files.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/server/index.js~min_support_version",
-    "variable/index.html#static-variable-MIN_SUPPORT_VERSION",
-    "<span>MIN_SUPPORT_VERSION</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/index.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/views/main/index.js~mainindex",
@@ -952,12 +502,6 @@ window.esdocSearchIndex = [
     "class/app/views/common/member-profile.js~MemberProfile.html",
     "<span>MemberProfile</span> <span class=\"search-result-import-path\">xuanxuan/app/views/common/member-profile.js</span>",
     "class"
-  ],
-  [
-    "xuanxuan/app/platform/electron/contextmenu.js~menu",
-    "variable/index.html#static-variable-Menu",
-    "<span>Menu</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/contextmenu.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/views/chats/menu.js~menu",
@@ -1056,12 +600,6 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "xuanxuan/app/views/main/navbar.js~navlink",
-    "function/index.html#static-function-NavLink",
-    "<span>NavLink</span> <span class=\"search-result-import-path\">xuanxuan/app/views/main/navbar.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/views/main/navbar.js~navbar",
     "class/app/views/main/navbar.js~Navbar.html",
     "<span>Navbar</span> <span class=\"search-result-import-path\">xuanxuan/app/views/main/navbar.js</span>",
@@ -1080,46 +618,10 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "xuanxuan/app/core/models/chat-message.js~object_types",
-    "variable/index.html#static-variable-OBJECT_TYPES",
-    "<span>OBJECT_TYPES</span> <span class=\"search-result-import-path\">xuanxuan/app/core/models/chat-message.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/env.js~os_platform",
-    "variable/index.html#static-variable-OS_PLATFORM",
-    "<span>OS_PLATFORM</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/env.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/exts/opened-app.js~openedapp",
     "class/app/exts/opened-app.js~OpenedApp.html",
     "<span>OpenedApp</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/opened-app.js</span>",
     "class"
-  ],
-  [
-    "xuanxuan/app/core/profile/user.js~password_with_md5_flag",
-    "variable/index.html#static-variable-PASSWORD_WITH_MD5_FLAG",
-    "<span>PASSWORD_WITH_MD5_FLAG</span> <span class=\"search-result-import-path\">xuanxuan/app/core/profile/user.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/network/socket.js~ping_interval",
-    "variable/index.html#static-variable-PING_INTERVAL",
-    "<span>PING_INTERVAL</span> <span class=\"search-result-import-path\">xuanxuan/app/core/network/socket.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/exts.js~pkg",
-    "variable/index.html#static-variable-PKG",
-    "<span>PKG</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/exts.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/views/common/build-info.js~pkg",
-    "variable/index.html#static-variable-PKG",
-    "<span>PKG</span> <span class=\"search-result-import-path\">xuanxuan/app/views/common/build-info.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/components/pager.js~pager",
@@ -1144,96 +646,6 @@ window.esdocSearchIndex = [
     "class/app/components/radio-group.js~RadioGroup.html",
     "<span>RadioGroup</span> <span class=\"search-result-import-path\">xuanxuan/app/components/radio-group.js</span>",
     "class"
-  ],
-  [
-    "xuanxuan/app/core/im/im-chats.js~search_score_map",
-    "variable/index.html#static-variable-SEARCH_SCORE_MAP",
-    "<span>SEARCH_SCORE_MAP</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-chats.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/app-remote.js~select_menu",
-    "variable/index.html#static-variable-SELECT_MENU",
-    "<span>SELECT_MENU</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/app-remote.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/contextmenu.js~select_menu",
-    "variable/index.html#static-variable-SELECT_MENU",
-    "<span>SELECT_MENU</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/contextmenu.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/webview.js~select_menu",
-    "variable/index.html#static-variable-SELECT_MENU",
-    "<span>SELECT_MENU</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/webview.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/models/chat-message.js~send_wait_time",
-    "variable/index.html#static-variable-SEND_WAIT_TIME",
-    "<span>SEND_WAIT_TIME</span> <span class=\"search-result-import-path\">xuanxuan/app/core/models/chat-message.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/app-remote.js~show_log",
-    "variable/index.html#static-variable-SHOW_LOG",
-    "<span>SHOW_LOG</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/app-remote.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/components/display-layer.js~stage",
-    "variable/index.html#static-variable-STAGE",
-    "<span>STAGE</span> <span class=\"search-result-import-path\">xuanxuan/app/components/display-layer.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/models/chat-message.js~status",
-    "variable/index.html#static-variable-STATUS",
-    "<span>STATUS</span> <span class=\"search-result-import-path\">xuanxuan/app/core/models/chat-message.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/models/chat.js~status",
-    "variable/index.html#static-variable-STATUS",
-    "<span>STATUS</span> <span class=\"search-result-import-path\">xuanxuan/app/core/models/chat.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/models/member.js~status",
-    "variable/index.html#static-variable-STATUS",
-    "<span>STATUS</span> <span class=\"search-result-import-path\">xuanxuan/app/core/models/member.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/browser/socket.js~status",
-    "variable/index.html#static-variable-STATUS",
-    "<span>STATUS</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/browser/socket.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/socket.js~status",
-    "variable/index.html#static-variable-STATUS",
-    "<span>STATUS</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/socket.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/task-queue.js~status",
-    "variable/index.html#static-variable-STATUS",
-    "<span>STATUS</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/task-queue.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/extensions-db.js~store_key",
-    "variable/index.html#static-variable-STORE_KEY",
-    "<span>STORE_KEY</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/extensions-db.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/themes.js~store_key",
-    "variable/index.html#static-variable-STORE_KEY",
-    "<span>STORE_KEY</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/themes.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/components/search-control.js~searchcontrol",
@@ -1296,39 +708,9 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "xuanxuan/app/core/server/index.js~timeout",
-    "variable/index.html#static-variable-TIMEOUT",
-    "<span>TIMEOUT</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/common/network.js~timeout_default",
-    "variable/index.html#static-variable-TIMEOUT_DEFAULT",
-    "<span>TIMEOUT_DEFAULT</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/common/network.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/utils/date-helper.js~time_day",
     "variable/index.html#static-variable-TIME_DAY",
     "<span>TIME_DAY</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/date-helper.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/models/chat-message.js~types",
-    "variable/index.html#static-variable-TYPES",
-    "<span>TYPES</span> <span class=\"search-result-import-path\">xuanxuan/app/core/models/chat-message.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/models/chat.js~types",
-    "variable/index.html#static-variable-TYPES",
-    "<span>TYPES</span> <span class=\"search-result-import-path\">xuanxuan/app/core/models/chat.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/models/entity-schema.js~types",
-    "variable/index.html#static-variable-TYPES",
-    "<span>TYPES</span> <span class=\"search-result-import-path\">xuanxuan/app/core/models/entity-schema.js</span>",
     "variable"
   ],
   [
@@ -1440,18 +822,6 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "xuanxuan/app/core/ui.js~_quit",
-    "variable/index.html#static-variable-_quit",
-    "<span>_quit</span> <span class=\"search-result-import-path\">xuanxuan/app/core/ui.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/im/im-ui.js~activecaches",
-    "variable/index.html#static-variable-activeCaches",
-    "<span>activeCaches</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-ui.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/core/im/im-ui.js~activechat",
     "function/index.html#static-function-activeChat",
     "<span>activeChat</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-ui.js</span>",
@@ -1464,46 +834,16 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/core/im/im-ui.js~activedchatid",
-    "variable/index.html#static-variable-activedChatId",
-    "<span>activedChatId</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-ui.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/core/context-menu.js~addcontextmenucreator",
     "function/index.html#static-function-addContextMenuCreator",
     "<span>addContextMenuCreator</span> <span class=\"search-result-import-path\">xuanxuan/app/core/context-menu.js</span>",
     "function"
   ],
   [
-    "xuanxuan/app/platform/browser/crypto.js~aesdecrypt",
-    "function/index.html#static-function-aesDecrypt",
-    "<span>aesDecrypt</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/browser/crypto.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/views/main/user-menu.js~allstatus",
-    "variable/index.html#static-variable-allStatus",
-    "<span>allStatus</span> <span class=\"search-result-import-path\">xuanxuan/app/views/main/user-menu.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/platform/common/config.js~allusers",
     "function/index.html#static-function-allUsers",
     "<span>allUsers</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/common/config.js</span>",
     "function"
-  ],
-  [
-    "xuanxuan/app/utils/markdown.js~allowedtags",
-    "variable/index.html#static-variable-allowedTags",
-    "<span>allowedTags</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/markdown.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/im/im-chats.js~app",
-    "variable/index.html#static-variable-app",
-    "<span>app</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-chats.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/core/index.js~app",
@@ -1536,54 +876,6 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
-    "xuanxuan/app/exts/build-in/index.js~buildinconfig",
-    "variable/index.html#static-variable-buildInConfig",
-    "<span>buildInConfig</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/build-in/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/build-in/index.js~buildinconfigfile",
-    "variable/index.html#static-variable-buildInConfigFile",
-    "<span>buildInConfigFile</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/build-in/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/views/exts/index.js~buildinview",
-    "variable/index.html#static-variable-buildInView",
-    "<span>buildInView</span> <span class=\"search-result-import-path\">xuanxuan/app/views/exts/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/build-in/index.js~buildins",
-    "variable/index.html#static-variable-buildIns",
-    "<span>buildIns</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/build-in/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/build-in/index.js~buildinsfile",
-    "variable/index.html#static-variable-buildInsFile",
-    "<span>buildInsFile</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/build-in/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/build-in/index.js~buildinspath",
-    "variable/index.html#static-variable-buildInsPath",
-    "<span>buildInsPath</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/build-in/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/components/area-selector.js~caculateposition",
-    "function/index.html#static-function-caculatePosition",
-    "<span>caculatePosition</span> <span class=\"search-result-import-path\">xuanxuan/app/components/area-selector.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/utils/search-score.js~calcconditionscore",
-    "function/index.html#static-function-calcConditionScore",
-    "<span>calcConditionScore</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/search-score.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/platform/electron/remote.js~callremote",
     "function/index.html#static-function-callRemote",
     "<span>callRemote</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/remote.js</span>",
@@ -1614,57 +906,9 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/exts/themes.js~changingthemetimer",
-    "variable/index.html#static-variable-changingThemeTimer",
-    "<span>changingThemeTimer</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/themes.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server-handlers.js~chataddmember",
-    "function/index.html#static-function-chatAddmember",
-    "<span>chatAddmember</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server-handlers.js~chatcategory",
-    "function/index.html#static-function-chatCategory",
-    "<span>chatCategory</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server-handlers.js~chatchangename",
-    "function/index.html#static-function-chatChangename",
-    "<span>chatChangename</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server-handlers.js~chatchangepublic",
-    "function/index.html#static-function-chatChangepublic",
-    "<span>chatChangepublic</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server-handlers.js~chatcreate",
-    "function/index.html#static-function-chatCreate",
-    "<span>chatCreate</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server-handlers.js~chatdismiss",
-    "function/index.html#static-function-chatDismiss",
-    "<span>chatDismiss</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server-handlers.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/core/im/im-ui.js~chatdismissconfirm",
     "function/index.html#static-function-chatDismissConfirm",
     "<span>chatDismissConfirm</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-ui.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/server/server-handlers.js~chaterror",
-    "function/index.html#static-function-chatError",
-    "<span>chatError</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/server-handlers.js</span>",
     "function"
   ],
   [
@@ -1674,159 +918,15 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/core/im/im-server-handlers.js~chatgetlist",
-    "function/index.html#static-function-chatGetlist",
-    "<span>chatGetlist</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server-handlers.js~chatgetpubliclist",
-    "function/index.html#static-function-chatGetpubliclist",
-    "<span>chatGetpubliclist</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server-handlers.js~chathide",
-    "function/index.html#static-function-chatHide",
-    "<span>chatHide</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server-handlers.js~chathistory",
-    "function/index.html#static-function-chatHistory",
-    "<span>chatHistory</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/views/chats/chat-avatar.js~chaticons",
-    "variable/index.html#static-variable-chatIcons",
-    "<span>chatIcons</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/chat-avatar.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server.js~chatjointask",
-    "variable/index.html#static-variable-chatJoinTask",
-    "<span>chatJoinTask</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server-handlers.js~chatjoinchat",
-    "function/index.html#static-function-chatJoinchat",
-    "<span>chatJoinchat</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/server/server-handlers.js~chatkickoff",
-    "function/index.html#static-function-chatKickoff",
-    "<span>chatKickoff</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/server/server-handlers.js~chatlogin",
-    "function/index.html#static-function-chatLogin",
-    "<span>chatLogin</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/server/server-handlers.js~chatlogout",
-    "function/index.html#static-function-chatLogout",
-    "<span>chatLogout</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server-handlers.js~chatmessage",
-    "function/index.html#static-function-chatMessage",
-    "<span>chatMessage</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server-handlers.js~chatmute",
-    "function/index.html#static-function-chatMute",
-    "<span>chatMute</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server-handlers.js~chatnotify",
-    "function/index.html#static-function-chatNotify",
-    "<span>chatNotify</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server-handlers.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/core/im/im-ui.js~chatrenameprompt",
     "function/index.html#static-function-chatRenamePrompt",
     "<span>chatRenamePrompt</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-ui.js</span>",
     "function"
   ],
   [
-    "xuanxuan/app/core/server/server-handlers.js~chatsessionid",
-    "function/index.html#static-function-chatSessionID",
-    "<span>chatSessionID</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server-handlers.js~chatsetcomitters",
-    "function/index.html#static-function-chatSetcomitters",
-    "<span>chatSetcomitters</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/server/server-handlers.js~chatsettings",
-    "function/index.html#static-function-chatSettings",
-    "<span>chatSettings</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server-handlers.js~chatstar",
-    "function/index.html#static-function-chatStar",
-    "<span>chatStar</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/server/server-handlers.js~chatuserchangestatus",
-    "function/index.html#static-function-chatUserChangeStatus",
-    "<span>chatUserChangeStatus</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/server/server-handlers.js~chatuserchange",
-    "function/index.html#static-function-chatUserchange",
-    "<span>chatUserchange</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/server/server-handlers.js~chatusergetlist",
-    "function/index.html#static-function-chatUsergetlist",
-    "<span>chatUsergetlist</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/server-handlers.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-chats.js~chats",
-    "variable/index.html#static-variable-chats",
-    "<span>chats</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-chats.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/core/im/im-files.js~checkfilecache",
     "function/index.html#static-function-checkFileCache",
     "<span>checkFileCache</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-files.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/platform/electron/net.js~checkfilecache",
-    "function/index.html#static-function-checkFileCache",
-    "<span>checkFileCache</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/net.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/exts/server/index.js~checklocalcache",
-    "function/index.html#static-function-checkLocalCache",
-    "<span>checkLocalCache</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/server/index.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/server/index.js~checkserverversion",
-    "function/index.html#static-function-checkServerVersion",
-    "<span>checkServerVersion</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/index.js</span>",
     "function"
   ],
   [
@@ -1842,34 +942,10 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/core/server/index.js~checkversionsupport",
-    "function/index.html#static-function-checkVersionSupport",
-    "<span>checkVersionSupport</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/index.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/utils/color.js~clamp",
-    "function/index.html#static-function-clamp",
-    "<span>clamp</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/color.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/utils/color.js~clampnumber",
-    "function/index.html#static-function-clampNumber",
-    "<span>clampNumber</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/color.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/utils/html-helper.js~classes",
     "function/index.html#static-function-classes",
     "<span>classes</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/html-helper.js</span>",
     "function"
-  ],
-  [
-    "xuanxuan/app/core/ui.js~clearcopycodetip",
-    "variable/index.html#static-variable-clearCopyCodeTip",
-    "<span>clearCopyCodeTip</span> <span class=\"search-result-import-path\">xuanxuan/app/core/ui.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/utils/store.js~clearstore",
@@ -1896,18 +972,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/utils/markdown.js~commonattrs",
-    "variable/index.html#static-variable-commonAttrs",
-    "<span>commonAttrs</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/markdown.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/ui.js~completedragndrop",
-    "function/index.html#static-function-completeDragNDrop",
-    "<span>completeDragNDrop</span> <span class=\"search-result-import-path\">xuanxuan/app/core/ui.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/config/index.js~config",
     "variable/index.html#static-variable-config",
     "<span>config</span> <span class=\"search-result-import-path\">xuanxuan/app/config/index.js</span>",
@@ -1918,42 +982,6 @@ window.esdocSearchIndex = [
     "variable/index.html#static-variable-config",
     "<span>config</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/browser/setting/index.js</span>",
     "variable"
-  ],
-  [
-    "xuanxuan/app/views/common/user-setting.js~configs",
-    "variable/index.html#static-variable-configs",
-    "<span>configs</span> <span class=\"search-result-import-path\">xuanxuan/app/views/common/user-setting.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/config/index.js~configurations",
-    "variable/index.html#static-variable-configurations",
-    "<span>configurations</span> <span class=\"search-result-import-path\">xuanxuan/app/config/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/components/display.js~container",
-    "variable/index.html#static-variable-container",
-    "<span>container</span> <span class=\"search-result-import-path\">xuanxuan/app/components/display.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/components/display.js~containerid",
-    "variable/index.html#static-variable-containerId",
-    "<span>containerId</span> <span class=\"search-result-import-path\">xuanxuan/app/components/display.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/context-menu.js~contextmenucreators",
-    "variable/index.html#static-variable-contextMenuCreators",
-    "<span>contextMenuCreators</span> <span class=\"search-result-import-path\">xuanxuan/app/core/context-menu.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/color.js~converttorgbint",
-    "function/index.html#static-function-convertToRgbInt",
-    "<span>convertToRgbInt</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/color.js</span>",
-    "function"
   ],
   [
     "xuanxuan/app/platform/electron/ui.js~copyselecttext",
@@ -1977,12 +1005,6 @@ window.esdocSearchIndex = [
     "xuanxuan/app/core/im/im-server.js~createboardchatmessage",
     "function/index.html#static-function-createBoardChatMessage",
     "<span>createBoardChatMessage</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/platform/electron/net.js~createcachepath",
-    "function/index.html#static-function-createCachePath",
-    "<span>createCachePath</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/net.js</span>",
     "function"
   ],
   [
@@ -2070,12 +1092,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/core/im/im-server.js~createlocalchatwithmembers",
-    "function/index.html#static-function-createLocalChatWithMembers",
-    "<span>createLocalChatWithMembers</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/platform/common/notification.js~createnotification",
     "function/index.html#static-function-createNotification",
     "<span>createNotification</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/common/notification.js</span>",
@@ -2118,12 +1134,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/core/im/im-server.js~createurlobjectmessage",
-    "function/index.html#static-function-createUrlObjectMessage",
-    "<span>createUrlObjectMessage</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/core/profile/index.js~createuser",
     "function/index.html#static-function-createUser",
     "<span>createUser</span> <span class=\"search-result-import-path\">xuanxuan/app/core/profile/index.js</span>",
@@ -2142,45 +1152,15 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
-    "xuanxuan/app/exts/ui.js~currentopenedapp",
-    "variable/index.html#static-variable-currentOpenedApp",
-    "<span>currentOpenedApp</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/ui.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/server/index.js~currentuser",
-    "variable/index.html#static-variable-currentUser",
-    "<span>currentUser</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/server/index.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/utils/image.js~cutimage",
     "function/index.html#static-function-cutImage",
     "<span>cutImage</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/image.js</span>",
     "function"
   ],
   [
-    "xuanxuan/app/platform/electron/env.js~datapath",
-    "variable/index.html#static-variable-dataPath",
-    "<span>dataPath</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/env.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/core/models/file-data.js~datauritoblob",
     "function/index.html#static-function-dataURItoBlob",
     "<span>dataURItoBlob</span> <span class=\"search-result-import-path\">xuanxuan/app/core/models/file-data.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/db/index.js~db",
-    "variable/index.html#static-variable-db",
-    "<span>db</span> <span class=\"search-result-import-path\">xuanxuan/app/core/db/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/crypto.js~decrypt",
-    "function/index.html#static-function-decrypt",
-    "<span>decrypt</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/crypto.js</span>",
     "function"
   ],
   [
@@ -2190,46 +1170,16 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
-    "xuanxuan/app/exts/ui.js~defaultopenedapp",
-    "variable/index.html#static-variable-defaultOpenedApp",
-    "<span>defaultOpenedApp</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/ui.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/models/entity-schema.js~defaultvaluesconveter",
-    "variable/index.html#static-variable-defaultValuesConveter",
-    "<span>defaultValuesConveter</span> <span class=\"search-result-import-path\">xuanxuan/app/core/models/entity-schema.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/core/im/im-chats.js~deletelocalmessage",
     "function/index.html#static-function-deleteLocalMessage",
     "<span>deleteLocalMessage</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-chats.js</span>",
     "function"
   ],
   [
-    "xuanxuan/app/core/members.js~depts",
-    "variable/index.html#static-variable-depts",
-    "<span>depts</span> <span class=\"search-result-import-path\">xuanxuan/app/core/members.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/core/members.js~deptssorter",
     "function/index.html#static-function-deptsSorter",
     "<span>deptsSorter</span> <span class=\"search-result-import-path\">xuanxuan/app/core/members.js</span>",
     "function"
-  ],
-  [
-    "xuanxuan/app/utils/store.js~deserialize",
-    "function/index.html#static-function-deserialize",
-    "<span>deserialize</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/store.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/platform/electron/env.js~desktoppath",
-    "variable/index.html#static-variable-desktopPath",
-    "<span>desktopPath</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/env.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/exts/server/index.js~detachserverextensions",
@@ -2248,12 +1198,6 @@ window.esdocSearchIndex = [
     "function/index.html#static-function-disableGlobalShortcut",
     "<span>disableGlobalShortcut</span> <span class=\"search-result-import-path\">xuanxuan/app/core/ui.js</span>",
     "function"
-  ],
-  [
-    "xuanxuan/app/components/display.js~displaycontainer",
-    "variable/index.html#static-variable-displayContainer",
-    "<span>displayContainer</span> <span class=\"search-result-import-path\">xuanxuan/app/components/display.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/components/display.js~displaygetref",
@@ -2310,30 +1254,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/exts/server/index.js~downloadremoteextension",
-    "function/index.html#static-function-downloadRemoteExtension",
-    "<span>downloadRemoteExtension</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/server/index.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/views/common/draft-editor.js~draftdecorator",
-    "variable/index.html#static-variable-draftDecorator",
-    "<span>draftDecorator</span> <span class=\"search-result-import-path\">xuanxuan/app/views/common/draft-editor.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/screenshot.js~drawframe",
-    "function/index.html#static-function-drawFrame",
-    "<span>drawFrame</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/screenshot.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/platform/browser/crypto.js~easencrypt",
-    "function/index.html#static-function-easEncrypt",
-    "<span>easEncrypt</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/browser/crypto.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/core/ui.js~emitapplinkclick",
     "function/index.html#static-function-emitAppLinkClick",
     "<span>emitAppLinkClick</span> <span class=\"search-result-import-path\">xuanxuan/app/core/ui.js</span>",
@@ -2346,21 +1266,9 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/views/common/emoji-popover.js~emojionecategories",
-    "variable/index.html#static-variable-emojioneCategories",
-    "<span>emojioneCategories</span> <span class=\"search-result-import-path\">xuanxuan/app/views/common/emoji-popover.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/core/ui.js~enableglobalshortcut",
     "function/index.html#static-function-enableGlobalShortcut",
     "<span>enableGlobalShortcut</span> <span class=\"search-result-import-path\">xuanxuan/app/core/ui.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/platform/electron/crypto.js~encrypt",
-    "function/index.html#static-function-encrypt",
-    "<span>encrypt</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/crypto.js</span>",
     "function"
   ],
   [
@@ -2388,12 +1296,6 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
-    "xuanxuan/app/platform/electron/remote.js~eventsmap",
-    "variable/index.html#static-variable-eventsMap",
-    "<span>eventsMap</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/remote.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/core/commander.js~executecommand",
     "function/index.html#static-function-executeCommand",
     "<span>executeCommand</span> <span class=\"search-result-import-path\">xuanxuan/app/core/commander.js</span>",
@@ -2412,51 +1314,15 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/views/exts/app-extensions.js~extensiontypes",
-    "variable/index.html#static-variable-extensionTypes",
-    "<span>extensionTypes</span> <span class=\"search-result-import-path\">xuanxuan/app/views/exts/app-extensions.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/manager.js~extractinstallfile",
-    "function/index.html#static-function-extractInstallFile",
-    "<span>extractInstallFile</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/manager.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/exts/build-in/index.js~exts",
     "variable/index.html#static-variable-exts",
     "<span>exts</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/build-in/index.js</span>",
     "variable"
   ],
   [
-    "xuanxuan/app/exts/exts.js~exts",
-    "variable/index.html#static-variable-exts",
-    "<span>exts</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/exts.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/exts/index.js~exts",
     "variable/index.html#static-variable-exts",
     "<span>exts</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/server/index.js~exts",
-    "variable/index.html#static-variable-exts",
-    "<span>exts</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/server/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/common/network.js~fetch",
-    "variable/index.html#static-variable-fetch",
-    "<span>fetch</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/common/network.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/im/im-chats.js~fetchchatmessagesqueue",
-    "variable/index.html#static-variable-fetchChatMessagesQueue",
-    "<span>fetchChatMessagesQueue</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-chats.js</span>",
     "variable"
   ],
   [
@@ -2478,52 +1344,16 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/exts/server/index.js~fetchtaskinterval",
-    "variable/index.html#static-variable-fetchTaskInterval",
-    "<span>fetchTaskInterval</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/server/index.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/core/server/index.js~fetchuserlist",
     "function/index.html#static-function-fetchUserList",
     "<span>fetchUserList</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/index.js</span>",
     "function"
   ],
   [
-    "xuanxuan/app/platform/common/open-file-button.js~filebutton",
-    "variable/index.html#static-variable-fileButton",
-    "<span>fileButton</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/common/open-file-button.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/utils/mdi-file-icon.js~fileicons",
     "variable/index.html#static-variable-fileIcons",
     "<span>fileIcons</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
     "variable"
-  ],
-  [
-    "xuanxuan/app/views/exts/app-files.js~filetypes",
-    "variable/index.html#static-variable-fileTypes",
-    "<span>fileTypes</span> <span class=\"search-result-import-path\">xuanxuan/app/views/exts/app-files.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/net.js~filescache",
-    "variable/index.html#static-variable-filesCache",
-    "<span>filesCache</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/net.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/views/common/draft-editor.js~findwithregex",
-    "function/index.html#static-function-findWithRegex",
-    "<span>findWithRegex</span> <span class=\"search-result-import-path\">xuanxuan/app/views/common/draft-editor.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/utils/color.js~fit",
-    "function/index.html#static-function-fit",
-    "<span>fit</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/color.js</span>",
-    "function"
   ],
   [
     "xuanxuan/app/platform/electron/ui.js~flashtrayicon",
@@ -2622,12 +1452,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/platform/electron/screenshot.js~getcanvas",
-    "function/index.html#static-function-getCanvas",
-    "<span>getCanvas</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/screenshot.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/core/im/im-chats.js~getchat",
     "function/index.html#static-function-getChat",
     "<span>getChat</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-chats.js</span>",
@@ -2712,12 +1536,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/platform/electron/screenshot.js~getdisplay",
-    "function/index.html#static-function-getDisplay",
-    "<span>getDisplay</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/screenshot.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/exts/server/index.js~getentryvisiturl",
     "function/index.html#static-function-getEntryVisitUrl",
     "<span>getEntryVisitUrl</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/server/index.js</span>",
@@ -2748,21 +1566,9 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/platform/electron/screenshot.js~getframeimage",
-    "function/index.html#static-function-getFrameImage",
-    "<span>getFrameImage</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/screenshot.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/core/im/im-chats.js~getgroupschats",
     "function/index.html#static-function-getGroupsChats",
     "<span>getGroupsChats</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-chats.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/platform/electron/clipboard.js~getimagedata",
-    "function/index.html#static-function-getImageData",
-    "<span>getImageData</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/clipboard.js</span>",
     "function"
   ],
   [
@@ -2775,12 +1581,6 @@ window.esdocSearchIndex = [
     "xuanxuan/app/exts/extensions-db.js~getindexofinstallextension",
     "function/index.html#static-function-getIndexOfInstallExtension",
     "<span>getIndexOfInstallExtension</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/extensions-db.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/context-menu.js~getinnermenuitemsforcontext",
-    "function/index.html#static-function-getInnerMenuItemsForContext",
-    "<span>getInnerMenuItemsForContext</span> <span class=\"search-result-import-path\">xuanxuan/app/core/context-menu.js</span>",
     "function"
   ],
   [
@@ -2832,12 +1632,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/platform/electron/screenshot.js~getloop",
-    "function/index.html#static-function-getLoop",
-    "<span>getLoop</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/screenshot.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/core/members.js~getmember",
     "function/index.html#static-function-getMember",
     "<span>getMember</span> <span class=\"search-result-import-path\">xuanxuan/app/core/members.js</span>",
@@ -2847,12 +1641,6 @@ window.esdocSearchIndex = [
     "xuanxuan/app/core/context-menu.js~getmenuitemsforcontext",
     "function/index.html#static-function-getMenuItemsForContext",
     "<span>getMenuItemsForContext</span> <span class=\"search-result-import-path\">xuanxuan/app/core/context-menu.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/context-menu.js~getmenuitemsfromcreator",
-    "function/index.html#static-function-getMenuItemsFromCreator",
-    "<span>getMenuItemsFromCreator</span> <span class=\"search-result-import-path\">xuanxuan/app/core/context-menu.js</span>",
     "function"
   ],
   [
@@ -2868,27 +1656,9 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/exts/ui.js~getopenedappindex",
-    "function/index.html#static-function-getOpenedAppIndex",
-    "<span>getOpenedAppIndex</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/ui.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/exts/ui.js~getopenedapps",
     "function/index.html#static-function-getOpenedApps",
     "<span>getOpenedApps</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/ui.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/platform/common/network.js~getoptions",
-    "function/index.html#static-function-getOptions",
-    "<span>getOptions</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/common/network.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-notice.js~getplaintextofchatmessage",
-    "function/index.html#static-function-getPlainTextOfChatMessage",
-    "<span>getPlainTextOfChatMessage</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-notice.js</span>",
     "function"
   ],
   [
@@ -2946,12 +1716,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/platform/electron/screenshot.js~getstream",
-    "function/index.html#static-function-getStream",
-    "<span>getStream</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/screenshot.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/platform/common/network.js~gettext",
     "function/index.html#static-function-getText",
     "<span>getText</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/common/network.js</span>",
@@ -3000,27 +1764,9 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/platform/electron/screenshot.js~getvideo",
-    "function/index.html#static-function-getVideo",
-    "<span>getVideo</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/screenshot.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/platform/electron/get-url-meta.js~geturlmeta",
     "function/index.html#static-function-geturlmeta",
     "<span>geturlmeta</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/get-url-meta.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/ui.js~globalhotkeys",
-    "variable/index.html#static-variable-globalHotkeys",
-    "<span>globalHotkeys</span> <span class=\"search-result-import-path\">xuanxuan/app/core/ui.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/exts.js~groupexts",
-    "function/index.html#static-function-groupExts",
-    "<span>groupExts</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/exts.js</span>",
     "function"
   ],
   [
@@ -3030,39 +1776,9 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/views/chats/message-content-card.js~handleactionbuttonclick",
-    "function/index.html#static-function-handleActionButtonClick",
-    "<span>handleActionButtonClick</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/message-content-card.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/exts/server/index.js~handlechatextensions",
-    "function/index.html#static-function-handleChatExtensions",
-    "<span>handleChatExtensions</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/server/index.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/exts/server/index.js~handleentryvisit",
-    "function/index.html#static-function-handleEntryVisit",
-    "<span>handleEntryVisit</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/server/index.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/core/im/im-server.js~handleinitchats",
     "function/index.html#static-function-handleInitChats",
     "<span>handleInitChats</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/views/chats/chat-sidebar-peoples.js~handlememberitemclick",
-    "function/index.html#static-function-handleMemberItemClick",
-    "<span>handleMemberItemClick</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/chat-sidebar-peoples.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/views/chats/message-content-card.js~handlemenuiconclick",
-    "function/index.html#static-function-handleMenuIconClick",
-    "<span>handleMenuIconClick</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/message-content-card.js</span>",
     "function"
   ],
   [
@@ -3072,57 +1788,15 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/utils/color.js~hexreg",
-    "variable/index.html#static-variable-hexReg",
-    "<span>hexReg</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/color.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/color.js~hextorgb",
-    "function/index.html#static-function-hexToRgb",
-    "<span>hexToRgb</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/color.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/platform/electron/ui.js~hidewindow",
     "function/index.html#static-function-hideWindow",
     "<span>hideWindow</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/ui.js</span>",
     "function"
   ],
   [
-    "xuanxuan/app/core/im/im-server.js~historyfetchingpager",
-    "variable/index.html#static-variable-historyFetchingPager",
-    "<span>historyFetchingPager</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/color.js~hsltorgb",
-    "function/index.html#static-function-hslToRgb",
-    "<span>hslToRgb</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/color.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/utils/markdown.js~htmlparserhandler",
-    "variable/index.html#static-variable-htmlParserHandler",
-    "<span>htmlParserHandler</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/markdown.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/remote.js~idseed",
-    "variable/index.html#static-variable-idSeed",
-    "<span>idSeed</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/remote.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/utils/string-helper.js~ifemptystringthen",
     "function/index.html#static-function-ifEmptyStringThen",
     "<span>ifEmptyStringThen</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/string-helper.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/platform/common/sound.js~init",
-    "function/index.html#static-function-init",
-    "<span>init</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/common/sound.js</span>",
     "function"
   ],
   [
@@ -3168,30 +1842,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/exts/manager.js~installfromdir",
-    "function/index.html#static-function-installFromDir",
-    "<span>installFromDir</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/manager.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/exts/extensions-db.js~installs",
-    "variable/index.html#static-variable-installs",
-    "<span>installs</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/extensions-db.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/build-in/index.js~internals",
-    "variable/index.html#static-variable-internals",
-    "<span>internals</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/build-in/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/im/im-server.js~invitememberstochat",
-    "function/index.html#static-function-inviteMembersToChat",
-    "<span>inviteMembersToChat</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/platform/electron/remote.js~ipcon",
     "function/index.html#static-function-ipcOn",
     "<span>ipcOn</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/remote.js</span>",
@@ -3216,57 +1866,9 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/exts/ui.js~isappopen",
-    "function/index.html#static-function-isAppOpen",
-    "<span>isAppOpen</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/ui.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/core/ui.js~isautologinnexttime",
     "function/index.html#static-function-isAutoLoginNextTime",
     "<span>isAutoLoginNextTime</span> <span class=\"search-result-import-path\">xuanxuan/app/core/ui.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/views/chats/message-content-image.js~isbrowser",
-    "variable/index.html#static-variable-isBrowser",
-    "<span>isBrowser</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/message-content-image.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/views/common/user-setting.js~isbrowser",
-    "variable/index.html#static-variable-isBrowser",
-    "<span>isBrowser</span> <span class=\"search-result-import-path\">xuanxuan/app/views/common/user-setting.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/views/main/user-menu.js~isbrowser",
-    "variable/index.html#static-variable-isBrowser",
-    "<span>isBrowser</span> <span class=\"search-result-import-path\">xuanxuan/app/views/main/user-menu.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/debug.js~isbrowserenv",
-    "variable/index.html#static-variable-isBrowserEnv",
-    "<span>isBrowserEnv</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/debug.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/views/common/file-list-item.js~isbrowserplatform",
-    "variable/index.html#static-variable-isBrowserPlatform",
-    "<span>isBrowserPlatform</span> <span class=\"search-result-import-path\">xuanxuan/app/views/common/file-list-item.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/screenshot.js~iscapturing",
-    "variable/index.html#static-variable-isCapturing",
-    "<span>isCapturing</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/screenshot.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/color.js~iscolor",
-    "function/index.html#static-function-isColor",
-    "<span>isColor</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/color.js</span>",
     "function"
   ],
   [
@@ -3300,24 +1902,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/core/context-menu.js~isdivideritem",
-    "function/index.html#static-function-isDividerItem",
-    "<span>isDividerItem</span> <span class=\"search-result-import-path\">xuanxuan/app/core/context-menu.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/platform/browser/ui.js~isdocumenthasfocus",
-    "function/index.html#static-function-isDocumentHasFocus",
-    "<span>isDocumentHasFocus</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/browser/ui.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/views/common/webview.js~iselectron",
-    "variable/index.html#static-variable-isElectron",
-    "<span>isElectron</span> <span class=\"search-result-import-path\">xuanxuan/app/views/common/webview.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/utils/string-helper.js~isemptystring",
     "function/index.html#static-function-isEmptyString",
     "<span>isEmptyString</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/string-helper.js</span>",
@@ -3330,42 +1914,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/views/common/user-setting.js~isflashtrayiconoff",
-    "function/index.html#static-function-isFlashTrayIconOff",
-    "<span>isFlashTrayIconOff</span> <span class=\"search-result-import-path\">xuanxuan/app/views/common/user-setting.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-chats.js~isgetchatmessagesqueuebusy",
-    "variable/index.html#static-variable-isGetChatMessagesQueueBusy",
-    "<span>isGetChatMessagesQueueBusy</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-chats.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/ui.js~isglobalshortcutdisabled",
-    "variable/index.html#static-variable-isGlobalShortcutDisabled",
-    "<span>isGlobalShortcutDisabled</span> <span class=\"search-result-import-path\">xuanxuan/app/core/ui.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/shortcut.js~isglobalshortcutregistered",
-    "function/index.html#static-function-isGlobalShortcutRegistered",
-    "<span>isGlobalShortcutRegistered</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/shortcut.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/platform/browser/env.js~islinux",
-    "variable/index.html#static-variable-isLinux",
-    "<span>isLinux</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/browser/env.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/env.js~islinux",
-    "variable/index.html#static-variable-isLinux",
-    "<span>isLinux</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/env.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/core/notice.js~ismatchwindowcondition",
     "function/index.html#static-function-isMatchWindowCondition",
     "<span>isMatchWindowCondition</span> <span class=\"search-result-import-path\">xuanxuan/app/core/notice.js</span>",
@@ -3376,24 +1924,6 @@ window.esdocSearchIndex = [
     "function/index.html#static-function-isNotEmptyString",
     "<span>isNotEmptyString</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/string-helper.js</span>",
     "function"
-  ],
-  [
-    "xuanxuan/app/views/common/user-setting.js~isnotificationoff",
-    "function/index.html#static-function-isNotificationOff",
-    "<span>isNotificationOff</span> <span class=\"search-result-import-path\">xuanxuan/app/views/common/user-setting.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/platform/browser/env.js~isosx",
-    "variable/index.html#static-variable-isOSX",
-    "<span>isOSX</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/browser/env.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/env.js~isosx",
-    "variable/index.html#static-variable-isOSX",
-    "<span>isOSX</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/env.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/utils/shortcut.js~isonlymodifykeys",
@@ -3412,24 +1942,6 @@ window.esdocSearchIndex = [
     "function/index.html#static-function-isPasswordWithMD5Flag",
     "<span>isPasswordWithMD5Flag</span> <span class=\"search-result-import-path\">xuanxuan/app/core/profile/user.js</span>",
     "function"
-  ],
-  [
-    "xuanxuan/app/components/area-selector.js~ispiontinrect",
-    "function/index.html#static-function-isPiontInRect",
-    "<span>isPiontInRect</span> <span class=\"search-result-import-path\">xuanxuan/app/components/area-selector.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/exts/server/index.js~isprocessing",
-    "variable/index.html#static-variable-isProcessing",
-    "<span>isProcessing</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/server/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/runtime.js~isreadyed",
-    "variable/index.html#static-variable-isReadyed",
-    "<span>isReadyed</span> <span class=\"search-result-import-path\">xuanxuan/app/core/runtime.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/utils/date-helper.js~issameday",
@@ -3480,12 +1992,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/views/common/user-setting.js~iswindownotificationoff",
-    "function/index.html#static-function-isWindowNotificationOff",
-    "<span>isWindowNotificationOff</span> <span class=\"search-result-import-path\">xuanxuan/app/views/common/user-setting.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/platform/browser/ui.js~iswindowopen",
     "variable/index.html#static-variable-isWindowOpen",
     "<span>isWindowOpen</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/browser/ui.js</span>",
@@ -3510,30 +2016,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/components/modal.js~iswindowsos",
-    "variable/index.html#static-variable-isWindowsOS",
-    "<span>isWindowsOS</span> <span class=\"search-result-import-path\">xuanxuan/app/components/modal.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/browser/env.js~iswindowsos",
-    "variable/index.html#static-variable-isWindowsOS",
-    "<span>isWindowsOS</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/browser/env.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/env.js~iswindowsos",
-    "variable/index.html#static-variable-isWindowsOS",
-    "<span>isWindowsOS</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/env.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/shortcut.js~iswindowsos",
-    "variable/index.html#static-variable-isWindowsOS",
-    "<span>isWindowsOS</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/shortcut.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/utils/date-helper.js~isyestoday",
     "function/index.html#static-function-isYestoday",
     "<span>isYestoday</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/date-helper.js</span>",
@@ -3552,18 +2034,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/views/common/draft-editor.js~langatall",
-    "variable/index.html#static-variable-langAtAll",
-    "<span>langAtAll</span> <span class=\"search-result-import-path\">xuanxuan/app/views/common/draft-editor.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/lang/index.js~langdata",
-    "variable/index.html#static-variable-langData",
-    "<span>langData</span> <span class=\"search-result-import-path\">xuanxuan/app/lang/index.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/lang/index.js~langerror",
     "function/index.html#static-function-langError",
     "<span>langError</span> <span class=\"search-result-import-path\">xuanxuan/app/lang/index.js</span>",
@@ -3576,58 +2046,10 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/config/index.js~langinconfig",
-    "variable/index.html#static-variable-langInConfig",
-    "<span>langInConfig</span> <span class=\"search-result-import-path\">xuanxuan/app/config/index.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/lang/index.js~langstring",
     "function/index.html#static-function-langString",
     "<span>langString</span> <span class=\"search-result-import-path\">xuanxuan/app/lang/index.js</span>",
     "function"
-  ],
-  [
-    "xuanxuan/app/core/db/database.js~lastcreatedb",
-    "variable/index.html#static-variable-lastCreateDb",
-    "<span>lastCreateDb</span> <span class=\"search-result-import-path\">xuanxuan/app/core/db/database.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/dialog.js~lastfilesavepath",
-    "variable/index.html#static-variable-lastFileSavePath",
-    "<span>lastFileSavePath</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/dialog.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/server/index.js~lastgettempusercall",
-    "variable/index.html#static-variable-lastGetTempUserCall",
-    "<span>lastGetTempUserCall</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/clipboard.js~lastnewimage",
-    "variable/index.html#static-variable-lastNewImage",
-    "<span>lastNewImage</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/clipboard.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/im/im-notice.js~lastnoticechat",
-    "variable/index.html#static-variable-lastNoticeChat",
-    "<span>lastNoticeChat</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-notice.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/im/im-notice.js~lastnoticeinfo",
-    "variable/index.html#static-variable-lastNoticeInfo",
-    "<span>lastNoticeInfo</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-notice.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/screenshot.js~laststeam",
-    "variable/index.html#static-variable-lastSteam",
-    "<span>lastSteam</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/screenshot.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/utils/limit-time-promise.js~limittimepromise",
@@ -3645,12 +2067,6 @@ window.esdocSearchIndex = [
     "xuanxuan/app/utils/html-helper.js~linkify",
     "function/index.html#static-function-linkify",
     "<span>linkify</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/html-helper.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/network/socket.js~listenmessage",
-    "function/index.html#static-function-listenMessage",
-    "<span>listenMessage</span> <span class=\"search-result-import-path\">xuanxuan/app/core/network/socket.js</span>",
     "function"
   ],
   [
@@ -3678,12 +2094,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/exts/server/index.js~loadremoteextension",
-    "function/index.html#static-function-loadRemoteExtension",
-    "<span>loadRemoteExtension</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/server/index.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/core/server/index.js~login",
     "function/index.html#static-function-login",
     "<span>login</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/index.js</span>",
@@ -3702,12 +2112,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/views/main/cache-container.js~mainviews",
-    "variable/index.html#static-variable-mainViews",
-    "<span>mainViews</span> <span class=\"search-result-import-path\">xuanxuan/app/views/main/cache-container.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/platform/electron/ui.js~maketmpfilepath",
     "function/index.html#static-function-makeTmpFilePath",
     "<span>makeTmpFilePath</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/ui.js</span>",
@@ -3720,57 +2124,9 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/core/ui.js~maxurlcachesize",
-    "variable/index.html#static-variable-maxUrlCacheSize",
-    "<span>maxUrlCacheSize</span> <span class=\"search-result-import-path\">xuanxuan/app/core/ui.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/utils/mdi-file-icon.js~mdifileicon",
     "function/index.html#static-function-mdifileicon",
     "<span>mdifileicon</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/mdi-file-icon.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/members.js~members",
-    "variable/index.html#static-variable-members",
-    "<span>members</span> <span class=\"search-result-import-path\">xuanxuan/app/core/members.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/shortcut.js~modifykeys",
-    "variable/index.html#static-variable-modifyKeys",
-    "<span>modifyKeys</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/shortcut.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/views/main/navbar.js~navbaritems",
-    "variable/index.html#static-variable-navbarItems",
-    "<span>navbarItems</span> <span class=\"search-result-import-path\">xuanxuan/app/views/main/navbar.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/components/display-layer.js~newzindex",
-    "function/index.html#static-function-newZIndex",
-    "<span>newZIndex</span> <span class=\"search-result-import-path\">xuanxuan/app/components/display-layer.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/exts/server/index.js~nextfetchtask",
-    "variable/index.html#static-variable-nextFetchTask",
-    "<span>nextFetchTask</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/server/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/external-api.js~nodemodules",
-    "variable/index.html#static-variable-nodeModules",
-    "<span>nodeModules</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/external-api.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/color.js~number",
-    "function/index.html#static-function-number",
-    "<span>number</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/color.js</span>",
     "function"
   ],
   [
@@ -3784,24 +2140,6 @@ window.esdocSearchIndex = [
     "function/index.html#static-function-onAppLinkClick",
     "<span>onAppLinkClick</span> <span class=\"search-result-import-path\">xuanxuan/app/core/ui.js</span>",
     "function"
-  ],
-  [
-    "xuanxuan/app/exts/extensions-db.js~onchangelistener",
-    "variable/index.html#static-variable-onChangeListener",
-    "<span>onChangeListener</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/extensions-db.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/exts.js~onchangelistener",
-    "function/index.html#static-function-onChangeListener",
-    "<span>onChangeListener</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/exts.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/exts/server/index.js~onchangelistener",
-    "variable/index.html#static-variable-onChangeListener",
-    "<span>onChangeListener</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/server/index.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/core/im/im-server.js~onchathistory",
@@ -3882,12 +2220,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/core/im/im-ui.js~onrenderchatmessagecontentlistener",
-    "variable/index.html#static-variable-onRenderChatMessageContentListener",
-    "<span>onRenderChatMessageContentListener</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-ui.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/platform/electron/remote.js~onrequestquit",
     "function/index.html#static-function-onRequestQuit",
     "<span>onRequestQuit</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/remote.js</span>",
@@ -3898,12 +2230,6 @@ window.esdocSearchIndex = [
     "function/index.html#static-function-onRequestQuit",
     "<span>onRequestQuit</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/ui.js</span>",
     "function"
-  ],
-  [
-    "xuanxuan/app/platform/electron/ui.js~onrequestquitlistener",
-    "variable/index.html#static-variable-onRequestQuitListener",
-    "<span>onRequestQuitListener</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/ui.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/core/im/im-server.js~onsendchatmessages",
@@ -4056,24 +2382,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/exts/ui.js~openedapps",
-    "variable/index.html#static-variable-openedApps",
-    "<span>openedApps</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/ui.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/common/network.js~optionsfilter",
-    "variable/index.html#static-variable-optionsFilter",
-    "<span>optionsFilter</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/common/network.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/browser/env.js~osplatform",
-    "variable/index.html#static-variable-osPlatform",
-    "<span>osPlatform</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/browser/env.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/utils/pinyin.js~pinyin",
     "function/index.html#static-function-pinyin",
     "<span>pinyin</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/pinyin.js</span>",
@@ -4120,24 +2428,6 @@ window.esdocSearchIndex = [
     "function/index.html#static-function-postText",
     "<span>postText</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/common/network.js</span>",
     "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-chats.js~processchatmessagequeue",
-    "function/index.html#static-function-processChatMessageQueue",
-    "<span>processChatMessageQueue</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-chats.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/exts/server/index.js~processextensions",
-    "function/index.html#static-function-processExtensions",
-    "<span>processExtensions</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/server/index.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-chats.js~publicchats",
-    "variable/index.html#static-variable-publicChats",
-    "<span>publicChats</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-chats.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/core/im/im-chats.js~querychats",
@@ -4197,18 +2487,6 @@ window.esdocSearchIndex = [
     "xuanxuan/app/core/commander.js~registercommand",
     "function/index.html#static-function-registerCommand",
     "<span>registerCommand</span> <span class=\"search-result-import-path\">xuanxuan/app/core/commander.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/platform/electron/shortcut.js~registerglobalshortcut",
-    "function/index.html#static-function-registerGlobalShortcut",
-    "<span>registerGlobalShortcut</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/shortcut.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/ui.js~registershortcut",
-    "function/index.html#static-function-registerShortcut",
-    "<span>registerShortcut</span> <span class=\"search-result-import-path\">xuanxuan/app/core/ui.js</span>",
     "function"
   ],
   [
@@ -4314,33 +2592,9 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/views/chats/chat-sidebar-files.js~renderemptyfilelist",
-    "function/index.html#static-function-renderEmptyFileList",
-    "<span>renderEmptyFileList</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/chat-sidebar-files.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/views/chats/chat-sidebar-files.js~renderfilelist",
-    "function/index.html#static-function-renderFileList",
-    "<span>renderFileList</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/chat-sidebar-files.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/views/chats/chat-sidebar-files.js~renderloading",
-    "function/index.html#static-function-renderLoading",
-    "<span>renderLoading</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/chat-sidebar-files.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/utils/markdown.js~renderer",
     "variable/index.html#static-variable-renderer",
     "<span>renderer</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/markdown.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/exts/runtime.js~replaceviews",
-    "variable/index.html#static-variable-replaceViews",
-    "<span>replaceViews</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/runtime.js</span>",
     "variable"
   ],
   [
@@ -4374,24 +2628,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/core/members.js~roles",
-    "variable/index.html#static-variable-roles",
-    "<span>roles</span> <span class=\"search-result-import-path\">xuanxuan/app/core/members.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/markdown.js~sanitizer",
-    "function/index.html#static-function-sanitizer",
-    "<span>sanitizer</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/markdown.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/exts/manager.js~saveandattach",
-    "function/index.html#static-function-saveAndAttach",
-    "<span>saveAndAttach</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/manager.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/platform/electron/dialog.js~saveasimagefromurl",
     "function/index.html#static-function-saveAsImageFromUrl",
     "<span>saveAsImageFromUrl</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/dialog.js</span>",
@@ -4401,12 +2637,6 @@ window.esdocSearchIndex = [
     "xuanxuan/app/core/im/im-chats.js~savechatmessages",
     "function/index.html#static-function-saveChatMessages",
     "<span>saveChatMessages</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-chats.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/exts/manager.js~saveextension",
-    "function/index.html#static-function-saveExtension",
-    "<span>saveExtension</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/manager.js</span>",
     "function"
   ],
   [
@@ -4437,12 +2667,6 @@ window.esdocSearchIndex = [
     "xuanxuan/app/platform/common/config.js~saveuser",
     "function/index.html#static-function-saveUser",
     "<span>saveUser</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/common/config.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/core/runtime.js~sayready",
-    "function/index.html#static-function-sayReady",
-    "<span>sayReady</span> <span class=\"search-result-import-path\">xuanxuan/app/core/runtime.js</span>",
     "function"
   ],
   [
@@ -4518,12 +2742,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/core/im/im-server.js~sendimageasbase64",
-    "function/index.html#static-function-sendImageAsBase64",
-    "<span>sendImageAsBase64</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/core/im/im-server.js~sendimagemessage",
     "function/index.html#static-function-sendImageMessage",
     "<span>sendImageMessage</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server.js</span>",
@@ -4551,12 +2769,6 @@ window.esdocSearchIndex = [
     "xuanxuan/app/platform/electron/remote.js~sendtowindow",
     "function/index.html#static-function-sendToWindow",
     "<span>sendToWindow</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/remote.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/utils/store.js~serialize",
-    "function/index.html#static-function-serialize",
-    "<span>serialize</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/store.js</span>",
     "function"
   ],
   [
@@ -4674,12 +2886,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/platform/electron/shortcut.js~shortcuts",
-    "variable/index.html#static-variable-shortcuts",
-    "<span>shortcuts</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/shortcut.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/views/common/about-dialog.js~showaboutdialog",
     "function/index.html#static-function-showAboutDialog",
     "<span>showAboutDialog</span> <span class=\"search-result-import-path\">xuanxuan/app/views/common/about-dialog.js</span>",
@@ -4701,12 +2907,6 @@ window.esdocSearchIndex = [
     "xuanxuan/app/views/chats/chat-change-font-popover.js~showchangefontpopover",
     "function/index.html#static-function-showChangeFontPopover",
     "<span>showChangeFontPopover</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/chat-change-font-popover.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/views/chats/chat-add-category-dialog.js~showchataddcategorydialog",
-    "function/index.html#static-function-showChatAddCategoryDialog",
-    "<span>showChatAddCategoryDialog</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/chat-add-category-dialog.js</span>",
     "function"
   ],
   [
@@ -4749,12 +2949,6 @@ window.esdocSearchIndex = [
     "xuanxuan/app/core/context-menu.js~showcontextmenu",
     "function/index.html#static-function-showContextMenu",
     "<span>showContextMenu</span> <span class=\"search-result-import-path\">xuanxuan/app/core/context-menu.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/views/chats/chat-create-dialog.js~showcreatechatdialog",
-    "function/index.html#static-function-showCreateChatDialog",
-    "<span>showCreateChatDialog</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/chat-create-dialog.js</span>",
     "function"
   ],
   [
@@ -4890,12 +3084,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/views/chats/message-list-item.js~showtimelabelinterval",
-    "variable/index.html#static-variable-showTimeLabelInterval",
-    "<span>showTimeLabelInterval</span> <span class=\"search-result-import-path\">xuanxuan/app/views/chats/message-list-item.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/views/todo/todo-editor-dialog.js~showtodoeditdialog",
     "function/index.html#static-function-showTodoEditDialog",
     "<span>showTodoEditDialog</span> <span class=\"search-result-import-path\">xuanxuan/app/views/todo/todo-editor-dialog.js</span>",
@@ -4932,12 +3120,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/views/login/form.js~simpleserverurl",
-    "function/index.html#static-function-simpleServerUrl",
-    "<span>simpleServerUrl</span> <span class=\"search-result-import-path\">xuanxuan/app/views/login/form.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/utils/skin.js~skinstyle",
     "function/index.html#static-function-skinStyle",
     "<span>skinStyle</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/skin.js</span>",
@@ -4950,52 +3132,10 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
-    "xuanxuan/app/exts/exts.js~sortexts",
-    "function/index.html#static-function-sortExts",
-    "<span>sortExts</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/exts.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/utils/sort-helper.js~sortlist",
     "function/index.html#static-function-sortList",
     "<span>sortList</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/sort-helper.js</span>",
     "function"
-  ],
-  [
-    "xuanxuan/app/utils/shortcut.js~specialkeys",
-    "variable/index.html#static-variable-specialKeys",
-    "<span>specialKeys</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/shortcut.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/time-sequence.js~start",
-    "variable/index.html#static-variable-start",
-    "<span>start</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/time-sequence.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/screenshot.js~startrecording",
-    "function/index.html#static-function-startRecording",
-    "<span>startRecording</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/screenshot.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/views/common/status-dot.js~statuscolors",
-    "variable/index.html#static-variable-statusColors",
-    "<span>statusColors</span> <span class=\"search-result-import-path\">xuanxuan/app/views/common/status-dot.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/electron/screenshot.js~stopstream",
-    "function/index.html#static-function-stopStream",
-    "<span>stopStream</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/screenshot.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/utils/store.js~storage",
-    "variable/index.html#static-variable-storage",
-    "<span>storage</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/store.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/utils/store.js~storeforeach",
@@ -5028,30 +3168,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/core/server/index.js~tempuseridlist",
-    "variable/index.html#static-variable-tempUserIdList",
-    "<span>tempUserIdList</span> <span class=\"search-result-import-path\">xuanxuan/app/core/server/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/skin.js~textskin",
-    "function/index.html#static-function-textSkin",
-    "<span>textSkin</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/skin.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/exts/themes.js~themelinkelement",
-    "variable/index.html#static-variable-themeLinkElement",
-    "<span>themeLinkElement</span> <span class=\"search-result-import-path\">xuanxuan/app/exts/themes.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/views/todo/todo-editer.js~timetoint",
-    "function/index.html#static-function-timeToInt",
-    "<span>timeToInt</span> <span class=\"search-result-import-path\">xuanxuan/app/views/todo/todo-editer.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/platform/common/network.js~timeout",
     "function/index.html#static-function-timeout",
     "<span>timeout</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/common/network.js</span>",
@@ -5061,18 +3177,6 @@ window.esdocSearchIndex = [
     "xuanxuan/app/utils/time-sequence.js~timesequence",
     "function/index.html#static-function-timesequence",
     "<span>timesequence</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/time-sequence.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/platform/electron/env.js~tmppath",
-    "variable/index.html#static-variable-tmpPath",
-    "<span>tmpPath</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/env.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/utils/color.js~tohexvalue",
-    "function/index.html#static-function-toHexValue",
-    "<span>toHexValue</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/color.js</span>",
     "function"
   ],
   [
@@ -5142,18 +3246,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/core/ui.js~unregisterglobalshortcut",
-    "function/index.html#static-function-unregisterGlobalShortcut",
-    "<span>unregisterGlobalShortcut</span> <span class=\"search-result-import-path\">xuanxuan/app/core/ui.js</span>",
-    "function"
-  ],
-  [
-    "xuanxuan/app/platform/electron/shortcut.js~unregisterglobalshortcut",
-    "function/index.html#static-function-unregisterGlobalShortcut",
-    "<span>unregisterGlobalShortcut</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/shortcut.js</span>",
-    "function"
-  ],
-  [
     "xuanxuan/app/core/im/im-server.js~updatechathistory",
     "function/index.html#static-function-updateChatHistory",
     "<span>updateChatHistory</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-server.js</span>",
@@ -5170,12 +3262,6 @@ window.esdocSearchIndex = [
     "function/index.html#static-function-updateChatNotice",
     "<span>updateChatNotice</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-notice.js</span>",
     "function"
-  ],
-  [
-    "xuanxuan/app/core/im/im-notice.js~updatechatnoticetask",
-    "variable/index.html#static-variable-updateChatNoticeTask",
-    "<span>updateChatNoticeTask</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-notice.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/core/im/im-chats.js~updatechats",
@@ -5238,34 +3324,10 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "xuanxuan/app/platform/browser/net.js~uploadfileorigin",
-    "variable/index.html#static-variable-uploadFileOrigin",
-    "<span>uploadFileOrigin</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/browser/net.js</span>",
-    "variable"
-  ],
-  [
     "xuanxuan/app/core/im/im-files.js~uploadimagefile",
     "function/index.html#static-function-uploadImageFile",
     "<span>uploadImageFile</span> <span class=\"search-result-import-path\">xuanxuan/app/core/im/im-files.js</span>",
     "function"
-  ],
-  [
-    "xuanxuan/app/core/ui.js~urlmetacaches",
-    "variable/index.html#static-variable-urlMetaCaches",
-    "<span>urlMetaCaches</span> <span class=\"search-result-import-path\">xuanxuan/app/core/ui.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/core/profile/index.js~user",
-    "variable/index.html#static-variable-user",
-    "<span>user</span> <span class=\"search-result-import-path\">xuanxuan/app/core/profile/index.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/platform/browser/env.js~useragent",
-    "variable/index.html#static-variable-userAgent",
-    "<span>userAgent</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/browser/env.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/platform/electron/ui.js~userdatapath",
@@ -5278,12 +3340,6 @@ window.esdocSearchIndex = [
     "function/index.html#static-function-userList",
     "<span>userList</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/common/config.js</span>",
     "function"
-  ],
-  [
-    "xuanxuan/app/utils/react-debug.js~wdyu",
-    "variable/index.html#static-variable-wdyu",
-    "<span>wdyu</span> <span class=\"search-result-import-path\">xuanxuan/app/utils/react-debug.js</span>",
-    "variable"
   ],
   [
     "xuanxuan/app/platform/electron/clipboard.js~write",
@@ -5325,12 +3381,6 @@ window.esdocSearchIndex = [
     "xuanxuan/app/platform/electron/clipboard.js~writetext",
     "variable/index.html#static-variable-writeText",
     "<span>writeText</span> <span class=\"search-result-import-path\">xuanxuan/app/platform/electron/clipboard.js</span>",
-    "variable"
-  ],
-  [
-    "xuanxuan/app/components/display-layer.js~zindexseed",
-    "variable/index.html#static-variable-zIndexSeed",
-    "<span>zIndexSeed</span> <span class=\"search-result-import-path\">xuanxuan/app/components/display-layer.js</span>",
     "variable"
   ],
   [
@@ -7243,13 +5293,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/chat-message.js~chatmessage#contenttype",
-    "class/app/core/models/chat-message.js~ChatMessage.html#instance-set-contentType",
+    "class/app/core/models/chat-message.js~ChatMessage.html#instance-get-contentType",
     "app/core/models/chat-message.js~ChatMessage#contentType",
     "member"
   ],
   [
     "app/core/models/chat-message.js~chatmessage#contenttype",
-    "class/app/core/models/chat-message.js~ChatMessage.html#instance-get-contentType",
+    "class/app/core/models/chat-message.js~ChatMessage.html#instance-set-contentType",
     "app/core/models/chat-message.js~ChatMessage#contentType",
     "member"
   ],
@@ -7309,13 +5359,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/chat-message.js~chatmessage#id",
-    "class/app/core/models/chat-message.js~ChatMessage.html#instance-set-id",
+    "class/app/core/models/chat-message.js~ChatMessage.html#instance-get-id",
     "app/core/models/chat-message.js~ChatMessage#id",
     "member"
   ],
   [
     "app/core/models/chat-message.js~chatmessage#id",
-    "class/app/core/models/chat-message.js~ChatMessage.html#instance-get-id",
+    "class/app/core/models/chat-message.js~ChatMessage.html#instance-set-id",
     "app/core/models/chat-message.js~ChatMessage#id",
     "member"
   ],
@@ -7531,13 +5581,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/chat-message.js~chatmessage#unread",
-    "class/app/core/models/chat-message.js~ChatMessage.html#instance-get-unread",
+    "class/app/core/models/chat-message.js~ChatMessage.html#instance-set-unread",
     "app/core/models/chat-message.js~ChatMessage#unread",
     "member"
   ],
   [
     "app/core/models/chat-message.js~chatmessage#unread",
-    "class/app/core/models/chat-message.js~ChatMessage.html#instance-set-unread",
+    "class/app/core/models/chat-message.js~ChatMessage.html#instance-get-unread",
     "app/core/models/chat-message.js~ChatMessage#unread",
     "member"
   ],
@@ -7771,13 +5821,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/chat.js~chat#committers",
-    "class/app/core/models/chat.js~Chat.html#instance-set-committers",
+    "class/app/core/models/chat.js~Chat.html#instance-get-committers",
     "app/core/models/chat.js~Chat#committers",
     "member"
   ],
   [
     "app/core/models/chat.js~chat#committers",
-    "class/app/core/models/chat.js~Chat.html#instance-get-committers",
+    "class/app/core/models/chat.js~Chat.html#instance-set-committers",
     "app/core/models/chat.js~Chat#committers",
     "member"
   ],
@@ -7807,13 +5857,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/chat.js~chat#createddate",
-    "class/app/core/models/chat.js~Chat.html#instance-get-createdDate",
+    "class/app/core/models/chat.js~Chat.html#instance-set-createdDate",
     "app/core/models/chat.js~Chat#createdDate",
     "member"
   ],
   [
     "app/core/models/chat.js~chat#createddate",
-    "class/app/core/models/chat.js~Chat.html#instance-set-createdDate",
+    "class/app/core/models/chat.js~Chat.html#instance-get-createdDate",
     "app/core/models/chat.js~Chat#createdDate",
     "member"
   ],
@@ -7891,25 +5941,25 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/chat.js~chat#hide",
-    "class/app/core/models/chat.js~Chat.html#instance-get-hide",
-    "app/core/models/chat.js~Chat#hide",
-    "member"
-  ],
-  [
-    "app/core/models/chat.js~chat#hide",
     "class/app/core/models/chat.js~Chat.html#instance-set-hide",
     "app/core/models/chat.js~Chat#hide",
     "member"
   ],
   [
-    "app/core/models/chat.js~chat#id",
-    "class/app/core/models/chat.js~Chat.html#instance-set-id",
-    "app/core/models/chat.js~Chat#id",
+    "app/core/models/chat.js~chat#hide",
+    "class/app/core/models/chat.js~Chat.html#instance-get-hide",
+    "app/core/models/chat.js~Chat#hide",
     "member"
   ],
   [
     "app/core/models/chat.js~chat#id",
     "class/app/core/models/chat.js~Chat.html#instance-get-id",
+    "app/core/models/chat.js~Chat#id",
+    "member"
+  ],
+  [
+    "app/core/models/chat.js~chat#id",
+    "class/app/core/models/chat.js~Chat.html#instance-set-id",
     "app/core/models/chat.js~Chat#id",
     "member"
   ],
@@ -7927,13 +5977,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/chat.js~chat#isdeleteone2one",
-    "class/app/core/models/chat.js~Chat.html#instance-get-isDeleteOne2One",
+    "class/app/core/models/chat.js~Chat.html#instance-set-isDeleteOne2One",
     "app/core/models/chat.js~Chat#isDeleteOne2One",
     "member"
   ],
   [
     "app/core/models/chat.js~chat#isdeleteone2one",
-    "class/app/core/models/chat.js~Chat.html#instance-set-isDeleteOne2One",
+    "class/app/core/models/chat.js~Chat.html#instance-get-isDeleteOne2One",
     "app/core/models/chat.js~Chat#isDeleteOne2One",
     "member"
   ],
@@ -8065,13 +6115,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/chat.js~chat#members",
-    "class/app/core/models/chat.js~Chat.html#instance-set-members",
+    "class/app/core/models/chat.js~Chat.html#instance-get-members",
     "app/core/models/chat.js~Chat#members",
     "member"
   ],
   [
     "app/core/models/chat.js~chat#members",
-    "class/app/core/models/chat.js~Chat.html#instance-get-members",
+    "class/app/core/models/chat.js~Chat.html#instance-set-members",
     "app/core/models/chat.js~Chat#members",
     "member"
   ],
@@ -8131,13 +6181,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/chat.js~chat#public",
-    "class/app/core/models/chat.js~Chat.html#instance-set-public",
+    "class/app/core/models/chat.js~Chat.html#instance-get-public",
     "app/core/models/chat.js~Chat#public",
     "member"
   ],
   [
     "app/core/models/chat.js~chat#public",
-    "class/app/core/models/chat.js~Chat.html#instance-get-public",
+    "class/app/core/models/chat.js~Chat.html#instance-set-public",
     "app/core/models/chat.js~Chat#public",
     "member"
   ],
@@ -8167,13 +6217,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/chat.js~chat#star",
-    "class/app/core/models/chat.js~Chat.html#instance-set-star",
+    "class/app/core/models/chat.js~Chat.html#instance-get-star",
     "app/core/models/chat.js~Chat#star",
     "member"
   ],
   [
     "app/core/models/chat.js~chat#star",
-    "class/app/core/models/chat.js~Chat.html#instance-get-star",
+    "class/app/core/models/chat.js~Chat.html#instance-set-star",
     "app/core/models/chat.js~Chat#star",
     "member"
   ],
@@ -8221,13 +6271,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/chat.js~chat#whitelist",
-    "class/app/core/models/chat.js~Chat.html#instance-set-whitelist",
+    "class/app/core/models/chat.js~Chat.html#instance-get-whitelist",
     "app/core/models/chat.js~Chat#whitelist",
     "member"
   ],
   [
     "app/core/models/chat.js~chat#whitelist",
-    "class/app/core/models/chat.js~Chat.html#instance-get-whitelist",
+    "class/app/core/models/chat.js~Chat.html#instance-set-whitelist",
     "app/core/models/chat.js~Chat#whitelist",
     "member"
   ],
@@ -8407,13 +6457,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/entity.js~entity#id",
-    "class/app/core/models/entity.js~Entity.html#instance-set-id",
+    "class/app/core/models/entity.js~Entity.html#instance-get-id",
     "app/core/models/entity.js~Entity#id",
     "member"
   ],
   [
     "app/core/models/entity.js~entity#id",
-    "class/app/core/models/entity.js~Entity.html#instance-get-id",
+    "class/app/core/models/entity.js~Entity.html#instance-set-id",
     "app/core/models/entity.js~Entity#id",
     "member"
   ],
@@ -8497,13 +6547,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/file-data.js~filedata#cgid",
-    "class/app/core/models/file-data.js~FileData.html#instance-get-cgid",
+    "class/app/core/models/file-data.js~FileData.html#instance-set-cgid",
     "app/core/models/file-data.js~FileData#cgid",
     "member"
   ],
   [
     "app/core/models/file-data.js~filedata#cgid",
-    "class/app/core/models/file-data.js~FileData.html#instance-set-cgid",
+    "class/app/core/models/file-data.js~FileData.html#instance-get-cgid",
     "app/core/models/file-data.js~FileData#cgid",
     "member"
   ],
@@ -8515,13 +6565,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/file-data.js~filedata#date",
-    "class/app/core/models/file-data.js~FileData.html#instance-get-date",
+    "class/app/core/models/file-data.js~FileData.html#instance-set-date",
     "app/core/models/file-data.js~FileData#date",
     "member"
   ],
   [
     "app/core/models/file-data.js~filedata#date",
-    "class/app/core/models/file-data.js~FileData.html#instance-set-date",
+    "class/app/core/models/file-data.js~FileData.html#instance-get-date",
     "app/core/models/file-data.js~FileData#date",
     "member"
   ],
@@ -8557,13 +6607,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/file-data.js~filedata#height",
-    "class/app/core/models/file-data.js~FileData.html#instance-set-height",
+    "class/app/core/models/file-data.js~FileData.html#instance-get-height",
     "app/core/models/file-data.js~FileData#height",
     "member"
   ],
   [
     "app/core/models/file-data.js~filedata#height",
-    "class/app/core/models/file-data.js~FileData.html#instance-get-height",
+    "class/app/core/models/file-data.js~FileData.html#instance-set-height",
     "app/core/models/file-data.js~FileData#height",
     "member"
   ],
@@ -8653,13 +6703,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/file-data.js~filedata#send",
-    "class/app/core/models/file-data.js~FileData.html#instance-set-send",
+    "class/app/core/models/file-data.js~FileData.html#instance-get-send",
     "app/core/models/file-data.js~FileData#send",
     "member"
   ],
   [
     "app/core/models/file-data.js~filedata#send",
-    "class/app/core/models/file-data.js~FileData.html#instance-get-send",
+    "class/app/core/models/file-data.js~FileData.html#instance-set-send",
     "app/core/models/file-data.js~FileData#send",
     "member"
   ],
@@ -8683,13 +6733,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/file-data.js~filedata#size",
-    "class/app/core/models/file-data.js~FileData.html#instance-get-size",
+    "class/app/core/models/file-data.js~FileData.html#instance-set-size",
     "app/core/models/file-data.js~FileData#size",
     "member"
   ],
   [
     "app/core/models/file-data.js~filedata#size",
-    "class/app/core/models/file-data.js~FileData.html#instance-set-size",
+    "class/app/core/models/file-data.js~FileData.html#instance-get-size",
     "app/core/models/file-data.js~FileData#size",
     "member"
   ],
@@ -8701,13 +6751,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/file-data.js~filedata#time",
-    "class/app/core/models/file-data.js~FileData.html#instance-set-time",
+    "class/app/core/models/file-data.js~FileData.html#instance-get-time",
     "app/core/models/file-data.js~FileData#time",
     "member"
   ],
   [
     "app/core/models/file-data.js~filedata#time",
-    "class/app/core/models/file-data.js~FileData.html#instance-get-time",
+    "class/app/core/models/file-data.js~FileData.html#instance-set-time",
     "app/core/models/file-data.js~FileData#time",
     "member"
   ],
@@ -8977,13 +7027,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/models/member.js~member#status",
-    "class/app/core/models/member.js~Member.html#instance-set-status",
+    "class/app/core/models/member.js~Member.html#instance-get-status",
     "app/core/models/member.js~Member#status",
     "member"
   ],
   [
     "app/core/models/member.js~member#status",
-    "class/app/core/models/member.js~Member.html#instance-get-status",
+    "class/app/core/models/member.js~Member.html#instance-set-status",
     "app/core/models/member.js~Member#status",
     "member"
   ],
@@ -9385,25 +7435,25 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/profile/user-config.js~userconfig#autoreconnect",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-autoReconnect",
-    "app/core/profile/user-config.js~UserConfig#autoReconnect",
-    "member"
-  ],
-  [
-    "app/core/profile/user-config.js~userconfig#autoreconnect",
     "class/app/core/profile/user-config.js~UserConfig.html#instance-get-autoReconnect",
     "app/core/profile/user-config.js~UserConfig#autoReconnect",
     "member"
   ],
   [
-    "app/core/profile/user-config.js~userconfig#avatarposition",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-avatarPosition",
-    "app/core/profile/user-config.js~UserConfig#avatarPosition",
+    "app/core/profile/user-config.js~userconfig#autoreconnect",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-autoReconnect",
+    "app/core/profile/user-config.js~UserConfig#autoReconnect",
     "member"
   ],
   [
     "app/core/profile/user-config.js~userconfig#avatarposition",
     "class/app/core/profile/user-config.js~UserConfig.html#instance-set-avatarPosition",
+    "app/core/profile/user-config.js~UserConfig#avatarPosition",
+    "member"
+  ],
+  [
+    "app/core/profile/user-config.js~userconfig#avatarposition",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-avatarPosition",
     "app/core/profile/user-config.js~UserConfig#avatarPosition",
     "member"
   ],
@@ -9427,25 +7477,25 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/profile/user-config.js~userconfig#chatfontsize",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-chatFontSize",
-    "app/core/profile/user-config.js~UserConfig#chatFontSize",
-    "member"
-  ],
-  [
-    "app/core/profile/user-config.js~userconfig#chatfontsize",
     "class/app/core/profile/user-config.js~UserConfig.html#instance-get-chatFontSize",
     "app/core/profile/user-config.js~UserConfig#chatFontSize",
     "member"
   ],
   [
-    "app/core/profile/user-config.js~userconfig#chatgroupstates",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-chatGroupStates",
-    "app/core/profile/user-config.js~UserConfig#chatGroupStates",
+    "app/core/profile/user-config.js~userconfig#chatfontsize",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-chatFontSize",
+    "app/core/profile/user-config.js~UserConfig#chatFontSize",
     "member"
   ],
   [
     "app/core/profile/user-config.js~userconfig#chatgroupstates",
     "class/app/core/profile/user-config.js~UserConfig.html#instance-set-chatGroupStates",
+    "app/core/profile/user-config.js~UserConfig#chatGroupStates",
+    "member"
+  ],
+  [
+    "app/core/profile/user-config.js~userconfig#chatgroupstates",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-chatGroupStates",
     "app/core/profile/user-config.js~UserConfig#chatGroupStates",
     "member"
   ],
@@ -9505,25 +7555,25 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/profile/user-config.js~userconfig#contactsorderrole",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-contactsOrderRole",
-    "app/core/profile/user-config.js~UserConfig#contactsOrderRole",
-    "member"
-  ],
-  [
-    "app/core/profile/user-config.js~userconfig#contactsorderrole",
     "class/app/core/profile/user-config.js~UserConfig.html#instance-set-contactsOrderRole",
     "app/core/profile/user-config.js~UserConfig#contactsOrderRole",
     "member"
   ],
   [
-    "app/core/profile/user-config.js~userconfig#enablesearchinemojionepicker",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-enableSearchInEmojionePicker",
-    "app/core/profile/user-config.js~UserConfig#enableSearchInEmojionePicker",
+    "app/core/profile/user-config.js~userconfig#contactsorderrole",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-contactsOrderRole",
+    "app/core/profile/user-config.js~UserConfig#contactsOrderRole",
     "member"
   ],
   [
     "app/core/profile/user-config.js~userconfig#enablesearchinemojionepicker",
     "class/app/core/profile/user-config.js~UserConfig.html#instance-get-enableSearchInEmojionePicker",
+    "app/core/profile/user-config.js~UserConfig#enableSearchInEmojionePicker",
+    "member"
+  ],
+  [
+    "app/core/profile/user-config.js~userconfig#enablesearchinemojionepicker",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-enableSearchInEmojionePicker",
     "app/core/profile/user-config.js~UserConfig#enableSearchInEmojionePicker",
     "member"
   ],
@@ -9571,25 +7621,25 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/profile/user-config.js~userconfig#flashtrayiconcondition",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-flashTrayIconCondition",
-    "app/core/profile/user-config.js~UserConfig#flashTrayIconCondition",
-    "member"
-  ],
-  [
-    "app/core/profile/user-config.js~userconfig#flashtrayiconcondition",
     "class/app/core/profile/user-config.js~UserConfig.html#instance-get-flashTrayIconCondition",
     "app/core/profile/user-config.js~UserConfig#flashTrayIconCondition",
     "member"
   ],
   [
-    "app/core/profile/user-config.js~userconfig#focuswindowhotkey",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-focusWindowHotkey",
-    "app/core/profile/user-config.js~UserConfig#focusWindowHotkey",
+    "app/core/profile/user-config.js~userconfig#flashtrayiconcondition",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-flashTrayIconCondition",
+    "app/core/profile/user-config.js~UserConfig#flashTrayIconCondition",
     "member"
   ],
   [
     "app/core/profile/user-config.js~userconfig#focuswindowhotkey",
     "class/app/core/profile/user-config.js~UserConfig.html#instance-get-focusWindowHotkey",
+    "app/core/profile/user-config.js~UserConfig#focusWindowHotkey",
+    "member"
+  ],
+  [
+    "app/core/profile/user-config.js~userconfig#focuswindowhotkey",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-focusWindowHotkey",
     "app/core/profile/user-config.js~UserConfig#focusWindowHotkey",
     "member"
   ],
@@ -9631,13 +7681,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/profile/user-config.js~userconfig#groupsdefaultcategoryname",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-groupsDefaultCategoryName",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-groupsDefaultCategoryName",
     "app/core/profile/user-config.js~UserConfig#groupsDefaultCategoryName",
     "member"
   ],
   [
     "app/core/profile/user-config.js~userconfig#groupsdefaultcategoryname",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-groupsDefaultCategoryName",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-groupsDefaultCategoryName",
     "app/core/profile/user-config.js~UserConfig#groupsDefaultCategoryName",
     "member"
   ],
@@ -9649,13 +7699,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/profile/user-config.js~userconfig#hidewindowonblur",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-hideWindowOnBlur",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-hideWindowOnBlur",
     "app/core/profile/user-config.js~UserConfig#hideWindowOnBlur",
     "member"
   ],
   [
     "app/core/profile/user-config.js~userconfig#hidewindowonblur",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-hideWindowOnBlur",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-hideWindowOnBlur",
     "app/core/profile/user-config.js~UserConfig#hideWindowOnBlur",
     "member"
   ],
@@ -9691,13 +7741,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/profile/user-config.js~userconfig#listenclipboardimage",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-listenClipboardImage",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-listenClipboardImage",
     "app/core/profile/user-config.js~UserConfig#listenClipboardImage",
     "member"
   ],
   [
     "app/core/profile/user-config.js~userconfig#listenclipboardimage",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-listenClipboardImage",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-listenClipboardImage",
     "app/core/profile/user-config.js~UserConfig#listenClipboardImage",
     "member"
   ],
@@ -9715,13 +7765,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/profile/user-config.js~userconfig#muteonuserisbusy",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-muteOnUserIsBusy",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-muteOnUserIsBusy",
     "app/core/profile/user-config.js~UserConfig#muteOnUserIsBusy",
     "member"
   ],
   [
     "app/core/profile/user-config.js~userconfig#muteonuserisbusy",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-muteOnUserIsBusy",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-muteOnUserIsBusy",
     "app/core/profile/user-config.js~UserConfig#muteOnUserIsBusy",
     "member"
   ],
@@ -9751,13 +7801,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/profile/user-config.js~userconfig#removefromtaskbaronhide",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-removeFromTaskbarOnHide",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-removeFromTaskbarOnHide",
     "app/core/profile/user-config.js~UserConfig#removeFromTaskbarOnHide",
     "member"
   ],
   [
     "app/core/profile/user-config.js~userconfig#removefromtaskbaronhide",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-removeFromTaskbarOnHide",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-removeFromTaskbarOnHide",
     "app/core/profile/user-config.js~UserConfig#removeFromTaskbarOnHide",
     "member"
   ],
@@ -9769,13 +7819,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/profile/user-config.js~userconfig#safewindownotification",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-safeWindowNotification",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-safeWindowNotification",
     "app/core/profile/user-config.js~UserConfig#safeWindowNotification",
     "member"
   ],
   [
     "app/core/profile/user-config.js~userconfig#safewindownotification",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-safeWindowNotification",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-safeWindowNotification",
     "app/core/profile/user-config.js~UserConfig#safeWindowNotification",
     "member"
   ],
@@ -9841,13 +7891,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/profile/user-config.js~userconfig#showmeonmenu",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-showMeOnMenu",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-showMeOnMenu",
     "app/core/profile/user-config.js~UserConfig#showMeOnMenu",
     "member"
   ],
   [
     "app/core/profile/user-config.js~userconfig#showmeonmenu",
-    "class/app/core/profile/user-config.js~UserConfig.html#instance-get-showMeOnMenu",
+    "class/app/core/profile/user-config.js~UserConfig.html#instance-set-showMeOnMenu",
     "app/core/profile/user-config.js~UserConfig#showMeOnMenu",
     "member"
   ],
@@ -10099,13 +8149,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/profile/user.js~user#ldap",
-    "class/app/core/profile/user.js~User.html#instance-get-ldap",
+    "class/app/core/profile/user.js~User.html#instance-set-ldap",
     "app/core/profile/user.js~User#ldap",
     "member"
   ],
   [
     "app/core/profile/user.js~user#ldap",
-    "class/app/core/profile/user.js~User.html#instance-set-ldap",
+    "class/app/core/profile/user.js~User.html#instance-get-ldap",
     "app/core/profile/user.js~User#ldap",
     "member"
   ],
@@ -10165,25 +8215,25 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/profile/user.js~user#ranzhiurl",
-    "class/app/core/profile/user.js~User.html#instance-get-ranzhiUrl",
-    "app/core/profile/user.js~User#ranzhiUrl",
-    "member"
-  ],
-  [
-    "app/core/profile/user.js~user#ranzhiurl",
     "class/app/core/profile/user.js~User.html#instance-set-ranzhiUrl",
     "app/core/profile/user.js~User#ranzhiUrl",
     "member"
   ],
   [
-    "app/core/profile/user.js~user#rememberpassword",
-    "class/app/core/profile/user.js~User.html#instance-set-rememberPassword",
-    "app/core/profile/user.js~User#rememberPassword",
+    "app/core/profile/user.js~user#ranzhiurl",
+    "class/app/core/profile/user.js~User.html#instance-get-ranzhiUrl",
+    "app/core/profile/user.js~User#ranzhiUrl",
     "member"
   ],
   [
     "app/core/profile/user.js~user#rememberpassword",
     "class/app/core/profile/user.js~User.html#instance-get-rememberPassword",
+    "app/core/profile/user.js~User#rememberPassword",
+    "member"
+  ],
+  [
+    "app/core/profile/user.js~user#rememberpassword",
+    "class/app/core/profile/user.js~User.html#instance-set-rememberPassword",
     "app/core/profile/user.js~User#rememberPassword",
     "member"
   ],
@@ -10249,13 +8299,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/profile/user.js~user#sessionid",
-    "class/app/core/profile/user.js~User.html#instance-set-sessionID",
+    "class/app/core/profile/user.js~User.html#instance-get-sessionID",
     "app/core/profile/user.js~User#sessionID",
     "member"
   ],
   [
     "app/core/profile/user.js~user#sessionid",
-    "class/app/core/profile/user.js~User.html#instance-get-sessionID",
+    "class/app/core/profile/user.js~User.html#instance-set-sessionID",
     "app/core/profile/user.js~User#sessionID",
     "member"
   ],
@@ -10279,13 +8329,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/core/profile/user.js~user#socketport",
-    "class/app/core/profile/user.js~User.html#instance-get-socketPort",
+    "class/app/core/profile/user.js~User.html#instance-set-socketPort",
     "app/core/profile/user.js~User#socketPort",
     "member"
   ],
   [
     "app/core/profile/user.js~user#socketport",
-    "class/app/core/profile/user.js~User.html#instance-set-socketPort",
+    "class/app/core/profile/user.js~User.html#instance-get-socketPort",
     "app/core/profile/user.js~User#socketPort",
     "member"
   ],
@@ -10747,13 +8797,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/exts/base-extension.js~extension#disabled",
-    "class/app/exts/base-extension.js~Extension.html#instance-set-disabled",
+    "class/app/exts/base-extension.js~Extension.html#instance-get-disabled",
     "app/exts/base-extension.js~Extension#disabled",
     "member"
   ],
   [
     "app/exts/base-extension.js~extension#disabled",
-    "class/app/exts/base-extension.js~Extension.html#instance-get-disabled",
+    "class/app/exts/base-extension.js~Extension.html#instance-set-disabled",
     "app/exts/base-extension.js~Extension#disabled",
     "member"
   ],
@@ -10933,13 +8983,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/exts/base-extension.js~extension#isdev",
-    "class/app/exts/base-extension.js~Extension.html#instance-get-isDev",
+    "class/app/exts/base-extension.js~Extension.html#instance-set-isDev",
     "app/exts/base-extension.js~Extension#isDev",
     "member"
   ],
   [
     "app/exts/base-extension.js~extension#isdev",
-    "class/app/exts/base-extension.js~Extension.html#instance-set-isDev",
+    "class/app/exts/base-extension.js~Extension.html#instance-get-isDev",
     "app/exts/base-extension.js~Extension#isDev",
     "member"
   ],
@@ -11005,13 +9055,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/exts/base-extension.js~extension#localpath",
-    "class/app/exts/base-extension.js~Extension.html#instance-set-localPath",
+    "class/app/exts/base-extension.js~Extension.html#instance-get-localPath",
     "app/exts/base-extension.js~Extension#localPath",
     "member"
   ],
   [
     "app/exts/base-extension.js~extension#localpath",
-    "class/app/exts/base-extension.js~Extension.html#instance-get-localPath",
+    "class/app/exts/base-extension.js~Extension.html#instance-set-localPath",
     "app/exts/base-extension.js~Extension#localPath",
     "member"
   ],
@@ -11119,13 +9169,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/exts/base-extension.js~extension#updatetime",
-    "class/app/exts/base-extension.js~Extension.html#instance-get-updateTime",
+    "class/app/exts/base-extension.js~Extension.html#instance-set-updateTime",
     "app/exts/base-extension.js~Extension#updateTime",
     "member"
   ],
   [
     "app/exts/base-extension.js~extension#updatetime",
-    "class/app/exts/base-extension.js~Extension.html#instance-set-updateTime",
+    "class/app/exts/base-extension.js~Extension.html#instance-get-updateTime",
     "app/exts/base-extension.js~Extension#updateTime",
     "member"
   ],
@@ -11383,13 +9433,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/exts/opened-app.js~openedapp#params",
-    "class/app/exts/opened-app.js~OpenedApp.html#instance-set-params",
+    "class/app/exts/opened-app.js~OpenedApp.html#instance-get-params",
     "app/exts/opened-app.js~OpenedApp#params",
     "member"
   ],
   [
     "app/exts/opened-app.js~openedapp#params",
-    "class/app/exts/opened-app.js~OpenedApp.html#instance-get-params",
+    "class/app/exts/opened-app.js~OpenedApp.html#instance-set-params",
     "app/exts/opened-app.js~OpenedApp#params",
     "member"
   ],
@@ -11407,13 +9457,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/exts/opened-app.js~openedapp#webview",
-    "class/app/exts/opened-app.js~OpenedApp.html#instance-set-webview",
+    "class/app/exts/opened-app.js~OpenedApp.html#instance-get-webview",
     "app/exts/opened-app.js~OpenedApp#webview",
     "member"
   ],
   [
     "app/exts/opened-app.js~openedapp#webview",
-    "class/app/exts/opened-app.js~OpenedApp.html#instance-get-webview",
+    "class/app/exts/opened-app.js~OpenedApp.html#instance-set-webview",
     "app/exts/opened-app.js~OpenedApp#webview",
     "member"
   ],
@@ -12661,13 +10711,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/platform/electron/socket.js~socket#status",
-    "class/app/platform/electron/socket.js~Socket.html#instance-get-status",
+    "class/app/platform/electron/socket.js~Socket.html#instance-set-status",
     "app/platform/electron/socket.js~Socket#status",
     "member"
   ],
   [
     "app/platform/electron/socket.js~socket#status",
-    "class/app/platform/electron/socket.js~Socket.html#instance-set-status",
+    "class/app/platform/electron/socket.js~Socket.html#instance-get-status",
     "app/platform/electron/socket.js~Socket#status",
     "member"
   ],
@@ -12715,25 +10765,25 @@ window.esdocSearchIndex = [
   ],
   [
     "app/utils/color.js~color#a",
-    "class/app/utils/color.js~Color.html#instance-set-A",
-    "app/utils/color.js~Color#A",
-    "member"
-  ],
-  [
-    "app/utils/color.js~color#a",
     "class/app/utils/color.js~Color.html#instance-get-A",
     "app/utils/color.js~Color#A",
     "member"
   ],
   [
-    "app/utils/color.js~color#b",
-    "class/app/utils/color.js~Color.html#instance-get-B",
-    "app/utils/color.js~Color#B",
+    "app/utils/color.js~color#a",
+    "class/app/utils/color.js~Color.html#instance-set-A",
+    "app/utils/color.js~Color#A",
     "member"
   ],
   [
     "app/utils/color.js~color#b",
     "class/app/utils/color.js~Color.html#instance-set-B",
+    "app/utils/color.js~Color#B",
+    "member"
+  ],
+  [
+    "app/utils/color.js~color#b",
+    "class/app/utils/color.js~Color.html#instance-get-B",
     "app/utils/color.js~Color#B",
     "member"
   ],
@@ -12859,13 +10909,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/utils/color.js~color#hsl",
-    "class/app/utils/color.js~Color.html#instance-get-hsl",
+    "class/app/utils/color.js~Color.html#instance-set-hsl",
     "app/utils/color.js~Color#hsl",
     "member"
   ],
   [
     "app/utils/color.js~color#hsl",
-    "class/app/utils/color.js~Color.html#instance-set-hsl",
+    "class/app/utils/color.js~Color.html#instance-get-hsl",
     "app/utils/color.js~Color#hsl",
     "member"
   ],
@@ -13261,13 +11311,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/utils/status.js~statuskeeper#onchange",
-    "class/app/utils/status.js~StatusKeeper.html#instance-get-onChange",
+    "class/app/utils/status.js~StatusKeeper.html#instance-set-onChange",
     "app/utils/status.js~StatusKeeper#onChange",
     "member"
   ],
   [
     "app/utils/status.js~statuskeeper#onchange",
-    "class/app/utils/status.js~StatusKeeper.html#instance-set-onChange",
+    "class/app/utils/status.js~StatusKeeper.html#instance-get-onChange",
     "app/utils/status.js~StatusKeeper#onChange",
     "member"
   ],
@@ -13405,25 +11455,25 @@ window.esdocSearchIndex = [
   ],
   [
     "app/utils/task-queue.js~taskqueue#ontask",
-    "class/app/utils/task-queue.js~TaskQueue.html#instance-get-onTask",
-    "app/utils/task-queue.js~TaskQueue#onTask",
-    "member"
-  ],
-  [
-    "app/utils/task-queue.js~taskqueue#ontask",
     "class/app/utils/task-queue.js~TaskQueue.html#instance-set-onTask",
     "app/utils/task-queue.js~TaskQueue#onTask",
     "member"
   ],
   [
-    "app/utils/task-queue.js~taskqueue#ontaskstart",
-    "class/app/utils/task-queue.js~TaskQueue.html#instance-get-onTaskStart",
-    "app/utils/task-queue.js~TaskQueue#onTaskStart",
+    "app/utils/task-queue.js~taskqueue#ontask",
+    "class/app/utils/task-queue.js~TaskQueue.html#instance-get-onTask",
+    "app/utils/task-queue.js~TaskQueue#onTask",
     "member"
   ],
   [
     "app/utils/task-queue.js~taskqueue#ontaskstart",
     "class/app/utils/task-queue.js~TaskQueue.html#instance-set-onTaskStart",
+    "app/utils/task-queue.js~TaskQueue#onTaskStart",
+    "member"
+  ],
+  [
+    "app/utils/task-queue.js~taskqueue#ontaskstart",
+    "class/app/utils/task-queue.js~TaskQueue.html#instance-get-onTaskStart",
     "app/utils/task-queue.js~TaskQueue#onTaskStart",
     "member"
   ],
@@ -15457,13 +13507,13 @@ window.esdocSearchIndex = [
   ],
   [
     "app/views/chats/menu-contact-list.js~menucontactlist#grouptype",
-    "class/app/views/chats/menu-contact-list.js~MenuContactList.html#instance-set-groupType",
+    "class/app/views/chats/menu-contact-list.js~MenuContactList.html#instance-get-groupType",
     "app/views/chats/menu-contact-list.js~MenuContactList#groupType",
     "member"
   ],
   [
     "app/views/chats/menu-contact-list.js~menucontactlist#grouptype",
-    "class/app/views/chats/menu-contact-list.js~MenuContactList.html#instance-get-groupType",
+    "class/app/views/chats/menu-contact-list.js~MenuContactList.html#instance-set-groupType",
     "app/views/chats/menu-contact-list.js~MenuContactList#groupType",
     "member"
   ],
