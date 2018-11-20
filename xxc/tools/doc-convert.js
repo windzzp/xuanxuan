@@ -41,7 +41,7 @@ function replaceConfig(content, config, conversions, prefixKey) {
             if (typeof value === 'object' && value !== null) {
                 content = replaceConfig(content, value, conversions, key);
             }
-            const regStr = `\\$\\{(${(prefixKey !== undefined && prefixKey !== null) ? (`${prefixKey}\\.`) : ''}${key}:?[.^\\}]*)\\}`;
+            const regStr = `\\$\\{(${(prefixKey !== undefined && prefixKey !== null) ? (`${prefixKey}\\.`) : ''}${key}:?[^\\}]*)\\}`;
             content = content.replace(new RegExp(regStr, 'g'), (_, match) => {
                 const matchArr = match.split(':');
                 let result = (value === null || value === undefined) ? '' : value;
