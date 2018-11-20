@@ -12,7 +12,7 @@ import replaceViews from '../replace-views';
  * @class WebviewFrame
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import WebviewFrame from './webview-frame';
  * <WebviewFrame />
  */
@@ -23,7 +23,7 @@ export default class WebViewFrame extends Component {
      * @readonly
      * @static
      * @memberof WebviewFrame
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {WebviewFrame} from './webview-frame';
      * <WebviewFrame />
      */

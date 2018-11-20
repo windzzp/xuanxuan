@@ -3,21 +3,19 @@
   "productName": "喧喧",
   "version": "2.1.0",
   "description": "企业即时通讯平台",
-  "main": "main.js",
   "scripts": {
-    "hot-server": "cross-env NODE_ENV=development node --max_old_space_size=2096 -r babel-register ./build/server.js",
-    "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./build/webpack.config.electron.js --progress --profile --colors",
-    "build-renderer": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./build/webpack.config.production.js --progress --profile --colors",
-    "build-renderer-debug": "cross-env NODE_ENV=debug node -r babel-register ./node_modules/webpack/bin/webpack --config ./build/webpack.config.debug.js --progress --profile --colors",
-    "build-main-debug": "cross-env NODE_ENV=debug node -r babel-register ./node_modules/webpack/bin/webpack --config ./build/webpack.config.electron.js --progress --profile --colors",
+    "hot-server": "cross-env NODE_ENV=development node --max_old_space_size=2096 -r babel-register ./tools/server.js",
+    "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./tools/webpack.config.electron.js --progress --profile --colors",
+    "build-renderer": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./tools/webpack.config.production.js --progress --profile --colors",
+    "build-renderer-debug": "cross-env NODE_ENV=debug node -r babel-register ./node_modules/webpack/bin/webpack --config ./tools/webpack.config.debug.js --progress --profile --colors",
+    "build-main-debug": "cross-env NODE_ENV=debug node -r babel-register ./node_modules/webpack/bin/webpack --config ./tools/webpack.config.electron.js --progress --profile --colors",
     "build": "npm run build-main && npm run build-renderer",
     "build-debug": "npm run build-main-debug && npm run build-renderer-debug",
-    "build-browser": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./build/webpack.config.browser.js --progress --profile --colors",
-    "start": "cross-env NODE_ENV=production electron ./app/",
+    "build-browser": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./tools/webpack.config.browser.js --progress --profile --colors",
+    "start": "npm run hot-server-browser",
     "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./app/main.development",
     "start-hot-fast": "cross-env HOT=1 NODE_ENV=development SKIP_INSTALL_EXTENSIONS=1 electron -r babel-register -r babel-polyfill ./app/main.development",
     "postinstall": "npm run package -- --skipbuild && concurrently \"electron-builder install-app-deps\" \"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\"",
-    "copy-browser-files": "cross-env NODE_ENV=development node --max_old_space_size=2096 -r babel-register ./build/package-browser.js",
     "package": "node --max_old_space_size=2096 -r babel-register ./build/package.js",
     "package-beta": "npm run package -- --beta",
     "package-debug": "npm run package -- --debug",
@@ -33,14 +31,15 @@
     "package-all-beta": "npm run package -- --platform=all --arch=x64 --beta --clean && npm run package -- --platform=mac,win --arch=x64 --debug --beta",
     "package-browser": "npm run package -- --platform=browser",
     "hot-server-browser": "npm run hot-server -- --target=browser",
-    "docs": "./node_modules/.bin/esdoc"
+    "docs": "./node_modules/.bin/esdoc",
+    "eslint": "eslint ./app"
   },
   "build": {
     "extends": "./build/electron-builder.json"
   },
   "bin": {
     "electron": "./node_modules/.bin/electron",
-    "xxbuild": "./build/build.js"
+    "eslint": "./node_modules/.bin/eslint"
   },
   "repository": {
     "type": "git",
@@ -86,7 +85,6 @@
     "babel-register": "^6.18.0",
     "babel-traverse": "^6.22.1",
     "babili-webpack-plugin": "^0.1.2",
-    "boiler-room-custodian": "^0.6.1",
     "chalk": "^2.4.1",
     "commander": "^2.19.0",
     "concurrently": "^3.1.0",
@@ -94,7 +92,6 @@
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
-    "dmd-plugin-zh-cn": "0.0.7",
     "electron": "^2.0.5",
     "electron-builder": "20.24.4",
     "electron-devtools-installer": "^2.2.4",
@@ -105,9 +102,8 @@
     "esdoc-jsx-plugin": "^1.0.0",
     "esdoc-react-plugin": "^1.0.1",
     "esdoc-standard-plugin": "^1.0.0",
-    "eslint": "^5.2.0",
+    "eslint": "^5.9.0",
     "eslint-config-airbnb": "^17.0.0",
-    "eslint-formatter-pretty": "^1.1.0",
     "eslint-import-resolver-babel-module": "^4.0.0-beta.3",
     "eslint-import-resolver-webpack": "^0.10.1",
     "eslint-plugin-compat": "^2.5.1",
@@ -128,7 +124,6 @@
     "minimist": "^1.2.0",
     "opn": "^5.4.0",
     "style-loader": "^0.21.0",
-    "tcomb": "^3.2.27",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "url-loader": "^1.0.1",
     "webpack": "^4.16.1",
@@ -142,7 +137,6 @@
     "aes-js": "^3.1.0",
     "cheerio": "^1.0.0-rc.2",
     "clipboard-js": "^0.3.5",
-    "color-thief-browser": "^2.0.2",
     "compare-versions": "^3.1.0",
     "dexie": "^2.0.4",
     "draft-js": "^0.10.5",
@@ -154,7 +148,6 @@
     "highlight.js": "^9.9.0",
     "hotkeys-js": "^3.3.5",
     "htmlparser": "^1.7.7",
-    "immutable": "^3.7.6",
     "ion-sound": "^3.0.7",
     "marked": "^0.4.0",
     "md5": "^2.2.1",
@@ -171,12 +164,12 @@
     "wolfy87-eventemitter": "^5.2.2",
     "ws": "^2.2.3"
   },
-  "devEngines": {
-    "node": ">=8.x",
-    "npm": ">=5.x"
-  },
   "optionalDependencies": {
     "bufferutil": "^4.0.0",
     "utf-8-validate": "^5.0.1"
+  },
+  "devEngines": {
+    "node": ">=8.x",
+    "npm": ">=5.x"
   }
 }

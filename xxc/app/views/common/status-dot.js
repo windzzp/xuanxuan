@@ -25,7 +25,7 @@ const statusColors = {
  * @class StatusDot
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * import StatusDot from './status-dot';
  * <StatusDot />
  */
@@ -36,7 +36,7 @@ export default class StatusDot extends PureComponent {
      * @readonly
      * @static
      * @memberof StatusDot
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {StatusDot} from './status-dot';
      * <StatusDot />
      */

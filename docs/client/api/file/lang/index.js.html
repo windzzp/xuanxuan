@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">lang/index.js | API</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<link rel="stylesheet" href="./inject/css/0-vue.css"><link rel="stylesheet" href="./inject/css/0-app.css"><link rel="stylesheet" href="./inject/css/0-esdoc.css"><script src="./inject/script/0-custom.js"></script><meta name="description" content="&#x4F01;&#x4E1A;&#x5373;&#x65F6;&#x901A;&#x8BAF;&#x5E73;&#x53F0;"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="API"><meta property="twitter:description" content="&#x4F01;&#x4E1A;&#x5373;&#x65F6;&#x901A;&#x8BAF;&#x5E73;&#x53F0;"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/easysoft/xuanxuan.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-langError">langError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-langFormat">langFormat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-langString">langString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateLangData">updateLangData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-currentLangName">currentLangName</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lang/index.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import LANG_ZH_CN from &apos;./zh-cn.json&apos;;
+import {formatString} from &apos;../utils/string-helper&apos;;
+
+/**
+ * &#x9ED8;&#x8BA4;&#x8BED;&#x8A00;&#x4EE3;&#x53F7;
+ * @type {string}
+ * @private
+ */
+const DEFAULT_LANG = &apos;zh-cn&apos;;
+
+/**
+ * &#x5F53;&#x524D;&#x8BED;&#x8A00;&#x4EE3;&#x53F7;
+ * @type {string}
+ */
+export const currentLangName = DEFAULT_LANG;
+
+/**
+ * &#x8BED;&#x8A00;&#x8868;&#x5BF9;&#x8C61;
+ * @private
+ * @type {Object&lt;string, string&gt;}
+ */
+let langData = Object.assign({}, LANG_ZH_CN);
+
+/**
+ * &#x66F4;&#x65B0;&#x8BED;&#x8A00;&#x8868;
+ * @param {Object&lt;string, string&gt;} newLangData &#x65B0;&#x7684;&#x8BED;&#x8A00;&#x8868;
+ * @return {void}
+ */
+export const updateLangData = (newLangData) =&gt; {
+    langData = Object.assign(langData, newLangData);
+};
+
+/**
+ * &#x6839;&#x636E;&#x8BED;&#x8A00;&#x914D;&#x7F6E;&#x540D;&#x79F0;&#x83B7;&#x53D6;&#x8BED;&#x8A00;&#x6587;&#x672C;
+ * @param  {string} name &#x8BED;&#x8A00;&#x914D;&#x7F6E;&#x540D;&#x79F0;
+ * @param  {string} defaultValue &#x9ED8;&#x8BA4;&#x8BED;&#x8A00;&#x6587;&#x672C;&#xFF0C;&#x5982;&#x679C;&#x6CA1;&#x6709;&#x5728;&#x8BED;&#x8A00;&#x8868;&#x4E2D;&#x627E;&#x5230;&#x8BED;&#x8A00;&#x6587;&#x672C;&#x5219;&#x8FD4;&#x56DE;&#x6B64;&#x503C;
+ * @return {string} &#x8BED;&#x8A00;&#x6587;&#x672C;
+ */
+export const langString = (name, defaultValue) =&gt; {
+    const value = langData[name];
+    return value === undefined ? defaultValue : value;
+};
+
+/**
+ * &#x83B7;&#x53D6;&#x4F7F;&#x7528;&#x53C2;&#x6570;&#x683C;&#x5F0F;&#x5316;&#x7684;&#x8BED;&#x8A00;&#x6587;&#x672C;
+ *
+ * @param {string} name &#x8BED;&#x8A00;&#x914D;&#x7F6E;&#x540D;&#x79F0;
+ * @param {...any} args &#x683C;&#x5F0F;&#x5316;&#x53C2;&#x6570;
+ * @return {string} &#x8BED;&#x8A00;&#x6587;&#x672C;
+ */
+export const langFormat = (name, ...args) =&gt; {
+    const str = langString(name);
+    if (args &amp;&amp; args.length) {
+        try {
+            return formatString(str, ...args);
+        } catch (e) {
+            throw new Error(`Cannot format lang string with key &apos;${name}&apos;, the lang string is &apos;${str}&apos;.`);
+        }
+    }
+    return str;
+};
+
+/**
+ * &#x83B7;&#x53D6;&#x9519;&#x8BEF;&#x4FE1;&#x606F;&#x5BF9;&#x5E94;&#x7684;&#x8BED;&#x8A00;&#x6587;&#x672C;
+ *
+ * @param {string|Error} err &#x9519;&#x8BEF;&#x4FE1;&#x606F;&#x6216;&#x9519;&#x8BEF;&#x5BF9;&#x8C61;&#x672C;&#x8EAB;
+ * @return {string}
+ */
+export const langError = err =&gt; {
+    if (typeof err === &apos;string&apos;) {
+        return langString(`error.${err}`, err);
+    }
+    let message = &apos;&apos;;
+    if (err.code) {
+        message += langString(`error.${err.code}`, `[Code: ${err.code}]`);
+    }
+    if (err.message &amp;&amp; err.message !== err.code) {
+        message += &apos;(&apos; + langString(`error.${err.message}`, err.message) + &apos;)&apos;;
+    }
+    if (err.formats) {
+        if (!Array.isArray(err.formats)) {
+            err.formats = [err.formats];
+        }
+        message = formatString(message, ...err.formats);
+    }
+    if (DEBUG) {
+        console.collapse(&apos;LANG.error&apos;, &apos;redBg&apos;, message, &apos;redPale&apos;);
+        console.error(err);
+        console.groupEnd();
+    }
+    return message;
+};
+
+export default {
+    update: updateLangData,
+    format: langFormat,
+    string: langString,
+    error: langError,
+
+    get data() {
+        return langData;
+    },
+
+    get name() {
+        return currentLangName;
+    }
+};
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

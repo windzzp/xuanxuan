@@ -14,7 +14,7 @@ import replaceViews from '../replace-views';
  * @class ChatCommittersSetting
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * import ChatCommittersSetting from './chat-committers-setting';
  * <ChatCommittersSetting />
  */
@@ -25,7 +25,7 @@ export default class ChatCommittersSetting extends PureComponent {
      * @readonly
      * @static
      * @memberof ChatCommittersSetting
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {ChatCommittersSetting} from './chat-committers-setting';
      * <ChatCommittersSetting />
      */

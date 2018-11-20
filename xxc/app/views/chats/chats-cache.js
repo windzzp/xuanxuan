@@ -10,7 +10,7 @@ import replaceViews from '../replace-views';
  * @class ChatsCache
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import ChatsCache from './chats-cache';
  * <ChatsCache />
  */
@@ -21,7 +21,7 @@ export default class ChatsCache extends Component {
      * @readonly
      * @static
      * @memberof ChatsCache
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {ChatsCache} from './chats-cache';
      * <ChatsCache />
      */

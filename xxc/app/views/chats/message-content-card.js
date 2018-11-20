@@ -44,7 +44,7 @@ const handleMenuIconClick = (menuItem, e) => {
  * @class MessageContentCard
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import MessageContentCard from './message-content-card';
  * <MessageContentCard />
  */
@@ -55,7 +55,7 @@ export default class MessageContentCard extends Component {
      * @readonly
      * @static
      * @memberof MessageContentCard
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {MessageContentCard} from './message-content-card';
      * <MessageContentCard />
      */

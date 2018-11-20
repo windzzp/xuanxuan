@@ -1,0 +1,1628 @@
+{
+  "coverage": "87.49%",
+  "expectCount": 2886,
+  "actualCount": 2525,
+  "files": {
+    "app/components/app-avatar.js": {
+      "expectCount": 4,
+      "actualCount": 2,
+      "undocumentLines": [
+        42,
+        57
+      ]
+    },
+    "app/components/area-selector.js": {
+      "expectCount": 17,
+      "actualCount": 12,
+      "undocumentLines": [
+        202,
+        203,
+        205,
+        218,
+        445
+      ]
+    },
+    "app/components/avatar.js": {
+      "expectCount": 5,
+      "actualCount": 3,
+      "undocumentLines": [
+        55,
+        78
+      ]
+    },
+    "app/components/button.js": {
+      "expectCount": 4,
+      "actualCount": 2,
+      "undocumentLines": [
+        41,
+        60
+      ]
+    },
+    "app/components/checkbox.js": {
+      "expectCount": 7,
+      "actualCount": 5,
+      "undocumentLines": [
+        38,
+        53
+      ]
+    },
+    "app/components/click-outside-wrapper.js": {
+      "expectCount": 8,
+      "actualCount": 5,
+      "undocumentLines": [
+        42,
+        57,
+        105
+      ]
+    },
+    "app/components/context-menu.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/components/display-container.js": {
+      "expectCount": 10,
+      "actualCount": 10,
+      "undocumentLines": []
+    },
+    "app/components/display-layer.js": {
+      "expectCount": 27,
+      "actualCount": 26,
+      "undocumentLines": [
+        468
+      ]
+    },
+    "app/components/display.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "app/components/group-list.js": {
+      "expectCount": 13,
+      "actualCount": 11,
+      "undocumentLines": [
+        52,
+        81
+      ]
+    },
+    "app/components/heading.js": {
+      "expectCount": 4,
+      "actualCount": 2,
+      "undocumentLines": [
+        40,
+        58
+      ]
+    },
+    "app/components/hotkey-input-control.js": {
+      "expectCount": 11,
+      "actualCount": 10,
+      "undocumentLines": [
+        149
+      ]
+    },
+    "app/components/icon.js": {
+      "expectCount": 5,
+      "actualCount": 4,
+      "undocumentLines": [
+        39
+      ]
+    },
+    "app/components/image-cutter.js": {
+      "expectCount": 13,
+      "actualCount": 11,
+      "undocumentLines": [
+        77,
+        144
+      ]
+    },
+    "app/components/image-holder.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "app/components/image-viewer.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/components/input-control.js": {
+      "expectCount": 15,
+      "actualCount": 13,
+      "undocumentLines": [
+        135,
+        238
+      ]
+    },
+    "app/components/list-item.js": {
+      "expectCount": 4,
+      "actualCount": 2,
+      "undocumentLines": [
+        42,
+        62
+      ]
+    },
+    "app/components/messager.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/components/modal.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "app/components/pager.js": {
+      "expectCount": 7,
+      "actualCount": 6,
+      "undocumentLines": [
+        93
+      ]
+    },
+    "app/components/popover.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/components/radio-group.js": {
+      "expectCount": 6,
+      "actualCount": 4,
+      "undocumentLines": [
+        47,
+        65
+      ]
+    },
+    "app/components/radio.js": {
+      "expectCount": 7,
+      "actualCount": 5,
+      "undocumentLines": [
+        42,
+        59
+      ]
+    },
+    "app/components/search-control.js": {
+      "expectCount": 16,
+      "actualCount": 14,
+      "undocumentLines": [
+        79,
+        230
+      ]
+    },
+    "app/components/select-box.js": {
+      "expectCount": 11,
+      "actualCount": 10,
+      "undocumentLines": [
+        155
+      ]
+    },
+    "app/components/spinner.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "app/components/tab-pane.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "app/components/tabs.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "app/config/index.js": {
+      "expectCount": 4,
+      "actualCount": 2,
+      "undocumentLines": [
+        33,
+        38
+      ]
+    },
+    "app/core/commander.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "app/core/context-menu.js": {
+      "expectCount": 11,
+      "actualCount": 11,
+      "undocumentLines": []
+    },
+    "app/core/db/database.js": {
+      "expectCount": 14,
+      "actualCount": 13,
+      "undocumentLines": [
+        76
+      ]
+    },
+    "app/core/db/index.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/core/events.js": {
+      "expectCount": 16,
+      "actualCount": 12,
+      "undocumentLines": [
+        43,
+        44,
+        175,
+        183
+      ]
+    },
+    "app/core/im/im-chats.js": {
+      "expectCount": 42,
+      "actualCount": 42,
+      "undocumentLines": []
+    },
+    "app/core/im/im-files.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "app/core/im/im-notice.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "app/core/im/im-server-handlers.js": {
+      "expectCount": 16,
+      "actualCount": 16,
+      "undocumentLines": []
+    },
+    "app/core/im/im-server.js": {
+      "expectCount": 42,
+      "actualCount": 42,
+      "undocumentLines": []
+    },
+    "app/core/im/im-ui.js": {
+      "expectCount": 24,
+      "actualCount": 24,
+      "undocumentLines": []
+    },
+    "app/core/index.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        12
+      ]
+    },
+    "app/core/members.js": {
+      "expectCount": 18,
+      "actualCount": 18,
+      "undocumentLines": []
+    },
+    "app/core/models/chat-message.js": {
+      "expectCount": 80,
+      "actualCount": 72,
+      "undocumentLines": [
+        60,
+        361,
+        447,
+        556,
+        639,
+        640,
+        671,
+        716
+      ]
+    },
+    "app/core/models/chat.js": {
+      "expectCount": 116,
+      "actualCount": 106,
+      "undocumentLines": [
+        312,
+        402,
+        737,
+        742,
+        750,
+        897,
+        990,
+        1007,
+        1111,
+        1208
+      ]
+    },
+    "app/core/models/entity-schema.js": {
+      "expectCount": 13,
+      "actualCount": 12,
+      "undocumentLines": [
+        125
+      ]
+    },
+    "app/core/models/entity.js": {
+      "expectCount": 19,
+      "actualCount": 19,
+      "undocumentLines": []
+    },
+    "app/core/models/file-data.js": {
+      "expectCount": 56,
+      "actualCount": 51,
+      "undocumentLines": [
+        220,
+        392,
+        568,
+        581,
+        613
+      ]
+    },
+    "app/core/models/member.js": {
+      "expectCount": 43,
+      "actualCount": 40,
+      "undocumentLines": [
+        224,
+        382,
+        409
+      ]
+    },
+    "app/core/models/notification-message.js": {
+      "expectCount": 12,
+      "actualCount": 11,
+      "undocumentLines": [
+        24
+      ]
+    },
+    "app/core/network/api.js": {
+      "expectCount": 3,
+      "actualCount": 3,
+      "undocumentLines": []
+    },
+    "app/core/network/socket-message.js": {
+      "expectCount": 13,
+      "actualCount": 13,
+      "undocumentLines": []
+    },
+    "app/core/network/socket.js": {
+      "expectCount": 32,
+      "actualCount": 30,
+      "undocumentLines": [
+        221,
+        276
+      ]
+    },
+    "app/core/notice.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "app/core/profile/index.js": {
+      "expectCount": 10,
+      "actualCount": 10,
+      "undocumentLines": []
+    },
+    "app/core/profile/user-config.js": {
+      "expectCount": 87,
+      "actualCount": 82,
+      "undocumentLines": [
+        32,
+        34,
+        36,
+        77,
+        93
+      ]
+    },
+    "app/core/profile/user.js": {
+      "expectCount": 86,
+      "actualCount": 74,
+      "undocumentLines": [
+        119,
+        120,
+        232,
+        328,
+        364,
+        383,
+        420,
+        491,
+        522,
+        546,
+        770,
+        870
+      ]
+    },
+    "app/core/runtime.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "app/core/server/index.js": {
+      "expectCount": 15,
+      "actualCount": 15,
+      "undocumentLines": []
+    },
+    "app/core/server/server-handlers.js": {
+      "expectCount": 10,
+      "actualCount": 10,
+      "undocumentLines": []
+    },
+    "app/core/todo/index.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "app/core/ui.js": {
+      "expectCount": 28,
+      "actualCount": 28,
+      "undocumentLines": []
+    },
+    "app/exts/app-extension.js": {
+      "expectCount": 25,
+      "actualCount": 22,
+      "undocumentLines": [
+        86,
+        87,
+        182
+      ]
+    },
+    "app/exts/base-extension.js": {
+      "expectCount": 100,
+      "actualCount": 88,
+      "undocumentLines": [
+        91,
+        96,
+        98,
+        106,
+        122,
+        155,
+        482,
+        499,
+        573,
+        735,
+        754,
+        755
+      ]
+    },
+    "app/exts/build-in/index.js": {
+      "expectCount": 7,
+      "actualCount": 7,
+      "undocumentLines": []
+    },
+    "app/exts/extension-config.js": {
+      "expectCount": 10,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        5,
+        6,
+        17,
+        18,
+        19,
+        20,
+        21,
+        24,
+        36
+      ]
+    },
+    "app/exts/extension.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "app/exts/extensions-db.js": {
+      "expectCount": 11,
+      "actualCount": 11,
+      "undocumentLines": []
+    },
+    "app/exts/external-api.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/exts/exts.js": {
+      "expectCount": 20,
+      "actualCount": 20,
+      "undocumentLines": []
+    },
+    "app/exts/index.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        6
+      ]
+    },
+    "app/exts/manager.js": {
+      "expectCount": 13,
+      "actualCount": 13,
+      "undocumentLines": []
+    },
+    "app/exts/opened-app.js": {
+      "expectCount": 30,
+      "actualCount": 22,
+      "undocumentLines": [
+        32,
+        33,
+        37,
+        38,
+        48,
+        105,
+        162,
+        227
+      ]
+    },
+    "app/exts/plugin-extension.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "app/exts/runtime.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "app/exts/server/index.js": {
+      "expectCount": 16,
+      "actualCount": 16,
+      "undocumentLines": []
+    },
+    "app/exts/theme-extension.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "app/exts/theme.js": {
+      "expectCount": 29,
+      "actualCount": 23,
+      "undocumentLines": [
+        73,
+        74,
+        121,
+        133,
+        174,
+        193
+      ]
+    },
+    "app/exts/themes.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "app/exts/ui.js": {
+      "expectCount": 22,
+      "actualCount": 22,
+      "undocumentLines": []
+    },
+    "app/lang/index.js": {
+      "expectCount": 7,
+      "actualCount": 7,
+      "undocumentLines": []
+    },
+    "app/main.development.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "app/platform/browser/clipboard.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "app/platform/browser/crypto.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "app/platform/browser/dialog.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/platform/browser/env.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "app/platform/browser/net.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/platform/browser/setting/index.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        5
+      ]
+    },
+    "app/platform/browser/socket.js": {
+      "expectCount": 27,
+      "actualCount": 24,
+      "undocumentLines": [
+        74,
+        75,
+        185
+      ]
+    },
+    "app/platform/browser/ui.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "app/platform/common/config.js": {
+      "expectCount": 7,
+      "actualCount": 7,
+      "undocumentLines": []
+    },
+    "app/platform/common/network.js": {
+      "expectCount": 17,
+      "actualCount": 1,
+      "undocumentLines": [
+        3,
+        4,
+        5,
+        6,
+        10,
+        48,
+        65,
+        69,
+        79,
+        85,
+        94,
+        113,
+        122,
+        235,
+        239,
+        243
+      ]
+    },
+    "app/platform/common/notification.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "app/platform/common/open-file-button.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "app/platform/common/sound.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "app/platform/electron/app-remote.js": {
+      "expectCount": 33,
+      "actualCount": 27,
+      "undocumentLines": [
+        161,
+        166,
+        442,
+        465,
+        523,
+        603
+      ]
+    },
+    "app/platform/electron/clipboard.js": {
+      "expectCount": 11,
+      "actualCount": 11,
+      "undocumentLines": []
+    },
+    "app/platform/electron/contextmenu.js": {
+      "expectCount": 7,
+      "actualCount": 7,
+      "undocumentLines": []
+    },
+    "app/platform/electron/crypto.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "app/platform/electron/dialog.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "app/platform/electron/env.js": {
+      "expectCount": 7,
+      "actualCount": 7,
+      "undocumentLines": []
+    },
+    "app/platform/electron/events.js": {
+      "expectCount": 9,
+      "actualCount": 6,
+      "undocumentLines": [
+        16,
+        17,
+        130
+      ]
+    },
+    "app/platform/electron/get-url-meta.js": {
+      "expectCount": 52,
+      "actualCount": 46,
+      "undocumentLines": [
+        57,
+        59,
+        61,
+        67,
+        68,
+        256
+      ]
+    },
+    "app/platform/electron/image.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "app/platform/electron/index.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        25
+      ]
+    },
+    "app/platform/electron/net.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "app/platform/electron/notify.js": {
+      "expectCount": 3,
+      "actualCount": 3,
+      "undocumentLines": []
+    },
+    "app/platform/electron/remote.js": {
+      "expectCount": 12,
+      "actualCount": 12,
+      "undocumentLines": []
+    },
+    "app/platform/electron/screenshot.js": {
+      "expectCount": 17,
+      "actualCount": 17,
+      "undocumentLines": []
+    },
+    "app/platform/electron/shortcut.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "app/platform/electron/socket.js": {
+      "expectCount": 29,
+      "actualCount": 25,
+      "undocumentLines": [
+        41,
+        70,
+        71,
+        169
+      ]
+    },
+    "app/platform/electron/ui.js": {
+      "expectCount": 32,
+      "actualCount": 32,
+      "undocumentLines": []
+    },
+    "app/platform/electron/webview.js": {
+      "expectCount": 3,
+      "actualCount": 3,
+      "undocumentLines": []
+    },
+    "app/utils/color.js": {
+      "expectCount": 53,
+      "actualCount": 49,
+      "undocumentLines": [
+        223,
+        224,
+        225,
+        328
+      ]
+    },
+    "app/utils/date-helper.js": {
+      "expectCount": 11,
+      "actualCount": 11,
+      "undocumentLines": []
+    },
+    "app/utils/debug.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/utils/delay-action.js": {
+      "expectCount": 11,
+      "actualCount": 10,
+      "undocumentLines": [
+        55
+      ]
+    },
+    "app/utils/html-helper.js": {
+      "expectCount": 7,
+      "actualCount": 7,
+      "undocumentLines": []
+    },
+    "app/utils/image.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "app/utils/limit-time-promise.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/utils/markdown.js": {
+      "expectCount": 5,
+      "actualCount": 1,
+      "undocumentLines": [
+        36,
+        39,
+        92,
+        93
+      ]
+    },
+    "app/utils/mdi-file-icon.js": {
+      "expectCount": 28,
+      "actualCount": 3,
+      "undocumentLines": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ]
+    },
+    "app/utils/pinyin.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/utils/plain.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/utils/react-debug.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        6
+      ]
+    },
+    "app/utils/search-score.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "app/utils/shortcut.js": {
+      "expectCount": 6,
+      "actualCount": 5,
+      "undocumentLines": [
+        3
+      ]
+    },
+    "app/utils/skin.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "app/utils/sort-helper.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/utils/status.js": {
+      "expectCount": 28,
+      "actualCount": 23,
+      "undocumentLines": [
+        14,
+        15,
+        56,
+        74,
+        140
+      ]
+    },
+    "app/utils/store.js": {
+      "expectCount": 10,
+      "actualCount": 10,
+      "undocumentLines": []
+    },
+    "app/utils/string-helper.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "app/utils/task-queue.js": {
+      "expectCount": 32,
+      "actualCount": 0,
+      "undocumentLines": [
+        4,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        33,
+        37,
+        41,
+        45,
+        49,
+        53,
+        54,
+        57,
+        61,
+        65,
+        69,
+        73,
+        77,
+        81,
+        85,
+        89,
+        93,
+        103,
+        111,
+        123,
+        147,
+        166
+      ]
+    },
+    "app/utils/time-sequence.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "app/views/chats/chat-add-category-dialog.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        7
+      ]
+    },
+    "app/views/chats/chat-add-category.js": {
+      "expectCount": 17,
+      "actualCount": 15,
+      "undocumentLines": [
+        201,
+        229
+      ]
+    },
+    "app/views/chats/chat-avatar.js": {
+      "expectCount": 9,
+      "actualCount": 7,
+      "undocumentLines": [
+        124,
+        136
+      ]
+    },
+    "app/views/chats/chat-change-font-popover.js": {
+      "expectCount": 12,
+      "actualCount": 10,
+      "undocumentLines": [
+        101,
+        111
+      ]
+    },
+    "app/views/chats/chat-committers-setting-dialog.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/views/chats/chat-committers-setting.js": {
+      "expectCount": 12,
+      "actualCount": 12,
+      "undocumentLines": []
+    },
+    "app/views/chats/chat-create-dialog.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/views/chats/chat-create-groups.js": {
+      "expectCount": 16,
+      "actualCount": 16,
+      "undocumentLines": []
+    },
+    "app/views/chats/chat-create.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "app/views/chats/chat-header.js": {
+      "expectCount": 9,
+      "actualCount": 6,
+      "undocumentLines": [
+        98,
+        100,
+        102
+      ]
+    },
+    "app/views/chats/chat-history.js": {
+      "expectCount": 26,
+      "actualCount": 21,
+      "undocumentLines": [
+        122,
+        130,
+        191,
+        249,
+        288
+      ]
+    },
+    "app/views/chats/chat-invite-dialog.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/views/chats/chat-invite.js": {
+      "expectCount": 11,
+      "actualCount": 11,
+      "undocumentLines": []
+    },
+    "app/views/chats/chat-join-public.js": {
+      "expectCount": 17,
+      "actualCount": 16,
+      "undocumentLines": [
+        112
+      ]
+    },
+    "app/views/chats/chat-list-item.js": {
+      "expectCount": 9,
+      "actualCount": 6,
+      "undocumentLines": [
+        108,
+        109,
+        115
+      ]
+    },
+    "app/views/chats/chat-messages.js": {
+      "expectCount": 15,
+      "actualCount": 13,
+      "undocumentLines": [
+        148,
+        188
+      ]
+    },
+    "app/views/chats/chat-search-result.js": {
+      "expectCount": 18,
+      "actualCount": 14,
+      "undocumentLines": [
+        12,
+        13,
+        154,
+        155
+      ]
+    },
+    "app/views/chats/chat-sendbox-toolbar.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "app/views/chats/chat-sendbox.js": {
+      "expectCount": 19,
+      "actualCount": 16,
+      "undocumentLines": [
+        69,
+        85,
+        293
+      ]
+    },
+    "app/views/chats/chat-sidebar-files.js": {
+      "expectCount": 12,
+      "actualCount": 12,
+      "undocumentLines": []
+    },
+    "app/views/chats/chat-sidebar-peoples.js": {
+      "expectCount": 12,
+      "actualCount": 11,
+      "undocumentLines": [
+        84
+      ]
+    },
+    "app/views/chats/chat-sidebar-profile.js": {
+      "expectCount": 12,
+      "actualCount": 9,
+      "undocumentLines": [
+        67,
+        81,
+        132
+      ]
+    },
+    "app/views/chats/chat-sidebar.js": {
+      "expectCount": 9,
+      "actualCount": 7,
+      "undocumentLines": [
+        105,
+        107
+      ]
+    },
+    "app/views/chats/chat-tip-popover.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/views/chats/chat-title.js": {
+      "expectCount": 8,
+      "actualCount": 6,
+      "undocumentLines": [
+        98,
+        99
+      ]
+    },
+    "app/views/chats/chat-view.js": {
+      "expectCount": 8,
+      "actualCount": 7,
+      "undocumentLines": [
+        79
+      ]
+    },
+    "app/views/chats/chats-cache.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "app/views/chats/chats-dnd-container.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "app/views/chats/chats-history-dialog.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/views/chats/chats-history.js": {
+      "expectCount": 29,
+      "actualCount": 23,
+      "undocumentLines": [
+        146,
+        147,
+        150,
+        287,
+        307,
+        514
+      ]
+    },
+    "app/views/chats/chats-suggest-panel.js": {
+      "expectCount": 14,
+      "actualCount": 12,
+      "undocumentLines": [
+        87,
+        106
+      ]
+    },
+    "app/views/chats/index.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "app/views/chats/menu-contact-list.js": {
+      "expectCount": 24,
+      "actualCount": 22,
+      "undocumentLines": [
+        251,
+        374
+      ]
+    },
+    "app/views/chats/menu-group-list.js": {
+      "expectCount": 20,
+      "actualCount": 18,
+      "undocumentLines": [
+        188,
+        298
+      ]
+    },
+    "app/views/chats/menu-header.js": {
+      "expectCount": 8,
+      "actualCount": 7,
+      "undocumentLines": [
+        107
+      ]
+    },
+    "app/views/chats/menu-list.js": {
+      "expectCount": 9,
+      "actualCount": 8,
+      "undocumentLines": [
+        76
+      ]
+    },
+    "app/views/chats/menu-recent-list.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "app/views/chats/menu-search-list.js": {
+      "expectCount": 14,
+      "actualCount": 11,
+      "undocumentLines": [
+        215,
+        216,
+        226
+      ]
+    },
+    "app/views/chats/menu.js": {
+      "expectCount": 13,
+      "actualCount": 11,
+      "undocumentLines": [
+        110,
+        145
+      ]
+    },
+    "app/views/chats/message-broadcast.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "app/views/chats/message-content-card.js": {
+      "expectCount": 7,
+      "actualCount": 7,
+      "undocumentLines": []
+    },
+    "app/views/chats/message-content-file.js": {
+      "expectCount": 7,
+      "actualCount": 6,
+      "undocumentLines": [
+        83
+      ]
+    },
+    "app/views/chats/message-content-image.js": {
+      "expectCount": 20,
+      "actualCount": 16,
+      "undocumentLines": [
+        146,
+        226,
+        238,
+        239
+      ]
+    },
+    "app/views/chats/message-content-text.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "app/views/chats/message-content-url.js": {
+      "expectCount": 15,
+      "actualCount": 13,
+      "undocumentLines": [
+        122,
+        221
+      ]
+    },
+    "app/views/chats/message-divider.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "app/views/chats/message-list-item.js": {
+      "expectCount": 26,
+      "actualCount": 19,
+      "undocumentLines": [
+        130,
+        226,
+        335,
+        336,
+        365,
+        366,
+        375
+      ]
+    },
+    "app/views/chats/message-list.js": {
+      "expectCount": 19,
+      "actualCount": 13,
+      "undocumentLines": [
+        86,
+        88,
+        156,
+        173,
+        198,
+        252
+      ]
+    },
+    "app/views/chats/messages-preview-dialog.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/views/chats/notification-message.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "app/views/common/about-dialog.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/views/common/about.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "app/views/common/build-info.js": {
+      "expectCount": 7,
+      "actualCount": 5,
+      "undocumentLines": [
+        47,
+        51
+      ]
+    },
+    "app/views/common/draft-editor.js": {
+      "expectCount": 25,
+      "actualCount": 23,
+      "undocumentLines": [
+        121,
+        462
+      ]
+    },
+    "app/views/common/emoji-popover.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "app/views/common/file-list-item.js": {
+      "expectCount": 13,
+      "actualCount": 13,
+      "undocumentLines": []
+    },
+    "app/views/common/file-list.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "app/views/common/hotkey-setting-dialog.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/views/common/member-list-item.js": {
+      "expectCount": 7,
+      "actualCount": 5,
+      "undocumentLines": [
+        57,
+        99
+      ]
+    },
+    "app/views/common/member-list.js": {
+      "expectCount": 10,
+      "actualCount": 9,
+      "undocumentLines": [
+        66
+      ]
+    },
+    "app/views/common/member-profile-dialog.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/views/common/member-profile.js": {
+      "expectCount": 9,
+      "actualCount": 7,
+      "undocumentLines": [
+        60,
+        78
+      ]
+    },
+    "app/views/common/status-dot.js": {
+      "expectCount": 6,
+      "actualCount": 5,
+      "undocumentLines": [
+        69
+      ]
+    },
+    "app/views/common/user-avatar.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "app/views/common/user-change-password-dialog.js": {
+      "expectCount": 10,
+      "actualCount": 10,
+      "undocumentLines": []
+    },
+    "app/views/common/user-list-item.js": {
+      "expectCount": 6,
+      "actualCount": 5,
+      "undocumentLines": [
+        53
+      ]
+    },
+    "app/views/common/user-profile-dialog.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/views/common/user-setting-dialog.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/views/common/user-setting.js": {
+      "expectCount": 18,
+      "actualCount": 18,
+      "undocumentLines": []
+    },
+    "app/views/common/webview-dialog.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/views/common/webview-frame.js": {
+      "expectCount": 20,
+      "actualCount": 19,
+      "undocumentLines": [
+        291
+      ]
+    },
+    "app/views/common/webview.js": {
+      "expectCount": 22,
+      "actualCount": 22,
+      "undocumentLines": []
+    },
+    "app/views/exts/app-extensions.js": {
+      "expectCount": 18,
+      "actualCount": 17,
+      "undocumentLines": [
+        106
+      ]
+    },
+    "app/views/exts/app-files.js": {
+      "expectCount": 15,
+      "actualCount": 14,
+      "undocumentLines": [
+        114
+      ]
+    },
+    "app/views/exts/app-home.js": {
+      "expectCount": 12,
+      "actualCount": 11,
+      "undocumentLines": [
+        89
+      ]
+    },
+    "app/views/exts/app-themes.js": {
+      "expectCount": 12,
+      "actualCount": 11,
+      "undocumentLines": [
+        94
+      ]
+    },
+    "app/views/exts/extension-detail-dialog.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/views/exts/extension-detail.js": {
+      "expectCount": 16,
+      "actualCount": 14,
+      "undocumentLines": [
+        97,
+        103
+      ]
+    },
+    "app/views/exts/extension-list-item.js": {
+      "expectCount": 7,
+      "actualCount": 0,
+      "undocumentLines": [
+        13,
+        14,
+        18,
+        25,
+        31,
+        38,
+        44
+      ]
+    },
+    "app/views/exts/index.js": {
+      "expectCount": 20,
+      "actualCount": 18,
+      "undocumentLines": [
+        143,
+        295
+      ]
+    },
+    "app/views/exts/web-app.js": {
+      "expectCount": 11,
+      "actualCount": 10,
+      "undocumentLines": [
+        159
+      ]
+    },
+    "app/views/index/app-image-cutter.js": {
+      "expectCount": 3,
+      "actualCount": 3,
+      "undocumentLines": []
+    },
+    "app/views/index/app-view.js": {
+      "expectCount": 8,
+      "actualCount": 7,
+      "undocumentLines": [
+        61
+      ]
+    },
+    "app/views/index/index.js": {
+      "expectCount": 3,
+      "actualCount": 3,
+      "undocumentLines": []
+    },
+    "app/views/login/form.js": {
+      "expectCount": 23,
+      "actualCount": 20,
+      "undocumentLines": [
+        144,
+        276,
+        417
+      ]
+    },
+    "app/views/login/index.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "app/views/login/swap-user-dialog.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/views/login/swap-user.js": {
+      "expectCount": 10,
+      "actualCount": 10,
+      "undocumentLines": []
+    },
+    "app/views/main/cache-container.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "app/views/main/global-message.js": {
+      "expectCount": 18,
+      "actualCount": 15,
+      "undocumentLines": [
+        97,
+        139,
+        160
+      ]
+    },
+    "app/views/main/index.js": {
+      "expectCount": 8,
+      "actualCount": 7,
+      "undocumentLines": [
+        71
+      ]
+    },
+    "app/views/main/navbar.js": {
+      "expectCount": 18,
+      "actualCount": 15,
+      "undocumentLines": [
+        132,
+        136,
+        144
+      ]
+    },
+    "app/views/main/user-menu.js": {
+      "expectCount": 15,
+      "actualCount": 14,
+      "undocumentLines": [
+        35
+      ]
+    },
+    "app/views/replace-views.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "app/views/todo/todo-editer.js": {
+      "expectCount": 11,
+      "actualCount": 11,
+      "undocumentLines": []
+    },
+    "app/views/todo/todo-editor-dialog.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    }
+  }
+}

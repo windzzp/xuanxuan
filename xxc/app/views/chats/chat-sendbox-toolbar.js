@@ -14,7 +14,7 @@ import {getMenuItemsForContext} from '../../core/context-menu';
  * @class ChatSendboxToolbar
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import ChatSendboxToolbar from './chat-sendbox-toolbar';
  * <ChatSendboxToolbar />
  */
@@ -25,7 +25,7 @@ export default class ChatSendboxToolbar extends PureComponent {
      * @readonly
      * @static
      * @memberof ChatSendboxToolbar
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {ChatSendboxToolbar} from './chat-sendbox-toolbar';
      * <ChatSendboxToolbar />
      */

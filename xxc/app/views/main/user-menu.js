@@ -14,70 +14,161 @@ import UserSettingDialog from '../common/user-setting-dialog';
 import UserChangePasswordDialog from '../common/user-change-password-dialog';
 import replaceViews from '../replace-views';
 
+/**
+ * 用户状态名称清单
+ * @type {string[]}
+ * @private
+ */
 const allStatus = [
     User.STATUS.getName(User.STATUS.online),
     User.STATUS.getName(User.STATUS.busy),
     User.STATUS.getName(User.STATUS.away),
 ];
 
+/**
+ * 当前系统平台是否为浏览器
+ * @type {boolean}
+ * @private
+ */
 const isBrowser = Platform.type === 'browser';
 
-class UserMenu extends Component {
+export default class UserMenu extends Component {
+    /**
+     * 获取 UserMenu 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<UserMenu>}
+     * @readonly
+     * @static
+     * @memberof UserMenu
+     * @example <caption>可替换组件类调用方式</caption>
+     * import {UserMenu} from './user-menu';
+     * <UserMenu />
+     */
     static get UserMenu() {
         return replaceViews('main/user-menu', UserMenu);
     }
 
-    static defaultProps = {
-        onRequestClose: null,
-        children: null,
-        className: null,
-    };
-
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof UserMenu
+     * @type {Object}
+     */
     static propTypes = {
         onRequestClose: PropTypes.func,
         children: PropTypes.any,
         className: PropTypes.string
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof UserMenu
+     * @static
+     */
+    static defaultProps = {
+        onRequestClose: null,
+        children: null,
+        className: null,
+    };
+
+    /**
+     * 处理点击切换状态事件
+     * @param {string} status 要切换的状态名称
+     * @memberof UserMenu
+     * @private
+     * @return {void}
+     */
     handleStatusClick(status) {
         App.server.changeUserStatus(status);
         this.requestClose();
     }
 
+    /**
+     * 处理点击退出登录（注销）条目事件
+     * @memberof UserMenu
+     * @private
+     * @return {void}
+     */
     handleLogoutClick = () => {
         App.server.logout();
         this.requestClose();
     }
 
+    /**
+     * 处理点击退出条目事件
+     * @memberof UserMenu
+     * @private
+     * @return {void}
+     */
     handleExitClick = () => {
         App.ui.quit();
     }
 
+    /**
+     * 处理请求关闭个人菜单事件
+     * @memberof UserMenu
+     * @private
+     * @return {void}
+     */
     requestClose = () => {
         if (this.props.onRequestClose) {
             this.props.onRequestClose();
         }
     }
 
+    /**
+     * 处理点击个人资料条目事件
+     * @memberof UserMenu
+     * @private
+     * @return {void}
+     */
     handleUserProfileItemClick = () => {
         UserProfileDialog.show();
         this.requestClose();
     };
 
+    /**
+     * 处理点击关于条目事件
+     * @memberof UserMenu
+     * @private
+     * @return {void}
+     */
     handleAboutItemClick = () => {
         AboutDialog.show();
         this.requestClose();
     };
 
+    /**
+     * 处理点击设置条目事件
+     * @memberof UserMenu
+     * @private
+     * @return {void}
+     */
     handleSettingItemClick = () => {
         UserSettingDialog.show();
         this.requestClose();
     };
 
+    /**
+     * 处理点击修改密码条目事件
+     * @memberof UserMenu
+     * @private
+     * @return {void}
+     */
     handleChangePasswordClick = () => {
         UserChangePasswordDialog.show();
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof UserMenu
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             onRequestClose,
@@ -118,5 +209,3 @@ class UserMenu extends Component {
         </ClickOutsideWrapper>);
     }
 }
-
-export default UserMenu;

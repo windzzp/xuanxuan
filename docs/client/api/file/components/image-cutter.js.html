@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">components/image-cutter.js | API</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<link rel="stylesheet" href="./inject/css/0-vue.css"><link rel="stylesheet" href="./inject/css/0-app.css"><link rel="stylesheet" href="./inject/css/0-esdoc.css"><script src="./inject/script/0-custom.js"></script><meta name="description" content="&#x4F01;&#x4E1A;&#x5373;&#x65F6;&#x901A;&#x8BAF;&#x5E73;&#x53F0;"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="API"><meta property="twitter:description" content="&#x4F01;&#x4E1A;&#x5373;&#x65F6;&#x901A;&#x8BAF;&#x5E73;&#x53F0;"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/easysoft/xuanxuan.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/app-avatar.js~AppAvatar.html">AppAvatar</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/area-selector.js~AreaSelector.html">AreaSelector</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/avatar.js~Avatar.html">Avatar</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/button.js~Button.html">Button</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/checkbox.js~Checkbox.html">Checkbox</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/click-outside-wrapper.js~ClickOutsideWrapper.html">ClickOutsideWrapper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/display-container.js~DisplayContainer.html">DisplayContainer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/display-layer.js~DisplayLayer.html">DisplayLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/group-list.js~GroupList.html">GroupList</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/heading.js~Heading.html">Heading</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/hotkey-input-control.js~HotkeyInputControl.html">HotkeyInputControl</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/icon.js~MDIcon.html">MDIcon</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/image-cutter.js~ImageCutter.html">ImageCutter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/image-holder.js~ImageHolder.html">ImageHolder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/input-control.js~InputControl.html">InputControl</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/list-item.js~ListItem.html">ListItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/pager.js~Pager.html">Pager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/radio-group.js~RadioGroup.html">RadioGroup</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/radio.js~Radio.html">Radio</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/search-control.js~SearchControl.html">SearchControl</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/select-box.js~Selectbox.html">Selectbox</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/spinner.js~Spinner.html">Spinner</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/tab-pane.js~TabPane.html">TabPane</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/tabs.js~Tabs.html">Tabs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showContextMenu">showContextMenu</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-displayGetRef">displayGetRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-displayHide">displayHide</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-displayRemove">displayRemove</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-displaySetStyle">displaySetStyle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-displayShow">displayShow</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showImageViewer">showImageViewer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showMessager">showMessager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showAlert">showAlert</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showConfirm">showConfirm</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showModal">showModal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showPrompt">showPrompt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showPopover">showPopover</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">components/image-cutter.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import React, {Component} from &apos;react&apos;;
+import PropTypes from &apos;prop-types&apos;;
+import hotkeys from &apos;hotkeys-js&apos;;
+import AreaSelector from &apos;./area-selector&apos;;
+import Icon from &apos;./icon&apos;;
+import Avatar from &apos;./avatar&apos;;
+import timeSequence from &apos;../utils/time-sequence&apos;;
+import ImageHelper from &apos;../utils/image&apos;;
+
+/**
+ * ImageCutter &#x7EC4;&#x4EF6; &#xFF0C;&#x663E;&#x793A;&#x4E00;&#x4E2A;&#x56FE;&#x7247;&#x526A;&#x5207;&#x63A7;&#x4EF6;
+ * @class ImageCutter
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example
+ * &lt;ImageCutter /&gt;
+ */
+export default class ImageCutter extends Component {
+    /**
+     * React &#x7EC4;&#x4EF6;&#x5C5E;&#x6027;&#x7C7B;&#x578B;&#x68C0;&#x67E5;
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof ImageCutter
+     * @return {Object}
+     */
+    static propTypes = {
+        sourceImage: PropTypes.string,
+        style: PropTypes.object,
+        onFinish: PropTypes.func,
+        onCancel: PropTypes.func,
+    };
+
+    /**
+     * React &#x7EC4;&#x4EF6;&#x9ED8;&#x8BA4;&#x5C5E;&#x6027;
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof ImageCutter
+     * @static
+     */
+    static defaultProps = {
+        sourceImage: null,
+        style: null,
+        onFinish: null,
+        onCancel: null,
+    };
+
+    /**
+     * React &#x7EC4;&#x4EF6;&#x6784;&#x9020;&#x51FD;&#x6570;&#xFF0C;&#x521B;&#x5EFA;&#x4E00;&#x4E2A; ImageCutter &#x7EC4;&#x4EF6;&#x5B9E;&#x4F8B;&#xFF0C;&#x4F1A;&#x5728;&#x88C5;&#x914D;&#x4E4B;&#x524D;&#x88AB;&#x8C03;&#x7528;&#x3002;
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props &#x7EC4;&#x4EF6;&#x5C5E;&#x6027;&#x5BF9;&#x8C61;
+     * @constructor
+     */
+    constructor(props) {
+        super(props);
+
+        /**
+         * React &#x7EC4;&#x4EF6;&#x72B6;&#x6001;&#x5BF9;&#x8C61;
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
+        this.state = {
+            hover: true,
+        };
+    }
+
+    /**
+     * React &#x7EC4;&#x4EF6;&#x751F;&#x547D;&#x5468;&#x671F;&#x51FD;&#x6570;&#xFF1A;`componentDidMount`
+     * &#x5728;&#x7EC4;&#x4EF6;&#x88AB;&#x88C5;&#x914D;&#x540E;&#x7ACB;&#x5373;&#x8C03;&#x7528;&#x3002;&#x521D;&#x59CB;&#x5316;&#x4F7F;&#x5F97;DOM&#x8282;&#x70B9;&#x5E94;&#x8BE5;&#x8FDB;&#x884C;&#x5230;&#x8FD9;&#x91CC;&#x3002;&#x82E5;&#x4F60;&#x9700;&#x8981;&#x4ECE;&#x8FDC;&#x7AEF;&#x52A0;&#x8F7D;&#x6570;&#x636E;&#xFF0C;&#x8FD9;&#x662F;&#x4E00;&#x4E2A;&#x9002;&#x5408;&#x5B9E;&#x73B0;&#x7F51;&#x7EDC;&#x8BF7;
+    &#x6C42;&#x7684;&#x5730;&#x65B9;&#x3002;&#x5728;&#x8BE5;&#x65B9;&#x6CD5;&#x91CC;&#x8BBE;&#x7F6E;&#x72B6;&#x6001;&#x5C06;&#x4F1A;&#x89E6;&#x53D1;&#x91CD;&#x6E32;&#x3002;
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof ImageCutter
+     * @return {void}
+     * @instance
+     */
+    componentDidMount() {
+        this.HotkeysScope = timeSequence();
+        hotkeys.setScope(this.HotkeysScope);
+        hotkeys(&apos;esc&apos;, this.HotkeysScope, () =&gt; {
+            this.handleCloseButtonClick();
+        });
+        hotkeys(&apos;enter&apos;, this.HotkeysScope, () =&gt; {
+            this.handleOkButtonClick();
+        });
+    }
+
+    /**
+     * React &#x7EC4;&#x4EF6;&#x751F;&#x547D;&#x5468;&#x671F;&#x51FD;&#x6570;&#xFF1A;`componentWillUnmount`
+     * &#x5728;&#x7EC4;&#x4EF6;&#x88AB;&#x5378;&#x8F7D;&#x548C;&#x9500;&#x6BC1;&#x4E4B;&#x524D;&#x7ACB;&#x523B;&#x8C03;&#x7528;&#x3002;&#x53EF;&#x4EE5;&#x5728;&#x8BE5;&#x65B9;&#x6CD5;&#x91CC;&#x5904;&#x7406;&#x4EFB;&#x4F55;&#x5FC5;&#x8981;&#x7684;&#x6E05;&#x7406;&#x5DE5;&#x4F5C;&#xFF0C;&#x4F8B;&#x5982;&#x89E3;&#x7ED1;&#x5B9A;&#x65F6;&#x5668;&#xFF0C;&#x53D6;&#x6D88;&#x7F51;&#x7EDC;&#x8BF7;&#x6C42;&#xFF0C;&#x6E05;&#x7406;
+    &#x4EFB;&#x4F55;&#x5728;componentDidMount&#x73AF;&#x8282;&#x521B;&#x5EFA;&#x7684;DOM&#x5143;&#x7D20;&#x3002;
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof ImageCutter
+     * @return {void}
+     * @instance
+     */
+    componentWillUnmount() {
+        hotkeys.deleteScope(this.HotkeysScope);
+    }
+
+    /**
+     * &#x5904;&#x7406;&#x786E;&#x8BA4;&#x6309;&#x94AE;&#x70B9;&#x51FB;&#x4E8B;&#x4EF6;
+     * @param {Event} event &#x4E8B;&#x4EF6;&#x5BF9;&#x8C61;
+     * @memberof ImageCutter
+     * @private
+     * @return {void}
+     * @instance
+     */
+    handleOkButtonClick = event =&gt; {
+        if (this.select) {
+            ImageHelper.cutImage(this.props.sourceImage, this.select).then(image =&gt; {
+                if (this.props.onFinish) {
+                    this.props.onFinish(image);
+                }
+            }).catch(err =&gt; {
+                if (DEBUG) {
+                    console.warn(&apos;Cut image error&apos;, err);
+                }
+            });
+        } else if (this.props.onFinish) {
+            this.props.onFinish(null);
+        }
+    }
+
+    /**
+     * &#x5904;&#x7406;&#x786E;&#x8BA4;&#x6309;&#x94AE;&#x70B9;&#x51FB;&#x4E8B;&#x4EF6;
+     * @memberof ImageCutter
+     * @private
+     * @return {void}
+     * @instance
+     */
+    handleCloseButtonClick = () =&gt; {
+        if (this.props.onFinish) {
+            this.props.onFinish(null);
+        }
+    }
+
+    /**
+     * &#x5904;&#x7406;&#x8BBE;&#x7F6E;&#x9009;&#x62E9;&#x533A;&#x57DF;&#x4E8B;&#x4EF6;
+     * @param {Object} select &#x65B0;&#x9009;&#x62E9;&#x7684;&#x533A;&#x57DF;
+     * @memberof ImageCutter
+     * @private
+     * @return {void}
+     * @instance
+     */
+    handleSelectArea = (select) =&gt; {
+        this.select = select;
+    }
+
+    /**
+     * React &#x7EC4;&#x4EF6;&#x751F;&#x547D;&#x5468;&#x671F;&#x51FD;&#x6570;&#xFF1A;Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof ImageCutter
+     * @return {ReactNode}
+     * @instance
+     */
+    render() {
+        let {
+            sourceImage,
+            style,
+            onFinish,
+            onCancel,
+            ...other
+        } = this.props;
+
+        const imageUrl = `file://${sourceImage.replace(/\\/g, &apos;/&apos;)}`;
+
+        style = Object({
+            backgroundRepeat: &apos;no-repeat&apos;,
+            backgroundImage: `url(&quot;${imageUrl}&quot;)`,
+            backgroundPosition: &apos;center&apos;,
+            backgroundSize: &apos;contain&apos;
+        }, style);
+
+        const toolbar = (&lt;nav
+            className=&quot;layer nav primary-pale&quot;
+            style={{marginTop: 2, marginBottom: 2}}
+        &gt;
+            &lt;a onClick={this.handleCloseButtonClick}&gt;&lt;Icon name=&quot;close icon-2x text-danger&quot; /&gt;&lt;/a&gt;
+            &lt;a onClick={this.handleOkButtonClick}&gt;&lt;Icon name=&quot;check icon-2x text-success&quot; /&gt;&lt;/a&gt;
+        &lt;/nav&gt;);
+
+        return (&lt;div
+            {...other}
+            className=&quot;dock user-app-no-dragable&quot;
+            style={style}
+            onMouseEnter={() =&gt; {this.setState({hover: true});}}
+            onMouseLeave={() =&gt; {this.setState({hover: false});}}
+        &gt;
+            &lt;AreaSelector
+                onSelectArea={this.handleSelectArea}
+                style={{zIndex: 2, display: this.state.hover ? &apos;block&apos; : &apos;block&apos;}}
+                className=&quot;dock&quot;
+                img={imageUrl}
+                toolbarHeight={50}
+                toolbar={toolbar}
+            /&gt;
+            &lt;Avatar className=&quot;state darken dock dock-right dock-top&quot; icon=&quot;close icon-2x&quot; onClick={this.handleCloseButtonClick} /&gt;
+        &lt;/div&gt;);
+    }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

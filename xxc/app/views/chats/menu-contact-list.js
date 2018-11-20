@@ -29,7 +29,7 @@ const GROUP_TYPES = [
  * @class MenuContactList
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import MenuContactList from './menu-contact-list';
  * <MenuContactList />
  */
@@ -40,7 +40,7 @@ export default class MenuContactList extends Component {
      * @readonly
      * @static
      * @memberof MenuContactList
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {MenuContactList} from './menu-contact-list';
      * <MenuContactList />
      */
@@ -355,7 +355,7 @@ export default class MenuContactList extends Component {
      * @class MenuContactList
      * @see https://react.docschina.org/docs/components-and-props.html
      * @extends {Component}
-     * @example @lang jsx
+     * @example
      * import MenuContactList from './menu-contact-list';
      * <MenuContactList />
      */

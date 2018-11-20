@@ -13,7 +13,7 @@ import Button from '../../components/button';
  * @class MessageContentUrl
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * import MessageContentUrl from './message-content-url';
  * <MessageContentUrl />
  */
@@ -24,7 +24,7 @@ export default class MessageContentUrl extends PureComponent {
      * @readonly
      * @static
      * @memberof MessageContentUrl
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {MessageContentUrl} from './message-content-url';
      * <MessageContentUrl />
      */

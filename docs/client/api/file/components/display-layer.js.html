@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">components/display-layer.js | API</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<link rel="stylesheet" href="./inject/css/0-vue.css"><link rel="stylesheet" href="./inject/css/0-app.css"><link rel="stylesheet" href="./inject/css/0-esdoc.css"><script src="./inject/script/0-custom.js"></script><meta name="description" content="&#x4F01;&#x4E1A;&#x5373;&#x65F6;&#x901A;&#x8BAF;&#x5E73;&#x53F0;"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="API"><meta property="twitter:description" content="&#x4F01;&#x4E1A;&#x5373;&#x65F6;&#x901A;&#x8BAF;&#x5E73;&#x53F0;"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/easysoft/xuanxuan.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/app-avatar.js~AppAvatar.html">AppAvatar</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/area-selector.js~AreaSelector.html">AreaSelector</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/avatar.js~Avatar.html">Avatar</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/button.js~Button.html">Button</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/checkbox.js~Checkbox.html">Checkbox</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/click-outside-wrapper.js~ClickOutsideWrapper.html">ClickOutsideWrapper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/display-container.js~DisplayContainer.html">DisplayContainer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/display-layer.js~DisplayLayer.html">DisplayLayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/group-list.js~GroupList.html">GroupList</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/heading.js~Heading.html">Heading</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/hotkey-input-control.js~HotkeyInputControl.html">HotkeyInputControl</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/icon.js~MDIcon.html">MDIcon</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/image-cutter.js~ImageCutter.html">ImageCutter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/image-holder.js~ImageHolder.html">ImageHolder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/input-control.js~InputControl.html">InputControl</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/list-item.js~ListItem.html">ListItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/pager.js~Pager.html">Pager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/radio-group.js~RadioGroup.html">RadioGroup</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/radio.js~Radio.html">Radio</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/search-control.js~SearchControl.html">SearchControl</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/select-box.js~Selectbox.html">Selectbox</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/spinner.js~Spinner.html">Spinner</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/tab-pane.js~TabPane.html">TabPane</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/components/tabs.js~Tabs.html">Tabs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showContextMenu">showContextMenu</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-displayGetRef">displayGetRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-displayHide">displayHide</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-displayRemove">displayRemove</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-displaySetStyle">displaySetStyle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-displayShow">displayShow</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showImageViewer">showImageViewer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showMessager">showMessager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showAlert">showAlert</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showConfirm">showConfirm</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showModal">showModal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showPrompt">showPrompt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-showPopover">showPopover</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">components/display-layer.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import React, {PureComponent} from &apos;react&apos;;
+import PropTypes from &apos;prop-types&apos;;
+import Spinner from &apos;./spinner&apos;;
+import {classes} from &apos;../utils/html-helper&apos;;
+import timeSequence from &apos;../utils/time-sequence&apos;;
+import Status from &apos;../utils/status&apos;;
+
+/**
+ * Display &#x72B6;&#x6001;
+ * @type {Status}
+ * @private
+ */
+const STAGE = new Status({
+    init: 0,
+    ready: 1,
+    shown: 2,
+    hidden: 3
+}, 0);
+
+/**
+ * z-index &#x5E8F;&#x53F7;
+ * @type {number}
+ * @private
+ */
+let zIndexSeed = 1100;
+
+/**
+ * &#x83B7;&#x53D6;&#x4E00;&#x4E2A;&#x9012;&#x589E;&#x7684; z-index &#x5E8F;&#x53F7;
+ * @return {number}
+ * @private
+ */
+const newZIndex = () =&gt; {
+    zIndexSeed += 1;
+    return zIndexSeed;
+};
+
+/**
+ * DisplayLayer &#x7EC4;&#x4EF6; &#xFF0C;&#x663E;&#x793A;&#x4E00;&#x4E2A;&#x5F39;&#x51FA;&#x5C42;
+ * &#x6240;&#x6709;&#x53EF;&#x7528;&#x7684;&#x52A8;&#x753B;&#x540D;&#x79F0;&#x5305;&#x62EC;&#xFF1A;
+ * - scale-from-top
+ * - scale-from-bottom
+ * - scale-from-left
+ * - scale-from-right
+ * - scale-from-center
+ * - enter-from-top
+ * - enter-from-bottom
+ * - enter-from-left
+ * - enter-from-right
+ * - enter-from-center
+ *
+ * @class DisplayLayer
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example
+ * &lt;DisplayLayer /&gt;
+ * @property {string} plugName &#x7EC4;&#x4EF6;&#x540D;&#x79F0;&#xFF0C;&#x4F1A;&#x5F71;&#x54CD; CSS &#x7C7B;&#x540D;
+ * @property {string} animation &#x52A8;&#x753B;&#x6548;&#x679C;&#x7C7B;&#x578B;
+ * @property {boolean} [modal=false] &#x662F;&#x5426;&#x4EE5;&#x6A21;&#x6001;&#x5F62;&#x5F0F;&#x663E;&#x793A;&#xFF0C;&#x5982;&#x679C;&#x8BBE;&#x7F6E;&#x4E3A; true&#xFF0C;&#x70B9;&#x51FB;&#x80CC;&#x666F;&#x5C42;&#x4E0D;&#x4F1A;&#x81EA;&#x52A8;&#x9690;&#x85CF;
+ * @property {boolean} [show=true] &#x662F;&#x5426;&#x5728;&#x521D;&#x59CB;&#x5316;&#x4E4B;&#x540E;&#x7ACB;&#x5373;&#x663E;&#x793A;
+ * @property {String|ReactNode|function} content &#x5185;&#x5BB9;&#xFF0C;&#x53EF;&#x4EE5;&#x4E3A;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A; Promise &#x6765;&#x5B9E;&#x73B0;&#x5185;&#x5BB9;&#x7684;&#x61D2;&#x52A0;&#x8F7D;
+ */
+export default class DisplayLayer extends PureComponent {
+    /**
+     * DisplayLayer &#x663E;&#x793A;&#x72B6;&#x6001;
+     * &#x5171; 4 &#x4E2A;&#x72B6;&#x6001;
+     * - init&#xFF0C;&#x9700;&#x8981;&#x521D;&#x59CB;&#x5316;
+     * - ready&#xFF0C;&#x51C6;&#x5907;&#x597D;&#x8FDB;&#x884C;&#x663E;&#x793A;
+     * - shown&#xFF0C;&#x5DF2;&#x7ECF;&#x663E;&#x793A;
+     * - hidden&#xFF0C;&#x5DF2;&#x7ECF;&#x9690;&#x85CF;
+     * @static
+     * @memberof DisplayLayer
+     * @type {Status}
+     */
+    static STAGE = STAGE;
+
+    /**
+     * React &#x7EC4;&#x4EF6;&#x5C5E;&#x6027;&#x7C7B;&#x578B;&#x68C0;&#x67E5;
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof DisplayLayer
+     * @return {Object}
+     */
+    static propTypes = {
+        content: PropTypes.any,
+        contentLoadFail: PropTypes.any,
+        id: PropTypes.any,
+        animation: PropTypes.any,
+        onShown: PropTypes.func,
+        onHidden: PropTypes.func,
+        onLoad: PropTypes.func,
+        show: PropTypes.bool,
+        hotkey: PropTypes.bool,
+        cache: PropTypes.bool,
+        loadingContent: PropTypes.bool,
+        rootClassName: PropTypes.string,
+        className: PropTypes.string,
+        backdrop: PropTypes.bool,
+        backdropClassName: PropTypes.string,
+        contentClassName: PropTypes.string,
+        footer: PropTypes.any,
+        header: PropTypes.any,
+        plugName: PropTypes.string,
+        modal: PropTypes.bool,
+        children: PropTypes.any,
+        style: PropTypes.object,
+    };
+
+    /**
+     * React &#x7EC4;&#x4EF6;&#x9ED8;&#x8BA4;&#x5C5E;&#x6027;
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof DisplayLayer
+     * @static
+     */
+    static defaultProps = {
+        plugName: null,
+        animation: &apos;scale-from-top&apos;,
+        modal: false,
+        show: true,
+        content: &apos;&apos;,
+        contentLoadFail: null,
+        contentClassName: &apos;&apos;,
+        header: null,
+        footer: null,
+        onShown: null,
+        onHidden: null,
+        onLoad: null,
+        hotkey: true,
+        className: &apos;layer&apos;,
+        rootClassName: &apos;&apos;,
+        backdrop: true,
+        backdropClassName: &apos;&apos;,
+        loadingContent: true,
+        cache: false,
+        id: null,
+        children: null,
+        style: null,
+    };
+
+    /**
+     * React &#x7EC4;&#x4EF6;&#x6784;&#x9020;&#x51FD;&#x6570;&#xFF0C;&#x521B;&#x5EFA;&#x4E00;&#x4E2A; DisplayLayer &#x7EC4;&#x4EF6;&#x5B9E;&#x4F8B;&#xFF0C;&#x4F1A;&#x5728;&#x88C5;&#x914D;&#x4E4B;&#x524D;&#x88AB;&#x8C03;&#x7528;&#x3002;
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props &#x7EC4;&#x4EF6;&#x5C5E;&#x6027;&#x5BF9;&#x8C61;
+     * @constructor
+     */
+    constructor(props) {
+        super(props);
+
+        /**
+         * React &#x7EC4;&#x4EF6;&#x72B6;&#x6001;&#x5BF9;&#x8C61;
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
+        this.state = {
+            stage: STAGE.init,
+            loading: true,
+            content: null,
+            style: null,
+            zIndex: newZIndex()
+        };
+        if (typeof props.content !== &apos;function&apos;) {
+            this.state.content = props.content;
+            this.state.loading = false;
+        }
+
+        /**
+         * &#x63A7;&#x4EF6; ID
+         * @type {string}
+         */
+        this.id = props.id || `display-${timeSequence()}`;
+    }
+
+    /**
+    * React &#x7EC4;&#x4EF6;&#x751F;&#x547D;&#x5468;&#x671F;&#x51FD;&#x6570;&#xFF1A;`componentDidMount`
+    * &#x5728;&#x7EC4;&#x4EF6;&#x88AB;&#x88C5;&#x914D;&#x540E;&#x7ACB;&#x5373;&#x8C03;&#x7528;&#x3002;&#x521D;&#x59CB;&#x5316;&#x4F7F;&#x5F97;DOM&#x8282;&#x70B9;&#x5E94;&#x8BE5;&#x8FDB;&#x884C;&#x5230;&#x8FD9;&#x91CC;&#x3002;&#x82E5;&#x4F60;&#x9700;&#x8981;&#x4ECE;&#x8FDC;&#x7AEF;&#x52A0;&#x8F7D;&#x6570;&#x636E;&#xFF0C;&#x8FD9;&#x662F;&#x4E00;&#x4E2A;&#x9002;&#x5408;&#x5B9E;&#x73B0;&#x7F51;&#x7EDC;&#x8BF7;
+    &#x6C42;&#x7684;&#x5730;&#x65B9;&#x3002;&#x5728;&#x8BE5;&#x65B9;&#x6CD5;&#x91CC;&#x8BBE;&#x7F6E;&#x72B6;&#x6001;&#x5C06;&#x4F1A;&#x89E6;&#x53D1;&#x91CD;&#x6E32;&#x3002;
+    *
+    * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+    * @private
+    * @memberof DisplayLayer
+    * @return {void}
+    * @instance
+    */
+    componentDidMount() {
+        const {show, hotkey} = this.props;
+        if (show) {
+            this.show();
+            this.loadContent();
+        }
+
+        if (hotkey) {
+            window.addEventListener(&apos;keyup&apos;, this.handleWindowKeyup);
+        }
+    }
+
+    /**
+    * React &#x7EC4;&#x4EF6;&#x751F;&#x547D;&#x5468;&#x671F;&#x51FD;&#x6570;&#xFF1A;`componentWillUnmount`
+    * &#x5728;&#x7EC4;&#x4EF6;&#x88AB;&#x5378;&#x8F7D;&#x548C;&#x9500;&#x6BC1;&#x4E4B;&#x524D;&#x7ACB;&#x523B;&#x8C03;&#x7528;&#x3002;&#x53EF;&#x4EE5;&#x5728;&#x8BE5;&#x65B9;&#x6CD5;&#x91CC;&#x5904;&#x7406;&#x4EFB;&#x4F55;&#x5FC5;&#x8981;&#x7684;&#x6E05;&#x7406;&#x5DE5;&#x4F5C;&#xFF0C;&#x4F8B;&#x5982;&#x89E3;&#x7ED1;&#x5B9A;&#x65F6;&#x5668;&#xFF0C;&#x53D6;&#x6D88;&#x7F51;&#x7EDC;&#x8BF7;&#x6C42;&#xFF0C;&#x6E05;&#x7406;
+    &#x4EFB;&#x4F55;&#x5728;componentDidMount&#x73AF;&#x8282;&#x521B;&#x5EFA;&#x7684;DOM&#x5143;&#x7D20;&#x3002;
+    *
+    * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+    * @private
+    * @memberof DisplayLayer
+    * @return {void}
+    * @instance
+    */
+    componentWillUnmount() {
+        const {hotkey} = this.props;
+        if (hotkey) {
+            window.removeEventListener(&apos;keyup&apos;, this.handleWindowKeyup);
+        }
+        clearTimeout(this.showTimerTask);
+    }
+
+    /**
+     * &#x83B7;&#x53D6;&#x7EC4;&#x4EF6;&#x540D;&#x79F0;
+     * @type {string}
+     * @memberof DisplayLayer
+     * @instance
+     */
+    get stageName() {
+        const {stage} = this.state;
+        return STAGE.getName(stage);
+    }
+
+    /**
+     * &#x68C0;&#x67E5;&#x7EC4;&#x4EF6;&#x662F;&#x5426;&#x663E;&#x793A;
+     * @type {boolean}
+     * @memberof DisplayLayer
+     * @instance
+     */
+    get isShow() {
+        return this.isStage(STAGE.shown);
+    }
+
+    /**
+     * &#x68C0;&#x67E5;&#x7EC4;&#x4EF6;&#x662F;&#x5426;&#x9690;&#x85CF;
+     * @type {boolean}
+     * @memberof DisplayLayer
+     * @instance
+     */
+    get isHide() {
+        return this.isStage(STAGE.hidden);
+    }
+
+    /**
+     * &#x68C0;&#x67E5;&#x5F53;&#x524D;&#x72B6;&#x6001;&#x662F;&#x5426;&#x4E3A;&#x6307;&#x5B9A;&#x7684;&#x72B6;&#x6001;
+     *
+     * @param {String|Number} stage &#x8981;&#x68C0;&#x67E5;&#x7684;&#x72B6;&#x6001;&#x5E8F;&#x53F7;&#x6216;&#x8005;&#x540D;&#x79F0;
+     * @return {boolean}
+     * @memberof DisplayLayer
+     * @instance
+     */
+    isStage(stage) {
+        return STAGE.isSame(stage, this.state.stage);
+    }
+
+    /**
+     * &#x53D8;&#x66F4;&#x72B6;&#x6001;
+     *
+     * @param {String|Number} stage &#x8981;&#x53D8;&#x66F4;&#x7684;&#x72B6;&#x6001;
+     * @memberof DisplayLayer
+     * @return {void}
+     * @instance
+     */
+    changeStage(stage) {
+        const newState = {stage: STAGE.getValue(stage)};
+        if (STAGE.isSame(stage, STAGE.shown)) {
+            newState.zIndex = newZIndex();
+        }
+        this.setState(newState);
+    }
+
+    /**
+     * &#x8BBE;&#x7F6E;&#x754C;&#x9762;&#x5143;&#x7D20;&#x4E0A;&#x7684;&#x6837;&#x5F0F;
+     *
+     * @param {Object} style &#x8981;&#x8BBE;&#x7F6E;&#x7684;&#x6837;&#x5F0F;&#x5BF9;&#x8C61;
+     * @param {?Function} callback &#x8BBE;&#x7F6E;&#x5B8C;&#x6210;&#x540E;&#x7684;&#x56DE;&#x8C03;&#x51FD;&#x6570;
+     * @memberof DisplayLayer
+     * @return {void}
+     * @instance
+     */
+    setStyle(style, callback) {
+        this.setState({style}, callback);
+    }
+
+    /**
+     * &#x663E;&#x793A; DisplayLayer
+     *
+     * @param {?Function} callback &#x5B8C;&#x6210;&#x540E;&#x7684;&#x56DE;&#x8C03;&#x51FD;&#x6570;
+     * @memberof DisplayLayer
+     * @return {void}
+     * @instance
+     */
+    show(callback) {
+        if (this.state.stage === STAGE.init) {
+            this.changeStage(STAGE.ready);
+            this.showTimerTask = setTimeout(() =&gt; {
+                this.show(callback);
+            }, 50);
+        } else {
+            this.changeStage(STAGE.shown);
+            const afterShow = () =&gt; {
+                if (this.props.onShown) {
+                    this.props.onShown(this);
+                }
+                if (callback) {
+                    callback(this);
+                }
+            };
+            if (this.props.animation) {
+                setTimeout(afterShow, 400);
+            } else {
+                afterShow();
+            }
+        }
+    }
+
+    /**
+     * &#x9690;&#x85CF; DisplayLayer
+     *
+     * @param {?Function} callback &#x5B8C;&#x6210;&#x540E;&#x7684;&#x56DE;&#x8C03;&#x51FD;&#x6570;
+     * @memberof DisplayLayer
+     * @return {void}
+     * @instance
+     */
+    hide(callback) {
+        this.changeStage(STAGE.hidden);
+        const afterHidden = () =&gt; {
+            const {cache, onHidden} = this.props;
+            if (cache) {
+                this.reset();
+            }
+            if (onHidden) {
+                onHidden(this);
+            }
+            if (callback) {
+                callback(this);
+            }
+        };
+        const {animation} = this.props;
+        if (animation) {
+            setTimeout(afterHidden, 400);
+        } else {
+            afterHidden();
+        }
+    }
+
+    /**
+     * &#x5728;&#x5F39;&#x51FA;&#x5C42;&#x4E0A;&#x52A0;&#x8F7D;&#x65B0;&#x7684;&#x5185;&#x5BB9;
+     * @param {String|ReactNode|Function} newContent &#x65B0;&#x7684;&#x5185;&#x5BB9;
+     * @param {?Function} callback &#x5B8C;&#x6210;&#x540E;&#x7684;&#x56DE;&#x8C03;&#x51FD;&#x6570;
+     * @memberof DisplayLayer
+     * @return {void}
+     * @instance
+     */
+    loadContent(newContent, callback) {
+        let {content, contentLoadFail, onLoad} = this.props;
+        if (newContent !== undefined) {
+            content = newContent;
+        }
+        if (typeof content === &apos;function&apos;) {
+            const contentResult = content();
+            const afterLoad = () =&gt; {
+                if (onLoad) {
+                    onLoad(true, this.state.content, this);
+                }
+                if (callback) {
+                    callback(true, this.state.content, this);
+                }
+            };
+            if (contentResult instanceof Promise) {
+                this.setState({loading: true, content: null});
+                contentResult.then(result =&gt; {
+                    this.setState({content: result, loading: false}, afterLoad);
+                }).catch(() =&gt; {
+                    this.setState({content: contentLoadFail, loading: false}, afterLoad);
+                });
+            } else {
+                this.setState({content: contentResult, loading: false}, afterLoad);
+            }
+        }
+    }
+
+    /**
+     * &#x5904;&#x7406;&#x754C;&#x9762;&#x6309;&#x952E;&#x4E8B;&#x4EF6;
+     * @param {Event} e &#x4E8B;&#x4EF6;&#x5BF9;&#x8C61;
+     * @memberof DisplayLayer
+     * @private
+     * @return {void}
+     * @instance
+     */
+    handeWindowKeyup(e) {
+        const {hotkey} = this.props;
+        if (e.keyCode === 27 &amp;&amp; !this.props.modal) { // ESC key code: 27
+            this.hide();
+        } else if (typeof hotkey === &apos;function&apos;) {
+            hotkey(e, this);
+        }
+    }
+
+    /**
+     * &#x91CD;&#x7F6E;&#x72B6;&#x6001;&#x4E3A; init&#xFF08;&#x9700;&#x8981;&#x521D;&#x59CB;&#x5316;&#xFF09;
+     * @memberof DisplayLayer
+     * @return {void}
+     * @instance
+     */
+    reset() {
+        this.setState({stage: STAGE.init});
+    }
+
+    /**
+     * &#x5904;&#x7406;&#x80CC;&#x666F;&#x906E;&#x7F69;&#x5C42;&#x70B9;&#x51FB;&#x4E8B;&#x4EF6;
+     * @param {Event} event &#x4E8B;&#x4EF6;&#x5BF9;&#x8C61;
+     * @memberof DisplayLayer
+     * @private
+     * @return {void}
+     * @instance
+     */
+    handleBackdropClick = event =&gt; {
+        if (!this.props.modal) {
+            this.hide();
+        }
+    }
+
+    /**
+     * React &#x7EC4;&#x4EF6;&#x751F;&#x547D;&#x5468;&#x671F;&#x51FD;&#x6570;&#xFF1A;Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof DisplayLayer
+     * @return {ReactNode}
+     * @instance
+     */
+    render() {
+        let {
+            plugName,
+            className,
+            rootClassName,
+            backdrop,
+            backdropClassName,
+            animation,
+            modal,
+            show,
+            content,
+            onShown,
+            onHidden,
+            header,
+            footer,
+            hotkey,
+            cache,
+            loadingContent,
+            contentClassName,
+            contentLoadFail,
+            children,
+            style,
+            id,
+            ...other
+        } = this.props;
+
+        if (loadingContent === true) {
+            loadingContent = &lt;Spinner /&gt;;
+        }
+
+        rootClassName = classes(
+            &apos;display-layer&apos;,
+            rootClassName,
+            `display-stage-${this.stageName}`,
+            plugName ? `display-layer-${plugName}` : null,
+            {&apos;has-animation&apos;: animation}
+        );
+
+        return (
+            &lt;div onKeyUp={this.handeWindowKeyup.bind(this)} className={rootClassName} style={{zIndex: this.state.zIndex}}&gt;
+                {backdrop &amp;&amp; &lt;div onClick={this.handleBackdropClick} className={classes(&apos;display-backdrop&apos;, backdropClassName)} /&gt;}
+                &lt;div id={this.id} className={classes(&apos;display&apos;, animation, className, {in: this.isStage(STAGE.shown)})} {...other} style={Object.assign({}, style, this.state.style)} ref={e =&gt; {this.displayElement = e;}}&gt;
+                    {header}
+                    &lt;div className={classes(&apos;content&apos;, contentClassName)}&gt;{this.state.loading ? loadingContent : this.state.content}&lt;/div&gt;
+                    {children}
+                    {footer}
+                &lt;/div&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

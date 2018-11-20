@@ -11,7 +11,7 @@ import replaceViews from '../replace-views';
  * @class UserAvatar
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import UserAvatar from './user-avatar';
  * <UserAvatar />
  */
@@ -22,7 +22,7 @@ export default class UserAvatar extends Component {
      * @readonly
      * @static
      * @memberof UserAvatar
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {UserAvatar} from './user-avatar';
      * <UserAvatar />
      */

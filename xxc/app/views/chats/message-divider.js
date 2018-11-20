@@ -10,7 +10,7 @@ import replaceViews from '../replace-views';
  * @class MessageDivider
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * import MessageDivider from './message-divider';
  * <MessageDivider />
  */
@@ -21,7 +21,7 @@ export default class MessageDivider extends PureComponent {
      * @readonly
      * @static
      * @memberof MessageDivider
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {MessageDivider} from './message-divider';
      * <MessageDivider />
      */

@@ -1,14 +1,29 @@
-import exts from './exts';
+import {getThemeExt, getThemeExts} from './exts';
 import Store from '../utils/store';
 
+/**
+ * 当前主题本地存储键前缀
+ * @type {string}
+ * @private
+ */
 const STORE_KEY = 'EXTENSIONS::theme.current';
 
+/**
+ * 当前主题
+ * @type {Theme}
+ * @private
+ */
 let currentTheme;
-const getCurrentTheme = () => {
+
+/**
+ * 获取当前使用的主题
+ * @return {Theme} 当前使用的主题
+ */
+export const getCurrentTheme = () => {
     if (currentTheme === undefined) {
         const currentThemeSetting = Store.get(STORE_KEY);
         if (currentThemeSetting) {
-            const themeExt = exts.getTheme(currentThemeSetting.extension);
+            const themeExt = getThemeExt(currentThemeSetting.extension);
             if (themeExt) {
                 currentTheme = themeExt.getTheme(currentThemeSetting.name);
             }
@@ -20,9 +35,21 @@ const getCurrentTheme = () => {
     return currentTheme;
 };
 
-// Backup the default theme
+/**
+ * 默认主题样式表文件路径
+ * @type {string}
+ * @private
+ */
 let theDefaultThemeStyle;
+
+/**
+ * 主题在界面上所使用的 `<link>` 元素
+ * @type {HTMLLinkElement}
+ * @private
+ */
 let themeLinkElement = null;
+
+
 if (process.env.HOT) {
     themeLinkElement = document.querySelector('link[href^="blob:"]');
     theDefaultThemeStyle = themeLinkElement.href;
@@ -30,8 +57,20 @@ if (process.env.HOT) {
     themeLinkElement = document.getElementById('theme');
     theDefaultThemeStyle = themeLinkElement.href;
 }
+
+/**
+ * 主题切换动画效果定时任务 ID
+ * @type {number}
+ * @private
+ */
 let changingThemeTimer = null;
-const applyTheme = theme => {
+
+/**
+ * 应用主题
+ * @param {string|Theme} theme 要应用的主题名称或者主题对象
+ * @return {void}
+ */
+export const applyTheme = theme => {
     theme = theme || currentTheme;
     clearTimeout(changingThemeTimer);
     document.body.classList.add('theme-changing');
@@ -44,7 +83,7 @@ const applyTheme = theme => {
             appendLinkElement.remove();
         }
     } else {
-        const styleFile = theme.styleFile;
+        const {styleFile} = theme;
         if (!styleFile) {
             applyTheme('');
             return 'THEME_HAS_NO_CSS_FILE';
@@ -84,11 +123,17 @@ const applyTheme = theme => {
     }
 };
 
+// 获取当前设置的主题，如果有则应用主题
 if (getCurrentTheme()) {
     applyTheme();
 }
 
-const setCurrentTheme = theme => {
+/**
+ * 设置当前所使用的主题
+ * @param {string|Theme} theme 要应用的主题名称或者主题对象，`'default'` 为应用默认主题
+ * @return {void}
+ */
+export const setCurrentTheme = theme => {
     if (theme === 'default') {
         theme = null;
     }
@@ -105,14 +150,22 @@ const setCurrentTheme = theme => {
     return applyTheme(theme);
 };
 
-const isCurrentTheme = themeId => {
-    return (themeId === 'default' && !currentTheme) || (currentTheme && currentTheme.id === themeId);
-};
+/**
+ * 检查指定的主题编号是否是当前设置的主题
+ * @param {string} themeId 主题编号
+ * @returns {boolean} 如果返回 `true` 则为是当前设置的主题，否则为不是当前设置的主题
+ */
+export const isCurrentTheme = themeId => (themeId === 'default' && !currentTheme) || (currentTheme && currentTheme.id === themeId);
 
-const search = (keys) => {
+/**
+ * 搜索主题
+ * @param {string} keys 搜索字符串
+ * @return {Theme[]} 搜索到的主题列表
+ */
+export const searchThemes = (keys) => {
     keys = keys.trim().toLowerCase().split(' ');
     const result = [];
-    exts.themes.forEach(theExt => {
+    getThemeExts().forEach(theExt => {
         const extThemes = theExt.themes;
         if (extThemes.length) {
             const searchGroup = {
@@ -146,10 +199,10 @@ const search = (keys) => {
 
 export default {
     get all() {
-        return exts.themes;
+        return getThemeExts();
     },
 
-    search,
+    search: searchThemes,
     isCurrentTheme,
     getCurrentTheme,
     setCurrentTheme,

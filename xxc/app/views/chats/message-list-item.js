@@ -30,7 +30,7 @@ const showTimeLabelInterval = 1000 * 60 * 5;
  * @class MessageListItem
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import MessageListItem from './message-list-item';
  * <MessageListItem />
  */
@@ -41,7 +41,7 @@ export default class MessageListItem extends Component {
      * @readonly
      * @static
      * @memberof MessageListItem
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {MessageListItem} from './message-list-item';
      * <MessageListItem />
      */

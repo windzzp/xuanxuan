@@ -20,7 +20,7 @@
 
 * `main.development.js`：Electron 主进程入口文件；
 * `index.html`：Electron 渲染进程加载的 HTML 文件；
-* `index.js`：Electron 渲染进程加载 JS 文件；
+* `index.js`：Electron 渲染进程窗口在 `index.html` 文件中加载 JS 文件；
 * `package.json`：Electron 加载的 package.json 文件。
 
 ### 其他资源文件
@@ -51,3 +51,8 @@ $ npm run docs
 ### 文档修改
 
 直接修改对应 JS 文件内的 [jsdoc 格式注释](http://usejsdoc.org/)，然后使用上述方法重新生成文档即可。
+
+## 参考
+
+* [React 中文网址](https://react.docschina.org/)
+* [Electron 官方网址](https://electronjs.org/)

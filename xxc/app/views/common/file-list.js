@@ -12,7 +12,7 @@ import Config from '../../config';
  * @class FileList
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import FileList from './file-list';
  * <FileList />
  */
@@ -23,7 +23,7 @@ export default class FileList extends Component {
      * @readonly
      * @static
      * @memberof FileList
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {FileList} from './file-list';
      * <FileList />
      */

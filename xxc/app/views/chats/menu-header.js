@@ -12,7 +12,7 @@ import replaceViews from '../replace-views';
  * @class MenuHeader
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import MenuHeader from './menu-header';
  * <MenuHeader />
  */
@@ -23,7 +23,7 @@ export default class MenuHeader extends PureComponent {
      * @readonly
      * @static
      * @memberof MenuHeader
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {MenuHeader} from './menu-header';
      * <MenuHeader />
      */

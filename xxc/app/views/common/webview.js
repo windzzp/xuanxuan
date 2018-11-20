@@ -17,7 +17,7 @@ const isElectron = Platform.type === 'electron';
  * @class Webview
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import Webview from './webview';
  * <Webview />
  */
@@ -28,7 +28,7 @@ export default class WebView extends Component {
      * @readonly
      * @static
      * @memberof Webview
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {Webview} from './webview';
      * <Webview />
      */

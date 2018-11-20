@@ -1,16 +1,22 @@
 #!/usr/bin/env node
 
+/* eslint-disable no-template-curly-in-string */
+/* eslint-disable import/no-dynamic-require */
+/* eslint-disable global-require */
+/* eslint-disable prefer-template */
+/* eslint-disable no-extend-native */
+
 import chalk from 'chalk';
 import program from 'commander';
 import {spawn} from 'child_process';
 import path from 'path';
 import os from 'os';
+import cpx from 'cpx';
+import archiver from 'archiver';
 import fse from 'fs-extra';
 import pkg from '../package.json';
 import {formatDate} from '../app/utils/date-helper';
 import oldPkg from '../app/package.json';
-import cpx from 'cpx';
-import archiver from 'archiver';
 
 const PLATFORMS = new Set(['win', 'mac', 'linux', 'browser']);
 const ARCHS = new Set(['x32', 'x64']);
@@ -38,9 +44,11 @@ const getCurrentPlatform = () => {
     const osPlatform = os.platform();
     if (osPlatform === 'linux') {
         return 'linux';
-    } else if (osPlatform === 'darwin') {
+    }
+    if (osPlatform === 'darwin') {
         return 'mac';
-    } else if (osPlatform === 'win32') {
+    }
+    if (osPlatform === 'win32') {
         return 'win';
     }
 };
@@ -106,10 +114,12 @@ const formatArchs = (val) => {
 const formatTime = ms => {
     if (ms < 1000) {
         return `${ms}ms`;
-    } else if (ms < 60000) {
-        return `${(ms/1000).toFixed(2)}sec`;
-    } else if (ms < 60000*60) {
-        return `${(ms/(1000*60)).toFixed(2)}min`;
+    }
+    if (ms < 60000) {
+        return `${(ms / 1000).toFixed(2)}sec`;
+    }
+    if (ms < 60000 * 60) {
+        return `${(ms / (1000 * 60)).toFixed(2)}min`;
     }
 };
 
@@ -130,19 +140,19 @@ const createZipFromDir = (file, dir, destDir = false) => {
 // https://github.com/uxitten/polyfill/blob/master/string.polyfill.js
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padEnd
 if (!String.prototype.padEnd) {
-    String.prototype.padEnd = function padEnd(targetLength,padString) {
-        targetLength = targetLength>>0; //floor if number or convert non-number to 0;
+    String.prototype.padEnd = function padEnd(targetLength, padString) {
+        // eslint-disable-next-line operator-assignment
+        targetLength = targetLength >> 0; // floor if number or convert non-number to 0;
         padString = String((typeof padString !== 'undefined' ? padString : ' '));
         if (this.length > targetLength) {
             return String(this);
         }
-        else {
-            targetLength = targetLength-this.length;
-            if (targetLength > padString.length) {
-                padString += padString.repeat(targetLength/padString.length); //append to original to ensure we are longer than needed
-            }
-            return String(this) + padString.slice(0,targetLength);
+        // eslint-disable-next-line operator-assignment
+        targetLength = targetLength - this.length;
+        if (targetLength > padString.length) {
+            padString += padString.repeat(targetLength / padString.length); // append to original to ensure we are longer than needed
         }
+        return String(this) + padString.slice(0, targetLength);
     };
 }
 
@@ -155,7 +165,7 @@ program
         if (isEmpty(val)) {
             const defaultConfig = fse.readJsonSync(path.resolve(__dirname, './build-config.default.json'), {throws: false});
             if (defaultConfig && !isEmpty(defaultConfig.name)) {
-                return  defaultConfig.name;
+                return defaultConfig.name;
             }
             return defaultValue;
         }
@@ -178,7 +188,7 @@ const platforms = formatPlatforms(program.platform);
 const archs = formatArchs(program.arch);
 const isDebug = program.debug;
 const isBeta = !!program.beta;
-const verbose = program.verbose;
+const {verbose} = program;
 const isSkipBuild = program.skipbuild;
 const isClean = program.clean;
 const buildVersion = isBeta ? formatDate(new Date(), program.beta === true ? 'beta.yyyyMMddhhmm' : program.beta) : null;
@@ -383,7 +393,7 @@ const outputConfigFiles = () => {
         console.log(`    ${chalk.green(chalk.bold('✓'))} 创建 ${chalk.underline('./app/manifest.json')}`);
     }
     console.log();
-}
+};
 
 // 还原项目目录下的 package.json 文件
 const revertConfigFiles = () => {
@@ -487,7 +497,8 @@ const build = async (callback) => {
         console.log();
     }
 
-    let packageNum = 1, packedNum = 0;
+    let packageNum = 1;
+    let packedNum = 0;
     const buildPlatforms = platforms;
     const archTypes = archs;
     const packagesPath = path.join(__dirname, '../', electronBuilder.directories.output);
@@ -539,6 +550,7 @@ const build = async (callback) => {
                     console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} ${'请耐心等待，这可能需要花费几分钟时间...'}`);
                 }
                 const startTime = new Date().getTime();
+                // eslint-disable-next-line no-await-in-loop
                 await createPackage(platform, arch, isDebug);
                 if (verbose) {
                     console.log(chalk.yellow('══════════════════════════════════════════════════════════════'));

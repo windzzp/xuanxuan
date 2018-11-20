@@ -17,7 +17,7 @@ import replaceViews from '../replace-views';
  * @class ChatView
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import ChatView from './chat-view';
  * <ChatView />
  */
@@ -28,7 +28,7 @@ export default class ChatView extends Component {
      * @readonly
      * @static
      * @memberof ChatView
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {ChatView} from './chat-view';
      * <ChatView />
      */

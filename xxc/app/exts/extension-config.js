@@ -25,6 +25,7 @@ export default class ExtensionConfig {
         const value = this.$[key];
         if (value === undefined) {
             if (defaultValue === undefined) {
+                // eslint-disable-next-line prefer-destructuring
                 defaultValue = this.map[key].defaultValue;
             }
             return defaultValue;

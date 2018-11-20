@@ -19,6 +19,10 @@ import utils from '../utils';
 import app from '../core';
 import views from '../views/external';
 
+/**
+ * 所有第三方 node 模块
+ * @type {Map<string, any>}
+ */
 const nodeModules = {
     React,
     ReactDOM,
@@ -40,6 +44,10 @@ const nodeModules = {
     }
 };
 
+/**
+ * 导出开放给扩展的模块
+ * @type {Map<string, any>}
+ */
 export default {
     lang,
     components,

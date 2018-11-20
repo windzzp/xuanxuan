@@ -31,7 +31,7 @@ const timeToInt = time => {
  * @class TodoEditer
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
- * @example @lang jsx
+ * @example
  * import TodoEditer from './todo-editer';
  * <TodoEditer />
  */
@@ -42,7 +42,7 @@ export default class TodoEditor extends PureComponent {
      * @readonly
      * @static
      * @memberof TodoEditer
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {TodoEditer} from './todo-editer';
      * <TodoEditer />
      */

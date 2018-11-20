@@ -31,7 +31,7 @@ export const ready = (listener) => {
 };
 
 /**
- * 触发事件准备就绪事件
+ * 触发界面准备就绪事件
  * @private
  * @return {void}
  */

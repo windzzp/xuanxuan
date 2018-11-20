@@ -4,7 +4,6 @@
     "includes": ["\\.js$"],
     "excludes": ["bundle\\.js$", "main\\.js$", "jquery"],
     "plugins": [
-        {"name": "./build/custom-esdoc.js"},
         {"name": "esdoc-jsx-plugin", "option": {"enable": true}},
         {"name": "esdoc-ecmascript-proposal-plugin", "option": {"all": true}},
         {"name": "esdoc-standard-plugin", "option": {

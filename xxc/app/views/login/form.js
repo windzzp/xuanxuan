@@ -16,6 +16,12 @@ import replaceViews from '../replace-views';
 import Button from '../../components/button';
 import {isPasswordWithMD5Flag} from '../../core/profile/user';
 
+/**
+ * 将服务器地址转换为简单形式
+ * @param {string} serverUrl 服务器地址
+ * @return {string} 服务器地址
+ * @private
+ */
 const simpleServerUrl = serverUrl => {
     if (serverUrl) {
         if (!serverUrl.startsWith('http://') && !serverUrl.startsWith('https://')) {
@@ -35,24 +41,69 @@ const simpleServerUrl = serverUrl => {
     return serverUrl;
 };
 
-class FormView extends PureComponent {
-    static get Form() {
-        return replaceViews('login/form', FormView);
+/**
+ * Form 组件 ，显示登录表单界面
+ * @class Form
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {PureComponent}
+ * @example
+ * import Form from './form';
+ * <Form />
+ */
+export default class LoginForm extends PureComponent {
+    /**
+     * 获取 Form 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
+     * @type {Class<Form>}
+     * @readonly
+     * @static
+     * @memberof LoginForm
+     * @example <caption>可替换组件类调用方式</caption>
+     * import {Form} from './form';
+     * <Form />
+     */
+    static get LoginForm() {
+        return replaceViews('login/form', LoginForm);
     }
 
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof LoginForm
+     * @type {Object}
+     */
     static propTypes = {
         className: PropTypes.string,
     };
 
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof LoginForm
+     * @static
+     */
     static defaultProps = {
         className: null,
     };
 
+    /**
+     * React 组件构造函数，创建一个 Form 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
 
         const lastSavedUser = App.profile.getLastSavedUser();
         const entryParams = App.ui.entryParams;
+
+        /**
+         * React 组件状态对象
+         * @see https://react.docschina.org/docs/state-and-lifecycle.html
+         * @type {object}
+         */
         const state = {
             serverUrl: Config.ui.serverUrl || '',
             account: '',
@@ -93,12 +144,28 @@ class FormView extends PureComponent {
         this.state = state;
     }
 
+    /**
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof LoginForm
+     * @return {void}
+     */
     componentDidMount() {
         if (this.state.submitable && (this.state.autoLogin || App.ui.isAutoLoginNextTime())) {
             this.login();
         }
     }
 
+    /**
+     * 登录到服务器
+     *
+     * @return {void}
+     * @memberof LoginForm
+     */
     login() {
         App.server.login({
             server: this.state.serverUrl,
@@ -117,6 +184,15 @@ class FormView extends PureComponent {
         });
     }
 
+    /**
+     * 处理输入框变更事件
+     *
+     * @param {string} field 输入框 ID
+     * @param {string} value 输入框值
+     * @memberof LoginForm
+     * @return {void}
+     * @private
+     */
     handleInputFieldChange(field, value) {
         const userState = {
             account: this.state.account,
@@ -130,6 +206,13 @@ class FormView extends PureComponent {
         this.setState(userState);
     }
 
+    /**
+     * 处理记住密码复选框变更事件
+     * @param {boolean} rememberPassword 是否记住密码
+     * @memberof LoginForm
+     * @private
+     * @return {void}
+     */
     handleRememberPasswordChanged = rememberPassword => {
         this.setState({
             rememberPassword,
@@ -138,6 +221,13 @@ class FormView extends PureComponent {
         });
     }
 
+    /**
+     * 处理自动登录复选框变更事件
+     * @param {boolean} autoLogin 是否自动登录
+     * @memberof LoginForm
+     * @private
+     * @return {void}
+     */
     handleAutoLoginChanged = autoLogin => {
         this.setState({
             autoLogin,
@@ -146,6 +236,13 @@ class FormView extends PureComponent {
         });
     }
 
+    /**
+     * 变更 LDAP 设置
+     *
+     * @param {boolean} ldap 是否启用 LDAP
+     * @memberof LoginForm
+     * @return {void}
+     */
     changeLDAP(ldap) {
         this.setState({
             ldap,
@@ -157,6 +254,13 @@ class FormView extends PureComponent {
         }
     }
 
+    /**
+     * 处理 LDAP 复选框变更事件
+     * @param {boolean} ldap 是否启用 LDAP
+     * @memberof LoginForm
+     * @private
+     * @return {void}
+     */
     handleLDAPChanged = ldap => {
         if (ldap && !this.hasShowedLDAPConfirm) {
             Modal.confirm(Lang.string('login.ldap.confirm'), {
@@ -180,6 +284,12 @@ class FormView extends PureComponent {
         }
     }
 
+    /**
+     * 处理点击登录按钮事件
+     * @memberof LoginForm
+     * @private
+     * @return {void}
+     */
     handleLoginBtnClick = () => {
         this.setState({
             logining: true,
@@ -217,6 +327,12 @@ class FormView extends PureComponent {
         });
     };
 
+    /**
+     * 处理点击切换用户按钮事件
+     * @memberof LoginForm
+     * @private
+     * @return {void}
+     */
     handleSwapUserBtnClick = () => {
         const {serverUrl, account} = this.state;
         const identify = (serverUrl && account) ? User.createIdentify(serverUrl, account) : null;
@@ -232,18 +348,46 @@ class FormView extends PureComponent {
         });
     };
 
+    /**
+     * 处理服务器地址变更事件
+     * @param {string} val 服务器地址
+     * @memberof LoginForm
+     * @private
+     * @return {void}
+     */
     handleServerUrlChange = val => {
         this.handleInputFieldChange('serverUrl', val);
     };
 
+    /**
+     * 处理用户名变更事件
+     * @param {string} val 用户名
+     * @memberof LoginForm
+     * @private
+     * @return {void}
+     */
     handleAccountChange = val => {
         this.handleInputFieldChange('account', val);
     };
 
+    /**
+     * 处理密码变更事件
+     * @param {string} val 密码
+     * @memberof LoginForm
+     * @private
+     * @return {void}
+     */
     handlePasswordChange = val => {
         this.handleInputFieldChange('password', val);
     };
 
+    /**
+     * 处理点击更多设置按钮事件
+     * @param {Event} e 事件对象
+     * @memberof LoginForm
+     * @private
+     * @return {void}
+     */
     handleSettingBtnClick = e => {
         const isOpenAtLogin = Platform.ui.isOpenAtLogin();
         App.ui.showContextMenu({x: e.clientX, y: e.clientY}, [{
@@ -255,6 +399,14 @@ class FormView extends PureComponent {
         }]);
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof LoginForm
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {
             className,
@@ -310,5 +462,3 @@ class FormView extends PureComponent {
         </div>);
     }
 }
-
-export default FormView;

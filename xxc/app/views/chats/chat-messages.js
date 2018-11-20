@@ -12,7 +12,7 @@ import Lang from '../../lang';
  * @class ChatMessages
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import ChatMessages from './chat-messages';
  * <ChatMessages />
  */
@@ -23,7 +23,7 @@ export default class ChatMessages extends Component {
      * @readonly
      * @static
      * @memberof ChatMessages
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {ChatMessages} from './chat-messages';
      * <ChatMessages />
      */

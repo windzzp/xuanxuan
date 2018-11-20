@@ -17,7 +17,7 @@ import {MemberList} from '../common/member-list';
  * @class ChatCreateGroups
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import ChatCreateGroups from './chat-create-groups';
  * <ChatCreateGroups />
  */
@@ -28,7 +28,7 @@ export default class ChatCreateGroups extends Component {
      * @readonly
      * @static
      * @memberof ChatCreateGroups
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {ChatCreateGroups} from './chat-create-groups';
      * <ChatCreateGroups />
      */

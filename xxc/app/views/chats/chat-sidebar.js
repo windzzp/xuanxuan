@@ -15,7 +15,7 @@ import replaceViews from '../replace-views';
  * @class ChatSidebar
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import ChatSidebar from './chat-sidebar';
  * <ChatSidebar />
  */
@@ -26,7 +26,7 @@ export default class ChatSidebar extends Component {
      * @readonly
      * @static
      * @memberof ChatSidebar
-     * @example <caption>可替换组件类调用方式</caption> @lang jsx
+     * @example <caption>可替换组件类调用方式</caption>
      * import {ChatSidebar} from './chat-sidebar';
      * <ChatSidebar />
      */
