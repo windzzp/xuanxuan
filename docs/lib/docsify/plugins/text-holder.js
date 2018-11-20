@@ -63,7 +63,7 @@
                 if (typeof value === 'object' && value !== null) {
                     content = replaceConfig(content, value, conversions, key);
                 }
-                var regStr = '\\$\\{(' + ((prefixKey !== undefined && prefixKey !== null) ? (prefixKey + '\\.') : '') + key + ':?[.^\\}]*)\\}';
+                var regStr = '\\$\\{(' + ((prefixKey !== undefined && prefixKey !== null) ? (prefixKey + '\\.') : '') + key + ':?[^\\}]*)\\}';
                 content = content.replace(new RegExp(regStr, 'g'), function(_, match) {
                     var matchArr = match.split(':');
                     var result = (value === null || value === undefined) ? '' : value;
