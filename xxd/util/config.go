@@ -51,7 +51,7 @@ func init() {
     data, err := goconfig.LoadConfigFile(dir + "/" + configPath)
     if err != nil {
 
-        Config.Ip = "127.0.0.1"
+        Config.Ip = "0.0.0.0"
         Config.ChatPort = "11444"
         Config.CommonPort = "11443"
         Config.IsHttps = "1"
