@@ -1,6 +1,6 @@
 # API
 
-[esdoc](./api/index.html ':include :type=iframe class=esdoc-iframe')
+[esdoc](api/${_urlSearch:>,src} ':include :type=iframe class=esdoc-iframe')
 
 <style>
 .app-nav {margin-top: 10px;}

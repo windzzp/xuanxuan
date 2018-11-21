@@ -41,7 +41,6 @@ xxc/app/style.css
 xxc/app/style.css.map
 xxc/app/dist
 xxc/app/web-dist
-xxc/app/package-lock.json
 xxc/app/manifest.json
 xxc/app/media-build
 
@@ -73,4 +72,5 @@ xxd/tmpfile
 
 # documentation
 docs/output
+docs/*/*-convert.md
 

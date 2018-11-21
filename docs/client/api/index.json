@@ -751,7 +751,8 @@
       ],
       "spread": false,
       "description": "如果在矩形区域内则返回 <code>true</code> 否则 返回 <code>false</code>"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 56,
@@ -797,7 +798,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 57,
@@ -2319,7 +2321,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 116,
@@ -2341,7 +2344,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 117,
@@ -2366,7 +2370,8 @@
       "spread": false,
       "description": ""
     },
-    "params": []
+    "params": [],
+    "ignore": true
   },
   {
     "__docId__": 118,
@@ -3113,7 +3118,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 145,
@@ -3135,7 +3141,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 146,
@@ -3157,7 +3164,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 147,
@@ -5529,7 +5537,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 239,
@@ -5551,7 +5560,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 240,
@@ -7698,7 +7708,8 @@
       "types": [
         "*"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 320,
@@ -7718,7 +7729,8 @@
       "types": [
         "*"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 321,
@@ -8153,7 +8165,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 334,
@@ -8190,7 +8203,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 335,
@@ -8456,7 +8470,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 339,
@@ -8502,7 +8517,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 340,
@@ -8762,7 +8778,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 346,
@@ -8784,7 +8801,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 347,
@@ -9109,7 +9127,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 361,
@@ -9176,7 +9195,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 364,
@@ -9595,7 +9615,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 382,
@@ -9617,7 +9638,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 383,
@@ -9639,7 +9661,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 384,
@@ -9661,7 +9684,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 385,
@@ -9683,7 +9707,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 386,
@@ -9705,7 +9730,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 387,
@@ -9727,7 +9753,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 388,
@@ -10226,7 +10253,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 399,
@@ -10248,7 +10276,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 400,
@@ -10319,7 +10348,8 @@
       "spread": false,
       "description": ""
     },
-    "params": []
+    "params": [],
+    "ignore": true
   },
   {
     "__docId__": 402,
@@ -11311,7 +11341,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 425,
@@ -11742,7 +11773,8 @@
       ],
       "spread": false,
       "description": "描述聊天消息内容的纯文本形式"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 434,
@@ -11764,7 +11796,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 435,
@@ -11786,7 +11819,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 436,
@@ -11808,7 +11842,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 437,
@@ -11890,7 +11925,8 @@
       ],
       "spread": false,
       "description": "如果处理成功则返回修改名称后的聊天实例"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 440,
@@ -11936,7 +11972,8 @@
       ],
       "spread": false,
       "description": "如果处理成功则返回修改后的聊天实例"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 441,
@@ -11982,7 +12019,8 @@
       ],
       "spread": false,
       "description": "如果处理成功则返回修改后的聊天实例"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 442,
@@ -12028,7 +12066,8 @@
       ],
       "spread": false,
       "description": "处理结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 443,
@@ -12074,7 +12113,8 @@
       ],
       "spread": false,
       "description": "如果处理成功则返回创建的聊天实例"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 444,
@@ -12120,7 +12160,8 @@
       ],
       "spread": false,
       "description": "处理结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 445,
@@ -12166,7 +12207,8 @@
       ],
       "spread": false,
       "description": "处理结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 446,
@@ -12212,7 +12254,8 @@
       ],
       "spread": false,
       "description": "如果处理成功则返回修改后的聊天实例"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 447,
@@ -12258,7 +12301,8 @@
       ],
       "spread": false,
       "description": "如果处理成功则返回修改后的聊天实例"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 448,
@@ -12304,7 +12348,8 @@
       ],
       "spread": false,
       "description": "处理结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 449,
@@ -12350,7 +12395,8 @@
       ],
       "spread": false,
       "description": "如果处理成功则返回修改后的聊天实例"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 450,
@@ -12396,7 +12442,8 @@
       ],
       "spread": false,
       "description": "如果处理成功则返回修改后的聊天实例"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 451,
@@ -12442,7 +12489,8 @@
       ],
       "spread": false,
       "description": "如果处理成功则返回修改后的聊天实例"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 452,
@@ -12488,7 +12536,8 @@
       ],
       "spread": false,
       "description": "如果处理成功则返回修改后的聊天实例"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 453,
@@ -12534,7 +12583,8 @@
       ],
       "spread": false,
       "description": "如果处理成功则返回获取到的公开聊天列表"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 454,
@@ -12580,7 +12630,8 @@
       ],
       "spread": false,
       "description": "返回操作结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 455,
@@ -12613,7 +12664,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 457,
@@ -12635,7 +12687,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 458,
@@ -12657,7 +12710,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 459,
@@ -12679,7 +12733,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 460,
@@ -13036,7 +13091,8 @@
       ],
       "spread": false,
       "description": "新创建的聊天实例"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 468,
@@ -13634,7 +13690,8 @@
       ],
       "spread": false,
       "description": "聊天消息实例"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 481,
@@ -13955,7 +14012,8 @@
       ],
       "spread": false,
       "description": "使用 Promise 异步返回处理结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 487,
@@ -14131,7 +14189,8 @@
       ],
       "spread": false,
       "description": "使用 Promise 异步返回处理结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 490,
@@ -14498,7 +14557,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 500,
@@ -14520,7 +14580,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 501,
@@ -14542,7 +14603,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 502,
@@ -15067,7 +15129,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 516,
@@ -15443,7 +15506,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 528,
@@ -15465,7 +15529,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 529,
@@ -15487,7 +15552,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 530,
@@ -15509,7 +15575,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 531,
@@ -16066,7 +16133,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 547,
@@ -16088,7 +16156,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 548,
@@ -16110,7 +16179,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 549,
@@ -16132,7 +16202,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 550,
@@ -16154,7 +16225,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 551,
@@ -18027,7 +18099,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 642,
@@ -18049,7 +18122,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 643,
@@ -18071,7 +18145,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 644,
@@ -18093,7 +18168,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 645,
@@ -21159,7 +21235,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 777,
@@ -21181,7 +21258,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 778,
@@ -22160,7 +22238,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 813,
@@ -22182,7 +22261,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 814,
@@ -23548,7 +23628,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 879,
@@ -23570,7 +23651,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 880,
@@ -25461,7 +25543,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 954,
@@ -25483,7 +25566,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 955,
@@ -25505,7 +25589,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 956,
@@ -25563,7 +25648,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 957,
@@ -26424,7 +26510,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 994,
@@ -26446,7 +26533,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 995,
@@ -26620,7 +26708,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1001,
@@ -26642,7 +26731,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1002,
@@ -29193,7 +29283,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1105,
@@ -29215,7 +29306,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1106,
@@ -31241,7 +31333,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1201,
@@ -31263,7 +31356,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1202,
@@ -31325,7 +31419,8 @@
       "spread": false,
       "description": ""
     },
-    "params": []
+    "params": [],
+    "ignore": true
   },
   {
     "__docId__": 1204,
@@ -31358,7 +31453,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1206,
@@ -31402,7 +31498,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1208,
@@ -31424,7 +31521,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1209,
@@ -31460,7 +31558,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1210,
@@ -31496,7 +31595,8 @@
       ],
       "spread": false,
       "description": "返回一个功能支持情况表"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1211,
@@ -31699,7 +31799,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1217,
@@ -31721,7 +31822,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1218,
@@ -31815,7 +31917,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1222,
@@ -31861,7 +31964,8 @@
       ],
       "spread": false,
       "description": "如果返回 `false`，表示此消息处理失败或者无法处理，如果为 `true` 或其他数据则表示已经处理"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1223,
@@ -31907,7 +32011,8 @@
       ],
       "spread": false,
       "description": "如果返回 `false`，表示此消息处理失败或者无法处理，如果为 `true` 或其他数据则表示已经处理"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1224,
@@ -31953,7 +32058,8 @@
       ],
       "spread": false,
       "description": "如果返回 `false`，表示此消息处理失败或者无法处理，如果为 `true` 或其他数据则表示已经处理"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1225,
@@ -31999,7 +32105,8 @@
       ],
       "spread": false,
       "description": "如果返回 `false`，表示此消息处理失败或者无法处理，如果为 `true` 或其他数据则表示已经处理"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1226,
@@ -32045,7 +32152,8 @@
       ],
       "spread": false,
       "description": "如果返回 `false`，表示此消息处理失败或者无法处理，如果为 `true` 或其他数据则表示已经处理"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1227,
@@ -32091,7 +32199,8 @@
       ],
       "spread": false,
       "description": "如果返回 `false`，表示此消息处理失败或者无法处理，如果为 `true` 或其他数据则表示已经处理"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1228,
@@ -32137,7 +32246,8 @@
       ],
       "spread": false,
       "description": "如果返回 `false`，表示此消息处理失败或者无法处理，如果为 `true` 或其他数据则表示已经处理"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1229,
@@ -32183,7 +32293,8 @@
       ],
       "spread": false,
       "description": "如果返回 `false`，表示此消息处理失败或者无法处理，如果为 `true` 或其他数据则表示已经处理"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1230,
@@ -32229,7 +32340,8 @@
       ],
       "spread": false,
       "description": "如果返回 `false`，表示此消息处理失败或者无法处理，如果为 `true` 或其他数据则表示已经处理"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1231,
@@ -32345,7 +32457,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1236,
@@ -32479,7 +32592,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1239,
@@ -32704,7 +32818,8 @@
       "spread": false,
       "description": ""
     },
-    "params": []
+    "params": [],
+    "ignore": true
   },
   {
     "__docId__": 1244,
@@ -32726,7 +32841,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1245,
@@ -32951,7 +33067,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1253,
@@ -32973,7 +33090,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1254,
@@ -33049,7 +33167,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1256,
@@ -33071,7 +33190,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1257,
@@ -33117,7 +33237,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1258,
@@ -33142,7 +33263,8 @@
       "spread": false,
       "description": ""
     },
-    "params": []
+    "params": [],
+    "ignore": true
   },
   {
     "__docId__": 1259,
@@ -33895,7 +34017,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1296,
@@ -36249,7 +36372,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1406,
@@ -36271,7 +36395,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1407,
@@ -36293,7 +36418,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1408,
@@ -36315,7 +36441,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1409,
@@ -36337,7 +36464,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1410,
@@ -36359,7 +36487,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1411,
@@ -36412,7 +36541,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1414,
@@ -36736,7 +36866,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1428,
@@ -36758,7 +36889,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1429,
@@ -36780,7 +36912,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1430,
@@ -37119,7 +37252,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1440,
@@ -37152,7 +37286,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1442,
@@ -37174,7 +37309,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1443,
@@ -37196,7 +37332,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1444,
@@ -37221,7 +37358,8 @@
       "spread": false,
       "description": ""
     },
-    "params": []
+    "params": [],
+    "ignore": true
   },
   {
     "__docId__": 1445,
@@ -37246,7 +37384,8 @@
       "spread": false,
       "description": ""
     },
-    "params": []
+    "params": [],
+    "ignore": true
   },
   {
     "__docId__": 1446,
@@ -37292,7 +37431,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1447,
@@ -37934,7 +38074,8 @@
       ],
       "spread": false,
       "description": "使用 Promise 异步返回处理结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1467,
@@ -38000,7 +38141,8 @@
       ],
       "spread": false,
       "description": "使用 Promise 异步返回处理结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1468,
@@ -38054,7 +38196,8 @@
       ],
       "spread": false,
       "description": "使用 Promise 异步返回处理结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1469,
@@ -38163,7 +38306,8 @@
       ],
       "spread": false,
       "description": "使用 Promise 异步返回处理结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1471,
@@ -39233,7 +39377,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1515,
@@ -39375,7 +39520,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1520,
@@ -39397,7 +39543,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1521,
@@ -39419,7 +39566,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1522,
@@ -39441,7 +39589,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1523,
@@ -39463,7 +39612,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1524,
@@ -39485,7 +39635,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1525,
@@ -39527,7 +39678,8 @@
       ],
       "spread": false,
       "description": "使用 Promise 异步返回处理结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1526,
@@ -39569,7 +39721,8 @@
       ],
       "spread": false,
       "description": "使用 Promise 异步返回处理结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1527,
@@ -39611,7 +39764,8 @@
       ],
       "spread": false,
       "description": "使用 Promise 异步返回处理结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1528,
@@ -39636,7 +39790,8 @@
       "spread": false,
       "description": ""
     },
-    "params": []
+    "params": [],
+    "ignore": true
   },
   {
     "__docId__": 1529,
@@ -39727,7 +39882,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1531,
@@ -39764,7 +39920,8 @@
       ],
       "spread": false,
       "description": "如果返回 `false`，则表示处理失败，否则返回处理后的数据"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1532,
@@ -40048,7 +40205,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1544,
@@ -40070,7 +40228,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1545,
@@ -40734,7 +40893,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1576,
@@ -40781,7 +40941,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1578,
@@ -40803,7 +40964,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1579,
@@ -40988,7 +41150,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1585,
@@ -41010,7 +41173,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1586,
@@ -41119,7 +41283,8 @@
       ],
       "spread": false,
       "description": "如果返回 `true` 则为已经打开，否则为没有打开"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1589,
@@ -41161,7 +41326,8 @@
       ],
       "spread": false,
       "description": "应用索引"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1590,
@@ -41183,7 +41349,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1591,
@@ -41892,7 +42059,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1609,
@@ -41936,7 +42104,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1611,
@@ -42314,7 +42483,8 @@
       ],
       "spread": false,
       "description": "返回加密后的 Buffer 数据"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1623,
@@ -42370,7 +42540,8 @@
       ],
       "spread": false,
       "description": "返回解密后的文本"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1624,
@@ -42460,7 +42631,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1628,
@@ -42482,7 +42654,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1629,
@@ -42504,7 +42677,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1630,
@@ -42526,7 +42700,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1631,
@@ -42548,7 +42723,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1632,
@@ -42614,7 +42790,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1637,
@@ -42689,7 +42866,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1642,
@@ -43477,7 +43655,8 @@
       "spread": false,
       "description": "如果返回 `true` 则为获得焦点，否则为没有获得焦点"
     },
-    "params": []
+    "params": [],
+    "ignore": true
   },
   {
     "__docId__": 1676,
@@ -43634,7 +43813,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1682,
@@ -43656,7 +43836,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1683,
@@ -43852,7 +44033,8 @@
       "types": [
         "*"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1690,
@@ -43872,7 +44054,8 @@
       "types": [
         "*"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1691,
@@ -43892,7 +44075,8 @@
       "types": [
         "*"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1692,
@@ -43922,7 +44106,8 @@
       "types": [
         "*"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1693,
@@ -44571,7 +44756,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1711,
@@ -44665,7 +44851,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1714,
@@ -44707,7 +44894,7 @@
     "__docId__": 1715,
     "kind": "file",
     "name": "app/platform/electron/app-remote.js",
-    "content": "import electron, {\n    BrowserWindow, app as ElectronApp, Tray, Menu, nativeImage, globalShortcut, ipcMain, dialog,\n} from 'electron';\nimport Lang from '../../lang';\nimport EVENT from './remote-events';\nimport Events from './events';\n\nif (typeof DEBUG === 'undefined') {\n    global.DEBUG = process.env.NODE_ENV === 'debug' || process.env.NODE_ENV === 'development';\n} else {\n    global.DEBUG = DEBUG;\n}\n\n/**\n * 是否是 Mac OS 系统\n * @type {boolean}\n * @private\n */\nconst IS_MAC_OSX = process.platform === 'darwin';\n\n/**\n * 是否显示调试日志信息\n * @type {boolean}\n * @private\n */\nconst SHOW_LOG = DEBUG;\n\nif (DEBUG && process.type === 'renderer') {\n    console.error('AppRemote must run in main process.');\n}\n\n/**\n * 文本选择右键菜单\n * @type {Menu}\n * @private\n */\nconst SELECT_MENU = Menu.buildFromTemplate([\n    {role: 'copy', label: Lang.string('menu.copy')},\n    {type: 'separator'},\n    {role: 'selectall', label: Lang.string('menu.selectAll')}\n]);\n\n/**\n * 文本输入框右键菜单\n * @type {Menu}\n * @private\n */\nconst INPUT_MENU = Menu.buildFromTemplate([\n    {role: 'undo', label: Lang.string('menu.undo')},\n    {role: 'redo', label: Lang.string('menu.redo')},\n    {type: 'separator'},\n    {role: 'cut', label: Lang.string('menu.cut')},\n    {role: 'copy', label: Lang.string('menu.copy')},\n    {role: 'paste', label: Lang.string('menu.paste')},\n    {type: 'separator'},\n    {role: 'selectall', label: Lang.string('menu.selectAll')}\n]);\n\n/**\n * Electron 主进程运行时管理类\n *\n * @class AppRemote\n */\nclass AppRemote {\n    /**\n     * 创建一个主进程运行时管理类实例\n     * @memberof AppRemote\n     */\n    constructor() {\n        /**\n         * 保存打开的所有窗口实例\n         * @type {Object<string, BrowserWindow>}\n         */\n        this.windows = {};\n\n        /**\n         * 保存应用运行时配置\n         * @type {Object}\n         */\n        this.appConfig = {};\n\n        // 绑定渲染进程请求退出事件\n        ipcMain.on(EVENT.app_quit, e => {\n            this.quit();\n        });\n\n        // 绑定与渲染进程通信事件\n        ipcMain.on(EVENT.remote, (e, method, callBackEventName, ...args) => {\n            let result = this[method];\n            if (typeof result === 'function') {\n                result = result.call(this, ...args);\n            }\n            if (method === 'quit') return;\n            if (result instanceof Promise) {\n                result.then(x => {\n                    e.sender.send(callBackEventName, x);\n                    return x;\n                }).catch(error => {\n                    console.warn('Remote error', error);\n                });\n            } else {\n                e.sender.send(callBackEventName, result);\n            }\n            if (DEBUG) {\n                console.info('\\n>> Accept remote call', `${callBackEventName}.${method}(`, args, ')');\n            }\n        });\n\n        // 绑定渲染进程请求发送消息到其他窗口渲染进程事件\n        ipcMain.on(EVENT.remote_send, (e, windowName, eventName, ...args) => {\n            const browserWindow = this.windows[windowName];\n            if (browserWindow) {\n                browserWindow.webContents.send(eventName, ...args);\n            }\n        });\n\n        // 绑定渲染进程请求绑定主进程事件\n        ipcMain.on(EVENT.remote_on, (e, eventId, event) => {\n            Events.on(event, (...args) => {\n                try {\n                    e.sender.send(eventId, ...args);\n                } catch (e) {\n                    this.off(eventId);\n                    if (SHOW_LOG) {\n                        console.error(`\\n>> Remote event '${event}' has be force removed, because window is closed.`, e);\n                    }\n                }\n            });\n            // this._eventsMap[eventId] = {remote: true, id: remoteOnEventId};\n            if (SHOW_LOG) console.log('\\n>> REMOTE EVENT on', event, eventId);\n        });\n\n        // 绑定渲染进程请求取消绑定主进程事件\n        ipcMain.on(EVENT.remote_off, (e, eventId) => {\n            Events.off(eventId);\n            if (SHOW_LOG) console.log('\\n>> REMOTE EVENT off', eventId);\n        });\n\n        // 绑定渲染进程请求触发主进程事件\n        ipcMain.on(EVENT.remote_emit, (e, eventId, ...args) => {\n            Events.emit(eventId, ...args);\n            if (SHOW_LOG) console.log('\\n>> REMOTE EVENT emit', eventId);\n        });\n\n        // 绑定渲染进程通知准备就绪事件\n        ipcMain.on(EVENT.app_ready, (e, config) => {\n            Object.assign(this.appConfig, config);\n            const langInConfig = config.lang && config.lang[Lang.name];\n            if (langInConfig) {\n                Lang.update(langInConfig);\n            }\n            this.initTrayIcon();\n            if (SHOW_LOG) console.log('\\n>> App ready.', config);\n        });\n\n        // 设置 Electron 应用标题\n        ElectronApp.setName(Lang.string('app.title'));\n    }\n\n    // 初始化并设置 Electron 应用入口路径\n    init(entryPath) {\n        if (!entryPath) {\n            throw new Error('Argument entryPath must be set on init app-remote.');\n        }\n\n        this.entryPath = entryPath;\n        global.entryPath = entryPath;\n    }\n\n    /**\n     * 通知主进程准备就绪并打开主界面窗口\n     * @memberof AppRemote\n     * @return {void}\n     */\n    ready() {\n        this.openMainWindow();\n    }\n\n    /**\n     * 初始化通知栏图标功能\n     * @memberof AppRemote\n     * @return {void}\n     */\n    initTrayIcon() {\n        if (this.tray) {\n            this.tray.destroy();\n        }\n\n        // 创建一个通知栏图标\n        const tray = new Tray(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-16.png`);\n\n        // 设置通知栏图标右键菜单功能\n        const trayContextMenu = Menu.buildFromTemplate([\n            {\n                label: Lang.string('common.open'),\n                click: () => {\n                    this.showAndFocusWindow();\n                }\n            }, {\n                label: Lang.string('common.exit'),\n                click: () => {\n                    this.mainWindow.webContents.send(EVENT.remote_app_quit, 'quit');\n                }\n            }\n        ]);\n\n        // 设置通知栏图标鼠标提示\n        tray.setToolTip(Lang.string('app.title'));\n\n        // 绑定通知栏图标点击事件\n        tray.on('click', () => {\n            this.showAndFocusWindow();\n        });\n\n        // 绑定通知栏图标右键点击事件\n        tray.on('right-click', () => {\n            tray.popUpContextMenu(trayContextMenu);\n        });\n\n        /**\n         * 通知栏图标管理器\n         * @type {Tray}\n         */\n        this.tray = tray;\n\n        /**\n         * 通知栏图标图片缓存\n         * @type {string[]}\n         * @private\n         */\n        this._trayIcons = [\n            nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-16.png`),\n            nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-transparent.png`)\n        ];\n\n        /**\n         * 通知栏图标闪烁计数器\n         * @type {number}\n         * @private\n         */\n        this._trayIconCounter = 0;\n    }\n\n    /**\n     * 创建应用主窗口\n     *\n     * @param {Object} options Electron 窗口初始化选项\n     * @memberof AppRemote\n     * @return {void}\n     */\n    createMainWindow(options) {\n        options = Object.assign({\n            width: 900,\n            height: 650,\n            minWidth: 400,\n            minHeight: 650,\n            url: 'index.html',\n            hashRoute: '/index',\n            name: 'main',\n            resizable: true,\n            debug: true\n        }, options);\n\n        if (DEBUG) {\n            const display = electron.screen.getPrimaryDisplay();\n            options.height = display.workAreaSize.height;\n            options.width = 800;\n            options.x = display.workArea.x;\n            options.y = display.workArea.y;\n        }\n\n        /**\n         * 主窗口实例\n         * @type {BrowserWindow}\n         */\n        this.mainWindow = this.createWindow(options);\n    }\n\n    /**\n     * 创建应用窗口，所有可用的窗口初始化选项参考 @see https://electronjs.org/docs/api/browser-window#new-browserwindowoptions\n     * @param {string} name 窗口名称，用户内部查询窗口实例\n     * @param {Object} options Electron 窗口初始化选项\n     * @memberof AppRemote\n     * @return {BrowserWindow} 创建的应用窗口实例\n     */\n    createWindow(name, options) {\n        if (typeof name === 'object') {\n            options = name;\n            // eslint-disable-next-line prefer-destructuring\n            name = options.name;\n        }\n\n        options = Object.assign({\n            name,\n            showAfterLoad: true,\n            hashRoute: `/${name}`,\n            url: 'index.html',\n            autoHideMenuBar: !IS_MAC_OSX,\n            backgroundColor: '#ffffff',\n            show: DEBUG,\n            webPreferences: {webSecurity: false}\n        }, options);\n\n        let browserWindow = this.windows[name];\n        if (browserWindow) {\n            throw new Error(`The window with name '${name}' has already be created.`);\n        }\n\n        const windowSetting = Object.assign({}, options);\n        ['url', 'showAfterLoad', 'debug', 'hashRoute', 'onLoad', 'beforeShow', 'afterShow', 'onClosed'].forEach(optionName => {\n            delete windowSetting[optionName];\n        });\n        browserWindow = new BrowserWindow(windowSetting);\n        // if(DEBUG) console.log('\\n>> Create window with settings', windowSetting);\n        this.windows[name] = browserWindow;\n        browserWindow.on('closed', () => {\n            delete this.windows[name];\n            if (options.onClosed) {\n                options.onClosed(name);\n            }\n        });\n\n        browserWindow.webContents.on('did-finish-load', () => {\n            if (options.showAfterLoad) {\n                if (options.beforeShow) {\n                    options.beforeShow(browserWindow, name);\n                }\n                browserWindow.show();\n                browserWindow.focus();\n                if (options.afterShow) {\n                    options.afterShow(browserWindow, name);\n                }\n            }\n            if (options.onLoad) {\n                options.onLoad(browserWindow);\n            }\n        });\n\n        // 阻止应用窗口导航到其他地址\n        browserWindow.webContents.on('will-navigate', event => {\n            event.preventDefault();\n        });\n\n        let {url} = options;\n        if (url) {\n            if (!url.startsWith('file://') && !url.startsWith('http://') && !url.startsWith('https://')) {\n                url = `file://${this.entryPath}/${options.url}`;\n            }\n            if (DEBUG) {\n                url += '?react_perf';\n            }\n            if (options.hashRoute) {\n                url += `#${options.hashRoute}`;\n            }\n            browserWindow.loadURL(url);\n        }\n\n        if (options.debug && DEBUG) {\n            browserWindow.openDevTools();\n            browserWindow.webContents.on('context-menu', (e, props) => {\n                const {x, y} = props;\n                Menu.buildFromTemplate([{\n                    label: Lang.string('debug.inspectElement'),\n                    click() {\n                        browserWindow.inspectElement(x, y);\n                    }\n                }]).popup(browserWindow);\n            });\n\n            browserWindow.webContents.on('crashed', () => {\n                const messageBoxOptions = {\n                    type: 'info',\n                    title: 'Renderer process crashed.',\n                    message: 'The renderer process has been crashed, you can reload or close it.',\n                    buttons: ['Reload', 'Close']\n                };\n                dialog.showMessageBox(messageBoxOptions, (index) => {\n                    if (index === 0) {\n                        browserWindow.reload();\n                    } else {\n                        browserWindow.close();\n                    }\n                });\n            });\n        }\n\n        return browserWindow;\n    }\n\n    /**\n     * 打开主窗口\n     *\n     * @memberof AppRemote\n     * @return {void}\n     */\n    openMainWindow() {\n        const {mainWindow} = this;\n        if (!mainWindow) {\n            this.createMainWindow();\n        } else if (!mainWindow.isVisible()) {\n            mainWindow.show();\n            mainWindow.focus();\n        }\n    }\n\n    /**\n     * 获取主窗口实例\n     * @memberof AppRemote\n     * @type {BrowserWindow}\n     */\n    get mainWindow() {\n        return this.windows.main;\n    }\n\n    /**\n     * 设置主窗口实例\n     * @param {BrowserWindow} mainWindow 主窗口实例\n     * @memberof AppRemote\n     */\n    set mainWindow(mainWindow) {\n        if (!mainWindow) {\n            delete this.windows.main;\n        } else {\n            this.windows.main = mainWindow;\n            mainWindow.on('close', e => {\n                if (this.markClose) return;\n                const now = new Date().getTime();\n                if (this.lastRequestCloseTime && (now - this.lastRequestCloseTime) < 1000) {\n                    electron.dialog.showMessageBox(mainWindow, {\n                        buttons: [Lang.string('common.exitIM'), Lang.string('common.cancel')],\n                        defaultId: 0,\n                        type: 'question',\n                        message: Lang.string('common.comfirmQuiteIM')\n                    }, response => {\n                        if (response === 0) {\n                            setTimeout(() => {\n                                this.quit();\n                            }, 0);\n                        }\n                    });\n                } else {\n                    this.lastRequestCloseTime = now;\n                    mainWindow.webContents.send(EVENT.remote_app_quit);\n                }\n                e.preventDefault();\n                return false;\n            });\n\n            // 绑定右键菜单事件\n            mainWindow.webContents.on('context-menu', (e, props) => {\n                const {selectionText, isEditable} = props;\n                if (isEditable) {\n                    INPUT_MENU.popup(mainWindow);\n                }\n            });\n        }\n    }\n\n    /**\n     * 关闭主窗口\n     * @return {void}\n     * @memberof AppRemote\n     */\n    closeMainWindow() {\n        this.markClose = true;\n        const {mainWindow} = this;\n        if (mainWindow) {\n            mainWindow.close();\n        }\n    }\n\n    /**\n     * 通过 IPC 向所有应用窗口渲染渲染进程发送消息\n     *\n     * @param {string} channel 事件频道\n     * @param {...any} args 事件参数\n     * @return {void}\n     * @memberof AppRemote\n     */\n    sendToWindows(channel, ...args) {\n        Object.keys(this.windows).forEach(name => {\n            this.sendToWindow(name, channel, ...args);\n        });\n    }\n\n    /**\n     * 通过 IPC 向指定名称的应用窗口渲染渲染进程发送消息\n     *\n     * @param {string} name 应用窗口名称\n     * @param {string} channel 事件频道\n     * @param {...any} args 事件参数\n     * @return {void}\n     * @memberof AppRemote\n     */\n    sendToWindow(name, channel, ...args) {\n        const browserWindow = this.windows[name];\n        if (browserWindow) {\n            browserWindow.webContents.send(channel, ...args);\n        }\n    }\n\n    /**\n     * 设置通知栏图标工具提示（鼠标悬停显示）消息\n     *\n     * @param {string|boolean} tooltip 要设置的消息文本，如果设置为 `false`，则显示应用默认名称\n     * @memberof AppRemote\n     * @return {void}\n     */\n    trayTooltip(tooltip) {\n        this.tray.setToolTip(tooltip || Lang.string('app.title'));\n    }\n\n    /**\n     * 闪烁通知栏图标\n     *\n     * @param {boolean} [flash=true] 如果设置为 `true` 则闪烁图标；如果设置为 `false` 则取消闪烁图标\n     * @memberof AppRemote\n     * @return {void}\n     */\n    flashTrayIcon(flash = true) {\n        if (flash) {\n            if (!this._flashTrayIconTask) {\n                this._flashTrayIconTask = setInterval(() => {\n                    this.tray.setImage(this._trayIcons[(this._trayIconCounter++) % 2]);\n                }, 400);\n            }\n        } else {\n            if (this._flashTrayIconTask) {\n                clearInterval(this._flashTrayIconTask);\n                this._flashTrayIconTask = null;\n            }\n            this.tray.setImage(this._trayIcons[0]);\n        }\n    }\n\n    /**\n     * 显示并激活指定名称的窗口，如果不指定名称，则激活并显示主窗口\n     *\n     * @param {string} [windowName='main'] 窗口名称\n     * @memberof AppRemote\n     * @return {void}\n     */\n    showAndFocusWindow(windowName = 'main') {\n        const browserWindow = this.windows[windowName];\n        if (browserWindow) {\n            if (browserWindow.isMinimized()) {\n                browserWindow.restore();\n            } else {\n                browserWindow.show();\n            }\n            browserWindow.focus();\n        }\n    }\n\n    /**\n     * 立即关闭并退出应用程序\n     *\n     * @memberof AppRemote\n     * @return {void}\n     */\n    quit() {\n        this.closeMainWindow();\n        this.tray.destroy();\n        globalShortcut.unregisterAll();\n        ElectronApp.quit();\n    }\n\n    /**\n     * 设置 Mac Dock 栏应用图标上的原点提示文本\n     *\n     * @param {string} label 提示文本\n     * @memberof AppRemote\n     * @return {void}\n     */\n    dockBadgeLabel(label) {\n        if (IS_MAC_OSX) {\n            ElectronApp.dock.setBadge(label);\n        }\n    }\n\n    /**\n     * 使 Mac Dock 栏应用图标弹跳并引起用户注意\n     *\n     * @param {string} [type='informational'] 弹跳类型\n     * @memberof AppRemote\n     * @return {void}\n     */\n    dockBounce(type = 'informational') {\n        if (IS_MAC_OSX) {\n            ElectronApp.dock.bounce(type);\n        }\n    }\n}\n\n/**\n * Electron 主进程运行时管理类全局唯一实例\n * @type {AppRemote}\n */\nconst app = new AppRemote();\n\nif (DEBUG) console.info('App created.');\n\nexport default app;\n",
+    "content": "import electron, {\n    BrowserWindow, app as ElectronApp, Tray, Menu, nativeImage, globalShortcut, ipcMain, dialog,\n} from 'electron';\nimport Lang from '../../lang';\nimport EVENT from './remote-events';\nimport Events from './events';\n\nif (typeof DEBUG === 'undefined') {\n    global.DEBUG = process.env.NODE_ENV === 'debug' || process.env.NODE_ENV === 'development';\n} else {\n    global.DEBUG = DEBUG;\n}\n\n/**\n * 是否是 Mac OS 系统\n * @type {boolean}\n * @private\n */\nconst IS_MAC_OSX = process.platform === 'darwin';\n\n/**\n * 是否显示调试日志信息\n * @type {boolean}\n * @private\n */\nconst SHOW_LOG = DEBUG;\n\nif (DEBUG && process.type === 'renderer') {\n    console.error('AppRemote must run in main process.');\n}\n\n/**\n * 文本选择右键菜单\n * @type {Menu}\n * @private\n */\nconst SELECT_MENU = Menu.buildFromTemplate([\n    {role: 'copy', label: Lang.string('menu.copy')},\n    {type: 'separator'},\n    {role: 'selectall', label: Lang.string('menu.selectAll')}\n]);\n\n/**\n * 文本输入框右键菜单\n * @type {Menu}\n * @private\n */\nconst INPUT_MENU = Menu.buildFromTemplate([\n    {role: 'undo', label: Lang.string('menu.undo')},\n    {role: 'redo', label: Lang.string('menu.redo')},\n    {type: 'separator'},\n    {role: 'cut', label: Lang.string('menu.cut')},\n    {role: 'copy', label: Lang.string('menu.copy')},\n    {role: 'paste', label: Lang.string('menu.paste')},\n    {type: 'separator'},\n    {role: 'selectall', label: Lang.string('menu.selectAll')}\n]);\n\n/**\n * Electron 主进程运行时管理类\n *\n * @class AppRemote\n */\nclass AppRemote {\n    /**\n     * 创建一个主进程运行时管理类实例\n     * @memberof AppRemote\n     */\n    constructor() {\n        /**\n         * 保存打开的所有窗口实例\n         * @type {Object<string, BrowserWindow>}\n         */\n        this.windows = {};\n\n        /**\n         * 保存应用运行时配置\n         * @type {Object}\n         */\n        this.appConfig = {};\n\n        // 绑定渲染进程请求退出事件\n        ipcMain.on(EVENT.app_quit, e => {\n            this.quit();\n        });\n\n        // 绑定与渲染进程通信事件\n        ipcMain.on(EVENT.remote, (e, method, callBackEventName, ...args) => {\n            let result = this[method];\n            if (typeof result === 'function') {\n                result = result.call(this, ...args);\n            }\n            if (method === 'quit') return;\n            if (result instanceof Promise) {\n                result.then(x => {\n                    e.sender.send(callBackEventName, x);\n                    return x;\n                }).catch(error => {\n                    console.warn('Remote error', error);\n                });\n            } else {\n                e.sender.send(callBackEventName, result);\n            }\n            if (DEBUG) {\n                console.info('\\n>> Accept remote call', `${callBackEventName}.${method}(`, args, ')');\n            }\n        });\n\n        // 绑定渲染进程请求发送消息到其他窗口渲染进程事件\n        ipcMain.on(EVENT.remote_send, (e, windowName, eventName, ...args) => {\n            const browserWindow = this.windows[windowName];\n            if (browserWindow) {\n                browserWindow.webContents.send(eventName, ...args);\n            }\n        });\n\n        // 绑定渲染进程请求绑定主进程事件\n        ipcMain.on(EVENT.remote_on, (e, eventId, event) => {\n            Events.on(event, (...args) => {\n                try {\n                    e.sender.send(eventId, ...args);\n                } catch (e) {\n                    this.off(eventId);\n                    if (SHOW_LOG) {\n                        console.error(`\\n>> Remote event '${event}' has be force removed, because window is closed.`, e);\n                    }\n                }\n            });\n            // this._eventsMap[eventId] = {remote: true, id: remoteOnEventId};\n            if (SHOW_LOG) console.log('\\n>> REMOTE EVENT on', event, eventId);\n        });\n\n        // 绑定渲染进程请求取消绑定主进程事件\n        ipcMain.on(EVENT.remote_off, (e, eventId) => {\n            Events.off(eventId);\n            if (SHOW_LOG) console.log('\\n>> REMOTE EVENT off', eventId);\n        });\n\n        // 绑定渲染进程请求触发主进程事件\n        ipcMain.on(EVENT.remote_emit, (e, eventId, ...args) => {\n            Events.emit(eventId, ...args);\n            if (SHOW_LOG) console.log('\\n>> REMOTE EVENT emit', eventId);\n        });\n\n        // 绑定渲染进程通知准备就绪事件\n        ipcMain.on(EVENT.app_ready, (e, config) => {\n            Object.assign(this.appConfig, config);\n            const langInConfig = config.lang && config.lang[Lang.name];\n            if (langInConfig) {\n                Lang.update(langInConfig);\n            }\n            this.initTrayIcon();\n            if (SHOW_LOG) console.log('\\n>> App ready.', config);\n        });\n\n        // 设置 Electron 应用标题\n        ElectronApp.setName(Lang.string('app.title'));\n    }\n\n    // 初始化并设置 Electron 应用入口路径\n    init(entryPath) {\n        if (!entryPath) {\n            throw new Error('Argument entryPath must be set on init app-remote.');\n        }\n\n        this.entryPath = entryPath;\n        global.entryPath = entryPath;\n    }\n\n    /**\n     * 通知主进程准备就绪并打开主界面窗口\n     * @memberof AppRemote\n     * @return {void}\n     */\n    ready() {\n        this.openMainWindow();\n    }\n\n    /**\n     * 初始化通知栏图标功能\n     * @memberof AppRemote\n     * @return {void}\n     */\n    initTrayIcon() {\n        if (this.tray) {\n            this.tray.destroy();\n        }\n\n        // 创建一个通知栏图标\n        const tray = new Tray(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-16.png`);\n\n        // 设置通知栏图标右键菜单功能\n        const trayContextMenu = Menu.buildFromTemplate([\n            {\n                label: Lang.string('common.open'),\n                click: () => {\n                    this.showAndFocusWindow();\n                }\n            }, {\n                label: Lang.string('common.exit'),\n                click: () => {\n                    this.mainWindow.webContents.send(EVENT.remote_app_quit, 'quit');\n                }\n            }\n        ]);\n\n        // 设置通知栏图标鼠标提示\n        tray.setToolTip(Lang.string('app.title'));\n\n        // 绑定通知栏图标点击事件\n        tray.on('click', () => {\n            this.showAndFocusWindow();\n        });\n\n        // 绑定通知栏图标右键点击事件\n        tray.on('right-click', () => {\n            tray.popUpContextMenu(trayContextMenu);\n        });\n\n        /**\n         * 通知栏图标管理器\n         * @type {Tray}\n         */\n        this.tray = tray;\n\n        /**\n         * 通知栏图标图片缓存\n         * @type {string[]}\n         * @private\n         */\n        this._trayIcons = [\n            nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-16.png`),\n            nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-transparent.png`)\n        ];\n\n        /**\n         * 通知栏图标闪烁计数器\n         * @type {number}\n         * @private\n         */\n        this._trayIconCounter = 0;\n    }\n\n    /**\n     * 创建应用主窗口\n     *\n     * @param {Object} options Electron 窗口初始化选项\n     * @memberof AppRemote\n     * @return {void}\n     */\n    createMainWindow(options) {\n        options = Object.assign({\n            width: 900,\n            height: 650,\n            minWidth: 400,\n            minHeight: 650,\n            url: 'index.html',\n            hashRoute: '/index',\n            name: 'main',\n            resizable: true,\n            debug: true\n        }, options);\n\n        if (DEBUG) {\n            const display = electron.screen.getPrimaryDisplay();\n            options.height = display.workAreaSize.height;\n            options.width = 800;\n            options.x = display.workArea.x;\n            options.y = display.workArea.y;\n        }\n\n        /**\n         * 主窗口实例\n         * @type {BrowserWindow}\n         */\n        this.mainWindow = this.createWindow(options);\n    }\n\n    /**\n     * 创建应用窗口，所有可用的窗口初始化选项参考 @see https://electronjs.org/docs/api/browser-window#new-browserwindowoptions\n     * @param {string} name 窗口名称，用户内部查询窗口实例\n     * @param {Object} options Electron 窗口初始化选项\n     * @memberof AppRemote\n     * @return {BrowserWindow} 创建的应用窗口实例\n     */\n    createWindow(name, options) {\n        if (typeof name === 'object') {\n            options = name;\n            // eslint-disable-next-line prefer-destructuring\n            name = options.name;\n        }\n\n        options = Object.assign({\n            name,\n            showAfterLoad: true,\n            hashRoute: `/${name}`,\n            url: 'index.html',\n            autoHideMenuBar: !IS_MAC_OSX,\n            backgroundColor: '#ffffff',\n            show: DEBUG,\n            webPreferences: {webSecurity: false}\n        }, options);\n\n        let browserWindow = this.windows[name];\n        if (browserWindow) {\n            throw new Error(`The window with name '${name}' has already be created.`);\n        }\n\n        const windowSetting = Object.assign({}, options);\n        ['url', 'showAfterLoad', 'debug', 'hashRoute', 'onLoad', 'beforeShow', 'afterShow', 'onClosed'].forEach(optionName => {\n            delete windowSetting[optionName];\n        });\n        browserWindow = new BrowserWindow(windowSetting);\n        // if(DEBUG) console.log('\\n>> Create window with settings', windowSetting);\n        this.windows[name] = browserWindow;\n        browserWindow.on('closed', () => {\n            delete this.windows[name];\n            if (options.onClosed) {\n                options.onClosed(name);\n            }\n        });\n\n        browserWindow.webContents.on('did-finish-load', () => {\n            if (options.showAfterLoad) {\n                if (options.beforeShow) {\n                    options.beforeShow(browserWindow, name);\n                }\n                browserWindow.show();\n                browserWindow.focus();\n                if (options.afterShow) {\n                    options.afterShow(browserWindow, name);\n                }\n            }\n            if (options.onLoad) {\n                options.onLoad(browserWindow);\n            }\n        });\n\n        // 阻止应用窗口导航到其他地址\n        browserWindow.webContents.on('will-navigate', event => {\n            event.preventDefault();\n        });\n\n        let {url} = options;\n        if (url) {\n            if (!url.startsWith('file://') && !url.startsWith('http://') && !url.startsWith('https://')) {\n                url = `file://${this.entryPath}/${options.url}`;\n            }\n            if (DEBUG) {\n                url += '?react_perf';\n            }\n            if (options.hashRoute) {\n                url += `#${options.hashRoute}`;\n            }\n            browserWindow.loadURL(url);\n        }\n\n        if (options.debug && DEBUG) {\n            browserWindow.openDevTools();\n            browserWindow.webContents.on('context-menu', (e, props) => {\n                const {x, y} = props;\n                Menu.buildFromTemplate([{\n                    label: Lang.string('debug.inspectElement'),\n                    click() {\n                        browserWindow.inspectElement(x, y);\n                    }\n                }]).popup(browserWindow);\n            });\n\n            browserWindow.webContents.on('crashed', () => {\n                const messageBoxOptions = {\n                    type: 'info',\n                    title: 'Renderer process crashed.',\n                    message: 'The renderer process has been crashed, you can reload or close it.',\n                    buttons: ['Reload', 'Close']\n                };\n                dialog.showMessageBox(messageBoxOptions, (index) => {\n                    if (index === 0) {\n                        browserWindow.reload();\n                    } else {\n                        browserWindow.close();\n                    }\n                });\n            });\n        }\n\n        return browserWindow;\n    }\n\n    /**\n     * 打开主窗口\n     *\n     * @memberof AppRemote\n     * @return {void}\n     */\n    openMainWindow() {\n        const {mainWindow} = this;\n        if (!mainWindow) {\n            this.createMainWindow();\n        } else if (!mainWindow.isVisible()) {\n            mainWindow.show();\n            mainWindow.focus();\n        }\n    }\n\n    /**\n     * 获取主窗口实例\n     * @memberof AppRemote\n     * @type {BrowserWindow}\n     */\n    get mainWindow() {\n        return this.windows.main;\n    }\n\n    /**\n     * 设置主窗口实例\n     * @param {BrowserWindow} mainWindow 主窗口实例\n     * @memberof AppRemote\n     */\n    set mainWindow(mainWindow) {\n        if (!mainWindow) {\n            delete this.windows.main;\n        } else {\n            this.windows.main = mainWindow;\n            mainWindow.on('close', e => {\n                if (this.markClose) return;\n                const now = new Date().getTime();\n                if (this.lastRequestCloseTime && (now - this.lastRequestCloseTime) < 1000) {\n                    electron.dialog.showMessageBox(mainWindow, {\n                        buttons: [Lang.string('common.exitIM'), Lang.string('common.cancel')],\n                        defaultId: 0,\n                        type: 'question',\n                        message: Lang.string('common.comfirmQuiteIM')\n                    }, response => {\n                        if (response === 0) {\n                            setTimeout(() => {\n                                this.quit();\n                            }, 0);\n                        }\n                    });\n                } else {\n                    this.lastRequestCloseTime = now;\n                    mainWindow.webContents.send(EVENT.remote_app_quit);\n                }\n                e.preventDefault();\n                return false;\n            });\n\n            // 绑定右键菜单事件\n            mainWindow.webContents.on('context-menu', (e, props) => {\n                const {selectionText, isEditable} = props;\n                if (isEditable) {\n                    INPUT_MENU.popup(mainWindow);\n                }\n            });\n        }\n    }\n\n    /**\n     * 关闭主窗口\n     * @return {void}\n     * @memberof AppRemote\n     */\n    closeMainWindow() {\n        this.markClose = true;\n        const {mainWindow} = this;\n        if (mainWindow) {\n            mainWindow.close();\n        }\n    }\n\n    /**\n     * 通过 IPC 向所有应用窗口渲染渲染进程发送消息\n     *\n     * @param {string} channel 事件频道\n     * @param {...any} args 事件参数\n     * @return {void}\n     * @memberof AppRemote\n     */\n    sendToWindows(channel, ...args) {\n        Object.keys(this.windows).forEach(name => {\n            this.sendToWindow(name, channel, ...args);\n        });\n    }\n\n    /**\n     * 通过 IPC 向指定名称的应用窗口渲染渲染进程发送消息\n     *\n     * @param {string} name 应用窗口名称\n     * @param {string} channel 事件频道\n     * @param {...any} args 事件参数\n     * @return {void}\n     * @memberof AppRemote\n     */\n    sendToWindow(name, channel, ...args) {\n        const browserWindow = this.windows[name];\n        if (browserWindow) {\n            browserWindow.webContents.send(channel, ...args);\n        }\n    }\n\n    /**\n     * 设置通知栏图标工具提示（鼠标悬停显示）消息\n     *\n     * @param {string|boolean} tooltip 要设置的消息文本，如果设置为 `false`，则显示应用默认名称\n     * @memberof AppRemote\n     * @return {void}\n     */\n    trayTooltip(tooltip) {\n        this.tray.setToolTip(tooltip || Lang.string('app.title'));\n    }\n\n    /**\n     * 闪烁通知栏图标\n     *\n     * @param {boolean} [flash=true] 如果设置为 `true` 则闪烁图标；如果设置为 `false` 则取消闪烁图标\n     * @memberof AppRemote\n     * @return {void}\n     */\n    flashTrayIcon(flash = true) {\n        if (flash) {\n            if (!this._flashTrayIconTask) {\n                this._flashTrayIconTask = setInterval(() => {\n                    this.tray.setImage(this._trayIcons[(this._trayIconCounter++) % 2]);\n                }, 400);\n            }\n        } else {\n            if (this._flashTrayIconTask) {\n                clearInterval(this._flashTrayIconTask);\n                this._flashTrayIconTask = null;\n            }\n            this.tray.setImage(this._trayIcons[0]);\n        }\n    }\n\n    /**\n     * 显示并激活指定名称的窗口，如果不指定名称，则激活并显示主窗口\n     *\n     * @param {string} [windowName='main'] 窗口名称\n     * @memberof AppRemote\n     * @return {void}\n     */\n    showAndFocusWindow(windowName = 'main') {\n        const browserWindow = this.windows[windowName];\n        if (browserWindow) {\n            if (browserWindow.isMinimized()) {\n                browserWindow.restore();\n            } else {\n                browserWindow.show();\n            }\n            browserWindow.focus();\n        }\n    }\n\n    /**\n     * 立即关闭并退出应用程序\n     *\n     * @memberof AppRemote\n     * @return {void}\n     */\n    quit() {\n        this.closeMainWindow();\n        this.tray.destroy();\n        globalShortcut.unregisterAll();\n        ElectronApp.quit();\n    }\n\n    /**\n     * 设置 Mac Dock 栏应用图标上的原点提示文本\n     *\n     * @param {string} label 提示文本\n     * @memberof AppRemote\n     * @return {void}\n     */\n    dockBadgeLabel(label) {\n        if (IS_MAC_OSX) {\n            ElectronApp.dock.setBadge(label);\n        }\n    }\n\n    /**\n     * 使 Mac Dock 栏应用图标弹跳并引起用户注意\n     *\n     * @param {string} [type='informational'] 弹跳类型\n     * @memberof AppRemote\n     * @return {void}\n     */\n    dockBounce(type = 'informational') {\n        if (IS_MAC_OSX) {\n            ElectronApp.dock.bounce(type);\n        }\n    }\n}\n\n/**\n * Electron 主进程运行时管理类全局唯一实例\n * @type {AppRemote}\n */\nconst app = new AppRemote();\n\nexport default app;\n",
     "static": true,
     "longname": "/Users/catouse/Projects/xuanxuan/xxc/app/platform/electron/app-remote.js",
     "access": "public",
@@ -44734,7 +44921,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1717,
@@ -44756,7 +44944,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1718,
@@ -44778,7 +44967,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1719,
@@ -44800,7 +44990,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1720,
@@ -45535,7 +45726,7 @@
     "importPath": "xuanxuan/app/platform/electron/app-remote.js",
     "importStyle": "app",
     "description": null,
-    "lineNumber": 603,
+    "lineNumber": 601,
     "undocument": true,
     "type": {
       "types": [
@@ -45636,7 +45827,8 @@
       ],
       "spread": false,
       "description": "图片信息对象"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1754,
@@ -45658,7 +45850,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1755,
@@ -46026,7 +46219,8 @@
       "types": [
         "*"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1765,
@@ -46151,7 +46345,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1768,
@@ -46173,7 +46368,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1769,
@@ -46352,7 +46548,8 @@
       ],
       "spread": false,
       "description": "返回加密后的 Buffer 数据"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1773,
@@ -46408,7 +46605,8 @@
       ],
       "spread": false,
       "description": "返回解密后的文本"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1774,
@@ -46441,7 +46639,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1776,
@@ -46618,7 +46817,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1781,
@@ -46640,7 +46840,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1782,
@@ -46662,7 +46863,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1783,
@@ -46684,7 +46886,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1784,
@@ -46706,7 +46909,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1785,
@@ -46728,7 +46932,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1786,
@@ -46750,7 +46955,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1787,
@@ -48445,7 +48651,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1866,
@@ -48503,7 +48710,8 @@
       ],
       "spread": false,
       "description": "创建文件缓存路径"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1867,
@@ -48567,7 +48775,8 @@
       ],
       "spread": false,
       "description": "使用 Promise 异步返回处理结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1868,
@@ -48880,7 +49089,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1877,
@@ -48902,7 +49112,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1878,
@@ -49391,7 +49602,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1890,
@@ -49416,7 +49628,8 @@
       "spread": false,
       "description": ""
     },
-    "params": []
+    "params": [],
+    "ignore": true
   },
   {
     "__docId__": 1891,
@@ -49458,7 +49671,8 @@
       ],
       "spread": false,
       "description": "使用 Promise 异步返回处理结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1892,
@@ -49500,7 +49714,8 @@
       ],
       "spread": false,
       "description": "使用 Promise 异步返回处理结果"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1893,
@@ -49546,7 +49761,8 @@
       ],
       "spread": false,
       "description": "Canvas 元素"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1894,
@@ -49582,7 +49798,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1895,
@@ -49618,7 +49835,8 @@
       ],
       "spread": false,
       "description": "以 DataUrl 格式返回图片内容"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1896,
@@ -49654,7 +49872,8 @@
       ],
       "spread": false,
       "description": "Electron Display 对象"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1897,
@@ -49690,7 +49909,8 @@
       ],
       "spread": false,
       "description": "帧循环函数"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1898,
@@ -49726,7 +49946,8 @@
       ],
       "spread": false,
       "description": "录屏操作对象"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1899,
@@ -49998,7 +50219,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1905,
@@ -50088,7 +50310,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1908,
@@ -50124,7 +50347,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1909,
@@ -50180,7 +50404,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1910,
@@ -50222,7 +50447,8 @@
       ],
       "spread": false,
       "description": "如果返回 `true` 则为被注册，否则为没有被注册"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1911,
@@ -50255,7 +50481,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1913,
@@ -51108,7 +51335,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1951,
@@ -52082,7 +52310,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1982,
@@ -52104,7 +52333,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1983,
@@ -52173,7 +52403,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1986,
@@ -52229,7 +52460,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1987,
@@ -52275,7 +52507,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1988,
@@ -52311,7 +52544,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1989,
@@ -52357,7 +52591,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1990,
@@ -52393,7 +52628,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1991,
@@ -52429,7 +52665,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1992,
@@ -52465,7 +52702,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1993,
@@ -52501,7 +52739,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1994,
@@ -52537,7 +52776,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 1995,
@@ -54473,7 +54713,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2078,
@@ -55367,7 +55608,8 @@
       "types": [
         "*"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2110,
@@ -55387,7 +55629,8 @@
       "types": [
         "{\"a\": *, \"b\": *, \"blockquote\": *, \"code\": boolean, \"em\": *, \"h1\": *, \"h2\": *, \"h3\": *, \"h4\": *, \"h5\": *, \"h6\": *, \"li\": *, \"ol\": *, \"ul\": *, \"p\": *, \"pre\": *, \"address\": *, \"s\": *, \"i\": *, \"sub\": *, \"sup\": *, \"strong\": *, \"kbd\": boolean, \"del\": boolean, \"mark\": boolean, \"ins\": boolean, \"hr\": boolean, \"var\": boolean, \"table\": *, \"tr\": *, \"thead\": *, \"th\": *, \"td\": *, \"tfoot\": *, \"tbody\": *, \"img\": *, \"video\": *, \"source\": *, \"audio\": *, \"track\": *, \"div\": *, \"span\": *, \"dl\": *, \"dt\": *, \"dd\": *, \"abbr\": *, \"details\": *, \"summary\": *, \"caption\": *}"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2111,
@@ -55407,7 +55650,8 @@
       "types": [
         "*"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2112,
@@ -55437,7 +55681,8 @@
       "types": [
         "*"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2113,
@@ -55473,7 +55718,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2115,
@@ -55493,7 +55739,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2116,
@@ -55513,7 +55760,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2117,
@@ -55533,7 +55781,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2118,
@@ -55553,7 +55802,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2119,
@@ -55573,7 +55823,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2120,
@@ -55593,7 +55844,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2121,
@@ -55613,7 +55865,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2122,
@@ -55633,7 +55886,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2123,
@@ -55653,7 +55907,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2124,
@@ -55673,7 +55928,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2125,
@@ -55693,7 +55949,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2126,
@@ -55713,7 +55970,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2127,
@@ -55733,7 +55991,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2128,
@@ -55753,7 +56012,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2129,
@@ -55773,7 +56033,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2130,
@@ -55793,7 +56054,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2131,
@@ -55813,7 +56075,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2132,
@@ -55833,7 +56096,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2133,
@@ -55853,7 +56117,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2134,
@@ -55873,7 +56138,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2135,
@@ -55893,7 +56159,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2136,
@@ -55913,7 +56180,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2137,
@@ -55933,7 +56201,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2138,
@@ -55953,7 +56222,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2139,
@@ -55973,7 +56243,8 @@
       "types": [
         "string"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2140,
@@ -56211,7 +56482,8 @@
       "types": [
         "boolean"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2148,
@@ -56278,7 +56550,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2150,
@@ -56364,7 +56637,8 @@
       "types": [
         "*"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2153,
@@ -56386,7 +56660,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2154,
@@ -56408,7 +56683,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2155,
@@ -56567,7 +56843,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2160,
@@ -56769,7 +57046,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2164,
@@ -57637,7 +57915,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2200,
@@ -57673,7 +57952,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2201,
@@ -57709,7 +57989,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2202,
@@ -58240,7 +58521,8 @@
       "types": [
         "app/utils/status.js~Status"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2218,
@@ -58877,7 +59159,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2256,
@@ -58949,7 +59232,8 @@
       "types": [
         "*"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2259,
@@ -59456,7 +59740,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2279,
@@ -59706,7 +59991,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2289,
@@ -59728,7 +60014,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2290,
@@ -60473,7 +60760,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2317,
@@ -63784,7 +64072,8 @@
       "types": [
         "number"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2444,
@@ -63804,7 +64093,8 @@
       "types": [
         "number"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2445,
@@ -65025,7 +65315,8 @@
       "spread": false,
       "description": "React 渲染内容"
     },
-    "params": []
+    "params": [],
+    "ignore": true
   },
   {
     "__docId__": 2490,
@@ -65054,7 +65345,8 @@
       "spread": false,
       "description": "React 渲染内容"
     },
-    "params": []
+    "params": [],
+    "ignore": true
   },
   {
     "__docId__": 2491,
@@ -65087,7 +65379,8 @@
       "types": [
         "*"
       ]
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2492,
@@ -65371,7 +65664,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2503,
@@ -68592,7 +68886,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2636,
@@ -71695,7 +71990,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2746,
@@ -71741,7 +72037,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2747,
@@ -72119,7 +72416,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2762,
@@ -73434,7 +73732,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2812,
@@ -75096,7 +75395,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2881,
@@ -75293,7 +75593,8 @@
       ],
       "spread": false,
       "description": "React 渲染内容"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2893,
@@ -75349,7 +75650,8 @@
       ],
       "spread": false,
       "description": ""
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2894,
@@ -75371,7 +75673,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2895,
@@ -75393,7 +75696,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2896,
@@ -76085,7 +76389,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2925,
@@ -76185,7 +76490,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2929,
@@ -77726,7 +78032,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 2986,
@@ -78663,7 +78970,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3022,
@@ -78699,7 +79007,8 @@
       ],
       "spread": false,
       "description": "如果是 `true` 则为已关闭通知功能"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3023,
@@ -78735,7 +79044,8 @@
       ],
       "spread": false,
       "description": "如果是 `true` 则为已关闭通知栏图标闪烁功能"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3024,
@@ -78771,7 +79081,8 @@
       ],
       "spread": false,
       "description": "如果是 `true` 则为已关闭桌面通知功能"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3025,
@@ -78793,7 +79104,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3026,
@@ -79873,7 +80185,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3064,
@@ -80473,7 +80786,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3088,
@@ -81002,7 +81316,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3107,
@@ -81024,7 +81339,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3108,
@@ -82754,7 +83070,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3177,
@@ -84163,7 +84480,8 @@
       ],
       "spread": false,
       "description": "服务器地址"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3230,
@@ -85350,7 +85668,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3273,
@@ -85528,7 +85847,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3281,
@@ -86174,7 +86494,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3311,
@@ -86214,7 +86535,8 @@
       ],
       "spread": false,
       "description": "React 渲染内容"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3312,
@@ -86634,7 +86956,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3331,
@@ -86656,7 +86979,8 @@
       ],
       "spread": false,
       "description": null
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3332,
@@ -87084,7 +87408,8 @@
       ],
       "spread": false,
       "description": "秒数"
-    }
+    },
+    "ignore": true
   },
   {
     "__docId__": 3349,
@@ -87424,7 +87749,7 @@
   },
   {
     "kind": "index",
-    "content": "# API 概览\n\n## 源码结构\n\n喧喧客户端源码全部在 [`xxc/app/`](https://github.com/easysoft/xuanxuan/tree/master/xxc/app) 文件夹下。\n\n\n### 源码模块结构\n\n* `components/`：包含喧喧用到的通用 React 组件；\n* `config/`：包含运行时配置项；\n* `core/`：喧喧核心功能模块，包含事件机制、界面管理、网络、用户资料、数据库、聊天功能等子模块；\n* `lang/`：管理界面上的语言文本；\n* `exts/`：实现扩展机制模块；\n* `utils/`：工具模块；\n* `platform/`：平台相关模块，目前包含浏览器平台和 Electron 平台；\n* `views/`：界面模块，大部分为 React 组件形式。\n\n### 入口文件包括\n\n* `main.development.js`：Electron 主进程入口文件；\n* `index.html`：Electron 渲染进程加载的 HTML 文件；\n* `index.js`：Electron 渲染进程加载 JS 文件；\n* `package.json`：Electron 加载的 package.json 文件。\n\n### 其他资源文件\n\n* `assets/`：包含界面上用到的静态第三方资源；\n* `build-in/`：内置的扩展配置和扩展包；\n* `meida/`：界面上使用到的媒体资源，包括图片、音频和表情资源；\n* `style/`：界面上用到的 CSS 样式，大部分为 Less 格式。\n\n## API 文档\n\n### 介绍\n\nAPI 文档使用 [esdoc](https://esdoc.org/) 工具根据源码内的 [jsdoc 格式注释](http://usejsdoc.org/) 自动生成。最终文档为一组基于 HTML 文件的静态站点。通常需要一个静态 Web 服务器来访问文档目录下的 `index.html` 文件，也使用浏览器在本地打开 `index.html` 来浏览文档。\n\n文档包含源码目录内的所有类、公共变量、公共函数，并提供全局 API 搜索功能。\n\n### 文档生成\n\n进入 `xxc/` 目录执行：\n\n```bash\n$ npm run docs\n```\n\n静待几分钟，等待命令执行完成之后就可以在 `docs/client/api/` 文件夹下找到文档相关文件。\n\n### 文档修改\n\n直接修改对应 JS 文件内的 [jsdoc 格式注释](http://usejsdoc.org/)，然后使用上述方法重新生成文档即可。\n\n## 参考\n\n* [React 中文网址](https://react.docschina.org/)\n* [Electron 官方网址](https://electronjs.org/)",
+    "content": "# API 概览\n\n## 源码结构\n\n喧喧客户端源码全部在 [`xxc/app/`](https://github.com/easysoft/xuanxuan/tree/master/xxc/app) 文件夹下。\n\n\n### 源码模块结构\n\n* `components/`：包含喧喧用到的通用 React 组件；\n* `config/`：包含运行时配置项；\n* `core/`：喧喧核心功能模块，包含事件机制、界面管理、网络、用户资料、数据库、聊天功能等子模块；\n* `lang/`：管理界面上的语言文本；\n* `exts/`：实现扩展机制模块；\n* `utils/`：工具模块；\n* `platform/`：平台相关模块，目前包含浏览器平台和 Electron 平台；\n* `views/`：界面模块，大部分为 React 组件形式。\n\n### 入口文件包括\n\n* `main.development.js`：Electron 主进程入口文件；\n* `index.html`：Electron 渲染进程加载的 HTML 文件；\n* `index.js`：Electron 渲染进程窗口在 `index.html` 文件中加载 JS 文件；\n* `package.json`：Electron 加载的 package.json 文件。\n\n### 其他资源文件\n\n* `assets/`：包含界面上用到的静态第三方资源；\n* `build-in/`：内置的扩展配置和扩展包；\n* `meida/`：界面上使用到的媒体资源，包括图片、音频和表情资源；\n* `style/`：界面上用到的 CSS 样式，大部分为 Less 格式。\n\n## API 文档\n\n### 介绍\n\nAPI 文档使用 [esdoc](https://esdoc.org/) 工具根据源码内的 [jsdoc 格式注释](http://usejsdoc.org/) 自动生成。最终文档为一组基于 HTML 文件的静态站点。通常需要一个静态 Web 服务器来访问文档目录下的 `index.html` 文件，也使用浏览器在本地打开 `index.html` 来浏览文档。\n\n文档包含源码目录内的所有类、公共变量、公共函数，并提供全局 API 搜索功能。\n\n### 文档生成\n\n进入 `xxc/` 目录执行：\n\n```bash\n$ npm run docs\n```\n\n静待几分钟，等待命令执行完成之后就可以在 `docs/client/api/` 文件夹下找到文档相关文件。\n\n### 文档修改\n\n直接修改对应 JS 文件内的 [jsdoc 格式注释](http://usejsdoc.org/)，然后使用上述方法重新生成文档即可。\n\n## 参考\n\n* [React 中文网址](https://react.docschina.org/)\n* [Electron 官方网址](https://electronjs.org/)",
     "longname": "/Users/catouse/Projects/xuanxuan/xxc/README.md",
     "name": "./README.md",
     "static": true,
@@ -87432,7 +87757,7 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n  \"name\": \"xuanxuan\",\n  \"productName\": \"喧喧\",\n  \"version\": \"2.1.0\",\n  \"description\": \"企业即时通讯平台\",\n  \"main\": \"main.js\",\n  \"scripts\": {\n    \"hot-server\": \"cross-env NODE_ENV=development node --max_old_space_size=2096 -r babel-register ./build/server.js\",\n    \"build-main\": \"cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./build/webpack.config.electron.js --progress --profile --colors\",\n    \"build-renderer\": \"cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./build/webpack.config.production.js --progress --profile --colors\",\n    \"build-renderer-debug\": \"cross-env NODE_ENV=debug node -r babel-register ./node_modules/webpack/bin/webpack --config ./build/webpack.config.debug.js --progress --profile --colors\",\n    \"build-main-debug\": \"cross-env NODE_ENV=debug node -r babel-register ./node_modules/webpack/bin/webpack --config ./build/webpack.config.electron.js --progress --profile --colors\",\n    \"build\": \"npm run build-main && npm run build-renderer\",\n    \"build-debug\": \"npm run build-main-debug && npm run build-renderer-debug\",\n    \"build-browser\": \"cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./build/webpack.config.browser.js --progress --profile --colors\",\n    \"start\": \"cross-env NODE_ENV=production electron ./app/\",\n    \"start-hot\": \"cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./app/main.development\",\n    \"start-hot-fast\": \"cross-env HOT=1 NODE_ENV=development SKIP_INSTALL_EXTENSIONS=1 electron -r babel-register -r babel-polyfill ./app/main.development\",\n    \"postinstall\": \"npm run package -- --skipbuild && concurrently \\\"electron-builder install-app-deps\\\" \\\"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\\\"\",\n    \"copy-browser-files\": \"cross-env NODE_ENV=development node --max_old_space_size=2096 -r babel-register ./build/package-browser.js\",\n    \"package\": \"node --max_old_space_size=2096 -r babel-register ./build/package.js\",\n    \"package-beta\": \"npm run package -- --beta\",\n    \"package-debug\": \"npm run package -- --debug\",\n    \"package-mac\": \"npm run package -- --platform=mac --arch=x64\",\n    \"package-mac-debug\": \"npm run package -- --platform=mac --arch=x64 --debug\",\n    \"package-win\": \"npm run package -- --platform=win --arch=x64\",\n    \"package-win-32\": \"npm run package -- --platform=win --arch=x32\",\n    \"package-win-all\": \"npm run package -- --platform=win --arch=all\",\n    \"package-linux\": \"npm run package -- --platform=linux --arch=x64\",\n    \"package-linux-32\": \"npm run package -- --platform=linux --arch=x32\",\n    \"package-win-debug\": \"npm run package -- --platform=win --arch=x64 --debug\",\n    \"package-all\": \"npm run package -- --platform=all --arch=all --clean && npm run package -- --platform=mac,win --arch=x64 --debug\",\n    \"package-all-beta\": \"npm run package -- --platform=all --arch=x64 --beta --clean && npm run package -- --platform=mac,win --arch=x64 --debug --beta\",\n    \"package-browser\": \"npm run package -- --platform=browser\",\n    \"hot-server-browser\": \"npm run hot-server -- --target=browser\",\n    \"docs\": \"./node_modules/.bin/esdoc\"\n  },\n  \"build\": {\n    \"extends\": \"./build/electron-builder.json\"\n  },\n  \"bin\": {\n    \"electron\": \"./node_modules/.bin/electron\",\n    \"xxbuild\": \"./build/build.js\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"https://github.com/easysoft/xuanxuan.git\"\n  },\n  \"author\": {\n    \"name\": \"青岛易软天创网络科技有限公司\",\n    \"email\": \"sunhao@cnezsoft.com\"\n  },\n  \"license\": \"ZPL 1.2\",\n  \"bugs\": {\n    \"url\": \"https://github.com/easysoft/xuanxuan/issues\"\n  },\n  \"keywords\": [\n    \"im\",\n    \"message\",\n    \"electron\",\n    \"react\",\n    \"webpack\",\n    \"react-hot\"\n  ],\n  \"homepage\": \"http://xuan.im\",\n  \"company\": \"青岛易软天创网络科技有限公司\",\n  \"devDependencies\": {\n    \"archiver\": \"^3.0.0\",\n    \"asar\": \"^0.14.3\",\n    \"babel-core\": \"^6.26.3\",\n    \"babel-eslint\": \"^8.2.6\",\n    \"babel-loader\": \"^7.1.5\",\n    \"babel-plugin-add-module-exports\": \"^0.2.1\",\n    \"babel-plugin-dev-expression\": \"^0.2.1\",\n    \"babel-plugin-module-resolver\": \"^3.1.1\",\n    \"babel-plugin-tcomb\": \"^0.3.24\",\n    \"babel-plugin-transform-class-properties\": \"^6.22.0\",\n    \"babel-plugin-transform-es2015-classes\": \"^6.23.0\",\n    \"babel-plugin-webpack-loaders\": \"^0.9.0\",\n    \"babel-polyfill\": \"^6.20.0\",\n    \"babel-preset-env\": \"^1.1.4\",\n    \"babel-preset-react\": \"^6.16.0\",\n    \"babel-preset-react-hmre\": \"^1.1.1\",\n    \"babel-preset-react-optimize\": \"^1.0.1\",\n    \"babel-preset-stage-0\": \"^6.16.0\",\n    \"babel-register\": \"^6.18.0\",\n    \"babel-traverse\": \"^6.22.1\",\n    \"babili-webpack-plugin\": \"^0.1.2\",\n    \"boiler-room-custodian\": \"^0.6.1\",\n    \"chalk\": \"^2.4.1\",\n    \"commander\": \"^2.19.0\",\n    \"concurrently\": \"^3.1.0\",\n    \"cpx\": \"^1.5.0\",\n    \"cross-env\": \"^5.2.0\",\n    \"css-loader\": \"^1.0.0\",\n    \"devtron\": \"^1.4.0\",\n    \"dmd-plugin-zh-cn\": \"0.0.7\",\n    \"electron\": \"^2.0.5\",\n    \"electron-builder\": \"20.24.4\",\n    \"electron-devtools-installer\": \"^2.2.4\",\n    \"esdoc\": \"^1.1.0\",\n    \"esdoc-ecmascript-proposal-plugin\": \"^1.0.0\",\n    \"esdoc-inject-script-plugin\": \"^1.0.0\",\n    \"esdoc-inject-style-plugin\": \"^1.0.0\",\n    \"esdoc-jsx-plugin\": \"^1.0.0\",\n    \"esdoc-react-plugin\": \"^1.0.1\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"eslint\": \"^5.2.0\",\n    \"eslint-config-airbnb\": \"^17.0.0\",\n    \"eslint-formatter-pretty\": \"^1.1.0\",\n    \"eslint-import-resolver-babel-module\": \"^4.0.0-beta.3\",\n    \"eslint-import-resolver-webpack\": \"^0.10.1\",\n    \"eslint-plugin-compat\": \"^2.5.1\",\n    \"eslint-plugin-import\": \"^2.13.0\",\n    \"eslint-plugin-jest\": \"^21.18.0\",\n    \"eslint-plugin-jsx-a11y\": \"6.1.1\",\n    \"eslint-plugin-promise\": \"^3.8.0\",\n    \"eslint-plugin-react\": \"^7.10.0\",\n    \"express\": \"^4.14.0\",\n    \"extract-text-webpack-plugin\": \"^4.0.0-beta.0\",\n    \"fbjs-scripts\": \"^0.8.3\",\n    \"file-loader\": \"^1.1.11\",\n    \"gh-pages\": \"^1.0.0\",\n    \"html-webpack-plugin\": \"^3.2.0\",\n    \"json-loader\": \"^0.5.7\",\n    \"less\": \"^3.7.1\",\n    \"less-loader\": \"^4.1.0\",\n    \"minimist\": \"^1.2.0\",\n    \"opn\": \"^5.4.0\",\n    \"style-loader\": \"^0.21.0\",\n    \"tcomb\": \"^3.2.27\",\n    \"uglifyjs-webpack-plugin\": \"^1.2.7\",\n    \"url-loader\": \"^1.0.1\",\n    \"webpack\": \"^4.16.1\",\n    \"webpack-cli\": \"^3.1.0\",\n    \"webpack-dev-middleware\": \"^3.1.3\",\n    \"webpack-hot-middleware\": \"^2.22.3\",\n    \"webpack-merge\": \"^4.1.3\",\n    \"why-did-you-update\": \"^0.1.1\"\n  },\n  \"dependencies\": {\n    \"aes-js\": \"^3.1.0\",\n    \"cheerio\": \"^1.0.0-rc.2\",\n    \"clipboard-js\": \"^0.3.5\",\n    \"color-thief-browser\": \"^2.0.2\",\n    \"compare-versions\": \"^3.1.0\",\n    \"dexie\": \"^2.0.4\",\n    \"draft-js\": \"^0.10.5\",\n    \"electron-debug\": \"^2.0.0\",\n    \"emojione\": \"^3.1.7\",\n    \"emojione-picker\": \"^2.1.2\",\n    \"extract-zip\": \"^1.6.6\",\n    \"fs-extra\": \"^7.0.0\",\n    \"highlight.js\": \"^9.9.0\",\n    \"hotkeys-js\": \"^3.3.5\",\n    \"htmlparser\": \"^1.7.7\",\n    \"immutable\": \"^3.7.6\",\n    \"ion-sound\": \"^3.0.7\",\n    \"marked\": \"^0.4.0\",\n    \"md5\": \"^2.2.1\",\n    \"pinyin\": \"^2.8.3\",\n    \"prop-types\": \"^15.6.2\",\n    \"react\": \"^16.4.1\",\n    \"react-dom\": \"^16.4.1\",\n    \"react-router-dom\": \"^4.2.2\",\n    \"react-split-pane\": \"^0.1.66\",\n    \"recordrtc\": \"^5.4.0\",\n    \"remove-markdown\": \"^0.3.0\",\n    \"source-map-support\": \"^0.5.6\",\n    \"uuid\": \"^3.1.0\",\n    \"wolfy87-eventemitter\": \"^5.2.2\",\n    \"ws\": \"^2.2.3\"\n  },\n  \"devEngines\": {\n    \"node\": \">=8.x\",\n    \"npm\": \">=5.x\"\n  },\n  \"optionalDependencies\": {\n    \"bufferutil\": \"^4.0.0\",\n    \"utf-8-validate\": \"^5.0.1\"\n  }\n}\n",
+    "content": "{\n  \"name\": \"xuanxuan\",\n  \"productName\": \"喧喧\",\n  \"version\": \"2.1.0\",\n  \"description\": \"企业即时通讯平台\",\n  \"scripts\": {\n    \"hot-server\": \"cross-env NODE_ENV=development node --max_old_space_size=2096 -r babel-register ./tools/server.js\",\n    \"build-main\": \"cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./tools/webpack.config.electron.js --progress --profile --colors\",\n    \"build-renderer\": \"cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./tools/webpack.config.production.js --progress --profile --colors\",\n    \"build-renderer-debug\": \"cross-env NODE_ENV=debug node -r babel-register ./node_modules/webpack/bin/webpack --config ./tools/webpack.config.debug.js --progress --profile --colors\",\n    \"build-main-debug\": \"cross-env NODE_ENV=debug node -r babel-register ./node_modules/webpack/bin/webpack --config ./tools/webpack.config.electron.js --progress --profile --colors\",\n    \"build\": \"npm run build-main && npm run build-renderer\",\n    \"build-debug\": \"npm run build-main-debug && npm run build-renderer-debug\",\n    \"build-browser\": \"cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./tools/webpack.config.browser.js --progress --profile --colors\",\n    \"start\": \"npm run hot-server-browser\",\n    \"start-hot\": \"cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./app/main.development\",\n    \"start-hot-fast\": \"cross-env HOT=1 NODE_ENV=development SKIP_INSTALL_EXTENSIONS=1 electron -r babel-register -r babel-polyfill ./app/main.development\",\n    \"postinstall\": \"npm run package -- --skipbuild && concurrently \\\"electron-builder install-app-deps\\\" \\\"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\\\"\",\n    \"package\": \"node --max_old_space_size=2096 -r babel-register ./build/package.js\",\n    \"package-beta\": \"npm run package -- --beta\",\n    \"package-debug\": \"npm run package -- --debug\",\n    \"package-mac\": \"npm run package -- --platform=mac --arch=x64\",\n    \"package-mac-debug\": \"npm run package -- --platform=mac --arch=x64 --debug\",\n    \"package-win\": \"npm run package -- --platform=win --arch=x64\",\n    \"package-win-32\": \"npm run package -- --platform=win --arch=x32\",\n    \"package-win-all\": \"npm run package -- --platform=win --arch=all\",\n    \"package-linux\": \"npm run package -- --platform=linux --arch=x64\",\n    \"package-linux-32\": \"npm run package -- --platform=linux --arch=x32\",\n    \"package-win-debug\": \"npm run package -- --platform=win --arch=x64 --debug\",\n    \"package-all\": \"npm run package -- --platform=all --arch=all --clean && npm run package -- --platform=mac,win --arch=x64 --debug\",\n    \"package-all-beta\": \"npm run package -- --platform=all --arch=x64 --beta --clean && npm run package -- --platform=mac,win --arch=x64 --debug --beta\",\n    \"package-browser\": \"npm run package -- --platform=browser\",\n    \"hot-server-browser\": \"npm run hot-server -- --target=browser\",\n    \"docs\": \"./node_modules/.bin/esdoc\",\n    \"eslint\": \"eslint ./app\"\n  },\n  \"build\": {\n    \"extends\": \"./build/electron-builder.json\"\n  },\n  \"bin\": {\n    \"electron\": \"./node_modules/.bin/electron\",\n    \"eslint\": \"./node_modules/.bin/eslint\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"https://github.com/easysoft/xuanxuan.git\"\n  },\n  \"author\": {\n    \"name\": \"青岛易软天创网络科技有限公司\",\n    \"email\": \"sunhao@cnezsoft.com\"\n  },\n  \"license\": \"ZPL 1.2\",\n  \"bugs\": {\n    \"url\": \"https://github.com/easysoft/xuanxuan/issues\"\n  },\n  \"keywords\": [\n    \"im\",\n    \"message\",\n    \"electron\",\n    \"react\",\n    \"webpack\",\n    \"react-hot\"\n  ],\n  \"homepage\": \"http://xuan.im\",\n  \"company\": \"青岛易软天创网络科技有限公司\",\n  \"devDependencies\": {\n    \"archiver\": \"^3.0.0\",\n    \"asar\": \"^0.14.3\",\n    \"babel-core\": \"^6.26.3\",\n    \"babel-eslint\": \"^8.2.6\",\n    \"babel-loader\": \"^7.1.5\",\n    \"babel-plugin-add-module-exports\": \"^0.2.1\",\n    \"babel-plugin-dev-expression\": \"^0.2.1\",\n    \"babel-plugin-module-resolver\": \"^3.1.1\",\n    \"babel-plugin-tcomb\": \"^0.3.24\",\n    \"babel-plugin-transform-class-properties\": \"^6.22.0\",\n    \"babel-plugin-transform-es2015-classes\": \"^6.23.0\",\n    \"babel-plugin-webpack-loaders\": \"^0.9.0\",\n    \"babel-polyfill\": \"^6.20.0\",\n    \"babel-preset-env\": \"^1.1.4\",\n    \"babel-preset-react\": \"^6.16.0\",\n    \"babel-preset-react-hmre\": \"^1.1.1\",\n    \"babel-preset-react-optimize\": \"^1.0.1\",\n    \"babel-preset-stage-0\": \"^6.16.0\",\n    \"babel-register\": \"^6.18.0\",\n    \"babel-traverse\": \"^6.22.1\",\n    \"babili-webpack-plugin\": \"^0.1.2\",\n    \"chalk\": \"^2.4.1\",\n    \"commander\": \"^2.19.0\",\n    \"concurrently\": \"^3.1.0\",\n    \"cpx\": \"^1.5.0\",\n    \"cross-env\": \"^5.2.0\",\n    \"css-loader\": \"^1.0.0\",\n    \"devtron\": \"^1.4.0\",\n    \"electron\": \"^2.0.5\",\n    \"electron-builder\": \"20.24.4\",\n    \"electron-devtools-installer\": \"^2.2.4\",\n    \"esdoc\": \"^1.1.0\",\n    \"esdoc-ecmascript-proposal-plugin\": \"^1.0.0\",\n    \"esdoc-inject-script-plugin\": \"^1.0.0\",\n    \"esdoc-inject-style-plugin\": \"^1.0.0\",\n    \"esdoc-jsx-plugin\": \"^1.0.0\",\n    \"esdoc-react-plugin\": \"^1.0.1\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"eslint\": \"^5.9.0\",\n    \"eslint-config-airbnb\": \"^17.0.0\",\n    \"eslint-import-resolver-babel-module\": \"^4.0.0-beta.3\",\n    \"eslint-import-resolver-webpack\": \"^0.10.1\",\n    \"eslint-plugin-compat\": \"^2.5.1\",\n    \"eslint-plugin-import\": \"^2.13.0\",\n    \"eslint-plugin-jest\": \"^21.18.0\",\n    \"eslint-plugin-jsx-a11y\": \"6.1.1\",\n    \"eslint-plugin-promise\": \"^3.8.0\",\n    \"eslint-plugin-react\": \"^7.10.0\",\n    \"express\": \"^4.14.0\",\n    \"extract-text-webpack-plugin\": \"^4.0.0-beta.0\",\n    \"fbjs-scripts\": \"^0.8.3\",\n    \"file-loader\": \"^1.1.11\",\n    \"gh-pages\": \"^1.0.0\",\n    \"html-webpack-plugin\": \"^3.2.0\",\n    \"json-loader\": \"^0.5.7\",\n    \"less\": \"^3.7.1\",\n    \"less-loader\": \"^4.1.0\",\n    \"minimist\": \"^1.2.0\",\n    \"opn\": \"^5.4.0\",\n    \"style-loader\": \"^0.21.0\",\n    \"uglifyjs-webpack-plugin\": \"^1.2.7\",\n    \"url-loader\": \"^1.0.1\",\n    \"webpack\": \"^4.16.1\",\n    \"webpack-cli\": \"^3.1.0\",\n    \"webpack-dev-middleware\": \"^3.1.3\",\n    \"webpack-hot-middleware\": \"^2.22.3\",\n    \"webpack-merge\": \"^4.1.3\",\n    \"why-did-you-update\": \"^0.1.1\"\n  },\n  \"dependencies\": {\n    \"aes-js\": \"^3.1.0\",\n    \"cheerio\": \"^1.0.0-rc.2\",\n    \"clipboard-js\": \"^0.3.5\",\n    \"compare-versions\": \"^3.1.0\",\n    \"dexie\": \"^2.0.4\",\n    \"draft-js\": \"^0.10.5\",\n    \"electron-debug\": \"^2.0.0\",\n    \"emojione\": \"^3.1.7\",\n    \"emojione-picker\": \"^2.1.2\",\n    \"extract-zip\": \"^1.6.6\",\n    \"fs-extra\": \"^7.0.0\",\n    \"highlight.js\": \"^9.9.0\",\n    \"hotkeys-js\": \"^3.3.5\",\n    \"htmlparser\": \"^1.7.7\",\n    \"ion-sound\": \"^3.0.7\",\n    \"marked\": \"^0.4.0\",\n    \"md5\": \"^2.2.1\",\n    \"pinyin\": \"^2.8.3\",\n    \"prop-types\": \"^15.6.2\",\n    \"react\": \"^16.4.1\",\n    \"react-dom\": \"^16.4.1\",\n    \"react-router-dom\": \"^4.2.2\",\n    \"react-split-pane\": \"^0.1.66\",\n    \"recordrtc\": \"^5.4.0\",\n    \"remove-markdown\": \"^0.3.0\",\n    \"source-map-support\": \"^0.5.6\",\n    \"uuid\": \"^3.1.0\",\n    \"wolfy87-eventemitter\": \"^5.2.2\",\n    \"ws\": \"^2.2.3\"\n  },\n  \"optionalDependencies\": {\n    \"bufferutil\": \"^4.0.0\",\n    \"utf-8-validate\": \"^5.0.1\"\n  },\n  \"devEngines\": {\n    \"node\": \">=8.x\",\n    \"npm\": \">=5.x\"\n  }\n}\n",
     "longname": "/Users/catouse/Projects/xuanxuan/xxc/package.json",
     "name": "package.json",
     "static": true,
