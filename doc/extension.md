@@ -40,7 +40,7 @@
 {
     // 扩展的名称，扩展名称只能包含字母、数字、短横线及下划线，且第一个字符必须为字母
     // 扩展的名称必须唯一，相同名称的扩展会提示覆盖或升级，为避免与其他扩展发生冲突，也可以使用 guid 做为扩展名称
-    "name": "simple-extension", 
+    "name": "simple-extension",
 
     // 扩展在界面上显示的名称
     "displayName": "简单扩展",
@@ -58,7 +58,7 @@
 
         // 扩展图标，可以使用如下值
         //   * 使用 Material Design Icons (https://materialdesignicons.com/)，使用 mdi- 前缀，例如 mdi-star
-        //   * 使用 http:// 或 https:// 协议开头页面地址，例如 http://zui.sexy/img/icon.png
+        //   * 使用 http:// 或 https:// 协议开头图片地址，例如 http://zui.sexy/img/icon.png
         //   * 使用相对扩展包目录的相对地址，例如 img/icon.png
         // 需要注意：
         //   * 当扩展类型为 app 时，如果不指定则会使用应用图标（appIcon）
@@ -147,7 +147,7 @@
         "configurations": [
             {
                 // 配置项名称
-                "name": "cfg1", 
+                "name": "cfg1",
 
                 // 配置项显示名称
                 "displayName": "配置项一",
@@ -162,7 +162,7 @@
                 "valueType": "string",
 
                 // 用于验证配置值是否合法的正则表达式
-                "matchReg": "[a-zA-Z0-9]+", 
+                "matchReg": "[a-zA-Z0-9]+",
             }
         ]
     },
@@ -601,9 +601,9 @@ module.exports = {
 };
 ```
 
-```js
-// user-avatar.js 文件
+`user-avatar.js` 文件：
 
+```js
 // 从全局扩展对象中引入模块
 const {
     views,
@@ -705,7 +705,7 @@ module.exports = UserAvatar;
 
 ## 开发模式
 
-当进行扩展开发时，无需将扩展打包为 `.zip` 文件进行安装测试，可以直接从开发目录加载扩展。从开发目录加载的扩展会显示 “开发中” 标签，显示配置文件中的错误，并且提供重新载入等快捷操作。
+当进行扩展开发时，无需将扩展打包为 `.zip` 文件进行安装测试，可以直接从开发目录加载扩展。从开发目录加载的扩展会显示 “开发中” 标签，检查并显示配置文件中的错误，并且提供重新载入等快捷操作。
 
 ![喧喧扩展开发模式](https://raw.githubusercontent.com/easysoft/xuanxuan/master/doc/img/extensions/extension-develop.png)
 
