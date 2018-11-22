@@ -139,7 +139,7 @@ export const onSendContentToChat = (cgid, listener) => events.on(`${EVENT.sendCo
  */
 export const getActivedCacheChatsGID = () => Object.keys(activeCaches);
 
-// 添加聊天工具栏邮件菜单生成器
+// 添加聊天工具栏右键菜单生成器
 addContextMenuCreator('chat.toolbar', context => {
     let {chat, showSidebarIcon = 'auto'} = context;
     const items = [];
@@ -406,7 +406,7 @@ export const chatDismissConfirm = chat => {
     });
 };
 
-// 添加聊天上小文菜单生成器
+// 添加聊天上下文菜单生成器
 addContextMenuCreator('chat.menu', context => {
     const {chat, menuType = null, viewType = null} = context;
     const menu = [];
