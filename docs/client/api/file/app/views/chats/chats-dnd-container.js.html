@@ -601,10 +601,10 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import React, {PureComponent} from &apos;react&apos;;
 import PropTypes from &apos;prop-types&apos;;
 import {classes} from &apos;../../utils/html-helper&apos;;
-import StringHelper from &apos;../../utils/string-helper&apos;;
+import {formatBytes} from &apos;../../utils/string-helper&apos;;
 import Lang from &apos;../../lang&apos;;
 import App from &apos;../../core&apos;;
-import API from &apos;../../core/network/api&apos;;
+import {checkUploadFileSize} from &apos;../../core/network/api&apos;;
 import Emojione from &apos;../../components/emojione&apos;;
 import replaceViews from &apos;../replace-views&apos;;
 
@@ -689,7 +689,7 @@ export default class ChatsDndContainer extends PureComponent {
             let hasError = false;
             for (let i = 0; i &lt; e.dataTransfer.files.length; ++i) {
                 const file = e.dataTransfer.files[i];
-                if (API.checkUploadFileSize(App.user, file.size)) {
+                if (checkUploadFileSize(App.user, file.size)) {
                     if (file.type.startsWith(&apos;image/&apos;)) {
                         App.im.ui.sendContentToChat(file, &apos;image&apos;);
                     } else {
@@ -700,7 +700,7 @@ export default class ChatsDndContainer extends PureComponent {
                 }
             }
             if (hasError) {
-                App.ui.showMessger(Lang.error({code: &apos;UPLOAD_FILE_IS_TOO_LARGE&apos;, formats: StringHelper.formatBytes(App.user.uploadFileSize)}), {type: &apos;warning&apos;});
+                App.ui.showMessger(Lang.error({code: &apos;UPLOAD_FILE_IS_TOO_LARGE&apos;, formats: formatBytes(App.user.uploadFileSize)}), {type: &apos;warning&apos;});
             }
         }
     }

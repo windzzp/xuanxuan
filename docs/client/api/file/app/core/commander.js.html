@@ -722,7 +722,7 @@ export const executeCommand = (command, ...params) =&gt; {
 export const executeCommandLine = (commandLine, commandContext = null) =&gt; {
     setCommandContext(commandContext);
     const params = commandLine.split(&apos;/&apos;);
-    return execute(...params.map((p, idx) =&gt; {
+    return executeCommand(...params.map((p, idx) =&gt; {
         if (p[0] === &apos;?&apos; &amp;&amp; idx === (params.length - 1)) {
             return p;
         }

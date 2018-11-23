@@ -1580,9 +1580,9 @@
                             "line": 53,
                             "column": 27
                           },
-                          "identifierName": "onExeCuteJavaScript"
+                          "identifierName": "onExecuteJavaScript"
                         },
-                        "name": "onExeCuteJavaScript"
+                        "name": "onExecuteJavaScript"
                       },
                       "value": {
                         "type": "MemberExpression",
@@ -2597,9 +2597,9 @@
                             "line": 76,
                             "column": 27
                           },
-                          "identifierName": "onExeCuteJavaScript"
+                          "identifierName": "onExecuteJavaScript"
                         },
-                        "name": "onExeCuteJavaScript"
+                        "name": "onExecuteJavaScript"
                       },
                       "value": {
                         "type": "NullLiteral",
@@ -15307,9 +15307,9 @@
                                         "line": 352,
                                         "column": 64
                                       },
-                                      "identifierName": "onExeCuteJavaScript"
+                                      "identifierName": "onExecuteJavaScript"
                                     },
-                                    "name": "onExeCuteJavaScript"
+                                    "name": "onExecuteJavaScript"
                                   },
                                   "value": {
                                     "type": "Identifier",
@@ -15324,9 +15324,9 @@
                                         "line": 352,
                                         "column": 64
                                       },
-                                      "identifierName": "onExeCuteJavaScript"
+                                      "identifierName": "onExecuteJavaScript"
                                     },
-                                    "name": "onExeCuteJavaScript"
+                                    "name": "onExecuteJavaScript"
                                   },
                                   "extra": {
                                     "shorthand": true
@@ -15877,9 +15877,9 @@
                                         "line": 360,
                                         "column": 83
                                       },
-                                      "identifierName": "onExeCuteJavaScript"
+                                      "identifierName": "onExecuteJavaScript"
                                     },
-                                    "name": "onExeCuteJavaScript"
+                                    "name": "onExecuteJavaScript"
                                   }
                                 ]
                               }
@@ -26770,7 +26770,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "onExeCuteJavaScript",
+      "value": "onExecuteJavaScript",
       "start": 1437,
       "end": 1456,
       "loc": {
@@ -28719,7 +28719,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "onExeCuteJavaScript",
+      "value": "onExecuteJavaScript",
       "start": 2099,
       "end": 2118,
       "loc": {
@@ -52406,7 +52406,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "onExeCuteJavaScript",
+      "value": "onExecuteJavaScript",
       "start": 10107,
       "end": 10126,
       "loc": {
@@ -53649,7 +53649,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "onExeCuteJavaScript",
+      "value": "onExecuteJavaScript",
       "start": 10416,
       "end": 10435,
       "loc": {

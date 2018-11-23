@@ -1190,7 +1190,7 @@ export const getUrlMeta = (url, disableCache = false) =&gt; {
             }
             if (extInspector &amp;&amp; extInspector.inspect) {
                 try {
-                    cardMeta = extInspector.inspect(meta, cardMeta, url);
+                    cardMeta = extInspector.inspect(url, meta, cardMeta);
                 } catch (err) {
                     if (DEBUG) {
                         console.error(&apos;Inspect url error&apos;, {

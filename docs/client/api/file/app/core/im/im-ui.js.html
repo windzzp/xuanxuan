@@ -739,7 +739,7 @@ export const onSendContentToChat = (cgid, listener) =&gt; events.on(`${EVENT.sen
  */
 export const getActivedCacheChatsGID = () =&gt; Object.keys(activeCaches);
 
-// &#x6DFB;&#x52A0;&#x804A;&#x5929;&#x5DE5;&#x5177;&#x680F;&#x90AE;&#x4EF6;&#x83DC;&#x5355;&#x751F;&#x6210;&#x5668;
+// &#x6DFB;&#x52A0;&#x804A;&#x5929;&#x5DE5;&#x5177;&#x680F;&#x53F3;&#x952E;&#x83DC;&#x5355;&#x751F;&#x6210;&#x5668;
 addContextMenuCreator(&apos;chat.toolbar&apos;, context =&gt; {
     let {chat, showSidebarIcon = &apos;auto&apos;} = context;
     const items = [];
@@ -1006,7 +1006,7 @@ export const chatDismissConfirm = chat =&gt; {
     });
 };
 
-// &#x6DFB;&#x52A0;&#x804A;&#x5929;&#x4E0A;&#x5C0F;&#x6587;&#x83DC;&#x5355;&#x751F;&#x6210;&#x5668;
+// &#x6DFB;&#x52A0;&#x804A;&#x5929;&#x4E0A;&#x4E0B;&#x6587;&#x83DC;&#x5355;&#x751F;&#x6210;&#x5668;
 addContextMenuCreator(&apos;chat.menu&apos;, context =&gt; {
     const {chat, menuType = null, viewType = null} = context;
     const menu = [];

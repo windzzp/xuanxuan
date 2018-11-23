@@ -674,7 +674,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-addContextMenuCreator">addContextMenuCreator</a></span></span><span class="code" data-ice="signature">(creator: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, <span>any</span>&gt;, createFunc: <span>Function(context: Object)</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-addContextMenuCreator">addContextMenuCreator</a></span></span><span class="code" data-ice="signature">(creator: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, <span>any</span>&gt;, createFunc: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(context: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>)</span></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
@@ -12315,7 +12315,7 @@
     
     
     
-    <span class="code" data-ice="name">addContextMenuCreator</span><span class="code" data-ice="signature">(creator: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, <span>any</span>&gt;, createFunc: <span>Function(context: Object)</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+    <span class="code" data-ice="name">addContextMenuCreator</span><span class="code" data-ice="signature">(creator: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, <span>any</span>&gt;, createFunc: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(context: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>)</span></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
     <span class="right-info">
       
       
@@ -12348,8 +12348,8 @@
     </tr>
 <tr data-ice="property" data-depth="1">
       <td data-ice="name" class="code" data-depth="1">creator.create</td>
-      <td data-ice="type" class="code"><span>Function(context: Object)</span></td>
-      <td data-ice="appendix"><ul><li>nullable: true</li></ul></td>
+      <td data-ice="type" class="code"><span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(context: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>)</span></span></td>
+      <td data-ice="appendix"></td>
       <td data-ice="description"><p>&#x751F;&#x6210;&#x83DC;&#x5355;&#x9879;&#x5217;&#x8868;&#x7684;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#xFF0C;create &#x548C; items &#x5C5E;&#x6027;&#x53EA;&#x80FD;&#x8BBE;&#x7F6E;&#x4E00;&#x4E2A;</p>
 </td>
     </tr>
@@ -12376,8 +12376,8 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">createFunc</td>
-      <td data-ice="type" class="code"><span>Function(context: Object)</span></td>
-      <td data-ice="appendix"><ul><li>nullable: true</li></ul></td>
+      <td data-ice="type" class="code"><span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(context: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>)</span></span></td>
+      <td data-ice="appendix"></td>
       <td data-ice="description"><p>&#x751F;&#x6210;&#x83DC;&#x5355;&#x9879;&#x5217;&#x8868;&#x7684;&#x56DE;&#x8C03;&#x51FD;&#x6570;</p>
 </td>
     </tr>
@@ -32031,7 +32031,8 @@ const divClass = classes(&apos;btn&apos;, [&apos;lg&apos;, &apos;flex-none&apos;
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
-          
+          <td class="return-desc" data-ice="returnDescription"><p>&#x5982;&#x679C;&#x8FD4;&#x56DE; <code>true</code> &#x5219;&#x4E3A;&#x64CD;&#x4F5C;&#x6210;&#x529F;&#xFF0C;&#x5426;&#x5219;&#x4E3A;&#x64CD;&#x4F5C;&#x5931;&#x8D25;</p>
+</td>
         </tr>
       </tbody>
     </table>
