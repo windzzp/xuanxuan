@@ -1,10 +1,10 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
-import StringHelper from '../../utils/string-helper';
+import {formatBytes} from '../../utils/string-helper';
 import Lang from '../../lang';
 import App from '../../core';
-import API from '../../core/network/api';
+import {checkUploadFileSize} from '../../core/network/api';
 import Emojione from '../../components/emojione';
 import replaceViews from '../replace-views';
 
@@ -89,7 +89,7 @@ export default class ChatsDndContainer extends PureComponent {
             let hasError = false;
             for (let i = 0; i < e.dataTransfer.files.length; ++i) {
                 const file = e.dataTransfer.files[i];
-                if (API.checkUploadFileSize(App.user, file.size)) {
+                if (checkUploadFileSize(App.user, file.size)) {
                     if (file.type.startsWith('image/')) {
                         App.im.ui.sendContentToChat(file, 'image');
                     } else {
@@ -100,7 +100,7 @@ export default class ChatsDndContainer extends PureComponent {
                 }
             }
             if (hasError) {
-                App.ui.showMessger(Lang.error({code: 'UPLOAD_FILE_IS_TOO_LARGE', formats: StringHelper.formatBytes(App.user.uploadFileSize)}), {type: 'warning'});
+                App.ui.showMessger(Lang.error({code: 'UPLOAD_FILE_IS_TOO_LARGE', formats: formatBytes(App.user.uploadFileSize)}), {type: 'warning'});
             }
         }
     }
