@@ -155,7 +155,7 @@ if (Platform.clipboard && Platform.clipboard.writeText) {
 
 // 处理用户登录事件
 Server.onUserLogin((user, loginError) => {
-    if (!loginError && user.isFirstSignedToday) {
+    if (Config.ui.showDailySignMessage && !loginError && user.isFirstSignedToday) {
         Messager.show(Lang.string('login.signed'), {
             type: 'success',
             icon: 'calendar-check',
