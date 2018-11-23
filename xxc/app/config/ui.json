@@ -9,5 +9,6 @@
     "page.start.size": 20,
     "page.more.size": 20,
     "chat.denyChatFromMemberProfile": false,
-    "showDailySignMessage": true
+    "showDailySignMessage": true,
+    "chat.disableChatHistory": false
 }

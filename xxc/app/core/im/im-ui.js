@@ -165,14 +165,16 @@ addContextMenuCreator('chat.toolbar', context => {
             }
         });
     }
-    items.push({
-        id: 'history',
-        icon: 'history',
-        label: Lang.string('chat.toolbor.history'),
-        click: () => {
-            ChatsHistoryDialog.show(chat);
-        }
-    });
+    if (!Config.ui['chat.disableChatHistory']) {
+        items.push({
+            id: 'history',
+            icon: 'history',
+            label: Lang.string('chat.toolbor.history'),
+            click: () => {
+                ChatsHistoryDialog.show(chat);
+            }
+        });
+    }
     if (chat.isRobot) {
         showSidebarIcon = false;
     }
