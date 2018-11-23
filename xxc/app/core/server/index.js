@@ -142,8 +142,8 @@ export const login = (user) => {
         });
     }).then(() => {
         user.endLogin(true);
-        events.emit(EVENT.login, user);
         user.save();
+        events.emit(EVENT.login, user);
         return Promise.resolve(user);
     }).catch(error => {
         user.endLogin(false);
