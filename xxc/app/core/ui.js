@@ -691,16 +691,17 @@ const unregisterGlobalShortcut = () => {
     }
 };
 
-// 处理全局快捷键注册和反注册
+profile.onUserConfigChange((change, config) => {
+    if (Platform.shortcut && change && Object.keys(change).some(x => x.startsWith('shortcut.'))) {
+        registerShortcut();
+    }
+    if (config.needSave) {
+        Server.socket.uploadUserSettings();
+    }
+});
+
+// // 处理全局快捷键注册和反注册
 if (Platform.shortcut) {
-    profile.onUserConfigChange((change, config) => {
-        if (change && Object.keys(change).some(x => x.startsWith('shortcut.'))) {
-            registerShortcut();
-        }
-        if (config.needSave) {
-            Server.socket.uploadUserSettings();
-        }
-    });
     Server.onUserLogin(registerShortcut);
     Server.onUserLoginout(unregisterGlobalShortcut);
 

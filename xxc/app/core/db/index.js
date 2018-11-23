@@ -1,5 +1,5 @@
 import Database from './database';
-import profile from '../profile';
+import {onSwapUser} from '../profile';
 
 /**
  * 当前数据库实例
@@ -9,7 +9,7 @@ import profile from '../profile';
 let db = null;
 
 // 当登录用户变更时重新创建数据库实例
-profile.onSwapUser(user => {
+onSwapUser(user => {
     db = Database.create(user.identify);
 });
 
