@@ -28,6 +28,7 @@ import {
 } from '../context-menu';
 import ui from '../ui';
 import {registerCommand, executeCommandLine} from '../commander';
+import Config from '../../config';
 
 /**
  * 当前激活的聊天实例 ID
@@ -569,12 +570,16 @@ addContextMenuCreator('chat.member', ({member, chat}) => {
             click: () => {
                 sendContentToChat(`@${member.displayName} `);
             }
-        }, {
-            label: Lang.string('chat.sendMessage'),
-            click: () => {
-                window.location.hash = `#/chats/contacts/${one2OneGid}`;
-            }
         });
+
+        if (!Config.ui['chat.denyChatFromMemberProfile']) {
+            menu.push({
+                label: Lang.string('chat.sendMessage'),
+                click: () => {
+                    window.location.hash = `#/chats/contacts/${one2OneGid}`;
+                }
+            });
+        }
     }
 
     tryAddDividerItem(menu);

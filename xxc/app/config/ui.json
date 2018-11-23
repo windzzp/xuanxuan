@@ -7,5 +7,6 @@
     "chat.suggestPanelShowTime": 10000,
     "chat.urlInspector": true,
     "page.start.size": 20,
-    "page.more.size": 20
+    "page.more.size": 20,
+    "chat.denyChatFromMemberProfile": false
 }

@@ -719,7 +719,7 @@ if (Platform.shortcut) {
 // 注册显示上下文菜单命令
 registerCommand('showContextMenu', (context, name) => {
     const {options, event} = context;
-    showContextMenu(name, {options, event})
+    showContextMenu(name, {options, event});
 });
 
 /**
