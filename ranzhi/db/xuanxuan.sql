@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `im_message` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- DROP TABLE IF EXISTS `im_chatuser`;
-CREATE TABLE IF NOT EXISTS `im_chatuser`(
+CREATE TABLE IF NOT EXISTS `im_chatuser` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `cgid` char(40) NOT NULL DEFAULT '',
   `user` mediumint(8) NOT NULL DEFAULT 0,
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `im_chatuser`(
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- DROP TABLE IF EXISTS `im_messagestatus`;
-CREATE TABLE `im_messagestatus` (
+CREATE TABLE IF NOT EXISTS `im_messagestatus` (
   `user` mediumint(8) NOT NULL DEFAULT 0,
   `gid` char(40) NOT NULL DEFAULT '',
   `status` enum('waiting','sent','readed','deleted') NOT NULL DEFAULT 'waiting',
