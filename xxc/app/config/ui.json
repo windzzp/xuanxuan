@@ -11,5 +11,6 @@
     "chat.denyChatFromMemberProfile": false,
     "showDailySignMessage": true,
     "chat.disableChatHistory": false,
-    "chat.simpleChatView": false
+    "chat.simpleChatView": false,
+    "chat.hideAllSidebar": false
 }
