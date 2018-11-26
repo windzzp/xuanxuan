@@ -17,12 +17,44 @@ const isDocumentHasFocus = () => {
 };
 
 /**
+ * 保存所有窗口激活回调函数
+ * @private
+ * @type {function[]}
+ */
+const windowFocusHandlers = [];
+
+/**
+ * 保存上次判断的窗口是否激活
+ * @private
+ * @type {boolean}
+ */
+let iwWindowHasFocus = isDocumentHasFocus();
+
+/**
+ * 检查窗口是否激活
+ * @return {void}
+ * @private
+ */
+const checkWindowHasFocus = () => {
+    const isHasFocus = isDocumentHasFocus();
+    if (isHasFocus !== iwWindowHasFocus) {
+        if (isHasFocus) {
+            windowFocusHandlers.forEach(x => x());
+        }
+    }
+    iwWindowHasFocus = isHasFocus;
+};
+
+// 定期检查窗口激活状态
+setInterval(checkWindowHasFocus, 300);
+
+/**
  * 绑定应用窗口激活事件
  * @param {funcion} listener 事件回调函数
  * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
  */
 export const onWindowFocus = listener => {
-    document.addEventListener('focus', listener);
+    windowFocusHandlers.push(listener);
 };
 
 /**
