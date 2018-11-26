@@ -785,7 +785,7 @@ addContextMenuCreator('message.text', ({message}) => {
             });
         }
     }
-    if (profile.user.isVersionSupport('todo')) {
+    if (!Config.ui['chat.simpleChatView'] && profile.user.isVersionSupport('todo')) {
         if (items.length) {
             items.push('divider');
         }
