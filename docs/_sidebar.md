@@ -15,18 +15,19 @@
   * [项目文件结构](client/project)
   * [打包](client/package.md)
   * [扩展机制](client/extension.md)
-  * [API](client/api.md)
+  * [客户端 API](client/api.md)
 
 * <i class="icon mdi mdi-run-fast"></i> 服务器
 
-  * [概述](server/summary)
-  * [服务器部署](server/deploy)
-  * [XXD API](server/xxd-api)
-  * [XXB 数据库](server/xxb-api)
-  * [XXB API](server/xxb-api)
+  * [服务器端部署](server/deploy)
+  * [服务器端升级](server/upgrade)
+  * [远程客户端扩展](server/remote-extension)
+  * [后端服务 API](server/api)
+  * [后端服务数据库](server/database)
 
 * <i class="icon mdi mdi-compass-outline"></i> 指南
 
-  * [参与到官方开发](contribute.md)
+  * [问题反馈](guide/feedback.md)
+  * [参与到官方开发](guide/contribute.md)
   * [安装 NodeJS 和 npm](guide/install-nodejs.md)
   * [学习资料推荐](guide/learn)
