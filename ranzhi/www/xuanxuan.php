@@ -19,7 +19,7 @@ $startTime = getTime();
 
 /* Run the app. */
 $appName = 'sys';
-$app     = xuanxuan::createApp($appName, '', 'xuanxuan');
+$app     = xuanxuan::createApp($appName);
 
 $app->loadCommon();
 $app->parseRequest();
