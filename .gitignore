@@ -64,6 +64,7 @@ xxd/log
 xxc/test
 
 # documentation
+docs
 xxc/docs
 issues.md
 
