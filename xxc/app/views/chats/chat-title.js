@@ -8,6 +8,7 @@ import {ChatAvatar} from './chat-avatar';
 import {StatusDot} from '../common/status-dot';
 import MemberProfileDialog from '../common/member-profile-dialog';
 import replaceViews from '../replace-views';
+import Config from '../../config';
 
 /**
  * ChatTitle 组件 ，显示聊天界面标题
@@ -98,6 +99,14 @@ export default class ChatTitle extends Component {
         this.lastOtherOneUpdateId = theOtherOne && theOtherOne.updateId;
         this.lastChatUpdateId = chat.updateId;
 
+        let chatNoticeView = null;
+        if (Config.ui['chat.showNoticeOnChatTitle']) {
+            const {noticeCount} = chat;
+            if (noticeCount) {
+                chatNoticeView = <div className={classes('label circle label-sm', chat.isMuteOrHidden ? 'blue' : 'red')}>{noticeCount > 99 ? '99+' : noticeCount}</div>;
+            }
+        }
+
         return (<div className={classes('chat-title heading', className)} {...other}>
             <ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} onClick={onTitleClick} />
             {theOtherOne && <StatusDot status={theOtherOne.status} />}
@@ -108,6 +117,7 @@ export default class ChatTitle extends Component {
             {chat.mute && <div className="hint--bottom" data-hint={Lang.string('chat.mute.label')}><Icon className="text-brown" name="bell-off" /></div>}
             {chat.isDismissed && <div className="small label rounded dark">{Lang.string('chat.group.dismissed')}</div>}
             {chat.isDeleteOne2One && <div className="small label rounded dark">{Lang.string('chat.deleted')}</div>}
+            {chatNoticeView}
             <div className="flex-auto" />
             {children}
         </div>);
