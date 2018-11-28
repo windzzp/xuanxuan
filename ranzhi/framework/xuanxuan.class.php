@@ -286,7 +286,7 @@ class xuanxuan extends router
             {
                 if($defaultValue === '_NOT_SET') $this->triggerError("The param '$key' should pass value. ", __FILE__, __LINE__, $exit = true);
             }
-            $i ++;
+            $i++;
         }
 
         return $defaultParams;
