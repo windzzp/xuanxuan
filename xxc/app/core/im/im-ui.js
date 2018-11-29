@@ -341,12 +341,20 @@ addContextMenuCreator('chat.sendbox.toolbar', context => {
                 click: openMessagePreview,
                 icon: 'mdi-file-find',
                 disabled: !openMessagePreview
-            }, {
-                icon: 'mdi-help-circle',
-                label: Lang.string('chat.sendbox.toolbar.markdownGuide'),
-                url: `!openUrlInDialog/${encodeURIComponent('http://wowubuntu.com/markdown/')}/?size=lg&insertCss=${encodeURIComponent('.wikistyle>p:first-child{display:none!important}')}`
             }];
-            ui.showContextMenu({x: e.pageX, y: e.pageY, target: e.target, placement: 'top'}, menuItems);
+
+            const mdHintUrl = Config.ui['markdown.hintUrl'];
+            if (mdHintUrl) {
+                menuItems.push({
+                    icon: 'mdi-help-circle',
+                    label: Lang.string('chat.sendbox.toolbar.markdownGuide'),
+                    url: Platform.type === 'browser' ? mdHintUrl : `!openUrlInDialog/${encodeURIComponent(mdHintUrl)}/?size=lg&insertCss=${encodeURIComponent('.wikistyle>p:first-child{display:none!important}')}`
+                });
+            }
+
+            ui.showContextMenu({
+                x: e.pageX, y: e.pageY, target: e.target, placement: 'top'
+            }, menuItems);
             e.preventDefault();
         } : null
     });

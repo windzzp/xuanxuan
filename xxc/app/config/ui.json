@@ -13,5 +13,6 @@
     "chat.disableChatHistory": false,
     "chat.simpleChatView": false,
     "chat.hideAllSidebar": false,
-    "chat.showNoticeOnChatTitle": false
+    "chat.showNoticeOnChatTitle": false,
+    "markdown.hintUrl": "http://wowubuntu.com/markdown/"
 }
