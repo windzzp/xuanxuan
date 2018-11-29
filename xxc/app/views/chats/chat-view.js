@@ -126,7 +126,7 @@ export default class ChatView extends Component {
 
         const hideSidebar = Config.ui['chat.hideAllSidebar'] || App.profile.userConfig.isChatSidebarHidden(chat.gid, App.ui.isSmallScreen() || chat.isOne2One);
         const isReadOnly = chat.isReadonly(App.profile.user);
-        const isRobot = chat.isRobot;
+        const {isRobot} = chat;
 
         let chatView = null;
         if (isReadOnly) {
