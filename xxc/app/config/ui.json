@@ -14,5 +14,7 @@
     "chat.simpleChatView": false,
     "chat.hideAllSidebar": false,
     "chat.showNoticeOnChatTitle": false,
+    "chat.sendMarkdown": true,
+    "member.showAvatar": true,
     "markdown.hintUrl": "http://wowubuntu.com/markdown/"
 }

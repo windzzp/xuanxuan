@@ -323,10 +323,12 @@ addContextMenuCreator('chat.sendbox.toolbar', context => {
         icon: 'mdi-format-size',
         label: Lang.string('chat.sendbox.toolbar.setFontSize'),
         click: e => {
-            ChatChangeFontPopover.show({x: e.pageX, y: e.pageY, target: e.target, placement: 'top'});
+            ChatChangeFontPopover.show({
+                x: e.pageX, y: e.pageY, target: e.target, placement: 'top'
+            });
         }
     });
-    const sendMarkdown = userConfig && userConfig.sendMarkdown;
+    const sendMarkdown = Config.ui['chat.sendMarkdown'] && userConfig && userConfig.sendMarkdown;
     items.push({
         id: 'markdown',
         icon: sendMarkdown ? 'mdi-markdown icon-2x' : 'mdi-markdown icon-2x',
@@ -364,7 +366,9 @@ addContextMenuCreator('chat.sendbox.toolbar', context => {
             icon: 'mdi-comment-question-outline',
             label: Lang.string('chat.sendbox.toolbar.tips'),
             click: e => {
-                ChatTipPopover.show({x: e.pageX, y: e.pageY, target: e.target, placement: 'top'});
+                ChatTipPopover.show({
+                    x: e.pageX, y: e.pageY, target: e.target, placement: 'top'
+                });
             }
         });
     }
