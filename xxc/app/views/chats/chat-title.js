@@ -100,6 +100,8 @@ export default class ChatTitle extends Component {
         this.lastChatUpdateId = chat.updateId;
 
         let chatNoticeView = null;
+        const hideChatAvatar = Config.ui['chat.hideChatAvatar'];
+
         if (Config.ui['chat.showNoticeOnChatTitle']) {
             const {noticeCount} = chat;
             if (noticeCount) {
@@ -108,7 +110,7 @@ export default class ChatTitle extends Component {
         }
 
         return (<div className={classes('chat-title heading', className)} {...other}>
-            <ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} onClick={onTitleClick} />
+            {hideChatAvatar ? null : <ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} onClick={onTitleClick} />}
             {theOtherOne && <StatusDot status={theOtherOne.status} />}
             {
                 theOtherOne ? <a className="strong rounded title flex-none text-primary" onClick={onTitleClick}>{chatName}</a> : <strong className="title flex-none">{chatName}</strong>

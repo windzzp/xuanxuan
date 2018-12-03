@@ -17,6 +17,7 @@ import {MessageContentUrl} from './message-content-url';
 import replaceViews from '../replace-views';
 import ChatMessage from '../../core/models/chat-message';
 import {showContextMenu} from '../../core/context-menu';
+import Config from '../../config';
 
 /**
  * 连续的聊天消息显示时间标签最小时间间隔，单位毫秒
@@ -370,19 +371,24 @@ export default class MessageListItem extends Component {
             lineHeight: font.titleLineHeight,
         } : null;
 
+        const hideChatAvatar = Config.ui['chat.hideChatAvatar'];
+
         if (!hideHeader) {
             const sender = message.getSender(App.members);
             this.lastSenderUpdateId = sender.updateId;
             if (sender.temp) {
                 this.needGetSendInfo = sender.id;
             }
-            headerView = (<div className="app-message-item-header">
-                <UserAvatar size={avatarSize} className="state" user={sender} onContextMenu={this.handleUserContextMenu} onClick={isNotification ? null : MemberProfileDialog.show.bind(null, sender, null)} />
-                <header style={titleFontStyle}>
-                    {isNotification ? <span className="title text-primary">{sender.displayName}</span> : <a className="title rounded text-primary" onContextMenu={staticUI ? null : this.handleUserContextMenu} onClick={staticUI ? MemberProfileDialog.show.bind(null, sender, null) : this.handleSenderNameClick.bind(this, sender, message)}>{sender.displayName}</a>}
-                    <small className="time">{formatDate(message.date, dateFormater)}</small>
-                </header>
-            </div>);
+            const avatarView = hideChatAvatar ? null : <UserAvatar size={avatarSize} className="state" user={sender} onContextMenu={this.handleUserContextMenu} onClick={isNotification ? null : MemberProfileDialog.show.bind(null, sender, null)} />;
+            headerView = (
+                <div className="app-message-item-header">
+                    {avatarView}
+                    <header style={titleFontStyle}>
+                        {isNotification ? <span className="title text-primary">{sender.displayName}</span> : <a className="title rounded text-primary" onContextMenu={staticUI ? null : this.handleUserContextMenu} onClick={staticUI ? MemberProfileDialog.show.bind(null, sender, null) : this.handleSenderNameClick.bind(this, sender, message)}>{sender.displayName}</a>}
+                        <small className="time">{formatDate(message.date, dateFormater)}</small>
+                    </header>
+                </div>
+            );
         } else {
             this.lastSenderUpdateId = false;
         }
@@ -407,7 +413,7 @@ export default class MessageListItem extends Component {
             this.isTextContent = true;
         }
 
-        if (!headerView) {
+        if (!hideChatAvatar && !headerView) {
             let hideTimeLabel = false;
             if (hideHeader && !showDateDivider && lastMessage && message.date && (message.date - lastMessage.date) <= showTimeLabelInterval) {
                 hideTimeLabel = true;
@@ -429,20 +435,23 @@ export default class MessageListItem extends Component {
             </div>);
         }
 
-        return (<div
-            {...other}
-            className={classes('app-message-item', className, {
-                'app-message-sending': !ignoreStatus && needCheckResend && !needResend,
-                'app-message-send-fail': !ignoreStatus && needResend,
-                'with-avatar': !hideHeader,
-                sharing: this.state.sharing
-            })}
-        >
-            {showDateDivider && <MessageDivider date={message.date} />}
-            {headerView}
-            {timeLabelView}
-            {contentView && <div className={classes(`app-message-content content-type-${message.contentType}`, {'content-type-text': message.isPlainTextContent})} onContextMenu={this.isTextContent || this.isUrlContent ? this.handleContentContextMenu : null}>{contentView}{actionsView}</div>}
-            {resendButtonsView}
-        </div>);
+        return (
+            <div
+                {...other}
+                className={classes('app-message-item', className, {
+                    'app-message-sending': !ignoreStatus && needCheckResend && !needResend,
+                    'app-message-send-fail': !ignoreStatus && needResend,
+                    'with-avatar': !hideHeader,
+                    'hide-chat-avatar': hideChatAvatar,
+                    sharing: this.state.sharing
+                })}
+            >
+                {showDateDivider && <MessageDivider date={message.date} />}
+                {headerView}
+                {timeLabelView}
+                {contentView && <div className={classes(`app-message-content content-type-${message.contentType}`, {'content-type-text': message.isPlainTextContent})} onContextMenu={this.isTextContent || this.isUrlContent ? this.handleContentContextMenu : null}>{contentView}{actionsView}</div>}
+                {resendButtonsView}
+            </div>
+        );
     }
 }
