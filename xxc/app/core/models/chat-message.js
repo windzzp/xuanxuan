@@ -111,7 +111,7 @@ export default class ChatMessage extends Entity {
         order: {type: 'int', indexed: true},
         date: {type: 'timestamp', indexed: true},
         type: {type: 'string', indexed: true, defaultValue: TYPES.normal},
-        contentType: {type: 'string', indexed: true, defaultValue: CONTENT_TYPES.text},
+        contentType: {type: 'string', indexed: true, defaultValue: CONTENT_TYPES.plain},
         content: {type: 'string', defaultValue: null},
         unread: {type: 'boolean', indexed: true, defaultValue: false},
         status: {type: 'int', indexed: true},
@@ -140,7 +140,7 @@ export default class ChatMessage extends Entity {
             }
         };
         if (!this.$.contentType) {
-            this.$.contentType = CONTENT_TYPES.text;
+            this.$.contentType = CONTENT_TYPES.plain;
         }
         if (!this.$.type) {
             this.$.type = TYPES.normal;

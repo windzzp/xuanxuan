@@ -328,38 +328,40 @@ addContextMenuCreator('chat.sendbox.toolbar', context => {
             });
         }
     });
-    const sendMarkdown = Config.ui['chat.sendMarkdown'] && userConfig && userConfig.sendMarkdown;
-    items.push({
-        id: 'markdown',
-        icon: sendMarkdown ? 'mdi-markdown icon-2x' : 'mdi-markdown icon-2x',
-        label: Lang.string(sendMarkdown ? 'chat.sendbox.toolbar.markdown.enabled' : 'chat.sendbox.toolbar.markdown.disabled') + (sendMarkdown ? ` (${Lang.string('chat.sendbox.toolbar.moreOptions')})` : ''),
-        className: sendMarkdown ? 'selected text-green' : '',
-        click: () => {
-            userConfig.sendMarkdown = !userConfig.sendMarkdown;
-        },
-        contextMenu: sendMarkdown ? e => {
-            const menuItems = [{
-                label: Lang.string('chat.sendbox.toolbar.previewDraft'),
-                click: openMessagePreview,
-                icon: 'mdi-file-find',
-                disabled: !openMessagePreview
-            }];
+    if (Config.ui['chat.sendMarkdown']) {
+        const sendMarkdown = userConfig && userConfig.sendMarkdown;
+        items.push({
+            id: 'markdown',
+            icon: sendMarkdown ? 'mdi-markdown icon-2x' : 'mdi-markdown icon-2x',
+            label: Lang.string(sendMarkdown ? 'chat.sendbox.toolbar.markdown.enabled' : 'chat.sendbox.toolbar.markdown.disabled') + (sendMarkdown ? ` (${Lang.string('chat.sendbox.toolbar.moreOptions')})` : ''),
+            className: sendMarkdown ? 'selected text-green' : '',
+            click: () => {
+                userConfig.sendMarkdown = !userConfig.sendMarkdown;
+            },
+            contextMenu: sendMarkdown ? e => {
+                const menuItems = [{
+                    label: Lang.string('chat.sendbox.toolbar.previewDraft'),
+                    click: openMessagePreview,
+                    icon: 'mdi-file-find',
+                    disabled: !openMessagePreview
+                }];
 
-            const mdHintUrl = Config.ui['markdown.hintUrl'];
-            if (mdHintUrl) {
-                menuItems.push({
-                    icon: 'mdi-help-circle',
-                    label: Lang.string('chat.sendbox.toolbar.markdownGuide'),
-                    url: Platform.type === 'browser' ? mdHintUrl : `!openUrlInDialog/${encodeURIComponent(mdHintUrl)}/?size=lg&insertCss=${encodeURIComponent('.wikistyle>p:first-child{display:none!important}')}`
-                });
-            }
+                const mdHintUrl = Config.ui['markdown.hintUrl'];
+                if (mdHintUrl) {
+                    menuItems.push({
+                        icon: 'mdi-help-circle',
+                        label: Lang.string('chat.sendbox.toolbar.markdownGuide'),
+                        url: Platform.type === 'browser' ? mdHintUrl : `!openUrlInDialog/${encodeURIComponent(mdHintUrl)}/?size=lg&insertCss=${encodeURIComponent('.wikistyle>p:first-child{display:none!important}')}`
+                    });
+                }
 
-            ui.showContextMenu({
-                x: e.pageX, y: e.pageY, target: e.target, placement: 'top'
-            }, menuItems);
-            e.preventDefault();
-        } : null
-    });
+                ui.showContextMenu({
+                    x: e.pageX, y: e.pageY, target: e.target, placement: 'top'
+                }, menuItems);
+                e.preventDefault();
+            } : null
+        });
+    }
     if (userConfig && userConfig.showMessageTip) {
         items.push({
             id: 'tips',
