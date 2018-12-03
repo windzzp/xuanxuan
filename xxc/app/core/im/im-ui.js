@@ -778,7 +778,7 @@ addContextMenuCreator('message.text', ({message}) => {
                     }
                 }
                 if (copyHtmlText === undefined) {
-                    copyHtmlText = message.renderedTextContent(renderChatMessageContent, linkMembersInText);
+                    copyHtmlText = message.renderedTextContent(renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : linkMembersInText);
                 }
                 if (Platform.clipboard.write) {
                     Platform.clipboard.write({text: message.isPlainTextContent ? copyHtmlText : strip(copyHtmlText), html: copyHtmlText});

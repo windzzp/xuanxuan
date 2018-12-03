@@ -372,6 +372,7 @@ export default class MessageListItem extends Component {
         } : null;
 
         const hideChatAvatar = Config.ui['chat.hideChatAvatar'];
+        const mentionOthers = Config.ui['chat.mentionOthers'];
 
         if (!hideHeader) {
             const sender = message.getSender(App.members);
@@ -384,7 +385,13 @@ export default class MessageListItem extends Component {
                 <div className="app-message-item-header">
                     {avatarView}
                     <header style={titleFontStyle}>
-                        {isNotification ? <span className="title text-primary">{sender.displayName}</span> : <a className="title rounded text-primary" onContextMenu={staticUI ? null : this.handleUserContextMenu} onClick={staticUI ? MemberProfileDialog.show.bind(null, sender, null) : this.handleSenderNameClick.bind(this, sender, message)}>{sender.displayName}</a>}
+                        {(isNotification || !mentionOthers) ? <span className="title text-primary">{sender.displayName}</span> : (
+                            <a
+                                className="title rounded text-primary"
+                                onContextMenu={staticUI ? null : this.handleUserContextMenu}
+                                onClick={staticUI ? MemberProfileDialog.show.bind(null, sender, null) : this.handleSenderNameClick.bind(this, sender, message)}>{sender.displayName}
+                            </a>
+                        )}
                         <small className="time">{formatDate(message.date, dateFormater)}</small>
                     </header>
                 </div>

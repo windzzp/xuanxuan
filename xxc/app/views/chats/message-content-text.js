@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
 import replaceViews from '../replace-views';
+import Config from '../../config';
 
 /**
  * MessageContentText 组件 ，显示聊天消息文本内容界面
@@ -85,7 +86,7 @@ export default class MessageContentText extends Component {
             ...other
         } = this.props;
 
-        const content = message.renderedTextContent(App.im.ui.renderChatMessageContent, App.im.ui.linkMembersInText);
+        const content = message.renderedTextContent(App.im.ui.renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : App.im.ui.linkMembersInText);
 
         return (<div
             {...other}

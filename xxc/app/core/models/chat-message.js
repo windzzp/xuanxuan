@@ -633,7 +633,9 @@ export default class ChatMessage extends Entity {
             if (typeof content === 'string' && content.length) {
                 if (converters && converters.length) {
                     converters.forEach(converter => {
-                        content = converter(content, renderOptions);
+                        if (converter) {
+                            content = converter(content, renderOptions);
+                        }
                     });
                 }
                 this._renderedTextContent = content;
