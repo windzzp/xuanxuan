@@ -21,5 +21,6 @@
     "chat.hideChatAvatar": false,
     "chat.hideStatusDot": false,
     "chat.mentionOthers": true,
-    "chat.denyShowMemberProfile": false
+    "chat.denyShowMemberProfile": false,
+    "chat.muteOnChatNotActive": false
 }
