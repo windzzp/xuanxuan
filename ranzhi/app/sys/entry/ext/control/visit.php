@@ -34,8 +34,11 @@ class myEntry extends entry
         }
         if(!empty($entry->login) && strpos($entry->login, 'http') !== 0)
         {
-            $_SERVER['SCRIPT_NAME'] = 'index.php';
-            $entry->login = commonModel::getSysURL() . str_replace('../', '/', $entry->login);
+            $_SERVER['SCRIPT_NAME'] = str_replace('xuanxuan.php', 'sys/xuanxuan.php', $_SERVER['SCRIPT_NAME']);
+            $webRoot = getRanzhiWebRoot();
+            $baseURL = commonModel::getSysURL();
+
+            $entry->login = str_replace('../', $baseURL . $webRoot, $entry->login);
         }
 
         $user   = $this->dao->select('*')->from(TABLE_USER)->where('id')->eq($this->session->userID)->fetch();
