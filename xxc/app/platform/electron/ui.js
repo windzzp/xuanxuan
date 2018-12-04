@@ -4,11 +4,33 @@ import {
 } from 'electron';
 import uuid from 'uuid/v4';
 import Path from 'path';
-import {onRequestQuit as onMainRequestQuit, callRemote} from './remote';
+import EVENT from './remote-events';
+import {onRequestQuit as onMainRequestQuit, callRemote, ipcSend} from './remote';
 import shortcut from './shortcut';
 import Lang from '../../lang';
 import env from './env';
 import getUrlMeta from './get-url-meta';
+import {getSearchParam} from '../../utils/html-helper';
+import Config from '../../config';
+
+/**
+ * 访问地址参数表
+ * @type {Map<string, string>}
+ * @private
+ */
+const urlParams = getSearchParam();
+
+/**
+ * 当前窗口名称
+ * @type {string}
+ */
+export const browserWindowName = urlParams._name;
+
+/**
+ * 获取当前窗口是否为第一个打开的主窗口
+ * @return {boolean} 如果为 true，则表示当前窗口是主窗口
+ */
+export const isMainWindow = () => browserWindowName === 'main';
 
 if (DEBUG) {
     global.$.Remote = Remote;
@@ -79,7 +101,7 @@ export const setShowInTaskbar = flag => {
  * @return {void}
  */
 export const setTrayTooltip = tooltip => {
-    return callRemote('trayTooltip', tooltip);
+    return callRemote('trayTooltip', tooltip, browserWindowName);
 };
 
 /**
@@ -88,7 +110,7 @@ export const setTrayTooltip = tooltip => {
  * @return {void}
  */
 export const flashTrayIcon = (flash = true) => {
-    return callRemote('flashTrayIcon', flash);
+    return callRemote('flashTrayIcon', flash, browserWindowName);
 };
 
 /**
@@ -141,7 +163,7 @@ export const showAndFocusWindow = () => {
  * @return {void}
  */
 export const quitIM = () => {
-    callRemote('quit');
+    callRemote('closeWindow', browserWindowName);
 };
 
 /**
@@ -328,8 +350,22 @@ export const isWindowOpenAndFocus = () => browserWindow.isFocused() && !browserW
  */
 export const getAppRoot = () => env.appRoot;
 
+/**
+ * 创建一个新的应用窗口
+ * @return {void}
+ */
+export const createAppWindow = () => {
+    callRemote('createAppWindow');
+};
+
+// 向主进程发送应用窗口界面准备就绪事件
+ipcSend(EVENT.app_ready, Config, browserWindowName);
+
 export default {
+    createAppWindow,
     userDataPath,
+    browserWindowName,
+    isMainWindow,
     browserWindow,
     makeTmpFilePath,
     openExternal: shell.openExternal,

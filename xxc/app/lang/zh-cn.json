@@ -39,8 +39,10 @@
     "common.littlexxSubname": "通知中心",
     "common.viewDetail": "查看详情",
     "common.moreActions": "更多操作…",
+    "common.confirmCreateAppWindow": "是否要创建一个新的窗口？（在新窗口中可以登录到另一个账号）",
 
     "menu.about": "关于",
+    "menu.createNewWindow": "新建窗口...",
     "menu.hideCurrentWindow": "隐藏当前窗口",
     "menu.hideOtherWindows": "隐藏其他窗口",
     "menu.showAllWindows": "显示所有窗口",

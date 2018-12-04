@@ -21,7 +21,7 @@ import ChatChangeFontPopover from '../../views/chats/chat-change-font-popover';
 import db from '../db';
 import ChatAddCategoryDialog from '../../views/chats/chat-add-category-dialog';
 import TodoEditorDialog from '../../views/todo/todo-editor-dialog';
-import Todo from '../todo';
+import {createTodoFromMessage} from '../todo';
 import {strip, linkify, escape} from '../../utils/html-helper';
 import {
     addContextMenuCreator, getMenuItemsForContext, tryAddDividerItem, tryRemoveLastDivider
@@ -328,38 +328,40 @@ addContextMenuCreator('chat.sendbox.toolbar', context => {
             });
         }
     });
-    const sendMarkdown = Config.ui['chat.sendMarkdown'] && userConfig && userConfig.sendMarkdown;
-    items.push({
-        id: 'markdown',
-        icon: sendMarkdown ? 'mdi-markdown icon-2x' : 'mdi-markdown icon-2x',
-        label: Lang.string(sendMarkdown ? 'chat.sendbox.toolbar.markdown.enabled' : 'chat.sendbox.toolbar.markdown.disabled') + (sendMarkdown ? ` (${Lang.string('chat.sendbox.toolbar.moreOptions')})` : ''),
-        className: sendMarkdown ? 'selected text-green' : '',
-        click: () => {
-            userConfig.sendMarkdown = !userConfig.sendMarkdown;
-        },
-        contextMenu: sendMarkdown ? e => {
-            const menuItems = [{
-                label: Lang.string('chat.sendbox.toolbar.previewDraft'),
-                click: openMessagePreview,
-                icon: 'mdi-file-find',
-                disabled: !openMessagePreview
-            }];
+    if (Config.ui['chat.sendMarkdown']) {
+        const sendMarkdown = userConfig && userConfig.sendMarkdown;
+        items.push({
+            id: 'markdown',
+            icon: sendMarkdown ? 'mdi-markdown icon-2x' : 'mdi-markdown icon-2x',
+            label: Lang.string(sendMarkdown ? 'chat.sendbox.toolbar.markdown.enabled' : 'chat.sendbox.toolbar.markdown.disabled') + (sendMarkdown ? ` (${Lang.string('chat.sendbox.toolbar.moreOptions')})` : ''),
+            className: sendMarkdown ? 'selected text-green' : '',
+            click: () => {
+                userConfig.sendMarkdown = !userConfig.sendMarkdown;
+            },
+            contextMenu: sendMarkdown ? e => {
+                const menuItems = [{
+                    label: Lang.string('chat.sendbox.toolbar.previewDraft'),
+                    click: openMessagePreview,
+                    icon: 'mdi-file-find',
+                    disabled: !openMessagePreview
+                }];
 
-            const mdHintUrl = Config.ui['markdown.hintUrl'];
-            if (mdHintUrl) {
-                menuItems.push({
-                    icon: 'mdi-help-circle',
-                    label: Lang.string('chat.sendbox.toolbar.markdownGuide'),
-                    url: Platform.type === 'browser' ? mdHintUrl : `!openUrlInDialog/${encodeURIComponent(mdHintUrl)}/?size=lg&insertCss=${encodeURIComponent('.wikistyle>p:first-child{display:none!important}')}`
-                });
-            }
+                const mdHintUrl = Config.ui['markdown.hintUrl'];
+                if (mdHintUrl) {
+                    menuItems.push({
+                        icon: 'mdi-help-circle',
+                        label: Lang.string('chat.sendbox.toolbar.markdownGuide'),
+                        url: Platform.type === 'browser' ? mdHintUrl : `!openUrlInDialog/${encodeURIComponent(mdHintUrl)}/?size=lg&insertCss=${encodeURIComponent('.wikistyle>p:first-child{display:none!important}')}`
+                    });
+                }
 
-            ui.showContextMenu({
-                x: e.pageX, y: e.pageY, target: e.target, placement: 'top'
-            }, menuItems);
-            e.preventDefault();
-        } : null
-    });
+                ui.showContextMenu({
+                    x: e.pageX, y: e.pageY, target: e.target, placement: 'top'
+                }, menuItems);
+                e.preventDefault();
+            } : null
+        });
+    }
     if (userConfig && userConfig.showMessageTip) {
         items.push({
             id: 'tips',
@@ -776,7 +778,7 @@ addContextMenuCreator('message.text', ({message}) => {
                     }
                 }
                 if (copyHtmlText === undefined) {
-                    copyHtmlText = message.renderedTextContent(renderChatMessageContent, linkMembersInText);
+                    copyHtmlText = message.renderedTextContent(renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : linkMembersInText);
                 }
                 if (Platform.clipboard.write) {
                     Platform.clipboard.write({text: message.isPlainTextContent ? copyHtmlText : strip(copyHtmlText), html: copyHtmlText});
@@ -805,7 +807,7 @@ addContextMenuCreator('message.text', ({message}) => {
             label: Lang.string('todo.create'),
             icon: 'mdi-calendar-check',
             click: (item, idx, e) => {
-                TodoEditorDialog.show(Todo.createTodoFromMessage(message));
+                TodoEditorDialog.show(createTodoFromMessage(message));
                 e.preventDefault();
             }
         });

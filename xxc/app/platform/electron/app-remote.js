@@ -12,6 +12,13 @@ if (typeof DEBUG === 'undefined') {
 }
 
 /**
+ * 应用窗口索引
+ * @type {number}
+ * @private
+ */
+let appWindowIndex = 0;
+
+/**
  * 是否是 Mac OS 系统
  * @type {boolean}
  * @private
@@ -28,17 +35,6 @@ const SHOW_LOG = DEBUG;
 if (DEBUG && process.type === 'renderer') {
     console.error('AppRemote must run in main process.');
 }
-
-/**
- * 文本选择右键菜单
- * @type {Menu}
- * @private
- */
-const SELECT_MENU = Menu.buildFromTemplate([
-    {role: 'copy', label: Lang.string('menu.copy')},
-    {type: 'separator'},
-    {role: 'selectall', label: Lang.string('menu.selectAll')}
-]);
 
 /**
  * 文本输入框右键菜单
@@ -80,7 +76,7 @@ class AppRemote {
         this.appConfig = {};
 
         // 绑定渲染进程请求退出事件
-        ipcMain.on(EVENT.app_quit, e => {
+        ipcMain.on(EVENT.app_quit, () => {
             this.quit();
         });
 
@@ -119,7 +115,7 @@ class AppRemote {
             Events.on(event, (...args) => {
                 try {
                     e.sender.send(eventId, ...args);
-                } catch (e) {
+                } catch (_) {
                     this.off(eventId);
                     if (SHOW_LOG) {
                         console.error(`\n>> Remote event '${event}' has be force removed, because window is closed.`, e);
@@ -143,13 +139,13 @@ class AppRemote {
         });
 
         // 绑定渲染进程通知准备就绪事件
-        ipcMain.on(EVENT.app_ready, (e, config) => {
+        ipcMain.on(EVENT.app_ready, (e, config, windowName) => {
             Object.assign(this.appConfig, config);
             const langInConfig = config.lang && config.lang[Lang.name];
             if (langInConfig) {
                 Lang.update(langInConfig);
             }
-            this.initTrayIcon();
+            this.createTrayIcon(windowName);
             if (SHOW_LOG) console.log('\n>> App ready.', config);
         });
 
@@ -174,17 +170,54 @@ class AppRemote {
      */
     ready() {
         this.openMainWindow();
+
+        if (IS_MAC_OSX) {
+            const dockMenu = Menu.buildFromTemplate([
+                {
+                    label: Lang.string('menu.createNewWindow'),
+                    click: () => {
+                        this.createAppWindow();
+                    }
+                }
+            ]);
+            ElectronApp.dock.setMenu(dockMenu);
+        }
+    }
+
+    /**
+     * 移除通知栏图标
+     *
+     * @param {string} windowName 窗口名称
+     * @memberof AppRemote
+     * @return {void}
+     */
+    removeTrayIcon(windowName) {
+        if (this._traysData && this._traysData[windowName]) {
+            const {tray} = this._traysData[windowName];
+            if (tray) {
+                tray.destroy();
+            }
+            delete this._traysData[windowName];
+        }
     }
 
     /**
      * 初始化通知栏图标功能
      * @memberof AppRemote
+     * @param {string} [windowName='main'] 窗口名称
      * @return {void}
      */
-    initTrayIcon() {
-        if (this.tray) {
-            this.tray.destroy();
+    createTrayIcon(windowName = 'main') {
+        if (!this._traysData) {
+            /**
+             * 所有窗口中通知栏图标管理器数据
+             * @type {Object[]}
+             */
+            this._traysData = {};
         }
+
+        // 尝试移除旧的图标
+        this.removeTrayIcon(windowName);
 
         // 创建一个通知栏图标
         const tray = new Tray(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-16.png`);
@@ -209,7 +242,7 @@ class AppRemote {
 
         // 绑定通知栏图标点击事件
         tray.on('click', () => {
-            this.showAndFocusWindow();
+            this.showAndFocusWindow(windowName);
         });
 
         // 绑定通知栏图标右键点击事件
@@ -217,11 +250,21 @@ class AppRemote {
             tray.popUpContextMenu(trayContextMenu);
         });
 
-        /**
-         * 通知栏图标管理器
-         * @type {Tray}
-         */
-        this.tray = tray;
+        this._traysData[windowName] = {
+            /**
+             * 通知栏图标管理器
+             * @type {Tray}
+             * @private
+             */
+            tray,
+
+            /**
+             * 通知栏图标闪烁计数器
+             * @type {number}
+             * @private
+             */
+            iconCounter: 0
+        };
 
         /**
          * 通知栏图标图片缓存
@@ -232,36 +275,31 @@ class AppRemote {
             nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-16.png`),
             nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-transparent.png`)
         ];
-
-        /**
-         * 通知栏图标闪烁计数器
-         * @type {number}
-         * @private
-         */
-        this._trayIconCounter = 0;
     }
 
     /**
-     * 创建应用主窗口
+     * 创建应用窗口
      *
      * @param {Object} options Electron 窗口初始化选项
      * @memberof AppRemote
      * @return {void}
      */
-    createMainWindow(options) {
+    createAppWindow(options) {
+        const hasMainWindow = !!this.mainWindow;
+        const windowName = hasMainWindow ? `main-${appWindowIndex++}` : 'main';
         options = Object.assign({
             width: 900,
             height: 650,
             minWidth: 400,
             minHeight: 650,
-            url: 'index.html',
+            url: `index.html?_name=${windowName}`,
             hashRoute: '/index',
-            name: 'main',
+            name: windowName,
             resizable: true,
             debug: true
         }, options);
 
-        if (DEBUG) {
+        if (DEBUG && !hasMainWindow) {
             const display = electron.screen.getPrimaryDisplay();
             options.height = display.workAreaSize.height;
             options.width = 800;
@@ -269,11 +307,49 @@ class AppRemote {
             options.y = display.workArea.y;
         }
 
-        /**
-         * 主窗口实例
-         * @type {BrowserWindow}
-         */
-        this.mainWindow = this.createWindow(options);
+        const appWindow = this.createWindow(options);
+
+        appWindow.on('close', e => {
+            if (this.markClose && this.markClose[windowName]) return;
+            const now = new Date().getTime();
+            if (this.lastRequestCloseTime && (now - this.lastRequestCloseTime) < 1000) {
+                electron.dialog.showMessageBox(appWindow, {
+                    buttons: [Lang.string('common.exitIM'), Lang.string('common.cancel')],
+                    defaultId: 0,
+                    type: 'question',
+                    message: Lang.string('common.comfirmQuiteIM')
+                }, response => {
+                    if (response === 0) {
+                        setTimeout(() => {
+                            this.closeWindow(windowName);
+                        }, 0);
+                    }
+                });
+            } else {
+                this.lastRequestCloseTime = now;
+                appWindow.webContents.send(EVENT.remote_app_quit);
+            }
+            e.preventDefault();
+            return false;
+        });
+
+        // 绑定右键菜单事件
+        appWindow.webContents.on('context-menu', (e, props) => {
+            const {isEditable} = props;
+            if (isEditable) {
+                INPUT_MENU.popup(appWindow);
+            }
+        });
+
+        if (!hasMainWindow) {
+            /**
+             * 主窗口实例
+             * @type {BrowserWindow}
+             */
+            this.mainWindow = appWindow;
+        }
+
+        return windowName;
     }
 
     /**
@@ -311,13 +387,13 @@ class AppRemote {
             delete windowSetting[optionName];
         });
         browserWindow = new BrowserWindow(windowSetting);
-        // if(DEBUG) console.log('\n>> Create window with settings', windowSetting);
         this.windows[name] = browserWindow;
         browserWindow.on('closed', () => {
             delete this.windows[name];
             if (options.onClosed) {
                 options.onClosed(name);
             }
+            this.tryQuiteOnAllWindowsClose();
         });
 
         browserWindow.webContents.on('did-finish-load', () => {
@@ -347,7 +423,7 @@ class AppRemote {
                 url = `file://${this.entryPath}/${options.url}`;
             }
             if (DEBUG) {
-                url += '?react_perf';
+                url += url.includes('?') ? '&react_perf' : '?react_perf';
             }
             if (options.hashRoute) {
                 url += `#${options.hashRoute}`;
@@ -367,21 +443,23 @@ class AppRemote {
                 }]).popup(browserWindow);
             });
 
-            browserWindow.webContents.on('crashed', () => {
-                const messageBoxOptions = {
-                    type: 'info',
-                    title: 'Renderer process crashed.',
-                    message: 'The renderer process has been crashed, you can reload or close it.',
-                    buttons: ['Reload', 'Close']
-                };
-                dialog.showMessageBox(messageBoxOptions, (index) => {
-                    if (index === 0) {
-                        browserWindow.reload();
-                    } else {
-                        browserWindow.close();
-                    }
+            if (DEBUG) {
+                browserWindow.webContents.on('crashed', () => {
+                    const messageBoxOptions = {
+                        type: 'info',
+                        title: 'Renderer process crashed.',
+                        message: 'The renderer process has been crashed, you can reload or close it.',
+                        buttons: ['Reload', 'Close']
+                    };
+                    dialog.showMessageBox(messageBoxOptions, (index) => {
+                        if (index === 0) {
+                            browserWindow.reload();
+                        } else {
+                            browserWindow.close();
+                        }
+                    });
                 });
-            });
+            }
         }
 
         return browserWindow;
@@ -396,7 +474,7 @@ class AppRemote {
     openMainWindow() {
         const {mainWindow} = this;
         if (!mainWindow) {
-            this.createMainWindow();
+            this.createAppWindow();
         } else if (!mainWindow.isVisible()) {
             mainWindow.show();
             mainWindow.focus();
@@ -422,52 +500,59 @@ class AppRemote {
             delete this.windows.main;
         } else {
             this.windows.main = mainWindow;
-            mainWindow.on('close', e => {
-                if (this.markClose) return;
-                const now = new Date().getTime();
-                if (this.lastRequestCloseTime && (now - this.lastRequestCloseTime) < 1000) {
-                    electron.dialog.showMessageBox(mainWindow, {
-                        buttons: [Lang.string('common.exitIM'), Lang.string('common.cancel')],
-                        defaultId: 0,
-                        type: 'question',
-                        message: Lang.string('common.comfirmQuiteIM')
-                    }, response => {
-                        if (response === 0) {
-                            setTimeout(() => {
-                                this.quit();
-                            }, 0);
-                        }
-                    });
-                } else {
-                    this.lastRequestCloseTime = now;
-                    mainWindow.webContents.send(EVENT.remote_app_quit);
-                }
-                e.preventDefault();
-                return false;
-            });
-
-            // 绑定右键菜单事件
-            mainWindow.webContents.on('context-menu', (e, props) => {
-                const {selectionText, isEditable} = props;
-                if (isEditable) {
-                    INPUT_MENU.popup(mainWindow);
-                }
-            });
         }
     }
 
     /**
-     * 关闭主窗口
-     * @return {void}
-     * @memberof AppRemote
+     * 关闭指定名称的窗口
+     * @param {string} winName 窗口名称
+     * @returns {boolean} 如果返回 `true` 则为关闭成功，否则为关闭失败（可能找不到指定名称的窗口）
      */
-    closeMainWindow() {
-        this.markClose = true;
-        const {mainWindow} = this;
-        if (mainWindow) {
-            mainWindow.close();
+    closeWindow(winName) {
+        // 移除窗口对应的通知栏图标
+        this.removeTrayIcon(winName);
+
+        // 获取已保存的窗口对象
+        const win = this.windows[winName];
+        if (SHOW_LOG) console.log('>> closeWindow', winName);
+        if (win) {
+            // 将窗口标记为关闭，跳过询问用户关闭策略步骤
+            if (!this.markClose) {
+                this.markClose = {};
+            }
+            this.markClose[winName] = true;
+            win.close();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 尝试退出，如果所有窗口都被关闭
+     *
+     * @memberof AppRemote
+     * @return {void}
+     */
+    tryQuiteOnAllWindowsClose() {
+        let hasWindowOpen = false;
+        Object.keys(this.windows).forEach(windowName => {
+            if (!hasWindowOpen && this.windows[windowName] && !this.markClose[windowName]) {
+                hasWindowOpen = true;
+            }
+        });
+        if (SHOW_LOG) console.log('>> tryQuiteOnAllWindowsClose', hasWindowOpen);
+        if (!hasWindowOpen) {
+            this.quit();
         }
     }
+
+    // /**
+    //  * 关闭所有窗口
+    //  * @return {void}
+    //  */
+    // closeAllWindows() {
+    //     Object.keys(this.windows).forEach(winName => this.closeWindow(winName));
+    // }
 
     /**
      * 通过 IPC 向所有应用窗口渲染渲染进程发送消息
@@ -503,33 +588,36 @@ class AppRemote {
      * 设置通知栏图标工具提示（鼠标悬停显示）消息
      *
      * @param {string|boolean} tooltip 要设置的消息文本，如果设置为 `false`，则显示应用默认名称
+     * @param {string} [windowName='main'] 窗口名称
      * @memberof AppRemote
      * @return {void}
      */
-    trayTooltip(tooltip) {
-        this.tray.setToolTip(tooltip || Lang.string('app.title'));
+    trayTooltip(tooltip, windowName = 'main') {
+        this._traysData[windowName].tray.setToolTip(tooltip || Lang.string('app.title'));
     }
 
     /**
      * 闪烁通知栏图标
      *
      * @param {boolean} [flash=true] 如果设置为 `true` 则闪烁图标；如果设置为 `false` 则取消闪烁图标
+     * @param {string} [windowName='main'] 窗口名称
      * @memberof AppRemote
      * @return {void}
      */
-    flashTrayIcon(flash = true) {
+    flashTrayIcon(flash = true, windowName = 'main') {
+        const trayData = this._traysData[windowName];
         if (flash) {
-            if (!this._flashTrayIconTask) {
-                this._flashTrayIconTask = setInterval(() => {
-                    this.tray.setImage(this._trayIcons[(this._trayIconCounter++) % 2]);
+            if (!trayData.flashTask) {
+                trayData.flashTask = setInterval(() => {
+                    trayData.tray.setImage(this._trayIcons[(trayData.iconCounter++) % 2]);
                 }, 400);
             }
         } else {
-            if (this._flashTrayIconTask) {
-                clearInterval(this._flashTrayIconTask);
-                this._flashTrayIconTask = null;
+            if (trayData.flashTask) {
+                clearInterval(trayData.flashTask);
+                trayData.flashTask = null;
             }
-            this.tray.setImage(this._trayIcons[0]);
+            trayData.tray.setImage(this._trayIcons[0]);
         }
     }
 
@@ -553,25 +641,48 @@ class AppRemote {
     }
 
     /**
+     * 尝试询问用户是否要创建一个新窗口
+     *
+     * @memberof AppRemote
+     * @return {void}
+     */
+    confirmCreateAppWindow() {
+        this.showAndFocusWindow();
+        electron.dialog.showMessageBox(this.mainWindow, {
+            buttons: [Lang.string('common.confirm'), Lang.string('common.cancel')],
+            defaultId: 0,
+            type: 'question',
+            message: Lang.string('common.confirmCreateAppWindow')
+        }, response => {
+            if (response === 0) {
+                this.createAppWindow();
+            }
+        });
+    }
+
+    /**
      * 立即关闭并退出应用程序
      *
      * @memberof AppRemote
      * @return {void}
      */
+    // eslint-disable-next-line class-methods-use-this
     quit() {
-        this.closeMainWindow();
-        this.tray.destroy();
-        globalShortcut.unregisterAll();
+        if (SHOW_LOG) console.log('>> quit');
+        try {
+            globalShortcut.unregisterAll();
+        } catch (_) {}
         ElectronApp.quit();
     }
 
     /**
-     * 设置 Mac Dock 栏应用图标上的原点提示文本
+     * 设置 Mac Dock 栏应用图标上的圆点提示文本
      *
      * @param {string} label 提示文本
      * @memberof AppRemote
      * @return {void}
      */
+    // eslint-disable-next-line class-methods-use-this
     dockBadgeLabel(label) {
         if (IS_MAC_OSX) {
             ElectronApp.dock.setBadge(label);
@@ -581,10 +692,11 @@ class AppRemote {
     /**
      * 使 Mac Dock 栏应用图标弹跳并引起用户注意
      *
-     * @param {string} [type='informational'] 弹跳类型
+     * @param {string} [type='informational'] Dock 栏应用图标弹跳类型
      * @memberof AppRemote
      * @return {void}
      */
+    // eslint-disable-next-line class-methods-use-this
     dockBounce(type = 'informational') {
         if (IS_MAC_OSX) {
             ElectronApp.dock.bounce(type);

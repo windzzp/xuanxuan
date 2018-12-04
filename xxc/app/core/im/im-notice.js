@@ -6,6 +6,7 @@ import {isMatchWindowCondition, updateNotice} from '../notice';
 import Lang from '../../lang';
 import profile from '../profile';
 import members from '../members';
+import Config from '../../config';
 
 /**
  * 获取描述聊天消息内容的纯文本形式
@@ -60,11 +61,15 @@ const updateChatNoticeTask = new DelayAction(() => {
     let total = 0;
     let lastChatMessage = null;
     let notMuteCount = 0;
+    const muteOnChatNotActive = Config.ui['chat.muteOnChatNotActive'];
 
     forEachChat(chat => {
         if (chat.noticeCount) {
-            const {isWindowFocus} = Platform.ui;
             const isActiveChat = ui.isActiveChat(chat.gid);
+            if (!isActiveChat && muteOnChatNotActive) {
+                return;
+            }
+            const {isWindowFocus} = Platform.ui;
             if (isWindowFocus && isActiveChat) {
                 const mutedMessages = chat.muteNotice();
                 if (mutedMessages && mutedMessages.length) {

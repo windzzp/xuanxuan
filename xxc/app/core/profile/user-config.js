@@ -317,7 +317,7 @@ export default class UserConfig {
      * @type {boolean}
      */
     get sendMarkdown() {
-        return this.get('ui.chat.sendMarkdown');
+        return Config.ui['chat.sendMarkdown'] && this.get('ui.chat.sendMarkdown');
     }
 
     /**
@@ -327,7 +327,9 @@ export default class UserConfig {
      * @memberof UserConfig
      */
     set sendMarkdown(flag) {
-        return this.set('ui.chat.sendMarkdown', flag);
+        if (Config.ui['chat.sendMarkdown']) {
+            return this.set('ui.chat.sendMarkdown', flag);
+        }
     }
 
     /**
