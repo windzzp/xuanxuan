@@ -21,7 +21,7 @@ import ChatChangeFontPopover from '../../views/chats/chat-change-font-popover';
 import db from '../db';
 import ChatAddCategoryDialog from '../../views/chats/chat-add-category-dialog';
 import TodoEditorDialog from '../../views/todo/todo-editor-dialog';
-import Todo from '../todo';
+import {createTodoFromMessage} from '../todo';
 import {strip, linkify, escape} from '../../utils/html-helper';
 import {
     addContextMenuCreator, getMenuItemsForContext, tryAddDividerItem, tryRemoveLastDivider
@@ -807,7 +807,7 @@ addContextMenuCreator('message.text', ({message}) => {
             label: Lang.string('todo.create'),
             icon: 'mdi-calendar-check',
             click: (item, idx, e) => {
-                TodoEditorDialog.show(Todo.createTodoFromMessage(message));
+                TodoEditorDialog.show(createTodoFromMessage(message));
                 e.preventDefault();
             }
         });
