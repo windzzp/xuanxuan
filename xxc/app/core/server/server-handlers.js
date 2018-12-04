@@ -30,6 +30,8 @@ const chatLogin = (msg, socket) => {
         if (member) {
             member.status = msg.data.status;
             members.update(member);
+        } else {
+            members.update(msg.data);
         }
     }
     return false;
