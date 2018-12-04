@@ -21,21 +21,28 @@
         <h4><?php echo $lang->chat->settings;?></h4>
       </div>
     </div>
-    <form id='ajaxForm' method='post'>
+    <form id='dataform' method='post' class='form-ajax'>
       <table class='table table-form w-p40'>
         <tr>
           <th class='w-80px'><?php echo $lang->chat->version;?></th>
           <td><?php echo $config->xuanxuan->version;?></td>
           <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th class='w-80px'><?php echo $lang->chat->turnon;?></th>
+          <td><?php echo html::radio('turnon', $lang->chat->turnonList, $turnon);?></td>
+          <td></td>
+          <td></td>
         </tr>
         <tr>
           <th><?php echo $lang->chat->key;?></th>
-          <td><?php echo html::input('key', $config->xuanxuan->key, "class='form-control'");?></td>
+          <td colspan='2'><?php echo html::input('key', $config->xuanxuan->key, "class='form-control'");?></td>
           <td><?php echo html::a('javascript:void(0)', $lang->chat->createKey, "", 'onclick="createKey()"');?></td>
         </tr>
         <tr>
           <th></th>
-          <td colspan='2'><?php echo html::submitButton();?></td>
+          <td colspan='3'><?php echo html::submitButton();?></td>
         </tr>
       </table>
     </form>
