@@ -36,7 +36,7 @@ if (DEBUG && DEBUG !== 'production') {
  * @private
  */
 const shouldQuit = ElectronApp.makeSingleInstance((commandLine, workingDirectory) => {
-    application.showAndFocusWindow();
+    application.confirmCreateAppWindow();
 });
 // 如果已经打开，则退出
 if (shouldQuit) {

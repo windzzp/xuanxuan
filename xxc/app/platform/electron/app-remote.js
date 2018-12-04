@@ -443,21 +443,23 @@ class AppRemote {
                 }]).popup(browserWindow);
             });
 
-            browserWindow.webContents.on('crashed', () => {
-                const messageBoxOptions = {
-                    type: 'info',
-                    title: 'Renderer process crashed.',
-                    message: 'The renderer process has been crashed, you can reload or close it.',
-                    buttons: ['Reload', 'Close']
-                };
-                dialog.showMessageBox(messageBoxOptions, (index) => {
-                    if (index === 0) {
-                        browserWindow.reload();
-                    } else {
-                        browserWindow.close();
-                    }
+            if (DEBUG) {
+                browserWindow.webContents.on('crashed', () => {
+                    const messageBoxOptions = {
+                        type: 'info',
+                        title: 'Renderer process crashed.',
+                        message: 'The renderer process has been crashed, you can reload or close it.',
+                        buttons: ['Reload', 'Close']
+                    };
+                    dialog.showMessageBox(messageBoxOptions, (index) => {
+                        if (index === 0) {
+                            browserWindow.reload();
+                        } else {
+                            browserWindow.close();
+                        }
+                    });
                 });
-            });
+            }
         }
 
         return browserWindow;
@@ -639,6 +641,26 @@ class AppRemote {
     }
 
     /**
+     * 尝试询问用户是否要创建一个新窗口
+     *
+     * @memberof AppRemote
+     * @return {void}
+     */
+    confirmCreateAppWindow() {
+        this.showAndFocusWindow();
+        electron.dialog.showMessageBox(this.mainWindow, {
+            buttons: [Lang.string('common.confirm'), Lang.string('common.cancel')],
+            defaultId: 0,
+            type: 'question',
+            message: Lang.string('common.confirmCreateAppWindow')
+        }, response => {
+            if (response === 0) {
+                this.createAppWindow();
+            }
+        });
+    }
+
+    /**
      * 立即关闭并退出应用程序
      *
      * @memberof AppRemote
@@ -647,7 +669,9 @@ class AppRemote {
     // eslint-disable-next-line class-methods-use-this
     quit() {
         if (SHOW_LOG) console.log('>> quit');
-        globalShortcut.unregisterAll();
+        try {
+            globalShortcut.unregisterAll();
+        } catch (_) {}
         ElectronApp.quit();
     }
 
