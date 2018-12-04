@@ -97,6 +97,19 @@ lines.forEach((line, index) => {
     if (line.startsWith('?> ') || line.startsWith('!> ')) {
         lines[index] = `>${line.substr(2)}`;
     }
+    if (line.endsWith(' **')) {
+        if (line.startsWith('## ** ')) {
+            lines[index] = `## ${line.substr(6, line.length - 8)}`;
+        } else if (line.startsWith('### ** ')) {
+            lines[index] = `### ${line.substr(7, line.length - 9)}`;
+        } else if (line.startsWith('#### ** ')) {
+            lines[index] = `#### ${line.substr(8, line.length - 10)}`;
+        } else if (line.startsWith('##### ** ')) {
+            lines[index] = `##### ${line.substr(9, line.length - 11)}`;
+        } else if (line.startsWith('###### ** ')) {
+            lines[index] = `### ${line.substr(10, line.length - 12)}`;
+        }
+    }
 });
 content = lines.join('\n');
 
