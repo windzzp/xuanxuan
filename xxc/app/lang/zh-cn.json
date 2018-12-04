@@ -41,6 +41,7 @@
     "common.moreActions": "更多操作…",
 
     "menu.about": "关于",
+    "menu.createNewWindow": "新建窗口...",
     "menu.hideCurrentWindow": "隐藏当前窗口",
     "menu.hideOtherWindows": "隐藏其他窗口",
     "menu.showAllWindows": "显示所有窗口",

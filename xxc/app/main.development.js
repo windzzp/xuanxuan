@@ -30,6 +30,19 @@ if (DEBUG && DEBUG !== 'production') {
     require('module').globalPaths.push(p); // eslint-disable-line
 }
 
+/**
+ * 检查是否已经打开了其他程序实例
+ * 此机制确保系统中仅仅只有一个程序实例在运行，因为程序已经支持多窗口模式，所以多个程序实例没有意义
+ * @private
+ */
+const shouldQuit = ElectronApp.makeSingleInstance((commandLine, workingDirectory) => {
+    application.showAndFocusWindow();
+});
+// 如果已经打开，则退出
+if (shouldQuit) {
+    application.quit();
+}
+
 // 当所有窗口关闭时退出应用
 ElectronApp.on('window-all-closed', () => {
     ElectronApp.quit();

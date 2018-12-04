@@ -137,7 +137,19 @@ export default class LoginForm extends PureComponent {
 
         state.submitable = StringHelper.isNotEmpty(state.serverUrl) && StringHelper.isNotEmpty(state.account) && StringHelper.isNotEmpty(state.password);
 
-        if (state.autoLogin && state.submitable) {
+        let denyAutoLogin = false;
+        if (Platform.ui.isMainWindow) {
+            denyAutoLogin = !Platform.ui.isMainWindow();
+        }
+
+        /**
+         * 是否在显示界面后自动登录
+         * @type {boolean}
+         * @private
+         */
+        this._autoLoginOnOpen = !denyAutoLogin && state.submitable && (state.autoLogin || App.ui.isAutoLoginNextTime());
+
+        if (this._autoLoginOnOpen) {
             state.logining = true;
         }
 
@@ -155,7 +167,7 @@ export default class LoginForm extends PureComponent {
      * @return {void}
      */
     componentDidMount() {
-        if (this.state.submitable && (this.state.autoLogin || App.ui.isAutoLoginNextTime())) {
+        if (this._autoLoginOnOpen) {
             this.login();
         }
     }
