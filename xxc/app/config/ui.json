@@ -16,5 +16,11 @@
     "chat.showNoticeOnChatTitle": false,
     "chat.sendMarkdown": true,
     "member.showAvatar": true,
-    "markdown.hintUrl": "http://wowubuntu.com/markdown/"
+    "markdown.hintUrl": "http://wowubuntu.com/markdown/",
+    "chat.littlexx": true,
+    "chat.hideChatAvatar": false,
+    "chat.hideStatusDot": false,
+    "chat.mentionOthers": true,
+    "chat.denyShowMemberProfile": false,
+    "chat.muteOnChatNotActive": false
 }

@@ -5,6 +5,7 @@ import Avatar from '../../components/avatar';
 import App from '../../core';
 import StringHelper from '../../utils/string-helper';
 import replaceViews from '../replace-views';
+import Config from '../../config';
 
 /**
  * MessageBroadcast 组件 ，显示广播聊天消息条目
@@ -92,7 +93,7 @@ export default class MessageBroadcast extends Component {
 
         let content = message.renderedTextContent(content => {
             return content.replace(/我/g, `@${message.getSender(App.members).account}${content.substr(1)}`);
-        }, App.im.ui.renderChatMessageContent, App.im.ui.linkMembersInText);
+        }, App.im.ui.renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : App.im.ui.linkMembersInText);
 
         if (StringHelper.isNotEmpty(prefix)) {
             content = prefix + content;

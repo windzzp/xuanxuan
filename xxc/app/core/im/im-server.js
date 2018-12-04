@@ -447,7 +447,7 @@ export const createTextChatMessage = (message, chat) => {
         content: message,
         user: profile.userId,
         cgid: chat.gid,
-        contentType: userConfig && userConfig.sendMarkdown ? ChatMessage.CONTENT_TYPES.text : ChatMessage.CONTENT_TYPES.plain
+        contentType: (Config.ui['chat.sendMarkdown'] && userConfig && userConfig.sendMarkdown) ? ChatMessage.CONTENT_TYPES.text : ChatMessage.CONTENT_TYPES.plain
     });
 };
 
