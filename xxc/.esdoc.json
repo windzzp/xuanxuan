@@ -9,7 +9,7 @@
         {"name": "esdoc-standard-plugin", "option": {
             "lint": {"enable": false},
             "accessor": {"access": ["public", "protected", "private"], "autoPrivate": true},
-            "unexportedIdentifier": {"enable": true},
+            "unexportedIdentifier": {"enable": false},
             "brand": {
                 "title": "API"
             }

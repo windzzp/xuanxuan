@@ -7,5 +7,20 @@
     "chat.suggestPanelShowTime": 10000,
     "chat.urlInspector": true,
     "page.start.size": 20,
-    "page.more.size": 20
+    "page.more.size": 20,
+    "chat.denyChatFromMemberProfile": false,
+    "showDailySignMessage": true,
+    "chat.disableChatHistory": false,
+    "chat.simpleChatView": false,
+    "chat.hideAllSidebar": false,
+    "chat.showNoticeOnChatTitle": false,
+    "chat.sendMarkdown": true,
+    "member.showAvatar": true,
+    "markdown.hintUrl": "http://wowubuntu.com/markdown/",
+    "chat.littlexx": true,
+    "chat.hideChatAvatar": false,
+    "chat.hideStatusDot": false,
+    "chat.mentionOthers": true,
+    "chat.denyShowMemberProfile": false,
+    "chat.muteOnChatNotActive": false
 }

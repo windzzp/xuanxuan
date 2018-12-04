@@ -5,6 +5,7 @@ import App from '../../core';
 import replaceViews from '../replace-views';
 import Button from '../../components/button';
 import Lang from '../../lang';
+import Config from '../../config';
 
 /**
  * NotificationMessage 组件 ，显示通知消息界面
@@ -84,7 +85,7 @@ export default class NotificationMessage extends Component {
             ...other
         } = this.props;
 
-        const content = message.renderedTextContent(App.im.ui.renderChatMessageContent, App.im.ui.linkMembersInText);
+        const content = message.renderedTextContent(App.im.ui.renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : App.im.ui.linkMembersInText);
         const {notification, actions} = message;
 
         let actionsButtons = [];

@@ -110,7 +110,6 @@ export default class Socket {
      */
     set status(newStatus) {
         this._status.change(newStatus);
-        this.renewUpdateId();
     }
 
     /**

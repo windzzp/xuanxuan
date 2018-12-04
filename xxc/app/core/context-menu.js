@@ -111,11 +111,11 @@ const getInnerMenuItemsForContext = (contextName, context) => {
 /**
  * 将一个上下文菜单生成器注册到系统
  * @param {Object<string, any>} creator 上下文菜单生成器
- * @param {?Function(context: Object)} creator.create 生成菜单项列表的回调函数，create 和 items 属性只能设置一个
+ * @param {function(context: Object)} creator.create 生成菜单项列表的回调函数，create 和 items 属性只能设置一个
  * @param {?Object[]} creator.items 固定的菜单项列表，create 和 items 属性只能设置一个
  * @param {?string} creator.id 生成器 ID，如果不指定则自动生成
  * @param {string|string[]} creator.match 匹配的上下文名称，多个上下文名称通过字符串数组或者使用英文逗号拼接为一个字符串
- * @param {?Function(context: Object)} createFunc 生成菜单项列表的回调函数
+ * @param {function(context: Object)} createFunc 生成菜单项列表的回调函数
  * @return {string} 生成器 ID
  */
 export const addContextMenuCreator = (creator, createFunc) => {
@@ -146,7 +146,7 @@ export const addContextMenuCreator = (creator, createFunc) => {
 /**
  * 从系统移除一个上下文菜单生成器
  * @param {string} creatorId 要移除的上下文生成器 ID
- * @return {boolean}
+ * @returns {boolean} 如果返回 `true` 则为操作成功，否则为操作失败
  */
 export const removeContextMenuCreator = creatorId => {
     if (contextMenuCreators[creatorId]) {

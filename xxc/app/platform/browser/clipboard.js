@@ -1,13 +1,12 @@
-import clipboard from 'clipboard-js'; // 考虑升级到 https://github.com/lgarron/clipboard-polyfill
+import clipboard from 'clipboard-polyfill'; // 考虑升级到 https://github.com/lgarron/clipboard-polyfill
 
 /**
  * 将文本复制到剪切板
  * @param {string} text 要复制的文本
  * @return {void}
  */
-export const writeText = text => {
-    clipboard.copy(text);
-};
+export const writeText = clipboard.writeText;
+
 
 /**
  * 将 HTML 文本复制到剪切板
@@ -15,10 +14,29 @@ export const writeText = text => {
  * @return {void}
  */
 export const writeHTML = html => {
-    clipboard.copy({'text/html': html});
+    const dt = new clipboard.DT();
+    dt.setData('text/html', html);
+    clipboard.write(dt);
+};
+
+/**
+ * 将内容写入剪切板中
+ * @param {{text: string, html: string}} data 内容
+ * @return {void}
+ */
+export const write = data => {
+    const dt = new clipboard.DT();
+    if (data.html !== undefined) {
+        dt.setData('text/html', data.html);
+    }
+    if (data.text !== undefined) {
+        dt.setData('text/plain', data.text);
+    }
+    clipboard.write(dt);
 };
 
 export default {
+    write,
     writeText,
     // readText: clipboard.readText,
     writeHTML,

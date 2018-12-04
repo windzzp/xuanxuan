@@ -6,6 +6,7 @@ import App from '../../core';
 import {ChatTitle} from './chat-title';
 import replaceViews from '../replace-views';
 import {getMenuItemsForContext} from '../../core/context-menu';
+import Config from '../../config';
 
 /**
  * ChatHeader 组件 ，显示一个聊天头部界面
@@ -100,19 +101,24 @@ export default class ChatHeader extends Component {
             this.lastOtherOneUpdateId = chat.getTheOtherOne(App).updateId;
         }
         this.isSidebarHidden = App.profile.userConfig.isChatSidebarHidden(chat.gid, chat.isOne2One);
+        const simpleChatView = Config.ui['chat.simpleChatView'];
 
-        return (<div
-            {...other}
-            className={classes('app-chat-header flex flex-wrap space-between shadow-divider', className)}
-        >
-            <ChatTitle chat={chat} className="flex flex-middle" />
-            <div className="toolbar flex flex-middle text-rigth rounded">
-                {
-                    getMenuItemsForContext('chat.toolbar', {chat, showSidebarIcon}).map(item => {
-                        return <div key={item.id} className={`hint--${item.hintPosition || 'bottom'} has-padding-sm`} data-hint={item.label} onClick={item.click}><button className={`btn iconbutton rounded${item.className ? ` ${item.className}` : ''}`} type="button"><Icon className="icon-2x" name={item.icon} /></button></div>;
-                    })
-                }
+        return (
+            <div
+                {...other}
+                className={classes('app-chat-header flex flex-wrap space-between shadow-divider', className)}
+            >
+                <ChatTitle chat={chat} className="flex flex-middle" />
+                {simpleChatView ? null : (
+                    <div className="toolbar flex flex-middle text-rigth rounded">
+                        {
+                            getMenuItemsForContext('chat.toolbar', {chat, showSidebarIcon}).map(item => {
+                                return <div key={item.id} className={`hint--${item.hintPosition || 'bottom'} has-padding-sm`} data-hint={item.label} onClick={item.click}><button className={`btn iconbutton rounded${item.className ? ` ${item.className}` : ''}`} type="button"><Icon className="icon-2x" name={item.icon} /></button></div>;
+                            })
+                        }
+                    </div>
+                )}
             </div>
-        </div>);
+        );
     }
 }

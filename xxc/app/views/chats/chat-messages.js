@@ -191,7 +191,10 @@ export default class ChatMessages extends Component {
         if (this.state.loading) {
             headerView = <Spinner className="has-padding" />;
         } else if (chat.messages && chat.isLoadingOver) {
-            headerView = <div className="has-padding small muted text-center space-sm">― {Lang.string('chat.noMoreMessage')} ―</div>;
+            const noMoreMessageText = Lang.string('chat.noMoreMessage');
+            if (noMoreMessageText) {
+                headerView = <div className="has-padding small muted text-center space-sm">― {noMoreMessageText} ―</div>;
+            }
         } else {
             headerView = <a className="has-padding small muted text-center block space-sm" onClick={this.loadChatMessages.bind(this, 0)}>― {Lang.string('chat.loadMoreMessage')} ―</a>;
         }

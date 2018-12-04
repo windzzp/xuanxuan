@@ -108,6 +108,24 @@ export const isCurrentUser = theUser => (theUser && user && user.id === theUser.
  */
 export const getCurrentUser = () => user;
 
+/**
+ * 获取当前登录的用户状态
+ * @return {number}
+ */
+export const getUserStatus = () => user && user.status;
+
+/**
+ * 检查当前登录的用户是否验证通过过
+ * @returns {boolean}
+ */
+export const isUserVertified = () => user && user.isVertified;
+
+/**
+ * 检查当前登录的用户是否在线
+ * @returns {boolean}
+ */
+export const isUserOnline = () => user && user.isOnline;
+
 export default {
     UserConfig,
     EVENT,

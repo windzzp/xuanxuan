@@ -50,7 +50,7 @@ export default class WebView extends Component {
         src: PropTypes.string.isRequired,
         insertCss: PropTypes.string,
         executeJavaScript: PropTypes.string,
-        onExeCuteJavaScript: PropTypes.func,
+        onExecuteJavaScript: PropTypes.func,
         onNavigate: PropTypes.func,
         onDomReady: PropTypes.func,
         injectForm: PropTypes.any,
@@ -73,7 +73,7 @@ export default class WebView extends Component {
         onPageTitleUpdated: null,
         insertCss: null,
         executeJavaScript: null,
-        onExeCuteJavaScript: null,
+        onExecuteJavaScript: null,
         onNavigate: null,
         injectForm: null,
         onDomReady: null,
@@ -349,7 +349,7 @@ export default class WebView extends Component {
     handleDomReady = () => {
         const {webview} = this;
         const {onDomReady} = this.props;
-        const {insertCss, executeJavaScript, onExeCuteJavaScript} = this.props;
+        const {insertCss, executeJavaScript, onExecuteJavaScript} = this.props;
         if (insertCss) {
             webview.insertCSS(insertCss);
             if (DEBUG) {
@@ -357,7 +357,7 @@ export default class WebView extends Component {
             }
         }
         if (executeJavaScript) {
-            webview.executeJavaScript(executeJavaScript, false, onExeCuteJavaScript);
+            webview.executeJavaScript(executeJavaScript, false, onExecuteJavaScript);
             if (DEBUG) {
                 console.log('Webview.executeJavaScript', executeJavaScript);
             }

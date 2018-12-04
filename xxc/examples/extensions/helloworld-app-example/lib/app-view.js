@@ -3,10 +3,6 @@ const {
     nodeModules,
 } = global.Xext;
 
-const {React, ReactDom} = nodeModules;
+const {React} = nodeModules;
 
-module.exports = React.createClass({
-    render() {
-        return React.createElement('div', {className: 'box red'}, '示例应用内容: Hello world!');
-    }
-});
+module.exports = () => React.createElement('div', {className: 'box red'}, '示例应用内容: Hello world!');

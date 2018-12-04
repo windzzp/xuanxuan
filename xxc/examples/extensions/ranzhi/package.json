@@ -3,7 +3,7 @@
     "displayName": "然之集成",
     "version": "1.0.0",
     "description": "当然之作为喧喧后端时与然之进行集成。",
-    "type": "app",
+    "type": "plugin",
     "appType": "webView",
     "webViewUrl": "http://demo.ranzhi.org/",
     "icon": "assets/icon.png",

@@ -6,6 +6,7 @@ import profile from '../profile';
 import members from '../members';
 import imServer from './im-server';
 import imUI from './im-ui';
+import Config from '../../config';
 
 /**
  * 处理服务器推送修改聊天名称消息
@@ -321,7 +322,7 @@ const chatGetpubliclist = (msg, socket) => {
  * @private
  */
 const chatNotify = (msg, socket) => {
-    if (msg.isSuccess) {
+    if (Config.ui['chat.littlexx'] && msg.isSuccess) {
         let messages = msg.data;
         if (!Array.isArray(messages)) {
             if (messages.cgid) {

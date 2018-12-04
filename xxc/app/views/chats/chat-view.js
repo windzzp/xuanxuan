@@ -11,6 +11,7 @@ import {ChatMessages} from './chat-messages';
 import {ChatSendbox} from './chat-sendbox';
 import {ChatSidebar} from './chat-sidebar';
 import replaceViews from '../replace-views';
+import Config from '../../config';
 
 /**
  * ChatView 组件 ，显示聊天界面
@@ -123,9 +124,9 @@ export default class ChatView extends Component {
             return <div key={chatGid} className={classes('box muted', {hidden})}>{Lang.string('chats.chat.selectOneOnMenu')}</div>;
         }
 
-        const hideSidebar = App.profile.userConfig.isChatSidebarHidden(chat.gid, App.ui.isSmallScreen() || chat.isOne2One);
+        const hideSidebar = Config.ui['chat.hideAllSidebar'] || App.profile.userConfig.isChatSidebarHidden(chat.gid, App.ui.isSmallScreen() || chat.isOne2One);
         const isReadOnly = chat.isReadonly(App.profile.user);
-        const isRobot = chat.isRobot;
+        const {isRobot} = chat;
 
         let chatView = null;
         if (isReadOnly) {

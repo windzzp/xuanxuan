@@ -3,7 +3,7 @@ import {
     desktopCapturer, screen as Screen, remote as Remote, clipboard,
 } from 'electron';
 import ui from './ui';
-import {saveImage} from './image';
+import {saveImage, createFromPath} from './image';
 import env from './env';
 import Lang from '../../lang';
 import RemoteEvents, {ipcOnce} from './remote';
@@ -386,9 +386,9 @@ export const captureAndCutScreenImage = (screenSources = 0, hideCurrentWindow = 
             }
             if (image) {
                 const filePath = ui.makeTmpFilePath('.png');
-                Image.saveImage(image.data, filePath).then(savedImage => {
+                saveImage(image.data, filePath).then(savedImage => {
                     if (savedImage && savedImage.path) {
-                        clipboard.writeImage(Image.createFromPath(savedImage.path));
+                        clipboard.writeImage(createFromPath(savedImage.path));
                     }
 
                     resolve(savedImage);

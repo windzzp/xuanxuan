@@ -8,6 +8,7 @@
     "appAccentColor": "#aa00ff",
     "appType": "insideView",
     "main": "lib/index.js",
+    "hot": true,
     "author": {
         "name": "Catouse"
     },

@@ -509,13 +509,15 @@ export const initChats = (chatArr, eachCallback) => {
     publicChats = null;
     chats = {};
     if (chatArr && chatArr.length) {
-        chatArr.push({
-            gid: 'littlexx',
-            name: Lang.string('common.littlexx'),
-            type: 'robot',
-            lastActiveTime: new Date().getTime() - Math.floor(MAX_RECENT_TIME / 2),
-            members: [profile.user.id]
-        });
+        if (Config.ui['chat.littlexx']) {
+            chatArr.push({
+                gid: 'littlexx',
+                name: Lang.string('common.littlexx'),
+                type: 'robot',
+                lastActiveTime: new Date().getTime() - Math.floor(MAX_RECENT_TIME / 2),
+                members: [profile.user.id]
+            });
+        }
         updateChats(chatArr);
         forEachChat(chat => {
             if (chat.isOne2One) {

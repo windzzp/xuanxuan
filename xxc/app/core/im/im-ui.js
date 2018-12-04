@@ -28,6 +28,7 @@ import {
 } from '../context-menu';
 import ui from '../ui';
 import {registerCommand, executeCommandLine} from '../commander';
+import Config from '../../config';
 
 /**
  * 当前激活的聊天实例 ID
@@ -139,7 +140,7 @@ export const onSendContentToChat = (cgid, listener) => events.on(`${EVENT.sendCo
  */
 export const getActivedCacheChatsGID = () => Object.keys(activeCaches);
 
-// 添加聊天工具栏邮件菜单生成器
+// 添加聊天工具栏右键菜单生成器
 addContextMenuCreator('chat.toolbar', context => {
     let {chat, showSidebarIcon = 'auto'} = context;
     const items = [];
@@ -164,14 +165,16 @@ addContextMenuCreator('chat.toolbar', context => {
             }
         });
     }
-    items.push({
-        id: 'history',
-        icon: 'history',
-        label: Lang.string('chat.toolbor.history'),
-        click: () => {
-            ChatsHistoryDialog.show(chat);
-        }
-    });
+    if (!Config.ui['chat.disableChatHistory']) {
+        items.push({
+            id: 'history',
+            icon: 'history',
+            label: Lang.string('chat.toolbor.history'),
+            click: () => {
+                ChatsHistoryDialog.show(chat);
+            }
+        });
+    }
     if (chat.isRobot) {
         showSidebarIcon = false;
     }
@@ -320,40 +323,54 @@ addContextMenuCreator('chat.sendbox.toolbar', context => {
         icon: 'mdi-format-size',
         label: Lang.string('chat.sendbox.toolbar.setFontSize'),
         click: e => {
-            ChatChangeFontPopover.show({x: e.pageX, y: e.pageY, target: e.target, placement: 'top'});
+            ChatChangeFontPopover.show({
+                x: e.pageX, y: e.pageY, target: e.target, placement: 'top'
+            });
         }
     });
-    const sendMarkdown = userConfig && userConfig.sendMarkdown;
-    items.push({
-        id: 'markdown',
-        icon: sendMarkdown ? 'mdi-markdown icon-2x' : 'mdi-markdown icon-2x',
-        label: Lang.string(sendMarkdown ? 'chat.sendbox.toolbar.markdown.enabled' : 'chat.sendbox.toolbar.markdown.disabled') + (sendMarkdown ? ` (${Lang.string('chat.sendbox.toolbar.moreOptions')})` : ''),
-        className: sendMarkdown ? 'selected text-green' : '',
-        click: () => {
-            userConfig.sendMarkdown = !userConfig.sendMarkdown;
-        },
-        contextMenu: sendMarkdown ? e => {
-            const menuItems = [{
-                label: Lang.string('chat.sendbox.toolbar.previewDraft'),
-                click: openMessagePreview,
-                icon: 'mdi-file-find',
-                disabled: !openMessagePreview
-            }, {
-                icon: 'mdi-help-circle',
-                label: Lang.string('chat.sendbox.toolbar.markdownGuide'),
-                url: `!openUrlInDialog/${encodeURIComponent('http://wowubuntu.com/markdown/')}/?size=lg&insertCss=${encodeURIComponent('.wikistyle>p:first-child{display:none!important}')}`
-            }];
-            ui.showContextMenu({x: e.pageX, y: e.pageY, target: e.target, placement: 'top'}, menuItems);
-            e.preventDefault();
-        } : null
-    });
+    if (Config.ui['chat.sendMarkdown']) {
+        const sendMarkdown = userConfig && userConfig.sendMarkdown;
+        items.push({
+            id: 'markdown',
+            icon: sendMarkdown ? 'mdi-markdown icon-2x' : 'mdi-markdown icon-2x',
+            label: Lang.string(sendMarkdown ? 'chat.sendbox.toolbar.markdown.enabled' : 'chat.sendbox.toolbar.markdown.disabled') + (sendMarkdown ? ` (${Lang.string('chat.sendbox.toolbar.moreOptions')})` : ''),
+            className: sendMarkdown ? 'selected text-green' : '',
+            click: () => {
+                userConfig.sendMarkdown = !userConfig.sendMarkdown;
+            },
+            contextMenu: sendMarkdown ? e => {
+                const menuItems = [{
+                    label: Lang.string('chat.sendbox.toolbar.previewDraft'),
+                    click: openMessagePreview,
+                    icon: 'mdi-file-find',
+                    disabled: !openMessagePreview
+                }];
+
+                const mdHintUrl = Config.ui['markdown.hintUrl'];
+                if (mdHintUrl) {
+                    menuItems.push({
+                        icon: 'mdi-help-circle',
+                        label: Lang.string('chat.sendbox.toolbar.markdownGuide'),
+                        url: Platform.type === 'browser' ? mdHintUrl : `!openUrlInDialog/${encodeURIComponent(mdHintUrl)}/?size=lg&insertCss=${encodeURIComponent('.wikistyle>p:first-child{display:none!important}')}`
+                    });
+                }
+
+                ui.showContextMenu({
+                    x: e.pageX, y: e.pageY, target: e.target, placement: 'top'
+                }, menuItems);
+                e.preventDefault();
+            } : null
+        });
+    }
     if (userConfig && userConfig.showMessageTip) {
         items.push({
             id: 'tips',
             icon: 'mdi-comment-question-outline',
             label: Lang.string('chat.sendbox.toolbar.tips'),
             click: e => {
-                ChatTipPopover.show({x: e.pageX, y: e.pageY, target: e.target, placement: 'top'});
+                ChatTipPopover.show({
+                    x: e.pageX, y: e.pageY, target: e.target, placement: 'top'
+                });
             }
         });
     }
@@ -406,7 +423,7 @@ export const chatDismissConfirm = chat => {
     });
 };
 
-// 添加聊天上小文菜单生成器
+// 添加聊天上下文菜单生成器
 addContextMenuCreator('chat.menu', context => {
     const {chat, menuType = null, viewType = null} = context;
     const menu = [];
@@ -569,12 +586,16 @@ addContextMenuCreator('chat.member', ({member, chat}) => {
             click: () => {
                 sendContentToChat(`@${member.displayName} `);
             }
-        }, {
-            label: Lang.string('chat.sendMessage'),
-            click: () => {
-                window.location.hash = `#/chats/contacts/${one2OneGid}`;
-            }
         });
+
+        if (!Config.ui['chat.denyChatFromMemberProfile']) {
+            menu.push({
+                label: Lang.string('chat.sendMessage'),
+                click: () => {
+                    window.location.hash = `#/chats/contacts/${one2OneGid}`;
+                }
+            });
+        }
     }
 
     tryAddDividerItem(menu);
@@ -757,7 +778,7 @@ addContextMenuCreator('message.text', ({message}) => {
                     }
                 }
                 if (copyHtmlText === undefined) {
-                    copyHtmlText = message.renderedTextContent(renderChatMessageContent, linkMembersInText);
+                    copyHtmlText = message.renderedTextContent(renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : linkMembersInText);
                 }
                 if (Platform.clipboard.write) {
                     Platform.clipboard.write({text: message.isPlainTextContent ? copyHtmlText : strip(copyHtmlText), html: copyHtmlText});
@@ -778,7 +799,7 @@ addContextMenuCreator('message.text', ({message}) => {
             });
         }
     }
-    if (profile.user.isVersionSupport('todo')) {
+    if (!Config.ui['chat.simpleChatView'] && profile.user.isVersionSupport('todo')) {
         if (items.length) {
             items.push('divider');
         }

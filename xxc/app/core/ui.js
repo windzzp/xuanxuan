@@ -155,7 +155,7 @@ if (Platform.clipboard && Platform.clipboard.writeText) {
 
 // 处理用户登录事件
 Server.onUserLogin((user, loginError) => {
-    if (!loginError && user.isFirstSignedToday) {
+    if (Config.ui.showDailySignMessage && !loginError && user.isFirstSignedToday) {
         Messager.show(Lang.string('login.signed'), {
             type: 'success',
             icon: 'calendar-check',
@@ -590,7 +590,7 @@ export const getUrlMeta = (url, disableCache = false) => {
             }
             if (extInspector && extInspector.inspect) {
                 try {
-                    cardMeta = extInspector.inspect(meta, cardMeta, url);
+                    cardMeta = extInspector.inspect(url, meta, cardMeta);
                 } catch (err) {
                     if (DEBUG) {
                         console.error('Inspect url error', {
@@ -691,16 +691,17 @@ const unregisterGlobalShortcut = () => {
     }
 };
 
-// 处理全局快捷键注册和反注册
+profile.onUserConfigChange((change, config) => {
+    if (Platform.shortcut && change && Object.keys(change).some(x => x.startsWith('shortcut.'))) {
+        registerShortcut();
+    }
+    if (config.needSave) {
+        Server.socket.uploadUserSettings();
+    }
+});
+
+// // 处理全局快捷键注册和反注册
 if (Platform.shortcut) {
-    profile.onUserConfigChange((change, config) => {
-        if (change && Object.keys(change).some(x => x.startsWith('shortcut.'))) {
-            registerShortcut();
-        }
-        if (config.needSave) {
-            Server.socket.uploadUserSettings();
-        }
-    });
     Server.onUserLogin(registerShortcut);
     Server.onUserLoginout(unregisterGlobalShortcut);
 
@@ -718,7 +719,7 @@ if (Platform.shortcut) {
 // 注册显示上下文菜单命令
 registerCommand('showContextMenu', (context, name) => {
     const {options, event} = context;
-    showContextMenu(name, {options, event})
+    showContextMenu(name, {options, event});
 });
 
 /**

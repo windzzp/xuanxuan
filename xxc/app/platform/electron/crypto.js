@@ -11,7 +11,7 @@ const encrypt = (data, token, cipherIV) => {
     const cipher = crypto.createCipheriv('aes-256-cbc', token, cipherIV);
     let crypted = cipher.update(data, 'utf8', 'binary');
     crypted += cipher.final('binary');
-    crypted = new Buffer(crypted, 'binary');
+    crypted = Buffer.from(crypted, 'binary');
     return crypted;
 };
 

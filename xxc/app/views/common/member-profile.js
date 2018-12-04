@@ -10,6 +10,7 @@ import ROUTES from '../common/routes';
 import {UserAvatar} from './user-avatar';
 import {StatusDot} from './status-dot';
 import replaceViews from '../replace-views';
+import Config from '../../config';
 
 /**
  * MemberProfile 组件 ，显示成员个人资料界面
@@ -147,7 +148,7 @@ export default class MemberProfile extends Component {
                         {deptName ? <div>{(!roleName) ? <Icon name="account-card-details text-gray" /> : null}{deptName}</div> : null}
                     </div>
                 </div>
-                {!hideChatBtn && !member.isDeleted && member.account !== App.profile.userAccount && <a href={`#${ROUTES.chats.contacts.id([member.id, App.profile.user.id].sort().join('&'))}`} onClick={onRequestClose} className="btn btn-lg rounded text-primary primary-pale"><Icon name="comment-text-outline" /> &nbsp;{Lang.string('member.profile.sendMessage')}</a>}
+                {!Config.ui['chat.denyChatFromMemberProfile'] && !hideChatBtn && !member.isDeleted && member.account !== App.profile.userAccount && <a href={`#${ROUTES.chats.contacts.id([member.id, App.profile.user.id].sort().join('&'))}`} onClick={onRequestClose} className="btn btn-lg rounded text-primary primary-pale"><Icon name="comment-text-outline" /> &nbsp;{Lang.string('member.profile.sendMessage')}</a>}
             </header>
             <div className="divider" />
             <div className="heading">
