@@ -144,7 +144,7 @@ export default class ChatView extends Component {
                 {isRobot ? null : <div className="flex-none gray text-gray heading"><Avatar icon="lock-outline" /><div className="title">{blockTip}</div></div>}
             </div>);
         } else {
-            chatView = (<SplitPane split="horizontal" primary="second" maxSize={500} minSize={80} defaultSize={100} paneStyle={{userSelect: 'none'}}>
+            chatView = (<SplitPane split="horizontal" primary="second" maxSize={500} minSize={80} defaultSize={Config.ui['chat.sendbox.height'] || 100} paneStyle={{userSelect: 'none'}}>
                 <div className="column single dock">
                     <ChatHeader chat={chat} className="flex-none" />
                     <ChatMessages chat={chat} className="flex-auto relative" />
