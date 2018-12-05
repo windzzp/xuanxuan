@@ -336,6 +336,8 @@ const electronBuilder = {
     }
 };
 
+const packagesPath = path.join(__dirname, '../', electronBuilder.directories.output);
+
 // 输出打包配置文件
 const outputConfigFiles = () => {
     console.log(`${chalk.cyanBright(chalk.bold('❖ 创建打包配置文件:'))}\n`);
@@ -442,7 +444,7 @@ const createPackage = (osType, arch, debug = isDebug) => {
     return new Promise((resolve, reject) => {
         const params = [`--${osType}`];
         if (arch) {
-            params.push(`--${arch}`);
+            params.push(`--${arch === 'x32' ? 'ia32' : arch}`);
         }
 
         spawn('build', params, {
@@ -454,7 +456,15 @@ const createPackage = (osType, arch, debug = isDebug) => {
             }),
             stdio: verbose ? 'inherit' : 'ignore'
         })
-            .on('close', code => resolve(code))
+            .on('close', async code => {
+                if (osType === 'win') {
+                    const zipDir = path.join(packagesPath, arch.includes('32') ? 'win-ia32-unpacked' : 'win-unpacked');
+                    const zipFile = path.join(packagesPath, `${config.name}.${config.version}.${(arch.includes('32') ? 'win32' : 'win64')}.zip`);
+                    await createZipFromDir(zipDir, zipFile, false);
+                    console.log(`    ${chalk.green(chalk.bold('✓'))} 创建压缩包 ${chalk.underline(zipFile)}`);
+                }
+                resolve(code);
+            })
             .on('error', spawnError => reject(spawnError));
     });
 };
@@ -501,7 +511,6 @@ const build = async (callback) => {
     let packedNum = 0;
     const buildPlatforms = platforms;
     const archTypes = archs;
-    const packagesPath = path.join(__dirname, '../', electronBuilder.directories.output);
     const needPackageBrowser = buildPlatforms.includes('browser');
     const onlyPackageBrowser = needPackageBrowser && buildPlatforms.length === 1;
 
@@ -552,6 +561,7 @@ const build = async (callback) => {
                 const startTime = new Date().getTime();
                 // eslint-disable-next-line no-await-in-loop
                 await createPackage(platform, arch, isDebug);
+
                 if (verbose) {
                     console.log(chalk.yellow('══════════════════════════════════════════════════════════════'));
                 }
