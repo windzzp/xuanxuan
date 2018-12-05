@@ -182,6 +182,7 @@ program
 
 console.log(chalk.magentaBright(chalk.bold(`───────────────┤ ${pkg.name.toUpperCase()} ${pkg.version}`) + ' 打包工具 ├───────────────'));
 
+const appRootPath = path.resolve(__dirname, '../');
 const configName = program.config;
 const isCustomConfig = configName && configName !== '-';
 const platforms = formatPlatforms(program.platform);
@@ -336,6 +337,13 @@ const electronBuilder = {
     }
 };
 
+if (config.buildIn) {
+    electronBuilder.extraResources.push({
+        from: path.resolve(configDirPath || __dirname, config.buildIn),
+        to: 'build-in'
+    });
+}
+
 const packagesPath = path.join(__dirname, '../', electronBuilder.directories.output);
 
 // 输出打包配置文件
@@ -459,9 +467,9 @@ const createPackage = (osType, arch, debug = isDebug) => {
             .on('close', async code => {
                 if (osType === 'win') {
                     const zipDir = path.join(packagesPath, arch.includes('32') ? 'win-ia32-unpacked' : 'win-unpacked');
-                    const zipFile = path.join(packagesPath, `${config.name}.${config.version}.${(arch.includes('32') ? 'win32' : 'win64')}.zip`);
-                    await createZipFromDir(zipDir, zipFile, false);
-                    console.log(`    ${chalk.green(chalk.bold('✓'))} 创建压缩包 ${chalk.underline(zipFile)}`);
+                    const zipFile = path.join(packagesPath, `${config.name}.${config.version}.${isBeta ? 'beta.' : ''}${debug ? 'debug.' : ''}${(arch.includes('32') ? 'win32' : 'win64')}.zip`);
+                    await createZipFromDir(zipFile, zipDir, false);
+                    console.log(`    ${chalk.green(chalk.bold('✓'))} 创建压缩包 ${chalk.underline(path.relative(appRootPath, zipFile))}`);
                 }
                 resolve(code);
             })
@@ -484,7 +492,7 @@ const buildBrowser = async (destRoot) => {
     await Promise.all([copyDist(), copyMedia(), copyAssets(), copyIndexHTML(), copyPKG(), copyManifest(), copyIcons()]);
 
     // 创建 zip
-    const zipFile = path.resolve(destRoot, '../', `${config.name}.${config.version}.browser.zip`);
+    const zipFile = path.resolve(destRoot, '../', `${config.name}.${config.version}.${isBeta ? 'beta.' : ''}${isDebug ? 'debug.' : ''}browser.zip`);
     await createZipFromDir(zipFile, destRoot, false);
     console.log(`    ${chalk.green(chalk.bold('✓'))} 创建压缩包 ${chalk.underline(zipFile)}`);
 };
