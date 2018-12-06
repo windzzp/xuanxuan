@@ -151,7 +151,7 @@ export default class Avatar extends PureComponent {
             if (React.isValidElement(image)) {
                 imageView = image;
             } else {
-                imageView = <Image alt={image} src={image} className={imageClassName}><Icon name="account muted" /></Image>;
+                imageView = <Image alt={image} src={image} className={imageClassName}><Icon name="image-filter-hdr muted" /></Image>;
             }
         }
         let iconView = null;
