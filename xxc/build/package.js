@@ -337,9 +337,9 @@ const electronBuilder = {
     }
 };
 
-if (config.buildIn) {
+if (config.buildInPath) {
     electronBuilder.extraResources.push({
-        from: path.resolve(configDirPath || __dirname, config.buildIn),
+        from: path.resolve(configDirPath || __dirname, config.buildInPath),
         to: 'build-in'
     });
 }
