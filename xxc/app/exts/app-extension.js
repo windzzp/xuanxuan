@@ -188,6 +188,23 @@ export default class AppExtension extends Extension {
     }
 
     /**
+     * 获取应用在菜单上显示的图标
+     * @memberof AppExtension
+     * @type {string}
+     */
+    get menuIcon() {
+        const {menuIcon} = this._pkg;
+        if (menuIcon && !this._menuIcon) {
+            if (menuIcon.length > 1 && !menuIcon.startsWith('http://') && !menuIcon.startsWith('https://') && !menuIcon.startsWith('mdi-') && !menuIcon.startsWith('icon')) {
+                this._menuIcon = Path.join(this.localPath, menuIcon);
+            } else {
+                this._menuIcon = menuIcon;
+            }
+        }
+        return this._menuIcon || this.appIcon;
+    }
+
+    /**
      * 获取扩展图标
      * @memberof AppExtension
      * @type {string}
@@ -238,5 +255,38 @@ export default class AppExtension extends Extension {
     get isFixed() {
         const {buildIn} = this;
         return buildIn && (buildIn.asDefault || buildIn.fixed);
+    }
+
+    /**
+     * 获取是否允许用户将应用图标固定在窗口菜单上
+     * @memberof AppExtension
+     * @type {boolean}
+     */
+    get canPinnedOnMenu() {
+        const {pinnedOnMenu} = this._pkg;
+        return !this.isFixed && pinnedOnMenu !== false;
+    }
+
+    /**
+     * 获取应用图标是否能够固定在窗口菜单上
+     * @memberof AppExtension
+     * @type {boolean}
+     */
+    get pinnedOnMenu() {
+        const {pinnedOnMenu} = this._pkg;
+        const userPinnedOnMenu = this._data.pinnedOnMenu;
+        return (pinnedOnMenu !== false && userPinnedOnMenu) || (pinnedOnMenu === true && userPinnedOnMenu !== false);
+    }
+
+    /**
+     * 设置应用图标是否能够固定在窗口菜单上
+     * @param {boolean} flag 是否能够固定在窗口菜单上
+     * @memberof AppExtension
+     */
+    set pinnedOnMenu(flag) {
+        const {pinnedOnMenu} = this._pkg;
+        if (pinnedOnMenu !== false) {
+            this._data.pinnedOnMenu = flag;
+        }
     }
 }

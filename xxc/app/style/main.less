@@ -2,6 +2,10 @@
   transition: all @animation-speed-normal @animation-type;
 }
 
+.app-nav-main {
+  max-height: calc(100% - (50*@rem));
+  overflow: hidden;
+}
 .app-nav-main > div > a.active {
   transform: scale(1);
   opacity: 1;
@@ -31,6 +35,7 @@
 
   &.with-avatar-on-top {
     .app-nav-main {
+      max-height: calc(100% - (100*@rem));
       top: (55*@rem);
     }
   }

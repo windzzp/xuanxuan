@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Route, Link} from 'react-router-dom';
+import ExtsRuntime from 'ExtsRuntime'; // eslint-disable-line
 import Config from '../../config';
-import ExtsRuntime from 'ExtsRuntime';
 import {rem, classes} from '../../utils/html-helper';
 import Lang from '../../lang';
 import Avatar from '../../components/avatar';
@@ -28,11 +28,6 @@ const navbarItems = [
         to: ROUTES.chats.contacts.__, label: Lang.string('navbar.contacts.label'), icon: 'account-multiple-outline', activeIcon: 'account-multiple'
     },
 ];
-
-// 如果扩展可用，在主导航上显示扩展条目
-if (ExtsRuntime) {
-    navbarItems.push({to: ROUTES.exts._, label: Lang.string('navbar.exts.label'), icon: 'apps', activeIcon: 'apps'});
-}
 
 /**
  * 渲染导航条目
@@ -227,43 +222,51 @@ export default class Navbar extends Component {
         } = this.props;
 
         const navbarWidth = Config.ui['navbar.width'];
-        const userConfig = App.profile.userConfig;
+        const {userConfig} = App.profile;
         const isAvatarOnTop = userConfig && userConfig.avatarPosition === 'top';
+        const {showUserMenu, noticeBadge} = this.state;
 
-        return (<div
-            className={classes('app-navbar', className, {
-                'with-avatar-on-top': isAvatarOnTop
-            })}
-            {...other}
-        >
-            <nav className={`dock-${isAvatarOnTop ? 'top' : 'bottom'} app-nav-profile`}>
-                <div className="hint--right" data-hint={App.profile.summaryText}>
-                    <a className="block relative app-profile-avatar" onClick={this.handleProfileAvatarClick}>
-                        <UserAvatar className="avatar-lg relative" style={{margin: rem((navbarWidth - 36) / 2)}} size={36} user={App.profile.user} />
-                        <StatusDot status={App.profile.userStatus} />
-                    </a>
-                </div>
-                {this.state.showUserMenu && <UserMenu className={`dock-left dock-${isAvatarOnTop ? 'top' : 'bottom'}`} style={{left: rem(navbarWidth)}} onRequestClose={this.handleUserMenuRequestClose} />}
-            </nav>
-            <nav className="dock-top app-nav-main">
-                {
-                    navbarItems.map(item => {
-                        return (<div key={item.to} className="hint--right nav-item" data-hint={item.label} onClick={this.handleMainNavItemClick}>
-                            <NavLink item={item} />
-                            {
-                                (this.state.noticeBadge && item.to === ROUTES.chats.recents.__) ? <div className="label label-sm dock-right dock-top circle red badge">{this.state.noticeBadge}</div> : null
-                            }
-                        </div>);
-                    })
-                }
-            </nav>
-            {
-                isAvatarOnTop && <nav className="dock-bottom">
-                    <div className="hint--right" data-hint={Lang.string('common.settings')}>
-                        <a className="block" onClick={this.handleSettingBtnClick}><Avatar size={navbarWidth} icon="settings" /></a>
+        return (
+            <div
+                className={classes('app-navbar', className, {
+                    'with-avatar-on-top': isAvatarOnTop
+                })}
+                {...other}
+            >
+                <nav className={`dock-${isAvatarOnTop ? 'top' : 'bottom'} app-nav-profile`}>
+                    <div className="hint--right" data-hint={App.profile.summaryText}>
+                        <a className="block relative app-profile-avatar" onClick={this.handleProfileAvatarClick}>
+                            <UserAvatar className="avatar-lg relative" style={{margin: rem((navbarWidth - 36) / 2)}} size={36} user={App.profile.user} />
+                            <StatusDot status={App.profile.userStatus} />
+                        </a>
                     </div>
+                    {showUserMenu && <UserMenu className={`dock-left dock-${isAvatarOnTop ? 'top' : 'bottom'}`} style={{left: rem(navbarWidth)}} onRequestClose={this.handleUserMenuRequestClose} />}
                 </nav>
-            }
-        </div>);
+                <nav className="dock-top app-nav-main">
+                    {
+                        navbarItems.map(item => {
+                            return (
+                                <div key={item.to} className="hint--right nav-item" data-hint={item.label} onClick={this.handleMainNavItemClick}>
+                                    <NavLink item={item} />
+                                    {
+                                        (noticeBadge && item.to === ROUTES.chats.recents.__) ? <div className="label label-sm dock-right dock-top circle red badge">{noticeBadge}</div> : null
+                                    }
+                                </div>
+                            );
+                        })
+                    }
+                    {ExtsRuntime && ExtsRuntime.ExtsNavbarView && <ExtsRuntime.ExtsNavbarView />}
+                </nav>
+                {
+                    isAvatarOnTop && (
+                        <nav className="dock-bottom">
+                            <div className="hint--right" data-hint={Lang.string('common.settings')}>
+                                <a className="block" onClick={this.handleSettingBtnClick}><Avatar size={navbarWidth} icon="settings" /></a>
+                            </div>
+                        </nav>
+                    )
+                }
+            </div>
+        );
     }
 }

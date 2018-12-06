@@ -6,6 +6,8 @@ import App from '../core';
 import {setExtensionUser} from './extension';
 import {registerCommand, executeCommand, createCommandObject} from '../core/commander';
 import {fetchServerExtensions, detachServerExtensions, getEntryVisitUrl} from './server';
+import ExtsView from '../views/exts/index';
+import ExtsNavbarView from '../views/exts/navbar';
 
 // 将开放给扩展的模块设置为全局可访问
 global.Xext = Xext;
@@ -177,5 +179,7 @@ export default {
     getUrlInspector: getExtensionUrlInspector,
     getUrlOpener: getExtensionUrlOpener,
     exts: Exts,
-    getEntryVisitUrl
+    getEntryVisitUrl,
+    ExtsView,
+    ExtsNavbarView,
 };

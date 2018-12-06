@@ -4,7 +4,9 @@ import Path from 'path';
 import {defaultApp, getAppExt} from './exts';
 import OpenedApp from './opened-app';
 import Lang from '../lang';
-import {setExtensionDisabled, openInstallExtensionDialog, uninstallExtension} from './manager';
+import {
+    setExtensionDisabled, openInstallExtensionDialog, uninstallExtension, saveExtensionData,
+} from './manager';
 import Modal from '../components/modal';
 import Messager from '../components/messager';
 import ExtensionDetailDialog from '../views/exts/extension-detail-dialog';
@@ -285,6 +287,18 @@ export const createSettingContextMenu = extension => {
                 disabled: true,
                 label: `${Lang.string('ext.openApp')} (${Lang.string(extension.needRestart ? 'ext.extension.needRestart' : 'ext.unavailable')})`,
             });
+            if (extension.canPinnedOnMenu) {
+                if (items.length && items[items.length - 1].type !== 'separator') {
+                    items.push({type: 'separator'});
+                }
+                items.push({
+                    label: Lang.string(extension.pinnedOnMenu ? 'ext.app.unpinnedOnMenu' : 'ext.app.pinnedOnMenu'),
+                    click: () => {
+                        extension.pinnedOnMenu = !extension.pinnedOnMenu;
+                        saveExtensionData(extension);
+                    }
+                });
+            }
         }
         if (!extension.buildIn && !extension.isRemote) {
             items.push({
@@ -346,6 +360,19 @@ export const createAppContextMenu = appExt => {
             label: Lang.string('ext.app.openInBrowser'),
             click: () => {
                 Platform.ui.openExternal(appExt.webViewUrl);
+            }
+        });
+    }
+
+    if (appExt.canPinnedOnMenu) {
+        if (items.length && items[items.length - 1].type !== 'separator') {
+            items.push({type: 'separator'});
+        }
+        items.push({
+            label: Lang.string(appExt.pinnedOnMenu ? 'ext.app.unpinnedOnMenu' : 'ext.app.pinnedOnMenu'),
+            click: () => {
+                appExt.pinnedOnMenu = !appExt.pinnedOnMenu;
+                saveExtensionData(appExt);
             }
         });
     }
@@ -433,6 +460,19 @@ export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
             label: Lang.string('ext.app.openInBrowser'),
             click: () => {
                 Platform.ui.openExternal(appExt.webViewUrl);
+            }
+        });
+    }
+
+    if (appExt.canPinnedOnMenu) {
+        if (items.length && items[items.length - 1].type !== 'separator') {
+            items.push({type: 'separator'});
+        }
+        items.push({
+            label: Lang.string(appExt.pinnedOnMenu ? 'ext.app.unpinnedOnMenu' : 'ext.app.pinnedOnMenu'),
+            click: () => {
+                appExt.pinnedOnMenu = !appExt.pinnedOnMenu;
+                saveExtensionData(appExt);
             }
         });
     }

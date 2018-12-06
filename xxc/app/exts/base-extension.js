@@ -1,6 +1,6 @@
 import Path from 'path';
 import StringHelper from '../utils/string-helper';
-import ExtensionConfig from './extension-config';
+// import ExtensionConfig from './extension-config';
 import timeSequence from '../utils/time-sequence';
 import {matchScore} from '../utils/search-score';
 import PinYin from '../utils/pinyin';
@@ -62,19 +62,19 @@ export default class Extension {
     constructor(pkgData, data) {
         this.initPkg(pkgData);
 
-        /**
-         * 扩展配置对象
-         * @type {ExtensionConfig}
-         * @private
-         */
-        this._config = new ExtensionConfig(this.name, this.configurations);
+        // /**
+        //  * 扩展配置对象
+        //  * @type {ExtensionConfig}
+        //  * @private
+        //  */
+        // this._config = new ExtensionConfig(this);
 
         /**
          * 扩展运行时数据对象
          * @type {Object}
          * @private
          */
-        this._data = Object.assign({}, data);
+        this._data = Object.assign({}, data, this.getConfig('_data'));
     }
 
     /**
@@ -656,7 +656,7 @@ export default class Extension {
      */
     getConfig(key) {
         if (!this._config) {
-            this._config = Store.get(`EXTENSION::${this.id}::config`, {});
+            this._config = Store.get(`EXTENSION::${this.name}::config`, {});
         }
         return key === undefined ? this._config : this._config[key];
     }
@@ -677,7 +677,7 @@ export default class Extension {
             config[key] = value;
         }
         this._config = config;
-        Store.set(`EXTENSION::${this.id}::config`, this._config);
+        Store.set(`EXTENSION::${this.name}::config`, this._config);
     }
 
     /**
@@ -1064,5 +1064,13 @@ export default class Extension {
      */
     getMatchScore(keys) {
         return matchScore(MATCH_SCORE_MAP, this, keys);
+    }
+
+    /**
+     * 保存扩展自定义数据
+     * @return {void}
+     */
+    saveData() {
+        this.setConfig('_data', this._data);
     }
 }

@@ -374,6 +374,8 @@
     "ext.app.goBack": "后退",
     "ext.app.goForward": "前进",
     "ext.app.openDevTools": "开发者工具",
+    "ext.app.pinnedOnMenu": "固定在导航上",
+    "ext.app.unpinnedOnMenu": "取消固定在导航上",
     "ext.themes.count.format": "共 {0} 个主题",
     "ext.themes.default": "默认主题",
     "ext.themes.inside": "内置主题",
