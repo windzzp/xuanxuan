@@ -596,9 +596,7 @@ addContextMenuCreator('chat.member', ({member, chat}) => {
         if (!Config.ui['chat.denyChatFromMemberProfile']) {
             menu.push({
                 label: Lang.string('chat.sendMessage'),
-                click: () => {
-                    window.location.hash = `#/chats/contacts/${one2OneGid}`;
-                }
+                url: `#/chats/recents/${one2OneGid}`
             });
         }
     }
