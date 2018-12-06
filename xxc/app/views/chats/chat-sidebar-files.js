@@ -135,6 +135,8 @@ export default class ChatSidebarFiles extends Component {
         const chat = this.props.chat;
         return App.im.chats.getChatFiles(chat).then(files => {
             return this.setState({files, loading: false});
+        }).catch(() => {
+            return this.setState({files: [], loading: false});
         });
     }
 
