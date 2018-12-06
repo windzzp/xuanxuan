@@ -75,8 +75,6 @@ export default class AppThemes extends PureComponent {
          */
         this.state = {
             search: '',
-            showInstalled: true,
-            type: (app.params && app.params.type) ? app.params.type : ''
         };
     }
 
