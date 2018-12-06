@@ -4,8 +4,10 @@ import Config from '../../config';
 import HTML from '../../utils/html-helper';
 import {LoginForm} from './form';
 import {BuildInfo} from '../common/build-info';
+import PoweredInfo from '../common/powered-info';
 import App from '../../core';
 import replaceViews from '../replace-views';
+import pkg from '../../package.json';
 
 /**
  * LoginIndex 组件 ，显示登录界面
@@ -73,6 +75,11 @@ export default class LoginIndex extends PureComponent {
             ...other
         } = this.props;
 
+        let showPoweredBy = Config.ui['app.showPoweredBy'];
+        if (showPoweredBy === 'auto') {
+            showPoweredBy = pkg.name !== 'xuanxuan';
+        }
+
         return (<div className={HTML.classes('app-login center-content', className)} {...other}>
             <section>
                 <header className="text-center space-sm">
@@ -83,6 +90,7 @@ export default class LoginIndex extends PureComponent {
                 {children}
             </section>
             <BuildInfo className="dock-right dock-bottom small has-padding text-white muted" />
+            {showPoweredBy && <PoweredInfo className="dock-left dock-bottom small strong has-padding text-white muted" />}
         </div>);
     }
 }

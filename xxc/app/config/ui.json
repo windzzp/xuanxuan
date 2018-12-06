@@ -23,5 +23,6 @@
     "chat.hideStatusDot": false,
     "chat.mentionOthers": true,
     "chat.denyShowMemberProfile": false,
-    "chat.muteOnChatNotActive": false
+    "chat.muteOnChatNotActive": false,
+    "app.showPoweredBy": "auto"
 }
