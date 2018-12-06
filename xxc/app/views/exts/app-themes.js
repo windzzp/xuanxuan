@@ -199,7 +199,7 @@ export default class AppThemes extends PureComponent {
                         <Avatar style={{color: app.app.accentColor}} auto={app.app.icon} className="rounded no-margin avatar-sm" />
                         <div className="title">{Lang.string('ext.themes.inside')}</div>
                     </div>
-                    <a className={HTML.classes('item rounded shadow-1', {active: isCurrentDefault})} style={Skin.style('#3f51b5')} onClick={this.handleThemeClick.bind(this, 'default')}>
+                    <a className={HTML.classes('item rounded shadow-1 primary', {active: isCurrentDefault})} onClick={this.handleThemeClick.bind(this, 'default')}>
                         <div className="content">
                             <div className="title">{Lang.string('ext.themes.default')} {isCurrentDefault && <small className="label circle white text-black shadow-1">{Lang.string('ext.themes.current')}</small>}</div>
                         </div>
