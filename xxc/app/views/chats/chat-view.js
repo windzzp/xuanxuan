@@ -153,15 +153,17 @@ export default class ChatView extends Component {
             </SplitPane>);
         }
 
-        return (<div
-            {...other}
-            className={classes('app-chat dock', className, {hidden, 'chat-readonly': isReadOnly})}
-        >
-            {isRobot ? chatView : <SplitPane className={hideSidebar ? 'soloPane1' : ''} split="vertical" primary="second" maxSize={360} minSize={150} defaultSize={200} paneStyle={{userSelect: 'none'}}>
-                {chatView}
-                <ChatSidebar chat={chat} />
-            </SplitPane>}
-            {children}
-        </div>);
+        return (
+            <div
+                {...other}
+                className={classes('app-chat dock', className, {hidden, 'chat-readonly': isReadOnly})}
+            >
+                {isRobot ? chatView : <SplitPane className={hideSidebar ? 'soloPane1' : ''} split="vertical" primary="second" maxSize={360} minSize={150} defaultSize={200} paneStyle={{userSelect: 'none'}}>
+                    {chatView}
+                    <ChatSidebar chat={chat} />
+                </SplitPane>}
+                {children}
+            </div>
+        );
     }
 }
