@@ -56,7 +56,7 @@ export default class Image extends PureComponent {
         } = this.props;
 
         const {error} = this.state;
-        if (error !== src) {
+        if (error && error === src) {
             return children;
         }
         return <img alt={alt || src} src={src} onError={this._handleImgError} {...other} />;
