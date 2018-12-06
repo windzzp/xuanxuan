@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {rem, classes} from '../utils/html-helper';
 import Skin from '../utils/skin';
 import Icon from './icon';
+import Image from './image';
 
 /**
  * Avatar 组件 ，显示一个头像
@@ -72,7 +73,7 @@ export default class Avatar extends PureComponent {
      * 创建一个头像组件
      * @param {any} avatar 头像内容
      * @param {any} iconView 图标内容
-     * @return {ReactNode}
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
      * @memberof Avatar
      */
     static render(avatar, iconView) {
@@ -97,7 +98,7 @@ export default class Avatar extends PureComponent {
      * @see https://doc.react-china.org/docs/react-component.html#render
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof Avatar
-     * @return {ReactNode}
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
      */
     render() {
         let {
@@ -150,7 +151,7 @@ export default class Avatar extends PureComponent {
             if (React.isValidElement(image)) {
                 imageView = image;
             } else {
-                imageView = <img alt={image} src={image} className={imageClassName} />;
+                imageView = <Image alt={image} src={image} className={imageClassName}><Icon name="account muted" /></Image>;
             }
         }
         let iconView = null;
