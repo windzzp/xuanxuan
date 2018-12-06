@@ -397,7 +397,7 @@ export const setChatCategory = (chat, category) => {
 
 /**
  * 向给定的聊天发送消息
- * @param {ChatMessage} socketMessage 聊天消息
+ * @param {SocketMessage} socketMessage 聊天消息
  * @param {Chat} chat 聊天实例对象
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
