@@ -511,7 +511,7 @@ export default class LoginForm extends PureComponent {
                 <div className="row">
                     <Checkbox disabled={logining} checked={rememberPassword} onChange={this.handleRememberPasswordChanged} className="cell" label={Lang.string('login.rememberPassword')} />
                     <Checkbox disabled={logining} checked={autoLogin} onChange={this.handleAutoLoginChanged} className="cell" label={Lang.string('login.autoLogin')} />
-                    <Checkbox disabled={logining} checked={ldap} onChange={this.handleLDAPChanged} className="cell" label="{'LDAP'}" />
+                    <Checkbox disabled={logining} checked={ldap} onChange={this.handleLDAPChanged} className="cell" label={Lang.string('login.ldap')} />
                     {Platform.ui.isOpenAtLogin ? <div data-hint={Lang.string('login.moreLoginSettings')} className="hint--top"><Button className="iconbutton rounded" icon="settings-box" onClick={this.handleSettingBtnClick} /></div> : null}
                 </div>
             </div>

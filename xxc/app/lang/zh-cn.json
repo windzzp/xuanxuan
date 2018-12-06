@@ -160,6 +160,7 @@
     "login.nonSecurity.detail": "与服务器的通信支持全程加密，如果要启用安全加密功能，请联系管理员开启 https 支持。非安全模式仅适合测试时使用。",
     "login.nonSecurity.btn": "继续使用非安全模式连接",
     "login.openAtLogin": "开机启动",
+    "login.ldap": "LDAP",
     "login.moreLoginSettings": "更多登录设置",
     "login.ldap.confirm": "使用 LDAP 登录需要服务器支持，并且不能使用“记住密码”和“自动登录”功能。是否继续？",
 
