@@ -107,7 +107,7 @@ export default class ExtsNavbarView extends PureComponent {
                 hasAppActive = true;
             }
             return (
-                <div className="hint--right nav-item" data-hint={app.displayName}>
+                <div key={`app-${app.name}`} className="hint--right nav-item" data-hint={app.displayName}>
                     <a className={classes('block', {active: isCurrentApp})} title={`【${app.displayName}】${app.description || ''}`} href={`#${ROUTES.exts.app.id(app.name)}`} onContextMenu={this.handleAppContextMenu} data-name={app.name}>
                         <Avatar size={Config.ui['navbar.width']} auto={menuIcon} className={classes('rounded flex-none', {'has-padding': !menuIcon.startsWith('mdi-')})} />
                     </a>
@@ -115,7 +115,7 @@ export default class ExtsNavbarView extends PureComponent {
             );
         });
         items.splice(0, 0, (
-            <div className="hint--right nav-item" data-hint={Lang.string('navbar.exts.label')}>
+            <div key="app-home" className="hint--right nav-item" data-hint={Lang.string('navbar.exts.label')}>
                 <a className={classes('block', {active: isExtsView && !hasAppActive})} href={`#${hasAppActive ? ROUTES.exts.app.id('home') : ROUTES.exts._}`}>
                     <Avatar size={Config.ui['navbar.width']} icon="mdi-apps" className="rounded flex-none" />
                 </a>
