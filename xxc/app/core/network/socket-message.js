@@ -1,4 +1,5 @@
 import Config from '../../config';
+import Lang from '../../lang';
 
 /**
  * Socket 服务消息类
@@ -17,41 +18,42 @@ export default class SocketMessage {
          * 操作模块名称
          * @type {string}
          */
-        this.module = null;
+        this.module; // eslint-disable-line
 
         /**
          * 操作方法名称
          * @type {string}
          */
-        this.method = null;
+        this.method; // eslint-disable-line
 
         /**
          * 操作方法的参数
          * @type {Array}
          */
-        this.params = null;
+        this.params; // eslint-disable-line
 
         /**
          * 操作数据
          * @type {any}
          */
-        this.data = null;
+        this.data; // eslint-disable-line
 
         /**
          * 操作结果
          * @type {string}
          */
-        this.result = null;
+        this.result; // eslint-disable-line
 
         /**
          * 版本号
          * @type {string}
          */
-        this.v = null;
+        this.v; // eslint-disable-line
 
         Object.assign(this, {
             module: 'chat',
-            v: Config.pkg.version
+            v: Config.pkg.version,
+            lang: Lang.name
         }, data);
     }
 
