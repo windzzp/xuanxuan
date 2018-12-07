@@ -168,18 +168,20 @@ export default class ChatSendbox extends Component {
         const contentList = this.editbox.getContentList();
         this.clearContent();
         this.focusEditor();
+        const {chat} = this.props;
+        App.im.ui.activeChat(chat, 'recents');
         for (let i = 0; i < contentList.length; ++i) {
             const content = contentList[i];
             if (content.type === 'text') {
                 content.content = Emojione.toShort(content.content);
                 const trimContent = App.profile.userConfig.sendHDEmoticon ? content.content.trim() : false;
                 if (trimContent && Emojione.emojioneList[trimContent]) {
-                    await App.im.server.sendEmojiMessage(trimContent, this.props.chat); // eslint-disable-line
+                    await App.im.server.sendEmojiMessage(trimContent, chat); // eslint-disable-line
                 } else {
-                    await App.im.server.sendTextMessage(content.content, this.props.chat); // eslint-disable-line
+                    await App.im.server.sendTextMessage(content.content, chat); // eslint-disable-line
                 }
             } else if (content.type === 'image') {
-                await App.im.server.sendImageMessage(content.image, this.props.chat); // eslint-disable-line
+                await App.im.server.sendImageMessage(content.image, chat); // eslint-disable-line
             }
         }
     }

@@ -225,7 +225,6 @@ export default class AppExtensions extends Component {
     render() {
         const {
             className,
-            app,
         } = this.props;
 
         const {search, type} = this.state;

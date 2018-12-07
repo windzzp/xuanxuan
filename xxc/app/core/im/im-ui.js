@@ -59,26 +59,31 @@ const EVENT = {
 /**
  * 在界面上激活聊天
  * @param {Chat|string} chat 聊天实例或者聊天 GID
+ * @param {string} [menu] 要激活的菜单类型
  * @return {void}
  */
-export const activeChat = chat => {
+export const activeChat = (chat, menu) => {
     if ((typeof chat === 'string') && chat.length) {
         chat = chats.get(chat);
     }
     if (chat) {
-        if (!activedChatId || chat.gid !== activedChatId) {
-            activedChatId = chat.gid;
-            events.emit(EVENT.activeChat, chat);
-            ui.showMobileChatsMenu(false);
-        }
         const urlHash = window.location.hash;
-        if (!urlHash.endsWith(`/${chat.gid}`)) {
+        if (menu) {
+            if (!urlHash.endsWith(`/${menu}/${chat.gid}`)) {
+                window.location.hash = `#/chats/${menu}/${chat.gid}`;
+            }
+        } else if (!urlHash.endsWith(`/${chat.gid}`)) {
             window.location.hash = `#/chats/recents/${chat.gid}`;
         }
         activeCaches[chat.gid] = true;
         if (chat.noticeCount) {
             chat.muteNotice();
             chats.saveChatMessages(chat.messages);
+        }
+        if (!activedChatId || chat.gid !== activedChatId) {
+            activedChatId = chat.gid;
+            events.emit(EVENT.activeChat, chat);
+            ui.showMobileChatsMenu(false);
         }
     }
 };
@@ -591,9 +596,7 @@ addContextMenuCreator('chat.member', ({member, chat}) => {
         if (!Config.ui['chat.denyChatFromMemberProfile']) {
             menu.push({
                 label: Lang.string('chat.sendMessage'),
-                click: () => {
-                    window.location.hash = `#/chats/contacts/${one2OneGid}`;
-                }
+                url: `#/chats/recents/${one2OneGid}`
             });
         }
     }
@@ -631,7 +634,12 @@ export const linkMembersInText = (text, {format = '<a class="app-link {className
         text = text.replace(/@([\w\u4e00-\u9fa5]+)/g, (mentionAt, mention) => {
             const m = members.guess(mention);
             if (m) {
-                return StringHelper.format(format, {displayName: m.displayName, id: m.id, account: m.account, className: m.account === userAccount ? 'at-me' : ''});
+                return StringHelper.format(format, {
+                    displayName: m.displayName,
+                    id: m.id,
+                    account: m.account,
+                    className: m.account === userAccount ? 'at-me' : '',
+                });
             }
             if (mention === 'all' || mention === langAtAll) {
                 return `<span class="at-all">@${langAtAll}</span>`;

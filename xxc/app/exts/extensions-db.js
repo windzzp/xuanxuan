@@ -137,6 +137,16 @@ export const setOnInstalledExtensionChangeListener = listener => {
     onChangeListener = listener;
 };
 
+/**
+ * 保存扩展数据
+ * @param {Extension} extension 扩展对象
+ * @return {void}
+ */
+export const saveExtensionData = (extension) => {
+    extension.saveData();
+    onChangeListener(extension, 'update');
+};
+
 export default {
     get installs() {
         return installs;

@@ -1,7 +1,7 @@
-import system from 'Config/system.json';
-import media from 'Config/media.json';
-import ui from 'Config/ui.json';
-import lang from 'Config/lang.json';
+import system from 'Config/system.json'; // eslint-disable-line
+import media from 'Config/media.json'; // eslint-disable-line
+import ui from 'Config/ui.json'; // eslint-disable-line
+import lang from 'Config/lang.json'; // eslint-disable-line
 import pkg from '../package.json';
 import Lang from '../lang';
 
@@ -27,6 +27,10 @@ export const updateConfig = (newConfig) => {
     Object.keys(newConfig).forEach(key => {
         Object.assign(config[key], newConfig[key]);
     });
+    const langInNewConfig = newConfig.lang && newConfig.lang[Lang.name];
+    if (langInNewConfig) {
+        Lang.update(langInNewConfig);
+    }
     return config;
 };
 
@@ -35,6 +39,7 @@ if (configurations) {
     updateConfig(configurations);
 }
 
+// 运行时配置中的语言配置
 const langInConfig = config.lang && config.lang[Lang.name];
 if (langInConfig) {
     Lang.update(langInConfig);
