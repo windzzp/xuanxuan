@@ -213,7 +213,7 @@ export const updateChatMessages = (messages, muted = false, skipOld = false) => 
     const updatedChats = {};
     Object.keys(chatsMessages).forEach(cgid => {
         const chat = getChat(cgid);
-        if (chat && (chat.id || chat.isRobot) && chat.isMember(profile.userId)) {
+        if (chat && chat.isMember(profile.userId)) {
             chat.addMessages(chatsMessages[cgid], profile.userId, muted, skipOld);
             if (muted) {
                 chat.muteNotice();

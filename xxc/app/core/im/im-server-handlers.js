@@ -4,7 +4,7 @@ import {
 import Chat from '../models/chat';
 import profile from '../profile';
 import members from '../members';
-import imServer from './im-server';
+import imServer, {handleReceiveChatMessages, handleInitChats, updateChatHistory} from './im-server';
 import imUI from './im-ui';
 import Config from '../../config';
 
@@ -82,7 +82,7 @@ const chatGetlist = (msg, socket) => {
         } else {
             newChats = msg.data;
         }
-        imServer.handleInitChats(newChats);
+        handleInitChats(newChats);
         return true;
     }
 };
@@ -121,7 +121,7 @@ const chatMessage = (msg, socket) => {
         }
 
         if (messages && messages.length) {
-            imServer.handleReceiveChatMessages(messages);
+            handleReceiveChatMessages(messages);
             return true;
         }
     }
@@ -147,7 +147,7 @@ const chatHistory = (msg, socket) => {
         }
     }
 
-    imServer.updateChatHistory((messages && messages.length) ? messages[0].cgid : null, messages, msg.pager, socket);
+    updateChatHistory((messages && messages.length) ? messages[0].cgid : null, messages, msg.pager, socket);
     return true;
 };
 

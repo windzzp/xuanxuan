@@ -634,7 +634,12 @@ export const linkMembersInText = (text, {format = '<a class="app-link {className
         text = text.replace(/@([\w\u4e00-\u9fa5]+)/g, (mentionAt, mention) => {
             const m = members.guess(mention);
             if (m) {
-                return StringHelper.format(format, {displayName: m.displayName, id: m.id, account: m.account, className: m.account === userAccount ? 'at-me' : ''});
+                return StringHelper.format(format, {
+                    displayName: m.displayName,
+                    id: m.id,
+                    account: m.account,
+                    className: m.account === userAccount ? 'at-me' : '',
+                });
             }
             if (mention === 'all' || mention === langAtAll) {
                 return `<span class="at-all">@${langAtAll}</span>`;

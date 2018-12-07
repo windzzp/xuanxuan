@@ -178,8 +178,9 @@ export const getMember = (idOrAccount) => {
     let member = members[idOrAccount];
     if (!member) {
         const findId = Object.keys(members).find(x => (members[x].account === idOrAccount));
-        if (findId) member = members[findId];
-        else {
+        if (findId) {
+            member = members[findId];
+        } else {
             member = new Member({
                 id: idOrAccount,
                 account: idOrAccount,

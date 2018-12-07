@@ -853,8 +853,39 @@ export const onReceiveChatMessages = listener => {
     return events.on(EVENT.message_receive, listener);
 };
 
+/**
+ * 向服务器主动请求获取用户聊天列表
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const fetchChatList = () => {
+    return socket.sendAndListen({
+        method: 'getlist'
+    });
+};
+
+/**
+ * 从服务器获取指定的聊天信息
+ * @param {string} cgid 聊天 gid
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const fetchChat = cgid => {
+    return socket.sendAndListen({
+        method: 'create',
+        params: [
+            cgid,
+            '',
+            '',
+            '',
+            0,
+            false
+        ]
+    });
+};
+
 export default {
     fetchChatsHistory,
+    fetchChatList,
+    fetchChat,
     onChatHistoryStart,
     onChatHistoryEnd,
     onChatHistory,
