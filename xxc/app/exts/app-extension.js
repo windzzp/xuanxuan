@@ -80,7 +80,7 @@ export default class AppExtension extends Extension {
         if (this.auth) {
             return this.auth;
         }
-        const webViewUrl = this._pkg.webViewUrl;
+        const {webViewUrl} = this._pkg;
         if (webViewUrl && !this._webViewUrl) {
             if (!isWebUrl(webViewUrl)) {
                 this._isLocalWebView = true;
@@ -115,7 +115,7 @@ export default class AppExtension extends Extension {
         if (this._appType !== APP_TYPES.webView) {
             return null;
         }
-        const webViewPreloadScript = this._pkg.webViewPreloadScript;
+        const {webViewPreloadScript} = this._pkg;
         if (webViewPreloadScript && !this._webViewPreloadScript) {
             /**
              * 内嵌网页预加载脚本缓存变量
@@ -152,7 +152,7 @@ export default class AppExtension extends Extension {
      */
     get isLocalWebView() {
         // 调用 webViewUrl 属性，确保 _isLocalWebView 变量被赋值
-        const webViewUrl = this.webViewUrl;
+        const webViewUrl = this.webViewUrl; // eslint-disable-line
         return this._isLocalWebView;
     }
 
@@ -176,7 +176,7 @@ export default class AppExtension extends Extension {
      * @type {string}
      */
     get appIcon() {
-        const appIcon = this._pkg.appIcon;
+        const {appIcon} = this._pkg;
         if (appIcon && !this._appIcon) {
             if (appIcon.length > 1 && !appIcon.startsWith('http://') && !appIcon.startsWith('https://') && !appIcon.startsWith('mdi-') && !appIcon.startsWith('icon')) {
                 this._appIcon = Path.join(this.localPath, appIcon);
@@ -185,6 +185,23 @@ export default class AppExtension extends Extension {
             }
         }
         return this._appIcon || super.icon;
+    }
+
+    /**
+     * 获取应用在菜单上显示的图标
+     * @memberof AppExtension
+     * @type {string}
+     */
+    get menuIcon() {
+        const {menuIcon} = this._pkg;
+        if (menuIcon && !this._menuIcon) {
+            if (menuIcon.length > 1 && !menuIcon.startsWith('http://') && !menuIcon.startsWith('https://') && !menuIcon.startsWith('mdi-') && !menuIcon.startsWith('icon')) {
+                this._menuIcon = Path.join(this.localPath, menuIcon);
+            } else {
+                this._menuIcon = menuIcon;
+            }
+        }
+        return this._menuIcon || this.appIcon;
     }
 
     /**
@@ -226,7 +243,7 @@ export default class AppExtension extends Extension {
      * @type {boolean}
      */
     get isDefault() {
-        const buildIn = this.buildIn;
+        const {buildIn} = this;
         return buildIn && buildIn.asDefault;
     }
 
@@ -236,7 +253,40 @@ export default class AppExtension extends Extension {
      * @type {boolean}
      */
     get isFixed() {
-        const buildIn = this.buildIn;
+        const {buildIn} = this;
         return buildIn && (buildIn.asDefault || buildIn.fixed);
+    }
+
+    /**
+     * 获取是否允许用户将应用图标固定在窗口菜单上
+     * @memberof AppExtension
+     * @type {boolean}
+     */
+    get canPinnedOnMenu() {
+        const {pinnedOnMenu} = this._pkg;
+        return !this.isFixed && pinnedOnMenu !== false;
+    }
+
+    /**
+     * 获取应用图标是否能够固定在窗口菜单上
+     * @memberof AppExtension
+     * @type {boolean}
+     */
+    get pinnedOnMenu() {
+        const {pinnedOnMenu} = this._pkg;
+        const userPinnedOnMenu = this._data.pinnedOnMenu;
+        return (pinnedOnMenu !== false && userPinnedOnMenu) || (pinnedOnMenu === true && userPinnedOnMenu !== false);
+    }
+
+    /**
+     * 设置应用图标是否能够固定在窗口菜单上
+     * @param {boolean} flag 是否能够固定在窗口菜单上
+     * @memberof AppExtension
+     */
+    set pinnedOnMenu(flag) {
+        const {pinnedOnMenu} = this._pkg;
+        if (pinnedOnMenu !== false) {
+            this._data.pinnedOnMenu = flag;
+        }
     }
 }

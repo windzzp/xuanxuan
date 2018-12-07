@@ -296,6 +296,9 @@ export default class ExtsIndex extends Component {
             >
                 {
                     openedApps.map(openedApp => {
+                        if (openedApp.app.pinnedOnMenu) {
+                            return null;
+                        }
                         const isCurrentApp = Exts.ui.isCurrentOpenedApp(openedApp.id);
                         const displayName = ifEmptyStringThen(this.state.pageTitles[openedApp.id], openedApp.app.displayName);
                         return (<NavLink
@@ -338,7 +341,7 @@ export default class ExtsIndex extends Component {
                         }
                         return (<div
                             key={openedApp.id}
-                            className={classes(`app-exts-app app-exts-app-${openedApp.id} dock scroll-y`, {hidden: !Exts.ui.isCurrentOpenedApp(openedApp.id)})}
+                            className={classes(`app-exts-app app-exts-app-${openedApp.id} dock scroll-y`, {'app-exts-app-pinned': openedApp.app.pinnedOnMenu, hidden: !Exts.ui.isCurrentOpenedApp(openedApp.id)})}
                             style={{backgroundColor: openedApp.app.appBackColor}}
                         >{appView}</div>);
                     })

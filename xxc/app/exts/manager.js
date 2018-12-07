@@ -3,7 +3,9 @@ import Path from 'path';
 import compareVersions from 'compare-versions';
 import uuid from 'uuid/v4';
 import extractZip from 'extract-zip';
-import db, {removeInstalledExtension, saveInstalledExtension, getInstalledExtension} from './extensions-db';
+import db, {
+    removeInstalledExtension, saveInstalledExtension, getInstalledExtension, saveExtensionData,
+} from './extensions-db';
 import {createExtension} from './extension';
 import Modal from '../components/modal';
 import Lang from '../lang';
@@ -273,7 +275,7 @@ export const setExtensionDisabled = (extension, disabled = true) => {
             extension.hotAttach();
         }
     }
-    saveInstalledExtension(extension, true);
+    saveExtensionData(extension);
 };
 
 /**
@@ -286,6 +288,7 @@ export const setExtensionEnabled = extension => {
     return setExtensionDisabled(extension, false);
 };
 
+export {saveExtensionData};
 
 export default {
     db,

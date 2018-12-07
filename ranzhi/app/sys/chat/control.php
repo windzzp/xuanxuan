@@ -38,7 +38,7 @@ class chat extends control
     {
         $this->app->loadModuleConfig('ldap');
         if(empty($this->config->ldap->turnon)) $password = md5($password . $account);
-        $user     = $this->loadModel('user')->identify($account, $password);
+        $user = $this->loadModel('user')->identify($account, $password);
 
         if($user)
         {
@@ -899,7 +899,7 @@ class chat extends control
                 $errors[] = $error;
             }
         }
-        elseif (!empty($chat->dismissDate))
+        elseif(!empty($chat->dismissDate))
         {
             $error = new stdclass();
             $error->gid      = $message->cgid;
@@ -1274,6 +1274,9 @@ class chat extends control
 
     /**
      * Check user change.
+     *
+     * @access public
+     * @return void
      */
     public function checkUserChange()
     {
@@ -1283,8 +1286,11 @@ class chat extends control
     }
 
     /**
-     * Extension list.
-     * @param int $userID
+     * Get extensions.
+     *
+     * @param  int    $userID
+     * @access public
+     * @return void
      */
     public function extensions($userID = 0)
     {

@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-unresolved
-import {env, fs as fse} from 'Platform';
 import path from 'path';
+import fse from 'fs-extra';
+import platform from '../../platform';
 import Config, {updateConfig} from '../../config';
 import Lang from '../../lang';
 
@@ -60,30 +61,17 @@ if (Array.isArray(internals) && internals.length) {
 }
 
 /**
- * 内置扩展存储根路径
- * @type {string}
- * @private
- */
-const buildInsPath = path.join(process.env.HOT ? env.appRoot : env.appPath, 'build-in');
-
-/**
- * 内置扩展清单文件路径：`extensions.json`
- * @type {string}
- * @private
- */
-const buildInsFile = path.join(buildInsPath, 'extensions.json');
-
-/**
  * 内置扩展清单文件读取的内置扩展列表
  * @type {Object[]}
  * @private
  */
-const buildIns = fse.readJsonSync(buildInsFile, {throws: false});
+const buildIns = platform.call('buildIn.getBuildInExtensions');
 
 if (buildIns && Array.isArray(buildIns)) {
+    const buildInPath = platform.access('buildIn.buildInPath');
     buildIns.forEach(extConfig => {
         if (typeof extConfig === 'string') {
-            const extPkgPath = path.join(buildInsPath, extConfig, 'package.json');
+            const extPkgPath = path.join(buildInPath, extConfig, 'package.json');
             const extPkg = fse.readJsonSync(extPkgPath, {throws: false});
             if (extPkg && extPkg.name === extConfig) {
                 extConfig = extPkg;
@@ -91,7 +79,7 @@ if (buildIns && Array.isArray(buildIns)) {
         }
         if (extConfig && (typeof extConfig === 'object')) {
             extConfig.buildIn = {
-                localPath: path.join(buildInsPath, extConfig.name)
+                localPath: path.join(buildInPath, extConfig.name)
             };
             exts.push(extConfig);
             if (DEBUG) {
@@ -103,20 +91,8 @@ if (buildIns && Array.isArray(buildIns)) {
     });
 }
 
-/**
- * 内置扩展存储根路径内的运行时配置文件路径
- * @type {string}
- * @private
- */
-const buildInConfigFile = path.join(buildInsPath, 'config.json');
-
-/**
- * 内置扩展存储根路径内的运行时配置
- * @type {string}
- * @private
- */
-const buildInConfig = fse.readJsonSync(buildInConfigFile, {throws: false});
-
+// 内置的运行时配置
+const buildInConfig = platform.call('buildIn.getBuildInConfig');
 // 更新扩展的运行时配置
 if (buildInConfig) {
     updateConfig(buildInConfig);

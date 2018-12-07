@@ -21,7 +21,7 @@ import ChatChangeFontPopover from '../../views/chats/chat-change-font-popover';
 import db from '../db';
 import ChatAddCategoryDialog from '../../views/chats/chat-add-category-dialog';
 import TodoEditorDialog from '../../views/todo/todo-editor-dialog';
-import Todo from '../todo';
+import {createTodoFromMessage} from '../todo';
 import {strip, linkify, escape} from '../../utils/html-helper';
 import {
     addContextMenuCreator, getMenuItemsForContext, tryAddDividerItem, tryRemoveLastDivider
@@ -59,26 +59,31 @@ const EVENT = {
 /**
  * 在界面上激活聊天
  * @param {Chat|string} chat 聊天实例或者聊天 GID
+ * @param {string} [menu] 要激活的菜单类型
  * @return {void}
  */
-export const activeChat = chat => {
+export const activeChat = (chat, menu) => {
     if ((typeof chat === 'string') && chat.length) {
         chat = chats.get(chat);
     }
     if (chat) {
-        if (!activedChatId || chat.gid !== activedChatId) {
-            activedChatId = chat.gid;
-            events.emit(EVENT.activeChat, chat);
-            ui.showMobileChatsMenu(false);
-        }
         const urlHash = window.location.hash;
-        if (!urlHash.endsWith(`/${chat.gid}`)) {
+        if (menu) {
+            if (!urlHash.endsWith(`/${menu}/${chat.gid}`)) {
+                window.location.hash = `#/chats/${menu}/${chat.gid}`;
+            }
+        } else if (!urlHash.endsWith(`/${chat.gid}`)) {
             window.location.hash = `#/chats/recents/${chat.gid}`;
         }
         activeCaches[chat.gid] = true;
         if (chat.noticeCount) {
             chat.muteNotice();
             chats.saveChatMessages(chat.messages);
+        }
+        if (!activedChatId || chat.gid !== activedChatId) {
+            activedChatId = chat.gid;
+            events.emit(EVENT.activeChat, chat);
+            ui.showMobileChatsMenu(false);
         }
     }
 };
@@ -591,9 +596,7 @@ addContextMenuCreator('chat.member', ({member, chat}) => {
         if (!Config.ui['chat.denyChatFromMemberProfile']) {
             menu.push({
                 label: Lang.string('chat.sendMessage'),
-                click: () => {
-                    window.location.hash = `#/chats/contacts/${one2OneGid}`;
-                }
+                url: `#/chats/recents/${one2OneGid}`
             });
         }
     }
@@ -807,7 +810,7 @@ addContextMenuCreator('message.text', ({message}) => {
             label: Lang.string('todo.create'),
             icon: 'mdi-calendar-check',
             click: (item, idx, e) => {
-                TodoEditorDialog.show(Todo.createTodoFromMessage(message));
+                TodoEditorDialog.show(createTodoFromMessage(message));
                 e.preventDefault();
             }
         });

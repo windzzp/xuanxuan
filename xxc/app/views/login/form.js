@@ -1,20 +1,20 @@
+// eslint-disable-next-line import/no-unresolved
 import Platform from 'Platform';
-import Config from '../../config';
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import Config from '../../config';
 import InputControl from '../../components/input-control';
 import Checkbox from '../../components/checkbox';
 import Modal from '../../components/modal';
 import Icon from '../../components/icon';
 import Lang from '../../lang';
-import HTML from '../../utils/html-helper';
-import StringHelper from '../../utils/string-helper';
+import {classes} from '../../utils/html-helper';
+import {isNotEmptyString} from '../../utils/string-helper';
 import App from '../../core';
-import User from '../../core/profile/user';
 import SwapUserDialog from './swap-user-dialog';
 import replaceViews from '../replace-views';
 import Button from '../../components/button';
-import {isPasswordWithMD5Flag} from '../../core/profile/user';
+import User, {isPasswordWithMD5Flag} from '../../core/profile/user';
 
 /**
  * 将服务器地址转换为简单形式
@@ -97,7 +97,14 @@ export default class LoginForm extends PureComponent {
         super(props);
 
         const lastSavedUser = App.profile.getLastSavedUser();
-        const entryParams = App.ui.entryParams;
+        const entryParams = Object.assign(App.ui.entryParams, Config.ui.defaultUser);
+        const lockServerUrl = Config.ui.serverUrl;
+
+        /**
+         * 是否锁定了服务器地址（不提供更改服务器地址输入框）
+         * @type {string}
+         */
+        this._lockServerUrl = lockServerUrl;
 
         /**
          * React 组件状态对象
@@ -105,7 +112,7 @@ export default class LoginForm extends PureComponent {
          * @type {object}
          */
         const state = {
-            serverUrl: Config.ui.serverUrl || '',
+            serverUrl: lockServerUrl || '',
             account: '',
             password: '',
             rememberPassword: true,
@@ -113,15 +120,17 @@ export default class LoginForm extends PureComponent {
             message: '',
             submitable: false,
             logining: false,
+            ldap: false,
         };
 
-        if (entryParams && entryParams.server) {
+        if (entryParams && entryParams.server && (!state.serverUrl || (simpleServerUrl(state.serverUrl) === simpleServerUrl(entryParams.server)))) {
             state.serverUrl = entryParams.server;
             state.account = entryParams.account || '';
             state.password = entryParams.password || '';
             state.ldap = entryParams.ldap;
-        } else if (lastSavedUser) {
-            if (!Config.ui.serverUrl) {
+        }
+        if (lastSavedUser && (!state.account || (state.account === lastSavedUser.account))) {
+            if (!lockServerUrl) {
                 state.serverUrl = lastSavedUser.serverUrl || lastSavedUser.server || '';
             }
             state.account = lastSavedUser.account || '';
@@ -135,9 +144,21 @@ export default class LoginForm extends PureComponent {
             state.serverUrl = simpleServerUrl(state.serverUrl);
         }
 
-        state.submitable = StringHelper.isNotEmpty(state.serverUrl) && StringHelper.isNotEmpty(state.account) && StringHelper.isNotEmpty(state.password);
+        state.submitable = isNotEmptyString(state.serverUrl) && isNotEmptyString(state.account) && isNotEmptyString(state.password);
 
-        if (state.autoLogin && state.submitable) {
+        let denyAutoLogin = false;
+        if (Platform.ui.isMainWindow) {
+            denyAutoLogin = !Platform.ui.isMainWindow();
+        }
+
+        /**
+         * 是否在显示界面后自动登录
+         * @type {boolean}
+         * @private
+         */
+        this._autoLoginOnOpen = !denyAutoLogin && state.submitable && (state.autoLogin || App.ui.isAutoLoginNextTime());
+
+        if (this._autoLoginOnOpen) {
             state.logining = true;
         }
 
@@ -155,7 +176,7 @@ export default class LoginForm extends PureComponent {
      * @return {void}
      */
     componentDidMount() {
-        if (this.state.submitable && (this.state.autoLogin || App.ui.isAutoLoginNextTime())) {
+        if (this._autoLoginOnOpen) {
             this.login();
         }
     }
@@ -167,13 +188,21 @@ export default class LoginForm extends PureComponent {
      * @memberof LoginForm
      */
     login() {
+        const {
+            account,
+            password,
+            serverUrl,
+            rememberPassword,
+            ldap,
+            autoLogin,
+        } = this.state;
         App.server.login({
-            server: this.state.serverUrl,
-            account: this.state.account,
-            password: this.state.password,
-            rememberPassword: this.state.rememberPassword,
-            autoLogin: this.state.autoLogin,
-            ldap: this.state.ldap,
+            server: serverUrl,
+            account,
+            password,
+            rememberPassword,
+            autoLogin,
+            ldap,
         }).then(() => {
             this.setState({logining: false});
         }).catch(error => {
@@ -194,14 +223,15 @@ export default class LoginForm extends PureComponent {
      * @private
      */
     handleInputFieldChange(field, value) {
+        const {account, password, serverUrl} = this.state;
         const userState = {
-            account: this.state.account,
-            password: this.state.password,
-            serverUrl: this.state.serverUrl,
+            account,
+            password,
+            serverUrl,
             message: ''
         };
         userState[field] = value;
-        userState.submitable = StringHelper.isNotEmpty(userState.serverUrl) && StringHelper.isNotEmpty(userState.account) && StringHelper.isNotEmpty(userState.password);
+        userState.submitable = isNotEmptyString(userState.serverUrl) && isNotEmptyString(userState.account) && isNotEmptyString(userState.password);
 
         this.setState(userState);
     }
@@ -214,10 +244,11 @@ export default class LoginForm extends PureComponent {
      * @return {void}
      */
     handleRememberPasswordChanged = rememberPassword => {
+        const {ldap, autoLogin} = this.state;
         this.setState({
             rememberPassword,
-            ldap: rememberPassword ? false : this.state.ldap,
-            autoLogin: !rememberPassword ? false : this.state.autoLogin
+            ldap: rememberPassword ? false : ldap,
+            autoLogin: !rememberPassword ? false : autoLogin
         });
     }
 
@@ -229,10 +260,11 @@ export default class LoginForm extends PureComponent {
      * @return {void}
      */
     handleAutoLoginChanged = autoLogin => {
+        const {ldap, rememberPassword} = this.state;
         this.setState({
             autoLogin,
-            ldap: autoLogin ? false : this.state.ldap,
-            rememberPassword: autoLogin ? true : this.state.rememberPassword
+            ldap: autoLogin ? false : ldap,
+            rememberPassword: autoLogin ? true : rememberPassword
         });
     }
 
@@ -244,12 +276,13 @@ export default class LoginForm extends PureComponent {
      * @return {void}
      */
     changeLDAP(ldap) {
+        const {autoLogin, rememberPassword, password} = this.state;
         this.setState({
             ldap,
-            rememberPassword: ldap ? false : this.state.rememberPassword,
-            autoLogin: ldap ? false : this.state.autoLogin,
+            rememberPassword: ldap ? false : rememberPassword,
+            autoLogin: ldap ? false : autoLogin,
         });
-        if (ldap && isPasswordWithMD5Flag(this.state.password)) {
+        if (ldap && isPasswordWithMD5Flag(password)) {
             this.handleInputFieldChange('password', '');
         }
     }
@@ -297,10 +330,12 @@ export default class LoginForm extends PureComponent {
         }, () => {
             const {serverUrl} = this.state;
             if (serverUrl.toLowerCase().startsWith('http://')) {
-                Modal.confirm((<div>
-                    <h4>{Lang.format('login.nonSecurity.confirm', serverUrl)}</h4>
-                    <div className="text-gray">{Lang.string('login.nonSecurity.detail')}</div>
-                </div>), {
+                Modal.confirm((
+                    <div>
+                        <h4>{Lang.format('login.nonSecurity.confirm', serverUrl)}</h4>
+                        <div className="text-gray">{Lang.string('login.nonSecurity.detail')}</div>
+                    </div>
+                ), {
                     actions: [
                         {type: 'cancel'},
                         {type: 'submit', label: Lang.string('login.nonSecurity.btn'), className: 'danger-pale text-danger'},
@@ -343,7 +378,7 @@ export default class LoginForm extends PureComponent {
                 password: user.passwordMD5WithFlag,
                 message: ''
             };
-            newState.submitable = StringHelper.isNotEmpty(newState.serverUrl) && StringHelper.isNotEmpty(newState.account) && StringHelper.isNotEmpty(newState.password);
+            newState.submitable = isNotEmptyString(newState.serverUrl) && isNotEmptyString(newState.account) && isNotEmptyString(newState.password);
             this.setState(newState);
         });
     };
@@ -417,48 +452,69 @@ export default class LoginForm extends PureComponent {
             this.serverSwitchBtn = <div data-hint={Lang.string('login.swapUser')} className="hint--top app-login-swap-user-btn dock-right dock-top"><button onClick={this.handleSwapUserBtnClick} type="button" className="btn iconbutton rounded"><Icon name="account-switch" /></button></div>;
         }
 
-        return (<div className={HTML.classes('app-login-form', className)} {...other}>
-            {this.state.message && <div className="app-login-message danger box">{this.state.message}</div>}
-            {Config.ui.serverUrl ? null : <InputControl
-                value={this.state.serverUrl}
-                autoFocus
-                disabled={this.state.logining}
-                label={Lang.string('login.serverUrl.label')}
-                placeholder={Lang.string('login.serverUrl.hint')}
-                onChange={this.handleServerUrlChange}
-                className="relative app-login-server-control"
-            >
-                {this.serverSwitchBtn}
-            </InputControl>}
-            <InputControl
-                value={this.state.account}
-                disabled={this.state.logining}
-                label={Lang.string('login.account.label')}
-                placeholder={Lang.string('login.account.hint')}
-                onChange={this.handleAccountChange}
-            />
-            <InputControl
-                value={this.state.password}
-                disabled={this.state.logining}
-                className="space"
-                label={Lang.string('login.password.label')}
-                inputType="password"
-                onChange={this.handlePasswordChange}
-            />
-            <button
-                type="button"
-                disabled={!this.state.submitable || this.state.logining}
-                className={HTML.classes('btn block rounded space-sm', this.state.submitable ? 'primary' : 'gray')}
-                onClick={this.handleLoginBtnClick}
-            >
-                {Lang.string(this.state.logining ? 'login.btn.logining' : 'login.btn.label')}
-            </button>
-            <div className="row">
-                <Checkbox disabled={this.state.logining} checked={this.state.rememberPassword} onChange={this.handleRememberPasswordChanged} className="cell" label={Lang.string('login.rememberPassword')} />
-                <Checkbox disabled={this.state.logining} checked={this.state.autoLogin} onChange={this.handleAutoLoginChanged} className="cell" label={Lang.string('login.autoLogin')} />
-                <Checkbox disabled={this.state.logining} checked={this.state.ldap} onChange={this.handleLDAPChanged} className="cell" label={'LDAP'} />
-                {Platform.ui.isOpenAtLogin ? <div data-hint={Lang.string('login.moreLoginSettings')} className="hint--top"><Button className="iconbutton rounded" icon="settings-box" onClick={this.handleSettingBtnClick} /></div> : null}
+        const {
+            serverUrl,
+            account,
+            password,
+            rememberPassword,
+            autoLogin,
+            message,
+            submitable,
+            logining,
+            ldap,
+        } = this.state;
+
+        let serverView = null;
+        if (!this._lockServerUrl) {
+            serverView = (
+                <InputControl
+                    value={serverUrl}
+                    autoFocus
+                    disabled={logining}
+                    label={Lang.string('login.serverUrl.label')}
+                    placeholder={Lang.string('login.serverUrl.hint')}
+                    onChange={this.handleServerUrlChange}
+                    className="relative app-login-server-control"
+                >
+                    {this.serverSwitchBtn}
+                </InputControl>
+            );
+        }
+
+        return (
+            <div className={classes('app-login-form', className)} {...other}>
+                {message && <div className="app-login-message danger box">{message}</div>}
+                {serverView}
+                <InputControl
+                    value={account}
+                    disabled={logining}
+                    label={Lang.string('login.account.label')}
+                    placeholder={Lang.string('login.account.hint')}
+                    onChange={this.handleAccountChange}
+                />
+                <InputControl
+                    value={password}
+                    disabled={logining}
+                    className="space"
+                    label={Lang.string('login.password.label')}
+                    inputType="password"
+                    onChange={this.handlePasswordChange}
+                />
+                <button
+                    type="button"
+                    disabled={!submitable || logining}
+                    className={classes('btn block rounded space-sm', submitable ? 'primary' : 'gray')}
+                    onClick={this.handleLoginBtnClick}
+                >
+                    {Lang.string(logining ? 'login.btn.logining' : 'login.btn.label')}
+                </button>
+                <div className="row">
+                    <Checkbox disabled={logining} checked={rememberPassword} onChange={this.handleRememberPasswordChanged} className="cell" label={Lang.string('login.rememberPassword')} />
+                    <Checkbox disabled={logining} checked={autoLogin} onChange={this.handleAutoLoginChanged} className="cell" label={Lang.string('login.autoLogin')} />
+                    <Checkbox disabled={logining} checked={ldap} onChange={this.handleLDAPChanged} className="cell" label={Lang.string('login.ldap')} />
+                    {Platform.ui.isOpenAtLogin ? <div data-hint={Lang.string('login.moreLoginSettings')} className="hint--top"><Button className="iconbutton rounded" icon="settings-box" onClick={this.handleSettingBtnClick} /></div> : null}
+                </div>
             </div>
-        </div>);
+        );
     }
 }

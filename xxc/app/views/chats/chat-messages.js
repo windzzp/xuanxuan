@@ -149,6 +149,8 @@ export default class ChatMessages extends Component {
                 this.setState({loading: true}, () => {
                     App.im.chats.loadChatMessages(chat).then(() => {
                         return this.setState({loading: false});
+                    }).catch(() => {
+                        return this.setState({loading: false});
                     });
                     this.loadChatMessagesTask = null;
                 });

@@ -1,11 +1,13 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Config from '../../config';
-import HTML from '../../utils/html-helper';
-import {LoginForm} from './form';
-import {BuildInfo} from '../common/build-info';
+import {classes} from '../../utils/html-helper';
+import {LoginForm} from './form'; // eslint-disable-line
+import {BuildInfo} from '../common/build-info'; // eslint-disable-line
+import PoweredInfo from '../common/powered-info';
 import App from '../../core';
 import replaceViews from '../replace-views';
+import pkg from '../../package.json';
 
 /**
  * LoginIndex 组件 ，显示登录界面
@@ -73,16 +75,24 @@ export default class LoginIndex extends PureComponent {
             ...other
         } = this.props;
 
-        return (<div className={HTML.classes('app-login center-content', className)} {...other}>
-            <section>
-                <header className="text-center space-sm">
-                    <img src={`${Config.media['image.path']}logo-inverse.png`} alt="logo" />
-                </header>
-                <LoginForm className="rounded layer has-padding-xl" />
-                {App.ui.entryParams.loginTip && <div className="app-login-tip small text-center has-padding-v muted text-white">{App.ui.entryParams.loginTip}</div>}
-                {children}
-            </section>
-            <BuildInfo className="dock-right dock-bottom small has-padding text-white muted" />
-        </div>);
+        let showPoweredBy = Config.ui['app.showPoweredBy'];
+        if (showPoweredBy === 'auto') {
+            showPoweredBy = pkg.name !== 'xuanxuan';
+        }
+
+        return (
+            <div className={classes('app-login center-content', className)} {...other}>
+                <section>
+                    <header className="text-center space-sm">
+                        <img src={`${Config.media['image.path']}logo-inverse.png`} alt="logo" />
+                    </header>
+                    <LoginForm className="rounded layer has-padding-xl" />
+                    {App.ui.entryParams.loginTip && <div className="app-login-tip small text-center has-padding-v muted text-white">{App.ui.entryParams.loginTip}</div>}
+                    {children}
+                </section>
+                <BuildInfo className="dock-right dock-bottom small has-padding text-white muted" />
+                {showPoweredBy && <PoweredInfo className="dock-left dock-bottom small strong has-padding text-white muted" />}
+            </div>
+        );
     }
 }

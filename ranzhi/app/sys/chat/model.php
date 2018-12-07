@@ -243,7 +243,7 @@ class chatModel extends model
     /**
      * Foramt chat object
      *
-     * @param  object   $chat
+     * @param  mixed    $chats  array | object
      * @access public
      * @return object
      */

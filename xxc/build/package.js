@@ -182,6 +182,7 @@ program
 
 console.log(chalk.magentaBright(chalk.bold(`───────────────┤ ${pkg.name.toUpperCase()} ${pkg.version}`) + ' 打包工具 ├───────────────'));
 
+const appRootPath = path.resolve(__dirname, '../');
 const configName = program.config;
 const isCustomConfig = configName && configName !== '-';
 const platforms = formatPlatforms(program.platform);
@@ -336,6 +337,15 @@ const electronBuilder = {
     }
 };
 
+if (config.buildInPath) {
+    electronBuilder.extraResources.push({
+        from: path.resolve(configDirPath || __dirname, config.buildInPath),
+        to: 'build-in'
+    });
+}
+
+const packagesPath = path.join(__dirname, '../', electronBuilder.directories.output);
+
 // 输出打包配置文件
 const outputConfigFiles = () => {
     console.log(`${chalk.cyanBright(chalk.bold('❖ 创建打包配置文件:'))}\n`);
@@ -442,7 +452,7 @@ const createPackage = (osType, arch, debug = isDebug) => {
     return new Promise((resolve, reject) => {
         const params = [`--${osType}`];
         if (arch) {
-            params.push(`--${arch}`);
+            params.push(`--${arch === 'x32' ? 'ia32' : arch}`);
         }
 
         spawn('build', params, {
@@ -454,7 +464,15 @@ const createPackage = (osType, arch, debug = isDebug) => {
             }),
             stdio: verbose ? 'inherit' : 'ignore'
         })
-            .on('close', code => resolve(code))
+            .on('close', async code => {
+                if (osType === 'win' || osType === 'linux') {
+                    const zipDir = path.join(packagesPath, arch.includes('32') ? `${osType}-ia32-unpacked` : `${osType}-unpacked`);
+                    const zipFile = path.join(packagesPath, `${config.name}.${config.version}.${isBeta ? 'beta.' : ''}${debug ? 'debug.' : ''}${(arch.includes('32') ? (osType === 'win' ? 'win32' : 'ia32') : (osType === 'win' ? 'win64' : 'x64'))}.zip`);
+                    await createZipFromDir(zipFile, zipDir, false);
+                    console.log(`    ${chalk.green(chalk.bold('✓'))} 创建压缩包 ${chalk.underline(path.relative(appRootPath, zipFile))}`);
+                }
+                resolve(code);
+            })
             .on('error', spawnError => reject(spawnError));
     });
 };
@@ -474,7 +492,7 @@ const buildBrowser = async (destRoot) => {
     await Promise.all([copyDist(), copyMedia(), copyAssets(), copyIndexHTML(), copyPKG(), copyManifest(), copyIcons()]);
 
     // 创建 zip
-    const zipFile = path.resolve(destRoot, '../', `${config.name}.${config.version}.browser.zip`);
+    const zipFile = path.resolve(destRoot, '../', `${config.name}.${config.version}.${isBeta ? 'beta.' : ''}${isDebug ? 'debug.' : ''}browser.zip`);
     await createZipFromDir(zipFile, destRoot, false);
     console.log(`    ${chalk.green(chalk.bold('✓'))} 创建压缩包 ${chalk.underline(zipFile)}`);
 };
@@ -501,7 +519,6 @@ const build = async (callback) => {
     let packedNum = 0;
     const buildPlatforms = platforms;
     const archTypes = archs;
-    const packagesPath = path.join(__dirname, '../', electronBuilder.directories.output);
     const needPackageBrowser = buildPlatforms.includes('browser');
     const onlyPackageBrowser = needPackageBrowser && buildPlatforms.length === 1;
 
@@ -552,6 +569,7 @@ const build = async (callback) => {
                 const startTime = new Date().getTime();
                 // eslint-disable-next-line no-await-in-loop
                 await createPackage(platform, arch, isDebug);
+
                 if (verbose) {
                     console.log(chalk.yellow('══════════════════════════════════════════════════════════════'));
                 }

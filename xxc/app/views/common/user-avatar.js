@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '../../components/avatar';
-import HTML from '../../utils/html-helper';
+import Icon from '../../components/icon';
+import Image from '../../components/image';
+import {classes} from '../../utils/html-helper';
 import App from '../../core';
 import {StatusDot} from './status-dot';
 import replaceViews from '../replace-views';
@@ -91,17 +93,17 @@ export default class UserAvatar extends Component {
         }
 
         if (!user) {
-            return <Avatar className={HTML.classes('circle user-avatar', className)} icon="account" {...other}>{statusDot}</Avatar>;
+            return <Avatar className={classes('circle user-avatar', className)} icon="account" {...other}>{statusDot}</Avatar>;
         }
 
         const avatarImageSrc = user.getAvatar(App.user && App.user.server);
         if (avatarImageSrc) {
-            return <Avatar className={HTML.classes('circle user-avatar', className)} image={avatarImageSrc} imageClassName="circle" {...other}>{statusDot}</Avatar>;
+            return <Avatar className={classes('circle user-avatar', className)} image={<Image src={avatarImageSrc}><Icon name="account muted" /></Image>} imageClassName="circle" {...other}>{statusDot}</Avatar>;
         }
         const name = user.realname || user.account;
         if (name && name.length) {
-            return <Avatar skin={{code: user.id || name, textColor: '#fff'}} className={HTML.classes('circle user-avatar', className)} label={name[0].toUpperCase()} {...other}>{statusDot}</Avatar>;
+            return <Avatar skin={{code: user.id || name, textColor: '#fff'}} className={classes('circle user-avatar', className)} label={name[0].toUpperCase()} {...other}>{statusDot}</Avatar>;
         }
-        return <Avatar skin={{code: user.id, textColor: '#fff'}} className={HTML.classes('circle user-avatar', className)} icon="account" {...other}>{statusDot}</Avatar>;
+        return <Avatar skin={{code: user.id, textColor: '#fff'}} className={classes('circle user-avatar', className)} icon="account" {...other}>{statusDot}</Avatar>;
     }
 }

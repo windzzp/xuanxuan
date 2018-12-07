@@ -1,9 +1,26 @@
+import Platform from 'Platform';
 import React, {Component} from 'react';
+import ReactChatView from 'react-chatview';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
-import {MessageListItem} from './message-list-item';
+import {MessageListItem} from './message-list-item'; // eslint-disable-line
 import replaceViews from '../replace-views';
 import App from '../../core';
+
+/**
+ * 是否为浏览器平台
+ * @type {boolean}
+ * @private
+ */
+const isBrowser = Platform.type === 'browser';
+
+/**
+ * 是否为火狐浏览器
+ * 因为火狐 bug，导致滚动条消失，所以需要判断是否为火狐浏览器 https://github.com/philipwalton/flexbugs/issues/108
+ * @type {boolean}
+ * @private
+ */
+const isFirefox = isBrowser && window.navigator.userAgent.includes('Firefox');
 
 /**
  * MessageList 组件 ，显示聊天消息列表界面
@@ -104,7 +121,8 @@ export default class MessageList extends Component {
      * @return {void}
      */
     componentDidUpdate() {
-        if (this.props.stayBottom) {
+        const {stayBottom} = this.props;
+        if (stayBottom) {
             const {messages} = this.props;
             const newMessage = this.checkHasNewMessages(messages);
             if (newMessage) {
@@ -151,7 +169,7 @@ export default class MessageList extends Component {
      * @memberof MessageList
      */
     checkHasNewMessages(messages) {
-        const lastMessage = this.lastMessage;
+        const {lastMessage} = this;
         const thisLastMessage = messages && messages.length ? messages[messages.length - 1] : null;
         this.lastMessage = thisLastMessage;
         if (lastMessage !== thisLastMessage && thisLastMessage && ((!lastMessage && thisLastMessage) || thisLastMessage.date > lastMessage.date || thisLastMessage.id > lastMessage.id)) {
@@ -168,7 +186,7 @@ export default class MessageList extends Component {
      * @memberof MessageList
      */
     checkHasNewOlderMessages(messages) {
-        const lastFirstMessage = this.lastFirstMessage;
+        const {lastFirstMessage} = this;
         const thisFirstMessage = messages && messages.length ? messages[0] : null;
         this.lastFirstMessage = thisFirstMessage;
         if (thisFirstMessage && lastFirstMessage && (thisFirstMessage.date < lastFirstMessage.date || thisFirstMessage.id < lastFirstMessage.id)) {
@@ -184,7 +202,14 @@ export default class MessageList extends Component {
      * @return {void}
      */
     handleScroll = e => {
-        const target = e.target;
+        if (isFirefox) {
+            const {onScroll} = this.props;
+            if (onScroll) {
+                onScroll({isAtTop: true}, e);
+            }
+            return;
+        }
+        const {target} = e;
         if (!target.classList.contains('app-message-list')) {
             return;
         }
@@ -196,8 +221,9 @@ export default class MessageList extends Component {
             isAtBottom: (target.scrollHeight - target.scrollTop) === target.clientHeight
         };
         this.scrollInfo = scrollInfo;
-        if (this.props.onScroll) {
-            this.props.onScroll(scrollInfo, e);
+        const {onScroll} = this.props;
+        if (onScroll) {
+            onScroll(scrollInfo, e);
         }
     }
 
@@ -241,18 +267,38 @@ export default class MessageList extends Component {
             messages.forEach(message => {
                 const messageListItem = listItemCreator ? listItemCreator(message, lastMessage) : <MessageListItem id={`message-${message.gid}`} staticUI={staticUI} font={font} showDateDivider={showDateDivider} lastMessage={lastMessage} key={message.gid} message={message} {...listItemProps} sleepUrlCard={sleepUrlCard} />;
                 lastMessage = message;
-                messagesView.unshift(messageListItem);
+                if (isFirefox) {
+                    messagesView.push(messageListItem);
+                } else {
+                    messagesView.unshift(messageListItem);
+                }
             });
         }
 
-        return (<div
-            {...other}
-            className={classes('app-message-list flex column-reverse', className, {'app-message-list-static': staticUI})}
-            onScroll={this.handleScroll}
-            ref={e => {this.element = e;}}
-        >
-            {messagesView}
-            {header}
-        </div>);
+        if (isFirefox) {
+            return (
+                <ReactChatView
+                    flipped
+                    className={classes('app-message-list flex column single', className, {'app-message-list-static': staticUI})}
+                    ref={e => {this.element = e;}}
+                    onInfiniteLoad={this.handleScroll}
+                >
+                    {messagesView}
+                    {header}
+                </ReactChatView>
+            );
+        }
+
+        return (
+            <div
+                {...other}
+                className={classes('app-message-list flex column-reverse', className, {'app-message-list-static': staticUI})}
+                onScroll={this.handleScroll}
+                ref={e => {this.element = e;}}
+            >
+                {messagesView}
+                {header}
+            </div>
+        );
     }
 }

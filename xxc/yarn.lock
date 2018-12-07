@@ -6034,6 +6034,11 @@ lodash.bind@^4.1.4:
   resolved "http://registry.npm.taobao.org/lodash.bind/download/lodash.bind-4.2.1.tgz#7ae3017e939622ac31b7d7d7dcb1b34db1690d35"
   integrity sha1-euMBfpOWIqwxt9fX3LGzTbFpDTU=
 
+lodash.clone@^4.5.0:
+  version "4.5.0"
+  resolved "http://registry.npm.taobao.org/lodash.clone/download/lodash.clone-4.5.0.tgz#195870450f5a13192478df4bc3d23d2dea1907b6"
+  integrity sha1-GVhwRQ9aExkkeN9Lw9I9LeoZB7Y=
+
 lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "http://registry.npm.taobao.org/lodash.debounce/download/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
@@ -7534,6 +7539,13 @@ react-addons-shallow-compare@>=0.14.0:
   dependencies:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
+
+react-chatview@^0.2.5:
+  version "0.2.5"
+  resolved "http://registry.npm.taobao.org/react-chatview/download/react-chatview-0.2.5.tgz#f5bb70ed2ec6d8a7f96b64883037ff19174c8e49"
+  integrity sha1-9btw7S7G2Kf5a2SIMDf/GRdMjkk=
+  dependencies:
+    lodash.clone "^4.5.0"
 
 react-deep-force-update@^1.0.0:
   version "1.1.2"
