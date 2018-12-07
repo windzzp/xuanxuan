@@ -116,7 +116,7 @@ export default class ExtsNavbarView extends PureComponent {
         });
         items.splice(0, 0, (
             <div className="hint--right nav-item" data-hint={Lang.string('navbar.exts.label')}>
-                <a className={classes('block', {active: isExtsView && !hasAppActive})} href={`#${ROUTES.exts._}`}>
+                <a className={classes('block', {active: isExtsView && !hasAppActive})} href={`#${hasAppActive ? ROUTES.exts.app.id('home') : ROUTES.exts._}`}>
                     <Avatar size={Config.ui['navbar.width']} icon="mdi-apps" className="rounded flex-none" />
                 </a>
             </div>
