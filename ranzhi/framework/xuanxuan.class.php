@@ -116,6 +116,7 @@ class xuanxuan extends router
         $client  = !empty($input->client) ? $input->client : '';
         $module  = !empty($input->module) ? $input->module : '';
         $method  = !empty($input->method) ? $input->method : '';
+        $lang    = !empty($input->lang)   ? $input->lang   : '';
         $params  = !empty($input->params) ? $input->params : array();
 
         $module = strtolower($module);
@@ -143,6 +144,8 @@ class xuanxuan extends router
 
         $this->session->set('userID', $userID);
         $this->session->set('clientIP', $client);
+
+        if($lang) $this->setClientLang($lang);
 
         $this->setModuleName($module);
         $this->setMethodName($method);
