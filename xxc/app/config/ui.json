@@ -17,7 +17,7 @@
     "chat.showNoticeOnChatTitle": false,
     "chat.sendMarkdown": true,
     "member.showAvatar": true,
-    "markdown.hintUrl": "http://wowubuntu.com/markdown/",
+    "markdown.hintUrl": "https://markdown-zh.readthedocs.io/en/latest/",
     "chat.littlexx": true,
     "chat.hideChatAvatar": false,
     "chat.hideStatusDot": false,
