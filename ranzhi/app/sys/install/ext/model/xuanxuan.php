@@ -22,7 +22,6 @@ public function setXuanxuan()
     }
     catch(PDOException $e)
     {
-        $this->dao->sqlError($e);
         return false;
     }
 
