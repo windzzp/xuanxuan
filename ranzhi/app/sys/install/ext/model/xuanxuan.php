@@ -2,11 +2,29 @@
 public function createTable($version)
 {
     $result = parent::createTable($version);
-    if($result)
+    if($result) $this->setXuanxuan();
+    return $result;
+}
+
+/**
+ * Set version and key for xuanxuan.
+ *
+ * @access public
+ * @return bool
+ */
+public function setXuanxuan()
+{
+    $sql  = "REPLACE INTO `{$this->config->db->name}`.`{$this->config->db->prefix}sys_config` (`owner`, `app`, `module`, `section`, `key`, `value`) VALUES ('system', 'sys', 'xuanxuan', 'global', 'version', '{$this->config->xuanxuan->version}');";
+    $sql .= "REPLACE INTO `{$this->config->db->name}`.`{$this->config->db->prefix}sys_config` (`owner`, `app`, `module`, `section`, `key`, `value`) VALUES ('system', 'sys', 'xuanxuan', '', 'key', '" . md5(md5(time()) . rand()). "');";
+    try
     {
-        $sql  = "INSERT INTO `{$this->config->db->name}`.`{$this->config->db->prefix}sys_config` (`owner`, `app`, `module`, `section`, `key`, `value`) VALUES ('system', 'sys', 'xuanxuan', 'global', 'version', '{$this->config->xuanxuan->version}');";
-        $sql .= "INSERT INTO `{$this->config->db->name}`.`{$this->config->db->prefix}sys_config` (`owner`, `app`, `module`, `section`, `key`, `value`) VALUES ('system', 'sys', 'xuanxuan', '', 'key', '" . md5(md5(time()) . rand()). "');";
         $this->dbh->query($sql);
     }
-    return $result;
+    catch(PDOException $e)
+    {
+        $this->dao->sqlError($e);
+        return false;
+    }
+
+    return true;
 }
