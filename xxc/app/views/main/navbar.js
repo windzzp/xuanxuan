@@ -245,14 +245,12 @@ export default class Navbar extends Component {
                 <nav className="dock-top app-nav-main">
                     {
                         navbarItems.map(item => {
-                            return (
-                                <div key={item.to} className="hint--right nav-item" data-hint={item.label} onClick={this.handleMainNavItemClick}>
-                                    <NavLink item={item} />
-                                    {
-                                        (noticeBadge && item.to === ROUTES.chats.recents.__) ? <div className="label label-sm dock-right dock-top circle red badge">{noticeBadge}</div> : null
-                                    }
-                                </div>
-                            );
+                            return (<div key={item.to} className="hint--right nav-item" data-hint={item.label} onClick={this.handleMainNavItemClick}>
+                                <NavLink item={item} />
+                                {
+                                    (noticeBadge && item.to === ROUTES.chats.recents.__) ? <div className="label label-sm dock-right dock-top circle red badge">{noticeBadge}</div> : null
+                                }
+                            </div>);
                         })
                     }
                     {ExtsRuntime && ExtsRuntime.ExtsNavbarView && <ExtsRuntime.ExtsNavbarView />}
