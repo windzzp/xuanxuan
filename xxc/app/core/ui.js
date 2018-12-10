@@ -176,6 +176,7 @@ Server.onUserLoginout((user, code, reason, unexpected) => {
         }
         if (errorCode) {
             Messager.show(Lang.error(errorCode), {
+                rootClassName: 'message-kickoff-confirm',
                 type: 'danger',
                 icon: 'alert',
                 actions: [{

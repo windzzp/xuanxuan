@@ -982,9 +982,9 @@ export default class Chat extends Entity {
      * @memberof Chat
      */
     getMembersSet(appMembers) {
-        if (this.type === TYPES.system) {
-            return appMembers.all.filter(x => !x.isDeleted);
-        }
+        // if (this.type === TYPES.system) {
+        //     return appMembers.all.filter(x => !x.isDeleted);
+        // }
         if (!this._membersSet || this._membersSetUpdateId !== this.updateId) {
             this.updateMembersSet(appMembers);
             this._membersSetUpdateId = this.updateId;
