@@ -200,7 +200,13 @@ func getMaxOnlineUser(config *goconfig.ConfigFile) error {
 
 //获取服务器列表,conf中[ranzhi]段不能改名.
 func getRanzhi(config *goconfig.ConfigFile) {
-    keyList := config.GetKeyList("ranzhi")
+    var section = "backend"
+    var keyList []string
+    keyList = config.GetKeyList(section)
+
+    if len(keyList) == 0 {
+        keyList = config.GetKeyList("ranzhi")
+    }
 
     Config.DefaultServer = ""
     if len(keyList) > 1 {
@@ -208,15 +214,15 @@ func getRanzhi(config *goconfig.ConfigFile) {
     }
 
     for _, ranzhiName := range keyList {
-        ranzhiServer, err := config.GetValue("ranzhi", ranzhiName)
+        ranzhiServer, err := config.GetValue(section, ranzhiName)
         if err != nil {
-            log.Fatal("config: get ranzhi server error,", err)
+            log.Fatal("config: get backend server error,", err)
         }
 
         serverInfo := strings.Split(ranzhiServer, ",")
         //逗号前面是地址，后面是token，token长度固定为32
         if len(serverInfo) < 2 || len(serverInfo[1]) != 32 {
-            log.Fatal("config: ranzhi server config error")
+            log.Fatal("config: backend server config error")
         }
 
         if len(serverInfo) >= 3 && serverInfo[2] == "default" {
