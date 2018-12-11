@@ -204,6 +204,7 @@ func getRanzhi(config *goconfig.ConfigFile) {
     var keyList []string
     keyList = config.GetKeyList(section)
 
+    //兼容2.1.0之前的版本
     if len(keyList) == 0 {
         keyList = config.GetKeyList("ranzhi")
     }
