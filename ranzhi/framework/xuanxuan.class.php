@@ -3,6 +3,14 @@ include 'router.class.php';
 class xuanxuan extends router
 {
     /**
+     * The input params.
+     *
+     * @var array
+     * @access public
+     */
+    public $input = array();
+
+    /**
      *  The request params.
      *
      * @var array
@@ -31,7 +39,10 @@ class xuanxuan extends router
         parent::__construct($appName, $appRoot);
 
         $this->setViewType();
-        $this->setClientLang('zh-cn');
+        $this->setInput();
+
+        $lang = empty($this->input['lang']) ? 'zh-cn' : $this->input['lang'];
+        $this->setClientLang($lang);
     }
 
     /**
@@ -46,28 +57,25 @@ class xuanxuan extends router
     }
 
     /**
-     * 加载common模块。
-     *
-     *  common模块比较特别，它会执行几乎每次请求都需要执行的操作，例如：
-     *  打开session，检查权限等等。
-     *  加载完$lang, $config, $dbh后，需要在入口文件(www/index.php)中手动调用该方法。
-     *
-     * Load the common module
-     *
-     *  The common module is a special module, which can be used to do some common things. For examle:
-     *  start session, check priviledge and so on.
-     *  This method should called manually in the router file(www/index.php) after the $lang, $config, $dbh loaded.
+     * Set input params.
      *
      * @access public
-     * @return object|bool  the common model object or false if not exits.
+     * @return void
      */
-    public function loadCommon()
+    public function setInput()
     {
-        $result = parent::loadCommon();
-
         $this->initAES();
 
-        return $result;
+        $input = file_get_contents("php://input");
+        $input = $this->decrypt($input);
+
+        $this->input['version'] = !empty($input->v)      ? $input->v      : '';
+        $this->input['userID']  = !empty($input->userID) ? $input->userID : '';
+        $this->input['client']  = !empty($input->client) ? $input->client : '';
+        $this->input['module']  = !empty($input->module) ? $input->module : '';
+        $this->input['method']  = !empty($input->method) ? $input->method : '';
+        $this->input['lang']    = !empty($input->lang)   ? $input->lang   : '';
+        $this->input['params']  = !empty($input->params) ? $input->params : array();
     }
 
     /**
@@ -78,8 +86,10 @@ class xuanxuan extends router
      */
     public function initAES()
     {
-        $key = $this->config->xuanxuan->key;
+        $row = $this->dbh->query('SELECT `value` FROM ' . TABLE_CONFIG . " WHERE `owner`='system' AND `module`='common' AND `section`='xuanxuan' AND `key`='key'")->fetch();
+        $key = $row->value;
         $iv  = substr($key, 0, 16);
+
         $this->aes = $this->loadClass('phpaes');
         $this->aes->init($key, $iv);
         if($this->config->debug)
@@ -109,15 +119,7 @@ class xuanxuan extends router
      */
     public function parseRequest()
     {
-        $input   = file_get_contents("php://input");
-        $input   = $this->decrypt($input);
-        $version = !empty($input->v)      ? $input->v : '';
-        $userID  = !empty($input->userID) ? $input->userID : '';
-        $client  = !empty($input->client) ? $input->client : '';
-        $module  = !empty($input->module) ? $input->module : '';
-        $method  = !empty($input->method) ? $input->method : '';
-        $lang    = !empty($input->lang)   ? $input->lang   : '';
-        $params  = !empty($input->params) ? $input->params : array();
+        extract($this->input);
 
         $module = strtolower($module);
         $method = strtolower($method);
@@ -144,8 +146,6 @@ class xuanxuan extends router
 
         $this->session->set('userID', $userID);
         $this->session->set('clientIP', $client);
-
-        if($lang) $this->setClientLang($lang);
 
         $this->setModuleName($module);
         $this->setMethodName($method);

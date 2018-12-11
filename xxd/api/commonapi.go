@@ -107,6 +107,16 @@ func (pd ParseData) Result() string {
     return ret.(string)
 }
 
+//获取lang
+func (pd ParseData) Lang() string {
+    ret, ok := pd["lang"]
+    if !ok {
+        return "zh-cn"
+    }
+
+    return ret.(string)
+}
+
 //获取版本号
 func (pd ParseData) Version() string {
     ret, ok := pd["v"]

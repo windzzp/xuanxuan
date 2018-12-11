@@ -51,6 +51,7 @@ type Client struct {
     userID      int64           // Send to user id
     repeatLogin bool
     cVer        string //client version
+    lang        string
 }
 
 type ClientRegister struct {
@@ -128,6 +129,11 @@ func chatLogin(parseData api.ParseData, client *Client) error {
         }
     }
 
+    client.lang = parseData.Lang()
+    if _, ok := util.Languages[client.lang]; ok == false {
+        util.Languages[client.lang] = client.lang
+    }
+
     loginData, userID, ok := api.ChatLogin(parseData)
     if userID == -1 {
         util.LogError().Println("chat login error")
@@ -145,7 +151,7 @@ func chatLogin(parseData api.ParseData, client *Client) error {
     client.userID = userID
 
     // 生成并存储文件会员
-    userFileSessionID, err := api.UserFileSessionID(client.serverName, client.userID)
+    userFileSessionID, err := api.UserFileSessionID(client.serverName, client.userID, client.lang)
     if err != nil {
         util.LogError().Println("chat user create file session error:", err)
         //返回给客户端登录失败的错误信息
@@ -155,7 +161,7 @@ func chatLogin(parseData api.ParseData, client *Client) error {
     client.send <- userFileSessionID
 
     // 获取所有用户列表
-    getList, err := api.UserGetlist(client.serverName, client.userID)
+    getList, err := api.UserGetlist(client.serverName, client.userID, client.lang)
     if err != nil {
         util.LogError().Println("chat user get user list error:", err)
         //返回给客户端登录失败的错误信息
@@ -165,7 +171,7 @@ func chatLogin(parseData api.ParseData, client *Client) error {
     client.send <- getList
 
     // 获取当前登录用户所有会话数据,组合好的数据放入send发送队列
-    chatList, err := api.Getlist(client.serverName, client.userID)
+    chatList, err := api.Getlist(client.serverName, client.userID, client.lang)
     if err != nil {
         util.LogError().Println("chat get list error:", err)
         // 返回给客户端登录失败的错误信息
@@ -175,7 +181,7 @@ func chatLogin(parseData api.ParseData, client *Client) error {
     client.send <- chatList
 
     //获取离线消息
-    offlineMessages, err := api.GetofflineMessages(client.serverName, client.userID)
+    offlineMessages, err := api.GetofflineMessages(client.serverName, client.userID, client.lang)
     if err != nil {
         util.LogError().Println("chat get offline messages error")
         // 返回给客户端登录失败的错误信息
@@ -183,7 +189,7 @@ func chatLogin(parseData api.ParseData, client *Client) error {
     }
     client.send <- offlineMessages
 
-    offlineNotify, err := api.GetOfflineNotify(client.serverName, client.userID)
+    offlineNotify, err := api.GetOfflineNotify(client.serverName, client.userID, client.lang)
     if err != nil {
         util.LogError().Println("chat get offline notify error")
         return err
@@ -216,7 +222,7 @@ func chatLogout(userID int64, client *Client) error {
     if client.repeatLogin {
         return nil
     }
-    x2cMessage, sendUsers, err := api.ChatLogout(client.serverName, client.userID)
+    x2cMessage, sendUsers, err := api.ChatLogout(client.serverName, client.userID, client.lang)
     if err != nil {
         return err
     }
