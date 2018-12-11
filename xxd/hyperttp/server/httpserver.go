@@ -15,7 +15,6 @@ import (
     "io"
     "net/http"
     "os"
-    //"strings"
     "xxd/api"
     "xxd/util"
     "math/rand"
