@@ -168,7 +168,7 @@ Server.onUserLogin((user, loginError) => {
 });
 
 // 处理用户退出登录事件
-Server.onUserLoginout((user, code, reason, unexpected) => {
+Server.onUserLogout((user, code, reason, unexpected) => {
     if (user) {
         let errorCode = null;
         if (reason === 'KICKOFF') {
@@ -704,7 +704,7 @@ profile.onUserConfigChange((change, config) => {
 // // 处理全局快捷键注册和反注册
 if (Platform.shortcut) {
     Server.onUserLogin(registerShortcut);
-    Server.onUserLoginout(unregisterGlobalShortcut);
+    Server.onUserLogout(unregisterGlobalShortcut);
 
     if (Platform.ui.showAndFocusWindow) {
         registerCommand('shortcut.focusWindowHotkey', () => {

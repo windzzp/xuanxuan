@@ -57,11 +57,11 @@ App.server.onUserLogin((user, error) => {
     fetchServerExtensions(user);
 });
 
-// 监听用户退出事件，触发扩展的 `onUserLoginout` 回调函数
-App.server.onUserLoginout((user, code, reason, unexpected) => {
+// 监听用户退出事件，触发扩展的 `onUserLogout` 回调函数
+App.server.onUserLogout((user, code, reason, unexpected) => {
     setExtensionUser(null);
     forEachExtension(ext => {
-        ext.callModuleMethod('onUserLoginout', user, code, reason, unexpected);
+        ext.callModuleMethod('onUserLogout', user, code, reason, unexpected);
     });
     detachServerExtensions(user);
 });
