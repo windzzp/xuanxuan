@@ -206,7 +206,8 @@ func getRanzhi(config *goconfig.ConfigFile) {
 
     //兼容2.1.0之前的版本
     if len(keyList) == 0 {
-        keyList = config.GetKeyList("ranzhi")
+        section = "ranzhi"
+        keyList = config.GetKeyList(section)
     }
 
     Config.DefaultServer = ""
