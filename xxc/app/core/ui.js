@@ -555,8 +555,8 @@ export const getUrlMeta = (url, disableCache = false) => {
             return Promise.resolve(url);
         };
         if (extInspector && extInspector.noMeta && extInspector.inspect) {
-            return getUrl().then(url => {
-                const cardMeta = extInspector.inspect(url);
+            return getUrl().then(entryUrl => {
+                const cardMeta = extInspector.inspect(entryUrl, url);
                 if (cardMeta instanceof Promise) {
                     return cardMeta;
                 }

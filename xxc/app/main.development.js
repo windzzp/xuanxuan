@@ -45,7 +45,9 @@ if (shouldQuit) {
 
 // 当所有窗口关闭时退出应用
 ElectronApp.on('window-all-closed', () => {
-    ElectronApp.quit();
+    try {
+        ElectronApp.quit();
+    } catch (_) {} // eslint-disable-line
 });
 
 /**
