@@ -771,7 +771,7 @@ export const enableGlobalShortcut = () => {
 
 // 监听浏览器地址栏 hash 参数变更事件
 window.addEventListener('hashchange', () => {
-    const hash = window.location.hash;
+    const {hash} = window.location;
     if (DEBUG) {
         console.color('➜', 'orangeBg', hash.substr(1), 'orangePale');
     }
