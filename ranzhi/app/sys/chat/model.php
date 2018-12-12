@@ -108,6 +108,7 @@ class chatModel extends model
      *
      * @param  string $status
      * @param  array  $idList
+     * @param  bool   $idAsKey
      * @access public
      * @return array
      */
