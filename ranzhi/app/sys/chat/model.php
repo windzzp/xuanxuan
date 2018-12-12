@@ -64,10 +64,15 @@ class chatModel extends model
      */
     public function formatUsers($users)
     {
+        $isObject = false;
         if(is_object($users))
         {
-            $user = $users;
+            $isObject = true;
+            $users    = array($users);
+        }
 
+        foreach($users as $user)
+        {
             $user->id     = (int)$user->id;
             $user->dept   = (int)$user->dept;
             $user->avatar = !empty($user->avatar) ? commonModel::getSysURL() . $user->avatar : $user->avatar;
@@ -77,12 +82,9 @@ class chatModel extends model
             return $user;
         }
 
-        if(is_array($users))
-        {
-            foreach($users as $user) $user = $this->formatUsers($user);
+        if($isObject) return current($users);
 
-            return $users;
-        }
+        return $users;
     }
 
     /**
@@ -250,10 +252,15 @@ class chatModel extends model
      */
     public function formatChats($chats)
     {
+        $isObject = false;
         if(is_object($chats))
         {
-            $chat = $chats;
+            $isObject = true;
+            $chats    = array($chats);
+        }
 
+        foreach($chats as $chat)
+        {
             $chat->id             = (int)$chat->id;
             $chat->subject        = (int)$chat->subject;
             $chat->public         = (int)$chat->public;
@@ -267,16 +274,11 @@ class chatModel extends model
             if(isset($chat->star)) $chat->star = (int)$chat->star;
             if(isset($chat->hide)) $chat->hide = (int)$chat->hide;
             if(isset($chat->mute)) $chat->mute = (int)$chat->mute;
-
-            return $chat;
         }
 
-        if(is_array($chats))
-        {
-            foreach($chats as $chat) $chat = $this->formatChats($chat);
+        if($isObject) return current($chats);
 
-            return $chats;
-        }
+        return $chats;
     }
 
     /**
