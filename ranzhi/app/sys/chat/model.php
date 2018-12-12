@@ -56,32 +56,33 @@ class chatModel extends model
     }
 
     /**
-     * Foramt user object
+     * Format users.
      *
-     * @param  object   $user
+     * @param  mixed  $users  object | array
      * @access public
-     * @return object
+     * @return object | array
      */
     public function formatUsers($users)
     {
-        if(is_array($users))
+        if(is_object($users))
         {
-            foreach($users as $user)
-            {
-                $user = $this->formatUsers($user);
-            }
-            return $users;
+            $user = $users;
+
+            $user->id     = (int)$user->id;
+            $user->dept   = (int)$user->dept;
+            $user->avatar = !empty($user->avatar) ? commonModel::getSysURL() . $user->avatar : $user->avatar;
+
+            if(isset($user->deleted)) $user->deleted = (int)$user->deleted;
+
+            return $user;
         }
 
-        $user = $users;
+        if(is_array($users))
+        {
+            foreach($users as $user) $user = $this->formatUsers($user);
 
-        $user->id     = (int)$user->id;
-        $user->dept   = (int)$user->dept;
-        $user->avatar = !empty($user->avatar) ? commonModel::getSysURL() . $user->avatar : $user->avatar;
-
-        if(isset($user->deleted)) $user->deleted = (int)$user->deleted;
-
-        return $user;
+            return $users;
+        }
     }
 
     /**
@@ -98,6 +99,7 @@ class chatModel extends model
 			->where('id')->eq($userID)
 			->fetch();
         if(!$user) return array();
+
         return $this->formatUsers($user);
     }
 
@@ -125,9 +127,8 @@ class chatModel extends model
             ->beginIF($idList)->andWhere('id')->in($idList)->fi();
 
         $users = $idAsKey ? $dao->fetchAll('id') : $dao->fetchAll();
-        $users = $this->formatUsers($users);
 
-        return $users;
+        return $this->formatUsers($users);
     }
 
     /**
@@ -241,40 +242,41 @@ class chatModel extends model
     }
 
     /**
-     * Foramt chat object
+     * Foramt chats.
      *
-     * @param  mixed    $chats  array | object
+     * @param  mixed  $chats  object | array
      * @access public
-     * @return object
+     * @return object | array
      */
     public function formatChats($chats)
     {
-        if(is_array($chats))
+        if(is_object($chats))
         {
-            foreach($chats as $chat)
-            {
-                $this->formatChats($chat);
-            }
-            return $chats;
+            $chat = $chats;
+
+            $chat->id             = (int)$chat->id;
+            $chat->subject        = (int)$chat->subject;
+            $chat->public         = (int)$chat->public;
+            $chat->createdDate    = strtotime($chat->createdDate);
+            $chat->editedDate     = $chat->editedDate == '0000-00-00 00:00:00' ? 0 : strtotime($chat->editedDate);
+            $chat->lastActiveTime = $chat->lastActiveTime == '0000-00-00 00:00:00' ? 0 : strtotime($chat->lastActiveTime);
+            $chat->dismissDate    = $chat->dismissDate == '0000-00-00 00:00:00' ? 0 : strtotime($chat->dismissDate);
+
+            if($chat->type == 'one2one') $chat->name = '';
+
+            if(isset($chat->star)) $chat->star = (int)$chat->star;
+            if(isset($chat->hide)) $chat->hide = (int)$chat->hide;
+            if(isset($chat->mute)) $chat->mute = (int)$chat->mute;
+
+            return $chat;
         }
 
-        $chat = $chats;
+        if(is_array($chats))
+        {
+            foreach($chats as $chat) $chat = $this->formatChats($chat);
 
-        $chat->id             = (int)$chat->id;
-        $chat->subject        = (int)$chat->subject;
-        $chat->public         = (int)$chat->public;
-        $chat->createdDate    = strtotime($chat->createdDate);
-        $chat->editedDate     = $chat->editedDate == '0000-00-00 00:00:00' ? 0 : strtotime($chat->editedDate);
-        $chat->lastActiveTime = $chat->lastActiveTime == '0000-00-00 00:00:00' ? 0 : strtotime($chat->lastActiveTime);
-        $chat->dismissDate    = $chat->dismissDate == '0000-00-00 00:00:00' ? 0 : strtotime($chat->dismissDate);
-
-        if($chat->type == 'one2one') $chat->name = '';
-
-        if(isset($chat->star)) $chat->star = (int)$chat->star;
-        if(isset($chat->hide)) $chat->hide = (int)$chat->hide;
-        if(isset($chat->mute)) $chat->mute = (int)$chat->mute;
-
-        return $chat;
+            return $chats;
+        }
     }
 
     /**
@@ -291,9 +293,7 @@ class chatModel extends model
             ->beginIF($public)->andWhere('dismissDate')->eq('0000-00-00 00:00:00')->fi()
             ->fetchAll();
 
-        $this->formatChats($chats);
-
-        return $chats;
+        return $this->formatChats($chats);
     }
 
     /**
@@ -321,9 +321,7 @@ class chatModel extends model
 
         $chats = array_merge($systemChat, $chats);
 
-        $this->formatChats($chats);
-
-        return $chats;
+        return $this->formatChats($chats);
     }
 
     /**
@@ -340,7 +338,7 @@ class chatModel extends model
 
         if($chat)
         {
-            $this->formatChats($chat);
+            $chat = $this->formatChats($chat);
 
             if($members) $chat->members = $this->getMemberListByGID($gid);
         }
