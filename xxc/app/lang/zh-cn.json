@@ -317,6 +317,7 @@
     "chat.message.refreshCard": "重新载入卡片",
     "chat.message.provider.format": "由【{0}】提供",
     "chat.message.copyMarkdown": "复制 Markdown",
+    "chat.message.senderMe": "我",
     "chat.noMoreMessage": "没有更多消息",
     "chat.loadMoreMessage": "加载更多历史消息",
 

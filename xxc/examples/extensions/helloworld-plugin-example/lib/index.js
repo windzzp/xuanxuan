@@ -31,7 +31,7 @@ module.exports = {
         }
     },
 
-    onUserLoginout: (user) => {
+    onUserLogout: (user) => {
         if (user) {
             console.log('>> 扩展【helloworld-plugin-example】：用户退出登录了，用户名称是：' + user.displayName);
         }

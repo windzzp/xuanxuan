@@ -102,6 +102,11 @@ func FileBaseName(path string) string {
     return filepath.Base(path)
 }
 
+//文件扩展名
+func FileExtension(path string) string {
+    return filepath.Ext(path)
+}
+
 //删除指定目录或文件
 func Rm(path string) error {
     err := os.Remove(path)

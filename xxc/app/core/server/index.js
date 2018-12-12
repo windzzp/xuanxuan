@@ -173,7 +173,7 @@ export const onUserLogin = listener => events.on(EVENT.login, listener);
  * @param {Funcion} listener 事件回调函数
  * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
  */
-export const onUserLoginout = listener => events.on(EVENT.loginout, listener);
+export const onUserLogout = listener => events.on(EVENT.loginout, listener);
 
 /**
  * 向服务器主动请求获取系统用户数据
@@ -242,7 +242,7 @@ export default {
     logout,
     socket,
     onUserLogin,
-    onUserLoginout,
+    onUserLogout,
     changeUserStatus,
     fetchUserList,
     tryGetTempUserInfo

@@ -24,5 +24,6 @@
     "chat.mentionOthers": true,
     "chat.denyShowMemberProfile": false,
     "chat.muteOnChatNotActive": false,
-    "app.showPoweredBy": "auto"
+    "app.showPoweredBy": "auto",
+    "chat.showMeAsMySenderName": false
 }

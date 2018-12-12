@@ -16,12 +16,13 @@ import (
     "database/sql"
 )
 
-const Version = "v2.1.0"
+const Version = "v2.2.0"
 
 var Run bool = true
 var IsTest bool = false
 var Token []byte
 var DBConn *sql.DB
+var Languages map[string]string
 
 func init() {
 
@@ -34,6 +35,7 @@ func init() {
     // xxd 启动时根据时间生成token
     timeStr := Int642String(GetUnixTime())
     Token = []byte(GetMD5(timeStr))
+    Languages = make(map[string]string)
     if IsTest {
         Printf("Server test model is %t \n", IsTest)
         Printf("Test token: %s \n", string(Token))

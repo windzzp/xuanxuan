@@ -122,14 +122,14 @@ class chat extends control
             $this->output->users  = !empty($userID) ? array($userID) : array();
             $this->output->data   = $users;
 
-            if (empty($idList))
+            if(empty($idList))
             {
                 $this->app->loadLang('user', 'sys');
                 $roles = $this->lang->user->roleList;
 
                 $allDepts = $this->loadModel('tree')->getListByType('dept');
                 $depts = array();
-                foreach ($allDepts as $id => $dept)
+                foreach($allDepts as $id => $dept)
                 {
                     $depts[$id] = array('name' => $dept->name, 'order' => (int)$dept->order, 'parent' => (int)$dept->parent);
                 }
