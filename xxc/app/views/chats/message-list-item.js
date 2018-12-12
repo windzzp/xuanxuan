@@ -123,7 +123,8 @@ export default class MessageListItem extends Component {
      * @return {void}
      */
     componentDidMount() {
-        if (!this.props.ignoreStatus) {
+        const {ignoreStatus} = this.props;
+        if (!ignoreStatus) {
             this.checkResendMessage();
         }
         if (this.needGetSendInfo && this.needGetSendInfo !== true) {
@@ -239,7 +240,7 @@ export default class MessageListItem extends Component {
      * @return {void}
      */
     handleResendBtnClick = () => {
-        const message = this.props.message;
+        const {message} = this.props;
         message.date = new Date().getTime();
         if (message.needCheckResend) {
             App.im.server.sendChatMessage(message);
@@ -254,9 +255,9 @@ export default class MessageListItem extends Component {
      * @return {void}
      */
     handleDeleteBtnClick = () => {
-        const message = this.props.message;
+        const {message} = this.props;
         if (message.needCheckResend) {
-            App.im.chats.deleteLocalMessage(this.props.message);
+            App.im.chats.deleteLocalMessage(message);
         }
     };
 
@@ -268,12 +269,15 @@ export default class MessageListItem extends Component {
      * @return {void}
      */
     handleShareBtnClick = event => {
+        const {message} = this.props;
         if (showContextMenu('message.text', {
             event,
-            message: this.props.message,
-            options: {onHidden: () => {
-                this.setState({sharing: false});
-            }}
+            message,
+            options: {
+                onHidden: () => {
+                    this.setState({sharing: false});
+                }
+            }
         })) {
             this.setState({sharing: true});
         }
