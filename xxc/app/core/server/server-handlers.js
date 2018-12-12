@@ -28,6 +28,7 @@ const chatLogin = (msg, socket) => {
         }
         const member = members.get(msg.data.id);
         if (member) {
+            member.$set(msg.data);
             member.status = msg.data.status;
             members.update(member);
         } else {

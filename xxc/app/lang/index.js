@@ -11,8 +11,9 @@ const DEFAULT_LANG = 'zh-cn';
 /**
  * 当前语言代号
  * @type {string}
+ * @private
  */
-export const currentLangName = DEFAULT_LANG;
+let currentLangName = DEFAULT_LANG;
 
 /**
  * 语言表对象
@@ -103,5 +104,9 @@ export default {
 
     get name() {
         return currentLangName;
+    },
+
+    set name(newName) {
+        currentLangName = newName;
     }
 };

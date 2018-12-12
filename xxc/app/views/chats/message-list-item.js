@@ -123,7 +123,8 @@ export default class MessageListItem extends Component {
      * @return {void}
      */
     componentDidMount() {
-        if (!this.props.ignoreStatus) {
+        const {ignoreStatus} = this.props;
+        if (!ignoreStatus) {
             this.checkResendMessage();
         }
         if (this.needGetSendInfo && this.needGetSendInfo !== true) {
@@ -239,7 +240,7 @@ export default class MessageListItem extends Component {
      * @return {void}
      */
     handleResendBtnClick = () => {
-        const message = this.props.message;
+        const {message} = this.props;
         message.date = new Date().getTime();
         if (message.needCheckResend) {
             App.im.server.sendChatMessage(message);
@@ -254,9 +255,9 @@ export default class MessageListItem extends Component {
      * @return {void}
      */
     handleDeleteBtnClick = () => {
-        const message = this.props.message;
+        const {message} = this.props;
         if (message.needCheckResend) {
-            App.im.chats.deleteLocalMessage(this.props.message);
+            App.im.chats.deleteLocalMessage(message);
         }
     };
 
@@ -268,12 +269,15 @@ export default class MessageListItem extends Component {
      * @return {void}
      */
     handleShareBtnClick = event => {
+        const {message} = this.props;
         if (showContextMenu('message.text', {
             event,
-            message: this.props.message,
-            options: {onHidden: () => {
-                this.setState({sharing: false});
-            }}
+            message,
+            options: {
+                onHidden: () => {
+                    this.setState({sharing: false});
+                }
+            }
         })) {
             this.setState({sharing: true});
         }
@@ -373,6 +377,7 @@ export default class MessageListItem extends Component {
 
         const hideChatAvatar = Config.ui['chat.hideChatAvatar'];
         const mentionOthers = Config.ui['chat.mentionOthers'];
+        const isSendByMe = message.isSender(App.profile.userId);
 
         if (!hideHeader) {
             const sender = message.getSender(App.members);
@@ -381,15 +386,17 @@ export default class MessageListItem extends Component {
                 this.needGetSendInfo = sender.id;
             }
             const avatarView = hideChatAvatar ? null : <UserAvatar size={avatarSize} className="state" user={sender} onContextMenu={this.handleUserContextMenu} onClick={isNotification ? null : MemberProfileDialog.show.bind(null, sender, null)} />;
+            const senderName = (isSendByMe && Config.ui['chat.showMeAsMySenderName']) ? Lang.string('chat.message.senderMe') : sender.displayName;
             headerView = (
                 <div className="app-message-item-header">
                     {avatarView}
                     <header style={titleFontStyle}>
-                        {(isNotification || !mentionOthers) ? <span className="title text-primary">{sender.displayName}</span> : (
+                        {(isNotification || !mentionOthers) ? <span className="title text-primary">{senderName}</span> : (
                             <a
                                 className="title rounded text-primary"
                                 onContextMenu={staticUI ? null : this.handleUserContextMenu}
-                                onClick={staticUI ? MemberProfileDialog.show.bind(null, sender, null) : this.handleSenderNameClick.bind(this, sender, message)}>{sender.displayName}
+                                onClick={staticUI ? MemberProfileDialog.show.bind(null, sender, null) : this.handleSenderNameClick.bind(this, sender, message)}>
+                                {senderName}
                             </a>
                         )}
                         <small className="time">{formatDate(message.date, dateFormater)}</small>
@@ -448,6 +455,7 @@ export default class MessageListItem extends Component {
                 className={classes('app-message-item', className, {
                     'app-message-sending': !ignoreStatus && needCheckResend && !needResend,
                     'app-message-send-fail': !ignoreStatus && needResend,
+                    'app-message-send-by-me': isSendByMe,
                     'with-avatar': !hideHeader,
                     'hide-chat-avatar': hideChatAvatar,
                     sharing: this.state.sharing

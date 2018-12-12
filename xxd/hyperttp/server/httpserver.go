@@ -15,7 +15,6 @@ import (
     "io"
     "net/http"
     "os"
-    //"strings"
     "xxd/api"
     "xxd/util"
     "math/rand"
@@ -147,6 +146,14 @@ func fileDownload(w http.ResponseWriter, r *http.Request) {
         w.WriteHeader(http.StatusNotFound)
         return
     }
+
+    //fileExtension := util.FileExtension(reqFileName)
+    //util.Println("fileExtension", fileExtension)
+    //if fileExtension != ".jpg" && fileExtension != ".png" && fileExtension != ".jpeg" && fileExtension != ".gif" {
+    //}
+
+    w.Header().Add("Content-Type", "application/octet-stream")
+    w.Header().Add("content-disposition", "attachment; filename=\""+ util.FileBaseName(reqFileName) +"\"")
 
     http.ServeFile(w, r, fileName)
 }

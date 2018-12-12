@@ -1,5 +1,6 @@
 import Platform from 'Platform'; // eslint-disable-line
 import Config from '../../config';
+import Lang from '../../lang';
 
 /**
  * 登录前向 XXD 服务器请求获取服务器信息
@@ -16,7 +17,8 @@ export const requestServerInfo = user => {
             user.passwordForServer,
             ''
         ],
-        v: Config.pkg.version
+        v: Config.pkg.version,
+        lang: Lang.name,
     });
     return Platform.net.postJSON(user.webServerInfoUrl, {
         headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},

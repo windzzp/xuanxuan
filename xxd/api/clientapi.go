@@ -57,14 +57,14 @@ func ChatLogin(clientData ParseData) ([]byte, int64, bool) {
 }
 
 //客户端退出
-func ChatLogout(serverName string, userID int64) ([]byte, []int64, error) {
+func ChatLogout(serverName string, userID int64, lang string) ([]byte, []int64, error) {
     ranzhiServer, ok := RanzhiServer(serverName)
     if !ok {
         util.LogError().Println("no ranzhi server name")
         return nil, nil, util.Errorf("%s\n", "no ranzhi server name")
     }
 
-    request := []byte(`{"module":"chat","method":"logout","userID":` + util.Int642String(userID) + `}`)
+    request := []byte(`{"module":"chat","method":"logout","lang":"` + lang + `","userID":` + util.Int642String(userID) + `}`)
     message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
     if err != nil {
         util.LogError().Println("aes encrypt error:", err)
@@ -178,7 +178,7 @@ func TransitData(clientData []byte, serverName string) ([]byte, []int64, error) 
 }
 
 //获取用户列表
-func UserGetlist(serverName string, userID int64) ([]byte, error) {
+func UserGetlist(serverName string, userID int64, lang string) ([]byte, error) {
     ranzhiServer, ok := RanzhiServer(serverName)
     if !ok {
         util.LogError().Println("no ranzhi server name")
@@ -186,7 +186,7 @@ func UserGetlist(serverName string, userID int64) ([]byte, error) {
     }
 
     // 固定的json格式
-    request := []byte(`{"module":"chat","method":"userGetlist","params":[""],"userID":` + util.Int642String(userID) + `}`)
+    request := []byte(`{"module":"chat","method":"userGetlist", "lang":"` + lang + `", "params":[""],"userID":` + util.Int642String(userID) + `}`)
 
     message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
     if err != nil {
@@ -212,9 +212,9 @@ func UserGetlist(serverName string, userID int64) ([]byte, error) {
 }
 
 //用户文件SessionID 作用于文件下载 为适配web版客户端
-func UserFileSessionID(serverName string, userID int64) ([]byte, error) {
+func UserFileSessionID(serverName string, userID int64, lang string) ([]byte, error) {
     sessionID := util.GetMD5(serverName + util.Int642String(userID) + util.Int642String(util.GetUnixTime()))
-    sessionData := []byte(`{"module":"chat","method":"SessionID","sessionID":"` + sessionID + `"}`)
+    sessionData := []byte(`{"module":"chat","method":"SessionID", "lang":"` + lang + `", "sessionID":"` + sessionID + `"}`)
 
     //将sessionID 存入公共空间
     util.CreateUid(serverName, userID, sessionID)
@@ -229,7 +229,7 @@ func UserFileSessionID(serverName string, userID int64) ([]byte, error) {
 }
 
 //获取用户的会话列表
-func Getlist(serverName string, userID int64) ([]byte, error) {
+func Getlist(serverName string, userID int64, lang string) ([]byte, error) {
     ranzhiServer, ok := RanzhiServer(serverName)
     if !ok {
         util.LogError().Println("no ranzhi server name")
@@ -237,7 +237,7 @@ func Getlist(serverName string, userID int64) ([]byte, error) {
     }
 
     // 固定的json格式
-    request := []byte(`{"module":"chat","method":"getlist","userID":` + util.Int642String(userID) + `}`)
+    request := []byte(`{"module":"chat","method":"getlist", "lang":"` + lang + `", "userID":` + util.Int642String(userID) + `}`)
     message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
     if err != nil {
         util.LogError().Println("aes encrypt error:", err)
@@ -263,7 +263,7 @@ func Getlist(serverName string, userID int64) ([]byte, error) {
 }
 
 //获取离线消息
-func GetofflineMessages(serverName string, userID int64) ([]byte, error) {
+func GetofflineMessages(serverName string, userID int64, lang string) ([]byte, error) {
     ranzhiServer, ok := RanzhiServer(serverName)
     if !ok {
         util.LogError().Println("no ranzhi server name")
@@ -271,7 +271,7 @@ func GetofflineMessages(serverName string, userID int64) ([]byte, error) {
     }
 
     // 固定的json格式
-    request := []byte(`{"module":"chat","method":"getOfflineMessages","userID":` + util.Int642String(userID) + `}`)
+    request := []byte(`{"module":"chat","method":"getOfflineMessages", "lang":"` + lang + `", "userID":` + util.Int642String(userID) + `}`)
     message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
     if err != nil {
         util.LogError().Println("aes encrypt error:", err)
@@ -296,7 +296,7 @@ func GetofflineMessages(serverName string, userID int64) ([]byte, error) {
 }
 
 //获取离线通知
-func GetOfflineNotify(serverName string, userID int64) ([]byte, error) {
+func GetOfflineNotify(serverName string, userID int64, lang string) ([]byte, error) {
     ranzhiServer, ok := RanzhiServer(serverName)
     if !ok {
         util.LogError().Println("no ranzhi server name")
@@ -304,7 +304,7 @@ func GetOfflineNotify(serverName string, userID int64) ([]byte, error) {
     }
 
     // 固定的json格式
-    request := []byte(`{"module":"chat","method":"getOfflineNotify","userID":` + util.Int642String(userID) + `}`)
+    request := []byte(`{"module":"chat","method":"getOfflineNotify", "lang":"` + lang + `", "userID":` + util.Int642String(userID) + `}`)
     message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
     if err != nil {
         util.LogError().Println("aes encrypt error:", err)
@@ -328,7 +328,7 @@ func GetOfflineNotify(serverName string, userID int64) ([]byte, error) {
     return retData, nil
 }
 
-func ReportAndGetNotify(server string) (map[int64][]byte, error) {
+func ReportAndGetNotify(server string, lang string) (map[int64][]byte, error) {
     ranzhiServer, ok := RanzhiServer(server)
     if !ok {
         util.LogError().Println("no ranzhi server name")
@@ -347,6 +347,7 @@ func ReportAndGetNotify(server string) (map[int64][]byte, error) {
 
     trunk["module"] = "chat"
     trunk["method"] = "notify"
+    trunk["lang"]   = lang
     trunk["params"] = params
 
     //send message to xxb and get notify data
@@ -380,7 +381,7 @@ func ReportAndGetNotify(server string) (map[int64][]byte, error) {
     return messageList, nil
 }
 
-func CheckUserChange(serverName string) ([]byte, error) {
+func CheckUserChange(serverName string, lang string) ([]byte, error) {
     ranzhiServer, ok := RanzhiServer(serverName)
     if !ok {
         util.LogError().Println("no ranzhi server name")
@@ -388,7 +389,7 @@ func CheckUserChange(serverName string) ([]byte, error) {
     }
 
     // 固定的json格式
-    request := []byte(`{"module":"chat","method":"checkUserChange","params":[""]}`)
+    request := []byte(`{"module":"chat","method":"checkUserChange","lang":"`+ lang +`","params":[""]}`)
 
     message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
     if err != nil {
@@ -412,7 +413,7 @@ func CheckUserChange(serverName string) ([]byte, error) {
         return nil, nil
     }
 
-    return UserGetlist(serverName, 0)
+    return UserGetlist(serverName, 0, lang)
 }
 
 // 与客户端间的错误通知

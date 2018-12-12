@@ -168,7 +168,7 @@ Server.onUserLogin((user, loginError) => {
 });
 
 // 处理用户退出登录事件
-Server.onUserLoginout((user, code, reason, unexpected) => {
+Server.onUserLogout((user, code, reason, unexpected) => {
     if (user) {
         let errorCode = null;
         if (reason === 'KICKOFF') {
@@ -176,6 +176,7 @@ Server.onUserLoginout((user, code, reason, unexpected) => {
         }
         if (errorCode) {
             Messager.show(Lang.error(errorCode), {
+                rootClassName: 'message-kickoff-confirm',
                 type: 'danger',
                 icon: 'alert',
                 actions: [{
@@ -703,7 +704,7 @@ profile.onUserConfigChange((change, config) => {
 // // 处理全局快捷键注册和反注册
 if (Platform.shortcut) {
     Server.onUserLogin(registerShortcut);
-    Server.onUserLoginout(unregisterGlobalShortcut);
+    Server.onUserLogout(unregisterGlobalShortcut);
 
     if (Platform.ui.showAndFocusWindow) {
         registerCommand('shortcut.focusWindowHotkey', () => {
@@ -770,7 +771,7 @@ export const enableGlobalShortcut = () => {
 
 // 监听浏览器地址栏 hash 参数变更事件
 window.addEventListener('hashchange', () => {
-    const hash = window.location.hash;
+    const {hash} = window.location;
     if (DEBUG) {
         console.color('➜', 'orangeBg', hash.substr(1), 'orangePale');
     }
