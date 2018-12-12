@@ -150,7 +150,7 @@ class chatModel extends model
         if(!empty($user->account) && !empty($user->password)) $data['password'] = md5($user->password . $user->account);
         if(!$data) return null;
 
-        $data->clientLang = $this->app->getClientLang();
+        $data['clientLang'] = $this->app->getClientLang();
         $this->dao->update(TABLE_USER)->data($data)->where('id')->eq($user->id)->exec();
         return $this->getUserByUserID($user->id);
     }
