@@ -76,7 +76,9 @@ export default class ExtsNavbarView extends PureComponent {
      */
     handleAppContextMenu = e => {
         const app = Exts.all.getExt(e.currentTarget.attributes['data-name'].value);
-        App.ui.showContextMenu({x: e.clientX, y: e.clientY, target: e.target}, Exts.ui.createAppContextMenu(app));
+        App.ui.showContextMenu({x: e.clientX, y: e.clientY, target: e.target}, Exts.ui.createNavbarAppContextMenu(app, () => {
+            this.forceUpdate();
+        }));
         e.preventDefault();
     }
 

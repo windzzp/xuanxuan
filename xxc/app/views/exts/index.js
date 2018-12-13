@@ -110,6 +110,9 @@ export default class ExtsIndex extends Component {
      * @return {void}
      */
     componentDidMount() {
+        this.onExtChangeHandler = Exts.all.onExtensionChange(() => {
+            this.forceUpdate();
+        });
         this.checkAppNotFoundMessage();
         this.checkScrollToCurrentApp();
     }
@@ -128,6 +131,20 @@ export default class ExtsIndex extends Component {
     componentDidUpdate() {
         this.checkAppNotFoundMessage();
         this.checkScrollToCurrentApp();
+    }
+
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof Index
+     * @return {void}
+     */
+    componentWillUnmount() {
+        App.events.off(this.onExtChangeHandler);
     }
 
     /**

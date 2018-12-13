@@ -49,6 +49,13 @@ export const isDefaultOpenedApp = id => id === defaultOpenedApp.id;
 const isAppOpen = id => openedApps.find(x => x.id === id);
 
 /**
+ * 查找打开的应用
+ * @param {string} appNameOrID 要查找的应用名称或者打开的应用 ID
+ * @return {OpenedApp}
+ */
+export const getOpenedApp = appNameOrID => openedApps.find(x => x.id === appNameOrID || x.app.name === appNameOrID);
+
+/**
  * 获取打开的应用索引
  * @param {string} id 应用 ID
  * @returns {number} 应用索引
@@ -436,6 +443,18 @@ export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
                 }
             }
         });
+        items.push({
+            label: Lang.string('ext.app.goHome'),
+            disabled: false,
+            click: () => {
+                if (theOpenedApp.webview) {
+                    return theOpenedApp.app.getEntryUrl().then(url => {
+                        theOpenedApp.webview.loadURL(url);
+                        return url;
+                    });
+                }
+            }
+        });
     }
     if (theOpenedApp.id !== defaultOpenedApp.id) {
         if (items.length) {
@@ -491,6 +510,26 @@ export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
     return items;
 };
 
+export const createNavbarAppContextMenu = (appExt, refreshUI) => {
+    const theOpenedApp = getOpenedApp(appExt.name);
+    const items = [];
+    if (theOpenedApp) {
+        items.push(...createOpenedAppContextMenu(theOpenedApp, refreshUI));
+        if (items.length && items[items.length - 1].type !== 'separator') {
+            items.push({type: 'separator'});
+        }
+        items.push({
+            label: Lang.string('ext.app.about'),
+            click: () => {
+                showExtensionDetailDialog(appExt);
+            }
+        });
+    } else {
+        items.push(...createAppContextMenu(appExt));
+    }
+    return items;
+};
+
 export default {
     get openedApps() {
         return openedApps;
@@ -527,4 +566,5 @@ export default {
     createAppContextMenu,
     showExtensionDetailDialog,
     createOpenedAppContextMenu,
+    createNavbarAppContextMenu,
 };
