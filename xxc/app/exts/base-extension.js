@@ -974,36 +974,40 @@ export default class Extension {
         const extModule = this.module;
         let urlInspectors = extModule && extModule.urlInspectors;
         if (urlInspectors) {
-            const urlObj = new URL(url);
-            if (!Array.isArray(urlInspectors)) {
-                urlInspectors = [urlInspectors];
+            try {
+                const urlObj = new URL(url);
+                if (!Array.isArray(urlInspectors)) {
+                    urlInspectors = [urlInspectors];
+                }
+                const urlInspector = urlInspectors.find(x => {
+                    if (!x[type]) {
+                        return false;
+                    }
+                    if (typeof x.test === 'function') {
+                        return x.test(url, urlObj);
+                    }
+                    if (Array.isArray(x.test)) {
+                        x.test = new Set(x.test);
+                    } else if (typeof x.test === 'string') {
+                        x.test = new RegExp(x.test, 'i');
+                    }
+                    if (x.test instanceof Set) {
+                        return x.test.has(urlObj.host);
+                    }
+                    return x.test.test(url);
+                });
+                if (urlInspector && !urlInspector.provider) {
+                    urlInspector.provider = {
+                        icon: this.icon,
+                        name: this.name,
+                        label: this.displayName,
+                        url: `!showExtensionDialog/${this.name}`
+                    };
+                }
+                return urlInspector;
+            } catch (_) {
+                return null;
             }
-            const urlInspector = urlInspectors.find(x => {
-                if (!x[type]) {
-                    return false;
-                }
-                if (typeof x.test === 'function') {
-                    return x.test(url, urlObj);
-                }
-                if (Array.isArray(x.test)) {
-                    x.test = new Set(x.test);
-                } else if (typeof x.test === 'string') {
-                    x.test = new RegExp(x.test, 'i');
-                }
-                if (x.test instanceof Set) {
-                    return x.test.has(urlObj.host);
-                }
-                return x.test.test(url);
-            });
-            if (urlInspector && !urlInspector.provider) {
-                urlInspector.provider = {
-                    icon: this.icon,
-                    name: this.name,
-                    label: this.displayName,
-                    url: `!showExtensionDialog/${this.name}`
-                };
-            }
-            return urlInspector;
         }
         return null;
     }
