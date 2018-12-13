@@ -104,13 +104,14 @@ export default class ExtsNavbarView extends PureComponent {
         const isExtsView = window.location.hash.startsWith('#/exts/');
         const items = apps.map(app => {
             const {menuIcon} = app;
-            const isCurrentApp = isExtsView && Exts.ui.isCurrentOpenedApp(app.name);
+            const openedApp = Exts.ui.getOpenedApp(app.name);
+            const isCurrentApp = openedApp && isExtsView && Exts.ui.isCurrentOpenedApp(openedApp.id);
             if (isCurrentApp) {
                 hasAppActive = true;
             }
             return (
                 <div key={`app-${app.name}`} className="hint--right nav-item" data-hint={app.displayName}>
-                    <a className={classes('block', {active: isCurrentApp})} title={`【${app.displayName}】${app.description || ''}`} href={`#${ROUTES.exts.app.id(app.name)}`} onContextMenu={this.handleAppContextMenu} data-name={app.name}>
+                    <a className={classes('block', {active: isCurrentApp, 'is-open': openedApp})} title={`【${app.displayName}】${app.description || ''}`} href={`#${ROUTES.exts.app.id(app.name)}`} onContextMenu={this.handleAppContextMenu} data-name={app.name}>
                         <Avatar size={Config.ui['navbar.width']} auto={menuIcon} className={classes('rounded flex-none', {'has-padding': !menuIcon.startsWith('mdi-')})} />
                     </a>
                 </div>

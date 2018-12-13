@@ -42,11 +42,11 @@ export const isDefaultOpenedApp = id => id === defaultOpenedApp.id;
 
 /**
  * 判断应用是否已经打开
- * @param {string} id 应用 ID
+ * @param {string} appNameOrID 要查找的应用名称或者打开的应用 ID
  * @returns {boolean} 如果返回 `true` 则为已经打开，否则为没有打开
  * @private
  */
-const isAppOpen = id => openedApps.find(x => x.id === id);
+const isAppOpen = appNameOrID => openedApps.find(x => x.id === appNameOrID || x.app.name === appNameOrID);
 
 /**
  * 查找打开的应用
@@ -547,6 +547,7 @@ export default {
     isCurrentOpenedApp,
     openApp,
     openAppById,
+    getOpenedApp,
     closeApp,
     closeAllApp,
     openAppWithUrl,
