@@ -152,25 +152,25 @@ const createMenu = () => {
                 label: Lang.string('menu.reload'),
                 accelerator: 'Command+R',
                 click() {
-                    application.mainWindow.webContents.reload();
+                    application.currentFocusWindow.webContents.reload();
                 }
             }, {
                 label: Lang.string('menu.toggleFullscreen'),
                 accelerator: 'Ctrl+Command+F',
                 click() {
-                    application.mainWindow.setFullScreen(!application.mainWindow.isFullScreen());
+                    application.currentFocusWindow.setFullScreen(!application.currentFocusWindow.isFullScreen());
                 }
             }, {
                 label: Lang.string('menu.toggleDeveloperTool'),
                 accelerator: 'Alt+Command+I',
                 click() {
-                    application.mainWindow.toggleDevTools();
+                    application.currentFocusWindow.toggleDevTools();
                 }
             }] : [{
                 label: Lang.string('menu.toggleFullscreen'),
                 accelerator: 'Ctrl+Command+F',
                 click() {
-                    application.mainWindow.setFullScreen(!application.mainWindow.isFullScreen());
+                    application.currentFocusWindow.setFullScreen(!application.currentFocusWindow.isFullScreen());
                 }
             }]
         }, {

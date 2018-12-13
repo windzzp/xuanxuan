@@ -555,6 +555,16 @@ class AppRemote {
     // }
 
     /**
+     * 获取当前激活的窗口
+     * @memberof AppRemote
+     * @type {BrowserWindow}
+     */
+    get currentFocusWindow() {
+        const focusedWindowName = Object.keys(this.windows).find(winName => this.windows[winName].isFocused());
+        return focusedWindowName ? this.windows[focusedWindowName] : this.mainWindow;
+    }
+
+    /**
      * 通过 IPC 向所有应用窗口渲染渲染进程发送消息
      *
      * @param {string} channel 事件频道
