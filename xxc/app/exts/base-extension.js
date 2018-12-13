@@ -1075,6 +1075,9 @@ export default class Extension {
      * @return {void}
      */
     saveData() {
-        this.setConfig('_data', this._data);
+        const data = Object.assign({}, this._data);
+        delete data.remoteLoaded;
+        delete data.loadRemoteFailed;
+        this.setConfig('_data', data);
     }
 }

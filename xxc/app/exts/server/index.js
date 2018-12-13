@@ -99,7 +99,7 @@ const downloadRemoteExtension = ext => {
                 });
             });
         }
-        return Promise.reject(`Cannot download extension package form remote server ${ext.download}.`);
+        return Promise.reject(new Error(`Cannot download extension package form remote server ${ext.download}.`));
     });
 };
 
@@ -161,6 +161,9 @@ const processExtensions = async () => {
                 theExt.setLoadRemoteResult(false, new Error('Cannot read package.json from ' + theExt.localPath));
             }
         } catch (error) {
+            if (DEBUG) {
+                console.error('Process remote extension error', error);
+            }
             theExt.setLoadRemoteResult(false, error);
         }
 
