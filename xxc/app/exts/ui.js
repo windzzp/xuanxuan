@@ -417,14 +417,6 @@ export const createAppContextMenu = appExt => {
 export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
     const items = [];
     if (theOpenedApp.webview) {
-        if (!isCurrentOpenedApp(theOpenedApp.id)) {
-            items.push({
-                label: Lang.string('ext.app.open'),
-                click: () => {
-                    openApp(appExt.name);
-                }
-            });
-        }
         items.push({
             label: Lang.string('ext.app.refresh'),
             click: () => {
@@ -522,6 +514,14 @@ export const createNavbarAppContextMenu = (appExt, refreshUI) => {
     const theOpenedApp = getOpenedApp(appExt.name);
     const items = [];
     if (theOpenedApp) {
+        if (!isCurrentOpenedApp(theOpenedApp.id)) {
+            items.push({
+                label: Lang.string('ext.app.open'),
+                click: () => {
+                    openApp(appExt.name);
+                }
+            });
+        }
         items.push(...createOpenedAppContextMenu(theOpenedApp, refreshUI));
         if (items.length && items[items.length - 1].type !== 'separator') {
             items.push({type: 'separator'});
