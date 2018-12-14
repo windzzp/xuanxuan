@@ -256,6 +256,14 @@ export default class MessageContentUrl extends PureComponent {
             });
         }
 
-        return <MessageContentCard card={card} className={classes('app-message-content-url relative')} {...other} />;
+        return (
+            <MessageContentCard
+                card={card}
+                className={classes('app-message-content-url relative', {
+                    'is-webview': card.webviewContent
+                })}
+                {...other}
+            />
+        );
     }
 }
