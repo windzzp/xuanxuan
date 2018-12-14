@@ -96,6 +96,12 @@ addContextMenuCreator('member', ({member}) => {
     }];
 });
 
+// 注册打开成员资料对话框命令
+registerCommand('showMemberProfile', (context, memberId) => {
+    memberId = memberId || context.options.memberId;
+    MemberProfileDialog.show(memberId);
+});
+
 /**
  * 绑定界面上链接点击事件
  * @param {string} type 链接目标类型
@@ -242,6 +248,11 @@ registerCommand('closeModal', (context, modalId, remove) => {
         }
     }
     modal.hide(modalId, null, remove);
+});
+
+// 注册路由跳转命令
+registerCommand('#', (context, ...params) => {
+    window.location.hash = `#/${params.join('/')}`;
 });
 
 /**

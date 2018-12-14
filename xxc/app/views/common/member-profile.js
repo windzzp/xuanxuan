@@ -77,7 +77,7 @@ export default class MemberProfile extends Component {
      */
     componentDidMount() {
         this.dataChangeEventHandler = App.events.onDataChange(data => {
-            if (data && data.members && data.members[this.props.memberId]) {
+            if (data && data.members && data.members[this._memberId]) {
                 this.forceUpdate();
             }
         });
@@ -93,7 +93,7 @@ export default class MemberProfile extends Component {
      * @memberof MemberProfile
      */
     shouldComponentUpdate(nextProps) {
-        return nextProps.compact !== this.props.compact || nextProps.className !== this.props.className || nextProps.hideChatBtn !== this.props.hideChatBtn || nextProps.onRequestClose !== this.props.onRequestClose || nextProps.memberId !== this.props.memberId;
+        return nextProps.compact !== this.props.compact || nextProps.className !== this.props.className || nextProps.hideChatBtn !== this.props.hideChatBtn || nextProps.onRequestClose !== this.props.onRequestClose || nextProps.memberId !== this._memberId;
     }
 
     /**
@@ -129,6 +129,7 @@ export default class MemberProfile extends Component {
         } = this.props;
 
         const member = App.members.get(memberId);
+        this._memberId = member && member.id;
         const roleName = member.getRoleName(App);
         const deptName = member.getDeptName(App);
 
