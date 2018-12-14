@@ -88,7 +88,10 @@ export default class MessageContentUrl extends PureComponent {
      * @return {void}
      */
     componentDidMount() {
-        this.getUrlMeta();
+        const {sleep} = this.state;
+        if (!sleep) {
+            this.getUrlMeta();
+        }
     }
 
     /**
