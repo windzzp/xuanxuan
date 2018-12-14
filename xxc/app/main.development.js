@@ -40,7 +40,9 @@ const shouldQuit = ElectronApp.makeSingleInstance((commandLine, workingDirectory
 });
 // 如果已经打开，则退出
 if (shouldQuit) {
-    application.quit();
+    try {
+        ElectronApp.quit();
+    } catch (_) {} // eslint-disable-line
 }
 
 // 当所有窗口关闭时退出应用
