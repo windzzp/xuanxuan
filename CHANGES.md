@@ -6,6 +6,24 @@
 
 [2018-12-14]
 
+### 功能预览
+
+#### 多开窗口
+
+在 Windows 上点击应用程序图标会提示启动一个新窗口。
+
+![multi-windows-2.png](https://raw.githubusercontent.com/easysoft/xuanxuan/master/docs/imgs/multi-windows-2.png)
+
+在 Mac 上程序坞应用图标右键来创建一个新窗口。
+
+![multi-windows.png](https://raw.githubusercontent.com/easysoft/xuanxuan/master/docs/imgs/multi-windows.png)
+
+#### 固定扩展应用启动图标
+
+将扩展应用启动图标固定到导航上。
+
+![pin-app-on-navbar.png](https://raw.githubusercontent.com/easysoft/xuanxuan/master/docs/imgs/pin-app-on-navbar.png)
+
 ### 更新日志
 
 * 新增 打开多个喧喧应用窗口功能（现在不允许启动多个程序实例），在每个窗口中可以登录一个新的账号，解决了启动多个程序实例导致第一个程序之外的程序无法使用数据库（[electron/electron issue #10792](https://github.com/electron/electron/issues/10792)）；
