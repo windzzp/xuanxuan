@@ -175,6 +175,11 @@ export default class DisplayLayer extends PureComponent {
          * @type {number}
          */
         this.showTimerTask = null;
+
+        /**
+         * 上次显示的时间
+         */
+        this.lastShowTime = 0;
     }
 
     /**
@@ -299,6 +304,7 @@ export default class DisplayLayer extends PureComponent {
         } else {
             this.changeStage(STAGE.shown);
             const afterShow = () => {
+                this.lastShowTime = new Date().getTime();
                 if (this.props.onShown) {
                     this.props.onShown(this);
                 }
