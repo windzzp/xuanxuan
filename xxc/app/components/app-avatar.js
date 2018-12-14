@@ -52,7 +52,7 @@ export default class AppAvatar extends PureComponent {
     * @see https://doc.react-china.org/docs/react-component.html#render
     * @see https://doc.react-china.org/docs/rendering-elements.html
     * @memberof AppAvatar
-    * @return {ReactNode}
+    * @return {ReactNode|string|number|null|boolean} React 渲染内容
     */
     render() {
         const {
