@@ -4,6 +4,7 @@ import Platform from 'Platform';
 import {classes} from '../../utils/html-helper';
 import timeSequence from '../../utils/time-sequence';
 import replaceViews from '../replace-views';
+import {openUrl} from '../../core/ui';
 
 /**
  * 获取当前平台是否为 Electron 平台
@@ -11,6 +12,13 @@ import replaceViews from '../replace-views';
  * @private
  */
 const isElectron = Platform.type === 'electron';
+
+/**
+ * 默认注入 JS 代码
+ * @type {string}
+ * @private
+ */
+const defaultInjectJS = "window.callXXCCommand = function(command, options) {var url = command + '/'; if (options) {url += '?'; }for (const name in options) {if (options.hasOwnProperty(name)) {if (url[url.length - 1] !== '?') url += '&'; url += 'name=' + encodeURIComponent(options[name]); }}window.open('xxc:' + url, '_blank');}";
 
 /**
  * Webview 组件 ，显示 Webview 界面
@@ -58,6 +66,7 @@ export default class WebView extends Component {
         hideBeforeDOMReady: PropTypes.bool,
         style: PropTypes.object,
         type: PropTypes.string,
+        modalId: PropTypes.string,
     };
 
     /**
@@ -80,6 +89,7 @@ export default class WebView extends Component {
         useMobileAgent: false,
         hideBeforeDOMReady: true,
         style: null,
+        modalId: null,
         type: 'auto'
     };
 
@@ -151,13 +161,19 @@ export default class WebView extends Component {
                 webview.addEventListener('will-navigate', this.handleWillNavigate);
             } else if (this.isIframe) {
                 const {iframe} = webview;
+                let firstLoad = true;
                 iframe.onload = () => {
                     if (iframe.contentWindow.document.readyState !== 'loading') {
                         this.handleDomReady();
+                        this.handleLoadingStop();
                     } else {
-                        iframe.contentWindow.document.addEventListener('DOMContentLoaded', e => {
-                            this.handleDomReady();
-                        });
+                        this.handleLoadingStart();
+                        if (firstLoad) {
+                            firstLoad = true;
+                            iframe.contentWindow.document.addEventListener('DOMContentLoaded', e => {
+                                this.handleDomReady();
+                            });
+                        }
                     }
                 };
                 if (iframe.contentWindow.document.readyState !== 'loading') {
@@ -222,7 +238,12 @@ export default class WebView extends Component {
                     const scriptEle = document.createElement('script');
                     scriptEle.innerHTML = code;
                     document.body.appendChild(scriptEle);
-                    callback && callback();
+                    if (callback) {
+                        callback();
+                    }
+                },
+                stop() {
+                    webview.contentWindow.stop();
                 }
             };
         }
@@ -264,9 +285,10 @@ export default class WebView extends Component {
      * @return {void}
      */
     handleNewWindow = e => {
-        if (Platform.ui.openExternal) {
-            Platform.ui.openExternal(e.url);
-        }
+        let {url} = e;
+        const {modalId} = this.props;
+        url = url.replace('closeModal', `closeModal/${modalId}`);
+        openUrl(url, null, e, {modalId});
     };
 
     /**
@@ -361,6 +383,7 @@ export default class WebView extends Component {
             if (DEBUG) {
                 console.log('Webview.executeJavaScript', executeJavaScript);
             }
+            webview.executeJavaScript(defaultInjectJS, false);
         }
         let {injectForm} = this.props;
         if (injectForm) {
@@ -447,18 +470,19 @@ export default class WebView extends Component {
 
         let webviewHtml = '';
         const {isWebview} = this;
+        const {errorCode, errorDescription, domReady} = this.state;
         if (isWebview) {
             webviewHtml = `<webview id="${this.webviewId}" src="${src}" class="dock fluid-v fluid" ${options && options.nodeintegration ? 'nodeintegration' : ''} ${options && options.preload ? (` preload="${options.preload}"`) : ''} />`;
         } else {
-            webviewHtml = `<iframe sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-presentation allow-scripts" id="${this.webviewId}" src="${src}" scrolling="auto" allowtransparency="true" hidefocus frameborder="0" class="dock fluid-v fluid" />`;
+            webviewHtml = `<iframe sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-presentation allow-scripts allow-same-origin" id="${this.webviewId}" src="${src}" scrolling="auto" allowtransparency="true" hidefocus frameborder="0" class="dock fluid-v fluid no-margin" />`;
         }
-        if (this.state.errorCode) {
-            webviewHtml += `<div class="dock box gray"><h1>ERROR ${this.state.errorCode}</h1><h2>${src}</h2><div>${this.state.errorDescription}</div></div>`;
+        if (errorCode) {
+            webviewHtml += `<div class="dock box gray"><h1>ERROR ${errorCode}</h1><h2>${src}</h2><div>${errorDescription}</div></div>`;
         }
 
         return (
             <div
-                className={classes('webview fade', className, {in: !hideBeforeDOMReady || this.state.domReady})}
+                className={classes('webview fade', className, {in: !hideBeforeDOMReady || domReady})}
                 dangerouslySetInnerHTML={{__html: webviewHtml}} // eslint-disable-line
                 style={style}
             />
