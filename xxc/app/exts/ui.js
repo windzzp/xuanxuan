@@ -417,6 +417,14 @@ export const createAppContextMenu = appExt => {
 export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
     const items = [];
     if (theOpenedApp.webview) {
+        if (!isCurrentOpenedApp(theOpenedApp.id)) {
+            items.push({
+                label: Lang.string('ext.app.open'),
+                click: () => {
+                    openApp(appExt.name);
+                }
+            });
+        }
         items.push({
             label: Lang.string('ext.app.refresh'),
             click: () => {
