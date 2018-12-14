@@ -629,7 +629,7 @@ export default class ChatMessage extends Entity {
     renderedTextContent(...converters) {
         if (this._renderedTextContent === undefined) {
             let {content} = this;
-            const renderOptions = {renderMarkdown: !this.isPlainTextContent};
+            const renderOptions = {renderMarkdown: this.isBroadcast || !this.isPlainTextContent};
             if (typeof content === 'string' && content.length) {
                 if (converters && converters.length) {
                     converters.forEach(converter => {
