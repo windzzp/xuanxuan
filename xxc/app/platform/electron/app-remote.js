@@ -232,7 +232,7 @@ class AppRemote {
             }, {
                 label: Lang.string('common.exit'),
                 click: () => {
-                    this.mainWindow.webContents.send(EVENT.remote_app_quit, 'quit');
+                    this.windows[windowName].webContents.send(EVENT.remote_app_quit, 'quit');
                 }
             }
         ]);
@@ -561,7 +561,7 @@ class AppRemote {
      */
     get currentFocusWindow() {
         const focusedWindowName = Object.keys(this.windows).find(winName => this.windows[winName].isFocused());
-        return focusedWindowName ? this.windows[focusedWindowName] : this.mainWindow;
+        return focusedWindowName ? this.windows[focusedWindowName] : (this.mainWindow || this.windows[Object.keys(this.windows)[0]]);
     }
 
     /**
@@ -658,7 +658,7 @@ class AppRemote {
      */
     confirmCreateAppWindow() {
         this.showAndFocusWindow();
-        electron.dialog.showMessageBox(this.mainWindow, {
+        electron.dialog.showMessageBox(this.currentFocusWindow, {
             buttons: [Lang.string('common.confirm'), Lang.string('common.cancel')],
             defaultId: 0,
             type: 'question',
