@@ -5,7 +5,9 @@ import {
 import uuid from 'uuid/v4';
 import Path from 'path';
 import EVENT from './remote-events';
-import {onRequestQuit as onMainRequestQuit, callRemote, ipcSend} from './remote';
+import {
+    onRequestQuit as onMainRequestQuit, callRemote, ipcSend, onRequestOpenUrl
+} from './remote';
 import shortcut from './shortcut';
 import Lang from '../../lang';
 import env from './env';
@@ -377,6 +379,7 @@ export default {
     setTrayTooltip,
     flashTrayIcon,
     onRequestQuit,
+    onRequestOpenUrl,
     onWindowFocus,
     closeWindow,
     openDevTools,

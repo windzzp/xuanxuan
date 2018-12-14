@@ -417,6 +417,12 @@ class AppRemote {
             event.preventDefault();
         });
 
+        // 阻止应用内的链接打开新窗口
+        browserWindow.webContents.on('new-window', (event, url) => {
+            browserWindow.webContents.send(EVENT.open_url, url);
+            event.preventDefault();
+        });
+
         let {url} = options;
         if (url) {
             if (!url.startsWith('file://') && !url.startsWith('http://') && !url.startsWith('https://')) {
