@@ -34,6 +34,9 @@ const INPUT_MENU = createContextMenu([
  * @return {void}
  */
 export const initWebview = (webview) => {
+    if (!webview || !webview.getWebContents) {
+        return;
+    }
     const webContents = webview.getWebContents();
     if (webContents) {
         webContents.on('context-menu', (e, props) => {
