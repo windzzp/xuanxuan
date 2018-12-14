@@ -11,7 +11,7 @@ http://xuan.im
 
 ## 最近更新
 
-🎉 2.1 本次更新增加了对 LDAP 登录模式的支持，优化了界面交互，修复了大量已知问题。[查看更新详情→](http://xuan.im/page/changelogs.html)
+🎉 2.2 新增应用窗口多开和固定扩展应用图标到导航上的功能，修复了大量已知问题。[查看更新详情→](http://xuan.im/page/changelogs.html)
 
 ## 特色功能
 
