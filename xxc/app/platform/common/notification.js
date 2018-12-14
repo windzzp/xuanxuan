@@ -37,7 +37,7 @@ export const showNotification = (title, options, onClick) => {
     if (Notification.permission === 'granted') {
         return Promise.resolve(createNotification(title, options, onClick));
     }
-    if (Notification.permission !== 'denied') {
+    if (Notification.permission !== 'denied' || Notification.permission === 'default') {
         return new Promise((resolve, reject) => {
             Notification.requestPermission(permission => {
                 if (permission === 'granted') {
