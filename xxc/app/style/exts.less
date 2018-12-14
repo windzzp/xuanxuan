@@ -12,6 +12,14 @@
   border-radius: 50%;
 }
 
+@media (max-width: 768px) {
+  .app-nav-main > div > a > .avatar > img {width: (30*@rem);}
+  .app-nav-main > div > a.is-open:before {
+    left: (30*@rem);
+    top: (2*@rem);
+  }
+}
+
 .app-exts-nav {
   background-color: @color-pale;
   box-shadow: inset rgba(0, 0, 0, 0.1) 0 (-1*@rem) (1*@rem);
