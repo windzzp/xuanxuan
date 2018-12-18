@@ -15,7 +15,7 @@ import Config from '../../config';
  * @return {Chat} 如果处理成功则返回修改名称后的聊天实例
  * @private
  */
-const chatChangename = (msg, socket) => {
+const chatChangeName = (msg, socket) => {
     if (msg.isSuccess) {
         const chat = getChat(msg.data.gid);
         if (chat) {
@@ -345,7 +345,7 @@ const chatNotify = (msg, socket) => {
  * @type {Object<string, Function(msg: SocketMessage, socket: Socket)>}
  */
 export default {
-    'chat/changename': chatChangename,
+    'chat/changename': chatChangeName,
     'chat/setcommitters': chatSetcomitters,
     'chat/addmember': chatAddmember,
     'chat/getlist': chatGetlist,
