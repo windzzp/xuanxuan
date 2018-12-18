@@ -203,8 +203,9 @@ export default class LoginForm extends PureComponent {
             rememberPassword,
             autoLogin,
             ldap,
-        }).then(() => {
+        }).then((user) => {
             this.setState({logining: false});
+            return user;
         }).catch(error => {
             if (DEBUG) {
                 console.error('Login failed with error:', error);
@@ -307,6 +308,7 @@ export default class LoginForm extends PureComponent {
                     this.changeLDAP(ldap);
                 }
                 this.hasShowedLDAPConfirm = true;
+                return result;
             }).catch(error => {
                 if (DEBUG) {
                     console.error('Modal.confirm error', error);
@@ -329,7 +331,7 @@ export default class LoginForm extends PureComponent {
             message: '',
         }, () => {
             const {serverUrl} = this.state;
-            if (serverUrl.toLowerCase().startsWith('http://')) {
+            if (!Config.ui['login.skipHTTPSecurityAlert'] && serverUrl.toLowerCase().startsWith('http://')) {
                 Modal.confirm((
                     <div>
                         <h4>{Lang.format('login.nonSecurity.confirm', serverUrl)}</h4>
@@ -351,6 +353,7 @@ export default class LoginForm extends PureComponent {
                             message: '',
                         });
                     }
+                    return result;
                 }).catch(error => {
                     if (DEBUG) {
                         console.error('Modal.confirm error', error);
