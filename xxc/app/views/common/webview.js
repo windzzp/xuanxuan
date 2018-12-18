@@ -383,15 +383,15 @@ export default class WebView extends Component {
             if (DEBUG) {
                 console.log('Webview.executeJavaScript', executeJavaScript);
             }
-            webview.executeJavaScript(defaultInjectJS, false);
         }
+        webview.executeJavaScript(defaultInjectJS, false);
         let {injectForm} = this.props;
         if (injectForm) {
             if (typeof injectForm === 'string') {
                 injectForm = JSON.parse(injectForm);
             }
             const injectScriptLines = ['(function(){'];
-            Object.keys(injectForm).forEach((key, index) => {
+            Object.keys(injectForm).forEach((key) => {
                 if (key && key[0] !== '$') {
                     let keyValue = injectForm[key];
                     if (keyValue) {
