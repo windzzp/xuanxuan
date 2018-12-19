@@ -1,6 +1,6 @@
 {
-    "name": "zentaodesktop",
-    "productName": "zentaodesktop",
+    "name": "xuanxuan",
+    "displayName": "喧喧",
     "version": "2.2.0",
     "description": "企业即时通讯平台",
     "main": "./main.js",
@@ -8,7 +8,7 @@
         "name": "青岛易软天创网络科技有限公司",
         "email": "sunhao@cnezsoft.com"
     },
-    "homepage": "https://www.zentao.net/",
+    "homepage": "http://xuan.im",
     "company": "青岛易软天创网络科技有限公司",
     "license": "ZPL 1.2",
     "bugs": {
@@ -20,20 +20,5 @@
     },
     "dependencies": {
         "jquery": "^3.3.1"
-    },
-    "displayName": "禅道",
-    "buildTime": "2018-12-17T02:10:27.218Z",
-    "buildVersion": "beta.201812171010",
-    "configurations": {
-        "lang": {
-            "zh-cn": {
-                "app.title": "禅道",
-                "common.littlexx": "通知中心",
-                "login.serverUrl.hint": "请输入禅道服务器地址"
-            }
-        },
-        "ui": {
-            "login.skipHTTPSecurityAlert": true
-        }
     }
 }
