@@ -264,10 +264,13 @@ const config = {
     copyOriginMedia: true,
     buildVersion,
     artifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}.${arch}.${ext}',
-    macArtifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}${env.PKG_ARCH}.${ext}',
+    macArtifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}.${ext}',
     winArtifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}${env.PKG_ARCH}.setup.${ext}',
     winZipArtifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}${env.PKG_ARCH}.${ext}',
     linuxZipArtifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}${env.PKG_ARCH}.${ext}',
+    macZipArtifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}.${ext}',
+    buildZip: true,
+    zipSubDir: true,
 };
 let configDirPath = null;
 if (isCustomConfig) {
@@ -540,11 +543,11 @@ const createPackage = (osType, arch, debug = isDebug) => {
             stdio: verbose ? 'inherit' : 'ignore'
         })
             .on('close', async code => {
-                if (osType === 'win' || osType === 'linux') {
-                    const zipDir = path.join(packagesPath, arch.includes('32') ? `${osType}-ia32-unpacked` : `${osType}-unpacked`);
+                if (config.buildZip) {
+                    const zipDir = path.join(packagesPath, osType === 'mac' ? 'mac' : (arch.includes('32') ? `${osType}-ia32-unpacked` : `${osType}-unpacked`)); // eslint-disable-line
                     const zipFileName = getArtifactName(osType, arch, 'zip', `${osType}Zip`);
                     const zipFile = path.join(packagesPath, zipFileName);
-                    await createZipFromDir(zipFile, zipDir, false);
+                    await createZipFromDir(zipFile, zipDir, (config.zipSubDir && osType !== 'mac') ? (typeof config.zipSubDir === 'string' ? config.name : config.zipSubDir) : false); // eslint-disable-line
                     console.log(`    ${chalk.green(chalk.bold('✓'))} 创建压缩包 ${chalk.underline(path.relative(appRootPath, zipFile))}`);
                 }
                 resolve(code);
@@ -631,7 +634,7 @@ const build = async (callback) => {
 
                 packageNum++;
                 if (buildPlatforms[i] === 'mac' && archTypes[j] === 'x32') {
-                    console.log(`    ${chalk.red(chalk.bold('𐄂'))} 不支持制作此平台安装包： ${platform}-${arch}`);
+                    console.log(`    ${chalk.red(chalk.bold('𐄂'))} 不支持制作此平台安装包： ${platform}-${arch}\n`);
                     continue;
                 }
 
