@@ -21,6 +21,44 @@ import oldPkg from '../app/package.json';
 const PLATFORMS = new Set(['win', 'mac', 'linux', 'browser']);
 const ARCHS = new Set(['x32', 'x64']);
 
+/**
+ * 自定义格式化字符串
+ * @param {string} str 要格式化的字符串
+ * @param {string} format 格式定义，例如 '{0}'
+ * @param  {...any} args 格式化参数
+ * @return  {string} 格式化后的字符串
+ * @example <caption>通过参数序号格式化</caption>
+ *     var hello = $.format('${0} ${1}!', '\\${0}', 'Hello', 'world');
+ *     // hello 值为 'Hello world!'
+ * @example <caption>通过对象名称格式化</caption>
+ *     var say = $.format('Say ${what} to ${who}', '\\${0}', {what: 'hello', who: 'you'});
+ *     // say 值为 'Say hello to you'
+ */
+const customFormatString = (str, format, ...args) => {
+    let result = str;
+    if (args.length > 0) {
+        let reg;
+        if (args.length === 1 && (typeof args[0] === 'object')) {
+            // eslint-disable-next-line prefer-destructuring
+            args = args[0];
+            Object.keys(args).forEach(key => {
+                if (args[key] !== undefined) {
+                    reg = new RegExp(`(${format.replace(0, key)})`, 'g');
+                    result = result.replace(reg, args[key]);
+                }
+            });
+        } else {
+            for (let i = 0; i < args.length; i++) {
+                if (args[i] !== undefined) {
+                    reg = new RegExp(`(${format.replace(0, `[${i}]`)})`, 'g');
+                    result = result.replace(reg, args[i]);
+                }
+            }
+        }
+    }
+    return result;
+};
+
 // 判断字符串或数组是否为空
 const isEmpty = val => val === undefined || val === null || !val.length;
 
@@ -225,6 +263,11 @@ const config = {
     mediaPath: 'media/',
     copyOriginMedia: true,
     buildVersion,
+    artifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}.${arch}.${ext}',
+    macArtifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}${env.PKG_ARCH}.${ext}',
+    winArtifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}${env.PKG_ARCH}.setup.${ext}',
+    winZipArtifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}${env.PKG_ARCH}.${ext}',
+    linuxZipArtifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}${env.PKG_ARCH}.${ext}',
 };
 let configDirPath = null;
 if (isCustomConfig) {
@@ -267,11 +310,26 @@ const appPkg = Object.assign({
     configurations: config.configurations
 }, config.pkg || null);
 
+const getArtifactName = (platform, arch, ext, name) => {
+    const artifactName = config[`${name || platform}ArtifactName`] || config.artifactName;
+    return customFormatString(artifactName, '\\${0}', Object.assign({}, config, {
+        arch,
+        platform,
+        os: platform,
+        beta: isBeta ? 'beta' : '',
+        debug: isDebug ? 'debug' : '',
+        ext,
+        'env.PKG_BETA': isBeta ? '.beta' : '',
+        'env.PKG_DEBUG': isDebug ? '.debug' : '',
+        'env.PKG_ARCH': arch.includes('32') ? '32' : '64',
+    }));
+};
+
 const electronBuilder = {
     productName: config.name,
     appId: config.appid || `com.cnezsoft.${config.name}`,
     compression: 'maximum',
-    artifactName: config.name + '.${version}${env.PKG_BETA}.${os}.${arch}.${ext}',
+    artifactName: config.artifactName,
     // electronVersion: '1.7.9',
     electronDownload: {mirror: 'https://npm.taobao.org/mirrors/electron/'},
     extraResources: [{
@@ -318,16 +376,17 @@ const electronBuilder = {
             'rpm',
             'tar.gz'
         ],
-        icon: 'icons'
+        icon: 'icons',
+        artifactName: config.linuxArtifactName || config.artifactName
     },
     mac: {
         icon: 'icon.icns',
-        artifactName: config.name + '.${version}${env.PKG_BETA}.${os}${env.PKG_ARCH}.${ext}'
+        artifactName: config.macArtifactName || config.artifactName
     },
     nsis: {
         oneClick: false,
         allowToChangeInstallationDirectory: true,
-        artifactName: config.name + '.${version}${env.PKG_BETA}.${os}${env.PKG_ARCH}.setup.${ext}',
+        artifactName: config.winArtifactName || config.artifactName,
         deleteAppDataOnUninstall: false
     },
     directories: {
@@ -459,15 +518,17 @@ const createPackage = (osType, arch, debug = isDebug) => {
             shell: true,
             env: Object.assign({}, process.env, {
                 SKIP_INSTALL_EXTENSIONS: debug ? 1 : 0,
-                PKG_ARCH: debug ? '.debug' : (osType === 'win' ? (arch.includes('32') ? '32' : '64') : ''),
-                PKG_BETA: isBeta ? '.beta' : ''
+                PKG_ARCH: arch.includes('32') ? '32' : '64',
+                PKG_BETA: isBeta ? '.beta' : '',
+                PKG_DEBUG: debug ? '.debug' : '',
             }),
             stdio: verbose ? 'inherit' : 'ignore'
         })
             .on('close', async code => {
                 if (osType === 'win' || osType === 'linux') {
                     const zipDir = path.join(packagesPath, arch.includes('32') ? `${osType}-ia32-unpacked` : `${osType}-unpacked`);
-                    const zipFile = path.join(packagesPath, `${config.name}.${config.version}.${isBeta ? 'beta.' : ''}${debug ? 'debug.' : ''}${(arch.includes('32') ? (osType === 'win' ? 'win32' : 'linux.ia32') : (osType === 'win' ? 'win64' : 'linux.x64'))}.zip`);
+                    const zipFileName = getArtifactName(osType, arch, 'zip', `${osType}Zip`);
+                    const zipFile = path.join(packagesPath, zipFileName);
                     await createZipFromDir(zipFile, zipDir, false);
                     console.log(`    ${chalk.green(chalk.bold('✓'))} 创建压缩包 ${chalk.underline(path.relative(appRootPath, zipFile))}`);
                 }
@@ -542,8 +603,6 @@ const build = async (callback) => {
         await buildApp();
     }
 
-    revertConfigFiles();
-
     if (!onlyPackageBrowser) {
         for (let i = 0; i < buildPlatforms.length; ++i) {
             const platform = buildPlatforms[i];
@@ -592,3 +651,5 @@ outputConfigFiles();
 if (!isSkipBuild) {
     build();
 }
+
+revertConfigFiles();
