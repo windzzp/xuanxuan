@@ -519,7 +519,7 @@ export default class Extension {
                 Object.keys(notificationSenders).forEach(senderId => {
                     const sender = notificationSenders[senderId];
                     if (sender.avatar && !sender.avatar.startsWith('http://') && !sender.avatar.startsWith('https://')) {
-                        sender.avatar = Path.join(this.localPath, sender.avatar);
+                        sender.avatar = `file://${Path.join(this.localPath, sender.avatar)}`;
                     }
                 });
             }
