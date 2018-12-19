@@ -27,5 +27,6 @@
     "app.showPoweredBy": "auto",
     "chat.showMeAsMySenderName": false,
     "login.skipHTTPSecurityAlert": false,
+    "login.ldap": true,
     "todo.enable": true
 }
