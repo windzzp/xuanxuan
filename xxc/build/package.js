@@ -466,7 +466,22 @@ const outputConfigFiles = () => {
 
 // 还原项目目录下的 package.json 文件
 const revertConfigFiles = () => {
-    fse.outputJsonSync('./app/package.json', oldPkg, {spaces: 4});
+    const originPkg = {
+        name: pkg.name,
+        productName: pkg.name.name,
+        displayName: pkg.productName,
+        version: pkg.version,
+        description: pkg.description,
+        main: './main.js',
+        author: pkg.author,
+        homepage: pkg.homepage,
+        company: pkg.company,
+        license: pkg.license,
+        bugs: pkg.bugs,
+        repository: pkg.repository,
+        dependencies: pkg.appDependencies
+    };
+    fse.outputJsonSync('./app/package.json', originPkg, {spaces: 4});
     console.log(`    ${chalk.green(chalk.bold('✓'))} 还原 ${chalk.underline('./app/package.json')}`);
 };
 
