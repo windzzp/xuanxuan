@@ -75,12 +75,12 @@ func InitHttp() {
     addr := util.Config.Ip + ":" + util.Config.CommonPort
 
     util.Println("Listen IP: ", util.Config.Ip)
-    util.Println("Websocket port: ", util.Config.ChatPort)
-    util.Println("Http port: ", util.Config.CommonPort)
+    util.Println("ChatPort port: ", util.Config.ChatPort)
+    util.Println("CommonPort port: ", util.Config.CommonPort)
 
     util.LogInfo().Println("Listen IP: ", util.Config.Ip)
-    util.LogInfo().Println("Websocket port: ", util.Config.ChatPort)
-    util.LogInfo().Println("Http port: ", util.Config.CommonPort)
+    util.LogInfo().Println("ChatPort port: ", util.Config.ChatPort)
+    util.LogInfo().Println("CommonPort port: ", util.Config.CommonPort)
 
     if util.Config.IsHttps != "1" {
         if err := http.ListenAndServe(addr, mux); err != nil {
