@@ -387,6 +387,17 @@ export default class Extension {
     get isRemote() {return this._data.remote;}
 
     /**
+     * 获取当前扩展是否为内置或远程扩展
+     *
+     * @readonly
+     * @memberof Extension
+     * @type {boolean}
+     */
+    get isBuildInOrRemote() {
+        return this.isRemote || this.buildIn;
+    }
+
+    /**
      * 获取远程扩展是否加载完毕
      * @memberof Extension
      * @type {boolean}
@@ -732,6 +743,7 @@ export default class Extension {
         if (DEBUG) {
             console.warn('Cannot set user config for the exteions, because current user is not logined.', this);
         }
+        return defualtValue;
     }
 
     /**

@@ -39,7 +39,7 @@ buildIns.forEach((buildIn, idx) => {
     ['version', 'license', 'homepage', 'bugs', 'repository'].forEach(key => {
         buildIn[key] = PKG[key];
     });
-    exts.push(createExtension(buildIn, {installTime: idx}, true));
+    exts.push(createExtension(buildIn, {installTime: idx, pinnedOnMenuOrder: idx}, true));
 });
 
 // 从数据库中加载用户安装的扩展
