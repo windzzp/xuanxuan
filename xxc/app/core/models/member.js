@@ -374,7 +374,7 @@ export default class Member extends Entity {
         let {avatar} = this;
         if (avatar && avatar.startsWith('$')) {
             avatar = avatar.substr(1);
-        } else if (serverUrl && avatar && !avatar.startsWith('https://') && !avatar.startsWith('http://')) {
+        } else if (serverUrl && avatar && !avatar.startsWith('https://') && !avatar.startsWith('http://') && !avatar.startsWith('file://')) {
             if (!(serverUrl instanceof URL)) {
                 serverUrl = new URL(serverUrl);
             }
