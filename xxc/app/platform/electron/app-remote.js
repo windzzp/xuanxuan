@@ -169,7 +169,7 @@ class AppRemote {
      * @return {void}
      */
     ready() {
-        this.openMainWindow();
+        this.openOrCreateWindow();
 
         if (IS_MAC_OSX) {
             const dockMenu = Menu.buildFromTemplate([
@@ -477,13 +477,13 @@ class AppRemote {
      * @memberof AppRemote
      * @return {void}
      */
-    openMainWindow() {
-        const {mainWindow} = this;
-        if (!mainWindow) {
+    openOrCreateWindow() {
+        const {currentFocusWindow} = this;
+        if (!currentFocusWindow) {
             this.createAppWindow();
-        } else if (!mainWindow.isVisible()) {
-            mainWindow.show();
-            mainWindow.focus();
+        } else if (!currentFocusWindow.isVisible()) {
+            currentFocusWindow.show();
+            currentFocusWindow.focus();
         }
     }
 
