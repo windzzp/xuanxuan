@@ -6,6 +6,7 @@ import Avatar from '../../components/avatar';
 import Icon from '../../components/icon';
 import {openUrlInBrowser} from '../../core/ui';
 import replaceViews from '../replace-views';
+import Config from '../../config';
 
 /**
  * WebviewFrame 组件 ，显示网页视图界面
@@ -272,8 +273,9 @@ export default class WebViewFrame extends Component {
             ...other
         } = this.props;
 
-        const isMaximize = this.state.maximize;
+        const {isMaximize} = this.state;
         const webview = this.webview && this.webview.webview;
+        const showNavButtons = !Config.ui['webview.frame.hiddenNavButtons'];
 
         return (<div className={classes('webview-frame column', className)} {...other}>
             <div className="heading flex-none shadow-2" style={{zIndex: 1031}}>
@@ -282,8 +284,8 @@ export default class WebViewFrame extends Component {
                 <nav className="nav" style={{marginRight: 40}}>
                     {DEBUG ? <a onClick={this.handleDevBtnClick}>{Icon.render('auto-fix')}</a> : null}
                     <a onClick={this.handleOpenBtnClick}>{Icon.render('open-in-new')}</a>
-                    <a className={webview && webview.canGoBack && webview.canGoBack() ? '' : 'disabled'} onClick={this.handleGoBackBtnClick}>{Icon.render('arrow-left')}</a>
-                    <a className={webview && webview.canGoForward && webview.canGoForward() ? '' : 'disabled'} onClick={this.handleGoForwardBtnClick}>{Icon.render('arrow-right')}</a>
+                    {showNavButtons && <a className={webview && webview.canGoBack && webview.canGoBack() ? '' : 'disabled'} onClick={this.handleGoBackBtnClick}>{Icon.render('arrow-left')}</a>}
+                    {showNavButtons && <a className={webview && webview.canGoForward && webview.canGoForward() ? '' : 'disabled'} onClick={this.handleGoForwardBtnClick}>{Icon.render('arrow-right')}</a>}
                     {this.state.loading ? <a onClick={this.handleStopBtnClick}>{Icon.render('close-circle-outline')}</a> : <a onClick={this.handleReloadBtnClick}>{Icon.render('reload')}</a>}
                     {displayId ? <a onClick={this.handleMaximizeBtnClick}>{Icon.render(isMaximize ? 'window-restore' : 'window-maximize')}</a> : null}
                 </nav>
