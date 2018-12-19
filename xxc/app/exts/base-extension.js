@@ -505,6 +505,43 @@ export default class Extension {
     }
 
     /**
+     * 获取通知消息发送者信息配置
+     *
+     * @readonly
+     * @memberof Extension
+     * @type {Map<String, Object>}
+     */
+    get notificationSenders() {
+        if (!this._notificationSenders) {
+            const extModule = this.module;
+            const notificationSenders = (extModule && extModule.commands) || this._pkg.notificationSenders;
+            if (notificationSenders) {
+                Object.keys(notificationSenders).forEach(senderId => {
+                    const sender = notificationSenders[senderId];
+                    if (sender.avatar && !sender.avatar.startsWith('http://') && !sender.avatar.startsWith('https://')) {
+                        sender.avatar = Path.join(this.localPath, sender.avatar);
+                    }
+                });
+            }
+            this._notificationSenders = notificationSenders;
+        }
+        return this._notificationSenders;
+    }
+
+    /**
+     * 获取指定的通知消息发送者信息配置对象
+     * @param {Object|string} sender 发送者 ID 或发送者信息对象
+     * @return {Object} 发送者信息配置对象
+     */
+    getNotificationSender(sender) {
+        const {notificationSenders} = this;
+        if (typeof sender !== 'object') {
+            sender = {id: sender};
+        }
+        return (notificationSenders && notificationSenders[sender.id]) ? Object.assign(sender, notificationSenders[sender.id]) : null;
+    }
+
+    /**
      * 获取扩展作者名称
      * @memberof Extension
      * @type {string}
