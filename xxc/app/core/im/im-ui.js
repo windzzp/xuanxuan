@@ -430,6 +430,7 @@ export const chatDismissConfirm = chat => {
                 return Promise.resolve(theChat);
             });
         }
+        return result;
     });
 };
 
@@ -812,7 +813,7 @@ addContextMenuCreator('message.text', ({message}) => {
             });
         }
     }
-    if (!Config.ui['chat.simpleChatView'] && profile.user.isVersionSupport('todo')) {
+    if (Config.ui['todo.enable'] && !Config.ui['chat.simpleChatView'] && profile.user.isVersionSupport('todo')) {
         if (items.length) {
             items.push('divider');
         }
