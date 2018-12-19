@@ -232,7 +232,7 @@ class AppRemote {
             }, {
                 label: Lang.string('common.exit'),
                 click: () => {
-                    this.mainWindow.webContents.send(EVENT.remote_app_quit, 'quit');
+                    this.windows[windowName].webContents.send(EVENT.remote_app_quit, 'quit');
                 }
             }
         ]);
@@ -417,6 +417,12 @@ class AppRemote {
             event.preventDefault();
         });
 
+        // 阻止应用内的链接打开新窗口
+        browserWindow.webContents.on('new-window', (event, url) => {
+            browserWindow.webContents.send(EVENT.open_url, url);
+            event.preventDefault();
+        });
+
         let {url} = options;
         if (url) {
             if (!url.startsWith('file://') && !url.startsWith('http://') && !url.startsWith('https://')) {
@@ -555,6 +561,16 @@ class AppRemote {
     // }
 
     /**
+     * 获取当前激活的窗口
+     * @memberof AppRemote
+     * @type {BrowserWindow}
+     */
+    get currentFocusWindow() {
+        const focusedWindowName = Object.keys(this.windows).find(winName => this.windows[winName].isFocused());
+        return focusedWindowName ? this.windows[focusedWindowName] : (this.mainWindow || this.windows[Object.keys(this.windows)[0]]);
+    }
+
+    /**
      * 通过 IPC 向所有应用窗口渲染渲染进程发送消息
      *
      * @param {string} channel 事件频道
@@ -648,7 +664,7 @@ class AppRemote {
      */
     confirmCreateAppWindow() {
         this.showAndFocusWindow();
-        electron.dialog.showMessageBox(this.mainWindow, {
+        electron.dialog.showMessageBox(this.currentFocusWindow, {
             buttons: [Lang.string('common.confirm'), Lang.string('common.cancel')],
             defaultId: 0,
             type: 'question',

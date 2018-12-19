@@ -2,6 +2,7 @@ import Entity from './entity';
 import Pinyin from '../../utils/pinyin';
 import Status from '../../utils/status';
 import {matchScore} from '../../utils/search-score';
+import Lang from '../../lang';
 
 /**
  * 搜索匹配分值表
@@ -68,6 +69,7 @@ export default class Member extends Entity {
         phone: {type: 'string', indexed: true},
         mobile: {type: 'string', indexed: true},
         realname: {type: 'string', indexed: true},
+        realnames: {type: 'json'},
         site: {type: 'string'},
         avatar: {type: 'string', indexed: true},
         role: {type: 'string'},
@@ -271,11 +273,34 @@ export default class Member extends Entity {
     }
 
     /**
+     * 获取用户真实姓名的多语言配置
+     *
+     * @readonly
+     * @memberof Member
+     */
+    get realnames() {
+        return this.$get('realnames');
+    }
+
+    /**
      * 获取用户用户真实姓名
      * @memberof Member
      * @type {string}
      */
     get realname() {
+        const {realnames} = this;
+        if (realnames) {
+            if (realnames.cn && !realnames['zh-cn']) {
+                realnames['zh-cn'] = realnames.cn;
+            }
+            if (realnames.tw && !realnames['zh-tw']) {
+                realnames['zh-tw'] = realnames.tw;
+            }
+            const realname = realnames[Lang.name];
+            if (realname) {
+                return realname;
+            }
+        }
         return this.$get('realname');
     }
 

@@ -467,7 +467,7 @@ const createPackage = (osType, arch, debug = isDebug) => {
             .on('close', async code => {
                 if (osType === 'win' || osType === 'linux') {
                     const zipDir = path.join(packagesPath, arch.includes('32') ? `${osType}-ia32-unpacked` : `${osType}-unpacked`);
-                    const zipFile = path.join(packagesPath, `${config.name}.${config.version}.${isBeta ? 'beta.' : ''}${debug ? 'debug.' : ''}${(arch.includes('32') ? (osType === 'win' ? 'win32' : 'ia32') : (osType === 'win' ? 'win64' : 'x64'))}.zip`);
+                    const zipFile = path.join(packagesPath, `${config.name}.${config.version}.${isBeta ? 'beta.' : ''}${debug ? 'debug.' : ''}${(arch.includes('32') ? (osType === 'win' ? 'win32' : 'linux.ia32') : (osType === 'win' ? 'win64' : 'linux.x64'))}.zip`);
                     await createZipFromDir(zipFile, zipDir, false);
                     console.log(`    ${chalk.green(chalk.bold('✓'))} 创建压缩包 ${chalk.underline(path.relative(appRootPath, zipFile))}`);
                 }

@@ -96,6 +96,12 @@ addContextMenuCreator('member', ({member}) => {
     }];
 });
 
+// 注册打开成员资料对话框命令
+registerCommand('showMemberProfile', (context, memberId) => {
+    memberId = memberId || context.options.memberId;
+    MemberProfileDialog.show(memberId);
+});
+
 /**
  * 绑定界面上链接点击事件
  * @param {string} type 链接目标类型
@@ -203,7 +209,7 @@ document.body.classList.add(`os-${Platform.env.os}`);
  * @return {void}
  */
 export const openUrlInApp = (url, appName) => {
-    executeCommandLine(`openInApp/${appName}/${encodeURIComponent(appName)}`, {appName, url});
+    executeCommandLine(`openInApp/${appName}/${encodeURIComponent(url)}`, {appName, url});
 };
 
 /**
@@ -229,6 +235,24 @@ registerCommand('openUrlInDialog', (context, url) => {
         return true;
     }
     return false;
+});
+
+// 注册关闭对话框命令
+registerCommand('closeModal', (context, modalId, remove) => {
+    modalId = modalId || context.modalId;
+    if (remove === undefined) {
+        if (context.removeModal === undefined) {
+            remove = true;
+        } else {
+            remove = context.removeModal;
+        }
+    }
+    modal.hide(modalId, null, remove);
+});
+
+// 注册路由跳转命令
+registerCommand('#', (context, ...params) => {
+    window.location.hash = `#/${params.join('/')}`;
 });
 
 /**
@@ -257,9 +281,17 @@ registerCommand('openUrlInBrowser', (context, url) => {
  * @param {string} url 要打开的链接
  * @param {Element} targetElement 触发事件元素
  * @param {Event} event 界面事件对象
+ * @param {Object} context 命令参数
  * @returns {boolean} 如果返回 `true` 则打开成功，否则为打开失败
  */
-export const openUrl = (url, targetElement, event) => {
+export const openUrl = (url, targetElement, event, context) => {
+    if (DEBUG) {
+        console.collapse('Open Url', 'redBg', url, 'redPale');
+        console.log('targetElement', targetElement);
+        console.log('event', event);
+        console.log('context', context);
+        console.groupEnd();
+    }
     if (isWebUrl(url)) {
         if (global.ExtsRuntime) {
             const extInspector = global.ExtsRuntime.getUrlOpener(url, targetElement);
@@ -267,7 +299,8 @@ export const openUrl = (url, targetElement, event) => {
                 const openResult = extInspector.open(url);
                 if (openResult === true || openResult === false) {
                     return openResult;
-                } else if (typeof openResult === 'string') {
+                }
+                if (typeof openResult === 'string') {
                     if (isWebUrl(openResult)) {
                         return openUrlInBrowser(openResult);
                     }
@@ -277,12 +310,15 @@ export const openUrl = (url, targetElement, event) => {
         }
         openUrlInBrowser(url);
         return true;
-    } else if (url[0] === '@') {
+    }
+    if (url[0] === '@') {
         const params = url.substr(1).split('/').map(decodeURIComponent);
         emitAppLinkClick(targetElement, ...params);
         return true;
-    } else if (url[0] === '!') {
-        executeCommandLine(url.substr(1), {targetElement, event});
+    }
+    if (url[0] === '!' || url.startsWith('xxc:')) {
+        url = url.substr(url[0] === '!' ? 1 : 4);
+        executeCommandLine(url, Object.assign({targetElement, event}, context));
         return true;
     }
 };
@@ -555,8 +591,8 @@ export const getUrlMeta = (url, disableCache = false) => {
             return Promise.resolve(url);
         };
         if (extInspector && extInspector.noMeta && extInspector.inspect) {
-            return getUrl().then(url => {
-                const cardMeta = extInspector.inspect(url);
+            return getUrl().then(entryUrl => {
+                const cardMeta = extInspector.inspect(entryUrl, url);
                 if (cardMeta instanceof Promise) {
                     return cardMeta;
                 }
@@ -779,6 +815,12 @@ window.addEventListener('hashchange', () => {
         window.location.hash = hash.replace('/:filterType/', '/recents/');
     }
 }, false);
+
+if (Platform.ui.onRequestOpenUrl) {
+    Platform.ui.onRequestOpenUrl((e, url) => {
+        openUrl(url);
+    });
+}
 
 export default {
     entryParams,

@@ -83,6 +83,9 @@ export default class ChatSendbox extends Component {
      */
     componentDidMount() {
         this.onSendContentToChatHandler = App.im.ui.onSendContentToChat(this.props.chat.gid, content => {
+            if (content.clear) {
+                this.clearContent();
+            }
             if (content && content.content) {
                 switch (content.type) {
                 case 'image':

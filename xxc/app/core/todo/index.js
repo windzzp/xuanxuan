@@ -5,7 +5,7 @@ import Markdown from '../../utils/markdown';
 /**
  * 将待办存储对象提交到服务器进行存储
  * @param {Object} todo 待办存储对象
- * @return {Promise}
+ * @returns {Promise} 使用 Promise 异步返回处理结果
  */
 export const createTodo = todo => {
     if (!todo.type) {

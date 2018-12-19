@@ -522,6 +522,9 @@ export const initChats = (chatArr, eachCallback) => {
         forEachChat(chat => {
             if (chat.isOne2One) {
                 const member = chat.getTheOtherOne(app);
+                if (!member) {
+                    return;
+                }
                 if (member.temp) {
                     chat.isDeleteOne2One = true;
                     Server.tryGetTempUserInfo(member.id);

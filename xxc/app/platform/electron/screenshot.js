@@ -331,7 +331,7 @@ export const openCaptureScreenWindow = (file, display, onClosed) => {
         if (DEBUG) {
             captureWindow.openDevTools();
         }
-        captureWindow.loadURL(`file://${ui.appRoot}/index.html#image-cutter/${encodeURIComponent(file.path)}`);
+        captureWindow.loadURL(`file://${ui.appRoot}/index.html?fromWindow=${ui.browserWindowName}#image-cutter/${encodeURIComponent(file.path)}`);
         captureWindow.webContents.on('did-finish-load', () => {
             captureWindow.show();
             captureWindow.focus();
@@ -401,6 +401,7 @@ export const captureAndCutScreenImage = (screenSources = 0, hideCurrentWindow = 
         });
         const onWindowClosed = () => {
             RemoteEvents.off(eventId);
+            isCapturing = false;
         };
         const takeScreenshots = () => {
             return Promise.all(screenSources.map(screenSource => {

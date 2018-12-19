@@ -80,7 +80,7 @@ class chatModel extends model
             if(isset($user->deleted)) $user->deleted = (int)$user->deleted;
         }
 
-        if($isObject) return current($users);
+        if($isObject) return reset($users);
 
         return $users;
     }
@@ -108,6 +108,7 @@ class chatModel extends model
      *
      * @param  string $status
      * @param  array  $idList
+     * @param  bool   $idAsKey
      * @access public
      * @return array
      */
@@ -275,7 +276,7 @@ class chatModel extends model
             if(isset($chat->mute)) $chat->mute = (int)$chat->mute;
         }
 
-        if($isObject) return current($chats);
+        if($isObject) return reset($chats);
 
         return $chats;
     }
