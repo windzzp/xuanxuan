@@ -86,7 +86,7 @@ export default class About extends PureComponent {
                     {Config.pkg.company ? <div><a target="_blank" className="btn rounded" href="http://cnezsoft.com/">{Lang.format('common.copyrightFormat', {year: new Date().getFullYear(), name: Config.pkg.company})}</a></div> : null}
                     {Config.ui.about ? <div>{Config.ui.about}</div> : null}
                     <div><a target="_blank" className="btn rounded" href="http://emojione.com/">Thanks to EmojiOne for providing free emoji icons</a></div>
-                    {showPoweredBy && <PoweredInfo className="btn rounded strong strong text-important" />}
+                    {showPoweredBy && <PoweredInfo className="btn rounded strong text-important"> http://xuan.im</PoweredInfo>}
                 </section>
             </div>
         );
