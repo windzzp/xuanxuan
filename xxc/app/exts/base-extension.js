@@ -1038,7 +1038,12 @@ export default class Extension {
         if (menuItem.url) {
             menuItem.url = StringHelper.format(menuItem.url, urlFormatObject);
         }
-        menuItem.label = `${this.displayName}: ${menuItem.label || menuItem.url}`;
+        menuItem.label = `${menuItem.label || menuItem.url}`;
+        if (menuItem.label[0] === '!') {
+            menuItem.label = menuItem.label.substr(1);
+        } else {
+            menuItem.label = `${this.displayName}: ${menuItem.label}`;
+        }
         if (!menuItem.icon) {
             menuItem.icon = this.icon;
         }
