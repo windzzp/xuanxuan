@@ -3,6 +3,7 @@ import extractZip from 'extract-zip';
 import Path from 'path';
 import server, {socket} from '../../core/server';
 import {createExtension} from '../extension';
+import timeSequence from '../../utils/time-sequence';
 
 /**
  * 服务器扩展变更回调函数
@@ -98,7 +99,7 @@ const downloadRemoteExtension = ext => {
                 });
             });
         }
-        return Promise.reject(`Cannot download extension package form remote server ${ext.download}.`);
+        return Promise.reject(new Error(`Cannot download extension package form remote server ${ext.download}.`));
     });
 };
 
@@ -160,6 +161,9 @@ const processExtensions = async () => {
                 theExt.setLoadRemoteResult(false, new Error('Cannot read package.json from ' + theExt.localPath));
             }
         } catch (error) {
+            if (DEBUG) {
+                console.error('Process remote extension error', error);
+            }
             theExt.setLoadRemoteResult(false, error);
         }
 
@@ -173,16 +177,72 @@ const processExtensions = async () => {
 };
 
 /**
+ * 获取免登录地址任务清单
+ * @type {Object[]}
+ * @private
+ */
+let entryVisitUrlTasks = [];
+
+/**
+ * 是否正在执行获取免登录地址任务
+ * @type {boolean}
+ */
+let isRunningEntryVisitTask = false;
+
+/**
+ * 从队列中执行获取免登录地址任务，同时可以添加一个新的任务
+ * @param {{entryID: string, id: number, referer: string?, resolve: function!, reject: function!}?} newTask 要执行的新任务
+ * @return {void}
+ */
+const runEntryVisitUrlTask = (newTask) => {
+    if (newTask) {
+        entryVisitUrlTasks.push(newTask);
+    }
+    if (isRunningEntryVisitTask) {
+        return;
+    }
+    if (entryVisitUrlTasks.length) {
+        isRunningEntryVisitTask = true;
+        const task = entryVisitUrlTasks[0];
+        const onFinishTask = () => {
+            const taskIndex = entryVisitUrlTasks.findIndex(x => x.id === task.id);
+            if (taskIndex > -1) {
+                entryVisitUrlTasks.splice(taskIndex, 1);
+            }
+            isRunningEntryVisitTask = false;
+            if (entryVisitUrlTasks.length) {
+                runEntryVisitUrlTask();
+            }
+        };
+        server.socket.sendAndListen({
+            module: 'entry',
+            method: 'visit',
+            params: {entryID: task.entryID, referer: task.referer}
+        }).then(url => {
+            onFinishTask();
+            task.resolve(url);
+        }).catch(err => {
+            onFinishTask();
+            task.reject();
+        });
+    }
+};
+
+/**
  * 获取远程扩展的免登录地址
  * @param {Extension|string} extOrEntryID 远程扩展对象或者远程入口 ID
  * @param {string} [referer=''] 要访问的链接，如果留空则使用远程扩展的主页链接
  * @returns {Promise<string>} 使用 Promise 异步返回处理结果
  */
 export const getEntryVisitUrl = (extOrEntryID, referer = '') => {
-    return server.socket.sendAndListen({
-        module: 'entry',
-        method: 'visit',
-        params: {entryID: typeof extOrEntryID === 'object' ? (extOrEntryID.entryID || extOrEntryID.name) : extOrEntryID, referer}
+    return new Promise((resolve, reject) => {
+        runEntryVisitUrlTask({
+            id: timeSequence(),
+            entryID: typeof extOrEntryID === 'object' ? (extOrEntryID.entryID || extOrEntryID.name) : extOrEntryID,
+            referer,
+            resolve,
+            reject
+        });
     });
 };
 
@@ -251,6 +311,7 @@ socket.setHandler({
  * @return {void}
  */
 export const detachServerExtensions = user => {
+    entryVisitUrlTasks = [];
     currentUser = null;
     if (exts) {
         exts.forEach(ext => {

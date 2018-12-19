@@ -50,24 +50,33 @@ export class UrlMeta {
      * 根据给定的 Fetch 响应数据解析网址信息
      *
      * @param {Response} response Fetch 响应数据
+     * @param {AbortController} controller Fetch 控制对象
      * @returns {Promise<UrlMeta, Error>} 使用 Promise 异步返回处理结果
      * @memberof UrlMeta
      */
-    inspectFromResponse(response) {
+    inspectFromResponse(response, controller) {
         this.response = response;
         const contentType = response.headers.get('content-type');
         this.contentTypeOrigin = contentType;
         if (contentType.startsWith('image')) {
             this.contentType = 'image';
+            if (controller) {
+                controller.abort();
+            }
         } else if (contentType.startsWith('video')) {
             this.contentType = 'video';
-        } else {
+            if (controller) {
+                controller.abort();
+            }
+        } else if (contentType.startsWith('text')) {
             this.contentType = 'page';
             return getTextFromResponse(response).then(documentSource => {
                 this.document = documentSource;
                 this.parsedDocument = cheerio.load(documentSource);
                 return Promise.resolve(this);
             });
+        } else if (controller) {
+            controller.abort();
         }
         return Promise.resolve(this);
     }
@@ -490,7 +499,9 @@ export class UrlMeta {
  * @return {UrlMeta} 页面信息
  */
 export default (url) => {
-    return limitTimePromise(request(url), 5000).then(response => {
-        return new UrlMeta(url).inspectFromResponse(response);
+    const controller = new AbortController();
+    const {signal} = controller;
+    return limitTimePromise(request(url, {signal}), 5000).then(response => {
+        return new UrlMeta(url).inspectFromResponse(response, controller);
     });
 };

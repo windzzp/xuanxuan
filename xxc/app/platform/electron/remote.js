@@ -188,6 +188,13 @@ export const remoteOff = (...names) => {
  */
 export const onRequestQuit = listener => ipcOn(EVENT.remote_app_quit, listener);
 
+/**
+ * 绑定主进程通知要打开网址事件
+ * @param {function} listener 事件回调函数
+ * @return {Symbol} 事件 ID
+ */
+export const onRequestOpenUrl = listener => ipcOn(EVENT.open_url, listener);
+
 export default {
     EVENT,
     call: callRemote,

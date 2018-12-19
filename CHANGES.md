@@ -1,23 +1,66 @@
 # 更新记录
 
-## v 2.1.1
+## v 2.2.0
 
-[2018-12-05]
+[2018-12-14]
+
+本次更新新增应用窗口多开和固定扩展应用图标到导航上的功能，修复了大量已知问题。
+
+### 功能预览
+
+#### 多开窗口
+
+在 Windows 上点击应用程序图标会提示启动一个新窗口。
+
+![multi-windows-2.png](https://raw.githubusercontent.com/easysoft/xuanxuan/master/docs/imgs/multi-windows-2.png)
+
+在 Mac 上程序坞应用图标右键来创建一个新窗口。
+
+![multi-windows.png](https://raw.githubusercontent.com/easysoft/xuanxuan/master/docs/imgs/multi-windows.png)
+
+#### 固定扩展应用启动图标
+
+将扩展应用启动图标固定到导航上。
+
+![pin-app-on-navbar.png](https://raw.githubusercontent.com/easysoft/xuanxuan/master/docs/imgs/pin-app-on-navbar.png)
 
 ### 更新日志
 
-* 新增 打开多个喧喧应用窗口功能，在每个窗口中可以登录一个新的账号；
+* 新增 打开多个喧喧应用窗口功能（现在不允许启动多个程序实例），在每个窗口中可以登录一个新的账号，解决了启动多个程序实例导致第一个程序之外的程序无法使用数据库（[electron/electron issue #10792](https://github.com/electron/electron/issues/10792)）；
+* 新增 将扩展应用启动图标固定到导航上的功能；
+* 优化 了头像的显示，当用户头像图片下载失败时会使用一个默认的头像代替；
+* 优化 了在浏览器上复制 HTML 格式消息内容功能（仅浏览器端版本）；
+* 修复 了在火狐浏览器上无法滚动浏览消息的问题（仅浏览器端版本）；
+* 修复 了当用户在联系人菜单界面发送消息时没有自动切换到最近聊天菜单界面的问题；
 * 修复 了在 Windows 上极少情况下导致收到新消息时导航没有选中项且聊天列表没有新消息提示的问题；
 * 修复 了在浏览器端有时因为判断窗口是否激活失效导致通知机制没有起作用的问题；
-* 优化 了在浏览器上复制 HTML 格式消息内容功能；
+* 修复 了有时加载历史记录失败导致一直显示正在加载中动画图标的问题；
+* 修复 了 Markdown 语法指南链接无法访问的问题；
 * 开发相关：
   * 客户端：
     * 新增 从可执行程序所在目录读取运行时配置；
     * 新增 `ui.chat.denyChatFromMemberProfile`、`ui.showDailySignMessage`、`ui.chat.disableChatHistory`、`markdown.hintUrl` 等大量运行时配置选项，用于打包个性化版本；
+    * 新增 对服务器端多语言的支持（客户端界面多语言仍在开发中）；
     * 优化 `npm run start` 命令，现在启动热更新服务器后会直接在浏览器中打开浏览器端版本；
     * 优化 了打包脚本，规范脚本参数，增加了更多打包选项；
     * 优化 了自动更新用户缓存列表机制，当接收到一个系统中不存在的用户 `chat/login` 消息时会自动记录该新用户信息到列表中；
     * 修复 了使用扩展实例对象调用 `getEntry()` 失效的问题；
+  * XXD：
+    * 增加对后端多语言模式的兼容；
+    * 调整配置文件中（`config/xxd.conf`）配置项节点名称并兼容 2.1.0；
+    * 修复在特定环境中文件下载失败的问题。
+
+### 下载地址
+
+* Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.win.debug.setup.exe)；
+* MacOS：[xuanxuan.2.2.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.mac.dmg)；
+* Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.linux.amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.linux.x86_64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.linux.i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.linux.i686.rpm)；
+* 浏览器端：[xuanxuan.2.2.0.browser.zip](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.browser.zip)；
+* XXD Server： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.linux.ia32.tar.gz)；
+* 服务器端：
+  * XXB 2.1：[Windows 64位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb.2.1.0.win64.exe)、[Windows 32位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb.2.1.0.win32.exe)、[Linux 64位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb.2.1.0.zbox_64.tar.gz)、[Linux 32位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb.2.1.0.zbox_32.tar.gz)、[Linux rpm安装包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb-2.1.0-1.noarch.rpm)、[Linux deb安装包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb_2.1.0_1_all.deb)；
+  * 然之：[5.0.0 稳定版](https://www.ranzhi.org/download/5.0.stable-134.html)、[扩展包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.ranzhi.2.2.0.zip)。
+
 
 ## v 2.1.0
 
@@ -67,7 +110,7 @@
 * 浏览器端：[xuanxuan.2.1.0.browser.zip](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.2.1.0.browser.zip)；
 * XXD Server： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxd.2.1.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxd.2.1.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxd.2.1.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxd.2.1.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxd.2.1.0.linux.ia32.tar.gz)；
 * 服务器端：
-  * XXB 1.2：[Windows 64位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb.2.1.0.win64.exe)、[Windows 32位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb.2.1.0.win32.exe)、[Linux 64位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb.2.1.0.zbox_64.tar.gz)、[Linux 32位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb.2.1.0.zbox_32.tar.gz)、[Linux rpm安装包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb-2.1.0-1.noarch.rpm)、[Linux deb安装包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb_2.1.0_1_all.deb)；
+  * XXB 2.1：[Windows 64位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb.2.1.0.win64.exe)、[Windows 32位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb.2.1.0.win32.exe)、[Linux 64位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb.2.1.0.zbox_64.tar.gz)、[Linux 32位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb.2.1.0.zbox_32.tar.gz)、[Linux rpm安装包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb-2.1.0-1.noarch.rpm)、[Linux deb安装包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb_2.1.0_1_all.deb)；
   * 然之：[4.9.0 稳定版](https://www.ranzhi.org/download/4.9stable-133.html)、[扩展包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.ranzhi.2.1.0.zip)。
   * 禅道：[扩展包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.zentao.2.1.0.zip)（扩展包可以在[禅道](http://www.zentao.net/)10.0上安装使用，使得喧喧使用禅道的账户体系、后续会与禅道进行深入集成。）
 

@@ -40,7 +40,9 @@ const shouldQuit = ElectronApp.makeSingleInstance((commandLine, workingDirectory
 });
 // 如果已经打开，则退出
 if (shouldQuit) {
-    application.quit();
+    try {
+        ElectronApp.quit();
+    } catch (_) {} // eslint-disable-line
 }
 
 // 当所有窗口关闭时退出应用
@@ -152,25 +154,25 @@ const createMenu = () => {
                 label: Lang.string('menu.reload'),
                 accelerator: 'Command+R',
                 click() {
-                    application.mainWindow.webContents.reload();
+                    application.currentFocusWindow.webContents.reload();
                 }
             }, {
                 label: Lang.string('menu.toggleFullscreen'),
                 accelerator: 'Ctrl+Command+F',
                 click() {
-                    application.mainWindow.setFullScreen(!application.mainWindow.isFullScreen());
+                    application.currentFocusWindow.setFullScreen(!application.currentFocusWindow.isFullScreen());
                 }
             }, {
                 label: Lang.string('menu.toggleDeveloperTool'),
                 accelerator: 'Alt+Command+I',
                 click() {
-                    application.mainWindow.toggleDevTools();
+                    application.currentFocusWindow.toggleDevTools();
                 }
             }] : [{
                 label: Lang.string('menu.toggleFullscreen'),
                 accelerator: 'Ctrl+Command+F',
                 click() {
-                    application.mainWindow.setFullScreen(!application.mainWindow.isFullScreen());
+                    application.currentFocusWindow.setFullScreen(!application.currentFocusWindow.isFullScreen());
                 }
             }]
         }, {
@@ -235,7 +237,7 @@ ElectronApp.on('ready', async () => {
 ElectronApp.on('activate', () => {
     // 在 OS X 系统上，可能存在所有应用窗口关闭了，但是程序还没关闭，此时如果收到激活应用请求需要
     // 重新打开应用窗口并创建应用菜单
-    application.openMainWindow();
+    application.openOrCreateWindow();
     createMenu();
 });
 

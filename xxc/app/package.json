@@ -1,7 +1,7 @@
 {
     "name": "xuanxuan",
-    "productName": "xuanxuan",
-    "version": "2.1.1",
+    "displayName": "喧喧",
+    "version": "2.2.0",
     "description": "企业即时通讯平台",
     "main": "./main.js",
     "author": {
@@ -20,8 +20,5 @@
     },
     "dependencies": {
         "jquery": "^3.3.1"
-    },
-    "displayName": "喧喧",
-    "buildTime": "2018-12-04T09:39:58.378Z",
-    "buildVersion": null
+    }
 }

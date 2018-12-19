@@ -505,6 +505,43 @@ export default class Extension {
     }
 
     /**
+     * 获取通知消息发送者信息配置
+     *
+     * @readonly
+     * @memberof Extension
+     * @type {Map<String, Object>}
+     */
+    get notificationSenders() {
+        if (!this._notificationSenders) {
+            const extModule = this.module;
+            const notificationSenders = (extModule && extModule.commands) || this._pkg.notificationSenders;
+            if (notificationSenders) {
+                Object.keys(notificationSenders).forEach(senderId => {
+                    const sender = notificationSenders[senderId];
+                    if (sender.avatar && !sender.avatar.startsWith('http://') && !sender.avatar.startsWith('https://')) {
+                        sender.avatar = `file://${Path.join(this.localPath, sender.avatar)}`;
+                    }
+                });
+            }
+            this._notificationSenders = notificationSenders;
+        }
+        return this._notificationSenders;
+    }
+
+    /**
+     * 获取指定的通知消息发送者信息配置对象
+     * @param {Object|string} sender 发送者 ID 或发送者信息对象
+     * @return {Object} 发送者信息配置对象
+     */
+    getNotificationSender(sender) {
+        const {notificationSenders} = this;
+        if (typeof sender !== 'object') {
+            sender = {id: sender};
+        }
+        return (notificationSenders && notificationSenders[sender.id]) ? Object.assign(sender, notificationSenders[sender.id]) : null;
+    }
+
+    /**
      * 获取扩展作者名称
      * @memberof Extension
      * @type {string}
@@ -974,36 +1011,40 @@ export default class Extension {
         const extModule = this.module;
         let urlInspectors = extModule && extModule.urlInspectors;
         if (urlInspectors) {
-            const urlObj = new URL(url);
-            if (!Array.isArray(urlInspectors)) {
-                urlInspectors = [urlInspectors];
+            try {
+                const urlObj = new URL(url);
+                if (!Array.isArray(urlInspectors)) {
+                    urlInspectors = [urlInspectors];
+                }
+                const urlInspector = urlInspectors.find(x => {
+                    if (!x[type]) {
+                        return false;
+                    }
+                    if (typeof x.test === 'function') {
+                        return x.test(url, urlObj);
+                    }
+                    if (Array.isArray(x.test)) {
+                        x.test = new Set(x.test);
+                    } else if (typeof x.test === 'string') {
+                        x.test = new RegExp(x.test, 'i');
+                    }
+                    if (x.test instanceof Set) {
+                        return x.test.has(urlObj.host);
+                    }
+                    return x.test.test(url);
+                });
+                if (urlInspector && !urlInspector.provider) {
+                    urlInspector.provider = {
+                        icon: this.icon,
+                        name: this.name,
+                        label: this.displayName,
+                        url: `!showExtensionDialog/${this.name}`
+                    };
+                }
+                return urlInspector;
+            } catch (_) {
+                return null;
             }
-            const urlInspector = urlInspectors.find(x => {
-                if (!x[type]) {
-                    return false;
-                }
-                if (typeof x.test === 'function') {
-                    return x.test(url, urlObj);
-                }
-                if (Array.isArray(x.test)) {
-                    x.test = new Set(x.test);
-                } else if (typeof x.test === 'string') {
-                    x.test = new RegExp(x.test, 'i');
-                }
-                if (x.test instanceof Set) {
-                    return x.test.has(urlObj.host);
-                }
-                return x.test.test(url);
-            });
-            if (urlInspector && !urlInspector.provider) {
-                urlInspector.provider = {
-                    icon: this.icon,
-                    name: this.name,
-                    label: this.displayName,
-                    url: `!showExtensionDialog/${this.name}`
-                };
-            }
-            return urlInspector;
         }
         return null;
     }
@@ -1034,7 +1075,12 @@ export default class Extension {
         if (menuItem.url) {
             menuItem.url = StringHelper.format(menuItem.url, urlFormatObject);
         }
-        menuItem.label = `${this.displayName}: ${menuItem.label || menuItem.url}`;
+        menuItem.label = `${menuItem.label || menuItem.url}`;
+        if (menuItem.label[0] === '!') {
+            menuItem.label = menuItem.label.substr(1);
+        } else {
+            menuItem.label = `${this.displayName}: ${menuItem.label}`;
+        }
         if (!menuItem.icon) {
             menuItem.icon = this.icon;
         }
@@ -1071,6 +1117,9 @@ export default class Extension {
      * @return {void}
      */
     saveData() {
-        this.setConfig('_data', this._data);
+        const data = Object.assign({}, this._data);
+        delete data.remoteLoaded;
+        delete data.loadRemoteFailed;
+        this.setConfig('_data', data);
     }
 }

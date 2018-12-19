@@ -7,7 +7,6 @@ import clipboard from 'clipboard-polyfill'; // 考虑升级到 https://github.co
  */
 export const writeText = clipboard.writeText;
 
-
 /**
  * 将 HTML 文本复制到剪切板
  * @param {string} html 要复制的 HTML 文本

@@ -25,5 +25,7 @@
     "chat.denyShowMemberProfile": false,
     "chat.muteOnChatNotActive": false,
     "app.showPoweredBy": "auto",
-    "chat.showMeAsMySenderName": false
+    "chat.showMeAsMySenderName": false,
+    "login.skipHTTPSecurityAlert": false,
+    "todo.enable": true
 }

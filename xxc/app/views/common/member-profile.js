@@ -5,8 +5,7 @@ import Icon from '../../components/icon';
 import Avatar from '../../components/avatar';
 import Lang from '../../lang';
 import App from '../../core';
-import Member from '../../core/models/member';
-import ROUTES from '../common/routes';
+import ROUTES from './routes';
 import {UserAvatar} from './user-avatar';
 import {StatusDot} from './status-dot';
 import replaceViews from '../replace-views';
@@ -77,7 +76,7 @@ export default class MemberProfile extends Component {
      */
     componentDidMount() {
         this.dataChangeEventHandler = App.events.onDataChange(data => {
-            if (data && data.members && data.members[this.props.memberId]) {
+            if (data && data.members && data.members[this._memberId]) {
                 this.forceUpdate();
             }
         });
@@ -93,7 +92,7 @@ export default class MemberProfile extends Component {
      * @memberof MemberProfile
      */
     shouldComponentUpdate(nextProps) {
-        return nextProps.compact !== this.props.compact || nextProps.className !== this.props.className || nextProps.hideChatBtn !== this.props.hideChatBtn || nextProps.onRequestClose !== this.props.onRequestClose || nextProps.memberId !== this.props.memberId;
+        return nextProps.compact !== this.props.compact || nextProps.className !== this.props.className || nextProps.hideChatBtn !== this.props.hideChatBtn || nextProps.onRequestClose !== this.props.onRequestClose || nextProps.memberId !== this._memberId;
     }
 
     /**
@@ -129,6 +128,7 @@ export default class MemberProfile extends Component {
         } = this.props;
 
         const member = App.members.get(memberId);
+        this._memberId = member && member.id;
         const roleName = member.getRoleName(App);
         const deptName = member.getDeptName(App);
 

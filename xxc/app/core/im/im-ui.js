@@ -118,18 +118,23 @@ export const onActiveChat = listener => events.on(EVENT.activeChat, listener);
  * @param {string|FileData} content 文本或图片文件内容
  * @param {string} type 内容类型，可以为 `'text'` 或 `'image'`
  * @param {string} cgid 聊天 GID
+ * @param {boolean} clear 是否清空输入框之前的内容
  * @return {void}
  */
-export const sendContentToChat = (content, type = 'text', cgid = null) => {
+export const sendContentToChat = (content, type = 'text', cgid = null, clear = false) => {
     if (!cgid) {
         cgid = activedChatId;
     }
     if (type === 'file') {
         Server.sendFileMessage(content, chats.get(cgid));
     } else {
-        return events.emit(`${EVENT.sendContentToChat}.${cgid}`, {content, type});
+        return events.emit(`${EVENT.sendContentToChat}.${cgid}`, {content, type, clear});
     }
 };
+
+registerCommand('sendContentToChat', (context, content) => {
+    sendContentToChat(content || context.options.content, context.options.type, context.options.cgid, context.options.clear);
+});
 
 /**
  * 绑定聊天发送框接收到新内容事件
@@ -425,6 +430,7 @@ export const chatDismissConfirm = chat => {
                 return Promise.resolve(theChat);
             });
         }
+        return result;
     });
 };
 
@@ -807,7 +813,7 @@ addContextMenuCreator('message.text', ({message}) => {
             });
         }
     }
-    if (!Config.ui['chat.simpleChatView'] && profile.user.isVersionSupport('todo')) {
+    if (Config.ui['todo.enable'] && !Config.ui['chat.simpleChatView'] && profile.user.isVersionSupport('todo')) {
         if (items.length) {
             items.push('divider');
         }

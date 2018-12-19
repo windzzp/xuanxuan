@@ -33,11 +33,22 @@ export default class DisplayContainer extends Component {
      * 根据 ID 获取弹出层组件实例
      *
      * @param {string} id 弹出层 ID
-     * @return {DisplayLayer}
+     * @return {DisplayLayer} 上次显示的弹出层
      * @memberof DisplayContainer
      */
     getItem(id) {
         return this.state.all[id];
+    }
+
+    /**
+     * 获取上次显示的弹出层
+     * @return {DisplayLayer} 上次显示的弹出层
+     * @memberof DisplayContainer
+     */
+    get lastShowItem() {
+        const {all} = this.state;
+        const allLayers = Object.keys(all).map(x => all[x]).filter(x => x.ref && x.ref.isShow).sort((x, y) => (y.lastShowTime - x.lastShowTime));
+        return (allLayers && allLayers.length) ? allLayers[0] : null;
     }
 
     /**
@@ -49,7 +60,7 @@ export default class DisplayContainer extends Component {
      * @memberof DisplayContainer
      */
     show(props, callback) {
-        const all = this.state.all;
+        const {all} = this.state;
         if (typeof props !== 'object') {
             props = {id: props};
         }
@@ -101,7 +112,7 @@ export default class DisplayContainer extends Component {
      */
     hide(id, callback, remove = 'auto') {
         const {all} = this.state;
-        const item = all[id];
+        const item = (id !== null && id !== undefined) ? all[id] : this.lastShowItem;
         if (!item) {
             if (DEBUG) {
                 console.warn(`Cannot find display layer with id ${id}.`);

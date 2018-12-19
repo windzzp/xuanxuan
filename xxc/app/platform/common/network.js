@@ -51,7 +51,7 @@ export const getTextFromResponse = response => {
         return response.blob().then(blob => {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = () => {
                     resolve(reader.result);
                 };
                 reader.onerror = reject;
@@ -194,7 +194,7 @@ export const uploadFile = (file, serverUrl, beforeSend = null, onProgress = null
                         error.code = 'USER_DENY_ATTACT_UPLOAD';
                         reject(error);
                     } else {
-                        const error = new Error('Unknown data content: ' + bodyText);
+                        const error = new Error(`Unknown data content: ${bodyText}`);
                         error.code = 'WRONG_DATA';
                         reject(error);
                     }

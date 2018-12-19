@@ -64,7 +64,6 @@ xxd/log
 xxc/test
 
 # documentation
-docs
 xxc/docs
 issues.md
 
@@ -73,5 +72,7 @@ xxd/tmpfile
 
 # documentation
 docs/output
+docs/pdf
 docs/*/*-convert.md
-
+docs/**/*.md
+docs/**/*.md

@@ -170,6 +170,30 @@ export const getExtensionUrlOpener = url => {
     return getExtensionUrlInspector(url, 'open');
 };
 
+/**
+ * 获取指定的通知消息发送者信息配置对象
+ * @param {Object|string} sender 发送者 ID 或发送者信息对象
+ * @return {Object} 发送者信息配置对象
+ */
+export const getNotificationSender = sender => {
+    if (typeof sender !== 'object') {
+        sender = {id: sender};
+    }
+    let extSender = null;
+    if (getExts().some(x => {
+        if (!x.disabled) {
+            const xSender = x.getNotificationSender(sender);
+            if (xSender) {
+                extSender = xSender;
+                return true;
+            }
+        }
+        return false;
+    })) {
+        return extSender;
+    }
+};
+
 // 将扩展中提供的所有可替换组件类设置为全局可访问
 global.replaceViews = Object.assign(global.replaceViews || {}, replaceViews);
 
@@ -182,4 +206,5 @@ export default {
     getEntryVisitUrl,
     ExtsView,
     ExtsNavbarView,
+    getNotificationSender,
 };

@@ -374,6 +374,7 @@
     "ext.app.refresh": "刷新",
     "ext.app.goBack": "后退",
     "ext.app.goForward": "前进",
+    "ext.app.goHome": "应用首页",
     "ext.app.openDevTools": "开发者工具",
     "ext.app.pinnedOnMenu": "固定在导航上",
     "ext.app.unpinnedOnMenu": "取消固定在导航上",
