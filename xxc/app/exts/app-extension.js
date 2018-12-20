@@ -179,7 +179,7 @@ export default class AppExtension extends Extension {
         const {appIcon} = this._pkg;
         if (appIcon && !this._appIcon) {
             if (appIcon.length > 1 && !appIcon.startsWith('http://') && !appIcon.startsWith('https://') && !appIcon.startsWith('mdi-') && !appIcon.startsWith('icon')) {
-                this._appIcon = Path.join(this.localPath, appIcon);
+                this._appIcon = `file://${Path.join(this.localPath, appIcon)}`;
             } else {
                 this._appIcon = appIcon;
             }
@@ -196,7 +196,7 @@ export default class AppExtension extends Extension {
         const {menuIcon} = this._pkg;
         if (menuIcon && !this._menuIcon) {
             if (menuIcon.length > 1 && !menuIcon.startsWith('http://') && !menuIcon.startsWith('https://') && !menuIcon.startsWith('mdi-') && !menuIcon.startsWith('icon')) {
-                this._menuIcon = Path.join(this.localPath, menuIcon);
+                this._menuIcon = `file://${Path.join(this.localPath, menuIcon)}`;
             } else {
                 this._menuIcon = menuIcon;
             }

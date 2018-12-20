@@ -507,7 +507,7 @@ export default class Extension {
         const {icon} = this._pkg;
         if (icon && !this._icon) {
             if (icon.length > 1 && !icon.startsWith('http://') && !icon.startsWith('https://') && !icon.startsWith('mdi-') && !icon.startsWith('icon')) {
-                this._icon = Path.join(this.localPath, icon);
+                this._icon = `file://${Path.join(this.localPath, icon)}`;
             } else {
                 this._icon = icon;
             }
