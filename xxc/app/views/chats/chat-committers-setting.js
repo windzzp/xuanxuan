@@ -150,6 +150,7 @@ export default class ChatCommittersSetting extends PureComponent {
             whitelist.delete(memberId);
         }
         this.setState({whitelist});
+        this.forceUpdate();
     }
 
     /**
