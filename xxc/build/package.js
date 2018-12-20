@@ -16,7 +16,6 @@ import archiver from 'archiver';
 import fse from 'fs-extra';
 import pkg from '../package.json';
 import {formatDate} from '../app/utils/date-helper';
-import oldPkg from '../app/package.json';
 
 const PLATFORMS = new Set(['win', 'mac', 'linux', 'browser']);
 const ARCHS = new Set(['x32', 'x64']);
@@ -161,6 +160,7 @@ const formatTime = ms => {
     }
 };
 
+// 创建 zip 文件
 const createZipFromDir = (file, dir, destDir = false) => {
     return new Promise((resolve, reject) => {
         const output = fse.createWriteStream(file);
@@ -418,7 +418,7 @@ const outputConfigFiles = () => {
 
     if (!isSkipBuild) {
         // 输出应用 package.json 文件
-        fse.outputJsonSync('./app/package.json', Object.assign({}, oldPkg, appPkg), {spaces: 4});
+        fse.outputJsonSync('./app/package.json', Object.assign({}, createPackageObj(), appPkg), {spaces: 4});
         console.log(`    ${chalk.green(chalk.bold('✓'))} 创建 ${chalk.underline('./app/package.json')}`);
         // 输出 manifest 文件
         fse.outputJsonSync('./app/manifest.json', {
@@ -467,24 +467,25 @@ const outputConfigFiles = () => {
     console.log();
 };
 
+const createPackageObj = () => ({
+    name: pkg.name,
+    productName: pkg.name.name,
+    displayName: pkg.productName,
+    version: pkg.version,
+    description: pkg.description,
+    main: './main.js',
+    author: pkg.author,
+    homepage: pkg.homepage,
+    company: pkg.company,
+    license: pkg.license,
+    bugs: pkg.bugs,
+    repository: pkg.repository,
+    dependencies: pkg.appDependencies
+});
+
 // 还原项目目录下的 package.json 文件
 const revertConfigFiles = () => {
-    const originPkg = {
-        name: pkg.name,
-        productName: pkg.name.name,
-        displayName: pkg.productName,
-        version: pkg.version,
-        description: pkg.description,
-        main: './main.js',
-        author: pkg.author,
-        homepage: pkg.homepage,
-        company: pkg.company,
-        license: pkg.license,
-        bugs: pkg.bugs,
-        repository: pkg.repository,
-        dependencies: pkg.appDependencies
-    };
-    fse.outputJsonSync('./app/package.json', originPkg, {spaces: 4});
+    fse.outputJsonSync('./app/package.json', createPackageObj(), {spaces: 4});
     console.log(`    ${chalk.green(chalk.bold('✓'))} 还原 ${chalk.underline('./app/package.json')}`);
 };
 
@@ -547,7 +548,7 @@ const createPackage = (osType, arch, debug = isDebug) => {
                     const zipDir = path.join(packagesPath, osType === 'mac' ? 'mac' : (arch.includes('32') ? `${osType}-ia32-unpacked` : `${osType}-unpacked`)); // eslint-disable-line
                     const zipFileName = getArtifactName(osType, arch, 'zip', `${osType}Zip`);
                     const zipFile = path.join(packagesPath, zipFileName);
-                    await createZipFromDir(zipFile, zipDir, (config.zipSubDir && osType !== 'mac') ? (typeof config.zipSubDir === 'string' ? config.name : config.zipSubDir) : false); // eslint-disable-line
+                    await createZipFromDir(zipFile, zipDir, (config.zipSubDir && osType !== 'mac') ? (typeof config.zipSubDir === 'string' ? config.zipSubDir : config.name) : false); // eslint-disable-line
                     console.log(`    ${chalk.green(chalk.bold('✓'))} 创建压缩包 ${chalk.underline(path.relative(appRootPath, zipFile))}`);
                 }
                 resolve(code);
@@ -667,7 +668,7 @@ const build = async (callback) => {
 outputConfigFiles();
 
 if (!isSkipBuild) {
-    build();
+    build(revertConfigFiles);
+} else {
+    revertConfigFiles();
 }
-
-revertConfigFiles();
