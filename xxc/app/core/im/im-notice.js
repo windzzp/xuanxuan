@@ -45,7 +45,7 @@ let lastNoticeChat = null;
  * @private
  * @type {Object}
  */
-let lastNoticeInfo = {};
+let lastNoticeInfo = {total: 0, notMuteCount: 0, muteCount: 0};
 
 /**
  * 更新聊天通知延迟操作实例
@@ -141,7 +141,7 @@ const updateChatNoticeTask = new DelayAction(() => {
     }
 
     lastNoticeInfo = {
-        total, chats: total, message, sound, tray, notMuteCount,
+        total, chats: total, message, sound, tray, notMuteCount, muteCount,
     };
     updateNotice(lastNoticeInfo);
 }, 200);
