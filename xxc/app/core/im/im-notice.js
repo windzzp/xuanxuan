@@ -1,6 +1,6 @@
 import Platform from 'Platform';
 import {saveChatMessages, onChatMessages, forEachChat} from './im-chats';
-import ui from './im-ui';
+import {isActiveChat, renderChatMessageContent, getcurrentActiveChat} from './im-ui';
 import DelayAction from '../../utils/delay-action';
 import {isMatchWindowCondition, updateNotice} from '../notice';
 import Lang from '../../lang';
@@ -23,7 +23,7 @@ const getPlainTextOfChatMessage = (chatMessage, limitLength = 255, ignoreBreak =
     if (chatMessage.isImageContent) {
         return `[${Lang.string('file.image.title')}]`;
     }
-    let plainText = chatMessage.renderedTextContent(ui.renderChatMessageContent).replace(/<(?:.|\n)*?>/gm, '');
+    let plainText = chatMessage.renderedTextContent(renderChatMessageContent).replace(/<(?:.|\n)*?>/gm, '');
     if (ignoreBreak) {
         plainText = plainText.trim().replace(/[\r\n]/g, ' ').replace(/\n[\s| | ]*\r/g, '\n');
     }
@@ -61,16 +61,17 @@ const updateChatNoticeTask = new DelayAction(() => {
     let total = 0;
     let lastChatMessage = null;
     let notMuteCount = 0;
+    let muteCount = 0;
     const muteOnChatNotActive = Config.ui['chat.muteOnChatNotActive'];
 
     forEachChat(chat => {
         if (chat.noticeCount) {
-            const isActiveChat = ui.isActiveChat(chat.gid);
-            if (!isActiveChat && muteOnChatNotActive) {
+            const isChatActive = isActiveChat(chat.gid);
+            if (!isChatActive && muteOnChatNotActive) {
                 return;
             }
             const {isWindowFocus} = Platform.ui;
-            if (isWindowFocus && isActiveChat) {
+            if (isWindowFocus && isChatActive) {
                 const mutedMessages = chat.muteNotice();
                 if (mutedMessages && mutedMessages.length) {
                     saveChatMessages(chat.messages, chat);
@@ -84,7 +85,9 @@ const updateChatNoticeTask = new DelayAction(() => {
                         lastNoticeChat = chat;
                     }
                 }
-                if (!chat.isMuteOrHidden) {
+                if (chat.isMuteOrHidden) {
+                    muteCount += chat.noticeCount;
+                } else {
                     notMuteCount += chat.noticeCount;
                 }
             }
@@ -157,7 +160,7 @@ onChatMessages(updateChatNotice);
 // 监听界面窗口激活事件
 if (Platform.ui.onWindowFocus) {
     Platform.ui.onWindowFocus(() => {
-        const activedChat = ui.currentActiveChat;
+        const activedChat = getcurrentActiveChat();
         if (activedChat && activedChat.noticeCount) {
             activedChat.muteNotice();
             saveChatMessages(activedChat.messages, activedChat);
@@ -168,7 +171,7 @@ if (Platform.ui.onWindowFocus) {
 // 监听界面窗口还原事件
 if (Platform.ui.onWindowRestore) {
     Platform.ui.onWindowRestore(() => {
-        const activedChat = ui.currentActiveChat;
+        const activedChat = getcurrentActiveChat();
         if (lastNoticeChat && lastNoticeChat.noticeCount && (!activedChat || (!activedChat.noticeCount && activedChat.gid !== lastNoticeChat.gid))) {
             window.location.hash = `#/chats/recents/${lastNoticeChat.gid}`;
         }

@@ -125,7 +125,7 @@ export default class Navbar extends Component {
      */
     componentDidMount() {
         this.noticeUpdateHandler = App.notice.onNoticeUpdate(notice => {
-            this.setState({noticeBadge: notice.total});
+            this.setState({noticeBadge: notice.notMuteCount});
         });
 
         this.dataChangeEventHandler = App.events.onDataChange(data => {

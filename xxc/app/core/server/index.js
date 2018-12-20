@@ -137,6 +137,7 @@ export const login = (user) => {
         user.setVersionSupport(checkVersionSupport(user));
         return socket.login(user, {
             onClose: (_, code, reason, unexpected) => {
+                notice.update();
                 events.emit(EVENT.loginout, user, code, reason, unexpected);
             }
         });

@@ -904,6 +904,18 @@ export const onChatSendboxFocus = (listener) => {
     return events.on(EVENT.sendboxFocus, listener);
 };
 
+/**
+ * 获取当前激活对聊天 GID
+ * @return {string} 当前激活对聊天 GID
+ */
+export const getCurrentActiveChatGID = () => activedChatId;
+
+/**
+ * 获取当前激活的聊天对象
+ * @return {Chat} 当前激活的聊天对象
+ */
+export const getcurrentActiveChat = () => activedChatId && chats.get(activedChatId);
+
 export default {
     activeChat,
     activeLastChat,
