@@ -1,6 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
 import path from 'path';
-import fse from 'fs-extra';
 import platform from '../../platform';
 import Config, {updateConfig} from '../../config';
 import Lang from '../../lang';
@@ -72,7 +71,7 @@ if (buildIns && Array.isArray(buildIns)) {
     buildIns.forEach(extConfig => {
         if (typeof extConfig === 'string') {
             const extPkgPath = path.join(buildInPath, extConfig, 'package.json');
-            const extPkg = fse.readJsonSync(extPkgPath, {throws: false});
+            const extPkg = platform.fs.readJsonSync(extPkgPath, {throws: false});
             if (extPkg && extPkg.name === extConfig) {
                 extConfig = extPkg;
             }
