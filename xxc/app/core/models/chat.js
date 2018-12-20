@@ -1330,9 +1330,9 @@ export default class Chat extends Entity {
             return chats.sort(orders);
         }
         if (!orders || orders === 'default' || orders === true) {
-            orders = ['star', 'notice', 'hide', 'mute', 'lastActiveTime', 'online', 'createDate', 'name', 'id'];
+            orders = ['star', 'notice', 'hide', 'lastActiveTime', 'mute', 'online', 'createDate', 'name', 'id'];
         } else if (orders === 'onlineFirst') {
-            orders = ['star', 'notice', 'hide', 'online', 'mute', 'lastActiveTime', 'createDate', 'name', 'id'];
+            orders = ['star', 'notice', 'hide', 'online', 'lastActiveTime', 'mute', 'createDate', 'name', 'id'];
         } else if (typeof orders === 'string') {
             orders = orders.split(' ');
         }
@@ -1353,6 +1353,9 @@ export default class Chat extends Entity {
                     let xValue;
                     let yValue;
                     switch (order) {
+                    case 'notice':
+                        result = (x.noticeCount ? 1 : 0) - (y.noticeCount ? 1 : 0);
+                        break;
                     case 'hide':
                     case 'mute':
                         result = (x[order] ? 0 : 1) - (y[order] ? 0 : 1);
