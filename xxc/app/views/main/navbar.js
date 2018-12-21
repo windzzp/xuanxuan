@@ -21,11 +21,11 @@ import replaceViews from '../replace-views';
  */
 const navbarItems = [
     {
-        to: ROUTES.chats.recents.__, label: Lang.string('navbar.chats.label'), icon: 'comment-outline', activeIcon: 'comment-processing'
+        to: ROUTES.chats.recents.__, label: Lang.string('navbar.chats.label'), icon: 'comment-processing-outline', activeIcon: 'comment-processing'
     }, {
-        to: ROUTES.chats.groups.__, label: Lang.string('navbar.groups.label'), icon: 'pound', activeIcon: 'pound-box'
+        to: ROUTES.chats.groups.__, label: Lang.string('navbar.groups.label'), icon: 'comment-multiple-outline', activeIcon: 'comment-multiple'
     }, {
-        to: ROUTES.chats.contacts.__, label: Lang.string('navbar.contacts.label'), icon: 'account-multiple-outline', activeIcon: 'account-multiple'
+        to: ROUTES.chats.contacts.__, label: Lang.string('navbar.contacts.label'), icon: 'account-group-outline', activeIcon: 'account-group'
     },
 ];
 
@@ -125,7 +125,7 @@ export default class Navbar extends Component {
      */
     componentDidMount() {
         this.noticeUpdateHandler = App.notice.onNoticeUpdate(notice => {
-            this.setState({noticeBadge: notice.total});
+            this.setState({noticeBadge: notice.notMuteCount});
         });
 
         this.dataChangeEventHandler = App.events.onDataChange(data => {

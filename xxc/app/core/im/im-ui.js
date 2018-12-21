@@ -430,6 +430,7 @@ export const chatDismissConfirm = chat => {
                 return Promise.resolve(theChat);
             });
         }
+        return result;
     });
 };
 
@@ -812,7 +813,7 @@ addContextMenuCreator('message.text', ({message}) => {
             });
         }
     }
-    if (!Config.ui['chat.simpleChatView'] && profile.user.isVersionSupport('todo')) {
+    if (Config.ui['todo.enable'] && !Config.ui['chat.simpleChatView'] && profile.user.isVersionSupport('todo')) {
         if (items.length) {
             items.push('divider');
         }
@@ -902,6 +903,18 @@ export const emitChatSendboxFocus = (chat, sendboxContent = null) => {
 export const onChatSendboxFocus = (listener) => {
     return events.on(EVENT.sendboxFocus, listener);
 };
+
+/**
+ * 获取当前激活对聊天 GID
+ * @return {string} 当前激活对聊天 GID
+ */
+export const getCurrentActiveChatGID = () => activedChatId;
+
+/**
+ * 获取当前激活的聊天对象
+ * @return {Chat} 当前激活的聊天对象
+ */
+export const getcurrentActiveChat = () => activedChatId && chats.get(activedChatId);
 
 export default {
     activeChat,

@@ -96,7 +96,7 @@ export default class Checkbox extends PureComponent {
         return (
             <div className={classes('checkbox', className, {checked})} {...other}>
                 <input id={this._controlId} checked={checked} type="checkbox" onChange={this.handleCheckboxChange} {...inputProps} />
-                {label && <label htmlFor={this.controlId}>{label}</label>}
+                {label && <label htmlFor={this._controlId}>{label}</label>}
             </div>
         );
     }

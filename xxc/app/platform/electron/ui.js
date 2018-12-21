@@ -264,7 +264,7 @@ export const showQuitConfirmDialog = (callback) => {
  * @return {void}
  */
 export const openDevTools = () => {
-    browserWindow.openDevTools();
+    browserWindow.webContents.openDevTools({mode: 'bottom'});
     // todo: Turn on debug mode
 };
 

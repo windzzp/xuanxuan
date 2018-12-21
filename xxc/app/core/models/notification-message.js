@@ -21,12 +21,23 @@ export default class NotificationMessage extends ChatMessage {
     get sender() {
         if (!this._sender) {
             const {notification} = this;
-            this._sender = new Member(notification.sender.id === 'ranzhi' ? {
-                id: 'ranzhi',
-                realname: '然之协同',
-                system: true,
-                avatar: `$${Config.media['image.path']}ranzhi-icon.png`
-            } : notification.sender);
+            let {sender} = notification;
+            if (global.ExtsRuntime && global.ExtsRuntime.getNotificationSender) {
+                const extSender = global.ExtsRuntime.getNotificationSender(sender);
+                if (extSender) {
+                    extSender.system = true;
+                    sender = extSender;
+                }
+            }
+            if (!sender.system && sender.id === 'ranzhi') {
+                sender = {
+                    id: 'ranzhi',
+                    realname: '然之协同',
+                    system: true,
+                    avatar: `$${Config.media['image.path']}ranzhi-icon.png`
+                };
+            }
+            this._sender = new Member(sender);
         }
         return this._sender;
     }

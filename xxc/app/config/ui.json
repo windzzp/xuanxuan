@@ -26,5 +26,8 @@
     "chat.muteOnChatNotActive": false,
     "app.showPoweredBy": "auto",
     "chat.showMeAsMySenderName": false,
-    "login.skipHTTPSecurityAlert": false
+    "login.skipHTTPSecurityAlert": false,
+    "login.ldap": true,
+    "todo.enable": true,
+    "webview.frame.hiddenNavButtons": false
 }

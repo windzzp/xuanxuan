@@ -134,6 +134,7 @@
     "why-did-you-update": "^0.1.1"
   },
   "dependencies": {
+    "abortcontroller-polyfill": "^1.2.1",
     "aes-js": "^3.1.0",
     "cheerio": "^1.0.0-rc.2",
     "clipboard-polyfill": "^2.7.0",
@@ -164,6 +165,9 @@
     "uuid": "^3.1.0",
     "wolfy87-eventemitter": "^5.2.2",
     "ws": "^2.2.3"
+  },
+  "appDependencies": {
+    "jquery": "^3.3.1"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.0",

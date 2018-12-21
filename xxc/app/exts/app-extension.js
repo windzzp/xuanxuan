@@ -179,7 +179,7 @@ export default class AppExtension extends Extension {
         const {appIcon} = this._pkg;
         if (appIcon && !this._appIcon) {
             if (appIcon.length > 1 && !appIcon.startsWith('http://') && !appIcon.startsWith('https://') && !appIcon.startsWith('mdi-') && !appIcon.startsWith('icon')) {
-                this._appIcon = Path.join(this.localPath, appIcon);
+                this._appIcon = `file://${Path.join(this.localPath, appIcon)}`;
             } else {
                 this._appIcon = appIcon;
             }
@@ -196,7 +196,7 @@ export default class AppExtension extends Extension {
         const {menuIcon} = this._pkg;
         if (menuIcon && !this._menuIcon) {
             if (menuIcon.length > 1 && !menuIcon.startsWith('http://') && !menuIcon.startsWith('https://') && !menuIcon.startsWith('mdi-') && !menuIcon.startsWith('icon')) {
-                this._menuIcon = Path.join(this.localPath, menuIcon);
+                this._menuIcon = `file://${Path.join(this.localPath, menuIcon)}`;
             } else {
                 this._menuIcon = menuIcon;
             }
@@ -264,7 +264,34 @@ export default class AppExtension extends Extension {
      */
     get canPinnedOnMenu() {
         const {pinnedOnMenu} = this._pkg;
+        if (pinnedOnMenu === 'fixed' && this.isBuildInOrRemote) {
+            return false;
+        }
         return !this.isFixed && pinnedOnMenu !== false;
+    }
+
+    /**
+     * 获取应用图标在导航上显示的顺序
+     *
+     * @readonly
+     * @memberof AppExtension
+     * @type {number}
+     */
+    get pinnedOnMenuOrder() {
+        let {pinnedOnMenuOrder} = this._pkg;
+        if (pinnedOnMenuOrder === undefined || pinnedOnMenuOrder === null) {
+            pinnedOnMenuOrder = this._data.pinnedOnMenuOrder;
+        }
+        return pinnedOnMenuOrder;
+    }
+
+    /**
+     * 设置应用图标在导航上显示的顺序
+     * @param {number} order 应用图标在导航上显示的顺序
+     * @memberof AppExtension
+     */
+    set pinnedOnMenuOrder(order) {
+        this._data.pinnedOnMenuOrder = order;
     }
 
     /**
@@ -275,7 +302,7 @@ export default class AppExtension extends Extension {
     get pinnedOnMenu() {
         const {pinnedOnMenu} = this._pkg;
         const userPinnedOnMenu = this._data.pinnedOnMenu;
-        return (pinnedOnMenu !== false && userPinnedOnMenu) || (pinnedOnMenu === true && userPinnedOnMenu !== false);
+        return (pinnedOnMenu === 'fixed' && this.isBuildInOrRemote) || (pinnedOnMenu !== false && userPinnedOnMenu) || ((pinnedOnMenu === true || pinnedOnMenu === 'fixed') && userPinnedOnMenu !== false);
     }
 
     /**

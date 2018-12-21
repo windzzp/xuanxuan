@@ -290,7 +290,7 @@ export default class UserSetting extends Component {
      * @return {void}
      */
     changeConfig(item, value) {
-        const name = item.name;
+        const {name} = item;
         if (typeof value === 'object' && value.target) {
             if (value.target.type === 'checkbox') {
                 value = value.target.checked;

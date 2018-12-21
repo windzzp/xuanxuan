@@ -2,7 +2,7 @@
  * 格式化字符串
  * @param {string} str 要格式化的字符串
  * @param  {...any} args 格式化参数
- * @return  {string}
+ * @return  {string} 格式化后的字符串
  * @example <caption>通过参数序号格式化</caption>
  *     var hello = $.format('{0} {1}!', 'Hello', 'world');
  *     // hello 值为 'Hello world!'
@@ -52,7 +52,7 @@ export const BYTE_UNITS = {
  * @param {number} size 字节大小
  * @param {number} [fixed=2] 保留的小数点尾数
  * @param {string} [unit=''] 单位，如果留空，则自动使用最合适的单位
- * @return {string}
+ * @return {string} 格式化后的字符串
  */
 export const formatBytes = (size, fixed = 2, unit = '') => {
     if (!unit) {

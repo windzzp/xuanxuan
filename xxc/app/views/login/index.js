@@ -8,6 +8,7 @@ import PoweredInfo from '../common/powered-info';
 import App from '../../core';
 import replaceViews from '../replace-views';
 import pkg from '../../package.json';
+import AboutDialog from '../common/about-dialog';
 
 /**
  * LoginIndex 组件 ，显示登录界面
@@ -90,8 +91,11 @@ export default class LoginIndex extends PureComponent {
                     {App.ui.entryParams.loginTip && <div className="app-login-tip small text-center has-padding-v muted text-white">{App.ui.entryParams.loginTip}</div>}
                     {children}
                 </section>
-                <BuildInfo className="dock-right dock-bottom small has-padding text-white muted" />
-                {showPoweredBy && <PoweredInfo className="dock-left dock-bottom small strong has-padding text-white muted" />}
+                <footer className="dock-right dock-bottom text-white muted has-padding-sm">
+                    <BuildInfo className="small state has-padding-sm inline-block" onClick={() => AboutDialog.show()} />
+                    {showPoweredBy ? '•' : null}
+                    {showPoweredBy && <PoweredInfo className="state has-padding-sm inline-block strong small" />}
+                </footer>
             </div>
         );
     }

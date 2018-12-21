@@ -20,6 +20,6 @@ export default class PoweredInfo extends PureComponent {
      * @return {ReactNode|string|number|null|boolean} React 渲染内容
      */
     render() {
-        return <a href="http://xuan.im" target="_blank" {...this.props}>{lang.string('common.poweredBy')}</a>;
+        return <a href="http://xuan.im" target="_blank" {...this.props}>{lang.string('common.poweredBy')} {this.props.children}</a>;
     }
 }

@@ -6,6 +6,7 @@ import UserConfig from './user-config';
 import DelayAction from '../../utils/delay-action';
 import {isSameDay, isToday} from '../../utils/date-helper';
 import events from '../events';
+import Config from '../../config';
 
 /**
  * 用户密码 MD5 存储前缀
@@ -728,6 +729,9 @@ export default class User extends Member {
      * @type {boolean}
      */
     get ldap() {
+        if (!Config.ui['login.ldap']) {
+            return false;
+        }
         return this.$get('ldap');
     }
 

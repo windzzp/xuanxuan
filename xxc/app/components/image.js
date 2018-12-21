@@ -31,10 +31,14 @@ export default class Image extends PureComponent {
     /**
      * 处理图片加载失败事件
      *
+     * @param {Event} e 事件对象
      * @memberof Image
      * @return {void}
      */
-    _handleImgError = () => {
+    _handleImgError = (e) => {
+        if (DEBUG) {
+            console.warn(`Cannot load image ${this.props.src}`, e);
+        }
         const {src} = this.props;
         this.setState({error: src});
     }

@@ -146,7 +146,7 @@ class AppRemote {
                 Lang.update(langInConfig);
             }
             this.createTrayIcon(windowName);
-            if (SHOW_LOG) console.log('\n>> App ready.', config);
+            if (SHOW_LOG) console.log('\n>> App ready.');
         });
 
         // 设置 Electron 应用标题
@@ -169,7 +169,7 @@ class AppRemote {
      * @return {void}
      */
     ready() {
-        this.openMainWindow();
+        this.openOrCreateWindow();
 
         if (IS_MAC_OSX) {
             const dockMenu = Menu.buildFromTemplate([
@@ -193,10 +193,12 @@ class AppRemote {
      */
     removeTrayIcon(windowName) {
         if (this._traysData && this._traysData[windowName]) {
-            const {tray} = this._traysData[windowName];
+            const trayData = this._traysData[windowName];
+            const {tray} = trayData;
             if (tray) {
                 tray.destroy();
             }
+            trayData.tray = null;
             delete this._traysData[windowName];
         }
     }
@@ -296,7 +298,7 @@ class AppRemote {
             hashRoute: '/index',
             name: windowName,
             resizable: true,
-            debug: true
+            debug: DEBUG
         }, options);
 
         if (DEBUG && !hasMainWindow) {
@@ -387,6 +389,10 @@ class AppRemote {
             delete windowSetting[optionName];
         });
         browserWindow = new BrowserWindow(windowSetting);
+        if (DEBUG) {
+            console.log(`>> Create window "${name}" with setting: `, windowSetting);
+        }
+
         this.windows[name] = browserWindow;
         browserWindow.on('closed', () => {
             delete this.windows[name];
@@ -438,7 +444,7 @@ class AppRemote {
         }
 
         if (options.debug && DEBUG) {
-            browserWindow.openDevTools();
+            browserWindow.webContents.openDevTools({mode: 'bottom'});
             browserWindow.webContents.on('context-menu', (e, props) => {
                 const {x, y} = props;
                 Menu.buildFromTemplate([{
@@ -449,23 +455,21 @@ class AppRemote {
                 }]).popup(browserWindow);
             });
 
-            if (DEBUG) {
-                browserWindow.webContents.on('crashed', () => {
-                    const messageBoxOptions = {
-                        type: 'info',
-                        title: 'Renderer process crashed.',
-                        message: 'The renderer process has been crashed, you can reload or close it.',
-                        buttons: ['Reload', 'Close']
-                    };
-                    dialog.showMessageBox(messageBoxOptions, (index) => {
-                        if (index === 0) {
-                            browserWindow.reload();
-                        } else {
-                            browserWindow.close();
-                        }
-                    });
+            browserWindow.webContents.on('crashed', () => {
+                const messageBoxOptions = {
+                    type: 'info',
+                    title: 'Renderer process crashed.',
+                    message: 'The renderer process has been crashed, you can reload or close it.',
+                    buttons: ['Reload', 'Close']
+                };
+                dialog.showMessageBox(messageBoxOptions, (index) => {
+                    if (index === 0) {
+                        browserWindow.reload();
+                    } else {
+                        browserWindow.close();
+                    }
                 });
-            }
+            });
         }
 
         return browserWindow;
@@ -477,13 +481,13 @@ class AppRemote {
      * @memberof AppRemote
      * @return {void}
      */
-    openMainWindow() {
-        const {mainWindow} = this;
-        if (!mainWindow) {
+    openOrCreateWindow() {
+        const {currentFocusWindow} = this;
+        if (!currentFocusWindow) {
             this.createAppWindow();
-        } else if (!mainWindow.isVisible()) {
-            mainWindow.show();
-            mainWindow.focus();
+        } else if (!currentFocusWindow.isVisible()) {
+            currentFocusWindow.show();
+            currentFocusWindow.focus();
         }
     }
 
@@ -625,7 +629,9 @@ class AppRemote {
         if (flash) {
             if (!trayData.flashTask) {
                 trayData.flashTask = setInterval(() => {
-                    trayData.tray.setImage(this._trayIcons[(trayData.iconCounter++) % 2]);
+                    if (trayData.tray) {
+                        trayData.tray.setImage(this._trayIcons[(trayData.iconCounter++) % 2]);
+                    }
                 }, 400);
             }
         } else {

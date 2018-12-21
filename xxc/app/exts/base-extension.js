@@ -387,6 +387,17 @@ export default class Extension {
     get isRemote() {return this._data.remote;}
 
     /**
+     * 获取当前扩展是否为内置或远程扩展
+     *
+     * @readonly
+     * @memberof Extension
+     * @type {boolean}
+     */
+    get isBuildInOrRemote() {
+        return this.isRemote || this.buildIn;
+    }
+
+    /**
      * 获取远程扩展是否加载完毕
      * @memberof Extension
      * @type {boolean}
@@ -496,12 +507,49 @@ export default class Extension {
         const {icon} = this._pkg;
         if (icon && !this._icon) {
             if (icon.length > 1 && !icon.startsWith('http://') && !icon.startsWith('https://') && !icon.startsWith('mdi-') && !icon.startsWith('icon')) {
-                this._icon = Path.join(this.localPath, icon);
+                this._icon = `file://${Path.join(this.localPath, icon)}`;
             } else {
                 this._icon = icon;
             }
         }
         return this._icon || 'mdi-cube';
+    }
+
+    /**
+     * 获取通知消息发送者信息配置
+     *
+     * @readonly
+     * @memberof Extension
+     * @type {Map<String, Object>}
+     */
+    get notificationSenders() {
+        if (!this._notificationSenders) {
+            const extModule = this.module;
+            const notificationSenders = (extModule && extModule.commands) || this._pkg.notificationSenders;
+            if (notificationSenders) {
+                Object.keys(notificationSenders).forEach(senderId => {
+                    const sender = notificationSenders[senderId];
+                    if (sender.avatar && !sender.avatar.startsWith('http://') && !sender.avatar.startsWith('https://')) {
+                        sender.avatar = `file://${Path.join(this.localPath, sender.avatar)}`;
+                    }
+                });
+            }
+            this._notificationSenders = notificationSenders;
+        }
+        return this._notificationSenders;
+    }
+
+    /**
+     * 获取指定的通知消息发送者信息配置对象
+     * @param {Object|string} sender 发送者 ID 或发送者信息对象
+     * @return {Object} 发送者信息配置对象
+     */
+    getNotificationSender(sender) {
+        const {notificationSenders} = this;
+        if (typeof sender !== 'object') {
+            sender = {id: sender};
+        }
+        return (notificationSenders && notificationSenders[sender.id]) ? Object.assign(sender, notificationSenders[sender.id]) : null;
     }
 
     /**
@@ -695,6 +743,7 @@ export default class Extension {
         if (DEBUG) {
             console.warn('Cannot set user config for the exteions, because current user is not logined.', this);
         }
+        return defualtValue;
     }
 
     /**
@@ -1038,7 +1087,12 @@ export default class Extension {
         if (menuItem.url) {
             menuItem.url = StringHelper.format(menuItem.url, urlFormatObject);
         }
-        menuItem.label = `${this.displayName}: ${menuItem.label || menuItem.url}`;
+        menuItem.label = `${menuItem.label || menuItem.url}`;
+        if (menuItem.label[0] === '!') {
+            menuItem.label = menuItem.label.substr(1);
+        } else {
+            menuItem.label = `${this.displayName}: ${menuItem.label}`;
+        }
         if (!menuItem.icon) {
             menuItem.icon = this.icon;
         }

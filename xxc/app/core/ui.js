@@ -317,7 +317,8 @@ export const openUrl = (url, targetElement, event, context) => {
         return true;
     }
     if (url[0] === '!' || url.startsWith('xxc:')) {
-        url = url.substr(url[0] === '!' ? 1 : 4);
+        // eslint-disable-next-line no-nested-ternary
+        url = url.substr(url[0] === '!' ? 1 : (url.startsWith('xxc://') ? 6 : 4));
         executeCommandLine(url, Object.assign({targetElement, event}, context));
         return true;
     }
