@@ -46,8 +46,8 @@ class chat extends control
             if($status == 'online')
             {
                 $data = new stdclass();
-                $data->id     = $user->id;
-                $data->status = $status;
+                $data->id           = $user->id;
+                $data->clientStatus = $status;
                 $user = $this->chat->editUser($data);
 
                 $this->loadModel('action')->create('user', $user->id, 'loginXuanxuan', '', 'xuanxuan-v' . (empty($version) ? '?' : $version), $user->account);
@@ -80,8 +80,8 @@ class chat extends control
     public function logout($userID = 0)
     {
         $user = new stdclass();
-        $user->id     = $userID;
-        $user->status = 'offline';
+        $user->id           = $userID;
+        $user->clientStatus = 'offline';
 
         $user  = $this->chat->editUser($user);
         $users = $this->chat->getUserList($status = 'online');
@@ -923,7 +923,7 @@ class chat extends control
         {
             if($id == $userID) continue;
 
-            if($user->status == 'offline')
+            if($user->clientStatus == 'offline')
             {
                 $offlineUsers[] = $id;
             }
