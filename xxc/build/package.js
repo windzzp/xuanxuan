@@ -17,15 +17,18 @@ import fse from 'fs-extra';
 import pkg from '../package.json';
 import {formatDate} from '../app/utils/date-helper';
 
+// 所支持的平台类型
 const PLATFORMS = new Set(['win', 'mac', 'linux', 'browser']);
+
+// 所支持的架构类型
 const ARCHS = new Set(['x32', 'x64']);
 
 /**
  * 自定义格式化字符串
  * @param {string} str 要格式化的字符串
  * @param {string} format 格式定义，例如 '{0}'
- * @param  {...any} args 格式化参数
- * @return  {string} 格式化后的字符串
+ * @param {...any} args 格式化参数
+ * @return {string} 格式化后的字符串
  * @example <caption>通过参数序号格式化</caption>
  *     var hello = $.format('${0} ${1}!', '\\${0}', 'Hello', 'world');
  *     // hello 值为 'Hello world!'
@@ -145,19 +148,6 @@ const formatArchs = (val) => {
         archsSet.add(getCurrentArch());
     }
     return Array.from(archsSet);
-};
-
-// 格式化消耗的时间
-const formatTime = ms => {
-    if (ms < 1000) {
-        return `${ms}ms`;
-    }
-    if (ms < 60000) {
-        return `${(ms / 1000).toFixed(2)}sec`;
-    }
-    if (ms < 60000 * 60) {
-        return `${(ms / (1000 * 60)).toFixed(2)}min`;
-    }
 };
 
 // 创建 zip 文件
@@ -287,6 +277,96 @@ if (isCustomConfig) {
     }
 }
 
+// 格式化时间
+const formatTime = time => {
+    return time >= 1000 ? formatDate(new Date(time), time > 3600000 ? 'h小时m分s秒' : time > 60000 ? 'm分s秒' : 's秒') : `${(time / 1000).toFixed(2)}秒`;
+};
+
+// 操作消耗时间表
+let timeCostMap = {
+    $default: true,
+    'webpack-electron': 69930,
+    'webpack-browser': 52164,
+    'package-browser': 57402,
+    'package-mac-x64': 246675,
+    'package-mac-x32': 0,
+    'package-win-x64': 46301,
+    'package-win-x32': 40683,
+    'package-linux-x64': 268699,
+    'package-linux-x32': 287033,
+};
+
+// 获取操作消耗时间
+const getTimeCost = (operation) => {
+    if (timeCostMap.$default) {
+        timeCostMap = Object.assign(timeCostMap, fse.readJSONSync(path.resolve(__dirname, './build-time-cost.json'), {throws: false}), {
+            $default: false
+        });
+    }
+    return operation ? timeCostMap[operation] : timeCostMap;
+};
+
+// 获取操作消耗时间文本
+const getTimeCostText = operation => {
+    const costTime = getTimeCost(operation);
+    if (costTime) {
+        return formatTime(costTime);
+    }
+};
+
+// 保存操作消耗时间
+const saveTimeCostMap = () => {
+    if (timeCostMap) {
+        fse.writeJSONSync(path.resolve(__dirname, './build-time-cost.json'), timeCostMap);
+        console.log(`    ${chalk.green(chalk.bold('✓'))} 保存构建缓存文件 ${chalk.underline('./build-time-cost.json')}`);
+    }
+};
+
+// 开始记录操作消耗时间
+const startRecordCostTime = operation => {
+    const costMap = getTimeCost();
+    costMap[`${operation}-begin`] = new Date().getTime();
+};
+
+// 停止记录操作消耗时间
+const finishRecordCostTime = operation => {
+    const costMap = getTimeCost();
+    const begin = costMap[`${operation}-begin`];
+    if (!begin) {
+        return;
+    }
+    const end = new Date().getTime();
+    delete costMap[`${operation}-begin`];
+    const cost = end - begin;
+    costMap[operation] = cost;
+    return cost;
+};
+
+// 输出预计耗时信息
+const printEstimateInfo = operation => {
+    const costTimeText = getTimeCostText(operation);
+    if (costTimeText) {
+        console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} 请耐心等待，预计操作耗时 ${chalk.bold(chalk.red(costTimeText))}...${chalk.grey(`(${operation})`)}`);
+    } else {
+        console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} 请耐心等待，这可能需要花费几分钟时间...`);
+    }
+    startRecordCostTime(operation);
+};
+
+// 输出实际耗时信息
+const printConsumeInfo = operation => {
+    const estimateCostTimeText = getTimeCostText(operation);
+    const costTime = finishRecordCostTime(operation);
+    if (costTime) {
+        const costTimeText = getTimeCostText(operation);
+        if (estimateCostTimeText) {
+            console.log(`    ${chalk.bold(chalk.magentaBright('⇒'))} 操作实际耗时 ${chalk.bold(chalk.red(costTimeText))}，预计耗时 ${chalk.bold(estimateCostTimeText)}${chalk.grey(`(${operation})`)}`);
+        } else {
+            console.log(`    ${chalk.bold(chalk.magentaBright('⇒'))} 操作实际耗时 ${chalk.bold(chalk.red(costTimeText))}${chalk.grey(`(${operation})`)}`);
+        }
+    }
+};
+
 // 输出打包配置
 console.log(`${chalk.cyanBright(chalk.bold('❖ 打包配置:'))}\n`);
 Object.keys(config).forEach((n) => {
@@ -406,6 +486,7 @@ if (config.buildInPath) {
     });
 }
 
+// 安装包输出目录
 const packagesPath = path.join(__dirname, '../', electronBuilder.directories.output);
 
 // 输出打包配置文件
@@ -467,6 +548,7 @@ const outputConfigFiles = () => {
     console.log();
 };
 
+// 生成 app/package.json 对象
 const createPackageObj = () => ({
     name: pkg.name,
     productName: pkg.name.name,
@@ -487,6 +569,9 @@ const createPackageObj = () => ({
 const revertConfigFiles = () => {
     fse.outputJsonSync('./app/package.json', createPackageObj(), {spaces: 4});
     console.log(`    ${chalk.green(chalk.bold('✓'))} 还原 ${chalk.underline('./app/package.json')}`);
+
+    fse.outputFileSync(path.resolve(__dirname, '../app/style/custom.less'), '');
+    console.log(`    ${chalk.green(chalk.bold('✓'))} 移除自定义样式 ${chalk.underline(path.resolve(__dirname, '../app/style/custom.less'))}`);
 };
 
 // 处理和编译应用源文件
@@ -502,12 +587,10 @@ const buildApp = (isBrowser = false) => {
             console.log();
         }
         console.log(`${chalk.yellow(chalk.bold(`    [${isBrowser ? '浏览器端：' : ''}使用 Webpack 进行编译]`))}`);
+        printEstimateInfo(isBrowser ? 'webpack-browser' : 'webpack-electron');
         if (verbose) {
             console.log(chalk.yellow('══════════════════════════════════════════════════════════════'));
-        } else {
-            console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} ${'请耐心等待，这可能需要花费几分钟时间...'}`);
         }
-        const startTime = new Date().getTime();
         const cmd = spawn('npm', ['run', isBrowser ? 'build-browser' : isDebug ? 'build-debug' : 'build'], {shell: true, env: process.env, stdio: verbose ? 'inherit' : 'ignore'});
         cmd.on('close', code => {
             if (verbose) {
@@ -517,7 +600,8 @@ const buildApp = (isBrowser = false) => {
                 fse.outputFileSync(path.resolve(__dirname, '../app/style/custom.less'), '');
                 console.log(`    ${chalk.green(chalk.bold('✓'))} 移除自定义样式 ${chalk.underline(path.resolve(__dirname, '../app/style/custom.less'))}`);
             }
-            console.log(`    ${chalk.green(chalk.bold('✓'))} 编译完成 [time: ${formatTime(new Date().getTime() - startTime)} result code: ${code}]`);
+            console.log(`    ${chalk.green(chalk.bold('✓'))} 编译完成 [result code: ${code}]`);
+            printConsumeInfo(isBrowser ? 'webpack-browser' : 'webpack-electron');
             console.log();
             resolve(code);
         });
@@ -611,9 +695,11 @@ const build = async (callback) => {
 
     if (needPackageBrowser) {
         console.log(`${chalk.yellow(chalk.bold(`    [${packageNum++}.正在制作浏览器端部署包]`))}`);
-        const startTime = new Date().getTime();
+        printEstimateInfo('package-browser');
+        console.log();
         await buildBrowser(path.join(packagesPath, 'browser'));
-        console.log(`    ${chalk.green(chalk.bold('✓'))} 已完成浏览器部署包 [time: ${formatTime(new Date().getTime() - startTime)}]\n`);
+        console.log(`    ${chalk.green(chalk.bold('✓'))} 已完成浏览器部署包\n`);
+        printConsumeInfo('package-browser');
 
         packedNum++;
     }
@@ -639,19 +725,21 @@ const build = async (callback) => {
                     continue;
                 }
 
+                printEstimateInfo(`package-${platform}-${arch}`);
+
                 if (verbose) {
                     console.log(chalk.yellow('══════════════════════════════════════════════════════════════'));
-                } else {
-                    console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} ${'请耐心等待，这可能需要花费几分钟时间...'}`);
                 }
-                const startTime = new Date().getTime();
                 // eslint-disable-next-line no-await-in-loop
                 await createPackage(platform, arch, isDebug);
 
                 if (verbose) {
                     console.log(chalk.yellow('══════════════════════════════════════════════════════════════'));
                 }
-                console.log(`    ${chalk.green(chalk.bold('✓'))} 已完成 ${chalk.bold(platform)}-${chalk.bold(arch)} [time: ${formatTime(new Date().getTime() - startTime)}]\n`);
+                console.log(`    ${chalk.green(chalk.bold('✓'))} 已完成 ${chalk.bold(platform)}-${chalk.bold(arch)}\n`);
+                printConsumeInfo(`package-${platform}-${arch}`);
+                console.log();
+
                 packedNum++;
             }
         }
@@ -665,10 +753,51 @@ const build = async (callback) => {
     }
 };
 
-outputConfigFiles();
+const printEstimateSummary = () => {
+    const buildPlatforms = platforms;
+    const archTypes = archs;
+    const needPackageBrowser = buildPlatforms.includes('browser');
+    const onlyPackageBrowser = needPackageBrowser && buildPlatforms.length === 1;
 
-if (!isSkipBuild) {
-    build(revertConfigFiles);
-} else {
+    let costTime = 1000;
+    if (!isSkipBuild) {
+        if (needPackageBrowser) {
+            costTime += getTimeCost('package-browser');
+        }
+        if (!onlyPackageBrowser) {
+            costTime += getTimeCost('webpack-electron');
+            for (let i = 0; i < buildPlatforms.length; ++i) {
+                const platform = buildPlatforms[i];
+                if (platform === 'browser') {
+                    continue;
+                }
+
+                for (let j = 0; j < archTypes.length; ++j) {
+                    const arch = archTypes[j];
+                    costTime += getTimeCost(`package-${platform}-${arch}`);
+                }
+            }
+        }
+        console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} 请耐心等待，预计完成所有操作耗时 ${chalk.bold(chalk.red(formatTime(costTime)))}...\n`);
+    }
+    return costTime;
+};
+
+// 执行脚本任务
+const main = async () => {
+    const startTime = new Date().getTime();
+    const estimateTime = printEstimateSummary();
+
+    outputConfigFiles();
+
+    if (!isSkipBuild) {
+        await build();
+    }
     revertConfigFiles();
-}
+
+    saveTimeCostMap();
+
+    console.log(`    ${chalk.bold(chalk.magentaBright('⇒'))} 所有操作完成实际耗时 ${chalk.bold(chalk.red(formatTime(new Date().getTime() - startTime)))}，预计耗时 ${chalk.bold(formatTime(estimateTime))}`);
+};
+
+main();
