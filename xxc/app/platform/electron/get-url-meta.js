@@ -1,4 +1,5 @@
 import cheerio from 'cheerio';
+import 'abortcontroller-polyfill/dist/abortcontroller-polyfill-only';
 import {request, getTextFromResponse} from '../common/network';
 import limitTimePromise from '../../utils/limit-time-promise';
 
@@ -500,8 +501,7 @@ export class UrlMeta {
  */
 export default (url) => {
     const controller = new AbortController();
-    const {signal} = controller;
-    return limitTimePromise(request(url, {signal}), 5000).then(response => {
+    return limitTimePromise(request(url, {signal: controller.signal}), 5000).then(response => {
         return new UrlMeta(url).inspectFromResponse(response, controller);
     });
 };

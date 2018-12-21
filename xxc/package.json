@@ -134,6 +134,7 @@
     "why-did-you-update": "^0.1.1"
   },
   "dependencies": {
+    "abortcontroller-polyfill": "^1.2.1",
     "aes-js": "^3.1.0",
     "cheerio": "^1.0.0-rc.2",
     "clipboard-polyfill": "^2.7.0",
