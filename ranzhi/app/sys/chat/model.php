@@ -10,7 +10,7 @@ class chatModel extends model
      */
     public function resetUserStatus($status = 'offline')
     {
-        $this->dao->update(TABLE_USER)->set('status')->eq($status)->exec();
+        $this->dao->update(TABLE_USER)->set('clientStatus')->eq($status)->exec();
         return !dao::isError();
     }
 
@@ -94,7 +94,7 @@ class chatModel extends model
      */
     public function getUserByUserID($userID = 0)
     {
-		$user = $this->dao->select('id, account, realname, avatar, role, dept, status, admin, gender, email, mobile, phone, site, qq, deleted')
+		$user = $this->dao->select('id, account, realname, avatar, role, dept, clientStatus, admin, gender, email, mobile, phone, site, qq, deleted')
 			->from(TABLE_USER)
 			->where('id')->eq($userID)
 			->fetch();
@@ -114,7 +114,7 @@ class chatModel extends model
      */
     public function getUserList($status = '', $idList = array(), $idAsKey = true)
     {
-        $dao = $this->dao->select('id, account, realname, avatar, role, dept, status, admin, gender, email, mobile, phone, site, qq, deleted')
+        $dao = $this->dao->select('id, account, realname, avatar, role, dept, clientStatus, admin, gender, email, mobile, phone, site, qq, deleted')
             ->from(TABLE_USER)
             ->where(1)
             ->beginIF(empty($idList))
@@ -123,8 +123,8 @@ class chatModel extends model
             ->orWhere('locked')->lt(helper::now())
             ->markRight(1)
             ->fi()
-            ->beginIF($status && $status == 'online')->andWhere('status')->ne('offline')->fi()
-            ->beginIF($status && $status != 'online')->andWhere('status')->eq($status)->fi()
+            ->beginIF($status && $status == 'online')->andWhere('clientStatus')->ne('offline')->fi()
+            ->beginIF($status && $status != 'online')->andWhere('clientStatus')->eq($status)->fi()
             ->beginIF($idList)->andWhere('id')->in($idList)->fi();
 
         $users = $idAsKey ? $dao->fetchAll('id') : $dao->fetchAll();
@@ -772,7 +772,7 @@ class chatModel extends model
     public function offlineUser($offline = array())
     {
         if(empty($offline)) return true;
-        $this->dao->update(TABLE_USER)->set('status')->eq('offline')->where('id')->in($offline)->exec();
+        $this->dao->update(TABLE_USER)->set('clientStatus')->eq('offline')->where('id')->in($offline)->exec();
         return !dao::isError();
     }
 
