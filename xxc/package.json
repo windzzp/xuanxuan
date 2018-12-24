@@ -92,7 +92,7 @@
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
-    "electron": "^2.0.5",
+    "electron": "^4.0.0",
     "electron-builder": "20.24.4",
     "electron-devtools-installer": "^2.2.4",
     "esdoc": "^1.1.0",
