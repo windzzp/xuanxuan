@@ -30,19 +30,20 @@ if (DEBUG && DEBUG !== 'production') {
     require('module').globalPaths.push(p); // eslint-disable-line
 }
 
-/**
- * 检查是否已经打开了其他程序实例
- * 此机制确保系统中仅仅只有一个程序实例在运行，因为程序已经支持多窗口模式，所以多个程序实例没有意义
- * @private
- */
-const shouldQuit = ElectronApp.makeSingleInstance((commandLine, workingDirectory) => {
-    application.confirmCreateAppWindow();
-});
-// 如果已经打开，则退出
-if (shouldQuit) {
+// 检查是否已经打开了其他程序实例
+// 此机制确保系统中仅仅只有一个程序实例在运行，因为程序已经支持多窗口模式，所以多个程序实例没有意义
+const gotTheLock = ElectronApp.requestSingleInstanceLock();
+if (!gotTheLock) {
+    // 如果已经打开，则退出
     try {
         ElectronApp.quit();
+        process.exit(0);
     } catch (_) {} // eslint-disable-line
+} else {
+    // 监听请求打开第二个实例事件，提示用户创建一个新的聊天窗口
+    ElectronApp.on('second-instance', (event, commandLine, workingDirectory) => {
+        application.confirmCreateAppWindow();
+    });
 }
 
 // 当所有窗口关闭时退出应用
