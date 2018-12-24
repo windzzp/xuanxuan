@@ -196,7 +196,8 @@ export default class DraftEditor extends PureComponent {
      * @memberof DraftEditor
      */
     getContent() {
-        return this.state.editorState.getCurrentContent().getPlainText();
+        const {editorState} = this.state;
+        return editorState.getCurrentContent().getPlainText();
     }
 
     /**
@@ -220,7 +221,7 @@ export default class DraftEditor extends PureComponent {
      */
     appendContent(content, asNewLine, callback) {
         if (content !== null && content !== undefined) {
-            const editorState = this.state.editorState;
+            const {editorState} = this.state;
             const selection = editorState.getSelection();
             const contentState = editorState.getCurrentContent();
             const ncs = Modifier.insertText(contentState, selection, content);
@@ -282,7 +283,7 @@ export default class DraftEditor extends PureComponent {
      */
     getContentList() {
         const contents = [];
-        const editorState = this.state.editorState;
+        const {editorState} = this.state;
         const contentState = editorState.getCurrentContent();
         const raw = convertToRaw(contentState);
         let thisTextContent = '';
@@ -334,8 +335,9 @@ export default class DraftEditor extends PureComponent {
             if (callback) {
                 callback(contentState);
             }
-            if (this.props.onChange) {
-                this.props.onChange(contentState);
+            const {onChange} = this.props;
+            if (onChange) {
+                onChange(contentState);
             }
         });
     }
@@ -348,10 +350,12 @@ export default class DraftEditor extends PureComponent {
      * @return {void}
      */
     handleKeyCommand(command) {
-        if (!this.props.handleKey) {
+        const {handleKey} = this.props;
+        if (!handleKey) {
             return;
         }
-        const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
+        const {editorState} = this.state;
+        const newState = RichUtils.handleKeyCommand(editorState, command);
         if (newState) {
             this.onChange(newState);
             return 'handled';
@@ -367,8 +371,9 @@ export default class DraftEditor extends PureComponent {
      * @return {void}
      */
     handleReturn(e) {
-        if (this.props.onReturnKeyDown) {
-            return this.props.onReturnKeyDown(e);
+        const {onReturnKeyDown} = this.props;
+        if (onReturnKeyDown) {
+            return onReturnKeyDown(e);
         }
         return 'not-handled';
     }
@@ -382,8 +387,9 @@ export default class DraftEditor extends PureComponent {
      * @return {void}
      */
     handlePastedText(text, html) {
-        if (this.props.onPastedText) {
-            this.props.onPastedText(text, html);
+        const {onPastedText} = this.props;
+        if (onPastedText) {
+            onPastedText(text, html);
         } else {
             this.appendContent(text || html);
         }
@@ -398,8 +404,9 @@ export default class DraftEditor extends PureComponent {
      * @return {void}
      */
     handlePastedFiles(files) {
-        if (this.props.onPastedFiles) {
-            this.props.onPastedFiles(files);
+        const {onPastedFiles} = this.props;
+        if (onPastedFiles) {
+            onPastedFiles(files);
         } else {
             const date = new Date();
             files.forEach(blob => {
