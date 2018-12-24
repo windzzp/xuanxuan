@@ -299,9 +299,8 @@ let timeCostMap = {
 // 获取操作消耗时间
 const getTimeCost = (operation) => {
     if (timeCostMap.$default) {
-        timeCostMap = Object.assign(timeCostMap, fse.readJSONSync(path.resolve(__dirname, './build-time-cost.json'), {throws: false}), {
-            $default: false
-        });
+        timeCostMap = Object.assign(timeCostMap, fse.readJSONSync(path.resolve(__dirname, './build-time-cost.json'), {throws: false}));
+        delete timeCostMap.$default;
     }
     return operation ? timeCostMap[operation] : timeCostMap;
 };
