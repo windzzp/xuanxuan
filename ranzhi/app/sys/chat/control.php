@@ -56,6 +56,7 @@ class chat extends control
                 $user->signed = $this->chat->getSignedTime($account);
 
                 $user->ranzhiUrl = commonModel::getSysURL();
+                $user->status    = $user->clientStatus;
 
                 $this->output->users = array_keys($users);
                 $this->output->data  = $user;
@@ -86,6 +87,7 @@ class chat extends control
         $user  = $this->chat->editUser($user);
         $users = $this->chat->getUserList($status = 'online');
 
+        $user->status = $user->clientStatus;
         $this->loadModel('action')->create('user', $userID, 'logoutXuanxuan', '', 'xuanxuan', $user->account);
 
         $this->output->result = 'success';

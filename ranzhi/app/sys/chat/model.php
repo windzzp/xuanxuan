@@ -76,7 +76,7 @@ class chatModel extends model
             $user->id     = (int)$user->id;
             $user->dept   = (int)$user->dept;
             $user->avatar = !empty($user->avatar) ? commonModel::getSysURL() . $user->avatar : $user->avatar;
-
+            $user->status = $user->clientStatus;
             if(isset($user->deleted)) $user->deleted = (int)$user->deleted;
         }
 
