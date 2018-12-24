@@ -6,7 +6,7 @@ import App from '../../core';
 import Lang from '../../lang';
 import Icon from '../../components/icon';
 import MemberProfileDialog from '../common/member-profile-dialog';
-import {UserAvatar} from '../common/user-avatar';
+import _UserAvatar from '../common/user-avatar';
 import {MessageDivider} from './message-divider';
 import {MessageContentFile} from './message-content-file';
 import {MessageContentImage} from './message-content-image';
@@ -18,6 +18,14 @@ import replaceViews from '../replace-views';
 import ChatMessage from '../../core/models/chat-message';
 import {showContextMenu} from '../../core/context-menu';
 import Config from '../../config';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * UserAvatar 可替换组件形式
+ * @type {Class<UserAvatar>}
+ * @private
+ */
+const UserAvatar = withReplaceView(_UserAvatar);
 
 /**
  * 连续的聊天消息显示时间标签最小时间间隔，单位毫秒

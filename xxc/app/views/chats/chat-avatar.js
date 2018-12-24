@@ -4,8 +4,16 @@ import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import App from '../../core';
 import Chat from '../../core/models/chat';
-import {UserAvatar} from '../common/user-avatar';
+import _UserAvatar from '../common/user-avatar';
 import replaceViews from '../replace-views';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * UserAvatar 可替换组件形式
+ * @type {Class<UserAvatar>}
+ * @private
+ */
+const UserAvatar = withReplaceView(_UserAvatar);
 
 /**
  * 聊天图标定义
@@ -117,7 +125,6 @@ export default class ChatAvatar extends Component {
             iconClassName,
             ...other
         } = this.props;
-
 
         if (chat.isOne2One) {
             const theOtherOne = chat.getTheOtherOne(App);

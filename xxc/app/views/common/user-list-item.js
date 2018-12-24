@@ -1,8 +1,16 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
-import {UserAvatar} from './user-avatar';
+import _UserAvatar from './user-avatar';
 import replaceViews from '../replace-views';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * UserAvatar 可替换组件形式
+ * @type {Class<UserAvatar>}
+ * @private
+ */
+const UserAvatar = withReplaceView(_UserAvatar);
 
 /**
  * UserListItem 组件 ，显示用户列表条目界面
