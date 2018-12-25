@@ -5,8 +5,6 @@ import Config from '../config';
 import Lang from '../lang';
 import {strip} from './html-helper';
 
-/** @module markdown */
-
 /**
  * Marked 渲染实例
  * @constant
@@ -14,7 +12,7 @@ import {strip} from './html-helper';
  */
 export const renderer = new Marked.Renderer();
 
-// 重构代码块的渲染
+// 重载代码块的渲染
 renderer.code = (code, lang) => {
     let fileName = null;
     if (lang) {

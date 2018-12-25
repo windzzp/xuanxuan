@@ -19,7 +19,7 @@ export const EVENT = {
 const DATA_CHANGE_DELAY = 110;
 
 /**
- * 事件触发器类
+ * 事件管理类
  * （能够同时在 Electron 主进程和渲染进程中工作）
  *
  * @class Events
@@ -162,6 +162,7 @@ export class Events extends EventEmitter {
      * 触发通用数据变更事件
      *
      * @param {Object<string, any>} data 变更数据表
+     * @param {number} delay 事件触发最小延迟时间，单位毫秒
      * @return {void}
      * @memberof Events
      */
@@ -191,6 +192,11 @@ export class Events extends EventEmitter {
     }
 }
 
+/**
+ * 全局事件管理类实例
+ * @type {Events}
+ * @private
+ */
 const events = new Events();
 
 /**
