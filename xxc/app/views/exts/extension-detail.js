@@ -234,7 +234,7 @@ export default class ExtensionDetail extends Component {
             titleViews.push(<span key="ext-buildIn-label" data-hint={Lang.string('ext.buildIn.hint')} className="hint--top hint--md"><Icon name="star-circle text-yellow" /></span>);
         }
         if (extension.isRemote) {
-            titleViews.push(<span key="ext-remote-label" data-hint={Lang.string('ext.remote.hint')} className="hint--top hint--md app-ext-list-item-remote-label"> <Icon name="verified text-green" /></span>);
+            titleViews.push(<span key="ext-remote-label" data-hint={Lang.string('ext.remote.hint')} className="hint--top hint--md app-ext-list-item-remote-label"> <Icon name="shield-check text-green" /></span>);
         }
         if (extension.needRestart) {
             titleViews.push(<span key="ext-needRestart" className="circle label warning">{Lang.string('ext.extension.needRestart')}</span>);
