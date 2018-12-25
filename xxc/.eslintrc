@@ -23,7 +23,7 @@
     "comma-dangle": "off",
     "generator-star-spacing": "off",
     "import/no-extraneous-dependencies": "off",
-    "prefer-destructuring": "warn",
+    "prefer-destructuring": ["warn", {"VariableDeclarator": true, "AssignmentExpression": false}],
     "no-console": "off",
     "no-use-before-define": "off",
     "no-multi-assign": "off",
@@ -56,7 +56,7 @@
     "no-bitwise": "off",
     "no-continue": "off",
     "no-else-return": "warn",
-    "no-nested-ternary": "warn",
+    "no-nested-ternary": "off",
     "no-mixed-operators": "warn",
     "no-underscore-dangle": "off",
     "react/jsx-indent": ["warn", 4],
@@ -73,7 +73,9 @@
     "no-lonely-if": "warn",
     "react/jsx-no-target-blank": "warn",
     "react/jsx-one-expression-per-line": "off",
-    "valid-jsdoc": "warn"
+    "valid-jsdoc": "warn",
+    "jsx-a11y/anchor-has-content": "off",
+    "jsx-a11y/media-has-caption": "off"
   },
   "plugins": [
     "import",
