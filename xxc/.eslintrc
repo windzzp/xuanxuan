@@ -66,6 +66,7 @@
     "promise/always-return": "warn",
     "arrow-body-style": "warn",
     "import/no-unresolved": "warn",
+    "import/no-named-as-default-member": "warn",
     "import/extensions": "off",
     "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
     "class-methods-use-this": "warn",
