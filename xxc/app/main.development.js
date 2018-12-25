@@ -41,7 +41,7 @@ if (!gotTheLock) {
     } catch (_) {} // eslint-disable-line
 } else {
     // 监听请求打开第二个实例事件，提示用户创建一个新的聊天窗口
-    ElectronApp.on('second-instance', (event, commandLine, workingDirectory) => {
+    ElectronApp.on('second-instance', (/* event, commandLine, workingDirectory */) => {
         application.confirmCreateAppWindow();
     });
 }

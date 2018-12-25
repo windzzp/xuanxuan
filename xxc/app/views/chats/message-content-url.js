@@ -106,7 +106,8 @@ export default class MessageContentUrl extends PureComponent {
      * @todo 考虑使用 `UNSAFE_componentWillReceiveProps` 替换 `componentWillReceiveProps`
      */
     componentWillReceiveProps(nextProps) {
-        if (nextProps.url !== this.props.url) {
+        const {url} = this.props;
+        if (nextProps.url !== url) {
             this.setState({meta: null});
         }
     }
@@ -133,15 +134,16 @@ export default class MessageContentUrl extends PureComponent {
      * @return {void}
      */
     getUrlMeta(disableCache = false) {
-        if (this.state.meta && !this.state.loading) {
+        const {meta, loading} = this.state;
+        if (meta && !loading) {
             return;
         }
         const {url} = this.props;
-        getUrlMeta(url, disableCache).then(meta => {
+        getUrlMeta(url, disableCache).then(thisMeta => {
             if (this.unmounted) {
                 return;
             }
-            return this.setState({meta, loading: false});
+            return this.setState({meta: thisMeta, loading: false});
         }).catch(_ => {
             if (this.unmounted) {
                 return;
@@ -194,9 +196,9 @@ export default class MessageContentUrl extends PureComponent {
             ...other
         } = this.props;
 
-        const {meta, loading} = this.state;
+        const {meta, loading, sleep: stateSleep} = this.state;
 
-        if (this.state.sleep) {
+        if (stateSleep) {
             const card = {
                 icon: 'mdi-web icon-2x text-info',
                 clickable: 'title',
@@ -211,7 +213,7 @@ export default class MessageContentUrl extends PureComponent {
             clickable: 'content',
             title: url,
         }, meta, {
-            icon: (meta && !loading) ? (meta.icon === false ? null : (meta.icon || 'mdi-web icon-2x text-info')) : 'mdi-loading muted spin',
+            icon: (meta && !loading) ? (meta.icon === false ? null : (meta.icon || 'mdi-web icon-2x text-info')) : 'mdi-loading muted spin', // eslint-disable-line
         });
 
         if (meta && !loading) {
