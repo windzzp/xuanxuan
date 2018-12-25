@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import timeSequence from '../utils/time-sequence';
 import DisplayLayer from './display-layer';
+import events from '../core/events';
 
 /**
  * DisplayContainer 组件 ，显示一个弹出层容器组件，用于管理界面上一个或多个弹出层
@@ -67,21 +68,30 @@ export default class DisplayContainer extends Component {
         if (!props.id) {
             props.id = timeSequence();
         }
-        const {id} = props;
+        const {id, listenUpdateStyle} = props;
         const item = all[id];
         if (!item) {
-            if (!props.cache) {
-                const userOnHidden = props.onHidden;
-                props.onHidden = (ref) => {
-                    if (userOnHidden) {
-                        userOnHidden(ref);
-                    }
+            const userOnHidden = props.onHidden;
+            props.onHidden = (ref) => {
+                if (listenUpdateStyle && ref.listenUpdateStyleHandler) {
+                    events.off(ref.listenUpdateStyleHandler);
+                    delete ref.listenUpdateStyleHandler;
+                }
+                if (userOnHidden) {
+                    userOnHidden(ref);
+                }
+                if (!props.cache) {
                     delete all[id];
                     this.setState({all});
-                };
-            }
+                }
+            };
             const userOnShow = props.onShown;
             props.onShown = (ref) => {
+                if (listenUpdateStyle) {
+                    ref.listenUpdateStyleHandler = events.on(`app.updateViewStyle.${ref.id}`, (style) => {
+                        ref.setStyle(style);
+                    });
+                }
                 if (userOnShow) {
                     userOnShow(ref);
                 }
