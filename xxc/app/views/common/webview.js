@@ -1,10 +1,12 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import Platform from 'Platform';
+import Platform from 'Platform'; // eslint-disable-line
 import {classes} from '../../utils/html-helper';
 import timeSequence from '../../utils/time-sequence';
 import replaceViews from '../replace-views';
-import {openUrl} from '../../core/ui';
+import {openUrl, onUpdateViewStyle, requestUpdateViewStyle} from '../../core/ui';
+import events from '../../core/events';
+import {formatString} from '../../utils/string-helper';
 
 /**
  * 获取当前平台是否为 Electron 平台
@@ -18,7 +20,31 @@ const isElectron = Platform.type === 'electron';
  * @type {string}
  * @private
  */
-const defaultInjectJS = "window.callXXCCommand = function(command, options) {var url = command + '/'; if (options) {url += '?'; }for (const name in options) {if (options.hasOwnProperty(name)) {if (url[url.length - 1] !== '?') url += '&'; url += 'name=' + encodeURIComponent(options[name]); }}window.open('xxc:' + url, '_blank');}";
+const defaultInjectJS = [
+    "window.getXXCViewID = function(){return '{id}';};",
+    "window.getXXCCardFullWidth = function(){return {cardWidth};};",
+    "window.callXXCCommand = function(command, options) {",
+        "var url = command + '/';",
+        "if (options) {",
+            "url += '?';",
+        "}",
+        "for (const name in options) {",
+            "if (options.hasOwnProperty(name)) {",
+                "if (url[url.length - 1] !== '?') url += '&';",
+                "url += 'name=' + encodeURIComponent(options[name]);",
+            "}",
+        "}",
+        "window.open('xxc:' + url, '_blank');",
+    "};",
+    "window.setXXCViewStyle = function(style) {",
+        "if (typeof style !== 'string') style = JSON.stringify(style);",
+        "window.callXXCCommand('updateViewStyle/{id}/' + encodeURIComponent(style));",
+    "};",
+    "window.adjustXXCViewHeight = function(height) {",
+        "window.setXXCViewStyle({height: height === undefined ? document.body.clientHeight : height})",
+    "};",
+    "if ({autoHeight}) window.adjustXXCViewHeight();",
+].join('\n');
 
 /**
  * Webview 组件 ，显示 Webview 界面
@@ -29,7 +55,7 @@ const defaultInjectJS = "window.callXXCCommand = function(command, options) {var
  * import Webview from './webview';
  * <Webview />
  */
-export default class WebView extends Component {
+export default class WebView extends PureComponent {
     /**
      * 获取 Webview 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
      * @type {Class<Webview>}
@@ -62,11 +88,13 @@ export default class WebView extends Component {
         onNavigate: PropTypes.func,
         onDomReady: PropTypes.func,
         injectForm: PropTypes.any,
+        injectData: PropTypes.any,
         useMobileAgent: PropTypes.bool,
         hideBeforeDOMReady: PropTypes.bool,
         style: PropTypes.object,
         type: PropTypes.string,
         modalId: PropTypes.string,
+        fluidWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
     };
 
     /**
@@ -133,7 +161,8 @@ export default class WebView extends Component {
         this.state = {
             errorCode: null,
             errorDescription: null,
-            domReady: false
+            domReady: false,
+            extraStyle: null
         };
     }
 
@@ -170,7 +199,7 @@ export default class WebView extends Component {
                         this.handleLoadingStart();
                         if (firstLoad) {
                             firstLoad = true;
-                            iframe.contentWindow.document.addEventListener('DOMContentLoaded', e => {
+                            iframe.contentWindow.document.addEventListener('DOMContentLoaded', () => {
                                 this.handleDomReady();
                             });
                         }
@@ -181,6 +210,15 @@ export default class WebView extends Component {
                 }
             }
         }
+
+        this.webviewUpdateStyleHandler = onUpdateViewStyle(this.webviewId, (extraStyle) => {
+            const {modalId} = this.props;
+            if (modalId) {
+                requestUpdateViewStyle(modalId, extraStyle);
+            } else {
+                this.setState({extraStyle});
+            }
+        });
     }
 
     /**
@@ -211,6 +249,8 @@ export default class WebView extends Component {
                 }
             }
         }
+
+        events.off(this.webviewUpdateStyleHandler);
     }
 
     /**
@@ -287,7 +327,9 @@ export default class WebView extends Component {
     handleNewWindow = e => {
         let {url} = e;
         const {modalId} = this.props;
-        url = url.replace('closeModal', `closeModal/${modalId}`);
+        if (modalId) {
+            url = url.replace('closeModal', `closeModal/${modalId}`);
+        }
         openUrl(url, null, e, {modalId});
     };
 
@@ -319,7 +361,6 @@ export default class WebView extends Component {
         this.setState({
             errorCode: null,
             errorDescription: null,
-            // domReady: false
         });
     };
 
@@ -370,8 +411,8 @@ export default class WebView extends Component {
      */
     handleDomReady = () => {
         const {webview} = this;
-        const {onDomReady} = this.props;
-        const {insertCss, executeJavaScript, onExecuteJavaScript} = this.props;
+        const {onDomReady, fluidWidth} = this.props;
+        const {insertCss, executeJavaScript, onExecuteJavaScript, injectData} = this.props;
         if (insertCss) {
             webview.insertCSS(insertCss);
             if (DEBUG) {
@@ -384,7 +425,13 @@ export default class WebView extends Component {
                 console.log('Webview.executeJavaScript', executeJavaScript);
             }
         }
-        webview.executeJavaScript(defaultInjectJS, false);
+
+        webview.executeJavaScript(formatString(defaultInjectJS, {
+            id: this.webviewId,
+            autoHeight: this.webviewStyle.height === 'auto',
+            cardWidth: typeof fluidWidth === 'function' ? fluidWidth() : (fluidWidth || 0)
+        }) + (injectData ? `\nwindow.getXXCInjectData = function() {return ${JSON.stringify(injectData)};}` : ''), false);
+
         let {injectForm} = this.props;
         if (injectForm) {
             if (typeof injectForm === 'string') {
@@ -430,7 +477,7 @@ export default class WebView extends Component {
         if (this.isWebview && contextmenu && (contextmenu.showInputContextMenu || contextmenu.showSelectionContextMenu)) {
             const webContents = webview.getWebContents();
             if (webContents) {
-                webContents.on('context-menu', (e, props) => {
+                webContents.on('context-menu', (_, props) => {
                     const {selectionText, isEditable} = props;
                     if (isEditable) {
                         if (contextmenu.showInputContextMenu) {
@@ -445,7 +492,7 @@ export default class WebView extends Component {
             }
         }
 
-        this.setState({domReady: true, loading: false});
+        this.setState({domReady: true});
     };
 
     /**
@@ -465,12 +512,16 @@ export default class WebView extends Component {
             style,
             useMobileAgent,
             hideBeforeDOMReady,
+            fluidWidth,
             ...options
         } = this.props;
 
-        let webviewHtml = '';
         const {isWebview} = this;
-        const {errorCode, errorDescription, domReady} = this.state;
+        const {
+            errorCode, errorDescription, domReady, extraStyle,
+        } = this.state;
+
+        let webviewHtml = '';
         if (isWebview) {
             webviewHtml = `<webview id="${this.webviewId}" src="${src}" class="dock fluid-v fluid" ${options && options.nodeintegration ? 'nodeintegration' : ''} ${options && options.preload ? (` preload="${options.preload}"`) : ''} />`;
         } else {
@@ -480,11 +531,20 @@ export default class WebView extends Component {
             webviewHtml += `<div class="dock box gray"><h1>ERROR ${errorCode}</h1><h2>${src}</h2><div>${errorDescription}</div></div>`;
         }
 
+        const webviewStyle = Object.assign({}, style, extraStyle);
+        if (webviewStyle.width && typeof webviewStyle.width === 'number') {
+            webviewStyle.width = `${webviewStyle.width}px`;
+        }
+        if (webviewStyle.height && typeof webviewStyle.height === 'number') {
+            webviewStyle.height = `${webviewStyle.height}px`;
+        }
+        this.webviewStyle = webviewStyle;
+
         return (
             <div
                 className={classes('webview fade', className, {in: !hideBeforeDOMReady || domReady})}
                 dangerouslySetInnerHTML={{__html: webviewHtml}} // eslint-disable-line
-                style={style}
+                style={webviewStyle}
             />
         );
     }

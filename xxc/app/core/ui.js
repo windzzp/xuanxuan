@@ -12,7 +12,7 @@ import profile from './profile';
 import Notice from './notice';
 import ImageViewer from '../components/image-viewer';
 import Store from '../utils/store';
-import {executeCommandLine, registerCommand} from './commander';
+import {executeCommandLine, registerCommand, executeCommand} from './commander';
 import WebViewDialog from '../views/common/webview-dialog';
 import {addContextMenuCreator, showContextMenu} from './context-menu';
 
@@ -25,7 +25,8 @@ const EVENT = {
     app_link: 'app.link',
     net_online: 'app.net.online',
     net_offline: 'app.net.offline',
-    ready: 'app.ready'
+    ready: 'app.ready',
+    update_view_style: 'app.updateViewStyle'
 };
 
 // 添加图片上下文菜单生成器
@@ -823,6 +824,42 @@ if (Platform.ui.onRequestOpenUrl) {
     });
 }
 
+// 注册更新组件样式命令，触发一个事件来响应命令
+registerCommand('updateViewStyle', (context, viewID, style) => {
+    if (viewID) {
+        if (context.options && style === undefined) {
+            ({style} = context.options);
+        }
+        if (typeof style === 'string') {
+            style = JSON.parse(style);
+        }
+        if (style.width && typeof style.width === 'number') {
+            style.width = `${style.width}px`;
+        }
+        if (style.height && typeof style.height === 'number') {
+            style.height = `${style.height}px`;
+        }
+        events.emit(`${EVENT.update_view_style}.${viewID}`, style, context.options);
+    }
+});
+
+/**
+ * 请求更新指定视图样式
+ * @param {String} viewID 组件 ID
+ * @param {Object|String} style 样式
+ */
+export const requestUpdateViewStyle = (viewID, style) => {
+    executeCommand('updateViewStyle', viewID, style);
+};
+
+/**
+ * 绑定 组件更新样式事件
+ * @param {String} viewID 组件 ID
+ * @param {funcion} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
+export const onUpdateViewStyle = (viewID, listener) => events.on(`${EVENT.update_view_style}.${viewID}`, listener);
+
 export default {
     entryParams,
     get canQuit() {
@@ -846,5 +883,6 @@ export default {
     getUrlMeta,
     openUrlInDialog,
     openUrlInBrowser,
-    openUrlInApp
+    openUrlInApp,
+    requestUpdateViewStyle,
 };

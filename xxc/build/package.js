@@ -299,9 +299,8 @@ let timeCostMap = {
 // 获取操作消耗时间
 const getTimeCost = (operation) => {
     if (timeCostMap.$default) {
-        timeCostMap = Object.assign(timeCostMap, fse.readJSONSync(path.resolve(__dirname, './build-time-cost.json'), {throws: false}), {
-            $default: false
-        });
+        timeCostMap = Object.assign(timeCostMap, fse.readJSONSync(path.resolve(__dirname, './build-time-cost.json'), {throws: false}));
+        delete timeCostMap.$default;
     }
     return operation ? timeCostMap[operation] : timeCostMap;
 };
@@ -374,24 +373,6 @@ Object.keys(config).forEach((n) => {
     console.log(`    ${n}:`.padEnd(22) + (typeof nV === 'string' ? nV : JSON.stringify(nV)));
 });
 console.log();
-
-const appPkg = Object.assign({
-    name: config.name,
-    productName: config.name,
-    displayName: config.productName,
-    version: config.version,
-    description: config.description,
-    main: './main.js',
-    author: config.author,
-    homepage: config.homepage,
-    company: config.company,
-    license: config.license,
-    bugs: config.bugs,
-    repository: config.repository,
-    buildTime: new Date(),
-    buildVersion: config.buildVersion,
-    configurations: config.configurations
-}, config.pkg || null);
 
 const getArtifactName = (platform, arch, ext, name) => {
     const artifactName = config[`${name || platform}ArtifactName`] || config.artifactName;
@@ -498,6 +479,24 @@ const outputConfigFiles = () => {
     console.log(`    ${chalk.green(chalk.bold('✓'))} 创建 ${chalk.underline('./build/electron-builder.json')}`);
 
     if (!isSkipBuild) {
+        const appPkg = Object.assign({
+            name: config.name,
+            productName: config.name,
+            displayName: config.productName,
+            version: config.version,
+            description: config.description,
+            main: './main.js',
+            author: config.author,
+            homepage: config.homepage,
+            company: config.company,
+            license: config.license,
+            bugs: config.bugs,
+            repository: config.repository,
+            buildTime: new Date(),
+            buildVersion: config.buildVersion,
+            configurations: config.configurations
+        }, config.pkg || null);
+
         // 输出应用 package.json 文件
         fse.outputJsonSync('./app/package.json', Object.assign({}, createPackageObj(), appPkg), {spaces: 4});
         console.log(`    ${chalk.green(chalk.bold('✓'))} 创建 ${chalk.underline('./app/package.json')}`);
@@ -551,7 +550,7 @@ const outputConfigFiles = () => {
 // 生成 app/package.json 对象
 const createPackageObj = () => ({
     name: pkg.name,
-    productName: pkg.name.name,
+    productName: pkg.name,
     displayName: pkg.productName,
     version: pkg.version,
     description: pkg.description,
@@ -562,7 +561,7 @@ const createPackageObj = () => ({
     license: pkg.license,
     bugs: pkg.bugs,
     repository: pkg.repository,
-    dependencies: pkg.appDependencies
+    dependencies: pkg.appDependencies || {}
 });
 
 // 还原项目目录下的 package.json 文件

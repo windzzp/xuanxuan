@@ -77,6 +77,7 @@ export default class MessageContentCard extends Component {
         header: PropTypes.any,
         children: PropTypes.any,
         style: PropTypes.object,
+        fluidWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
     };
 
     /**
@@ -109,6 +110,7 @@ export default class MessageContentCard extends Component {
             baseClassName,
             header,
             children,
+            fluidWidth,
             style,
             ...other
         } = this.props;
@@ -141,9 +143,9 @@ export default class MessageContentCard extends Component {
             if (React.isValidElement(content)) {
                 contentView = content;
             } else if (webviewContent) {
-                contentView = <WebView className="relative" {...content} />;
+                contentView = <WebView fluidWidth={fluidWidth} className="relative" {...content} />;
             } else if (htmlContent) {
-                contentView = <div className="content" dangerouslySetInnerHTML={{__html: content}} />;
+                contentView = <div className="content" dangerouslySetInnerHTML={{__html: content}} />; // eslint-disable-line
             } else {
                 contentView = <div className="content">{content}</div>;
             }
@@ -151,15 +153,15 @@ export default class MessageContentCard extends Component {
 
         const actionsButtons = [];
         if (actions) {
-            actions.forEach((action, idx) => {
-                actionsButtons.push(<Button className={action.btnClass || 'rounded primary outline'} key={idx} label={action.label} icon={action.icon} onClick={handleActionButtonClick.bind(this, action)} />);
+            actions.forEach((action) => {
+                actionsButtons.push(<Button className={action.btnClass || 'rounded primary outline'} key={action.id || action.label} label={action.label} icon={action.icon} onClick={handleActionButtonClick.bind(this, action)} />);
             });
         }
 
         const cardsMenu = [];
         if (menu && menu.length) {
-            menu.forEach((menuItem, menuItemIndex) => {
-                cardsMenu.push(<div key={menuItemIndex} className="hint--top-left" data-hint={menuItem.label}><a className="btn rounded iconbutton" onClick={menuItem.click ? handleMenuIconClick.bind(this, menuItem) : null} href={menuItem.url}><Avatar auto={menuItem.icon} className="avatar-sm" /></a></div>);
+            menu.forEach((menuItem) => {
+                cardsMenu.push(<div key={menuItem.id || menuItem.label} className="hint--top-left" data-hint={menuItem.label}><a className="btn rounded iconbutton" onClick={menuItem.click ? handleMenuIconClick.bind(this, menuItem) : null} href={menuItem.url}><Avatar auto={menuItem.icon} className="avatar-sm" /></a></div>);
             });
         }
         if (provider) {
@@ -167,32 +169,36 @@ export default class MessageContentCard extends Component {
         }
 
         const clickView = (clickable && clickable !== true) ? <a className="dock" href={url || contentUrl} title={titleView ? title : null} /> : null;
-        return (<div
-            className={classes('app-message-card', baseClassName, className, {
-                'app-link state': clickable === true,
-                'with-avatar': !!avatarView,
-                'only-title': !contentView && !subTitleView && !actionsButtons.length
-            })}
-            data-url={url}
-            style={Object.assign({}, style, card.style)}
-            {...other}
-        >
-            {topView}
-            {(header || titleView || avatarView || subTitleView) ? <header>
-                {avatarView}
-                <hgroup>
-                    {titleView}
-                    {subTitleView}
-                    {clickable === 'title' ? clickView : null}
-                </hgroup>
-                {header}
-                {clickable === 'header' ? clickView : null}
-            </header> : null}
-            {contentView}
-            {clickable === 'content' ? clickView : null}
-            {actionsButtons && actionsButtons.length ? <nav className="nav actions gray">{actionsButtons}</nav> : null}
-            {children}
-            {cardsMenu && cardsMenu.length ? <div className="app-menu-card-menu">{cardsMenu}</div> : null}
-        </div>);
+        return (
+            <div
+                className={classes('app-message-card', baseClassName, className, {
+                    'app-link state': clickable === true,
+                    'with-avatar': !!avatarView,
+                    'only-title': !contentView && !subTitleView && !actionsButtons.length
+                })}
+                data-url={url}
+                style={Object.assign({}, style, card.style)}
+                {...other}
+            >
+                {topView}
+                {(header || titleView || avatarView || subTitleView) ? (
+                    <header>
+                        {avatarView}
+                        <hgroup>
+                            {titleView}
+                            {subTitleView}
+                            {clickable === 'title' ? clickView : null}
+                        </hgroup>
+                        {header}
+                        {clickable === 'header' ? clickView : null}
+                    </header>
+                ) : null}
+                {contentView}
+                {clickable === 'content' ? clickView : null}
+                {actionsButtons && actionsButtons.length ? <nav className="nav actions gray">{actionsButtons}</nav> : null}
+                {children}
+                {cardsMenu && cardsMenu.length ? <div className="app-menu-card-menu">{cardsMenu}</div> : null}
+            </div>
+        );
     }
 }

@@ -9,10 +9,19 @@ import Avatar from '../../components/avatar';
 import App from '../../core';
 import ROUTES from '../common/routes';
 import UserSettingDialog from '../common/user-setting-dialog';
-import {UserAvatar} from '../common/user-avatar';
+import _UserAvatar from '../common/user-avatar';
 import {StatusDot} from '../common/status-dot';
 import {UserMenu} from './user-menu';
 import replaceViews from '../replace-views';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * UserAvatar 可替换组件形式
+ * @type {Class<UserAvatar>}
+ * @private
+ */
+const UserAvatar = withReplaceView(_UserAvatar);
+
 
 /**
  * 导航项目列表

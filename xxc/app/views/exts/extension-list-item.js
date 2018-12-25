@@ -79,7 +79,7 @@ export default class ExtensionListItem extends Component {
                 <div className="title">
                     <strong>{extension.displayName}</strong>
                     {extension.buildIn ? <span data-hint={Lang.string('ext.buildIn.hint')} className="hint--top hint--md app-ext-list-item-buildIn-label"> <Icon name="star-circle icon-sm text-yellow" /></span> : null}
-                    {extension.isRemote ? <span data-hint={Lang.string('ext.remote.hint')} className="hint--top hint--md app-ext-list-item-remote-label"> <Icon name="verified icon-sm text-green" /></span> : null}
+                    {extension.isRemote ? <span data-hint={Lang.string('ext.remote.hint')} className="hint--top hint--md app-ext-list-item-remote-label"> <Icon name="shield-check icon-sm text-green" /></span> : null}
                      &nbsp; <small className="text-gray">{extension.version ? `v${extension.version}` : ''}</small>
                 </div>
                 <div className={classes('small space-xs', {'text-ellipsis': isDev})} title={extension.description || ''}>

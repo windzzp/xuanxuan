@@ -36,6 +36,7 @@ export const showWebviewDialog = (sourceUrl, options, callback) => {
         actions: false,
         animation: 'enter-from-bottom fade',
         contentClassName: 'no-padding flex stretch',
+        listenUpdateStyle: true,
         content: <WebViewFrame displayId={displayId} src={sourceUrl} options={options} />
     }, callback);
 };

@@ -6,10 +6,18 @@ import Avatar from '../../components/avatar';
 import Lang from '../../lang';
 import App from '../../core';
 import ROUTES from './routes';
-import {UserAvatar} from './user-avatar';
+import _UserAvatar from './user-avatar';
 import {StatusDot} from './status-dot';
 import replaceViews from '../replace-views';
 import Config from '../../config';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * UserAvatar 可替换组件形式
+ * @type {Class<UserAvatar>}
+ * @private
+ */
+const UserAvatar = withReplaceView(_UserAvatar);
 
 /**
  * MemberProfile 组件 ，显示成员个人资料界面

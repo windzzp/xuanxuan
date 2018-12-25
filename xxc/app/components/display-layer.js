@@ -452,6 +452,7 @@ export default class DisplayLayer extends PureComponent {
             contentLoadFail,
             children,
             style,
+            listenUpdateStyle,
             id,
             ...other
         } = this.props;

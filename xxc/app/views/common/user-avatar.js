@@ -6,7 +6,6 @@ import Image from '../../components/image';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
 import {StatusDot} from './status-dot';
-import replaceViews from '../replace-views';
 
 /**
  * UserAvatar 组件 ，显示用户头像界面
@@ -19,18 +18,13 @@ import replaceViews from '../replace-views';
  */
 export default class UserAvatar extends Component {
     /**
-     * 获取 UserAvatar 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<UserAvatar>}
-     * @readonly
+     * UserAvatar 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof UserAvatar
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {UserAvatar} from './user-avatar';
-     * <UserAvatar />
      */
-    static get UserAvatar() {
-        return replaceViews('common/user-avatar', UserAvatar);
-    }
+    static replaceViewPath = 'common/UserAvatar';
 
     /**
      * React 组件属性类型检查

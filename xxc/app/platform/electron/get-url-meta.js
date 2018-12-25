@@ -1,5 +1,4 @@
 import cheerio from 'cheerio';
-import 'abortcontroller-polyfill/dist/abortcontroller-polyfill-only';
 import {request, getTextFromResponse} from '../common/network';
 import limitTimePromise from '../../utils/limit-time-promise';
 
@@ -232,9 +231,7 @@ export class UrlMeta {
              * @type {string}
              * @private
              */
-            this._links = this.parsedDocument('a').map((i, elem) => {
-                return this.parsedDocument(elem).attr('href');
-            });
+            this._links = this.parsedDocument('a').map((i, elem) => this.parsedDocument(elem).attr('href'));
         }
         return this._links;
     }
@@ -438,9 +435,7 @@ export class UrlMeta {
      * @return {string[]} Feeds 地址列表
      */
     parseFeeds(format) {
-        const feeds = this.parsedDocument(`link[type='application/${format}+xml']`).map((i, elem) => {
-            return this.parsedDocument(elem).attr('href');
-        });
+        const feeds = this.parsedDocument(`link[type='application/${format}+xml']`).map((i, elem) => this.parsedDocument(elem).attr('href'));
 
         return feeds;
     }
@@ -501,7 +496,5 @@ export class UrlMeta {
  */
 export default (url) => {
     const controller = new AbortController();
-    return limitTimePromise(request(url, {signal: controller.signal}), 5000).then(response => {
-        return new UrlMeta(url).inspectFromResponse(response, controller);
-    });
+    return limitTimePromise(request(url, {signal: controller.signal}), 5000).then(response => new UrlMeta(url).inspectFromResponse(response, controller));
 };

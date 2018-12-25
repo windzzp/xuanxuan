@@ -10,9 +10,17 @@ import Avatar from '../../components/avatar';
 import Messager from '../../components/messager';
 import Lang from '../../lang';
 import App from '../../core';
-import {UserAvatar} from './user-avatar';
+import _UserAvatar from './user-avatar';
 import replaceViews from '../replace-views';
 import FileData from '../../core/models/file-data';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * UserAvatar 可替换组件形式
+ * @type {Class<UserAvatar>}
+ * @private
+ */
+const UserAvatar = withReplaceView(_UserAvatar);
 
 /**
  * 检查当前平台是否是浏览器
