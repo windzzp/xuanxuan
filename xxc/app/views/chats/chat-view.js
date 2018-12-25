@@ -157,6 +157,7 @@ export default class ChatView extends Component {
             <div
                 {...other}
                 className={classes('app-chat dock', className, {hidden, 'chat-readonly': isReadOnly})}
+                id={`chat-view-${chat.gid}`}
             >
                 {isRobot ? chatView : <SplitPane className={hideSidebar ? 'soloPane1' : ''} split="vertical" primary="second" maxSize={360} minSize={150} defaultSize={200} paneStyle={{userSelect: 'none'}}>
                     {chatView}

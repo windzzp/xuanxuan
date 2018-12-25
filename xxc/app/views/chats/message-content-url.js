@@ -127,6 +127,20 @@ export default class MessageContentUrl extends PureComponent {
     }
 
     /**
+     * 获取卡片最大适合宽度（填充满窗口消息列表可用区域）
+     *
+     * @return {number} 宽度
+     * @memberof MessageContentUrl
+     */
+    getFluidCardWidth = () => {
+        const {cgid} = this.props;
+        const messageListEle = document.querySelector(cgid ? `#chat-view-${cgid} .app-message-list` : `.app-chats .app-chat:not(.hidden) .app-message-list`);
+        if (messageListEle) {
+            return messageListEle.clientWidth - 80;
+        }
+    };
+
+    /**
      * 获取网址信息
      *
      * @param {boolean} [disableCache=false] 是否禁用缓存
@@ -206,7 +220,7 @@ export default class MessageContentUrl extends PureComponent {
                 title: url,
             };
             const reloadBtn = (<div className="flex-none hint--top has-padding-sm" data-hint={Lang.string('chat.message.loadCard')}><Button onClick={this.loadSleep} className="iconbutton rounded text-primary" icon="mdi-cards-playing-outline" /></div>);
-            return <MessageContentCard header={reloadBtn} card={card} className={classes('app-message-content-url relative')} {...other} />;
+            return <MessageContentCard header={reloadBtn} card={card} className={classes('app-message-content-url relative')} {...other} fluidWidth={this.getFluidCardWidth} />;
         }
 
         const card = Object.assign({
@@ -223,7 +237,7 @@ export default class MessageContentUrl extends PureComponent {
             const {webviewContent, content} = card;
             if (webviewContent) {
                 const {originSrc, ...webviewProps} = content;
-                card.content = <WebView className="relative" {...webviewProps} ref={e => {this.webview = e;}} />;
+                card.content = <WebView fluidWidth={this.getFluidCardWidth} className="relative" {...webviewProps} ref={e => {this.webview = e;}} />;
                 card.clickable = 'header';
                 card.menu.push({
                     label: Lang.string('common.moreActions'),
@@ -264,6 +278,7 @@ export default class MessageContentUrl extends PureComponent {
         return (
             <MessageContentCard
                 card={card}
+                fluidWidth={this.getFluidCardWidth}
                 className={classes('app-message-content-url relative', {
                     'is-webview': card.webviewContent
                 })}
