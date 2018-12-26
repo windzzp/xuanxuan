@@ -159,6 +159,11 @@ class chat extends control
     {
         $user = (object)$user;
         $user->id = $userID;
+        if(isset($user->status)) 
+        {
+            $user->clientStatus = $user->status;
+            unset($user->status);
+        }
         $user  = $this->chat->editUser($user);
         $users = $this->chat->getUserList($status = 'online');
         if(dao::isError())
