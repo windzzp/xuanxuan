@@ -179,8 +179,7 @@ export default class WebView extends PureComponent {
 
     /**
      * React 组件生命周期函数：`componentDidMount`
-     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
-    求的地方。在该方法里设置状态将会触发重渲。
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请求的地方。在该方法里设置状态将会触发重渲。
      *
      * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
      * @private
@@ -249,8 +248,7 @@ export default class WebView extends PureComponent {
 
     /**
      * React 组件生命周期函数：`componentWillUnmount`
-     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
-    任何在componentDidMount环节创建的DOM元素。
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理任何在componentDidMount环节创建的DOM元素。
      *
      * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
      * @private
@@ -608,7 +606,7 @@ export default class WebView extends PureComponent {
                     </div>
                 );
             }
-            views.push(<div key="loading" className="webview-loading has-padding-sm center-content">{loadingView}</div>)
+            views.push(<div key="loading" className="webview-loading has-padding-sm center-content state">{loadingView}</div>)
         }
         return views.length > 1 ? views : views[0];
     }

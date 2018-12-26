@@ -7,6 +7,7 @@ import {getUrlMeta} from '../../core/ui';
 import WebView from '../common/webview';
 import Lang from '../../lang';
 import Button from '../../components/button';
+import {showContextMenu} from '../../core/context-menu';
 
 /**
  * MessageContentUrl 组件 ，显示聊天消息网址卡片内容界面
@@ -194,6 +195,29 @@ export default class MessageContentUrl extends PureComponent {
     };
 
     /**
+     * 处理显示消息内容上下文菜单事件
+     * @param {Event} event 事件对象
+     * @memberof MessageListItem
+     * @private
+     * @return {void}
+     */
+    handleContextMenu = event => {
+        if (event.target.tagName === 'WEBVIEW') {
+            return;
+        }
+        const {url} = this.props;
+        showContextMenu('link', {
+            url,
+            event,
+            options: {
+                copy: true,
+                selectAll: false,
+                linkTarget: true
+            }
+        });
+    }
+
+    /**
      * React 组件生命周期函数：Render
      * @private
      * @see https://doc.react-china.org/docs/react-component.html#render
@@ -220,7 +244,7 @@ export default class MessageContentUrl extends PureComponent {
                 title: url,
             };
             const reloadBtn = (<div className="flex-none hint--top has-padding-sm" data-hint={Lang.string('chat.message.loadCard')}><Button onClick={this.loadSleep} className="iconbutton rounded text-primary" icon="mdi-cards-playing-outline" /></div>);
-            return <MessageContentCard header={reloadBtn} card={card} className={classes('app-message-content-url relative')} {...other} fluidWidth={this.getFluidCardWidth} />;
+            return <MessageContentCard onContextMenu={this.handleContextMenu} header={reloadBtn} card={card} className={classes('app-message-content-url relative')} {...other} fluidWidth={this.getFluidCardWidth} />;
         }
 
         const card = Object.assign({
@@ -277,6 +301,7 @@ export default class MessageContentUrl extends PureComponent {
 
         return (
             <MessageContentCard
+                onContextMenu={this.handleContextMenu}
                 card={card}
                 fluidWidth={this.getFluidCardWidth}
                 className={classes('app-message-content-url relative', {

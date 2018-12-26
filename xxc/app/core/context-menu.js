@@ -292,7 +292,7 @@ export const showContextMenu = (contextName, context) => {
 // 添加链接上下文菜单生成器
 addContextMenuCreator('link', context => {
     const {event, options} = context;
-    const link = options && options.url ? options.url : event.target.href;
+    const link = options && options.url ? options.url : (context.url || event.target.href);
     if (isWebUrl(link)) {
         let linkText = document.getSelection().toString().trim();
         if (event && linkText === '') {
@@ -310,7 +310,8 @@ addContextMenuCreator('link', context => {
                 label: Lang.string('common.copyLink'),
                 click: () => {
                     Platform.clipboard.writeText(link);
-                }
+                },
+                icon: 'mdi-link'
             });
 
             if (linkText && linkText !== link && `${linkText}/` !== link) {
@@ -318,7 +319,8 @@ addContextMenuCreator('link', context => {
                     label: Lang.format('common.copyFormat', linkText.length > 25 ? `${linkText.substr(0, 25)}…` : linkText),
                     click: () => {
                         Platform.clipboard.writeText(linkText);
-                    }
+                    },
+                    icon: 'mdi-content-copy'
                 });
             }
         }
@@ -332,6 +334,7 @@ if (Platform.clipboard && Platform.clipboard.writeText) {
         const {emoji} = context;
         if (emoji) {
             return [{
+                icon: 'mdi-emoticon-outline',
                 label: Lang.string('common.copy'),
                 click: () => {
                     Platform.clipboard.writeText(emoji);

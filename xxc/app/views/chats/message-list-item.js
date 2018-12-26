@@ -472,7 +472,7 @@ export default class MessageListItem extends Component {
                 {showDateDivider && <MessageDivider date={message.date} />}
                 {headerView}
                 {timeLabelView}
-                {contentView && <div className={classes(`app-message-content content-type-${message.contentType}`, {'content-type-text': message.isPlainTextContent})} onContextMenu={this.isTextContent || this.isUrlContent ? this.handleContentContextMenu : null}>{contentView}{actionsView}</div>}
+                {contentView && <div className={classes(`app-message-content content-type-${message.contentType}`, {'content-type-text': message.isPlainTextContent})} onContextMenu={this.isTextContent ? this.handleContentContextMenu : null}>{contentView}{actionsView}</div>}
                 {resendButtonsView}
             </div>
         );
