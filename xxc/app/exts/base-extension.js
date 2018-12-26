@@ -69,12 +69,17 @@ export default class Extension {
         //  */
         // this._config = new ExtensionConfig(this);
 
+        const localData = this.getConfig('_data') || {} ;
+        delete localData.remoteLoaded;
+        delete localData.loadRemoteFailed;
+        delete localData.serverData;
+
         /**
          * 扩展运行时数据对象
          * @type {Object}
          * @private
          */
-        this._data = Object.assign({}, data, this.getConfig('_data'));
+        this._data = Object.assign({}, data, localData);
     }
 
     /**
@@ -1132,6 +1137,7 @@ export default class Extension {
         const data = Object.assign({}, this._data);
         delete data.remoteLoaded;
         delete data.loadRemoteFailed;
+        delete data.serverData;
         this.setConfig('_data', data);
     }
 }
