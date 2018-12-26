@@ -218,7 +218,7 @@ export const getMenuItemsForContext = (contextName, context = {}) => {
             }
             if (linkItemsCount < 3) {
                 textSelectItems.push({
-                    label: Lang.format('menu.copy.format', selectedText),
+                    label: Lang.format('menu.copy.select', selectedText),
                     click: Platform.ui.copySelectText
                 });
             }
@@ -227,7 +227,7 @@ export const getMenuItemsForContext = (contextName, context = {}) => {
     if (options && options.selectAll && Platform.ui.selectAllText) {
         textSelectItems.push({
             label: Lang.string('menu.selectAll'),
-            icon: 'mdi-select-all',
+            icon: 'mdi-select',
             click: Platform.ui.selectAllText
         });
     }
