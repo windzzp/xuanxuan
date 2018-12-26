@@ -19,7 +19,7 @@ const KEY_USER_LIST = 'USER_LIST';
  * 获取本地存储中保存的所有用户标识字符串清单
  * @return {string[]} 所有用户标识字符串清单
  */
-export const allUsers = () => {
+export const getAllUsersFromStore = () => {
     return Store.get(KEY_USER_LIST, {});
 };
 
@@ -28,7 +28,7 @@ export const allUsers = () => {
  * @param {string} identify 用户标识字符串
  * @returns {Object} 保存的用户对象
  */
-export const getUser = (identify) => {
+export const getUserFromStore = (identify) => {
     if (identify) {
         const user = Store.get(`${KEY_USER_PREFIX}${identify}`);
         if (user) {
@@ -39,7 +39,7 @@ export const getUser = (identify) => {
         }
         return user;
     }
-    const users = allUsers();
+    const users = getAllUsersFromStore();
     if (!users) {
         return null;
     }
@@ -52,16 +52,16 @@ export const getUser = (identify) => {
             maxTimeIndentify = identify;
         }
     });
-    return maxTimeIndentify ? getUser(maxTimeIndentify) : null;
+    return maxTimeIndentify ? getUserFromStore(maxTimeIndentify) : null;
 };
 
 /**
  * 获取本地存储中保存的所有用户
  * @return {Object[]} 保存的用户列表
  */
-export const userList = () => {
-    const users = allUsers();
-    return Object.keys(users).map(getUser).sort((x, y) => y.lastLoginTime - x.lastLoginTime);
+export const getUserListFromStore = () => {
+    const users = getAllUsersFromStore();
+    return Object.keys(users).map(getUserFromStore).sort((x, y) => y.lastLoginTime - x.lastLoginTime);
 };
 
 /**
@@ -69,7 +69,7 @@ export const userList = () => {
  * @param {Object} user 要保存的用户对象
  * @return {void}
  */
-export const saveUser = (user) => {
+export const saveUserToStore = (user) => {
     const {identify} = user;
     if (!identify) {
         throw new Error('Cannot save user, because user.indentify property is not defined.');
@@ -82,7 +82,7 @@ export const saveUser = (user) => {
 
     Store.set(`${KEY_USER_PREFIX}${identify}`, userData);
 
-    const users = allUsers();
+    const users = getAllUsersFromStore();
     users[identify] = new Date().getTime();
     Store.set(KEY_USER_LIST, users);
 };
@@ -92,7 +92,7 @@ export const saveUser = (user) => {
  * @param {string|{identify: string}} user 要移除的用户标识字符串或者用户对象
  * @return {void}
  */
-export const removeUser = (user) => {
+export const removeUserFromStore = (user) => {
     const identify = typeof user === 'object' ? user.identify : user;
 
     if (!identify) {
@@ -101,7 +101,7 @@ export const removeUser = (user) => {
 
     Store.remove(`${KEY_USER_PREFIX}${identify}`);
 
-    const users = allUsers();
+    const users = getAllUsersFromStore();
     if (users[identify]) {
         delete users[identify];
         Store.set(KEY_USER_LIST, users);
@@ -109,10 +109,9 @@ export const removeUser = (user) => {
 };
 
 export default {
-    allUsers,
-    getUser,
-    userList,
-    saveUser,
-    removeUser,
-    store: Store
+    allUsers: getAllUsersFromStore,
+    getUser: getUserFromStore,
+    userList: getUserListFromStore,
+    saveUser: saveUserToStore,
+    removeUser: removeUserFromStore,
 };

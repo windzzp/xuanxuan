@@ -1,6 +1,5 @@
 
 import fs from 'fs-extra';
-import config from '../common/config';
 import sound from '../common/sound';
 import env from './env';
 import screenshot from './screenshot';
@@ -35,7 +34,6 @@ const platform = {
     shortcut,
     dialog,
     fs,
-    config,
     sound,
     net,
     crypto,

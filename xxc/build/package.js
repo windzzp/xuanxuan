@@ -345,9 +345,9 @@ const finishRecordCostTime = operation => {
 const printEstimateInfo = operation => {
     const costTimeText = getTimeCostText(operation);
     if (costTimeText) {
-        console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} 请耐心等待，预计操作耗时 ${chalk.bold(chalk.red(costTimeText))}...${chalk.grey(`(${operation})`)}`);
+        console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} 请耐心等待，预计操作耗时 ${chalk.bold(chalk.red(costTimeText))}...${chalk.grey(`(${formatDate(new Date())} ${operation})`)}`);
     } else {
-        console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} 请耐心等待，这可能需要花费几分钟时间...`);
+        console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} 请耐心等待，这可能需要花费几分钟时间...${chalk.grey(`(${formatDate(new Date())} ${operation})`)}`);
     }
     startRecordCostTime(operation);
 };
@@ -359,9 +359,9 @@ const printConsumeInfo = operation => {
     if (costTime) {
         const costTimeText = getTimeCostText(operation);
         if (estimateCostTimeText) {
-            console.log(`    ${chalk.bold(chalk.magentaBright('⇒'))} 操作实际耗时 ${chalk.bold(chalk.red(costTimeText))}，预计耗时 ${chalk.bold(estimateCostTimeText)}${chalk.grey(`(${operation})`)}`);
+            console.log(`    ${chalk.bold(chalk.magentaBright('⇒'))} 操作实际耗时 ${chalk.bold(chalk.red(costTimeText))}，预计耗时 ${chalk.bold(estimateCostTimeText)}${chalk.grey(`(${formatDate(new Date())} ${operation})`)}`);
         } else {
-            console.log(`    ${chalk.bold(chalk.magentaBright('⇒'))} 操作实际耗时 ${chalk.bold(chalk.red(costTimeText))}${chalk.grey(`(${operation})`)}`);
+            console.log(`    ${chalk.bold(chalk.magentaBright('⇒'))} 操作实际耗时 ${chalk.bold(chalk.red(costTimeText))}${chalk.grey(`(${formatDate(new Date())} ${operation})`)}`);
         }
     }
 };
@@ -394,7 +394,7 @@ const electronBuilder = {
     appId: config.appid || `com.cnezsoft.${config.name}`,
     compression: 'maximum',
     artifactName: config.artifactName,
-    // electronVersion: '1.7.9',
+    electronVersion: config.electronVersion,
     electronDownload: {mirror: 'https://npm.taobao.org/mirrors/electron/'},
     extraResources: [{
         from: 'app/build-in/',
