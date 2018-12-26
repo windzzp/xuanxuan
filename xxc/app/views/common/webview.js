@@ -7,6 +7,7 @@ import replaceViews from '../replace-views';
 import {openUrl, onUpdateViewStyle, requestUpdateViewStyle} from '../../core/ui';
 import events from '../../core/events';
 import {formatString} from '../../utils/string-helper';
+import Spinner from '../../components/spinner';
 
 /**
  * 获取当前平台是否为 Electron 平台
@@ -31,15 +32,18 @@ const defaultInjectJS = [
         "for (const name in options) {",
             "if (options.hasOwnProperty(name)) {",
                 "if (url[url.length - 1] !== '?') url += '&';",
-                "url += 'name=' + encodeURIComponent(options[name]);",
+                "url += name + '=' + encodeURIComponent(options[name]);",
             "}",
         "}",
         "window.open('xxc:' + url, '_blank');",
     "};",
-    "window.setXXCViewStyle = function(style) {",
-        "if (typeof style !== 'string') style = JSON.stringify(style);",
-        "window.callXXCCommand('updateViewStyle/{id}/' + encodeURIComponent(style));",
+    "window.setXXCViewStyle = function(style, options) {",
+        "if (style && typeof style !== 'string') style = JSON.stringify(style);",
+        "var commandLine = 'updateViewStyle/{id}'",
+        "if (style !== undefined) commandLine += '/' + encodeURIComponent(style);",
+        "window.callXXCCommand(commandLine, options);",
     "};",
+    "window.showXXCView = function(show) {if(show === undefined) show = true; setXXCViewStyle(null, {show: !!show})};",
     "window.adjustXXCViewHeight = function(height) {",
         "window.setXXCViewStyle({height: height === undefined ? document.body.clientHeight : height})",
     "};",
@@ -95,6 +99,9 @@ export default class WebView extends PureComponent {
         type: PropTypes.string,
         modalId: PropTypes.string,
         fluidWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
+        showCondition: PropTypes.oneOf(['immediately', 'domReady', 'manual']),
+        loadingContent: PropTypes.node,
+        maxLoadingTime: PropTypes.number,
     };
 
     /**
@@ -118,7 +125,10 @@ export default class WebView extends PureComponent {
         hideBeforeDOMReady: true,
         style: null,
         modalId: null,
-        type: 'auto'
+        type: 'auto',
+        showCondition: 'immediately',
+        loadingContent: null,
+        maxLoadingTime: 10000,
     };
 
     /**
@@ -162,7 +172,8 @@ export default class WebView extends PureComponent {
             errorCode: null,
             errorDescription: null,
             domReady: false,
-            extraStyle: null
+            extraStyle: null,
+            loading: props.showCondition !== 'immediately'
         };
     }
 
@@ -211,14 +222,29 @@ export default class WebView extends PureComponent {
             }
         }
 
-        this.webviewUpdateStyleHandler = onUpdateViewStyle(this.webviewId, (extraStyle) => {
+        this.webviewUpdateStyleHandler = onUpdateViewStyle(this.webviewId, (extraStyle, options) => {
+            if (options) {
+                const {loading} = this.state;
+                if (loading && (options.show || options.hide === false || options.hide === 'false')) {
+                    this.setState({loading: false});
+                } else if (!loading && (options.hide || options.show === false || options.show === 'false')) {
+                    this.setState({loading: true});
+                }
+            }
             const {modalId} = this.props;
             if (modalId) {
                 requestUpdateViewStyle(modalId, extraStyle);
-            } else {
+            } else if (extraStyle !== undefined) {
                 this.setState({extraStyle});
             }
         });
+
+        if (this.state.loading) {
+            this.loadingTimerID = setTimeout(() => {
+                this.setState({loading: false});
+                this.loadingTimerID = null;
+            }, this.props.maxLoadingTime);
+        }
     }
 
     /**
@@ -251,6 +277,11 @@ export default class WebView extends PureComponent {
         }
 
         events.off(this.webviewUpdateStyleHandler);
+
+        if (this.loadingTimerID) {
+            clearTimeout(this.loadingTimerID);
+            this.loadingTimerID = null;
+        }
     }
 
     /**
@@ -411,7 +442,7 @@ export default class WebView extends PureComponent {
      */
     handleDomReady = () => {
         const {webview} = this;
-        const {onDomReady, fluidWidth} = this.props;
+        const {onDomReady, fluidWidth, showCondition} = this.props;
         const {insertCss, executeJavaScript, onExecuteJavaScript, injectData} = this.props;
         if (insertCss) {
             webview.insertCSS(insertCss);
@@ -492,7 +523,21 @@ export default class WebView extends PureComponent {
             }
         }
 
-        this.setState({domReady: true});
+        const newState = {domReady: true};
+        if (this.state.loading && showCondition === 'domReady') {
+            newState.loading = false;
+        }
+        this.setState(newState);
+        // if (!newState.loading) {
+        //     if (this.loadingTimerID) {
+        //         clearTimeout(this.loadingTimerID);
+        //     }
+        //     this.loadingTimerID = setTimeout(() => {
+        //         this.setState(newState);
+        //     }, 500);
+        // } else {
+        //     this.setState(newState);
+        // }
     };
 
     /**
@@ -513,12 +558,13 @@ export default class WebView extends PureComponent {
             useMobileAgent,
             hideBeforeDOMReady,
             fluidWidth,
+            loadingContent,
             ...options
         } = this.props;
 
         const {isWebview} = this;
         const {
-            errorCode, errorDescription, domReady, extraStyle,
+            errorCode, errorDescription, domReady, extraStyle, loading,
         } = this.state;
 
         let webviewHtml = '';
@@ -531,7 +577,7 @@ export default class WebView extends PureComponent {
             webviewHtml += `<div class="dock box gray"><h1>ERROR ${errorCode}</h1><h2>${src}</h2><div>${errorDescription}</div></div>`;
         }
 
-        const webviewStyle = Object.assign({}, style, extraStyle);
+        const webviewStyle = Object.assign({}, style, this.webviewStyle, extraStyle);
         if (webviewStyle.width && typeof webviewStyle.width === 'number') {
             webviewStyle.width = `${webviewStyle.width}px`;
         }
@@ -540,12 +586,30 @@ export default class WebView extends PureComponent {
         }
         this.webviewStyle = webviewStyle;
 
-        return (
-            <div
-                className={classes('webview fade', className, {in: !hideBeforeDOMReady || domReady})}
-                dangerouslySetInnerHTML={{__html: webviewHtml}} // eslint-disable-line
-                style={webviewStyle}
-            />
-        );
+        const views = [
+            (
+                <div
+                    key="webview"
+                    className={classes('webview fade', className, {in: !hideBeforeDOMReady || domReady, 'is-loading': loading})}
+                    dangerouslySetInnerHTML={{__html: webviewHtml}} // eslint-disable-line
+                    style={webviewStyle}
+                />
+            )
+        ];
+        if (loading && loadingContent !== false) {
+            let loadingView = null;
+            if (React.isValidElement(loadingContent)) {
+                loadingView = loadingContent;
+            } else {
+                loadingView = (
+                    <div className="fluid">
+                        <div className="has-padding-xl"><Spinner /></div>
+                        <div className="content muted small text-ellipsis">{loadingContent || src}</div>
+                    </div>
+                );
+            }
+            views.push(<div key="loading" className="webview-loading has-padding-sm center-content">{loadingView}</div>)
+        }
+        return views.length > 1 ? views : views[0];
     }
 }

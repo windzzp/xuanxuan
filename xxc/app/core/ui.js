@@ -833,11 +833,13 @@ registerCommand('updateViewStyle', (context, viewID, style) => {
         if (typeof style === 'string') {
             style = JSON.parse(style);
         }
-        if (style.width && typeof style.width === 'number') {
-            style.width = `${style.width}px`;
-        }
-        if (style.height && typeof style.height === 'number') {
-            style.height = `${style.height}px`;
+        if (style) {
+            if (style.width && typeof style.width === 'number') {
+                style.width = `${style.width}px`;
+            }
+            if (style.height && typeof style.height === 'number') {
+                style.height = `${style.height}px`;
+            }
         }
         events.emit(`${EVENT.update_view_style}.${viewID}`, style, context.options);
     }

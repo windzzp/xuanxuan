@@ -1072,6 +1072,19 @@
   }
 }
 
+.webview.is-loading {
+  position: fixed!important;
+  bottom: -1000%;
+  left: -1000%;
+  visibility: hidden;
+}
+.webview-loading {
+  padding: (40*@rem);
+  width: (300*@rem);
+
+  .content {max-width: 100%;}
+}
+
 .app-chats-suggest-panel {
   width: (300*@rem);
   max-height: (500*@rem);
