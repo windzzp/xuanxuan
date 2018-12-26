@@ -126,7 +126,7 @@ export default class WebView extends PureComponent {
         style: null,
         modalId: null,
         type: 'auto',
-        showCondition: 'immediately',
+        showCondition: 'domReady',
         loadingContent: null,
         maxLoadingTime: 10000,
     };
@@ -310,6 +310,12 @@ export default class WebView extends PureComponent {
                     if (callback) {
                         callback();
                     }
+                },
+                getURL() {
+                    return webview.contentWindow.location.href;
+                },
+                get src() {
+                    return webview.contentWindow.location.href;
                 },
                 stop() {
                     webview.contentWindow.stop();

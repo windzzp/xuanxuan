@@ -366,7 +366,10 @@ export const createAppContextMenu = appExt => {
         items.push({
             label: Lang.string('ext.app.openInBrowser'),
             click: () => {
-                Platform.ui.openExternal(appExt.webViewUrl);
+                appExt.getEntryUrl().then(url => {
+                    Platform.ui.openExternal(url);
+                    return url;
+                });
             }
         });
     }
@@ -453,7 +456,7 @@ export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
                         return url;
                     });
                 }
-            }
+            },
         });
     }
     if (theOpenedApp.id !== defaultOpenedApp.id) {
@@ -478,9 +481,21 @@ export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
         items.push({
             label: Lang.string('ext.app.openInBrowser'),
             click: () => {
-                Platform.ui.openExternal(appExt.webViewUrl);
+                const currentUrl = theOpenedApp.webview && theOpenedApp.webview.src;
+                appExt.getEntryUrl(currentUrl).then(url => {
+                    Platform.ui.openExternal(url);
+                    return url;
+                });
             }
         });
+        if (theOpenedApp.webview && Platform.clipboard && Platform.clipboard.writeText) {
+            items.push({
+                label: Lang.string('ext.app.copyUrl'),
+                click: () => {
+                    Platform.clipboard.writeText(theOpenedApp.webview.src || appExt.webViewUrl);
+                },
+            })
+        }
     }
 
     if (appExt.canPinnedOnMenu) {
