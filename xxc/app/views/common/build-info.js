@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import Config from '../../config';
+import Config, {getSpecialVersionName} from '../../config';
 import Platform from 'Platform';
 import DateHelper from '../../utils/date-helper';
 import replaceViews from '../replace-views';
@@ -72,6 +72,7 @@ export default class BuildInfo extends PureComponent {
      * @return {ReactNode|string|number|null|boolean} React 渲染内容
      */
     render() {
-        return <div onClick={this.handleClick} {...this.props}>v{PKG.version}{PKG.distributeTime ? (` (${DateHelper.format(PKG.distributeTime, 'YYYYMMDDHHmm')})`) : null}{PKG.buildVersion ? `.${PKG.buildVersion}` : null} {Config.system.specialVersion ? (` for ${Config.system.specialVersion}`) : ''} {DEBUG ? '[debug]' : ''}</div>;
+        const specialVersion = getSpecialVersionName();
+        return <div onClick={this.handleClick} {...this.props}>v{PKG.version}{PKG.distributeTime ? (` (${DateHelper.format(PKG.distributeTime, 'YYYYMMDDHHmm')})`) : null}{PKG.buildVersion ? `.${PKG.buildVersion}` : null} {specialVersion ? (` for ${specialVersion}`) : ''} {DEBUG ? '[debug]' : ''}</div>;
     }
 }

@@ -2,7 +2,6 @@ import {remote as Remote, nativeImage} from 'electron';
 import Path from 'path';
 import fs from 'fs-extra';
 import env from './env';
-import Lang from '../../lang';
 import ui from './ui';
 import {showOpenDialog} from '../common/open-file-button';
 import {downloadFileWithRequest} from './net';
@@ -49,7 +48,6 @@ export const showSaveDialog = (options, callback) => {
     }
 
     options = Object.assign({
-        title: Lang.string('dialog.fileSaveTo'),
         defaultPath: Path.join(lastFileSavePath || env.desktopPath, filename)
     }, options);
     Remote.dialog.showSaveDialog(ui.browserWindow, options, filename => {
@@ -70,7 +68,6 @@ export const showSaveDialog = (options, callback) => {
  */
 export const showRemoteOpenDialog = (options, callback) => {
     options = Object.assign({
-        title: Lang.string('dialog.openFile'),
         defaultPath: env.desktopPath,
         properties: ['openFile']
     }, options);
@@ -112,7 +109,7 @@ export const saveAsImageFromUrl = (url, dataType) => new Promise((resolve, rejec
 });
 
 export default {
-    showRemoteOpenDialog,
+    // showRemoteOpenDialog,
     showSaveDialog,
     showOpenDialog,
     saveAsImageFromUrl

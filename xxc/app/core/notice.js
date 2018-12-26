@@ -1,6 +1,7 @@
 import {notify, ui as PlatformUI} from 'Platform';
 import events from './events';
 import Lang from '../lang';
+import Config from '../config';
 
 /**
  * 默认通知内容
@@ -51,6 +52,10 @@ export const updateNotice = info => {
     }
 
     if (info.message && notify.showNotification) {
+        const noticeOptions = typeof info.message === 'object' ? info.message : {title: info.message};
+        if (!noticeOptions.icon) {
+            noticeOptions.icon = `${Config.media['image.path']}icon.png`;
+        }
         notify.showNotification(info.message);
     }
 

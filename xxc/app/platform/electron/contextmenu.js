@@ -1,12 +1,27 @@
 import {remote} from 'electron';
 import ui from './ui';
-import Lang from '../../lang';
+
+/**
+ * 语言文本访问对象
+ * @type {Object}
+ * @private
+ */
+let lang = null;
 
 /**
  * Electron 上下文菜单类
  * @private
  */
 const {Menu} = remote;
+
+/**
+ * 设置语言文本访问对象
+ * @param {Object} langObj 语言文本访问对象
+ * @return {void}
+ */
+const setLangObj = langObj => {
+    lang = langObj;
+};
 
 /**
  * 创建上下文菜单实例
@@ -38,33 +53,6 @@ export const popupContextMenu = (menu, x, y, browserWindow) => {
 };
 
 /**
- * 文本选择右键菜单
- * @type {Menu}
- * @private
- */
-const SELECT_MENU = [
-    {role: 'copy', label: Lang.string('menu.copy')},
-    {type: 'separator'},
-    {role: 'selectall', label: Lang.string('menu.selectAll')}
-];
-
-/**
- * 文本输入框右键菜单
- * @type {Menu}
- * @private
- */
-const INPUT_MENU = [
-    {role: 'undo', label: Lang.string('menu.undo')},
-    {role: 'redo', label: Lang.string('menu.redo')},
-    {type: 'separator'},
-    {role: 'cut', label: Lang.string('menu.cut')},
-    {role: 'copy', label: Lang.string('menu.copy')},
-    {role: 'paste', label: Lang.string('menu.paste')},
-    {type: 'separator'},
-    {role: 'selectall', label: Lang.string('menu.selectAll')}
-];
-
-/**
  * 显示文本输入框右键上下文菜单
  * @param {BrowserWindow} windowObj 应用窗口实例
  * @param {number} x 菜单显示在 X 轴上的位置
@@ -72,6 +60,21 @@ const INPUT_MENU = [
  * @return {void}
  */
 export const showInputContextMenu = (windowObj, x, y) => {
+    /**
+     * 文本输入框右键菜单
+     * @type {Menu}
+     * @private
+     */
+    const INPUT_MENU = [
+        {role: 'undo', label: lang.string('menu.undo')},
+        {role: 'redo', label: lang.string('menu.redo')},
+        {type: 'separator'},
+        {role: 'cut', label: lang.string('menu.cut')},
+        {role: 'copy', label: lang.string('menu.copy')},
+        {role: 'paste', label: lang.string('menu.paste')},
+        {type: 'separator'},
+        {role: 'selectall', label: lang.string('menu.selectAll')}
+    ];
     popupContextMenu(INPUT_MENU, x, y, windowObj);
 };
 
@@ -83,10 +86,21 @@ export const showInputContextMenu = (windowObj, x, y) => {
  * @return {void}
  */
 export const showSelectionContextMenu = (windowObj, x, y) => {
+    /**
+     * 文本选择右键菜单
+     * @type {Menu}
+     * @private
+     */
+    const SELECT_MENU = [
+        {role: 'copy', label: lang.string('menu.copy')},
+        {type: 'separator'},
+        {role: 'selectall', label: lang.string('menu.selectAll')}
+    ];
     popupContextMenu(SELECT_MENU, x, y, windowObj);
 };
 
 export default {
+    setLangObj,
     createContextMenu,
     popupContextMenu,
     showSelectionContextMenu,

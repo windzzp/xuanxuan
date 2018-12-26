@@ -421,7 +421,7 @@ if (Platform.ui.onRequestQuit) {
                     Platform.ui.hideWindow();
                     return false;
                 } else if (appCloseOption !== 'close' && Platform.ui.showQuitConfirmDialog) {
-                    Platform.ui.showQuitConfirmDialog((result, checked) => {
+                    Platform.ui.showQuitConfirmDialog(Lang.string('dialog.appClose.title'), Lang.string('dialog.appClose.rememberOption'), [Lang.string('dialog.appClose.minimizeMainWindow'), Lang.string('dialog.appClose.quitApp'), Lang.string('dialog.appClose.cancelAction')], (result, checked) => {
                         if (checked && result) {
                             user.config.appCloseOption = result;
                         }

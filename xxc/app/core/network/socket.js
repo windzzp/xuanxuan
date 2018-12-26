@@ -4,6 +4,7 @@ import md5 from 'md5';
 import SocketMessage from './socket-message';
 import events from '../events';
 import {langString} from '../../lang';
+import Config from '../../config';
 
 /**
  * Ping 消息发送间隔，单位毫秒
@@ -310,6 +311,7 @@ export default class AppSocket extends Socket {
             this.init(user.socketUrl, Object.assign({
                 userToken: user.token,
                 cipherIV: user.cipherIV,
+                version: Config.pkg.version,
                 connect: true,
                 onConnect,
                 onConnectFail: (e) => {

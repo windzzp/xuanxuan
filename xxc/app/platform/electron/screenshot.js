@@ -5,7 +5,6 @@ import {
 import ui from './ui';
 import {saveImage, createFromPath} from './image';
 import env from './env';
-import Lang from '../../lang';
 import RemoteEvents, {ipcOnce} from './remote';
 
 /* This is NEEDED because RecordRTC is badly written */
@@ -324,7 +323,7 @@ export const openCaptureScreenWindow = (file, display, onClosed) => {
             fullscreen: true,
             frame: true,
             show: false,
-            title: `${Lang.string('imageCutter.captureScreen')} - ${display.id}`,
+            // title: `${Lang.string('imageCutter.captureScreen')} - ${display.id}`,
             titleBarStyle: 'hidden',
             resizable: false,
         });

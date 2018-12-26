@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-unresolved
-import Platform from 'Platform';
+import Platform from 'Platform'; // eslint-disable-line
 
 /**
  * 平台模块访问类
@@ -50,8 +49,35 @@ class PlatformModule {
         }
         return $module;
     }
+
+    /**
+     * 判断平台模块中是否拥有指定的方法或属性定义
+     *
+     * @param {string[]} nameArr 名称数组
+     * @returns {boolean} 如果返回 `true` 则为拥有指定的方法或属性定义，否则为没有有指定的方法或属性定义
+     * @memberof PlatformModule
+     */
+    has(nameArr) {
+        return this.access(nameArr) !== undefined;
+    }
+
+    /**
+     * 初始化平台模块对象
+     * @param {{lang: Object, config: Object}} settings 初始化配置
+     * @param {Object} settings.lang 语言文本访问对象
+     * @param {Object} settings.config 运行时配置对象
+     * @return {void}
+     */
+    init(settings) {
+        this.call('init', settings);
+    }
 }
 
+/**
+ * 平台模块对象访问对象
+ * @type {PlatformModule}
+ * @private
+ */
 const platform = new PlatformModule(Platform);
 
 if (DEBUG) {

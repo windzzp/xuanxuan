@@ -175,7 +175,10 @@ export default class FileListItem extends Component {
      */
     handleDownloadBtnClick(file) {
         if (Platform.dialog.showSaveDialog) {
-            Platform.dialog.showSaveDialog({filename: file.name}, filename => {
+            Platform.dialog.showSaveDialog({
+                title: Lang.string('dialog.fileSaveTo'),
+                filename: file.name
+            }, filename => {
                 if (filename) {
                     file.path = filename;
                     this.setState({download: 0});

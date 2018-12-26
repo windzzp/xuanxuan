@@ -22,8 +22,21 @@ if (process.type !== 'renderer') {
     throw new Error('platform/electron/index.js must run in renderer process.');
 }
 
+export const init = ({config, lang}) => {
+    if (config) {
+        // 初始化 ion-sound 声音播放模块
+        sound.init(config.media['sound.path']);
+
+        ui.init(config, lang);
+    }
+    if (lang) {
+        contextmenu.setLangObj(lang);
+    }
+};
+
 const platform = {
     type: 'electron',
+    init,
     env,
     screenshot,
     contextmenu,

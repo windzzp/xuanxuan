@@ -1,5 +1,5 @@
 import Platform from 'Platform'; // eslint-disable-line
-import Config from '../../config'; // eslint-disable-line
+import Config, {getSpecialVersionName} from '../../config'; // eslint-disable-line
 import {socket} from '../server';
 import imServerHandlers from './im-server-handlers';
 import events from '../events';
@@ -559,7 +559,8 @@ export const sendChatMessage = async (messages, chat, isSystemMessage = false) =
         const command = message.getCommand();
         if (command) {
             if (command.action === 'version') {
-                const specialVersion = Config.system.specialVersion ? ` for ${Config.system.specialVersion}` : '';
+                const specialVersionName = getSpecialVersionName();
+                const specialVersion = specialVersionName ? ` for ${specialVersionName}` : '';
                 const contentLines = ['```'];
                 contentLines.push(
                     `$$version       = '${PKG.version}${PKG.buildVersion ? ('.' + PKG.buildVersion) : ''}${specialVersion}';`,

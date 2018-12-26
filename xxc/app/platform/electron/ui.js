@@ -9,11 +9,9 @@ import {
     onRequestQuit as onMainRequestQuit, callRemote, ipcSend, onRequestOpenUrl
 } from './remote';
 import shortcut from './shortcut';
-import Lang from '../../lang';
 import env from './env';
 import getUrlMeta from './get-url-meta';
 import {getSearchParam} from '../../utils/html-helper';
-import Config from '../../config';
 
 /**
  * 访问地址参数表
@@ -237,15 +235,15 @@ onMainRequestQuit((sender, closeReason) => {
  * @param {function} callback 回调函数
  * @return {void}
  */
-export const showQuitConfirmDialog = (callback) => {
+export const showQuitConfirmDialog = (message, rememberText, buttons, callback) => {
     Remote.dialog.showMessageBox(browserWindow, {
         type: 'question',
-        message: Lang.string('dialog.appClose.title'),
-        checkboxLabel: callback ? Lang.string('dialog.appClose.rememberOption') : undefined,
+        message,
+        checkboxLabel: callback ? rememberText : undefined,
         checkboxChecked: false,
         cancelId: 2,
         defaultId: 0,
-        buttons: [Lang.string('dialog.appClose.minimizeMainWindow'), Lang.string('dialog.appClose.quitApp'), Lang.string('dialog.appClose.cancelAction')],
+        buttons,
     }, (result, checked) => {
         result = ['minimize', 'close', ''][result];
         if (callback) {
@@ -360,10 +358,19 @@ export const createAppWindow = () => {
     callRemote('createAppWindow');
 };
 
-// 向主进程发送应用窗口界面准备就绪事件
-ipcSend(EVENT.app_ready, Config, browserWindowName);
+/**
+ * 初始化
+ * @param {Object} config 运行时配置
+ * @return {void}
+ */
+const init = (config) => {
+    // 向主进程发送应用窗口界面准备就绪事件
+    ipcSend(EVENT.app_ready, config, browserWindowName);
+};
+
 
 export default {
+    init,
     createAppWindow,
     userDataPath,
     browserWindowName,
