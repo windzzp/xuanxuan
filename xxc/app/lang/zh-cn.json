@@ -41,6 +41,7 @@
     "common.moreActions": "更多操作…",
     "common.confirmCreateAppWindow": "是否要创建一个新的窗口？（在新窗口中可以登录到另一个账号）",
     "common.poweredBy": "由喧喧驱动",
+    "common.default": "默认",
 
     "menu.about": "关于",
     "menu.createNewWindow": "新建窗口...",
@@ -302,6 +303,8 @@
     "chat.sendbox.toolbar.markdownGuide": "Markdown 语法指南",
     "chat.sendbox.toolbar.moreOptions": "右键查看更多选项",
     "chat.sendbox.toolbar.changeHotkeyTip": "右键切换快捷键",
+    "chat.sendbox.toolbar.code": "发送代码",
+    "chat.sendbox.toolbar.code.content": "输入要发送的代码",
     "chat.sendbox.changeHotkeyTip": "选择发送消息快捷键",
     "chat.sendbox.placeholder.sendMessage": "发送消息",
     "chat.sendbox.placeholder.memberIsOffline": "发送消息（{0}现在不在线，你发送的消息将在对方下次上线时送达）",
@@ -318,6 +321,7 @@
     "chat.message.provider.format": "由【{0}】提供",
     "chat.message.copyMarkdown": "复制 Markdown",
     "chat.message.senderMe": "我",
+    "chat.share": "转发",
     "chat.noMoreMessage": "没有更多消息",
     "chat.loadMoreMessage": "加载更多历史消息",
 
