@@ -1084,10 +1084,21 @@
   visibility: hidden;
 }
 .webview-loading {
+  .app-message-card & {width: (300*@rem);}
   padding: (40*@rem);
-  width: (300*@rem);
-
   .content {max-width: 100%;}
+}
+.app-web-app,
+.webview-frame {
+  .webview-loading {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    &:after {display: none;}
+    .content {text-align: center;}
+  }
 }
 
 .app-chats-suggest-panel {

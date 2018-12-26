@@ -370,6 +370,7 @@ export default class WebView extends PureComponent {
      * @return {void}
      */
     handlePageTitleChange = e => {
+        this.pageTitle = e.title;
         const {onPageTitleUpdated} = this.props;
         if (onPageTitleUpdated) {
             onPageTitleUpdated(e.title, e.explicitSet);
@@ -440,7 +441,7 @@ export default class WebView extends PureComponent {
      */
     handleDomReady = () => {
         const {webview} = this;
-        const {onDomReady, fluidWidth, showCondition} = this.props;
+        const {onDomReady, fluidWidth, showCondition, style} = this.props;
         const {insertCss, executeJavaScript, onExecuteJavaScript, injectData} = this.props;
         if (insertCss) {
             webview.insertCSS(insertCss);
@@ -457,7 +458,7 @@ export default class WebView extends PureComponent {
 
         webview.executeJavaScript(formatString(defaultInjectJS, {
             id: this.webviewId,
-            autoHeight: this.webviewStyle.height === 'auto',
+            autoHeight: style && style.height === 'auto',
             cardWidth: typeof fluidWidth === 'function' ? fluidWidth() : (fluidWidth || 0)
         }) + (injectData ? `\nwindow.getXXCInjectData = function() {return ${JSON.stringify(injectData)};}` : ''), false);
 
@@ -575,7 +576,7 @@ export default class WebView extends PureComponent {
             webviewHtml += `<div class="dock box gray"><h1>ERROR ${errorCode}</h1><h2>${src}</h2><div>${errorDescription}</div></div>`;
         }
 
-        const webviewStyle = Object.assign({}, style, this.webviewStyle, extraStyle);
+        const webviewStyle = Object.assign({minHeight: '30px'}, style, this.webviewStyle, extraStyle);
         if (webviewStyle.width && typeof webviewStyle.width === 'number') {
             webviewStyle.width = `${webviewStyle.width}px`;
         }
@@ -602,7 +603,7 @@ export default class WebView extends PureComponent {
                 loadingView = (
                     <div className="fluid">
                         <div className="has-padding-xl"><Spinner /></div>
-                        <div className="content muted small text-ellipsis">{loadingContent || src}</div>
+                        <div className="content muted small text-ellipsis">{loadingContent || this.pageTitle || src}</div>
                     </div>
                 );
             }
