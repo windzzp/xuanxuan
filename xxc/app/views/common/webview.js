@@ -571,7 +571,7 @@ export default class WebView extends PureComponent {
         if (isWebview) {
             webviewHtml = `<webview id="${this.webviewId}" src="${src}" class="dock fluid-v fluid" ${options && options.nodeintegration ? 'nodeintegration' : ''} ${options && options.preload ? (` preload="${options.preload}"`) : ''} />`;
         } else {
-            webviewHtml = `<iframe sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-presentation allow-scripts allow-same-origin" id="${this.webviewId}" src="${src}" scrolling="auto" allowtransparency="true" hidefocus frameborder="0" class="dock fluid-v fluid no-margin" />`;
+            webviewHtml = `<iframe sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-presentation allow-scripts allow-same-origin" id="${this.webviewId}" src="${src}" scrolling="auto" allowtransparency="true" hidefocus frameborder="0" class="dock fluid-v fluid no-margin user-selectable" />`;
         }
         if (errorCode) {
             webviewHtml += `<div class="dock box gray"><h1>ERROR ${errorCode}</h1><h2>${src}</h2><div>${errorDescription}</div></div>`;
