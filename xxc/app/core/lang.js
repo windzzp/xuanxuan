@@ -45,9 +45,7 @@ export const onLangChange = listener => events.on(LANG_CHANGE_EVENT, listener);
  * 获取所有语言清单
  * @return {Array<{name: String, label: String}>} 语言清单列表
  */
-export const getAllLangList = () => {
-    return extraLangData.ALL || [{name: 'zh-cn', label: '简体中文'}];
-};
+export const getAllLangList = () => extraLangData.ALL || [{name: 'zh-cn', label: '简体中文'}];
 
 /**
  * 获取平台预设的语言数据对象
