@@ -12,7 +12,7 @@ import {HomeIndex} from './views/index';
 import {ready} from './core/runtime';
 import {triggerReady} from './core/ui';
 
-document.body.classList.add('theme-changing');
+document.body.classList.add('no-animation');
 
 // 喧喧运行时管理程序就绪时加载 React 界面组件
 ready(() => {
@@ -24,7 +24,7 @@ ready(() => {
         // 触发界面就绪事件
         triggerReady();
         setTimeout(() => {
-            document.body.classList.remove('theme-changing');
+            document.body.classList.remove('no-animation');
         }, 2000);
     });
 });
