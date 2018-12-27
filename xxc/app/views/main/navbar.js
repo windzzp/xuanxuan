@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Route, Link} from 'react-router-dom';
-import ExtsRuntime from 'ExtsRuntime'; // eslint-disable-line
 import Config from '../../config';
 import {rem, classes} from '../../utils/html-helper';
 import Lang from '../../core/lang';
@@ -232,7 +231,8 @@ export default class Navbar extends Component {
         const navbarWidth = Config.ui['navbar.width'];
         const {userConfig} = App.profile;
         const isAvatarOnTop = userConfig && userConfig.avatarPosition === 'top';
-        const {showUserMenu, noticeBadge} = this.state;
+        const {showUserMenu} = this.state;
+        const {ExtsRuntime} = global;
 
         return (
             <div

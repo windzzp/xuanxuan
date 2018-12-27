@@ -1,4 +1,4 @@
-import ExtsRuntime from 'ExtsRuntime';
+import ExtsRuntime from 'ExtsRuntime'; // eslint-disable-line
 import events from './events';
 import lang, {initLang} from './lang';
 import config from '../config';

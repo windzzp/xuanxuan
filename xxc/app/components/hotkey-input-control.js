@@ -138,6 +138,7 @@ export default class HotkeyInputControl extends Component {
             defaultValue,
             className,
             inputProps,
+            onlyMotifyKeysText,
             ...other
         } = this.props;
 
