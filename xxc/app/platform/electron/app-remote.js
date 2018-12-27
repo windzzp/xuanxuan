@@ -73,13 +73,21 @@ class AppRemote {
             if (method === 'quit') return;
             if (result instanceof Promise) {
                 result.then(x => {
-                    e.sender.send(callBackEventName, x);
+                    try {
+                        e.sender.send(callBackEventName, x);
+                    } catch (e) {
+                        console.error('\n>> ERROR: Cannot send remote result to BrowserWindow.', e);
+                    }
                     return x;
                 }).catch(error => {
                     console.warn('Remote error', error);
                 });
             } else {
-                e.sender.send(callBackEventName, result);
+                try {
+                    e.sender.send(callBackEventName, result);
+                } catch (err) {
+                    console.error('\n>> ERROR: Cannot send remote result to BrowserWindow.', err);
+                }
             }
             if (DEBUG) {
                 console.info('\n>> Accept remote call', `${callBackEventName}.${method}(`, args, ')');
@@ -623,6 +631,9 @@ class AppRemote {
                     message: 'The renderer process has been crashed, you can reload or close it.',
                     buttons: ['Reload', 'Close']
                 };
+                if (DEBUG) {
+                    console.error(`\n>> ERROR: ${messageBoxOptions.message}`);
+                }
                 dialog.showMessageBox(messageBoxOptions, (index) => {
                     if (index === 0) {
                         browserWindow.reload();
