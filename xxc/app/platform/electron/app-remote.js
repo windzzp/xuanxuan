@@ -1,9 +1,9 @@
 import electron, {
-    BrowserWindow, app as ElectronApp, Tray, Menu, nativeImage, globalShortcut, ipcMain, dialog,
+    BrowserWindow, app as ElectronApp, Tray, Menu, nativeImage, globalShortcut, ipcMain, dialog, shell
 } from 'electron';
 import EVENT from './remote-events';
 import events from './events';
-import Lang from './lang-remote';
+import Lang, {onLangChange} from './lang-remote';
 
 if (typeof DEBUG === 'undefined') {
     global.DEBUG = process.env.NODE_ENV === 'debug' || process.env.NODE_ENV === 'development';
@@ -128,6 +128,156 @@ class AppRemote {
             this.createTrayIcon(windowName);
             if (SHOW_LOG) console.log('\n>> App ready.');
         });
+
+        onLangChange(() => {
+            this.createAppMenu();
+        });
+    }
+
+    /**
+     * 创建应用菜单
+     *
+     * @memberof AppRemote
+     * @return {void}
+     */
+    createAppMenu() {
+        if (process.platform === 'darwin') {
+            const template = [{
+                label: Lang.string('app.title'),
+                submenu: [{
+                    label: Lang.string('menu.about'),
+                    selector: 'orderFrontStandardAboutPanel:'
+                }, {
+                    type: 'separator'
+                }, {
+                    label: 'Services',
+                    submenu: []
+                }, {
+                    type: 'separator'
+                }, {
+                    label: Lang.string('menu.hideCurrentWindow'),
+                    accelerator: 'Command+H',
+                    selector: 'hide:'
+                }, {
+                    label: Lang.string('menu.hideOtherWindows'),
+                    accelerator: 'Command+Shift+H',
+                    selector: 'hideOtherApplications:'
+                }, {
+                    label: Lang.string('menu.showAllWindows'),
+                    selector: 'unhideAllApplications:'
+                }, {
+                    type: 'separator'
+                }, {
+                    label: Lang.string('menu.quit'),
+                    accelerator: 'Command+Q',
+                    click: () => {
+                        this.quit();
+                    }
+                }]
+            },
+            {
+                label: Lang.string('menu.edit'),
+                submenu: [{
+                    label: Lang.string('menu.undo'),
+                    accelerator: 'Command+Z',
+                    selector: 'undo:'
+                }, {
+                    label: Lang.string('menu.redo'),
+                    accelerator: 'Shift+Command+Z',
+                    selector: 'redo:'
+                }, {
+                    type: 'separator'
+                }, {
+                    label: Lang.string('menu.cut'),
+                    accelerator: 'Command+X',
+                    selector: 'cut:'
+                }, {
+                    label: Lang.string('menu.copy'),
+                    accelerator: 'Command+C',
+                    selector: 'copy:'
+                }, {
+                    label: Lang.string('menu.paste'),
+                    accelerator: 'Command+V',
+                    selector: 'paste:'
+                }, {
+                    label: Lang.string('menu.selectAll'),
+                    accelerator: 'Command+A',
+                    selector: 'selectAll:'
+                }]
+            },
+            {
+                label: Lang.string('menu.view'),
+                submenu: (DEBUG) ? [{
+                    label: Lang.string('menu.reload'),
+                    accelerator: 'Command+R',
+                    click: () => {
+                        this.currentFocusWindow.webContents.reload();
+                    }
+                }, {
+                    label: Lang.string('menu.toggleFullscreen'),
+                    accelerator: 'Ctrl+Command+F',
+                    click: () => {
+                        this.currentFocusWindow.setFullScreen(!this.currentFocusWindow.isFullScreen());
+                    }
+                }, {
+                    label: Lang.string('menu.toggleDeveloperTool'),
+                    accelerator: 'Alt+Command+I',
+                    click: () => {
+                        this.currentFocusWindow.toggleDevTools();
+                    }
+                }] : [{
+                    label: Lang.string('menu.toggleFullscreen'),
+                    accelerator: 'Ctrl+Command+F',
+                    click: () => {
+                        this.currentFocusWindow.setFullScreen(!this.currentFocusWindow.isFullScreen());
+                    }
+                }]
+            },
+            {
+                label: Lang.string('menu.window'),
+                submenu: [{
+                    label: Lang.string('menu.minimize'),
+                    accelerator: 'Command+M',
+                    selector: 'performMiniaturize:'
+                }, {
+                    label: Lang.string('menu.close'),
+                    accelerator: 'Command+W',
+                    selector: 'performClose:'
+                }, {
+                    type: 'separator'
+                }, {
+                    label: Lang.string('menu.bringAllToFront'),
+                    selector: 'arrangeInFront:'
+                }]
+            },
+            {
+                label: Lang.string('menu.help'),
+                submenu: [{
+                    label: Lang.string('menu.website'),
+                    click() {
+                        shell.openExternal(this.appConfig.pkg.homepage);
+                    }
+                }, {
+                    label: Lang.string('menu.project'),
+                    click() {
+                        shell.openExternal('https://github.com/easysoft/xuanxuan');
+                    }
+                }, {
+                    label: Lang.string('menu.community'),
+                    click() {
+                        shell.openExternal('https://github.com/easysoft/xuanxuan');
+                    }
+                }, {
+                    label: Lang.string('menu.issues'),
+                    click() {
+                        shell.openExternal('https://github.com/easysoft/xuanxuan/issues');
+                    }
+                }]
+            }];
+
+            const menu = Menu.buildFromTemplate(template);
+            Menu.setApplicationMenu(menu);
+        }
     }
 
     // 初始化并设置 Electron 应用入口路径
@@ -158,6 +308,20 @@ class AppRemote {
                 }
             ]);
             ElectronApp.dock.setMenu(dockMenu);
+        }
+
+        // 创建应用窗口菜单
+        this.createAppMenu();
+
+        // 设置关于窗口
+        if (typeof ElectronApp.setAboutPanelOptions === 'function') {
+            ElectronApp.setAboutPanelOptions({
+                applicationName: Lang.title,
+                applicationVersion: this.appConfig.pkg.version,
+                copyright: 'Copyright (C) 2017 cnezsoft.com',
+                credits: `Licence: ${this.appConfig.pkg.license}`,
+                version: DEBUG ? '[debug]' : ''
+            });
         }
     }
 

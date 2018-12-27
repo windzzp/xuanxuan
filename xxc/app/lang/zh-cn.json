@@ -41,6 +41,8 @@
     "common.moreActions": "更多操作…",
     "common.confirmCreateAppWindow": "是否要创建一个新的窗口？（在新窗口中可以登录到另一个账号）",
     "common.poweredBy": "由喧喧驱动",
+    "common.switchLanguage": "语言",
+    "comman.selectLanguage": "请选择你使用的界面语言",
 
     "menu.about": "关于",
     "menu.createNewWindow": "新建窗口...",

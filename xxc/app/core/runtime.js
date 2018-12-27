@@ -43,13 +43,17 @@ const sayReady = () => {
     events.emit(EVENT.ready);
 };
 
-// 初始化应用
-initLang(config.lang);
-if (ExtsRuntime) {
-    ExtsRuntime.loadModules();
-    global.ExtsRuntime = ExtsRuntime;
-}
-platform.init({config, lang});
-sayReady();
+const run = async () => {
+    // 初始化应用
+    await initLang(config.lang);
+    if (ExtsRuntime) {
+        ExtsRuntime.loadModules();
+        global.ExtsRuntime = ExtsRuntime;
+    }
+    platform.init({config, lang});
+    sayReady();
+};
+
+run();
 
 export default {ready};

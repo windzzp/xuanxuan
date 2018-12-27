@@ -1,35 +1,19 @@
 import React, {PureComponent} from 'react';
-import {HashRouter as Router, Route, Switch} from 'react-router-dom';
-import ImageCutterApp from './app-image-cutter';
-import {AppView} from './app-view';
-import replaceViews from '../replace-views';
-import {onLangChange} from '../../core/lang';
+import Lang, {getAllLangList, loadLanguage, onLangChange} from '../../core/lang';
+import Button from '../../components/button';
+import {classes} from '../../utils/html-helper';
 import events from '../../core/events';
 
 /**
- * HomeIndex 组件 ，显示喧喧应用窗口界面
- * @class HomeIndex
+ * BuildInfo 组件 ，显示构建信息
+ * @class BuildInfo
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
  * @example
- * import HomeIndex from './index';
- * <HomeIndex />
+ * import BuildInfo from './build-info';
+ * <BuildInfo />
  */
-export default class HomeIndex extends PureComponent {
-    /**
-     * 获取 HomeIndex 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<HomeIndex>}
-     * @readonly
-     * @static
-     * @memberof HomeIndex
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {HomeIndex} from './index';
-     * <HomeIndex />
-     */
-    static get HomeIndex() {
-        return replaceViews('index/index', HomeIndex);
-    }
-
+export default class LanguageSwitcher extends PureComponent {
     /**
      * React 组件生命周期函数：`componentDidMount`
      * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
@@ -65,15 +49,31 @@ export default class HomeIndex extends PureComponent {
      * @private
      * @see https://doc.react-china.org/docs/react-component.html#render
      * @see https://doc.react-china.org/docs/rendering-elements.html
-     * @memberof HomeIndex
+     * @memberof BuildInfo
      * @return {ReactNode|string|number|null|boolean} React 渲染内容
      */
     render() {
-        return (<Router>
-            <Switch>
-                <Route path="/image-cutter/:file?" component={ImageCutterApp} />
-                <Route path="/:app?" component={AppView} />
-            </Switch>
-        </Router>);
+        const langList = getAllLangList();
+        const currentLangName = Lang.name;
+        return (
+            <div className="app-lang-switcher">
+                <header className="heading"><strong className="title">{Lang.string('comman.selectLanguage')}</strong></header>
+                <div className="space-sm">
+                    {
+                        langList.map(lang => (
+                            <Button
+                                className={classes('has-margin-sm primary', {
+                                    outline: currentLangName !== lang.name,
+                                })}
+                                key={lang.name}
+                                onClick={loadLanguage.bind(null, lang.name)}
+                            >
+                                {lang.label}
+                            </Button>
+                        ))
+                    }
+                </div>
+            </div>
+        );
     }
 }

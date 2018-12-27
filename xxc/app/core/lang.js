@@ -1,5 +1,5 @@
 import LANG_ZH_CN from '../lang/zh-cn.json';
-import {platformCall, platformAccess} from '../platform';
+import platform from '../platform';
 import {setStoreItem, getStoreItem} from '../utils/store';
 import LangHelper from '../utils/lang-helper';
 import events from './events';
@@ -34,7 +34,6 @@ let extraLangData = null;
  *
  * // 绑定语言变更事件
  * const langChangeHandler = onLangChange(newLang => {
- *     console.log('新语言名称为', newLang.name);
  * });
  *
  * // 取消事件绑定
@@ -51,6 +50,23 @@ export const getAllLangList = () => {
 };
 
 /**
+ * 获取平台预设的语言数据对象
+ * 该语言数据默认会从 lang/ 目录下加载对应的语言文件
+ * @param {String} langName 语言名称
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+const loadPlatformLangData = (langName) => {
+    if (langName === 'zh-cn') {
+        return Promise.resolve();
+    }
+    const platformResult = platform.call('language.loadLangData', langName);
+    if (platformResult instanceof Promise) {
+        return platformResult;
+    }
+    return Promise.resolve(platformResult);
+};
+
+/**
  * 更改界面语言
  * @param {String} langName 界面语言名称
  * @param {boolean} [notifyPlatform=true] 是否通知平台变更语言
@@ -58,29 +74,29 @@ export const getAllLangList = () => {
  */
 export const loadLanguage = (langName, notifyPlatform = true) => {
     if (!langName) {
-        return;
+        return Promise.reject(new Error('Must provide the langName.'));
     }
     if (langName !== langHelper.name) {
-        // 获取平台预设的语言数据对象
-        // 该语言数据默认会从 lang/ 目录下加载对应的语言文件
-        const platformLangData = (langName === 'zh-cn') ? LANG_ZH_CN : (platformCall('language.loadLangData', langName) || LANG_ZH_CN);
+        return loadPlatformLangData(langName).then(platformLangData => {
+            // 合并语言数据对象
+            const langData = Object.assign({}, platformLangData || LANG_ZH_CN, extraLangData && extraLangData[langName]);
 
-        // 合并语言数据对象
-        const langData = Object.assign({}, platformLangData, extraLangData && extraLangData[langName]);
+            // 变更语言
+            langHelper.change(langName, langData);
 
-        // 变更语言
-        langHelper.change(langName, langData);
+            // 存储当前语言配置
+            setStoreItem('LANG_NAME', langName);
 
-        // 存储当前语言配置
-        setStoreItem('LANG_NAME', langName);
+            // 触发语言变更事件
+            events.emit(LANG_CHANGE_EVENT, langHelper);
 
-        // 触发语言变更事件
-        events.emit(LANG_CHANGE_EVENT, langHelper);
-
-        if (notifyPlatform) {
-            platformCall('language.handleLangChange', langName, langData);
-        }
+            if (notifyPlatform) {
+                platform.call('language.handleLangChange', langName, langData);
+            }
+            return Promise.resolve();
+        });
     }
+    return Promise.resolve();
 };
 
 /**
@@ -93,10 +109,10 @@ export const initLang = (extraData) => {
     extraLangData = extraData;
 
     // 获取默认语言名称
-    const langName = platformCall('language.getPlatformLangName') || getStoreItem('LANG_NAME') || 'zh-cn';
+    const langName = getStoreItem('LANG_NAME') || platform.call('language.getPlatformLangName') || 'zh-cn';
 
     // 绑定处理平台请求语言变更的情况
-    const setRequestChangeLangHandler = platformAccess('language.setRequestChangeLangHandler');
+    const setRequestChangeLangHandler = platform.access('language.setRequestChangeLangHandler');
     if (setRequestChangeLangHandler) {
         setRequestChangeLangHandler((newLangName) => {
             loadLanguage(newLangName, false);
@@ -104,7 +120,11 @@ export const initLang = (extraData) => {
     }
 
     // 加载语言
-    loadLanguage(langName);
+    return loadLanguage(langName);
 };
+
+if (DEBUG) {
+    global.$lang = langHelper;
+}
 
 export default langHelper;
