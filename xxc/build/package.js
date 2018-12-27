@@ -777,7 +777,7 @@ const printEstimateSummary = () => {
                 }
             }
         }
-        console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} 请耐心等待，预计完成所有操作耗时 ${chalk.bold(chalk.red(formatTime(costTime)))}...\n`);
+        console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} 预计完成所有操作耗时 ${chalk.bold(chalk.red(formatTime(costTime)))}...\n`);
     }
     return costTime;
 };
