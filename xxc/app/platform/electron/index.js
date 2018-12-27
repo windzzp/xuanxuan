@@ -28,6 +28,7 @@ export const init = ({config, lang}) => {
         // 初始化 ion-sound 声音播放模块
         sound.init(config.media['sound.path']);
 
+        // 初始化界面交互功能模块
         ui.init(config);
     }
 

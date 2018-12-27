@@ -1,7 +1,8 @@
 import ExtsRuntime from 'ExtsRuntime';
 import events from './events';
-import {initLang} from './lang';
+import lang, {initLang} from './lang';
 import config from '../config';
+import platform from '../platform';
 
 /**
  * 运行时事件表
@@ -49,6 +50,7 @@ setTimeout(() => {
         ExtsRuntime.loadModules();
         global.ExtsRuntime = ExtsRuntime;
     }
+    platform.init({config, lang});
     sayReady();
 }, 0);
 
