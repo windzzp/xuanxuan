@@ -6,7 +6,7 @@ import Avatar from '../../components/avatar';
 import Messager from '../../components/messager';
 import SearchControl from '../../components/search-control';
 import Spinner from '../../components/spinner';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import ROUTES from '../common/routes';
 import {ChatListItem} from './chat-list-item';

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import User from '../../core/profile/user';
 import {UserListItem} from '../common/user-list-item';
 import replaceViews from '../replace-views';

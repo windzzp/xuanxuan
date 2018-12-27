@@ -1,6 +1,6 @@
 import Xext from './external-api';
 import Exts, {forEachExtension, getExt, getExts} from './exts';
-import ui from './ui';
+import {showExtensionDetailDialog, openAppWithUrl} from './ui';
 import {reloadDevExtension} from './manager';
 import App from '../core';
 import {setExtensionUser} from './extension';
@@ -126,13 +126,13 @@ registerCommand('extension', (context, extName, commandName, ...params) => {
 registerCommand('showExtensionDialog', (context, extName) => {
     const ext = getExt(extName);
     if (ext) {
-        return ui.showExtensionDetailDialog(ext);
+        return showExtensionDetailDialog(ext);
     }
 });
 
 // 注册 `openInApp` 命令，用于使用命令在扩展应用中打开链接
 registerCommand('openInApp', (context, appName, url) => {
-    ui.openAppWithUrl(appName, url);
+    openAppWithUrl(appName, url);
 });
 
 /**
@@ -166,9 +166,7 @@ export const getExtensionUrlInspector = (url, type = 'inspect') => {
  * @return {any} 网址打开处理器对象
  * @memberof Extension
  */
-export const getExtensionUrlOpener = url => {
-    return getExtensionUrlInspector(url, 'open');
-};
+export const getExtensionUrlOpener = url => getExtensionUrlInspector(url, 'open');
 
 /**
  * 获取指定的通知消息发送者信息配置对象
@@ -199,7 +197,6 @@ global.replaceViews = Object.assign(global.replaceViews || {}, replaceViews);
 
 export default {
     loadModules: loadExtensionsModules,
-    ui,
     getUrlInspector: getExtensionUrlInspector,
     getUrlOpener: getExtensionUrlOpener,
     exts: Exts,

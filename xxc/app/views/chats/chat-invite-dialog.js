@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from '../../components/modal';
 import {ChatInvite} from './chat-invite';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 
 /**
  * 显示邀请其他成员加入聊天对话框

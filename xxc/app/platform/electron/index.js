@@ -16,7 +16,8 @@ import crypto from './crypto';
 import Socket from './socket';
 import clipboard from './clipboard';
 import webview from './webview';
-import buildIn from './build-in';
+import buildIn, {buildInPath} from './build-in';
+import language, {initLanguage} from './language';
 
 if (process.type !== 'renderer') {
     throw new Error('platform/electron/index.js must run in renderer process.');
@@ -27,16 +28,24 @@ export const init = ({config, lang}) => {
         // 初始化 ion-sound 声音播放模块
         sound.init(config.media['sound.path']);
 
-        ui.init(config, lang);
+        ui.init(config);
     }
+
     if (lang) {
         contextmenu.setLangObj(lang);
+    }
+
+    initLanguage();
+
+    if (DEBUG) {
+        console.color('Build-in Path', 'greenBg', buildInPath, 'greenPale');
     }
 };
 
 const platform = {
     type: 'electron',
     init,
+    language,
     env,
     screenshot,
     contextmenu,
@@ -56,9 +65,5 @@ const platform = {
     webview,
     buildIn,
 };
-
-if (DEBUG) {
-    global.$.Platform = platform;
-}
 
 export default platform;

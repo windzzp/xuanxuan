@@ -4,7 +4,7 @@ import {Route, Link} from 'react-router-dom';
 import ExtsRuntime from 'ExtsRuntime'; // eslint-disable-line
 import Config from '../../config';
 import {rem, classes} from '../../utils/html-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import Avatar from '../../components/avatar';
 import App from '../../core';
 import ROUTES from '../common/routes';
@@ -21,22 +21,6 @@ import withReplaceView from '../with-replace-view';
  * @private
  */
 const UserAvatar = withReplaceView(_UserAvatar);
-
-
-/**
- * 导航项目列表
- * @type {{to: string, label: string, icon: string, activeIcon: string}[]}
- * @private
- */
-const navbarItems = [
-    {
-        to: ROUTES.chats.recents.__, label: Lang.string('navbar.chats.label'), icon: 'comment-processing-outline', activeIcon: 'comment-processing'
-    }, {
-        to: ROUTES.chats.groups.__, label: Lang.string('navbar.groups.label'), icon: 'comment-multiple-outline', activeIcon: 'comment-multiple'
-    }, {
-        to: ROUTES.chats.contacts.__, label: Lang.string('navbar.contacts.label'), icon: 'account-group-outline', activeIcon: 'account-group'
-    },
-];
 
 /**
  * 渲染导航条目
@@ -120,6 +104,21 @@ export default class Navbar extends Component {
             showUserMenu: false,
             noticeBadge: 0,
         };
+
+        /**
+         * 导航项目列表
+         * @type {{to: string, label: string, icon: string, activeIcon: string}[]}
+         * @private
+         */
+        this.navbarItems = [
+            {
+                to: ROUTES.chats.recents.__, label: Lang.string('navbar.chats.label'), icon: 'comment-processing-outline', activeIcon: 'comment-processing'
+            }, {
+                to: ROUTES.chats.groups.__, label: Lang.string('navbar.groups.label'), icon: 'comment-multiple-outline', activeIcon: 'comment-multiple'
+            }, {
+                to: ROUTES.chats.contacts.__, label: Lang.string('navbar.contacts.label'), icon: 'account-group-outline', activeIcon: 'account-group'
+            },
+        ];
     }
 
     /**
@@ -253,7 +252,7 @@ export default class Navbar extends Component {
                 </nav>
                 <nav className="dock-top app-nav-main">
                     {
-                        navbarItems.map(item => {
+                        this.navbarItems.map(item => {
                             return (<div key={item.to} className="hint--right nav-item" data-hint={item.label} onClick={this.handleMainNavItemClick}>
                                 <NavLink item={item} />
                                 {

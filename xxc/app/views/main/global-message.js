@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
 import App from '../../core';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import Member from '../../core/models/member';
 import Avatar from '../../components/avatar';
 import replaceViews from '../replace-views';

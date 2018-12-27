@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
 import DateHelper from '../../utils/date-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import replaceViews from '../replace-views';
 
 /**

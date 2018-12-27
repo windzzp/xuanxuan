@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import SearchControl from '../../components/search-control';
 import Icon from '../../components/icon';
 import Button from '../../components/button';

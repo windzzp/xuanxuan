@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from '../../components/modal';
 import {About} from './about';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 
 /**
  * 显示应用关于对话框

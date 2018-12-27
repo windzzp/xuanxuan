@@ -5,7 +5,7 @@ import replaceViews from '../replace-views';
 import MessageContentCard from './message-content-card';
 import {getUrlMeta} from '../../core/ui';
 import WebView from '../common/webview';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import Button from '../../components/button';
 import {showContextMenu} from '../../core/context-menu';
 

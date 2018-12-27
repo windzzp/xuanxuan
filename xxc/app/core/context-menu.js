@@ -1,8 +1,22 @@
-import Platform from 'Platform'; // eslint-disable-line
 import ContextMenu from '../components/context-menu';
 import timeSquence from '../utils/time-sequence';
-import Lang from '../lang';
+import Lang from './lang';
 import {isWebUrl} from '../utils/html-helper';
+import platform from '../platform';
+
+/**
+ * 平台提供的剪切板功能访问对象
+ * @type {Object}
+ * @private
+ */
+const clipboard = platform.access('clipboard');
+
+/**
+ * 平台提供的通用界面交互访问对象
+ * @type {Object}
+ * @private
+ */
+const platformUI = platform.access('ui');
 
 /**
  * 存储所有上下文菜单生成器
@@ -208,7 +222,7 @@ export const getMenuItemsForContext = (contextName, context = {}) => {
 
     const textSelectItems = [];
 
-    if (options && options.copy && Platform.ui.copySelectText) {
+    if (options && options.copy && platformUI.copySelectText) {
         let selectedText = document.getSelection().toString().trim();
         if (selectedText) {
             const newLinePos = selectedText.indexOf('\n');
@@ -219,16 +233,16 @@ export const getMenuItemsForContext = (contextName, context = {}) => {
             if (linkItemsCount < 3) {
                 textSelectItems.push({
                     label: Lang.format('menu.copy.select', selectedText),
-                    click: Platform.ui.copySelectText
+                    click: platformUI.copySelectText
                 });
             }
         }
     }
-    if (options && options.selectAll && Platform.ui.selectAllText) {
+    if (options && options.selectAll && platformUI.selectAllText) {
         textSelectItems.push({
             label: Lang.string('menu.selectAll'),
             icon: 'mdi-select',
-            click: Platform.ui.selectAllText
+            click: platformUI.selectAllText
         });
     }
     if (textSelectItems.length) {
@@ -291,8 +305,8 @@ export const showContextMenu = (contextName, context) => {
 
 // 添加链接上下文菜单生成器
 addContextMenuCreator('link', context => {
-    const {event, options} = context;
-    const link = options && options.url ? options.url : (context.url || event.target.href);
+    const {event, options, url} = context;
+    const link = options && options.url ? options.url : (url || event.target.href);
     if (isWebUrl(link)) {
         let linkText = document.getSelection().toString().trim();
         if (event && linkText === '') {
@@ -301,15 +315,15 @@ addContextMenuCreator('link', context => {
         const items = [{
             label: Lang.string('common.openLink'),
             click: () => {
-                Platform.ui.openExternal(link);
+                platformUI.openExternal(link);
             },
             icon: 'mdi-open-in-new'
         }];
-        if (Platform.clipboard && Platform.clipboard.writeText) {
+        if (clipboard && clipboard.writeText) {
             items.push({
                 label: Lang.string('common.copyLink'),
                 click: () => {
-                    Platform.clipboard.writeText(link);
+                    clipboard.writeText(link);
                 },
                 icon: 'mdi-link'
             });
@@ -318,7 +332,7 @@ addContextMenuCreator('link', context => {
                 items.push({
                     label: Lang.format('common.copyFormat', linkText.length > 25 ? `${linkText.substr(0, 25)}…` : linkText),
                     click: () => {
-                        Platform.clipboard.writeText(linkText);
+                        clipboard.writeText(linkText);
                     },
                     icon: 'mdi-content-copy'
                 });
@@ -328,7 +342,7 @@ addContextMenuCreator('link', context => {
     }
 });
 
-if (Platform.clipboard && Platform.clipboard.writeText) {
+if (clipboard && clipboard.writeText) {
     // 添加 Emoji 表情操作上下文菜单
     addContextMenuCreator('emoji', context => {
         const {emoji} = context;
@@ -337,7 +351,7 @@ if (Platform.clipboard && Platform.clipboard.writeText) {
                 icon: 'mdi-emoticon-outline',
                 label: Lang.string('common.copy'),
                 click: () => {
-                    Platform.clipboard.writeText(emoji);
+                    clipboard.writeText(emoji);
                 }
             }];
         }

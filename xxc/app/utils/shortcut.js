@@ -1,6 +1,6 @@
-import Platform from 'Platform'; // eslint-disable-line
+import platform from '../platform';
 
-const {isWindowsOS, isOSX} = Platform.env;
+const {isWindowsOS, isOSX} = platform.access('env');
 
 /**
  * 按键代码与按键名称表

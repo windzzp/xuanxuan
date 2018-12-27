@@ -1,10 +1,12 @@
 // eslint-disable-next-line import/no-unresolved
-import {Socket} from 'Platform';
 import md5 from 'md5';
 import SocketMessage from './socket-message';
 import events from '../events';
-import {langString} from '../../lang';
+import Lang from '../lang';
 import Config from '../../config';
+import platform from '../../platform';
+
+const Socket = platform.access('Socket');
 
 /**
  * Ping 消息发送间隔，单位毫秒
@@ -414,7 +416,7 @@ export default class AppSocket extends Socket {
      */
     changeUserPassword(password) {
         if (this.user.ldap) {
-            return Promise.reject(langString('user.changePassword.notSupport'));
+            return Promise.reject(Lang.string('user.changePassword.notSupport'));
         }
         return this.changeUser({
             password: this.user.isVersionSupport('changePwdWithMD5') ? md5(password) : md5(`${md5(password)}${this.user.account}`)

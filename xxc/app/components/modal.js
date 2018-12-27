@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Display from './display';
 import HTML from '../utils/html-helper';
 import Icon from './icon';
 import timeSequence from '../utils/time-sequence';
-import Lang from '../lang';
+import Lang from '../core/lang';
 import InputControl from './input-control';
 
 /** @module modal */

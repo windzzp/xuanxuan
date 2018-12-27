@@ -1,4 +1,3 @@
-import Platform from 'Platform';
 import React, {Component} from 'react';
 import ReactChatView from 'react-chatview';
 import PropTypes from 'prop-types';
@@ -6,13 +5,14 @@ import {classes} from '../../utils/html-helper';
 import {MessageListItem} from './message-list-item'; // eslint-disable-line
 import replaceViews from '../replace-views';
 import App from '../../core';
+import platform from '../../platform';
 
 /**
  * 是否为浏览器平台
  * @type {boolean}
  * @private
  */
-const isBrowser = Platform.type === 'browser';
+const isBrowser = platform.isType('browser');
 
 /**
  * 是否为火狐浏览器

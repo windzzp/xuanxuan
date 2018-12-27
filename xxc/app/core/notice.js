@@ -1,7 +1,21 @@
-import {notify, ui as PlatformUI} from 'Platform';
 import events from './events';
-import Lang from '../lang';
+import Lang from './lang';
 import Config from '../config';
+import platform from '../platform';
+
+/**
+ * 平台提供的通知功能访问对象
+ * @type {Object}
+ * @private
+ */
+const notify = platform.access('notify');
+
+/**
+ * 平台提供的通用界面交互访问对象
+ * @type {Object}
+ * @private
+ */
+const PlatformUI = platform.access('ui');
 
 /**
  * 默认通知内容

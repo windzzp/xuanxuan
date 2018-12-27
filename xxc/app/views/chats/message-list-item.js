@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import {formatDate, isSameDay, isToday} from '../../utils/date-helper';
 import App from '../../core';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import Icon from '../../components/icon';
 import MemberProfileDialog from '../common/member-profile-dialog';
 import _UserAvatar from '../common/user-avatar';

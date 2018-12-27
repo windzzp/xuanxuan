@@ -4,7 +4,7 @@ import {classes} from '../../utils/html-helper';
 import Avatar from '../../components/avatar';
 import Button from '../../components/button';
 import Icon from '../../components/icon';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import Exts from '../../exts';
 import App from '../../core';
 import DateHelper from '../../utils/date-helper';

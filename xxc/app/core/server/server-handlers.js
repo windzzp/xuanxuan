@@ -1,5 +1,5 @@
 import members from '../members';
-import Lang from '../../lang';
+import Lang from '../lang';
 import Member from '../models/member';
 import events from '../events';
 

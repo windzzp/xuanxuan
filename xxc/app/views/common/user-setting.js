@@ -1,21 +1,21 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Platform from 'Platform';
 import Config from '../../config';
 import {classes} from '../../utils/html-helper';
 import {formatKeyDecoration} from '../../utils/shortcut';
 import HotkeyInputControl from '../../components/hotkey-input-control';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import Checkbox from '../../components/checkbox';
 import SelectBox from '../../components/select-box';
 import timeSequence from '../../utils/time-sequence';
+import platform from '../../platform';
 
 /**
  * 当前平台是否是浏览器
  * @type {boolean}
  * @private
  */
-const isBrowser = Platform.type === 'browser';
+const isBrowser = platform.isType('browser');
 
 /**
  * 判断是否已关闭通知功能
@@ -176,7 +176,7 @@ const configs = [
             }, {
                 type: 'select',
                 name: 'ui.app.onClose',
-                hidden: !Platform.ui.showQuitConfirmDialog,
+                hidden: !platform.has('ui.showQuitConfirmDialog'),
                 options: [
                     {value: 'ask', label: Lang.string('setting.windows.askEveryTime')},
                     {value: 'minimize', label: Lang.string('setting.windows.minimizeMainWindow')},
@@ -344,7 +344,7 @@ export default class UserSetting extends Component {
         if (item.getConverter) {
             value = item.getConverter(value);
         }
-        return <HotkeyInputControl key={item.name} defaultValue={value} labelStyle={{flex: 1}} onChange={this.changeConfig.bind(this, item)} label={item.caption} className={classes('flex', item.className)} />;
+        return <HotkeyInputControl onlyMotifyKeysText={Lang.string('setting.hotkeys.cantSetOnlyMotifyKeys')} key={item.name} defaultValue={value} labelStyle={{flex: 1}} onChange={this.changeConfig.bind(this, item)} label={item.caption} className={classes('flex', item.className)} />;
     }
 
     /**

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Popover from '../../components/popover';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import profile from '../../core/profile';
 import DelayAction from '../../utils/delay-action';
 import replaceViews from '../replace-views';

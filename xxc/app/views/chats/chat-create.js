@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import Avatar from '../../components/avatar';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import {ChatCreateGroups} from './chat-create-groups';
 import {ChatJoinPublic} from './chat-join-public';
 import replaceViews from '../replace-views';

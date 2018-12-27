@@ -39,22 +39,21 @@ export const updateConfig = (newConfig) => {
     Object.keys(newConfig).forEach(key => {
         Object.assign(config[key], newConfig[key]);
     });
-    // const langInNewConfig = newConfig.lang && newConfig.lang[Lang.name];
-    // if (langInNewConfig) {
-    //     Lang.update(langInNewConfig);
-    // }
     return config;
 };
 
+// 从 package.json 文件中获取额外的运行时配置选项
 const {configurations} = pkg;
 if (configurations) {
     updateConfig(configurations);
 }
 
-// 运行时配置中的语言配置
-// const langInConfig = config.lang && config.lang[Lang.name];
-// if (langInConfig) {
-//     Lang.update(langInConfig);
-// }
+// 内置的运行时配置
+const buildInConfig = platform.call('buildIn.getBuildInConfig');
+
+// 更新扩展的运行时配置
+if (buildInConfig) {
+    updateConfig(buildInConfig);
+}
 
 export default config;

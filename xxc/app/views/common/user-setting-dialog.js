@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from '../../components/modal';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import DEFAULT_USER_CONFIG from '../../core/profile/user-default-config';
 import Messager from '../../components/messager';

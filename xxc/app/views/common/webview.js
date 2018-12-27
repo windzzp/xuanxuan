@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import Platform from 'Platform'; // eslint-disable-line
 import {classes} from '../../utils/html-helper';
 import timeSequence from '../../utils/time-sequence';
 import replaceViews from '../replace-views';
@@ -8,13 +7,14 @@ import {openUrl, onUpdateViewStyle, requestUpdateViewStyle} from '../../core/ui'
 import events from '../../core/events';
 import {formatString} from '../../utils/string-helper';
 import Spinner from '../../components/spinner';
+import platform from '../../platform';
 
 /**
  * 获取当前平台是否为 Electron 平台
  * @type {boolean}
  * @private
  */
-const isElectron = Platform.type === 'electron';
+const isElectron = platform.isType('electron');
 
 /**
  * 默认注入 JS 代码
@@ -509,7 +509,7 @@ export default class WebView extends PureComponent {
             onDomReady();
         }
 
-        const {contextmenu} = Platform;
+        const {contextmenu} = platform.modules;
         if (this.isWebview && contextmenu && (contextmenu.showInputContextMenu || contextmenu.showSelectionContextMenu)) {
             const webContents = webview.getWebContents();
             if (webContents) {

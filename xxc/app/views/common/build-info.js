@@ -1,8 +1,8 @@
 import React, {PureComponent} from 'react';
 import Config, {getSpecialVersionName} from '../../config';
-import Platform from 'Platform';
 import DateHelper from '../../utils/date-helper';
 import replaceViews from '../replace-views';
+import platform from '../../platform';
 
 /**
  * package.json 内容
@@ -53,9 +53,7 @@ export default class BuildInfo extends PureComponent {
             this.clickTimes += 1;
             this.lastClickTime = now;
             if (this.clickTimes >= 5) {
-                if (Platform.ui.openDevTools) {
-                    Platform.ui.openDevTools();
-                }
+                platform.call('ui.openDevTools');
             }
         } else {
             this.clickTimes = 0;

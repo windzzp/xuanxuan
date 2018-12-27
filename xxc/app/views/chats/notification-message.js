@@ -4,7 +4,7 @@ import {classes} from '../../utils/html-helper';
 import App from '../../core';
 import replaceViews from '../replace-views';
 import Button from '../../components/button';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import Config from '../../config';
 
 /**

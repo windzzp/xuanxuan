@@ -5,7 +5,7 @@ import App from '../../core';
 import {MessageList} from './message-list';
 import replaceViews from '../replace-views';
 import Spinner from '../../components/spinner';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 
 /**
  * ChatMessages 组件 ，显示一个聊天消息列表界面

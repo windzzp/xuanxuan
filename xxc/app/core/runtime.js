@@ -1,5 +1,7 @@
 import ExtsRuntime from 'ExtsRuntime';
 import events from './events';
+import {initLang} from './lang';
+import config from '../config';
 
 /**
  * 运行时事件表
@@ -15,7 +17,7 @@ const EVENT = {
  * @type {boolean}
  * @private
  */
-let isReadyed = false;
+let isReadied = false;
 
 /**
  * 绑定应用准备就绪事件
@@ -23,7 +25,7 @@ let isReadyed = false;
  * @return {boolean|Symbol} 如果应用已经准备就绪会立即执行回调函数并返回 `false`，否则会返回一个事件 ID
  */
 export const ready = (listener) => {
-    if (isReadyed) {
+    if (isReadied) {
         listener();
         return false;
     }
@@ -36,18 +38,18 @@ export const ready = (listener) => {
  * @return {void}
  */
 const sayReady = () => {
-    isReadyed = true;
+    isReadied = true;
     events.emit(EVENT.ready);
 };
 
-if (ExtsRuntime) {
-    setTimeout(() => {
+// 初始化应用
+setTimeout(() => {
+    initLang(config.lang);
+    if (ExtsRuntime) {
         ExtsRuntime.loadModules();
-        sayReady();
-    }, 0);
-    global.ExtsRuntime = ExtsRuntime;
-} else {
+        global.ExtsRuntime = ExtsRuntime;
+    }
     sayReady();
-}
+}, 0);
 
 export default {ready};

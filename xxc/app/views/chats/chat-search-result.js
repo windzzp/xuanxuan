@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import Avatar from '../../components/avatar';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import {MessageList} from './message-list';
 import {MessageListItem} from './message-list-item';

@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Platform from 'Platform';
 import HTML from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import ClickOutsideWrapper from '../../components/click-outside-wrapper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import {StatusDot} from '../common/status-dot';
 import User from '../../core/profile/user';
@@ -13,6 +12,7 @@ import AboutDialog from '../common/about-dialog';
 import UserSettingDialog from '../common/user-setting-dialog';
 import UserChangePasswordDialog from '../common/user-change-password-dialog';
 import replaceViews from '../replace-views';
+import platform from '../../platform';
 
 /**
  * 用户状态名称清单
@@ -30,7 +30,7 @@ const allStatus = [
  * @type {boolean}
  * @private
  */
-const isBrowser = Platform.type === 'browser';
+const isBrowser = platform.isType('browser');
 
 export default class UserMenu extends Component {
     /**

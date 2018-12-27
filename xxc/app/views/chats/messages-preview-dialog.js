@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from '../../components/modal';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import {MessageList} from './message-list';
 
 /**

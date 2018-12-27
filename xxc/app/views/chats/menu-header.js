@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
 import SearchControl from '../../components/search-control';
 import Icon from '../../components/icon';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import ChatCreateDialog from './chat-create-dialog';
 import replaceViews from '../replace-views';
 

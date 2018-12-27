@@ -5,7 +5,7 @@ import Member from '../../core/models/member';
 import {MemberListItem} from './member-list-item';
 import replaceViews from '../replace-views';
 import ListItem from '../../components/list-item';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import Config from '../../config';
 

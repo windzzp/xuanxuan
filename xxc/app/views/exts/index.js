@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {NavLink, Redirect} from 'react-router-dom';
 import {classes} from '../../utils/html-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import ROUTES from '../common/routes';
 import Icon from '../../components/icon';
 import Avatar from '../../components/avatar';

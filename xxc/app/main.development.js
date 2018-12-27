@@ -6,7 +6,7 @@
 import {app as ElectronApp, Menu, shell} from 'electron';
 import pkg from './package.json';
 import application from './platform/electron/app-remote';
-import Lang from './lang';
+import Lang from './platform/electron/lang-remote';
 
 // 禁用自签发证书警告
 ElectronApp.commandLine.appendSwitch('ignore-certificate-errors');

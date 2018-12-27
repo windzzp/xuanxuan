@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
 import StringHelper from '../../utils/string-helper';
 import DateHelper from '../../utils/date-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import replaceViews from '../replace-views';
 import InputControl from '../../components/input-control';
 import SelectBox from '../../components/select-box';

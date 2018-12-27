@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from '../../components/modal';
 import {ChatCommittersSetting} from './chat-committers-setting';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 
 /**

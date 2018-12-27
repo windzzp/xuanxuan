@@ -4,7 +4,7 @@ import HTML from '../../utils/html-helper';
 import StringHelper from '../../utils/string-helper';
 import SearchControl from '../../components/search-control';
 import Messager from '../../components/messager';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import {MemberList} from '../common/member-list';
 import ROUTES from '../common/routes';

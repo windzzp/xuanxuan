@@ -13,7 +13,7 @@ import {
 import Emojione from '../../components/emojione';
 import App from '../../core';
 import timeSequence from '../../utils/time-sequence';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import replaceViews from '../replace-views';
 
 /**

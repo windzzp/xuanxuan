@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import {showContextMenu} from '../../core/context-menu';
 import Icon from '../../components/icon';
 import GroupList from '../../components/group-list';
@@ -306,7 +306,8 @@ export default class MenuGroupList extends Component {
                     hideEmptyGroup: true,
                     checkIsGroup: this.checkIsGroup,
                     onExpandChange: this.onExpandChange,
-                    forceCollapse: !!this.state.dragging
+                    forceCollapse: !!this.state.dragging,
+                    showMoreText: Lang.string('common.clickShowMoreFormat'),
                 })
             }
             {children}

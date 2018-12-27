@@ -5,7 +5,7 @@ import Icon from '../../components/icon';
 import Avatar from '../../components/avatar';
 import SearchControl from '../../components/search-control';
 import SelectBox from '../../components/select-box';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import {ChatListItem} from './chat-list-item';
 import {ChatHistory} from './chat-history';

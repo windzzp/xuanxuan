@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-unresolved
 import events from '../events';
 import User from './user';
-import Lang from '../../lang';
+import Lang from '../lang';
 import notice from '../notice';
 import {getUserFromStore} from './user-store';
 

@@ -1,4 +1,3 @@
-import {env, dialog, fs as fse} from 'Platform';
 import Path from 'path';
 import compareVersions from 'compare-versions';
 import uuid from 'uuid/v4';
@@ -8,7 +7,29 @@ import db, {
 } from './extensions-db';
 import {createExtension} from './extension';
 import Modal from '../components/modal';
-import Lang from '../lang';
+import Lang from '../core/lang';
+import platform from '../platform';
+
+/**
+ * 平台提供的对话框功能访问对象
+ * @type {Object}
+ * @private
+ */
+const dialog = platform.access('dialog');
+
+/**
+ * 平台提供的系统环境信息访问对象
+ * @type {Object}
+ * @private
+ */
+const env = platform.access('env');
+
+/**
+ * 平台提供的文件读写功能访问对象
+ * @type {Object}
+ * @private
+ */
+const fse = platform.access('fs');
 
 /**
  * 生成扩展本地保存路径

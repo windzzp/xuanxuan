@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import Platform from 'Platform';
 import ImageCutter from '../../components/image-cutter';
 import {getSearchParam} from '../../utils/html-helper';
+import platform from '../../platform';
 
 /**
  * AppImageCutter 组件 ，显示图片剪切应用界面（用于在截图窗口中单独显示）
@@ -22,7 +22,8 @@ export default class ImageCutterApp extends Component {
      */
     onFinishCutImage = (image) => {
         const fromWindow = getSearchParam('fromWindow');
-        Platform.remote.sendToWindow(fromWindow || 'main', Platform.remote.EVENT.capture_screen, image);
+        const {remote} = platform.modules;
+        remote.sendToWindow(fromWindow || 'main', remote.EVENT.capture_screen, image);
     }
 
     /**

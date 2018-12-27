@@ -1,7 +1,7 @@
 import React from 'react';
 import EmojiPicker from 'emojione-picker';
 import Popover from '../../components/popover';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import profile from '../../core/profile';
 import Emojione from '../../components/emojione';
 

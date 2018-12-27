@@ -6,7 +6,7 @@ import Avatar from '../../components/avatar';
 import ROUTES from '../common/routes';
 import Config from '../../config';
 import {classes} from '../../utils/html-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 
 
 /**

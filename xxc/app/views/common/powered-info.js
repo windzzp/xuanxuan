@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import lang from '../../lang';
+import lang from '../../core/lang';
 
 /**
  * PoweredInfo 组件 ，显示构建信息

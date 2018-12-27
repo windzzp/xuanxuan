@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from '../../components/modal';
 import HotkeyInputControl from '../../components/hotkey-input-control';
 import {enableGlobalShortcut, disableGlobalShortcut} from '../../core/ui';
+import Lang from '../../core/lang';
 
 /**
  * 显示快捷键设置对话框
@@ -22,14 +23,17 @@ export const showHotkeySettingDialog = (title, defaultHotkey, onKeySelect, callb
                 onKeySelect(userHotKey);
             }
         },
-        content: <div>
-            <HotkeyInputControl
-                placeholder={defaultHotkey}
-                onChange={key => {
-                    userHotKey = key;
-                }}
-            />
-        </div>
+        content: (
+            <div>
+                <HotkeyInputControl
+                    onlyMotifyKeysText={Lang.string('setting.hotkeys.cantSetOnlyMotifyKeys')}
+                    placeholder={defaultHotkey}
+                    onChange={key => {
+                        userHotKey = key;
+                    }}
+                />
+            </div>
+        )
     }, callback);
 };
 

@@ -1,15 +1,18 @@
 // eslint-disable-next-line import/no-unresolved
-import Platform from 'Platform';
 import Path from 'path';
 import {defaultApp, getAppExt} from './exts';
 import OpenedApp from './opened-app';
-import Lang from '../lang';
+import Lang from '../core/lang';
 import {
     setExtensionDisabled, openInstallExtensionDialog, uninstallExtension, saveExtensionData,
 } from './manager';
 import Modal from '../components/modal';
 import Messager from '../components/messager';
 import ExtensionDetailDialog from '../views/exts/extension-detail-dialog';
+import platform from '../platform';
+
+// 从平台功能访问对象获取功能模块对象
+const {clipboard, ui: platformUI} = platform.modules;
 
 /**
  * 默认打开的应用
@@ -343,7 +346,7 @@ export const createSettingContextMenu = extension => {
 export const showDevFolder = extension => {
     const {localPath} = extension;
     if (localPath) {
-        Platform.ui.showItemInFolder(Path.join(localPath, 'package.json'));
+        platformUI.showItemInFolder(Path.join(localPath, 'package.json'));
         return true;
     }
     return false;
@@ -365,12 +368,10 @@ export const createAppContextMenu = appExt => {
     if (appExt.webViewUrl && !appExt.isLocalWebView) {
         items.push({
             label: Lang.string('ext.app.openInBrowser'),
-            click: () => {
-                appExt.getEntryUrl().then(url => {
-                    Platform.ui.openExternal(url);
-                    return url;
-                });
-            }
+            click: () => appExt.getEntryUrl().then(url => {
+                platformUI.openExternal(url);
+                return url;
+            })
         });
     }
 
@@ -482,19 +483,19 @@ export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
             label: Lang.string('ext.app.openInBrowser'),
             click: () => {
                 const currentUrl = theOpenedApp.webview && theOpenedApp.webview.src;
-                appExt.getEntryUrl(currentUrl).then(url => {
-                    Platform.ui.openExternal(url);
+                return appExt.getEntryUrl(currentUrl).then(url => {
+                    platformUI.openExternal(url);
                     return url;
                 });
             }
         });
-        if (theOpenedApp.webview && Platform.clipboard && Platform.clipboard.writeText) {
+        if (theOpenedApp.webview && clipboard && clipboard.writeText) {
             items.push({
                 label: Lang.string('ext.app.copyUrl'),
                 click: () => {
-                    Platform.clipboard.writeText(theOpenedApp.webview.src || appExt.webViewUrl);
+                    clipboard.writeText(theOpenedApp.webview.src || appExt.webViewUrl);
                 },
-            })
+            });
         }
     }
 

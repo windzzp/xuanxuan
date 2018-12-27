@@ -1,4 +1,3 @@
-import Platform from 'Platform'; // eslint-disable-line
 import Config, {getSpecialVersionName} from '../../config'; // eslint-disable-line
 import {socket} from '../server';
 import imServerHandlers from './im-server-handlers';
@@ -11,7 +10,7 @@ import Messager from '../../components/messager';
 import {formatBytes} from '../../utils/string-helper';
 import {createPhpTimestramp} from '../../utils/date-helper';
 import ChatMessage from '../models/chat-message';
-import Lang from '../../lang';
+import Lang from '../lang';
 import {getImageInfo} from '../../utils/image';
 import FileData from '../models/file-data';
 import {checkUploadFileSize, uploadFile} from './im-files';
@@ -19,6 +18,7 @@ import {isWebUrl} from '../../utils/html-helper';
 import {
     updateChatMessages, getChat, queryChats, initChats,
 } from './im-chats';
+import platform from '../../platform';
 
 /**
  * 适合使用 Base64 格式发送图片的最大文件大小
@@ -565,18 +565,18 @@ export const sendChatMessage = async (messages, chat, isSystemMessage = false) =
                 contentLines.push(
                     `$$version       = '${PKG.version}${PKG.buildVersion ? ('.' + PKG.buildVersion) : ''}${specialVersion}';`,
                     `$$serverVersion = '${profile.user.serverVersion}';`,
-                    `$$platform      = '${Platform.type}';`,
-                    `$$os            = '${Platform.env.os}';`
+                    `$$platform      = '${platform.type}';`,
+                    `$$os            = '${platform.access('env.os')}';`
                 );
-                if (Platform.env.arch) {
-                    contentLines.push(`$$arch          = '${Platform.env.arch}';`);
+                if (platform.has('env.arch')) {
+                    contentLines.push(`$$arch          = '${platform.access('env.arch')}';`);
                 }
                 contentLines.push('```');
                 message.content = contentLines.join('\n');
-            } else if (command.action === 'dataPath' && Platform.ui.createUserDataPath) {
+            } else if (command.action === 'dataPath' && platform.has('ui.createUserDataPath')) {
                 const contentLines = ['```'];
                 contentLines.push(
-                    `$$dataPath = '${Platform.ui.createUserDataPath(profile.user, '', '')}';`,
+                    `$$dataPath = '${platform.call('ui.createUserDataPath', profile.user, '', '')}';`,
                 );
                 contentLines.push('```');
                 message.content = contentLines.join('\n');

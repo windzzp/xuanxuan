@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-unresolved
 import path from 'path';
 import platform from '../../platform';
-import Config, {updateConfig} from '../../config';
-import Lang from '../../lang';
+import Config from '../../config';
+import Lang from '../../core/lang';
 
 /**
  * 内置扩展清单
@@ -88,13 +88,6 @@ if (buildIns && Array.isArray(buildIns)) {
             }
         }
     });
-}
-
-// 内置的运行时配置
-const buildInConfig = platform.call('buildIn.getBuildInConfig');
-// 更新扩展的运行时配置
-if (buildInConfig) {
-    updateConfig(buildInConfig);
 }
 
 export default exts;

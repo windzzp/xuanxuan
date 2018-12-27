@@ -1,9 +1,9 @@
 import electron, {
     BrowserWindow, app as ElectronApp, Tray, Menu, nativeImage, globalShortcut, ipcMain, dialog,
 } from 'electron';
-import Lang from '../../lang';
 import EVENT from './remote-events';
-import Events from './events';
+import events from './events';
+import Lang from './lang-remote';
 
 if (typeof DEBUG === 'undefined') {
     global.DEBUG = process.env.NODE_ENV === 'debug' || process.env.NODE_ENV === 'development';
@@ -35,22 +35,6 @@ const SHOW_LOG = DEBUG;
 if (DEBUG && process.type === 'renderer') {
     console.error('AppRemote must run in main process.');
 }
-
-/**
- * 文本输入框右键菜单
- * @type {Menu}
- * @private
- */
-const INPUT_MENU = Menu.buildFromTemplate([
-    {role: 'undo', label: Lang.string('menu.undo')},
-    {role: 'redo', label: Lang.string('menu.redo')},
-    {type: 'separator'},
-    {role: 'cut', label: Lang.string('menu.cut')},
-    {role: 'copy', label: Lang.string('menu.copy')},
-    {role: 'paste', label: Lang.string('menu.paste')},
-    {type: 'separator'},
-    {role: 'selectall', label: Lang.string('menu.selectAll')}
-]);
 
 /**
  * Electron 主进程运行时管理类
@@ -112,7 +96,7 @@ class AppRemote {
 
         // 绑定渲染进程请求绑定主进程事件
         ipcMain.on(EVENT.remote_on, (e, eventId, event) => {
-            Events.on(event, (...args) => {
+            events.on(event, (...args) => {
                 try {
                     e.sender.send(eventId, ...args);
                 } catch (_) {
@@ -128,13 +112,13 @@ class AppRemote {
 
         // 绑定渲染进程请求取消绑定主进程事件
         ipcMain.on(EVENT.remote_off, (e, eventId) => {
-            Events.off(eventId);
+            events.off(eventId);
             if (SHOW_LOG) console.log('\n>> REMOTE EVENT off', eventId);
         });
 
         // 绑定渲染进程请求触发主进程事件
         ipcMain.on(EVENT.remote_emit, (e, eventId, ...args) => {
-            Events.emit(eventId, ...args);
+            events.emit(eventId, ...args);
             if (SHOW_LOG) console.log('\n>> REMOTE EVENT emit', eventId);
         });
 
@@ -150,7 +134,7 @@ class AppRemote {
         });
 
         // 设置 Electron 应用标题
-        ElectronApp.setName(Lang.string('app.title'));
+        // todo: ElectronApp.setName(Lang.string('app.title'));
     }
 
     // 初始化并设置 Electron 应用入口路径
@@ -234,7 +218,10 @@ class AppRemote {
             }, {
                 label: Lang.string('common.exit'),
                 click: () => {
-                    this.windows[windowName].webContents.send(EVENT.remote_app_quit, 'quit');
+                    const browserWindow = this.windows[windowName];
+                    if (browserWindow) {
+                        browserWindow.webContents.send(EVENT.remote_app_quit, 'quit');
+                    }
                 }
             }
         ]);
@@ -329,7 +316,9 @@ class AppRemote {
                 });
             } else {
                 this.lastRequestCloseTime = now;
-                appWindow.webContents.send(EVENT.remote_app_quit);
+                if (appWindow) {
+                    appWindow.webContents.send(EVENT.remote_app_quit);
+                }
             }
             e.preventDefault();
             return false;
@@ -339,7 +328,22 @@ class AppRemote {
         appWindow.webContents.on('context-menu', (e, props) => {
             const {isEditable} = props;
             if (isEditable) {
-                INPUT_MENU.popup(appWindow);
+                /**
+                 * 文本输入框右键菜单
+                 * @type {Menu}
+                 * @private
+                 */
+                const inputMenu = Menu.buildFromTemplate([
+                    {role: 'undo', label: Lang.string('menu.undo')},
+                    {role: 'redo', label: Lang.string('menu.redo')},
+                    {type: 'separator'},
+                    {role: 'cut', label: Lang.string('menu.cut')},
+                    {role: 'copy', label: Lang.string('menu.copy')},
+                    {role: 'paste', label: Lang.string('menu.paste')},
+                    {type: 'separator'},
+                    {role: 'selectall', label: Lang.string('menu.selectAll')}
+                ]);
+                inputMenu.popup(appWindow);
             }
         });
 
@@ -613,7 +617,10 @@ class AppRemote {
      * @return {void}
      */
     trayTooltip(tooltip, windowName = 'main') {
-        this._traysData[windowName].tray.setToolTip(tooltip || Lang.string('app.title'));
+        const trayData = this._traysData && this._traysData[windowName];
+        if (trayData) {
+            trayData.setToolTip(tooltip || Lang.string('app.title'));
+        }
     }
 
     /**
@@ -625,21 +632,23 @@ class AppRemote {
      * @return {void}
      */
     flashTrayIcon(flash = true, windowName = 'main') {
-        const trayData = this._traysData[windowName];
-        if (flash) {
-            if (!trayData.flashTask) {
-                trayData.flashTask = setInterval(() => {
-                    if (trayData.tray) {
-                        trayData.tray.setImage(this._trayIcons[(trayData.iconCounter++) % 2]);
-                    }
-                }, 400);
+        const trayData = this._traysData && this._traysData[windowName];
+        if (trayData) {
+            if (flash) {
+                if (!trayData.flashTask) {
+                    trayData.flashTask = setInterval(() => {
+                        if (trayData.tray) {
+                            trayData.tray.setImage(this._trayIcons[(trayData.iconCounter++) % 2]);
+                        }
+                    }, 400);
+                }
+            } else {
+                if (trayData.flashTask) {
+                    clearInterval(trayData.flashTask);
+                    trayData.flashTask = null;
+                }
+                trayData.tray.setImage(this._trayIcons[0]);
             }
-        } else {
-            if (trayData.flashTask) {
-                clearInterval(trayData.flashTask);
-                trayData.flashTask = null;
-            }
-            trayData.tray.setImage(this._trayIcons[0]);
         }
     }
 
@@ -693,7 +702,7 @@ class AppRemote {
         if (SHOW_LOG) console.log('>> quit');
         try {
             globalShortcut.unregisterAll();
-        } catch (_) {}
+        } catch (_) {} // eslint-disable-line
         ElectronApp.quit();
     }
 
