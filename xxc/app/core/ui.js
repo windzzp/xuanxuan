@@ -5,7 +5,7 @@ import Messager from '../components/messager';
 import ContextMenu from '../components/context-menu';
 import modal from '../components/modal';
 import {isWebUrl, getSearchParam} from '../utils/html-helper';
-import Lang from './lang';
+import Lang, {onLangChange} from './lang';
 import events from './events';
 import profile from './profile';
 import Notice from './notice';
@@ -573,9 +573,6 @@ export const setTitle = title => {
     document.title = title;
 };
 
-// 设置默认标题
-setTitle(Lang.string('app.title'));
-
 /**
  * 浏览器地址解析缓存
  * @private
@@ -890,6 +887,11 @@ export const requestUpdateViewStyle = (viewID, style) => {
  * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
  */
 export const onUpdateViewStyle = (viewID, listener) => events.on(`${EVENT.update_view_style}.${viewID}`, listener);
+
+onLangChange(() => {
+    // 设置默认标题
+    setTitle(Lang.string('app.title'));
+});
 
 export default {
     entryParams,

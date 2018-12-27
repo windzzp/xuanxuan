@@ -43,7 +43,7 @@ export default class SearchControl extends PureComponent {
      * @static
      */
     static defaultProps = {
-        placeholder: Lang.string('common.search'),
+        placeholder: null,
         changeDelay: 100,
         onSearchChange: null,
         onFocusChange: null,
@@ -211,10 +211,15 @@ export default class SearchControl extends PureComponent {
             onFocusChange,
             onBlur,
             defaultValue,
+            placeholder,
             ...other
         } = this.props;
 
         delete other.value;
+
+        if (placeholder === null) {
+            placeholder = Lang.string('common.search');
+        }
 
         return (<InputControl
             className={HTML.classes('search', className, {
@@ -228,6 +233,7 @@ export default class SearchControl extends PureComponent {
             onBlur={this.handleOnInputBlur}
             onChange={this.handleOnInputChange}
             ref={e => {this.inputControl = e;}}
+            placeholder={placeholder}
             {...other}
         >
             <Icon name="close" onClick={this.handleOnClearBtnClick} className="close state" />

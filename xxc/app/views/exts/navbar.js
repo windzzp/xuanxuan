@@ -8,7 +8,6 @@ import Config from '../../config';
 import {classes} from '../../utils/html-helper';
 import Lang from '../../core/lang';
 
-
 /**
  * ExtsNavbarView 组件 ，显示扩展应用导航
  * @class ExtsNavbarView

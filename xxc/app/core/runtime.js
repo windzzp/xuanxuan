@@ -44,14 +44,12 @@ const sayReady = () => {
 };
 
 // 初始化应用
-setTimeout(() => {
-    initLang(config.lang);
-    if (ExtsRuntime) {
-        ExtsRuntime.loadModules();
-        global.ExtsRuntime = ExtsRuntime;
-    }
-    platform.init({config, lang});
-    sayReady();
-}, 0);
+initLang(config.lang);
+if (ExtsRuntime) {
+    ExtsRuntime.loadModules();
+    global.ExtsRuntime = ExtsRuntime;
+}
+platform.init({config, lang});
+sayReady();
 
 export default {ready};

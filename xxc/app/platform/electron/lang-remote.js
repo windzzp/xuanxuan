@@ -1,4 +1,4 @@
-import {ipcMain} from 'electron';
+import {ipcMain, app} from 'electron';
 import EVENTS from './remote-events';
 import LangHelper from '../../utils/lang-helper';
 import events from './events';
@@ -12,6 +12,7 @@ const langHelper = new LangHelper();
 // 绑定客户端请求变更语言事件
 ipcMain.on(EVENTS.remote_lang_change, (e, langName, langData) => {
     langHelper.change(langName, langData);
+    app.setName(langHelper.string('app.title'));
     events.emit(EVENTS.lang_change, langHelper);
 });
 

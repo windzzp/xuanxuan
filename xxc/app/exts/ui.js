@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 import Path from 'path';
-import {defaultApp, getAppExt} from './exts';
+import {getDefaultApp, getAppExt} from './exts';
 import OpenedApp from './opened-app';
 import Lang from '../core/lang';
 import {
@@ -19,16 +19,14 @@ const {clipboard, ui: platformUI} = platform.modules;
  * @type {OpenedApp}
  * @private
  */
-const defaultOpenedApp = new OpenedApp(defaultApp);
+let defaultOpenedApp = null;
 
 /**
  * 已打开的应用清单
  * @type {OpenedApp[]}
  * @private
  */
-const openedApps = [
-    defaultOpenedApp,
-];
+const openedApps = [];
 
 /**
  * 获取已打开的应用清单
@@ -49,7 +47,7 @@ export const isDefaultOpenedApp = id => id === defaultOpenedApp.id;
  * @returns {boolean} 如果返回 `true` 则为已经打开，否则为没有打开
  * @private
  */
-const isAppOpen = appNameOrID => openedApps.find(x => x.id === appNameOrID || x.app.name === appNameOrID);
+export const isAppOpen = appNameOrID => openedApps.find(x => x.id === appNameOrID || x.app.name === appNameOrID);
 
 /**
  * 查找打开的应用
@@ -526,6 +524,12 @@ export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
     return items;
 };
 
+/**
+ * 创建导航上的应用上下文菜单项
+ * @param {AppExtension} appExt 打开的应用
+ * @param {function} refreshUI 请求刷新界面的回调函数
+ * @return {Object[]} 上下文菜单项清单
+ */
 export const createNavbarAppContextMenu = (appExt, refreshUI) => {
     const theOpenedApp = getOpenedApp(appExt.name);
     const items = [];
@@ -552,6 +556,15 @@ export const createNavbarAppContextMenu = (appExt, refreshUI) => {
         items.push(...createAppContextMenu(appExt));
     }
     return items;
+};
+
+/**
+ * 初始化扩展界面功能
+ * @return {void}
+ */
+export const initUI = () => {
+    defaultOpenedApp = new OpenedApp(getDefaultApp());
+    openedApps.push(defaultOpenedApp);
 };
 
 export default {

@@ -1,6 +1,9 @@
 import Xext from './external-api';
-import Exts, {forEachExtension, getExt, getExts} from './exts';
-import {showExtensionDetailDialog, openAppWithUrl} from './ui';
+import Exts, {
+    forEachExtension, getExt, getExts, initExtensions
+} from './exts';
+import {initThemes} from './themes';
+import {showExtensionDetailDialog, openAppWithUrl, initUI} from './ui';
 import {reloadDevExtension} from './manager';
 import App from '../core';
 import {setExtensionUser} from './extension';
@@ -24,6 +27,8 @@ const replaceViews = {};
  * @return {void}
  */
 export const loadExtensionsModules = () => {
+    initExtensions();
+
     forEachExtension(ext => {
         if (ext.isDev) {
             const reloadExt = reloadDevExtension(ext);
@@ -37,6 +42,9 @@ export const loadExtensionsModules = () => {
             Object.assign(replaceViews, ext.replaceViews);
         }
     });
+
+    initThemes();
+    initUI();
 };
 
 // 监听应用的准备就绪事件，触发扩展的 `onReady` 回调函数

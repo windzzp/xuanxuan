@@ -128,9 +128,6 @@ class AppRemote {
             this.createTrayIcon(windowName);
             if (SHOW_LOG) console.log('\n>> App ready.');
         });
-
-        // 设置 Electron 应用标题
-        // todo: ElectronApp.setName(Lang.string('app.title'));
     }
 
     // 初始化并设置 Electron 应用入口路径
