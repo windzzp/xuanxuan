@@ -75,8 +75,8 @@ class AppRemote {
                 result.then(x => {
                     try {
                         e.sender.send(callBackEventName, x);
-                    } catch (e) {
-                        console.error('\n>> ERROR: Cannot send remote result to BrowserWindow.', e);
+                    } catch (err) {
+                        console.error('\n>> ERROR: Cannot send remote result to BrowserWindow.', err);
                     }
                     return x;
                 }).catch(error => {

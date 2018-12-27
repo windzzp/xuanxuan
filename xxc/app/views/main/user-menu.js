@@ -114,8 +114,9 @@ export default class UserMenu extends Component {
      * @return {void}
      */
     requestClose = () => {
-        if (this.props.onRequestClose) {
-            this.props.onRequestClose();
+        const {onRequestClose} = this.props;
+        if (onRequestClose) {
+            onRequestClose();
         }
     }
 
@@ -191,11 +192,13 @@ export default class UserMenu extends Component {
             >
                 {
                     allStatus.map(statusName => {
-                        return (<a key={statusName} onClick={this.handleStatusClick.bind(this, statusName)} className="item flex-middle">
-                            <StatusDot status={statusName} />
-                            <div className="title">{Lang.string(`member.status.${statusName}`)}</div>
-                            {userStatusName === statusName && <Icon name="check" className="text-green" />}
-                        </a>);
+                        return (
+                            <a key={statusName} onClick={this.handleStatusClick.bind(this, statusName)} className="item flex-middle">
+                                <StatusDot status={statusName} />
+                                <div className="title">{Lang.string(`member.status.${statusName}`)}</div>
+                                {userStatusName === statusName && <Icon name="check" className="text-green" />}
+                            </a>
+                        );
                     })
                 }
                 <div className="divider" />
