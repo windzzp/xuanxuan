@@ -202,10 +202,10 @@ export default class UserMenu extends Component {
                 <a className="item" onClick={this.handleUserProfileItemClick}><div className="title">{Lang.string('usermenu.openProfile')}</div></a>
                 {isSupportChangePassword ? <a className="item" onClick={this.handleChangePasswordClick}><div className="title">{Lang.string('usermenu.changePassword')}</div></a> : null}
                 <div className="divider" />
-                <a className="item" onClick={this.handleAboutItemClick}><div className="title">{Lang.string('usermenu.about')}</div></a>
-                <a className="item" onClick={showLanguageSwitchDialog.bind(null, null)}><div className="title">{Lang.string('common.switchLanguage')}</div></a>
                 <a className="item" onClick={this.handleSettingItemClick}><div className="title">{Lang.string('usermenu.setting')}</div></a>
-                {isBrowser ? null : <a className="item" href="#/exts/app/themes" onClick={this.requestClose}><div className="title">{Lang.string('exts.themes.label')}</div></a>}
+                <a className="item" onClick={showLanguageSwitchDialog.bind(null, null)}><div className="title">{Lang.string('common.switchLanguage')}</div></a>
+                <a className="item" onClick={this.handleAboutItemClick}><div className="title">{Lang.string('usermenu.about')}</div></a>
+                <div className="divider" />
                 <a className="item" onClick={this.handleLogoutClick}><div className="title">{Lang.string('usermenu.logout')}</div></a>
                 {App.ui.canQuit && <a className="item" onClick={this.handleExitClick}><div className="title">{Lang.string('usermenu.exit')}</div></a>}
                 {children}
