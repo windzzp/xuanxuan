@@ -2,8 +2,15 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import OpenedApp from '../../exts/opened-app';
-import replaceViews from '../replace-views';
-import {WebView} from '../common/webview';
+import _WebView from '../common/webview';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * WebView 可替换组件形式
+ * @type {Class<WebView>}
+ * @private
+ */
+const WebView = withReplaceView(_WebView);
 
 /**
  * WebApp 组件 ，显示内嵌 Web 页面应用界面
@@ -16,18 +23,13 @@ import {WebView} from '../common/webview';
  */
 export default class WebApp extends Component {
     /**
-     * 获取 WebApp 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<WebApp>}
-     * @readonly
+     * WebApp 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof WebApp
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {WebApp} from './web-app';
-     * <WebApp />
      */
-    static get WebApp() {
-        return replaceViews('exts/web-app', WebApp);
-    }
+    static replaceViewPath = 'exts/WebApp';
 
     /**
      * React 组件属性类型检查

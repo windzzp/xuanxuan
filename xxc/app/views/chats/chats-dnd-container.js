@@ -6,7 +6,6 @@ import Lang from '../../core/lang';
 import App from '../../core';
 import {checkUploadFileSize} from '../../core/network/api';
 import Emojione from '../../components/emojione';
-import replaceViews from '../replace-views';
 
 /**
  * ChatsDndContainer 组件 ，显示聊天拖放功能交互容器
@@ -19,18 +18,13 @@ import replaceViews from '../replace-views';
  */
 export default class ChatsDndContainer extends PureComponent {
     /**
-     * 获取 ChatsDndContainer 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatsDndContainer>}
-     * @readonly
+     * ChatsDndContainer 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatsDndContainer
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatsDndContainer} from './chats-dnd-container';
-     * <ChatsDndContainer />
      */
-    static get ChatsDndContainer() {
-        return replaceViews('chats/chats-dnd-container', ChatsDndContainer);
-    }
+    static replaceViewPath = 'chats/ChatsDndContainer';
 
     /**
      * React 组件属性类型检查

@@ -4,12 +4,19 @@ import hotkeys from 'hotkeys-js';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
 import {showContextMenu} from '../../core/context-menu';
-import {ChatListItem} from './chat-list-item';
-import replaceViews from '../replace-views';
+import _ChatListItem from './chat-list-item';
 import ROUTES from '../common/routes';
 import ListItem from '../../components/list-item';
 import Lang from '../../core/lang';
 import Config from '../../config';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatListItem 可替换组件形式
+ * @type {Class<ChatListItem>}
+ * @private
+ */
+const ChatListItem = withReplaceView(_ChatListItem);
 
 /**
  * MenuSearchList 组件 ，显示聊天搜索结果列表界面
@@ -22,18 +29,13 @@ import Config from '../../config';
  */
 export default class MenuSearchList extends Component {
     /**
-     * 获取 MenuSearchList 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MenuSearchList>}
-     * @readonly
+     * MenuSearchList 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MenuSearchList
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MenuSearchList} from './menu-search-list';
-     * <MenuSearchList />
      */
-    static get MenuSearchList() {
-        return replaceViews('chats/menu-search-list', MenuSearchList);
-    }
+    static replaceViewPath = 'chats/MenuSearchList';
 
     /**
      * React 组件属性类型检查

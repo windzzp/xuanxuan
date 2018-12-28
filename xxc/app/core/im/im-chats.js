@@ -2,7 +2,7 @@ import Md5 from 'md5';
 import Config from '../../config';
 import Chat from '../models/chat';
 import ChatMessage from '../models/chat-message';
-import NotificationMessage from '../models/notification-message';
+import _NotificationMessage from '../models/notification-message';
 import profile from '../profile';
 import Events from '../events';
 import members from '../members';
@@ -13,6 +13,14 @@ import TaskQueue from '../../utils/task-queue';
 import timeSequence from '../../utils/time-sequence';
 import Lang from '../lang';
 import Server from '../server';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * NotificationMessage 可替换组件形式
+ * @type {Class<NotificationMessage>}
+ * @private
+ */
+const NotificationMessage = withReplaceView(_NotificationMessage);
 
 /**
  * 从运行时配置读取默认每次加载聊天记录条目的数目

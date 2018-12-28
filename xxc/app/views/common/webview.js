@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import timeSequence from '../../utils/time-sequence';
-import replaceViews from '../replace-views';
 import {openUrl, onUpdateViewStyle, requestUpdateViewStyle} from '../../core/ui';
 import events from '../../core/events';
 import {formatString} from '../../utils/string-helper';
@@ -61,18 +60,13 @@ const defaultInjectJS = [
  */
 export default class WebView extends PureComponent {
     /**
-     * 获取 Webview 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<Webview>}
-     * @readonly
+     * Webview 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof Webview
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {Webview} from './webview';
-     * <Webview />
      */
-    static get WebView() {
-        return replaceViews('common/webview', WebView);
-    }
+    static replaceViewPath = 'common/Webview';
 
     /**
      * React 组件属性类型检查

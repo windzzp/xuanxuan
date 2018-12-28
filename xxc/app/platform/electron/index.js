@@ -1,4 +1,3 @@
-
 import fs from 'fs-extra';
 import sound from '../common/sound';
 import env from './env';

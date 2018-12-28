@@ -5,10 +5,17 @@ import Icon from '../../components/icon';
 import Lang from '../../core/lang';
 import App from '../../core';
 import Member from '../../core/models/member';
-import {MemberList} from '../common/member-list';
-import replaceViews from '../replace-views';
+import _MemberList from '../common/member-list';
 import ChatInviteDialog from './chat-invite-dialog';
 import {showContextMenu} from '../../core/context-menu';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * MemberList 可替换组件形式
+ * @type {Class<MemberList>}
+ * @private
+ */
+const MemberList = withReplaceView(_MemberList);
 
 /**
  * 处理聊天成员点击事件
@@ -31,18 +38,13 @@ const handleMemberItemClick = member => {
  */
 export default class ChatSidebarPeoples extends Component {
     /**
-     * 获取 ChatSidebarPeoples 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatSidebarPeoples>}
-     * @readonly
+     * ChatSidebarPeoples 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatSidebarPeoples
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatSidebarPeoples} from './chat-sidebar-peoples';
-     * <ChatSidebarPeoples />
      */
-    static get ChatSidebarPeoples() {
-        return replaceViews('chats/chat-sidebar-peoples', ChatSidebarPeoples);
-    }
+    static replaceViewPath = 'chats/ChatSidebarPeoples';
 
     /**
      * React 组件属性类型检查

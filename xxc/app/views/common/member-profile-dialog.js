@@ -1,7 +1,15 @@
 import React from 'react';
 import Modal from '../../components/modal';
 import App from '../../core';
-import {MemberProfile} from './member-profile';
+import _MemberProfile from './member-profile';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * MemberProfile 可替换组件形式
+ * @type {Class<MemberProfile>}
+ * @private
+ */
+const MemberProfile = withReplaceView(_MemberProfile);
 
 /**
  * 显示成员个人资料对话框

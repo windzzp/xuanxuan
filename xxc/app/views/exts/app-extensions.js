@@ -8,8 +8,15 @@ import Button from '../../components/button';
 import Exts from '../../exts';
 import OpenedApp from '../../exts/opened-app';
 import App from '../../core';
-import {ExtensionListItem} from './extension-list-item';
-import replaceViews from '../replace-views';
+import _ExtensionListItem from './extension-list-item';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ExtensionListItem 可替换组件形式
+ * @type {Class<ExtensionListItem>}
+ * @private
+ */
+const ExtensionListItem = withReplaceView(_ExtensionListItem);
 
 /**
  * AppExtensions 组件 ，显示“应用”扩展界面
@@ -22,18 +29,13 @@ import replaceViews from '../replace-views';
  */
 export default class AppExtensions extends Component {
     /**
-     * 获取 AppExtensions 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<AppExtensions>}
-     * @readonly
+     * AppExtensions 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof AppExtensions
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {AppExtensions} from './app-extensions';
-     * <AppExtensions />
      */
-    static get AppExtensions() {
-        return replaceViews('exts/app-extensions', AppExtensions);
-    }
+    static replaceViewPath = 'exts/AppExtensions';
 
     /**
      * React 组件属性类型检查

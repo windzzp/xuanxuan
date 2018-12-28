@@ -1,8 +1,22 @@
 import React, {PureComponent} from 'react';
 import App from '../../core';
-import {LoginIndex} from '../login';
-import {MainIndex} from '../main';
-import replaceViews from '../replace-views';
+import _LoginIndex from '../login';
+import _MainIndex from '../main';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * MainIndex 可替换组件形式
+ * @type {Class<MainIndex>}
+ * @private
+ */
+const MainIndex = withReplaceView(_MainIndex);
+
+/**
+ * LoginIndex 可替换组件形式
+ * @type {Class<LoginIndex>}
+ * @private
+ */
+const LoginIndex = withReplaceView(_LoginIndex);
 
 /**
  * AppView 组件 ，显示喧喧主应用界面
@@ -15,18 +29,13 @@ import replaceViews from '../replace-views';
  */
 export default class AppView extends PureComponent {
     /**
-     * 获取 AppView 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<AppView>}
-     * @readonly
+     * AppView 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof AppView
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {AppView} from './app-view';
-     * <AppView />
      */
-    static get AppView() {
-        return replaceViews('index/app-view', AppView);
-    }
+    static replaceViewPath = 'index/AppView';
 
     /**
      * React 组件构造函数，创建一个 AppView 组件实例，会在装配之前被调用。

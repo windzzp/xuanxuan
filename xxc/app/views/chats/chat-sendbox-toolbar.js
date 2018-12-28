@@ -6,7 +6,6 @@ import {formatKeyDecoration} from '../../utils/shortcut';
 import Icon from '../../components/icon';
 import Lang from '../../core/lang';
 import App from '../../core';
-import replaceViews from '../replace-views';
 import {getMenuItemsForContext} from '../../core/context-menu';
 
 /**
@@ -20,18 +19,13 @@ import {getMenuItemsForContext} from '../../core/context-menu';
  */
 export default class ChatSendboxToolbar extends PureComponent {
     /**
-     * 获取 ChatSendboxToolbar 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatSendboxToolbar>}
-     * @readonly
+     * ChatSendboxToolbar 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatSendboxToolbar
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatSendboxToolbar} from './chat-sendbox-toolbar';
-     * <ChatSendboxToolbar />
      */
-    static get ChatSendboxToolbar() {
-        return replaceViews('chats/chat-sendbox-toolbar flex', ChatSendboxToolbar);
-    }
+    static replaceViewPath = 'chats/ChatSendboxToolbar';
 
     /**
      * React 组件属性类型检查

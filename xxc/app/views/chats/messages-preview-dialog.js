@@ -1,7 +1,15 @@
 import React from 'react';
 import Modal from '../../components/modal';
 import Lang from '../../core/lang';
-import {MessageList} from './message-list';
+import _MessageList from './message-list';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * MessageList 可替换组件形式
+ * @type {Class<MessageList>}
+ * @private
+ */
+const MessageList = withReplaceView(_MessageList);
 
 /**
  * 显示聊天消息预览对话框

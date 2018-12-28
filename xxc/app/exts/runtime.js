@@ -9,8 +9,23 @@ import App from '../core';
 import {setExtensionUser} from './extension';
 import {registerCommand, executeCommand, createCommandObject} from '../core/commander';
 import {fetchServerExtensions, detachServerExtensions, getEntryVisitUrl} from './server';
-import ExtsView from '../views/exts/index';
-import ExtsNavbarView from '../views/exts/navbar';
+import _ExtsView from '../views/exts/index';
+import _ExtsNavbarView from '../views/exts/navbar';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ExtsView 可替换组件形式
+ * @type {Class<ExtsView>}
+ * @private
+ */
+const ExtsView = withReplaceView(_ExtsView);
+
+/**
+ * ExtsNavbarView 可替换组件形式
+ * @type {Class<ExtsNavbarView>}
+ * @private
+ */
+const ExtsNavbarView = withReplaceView(_ExtsNavbarView);
 
 // 将开放给扩展的模块设置为全局可访问
 global.Xext = Xext;

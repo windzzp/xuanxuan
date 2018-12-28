@@ -1,8 +1,15 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
-import {FileListItem} from '../common/file-list-item';
-import replaceViews from '../replace-views';
+import _FileListItem from '../common/file-list-item';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * FileListItem 可替换组件形式
+ * @type {Class<FileListItem>}
+ * @private
+ */
+const FileListItem = withReplaceView(_FileListItem);
 
 /**
  * MessageContentFile 组件 ，显示聊天消息文件内容界面
@@ -15,18 +22,13 @@ import replaceViews from '../replace-views';
  */
 export default class MessageContentFile extends Component {
     /**
-     * 获取 MessageContentFile 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MessageContentFile>}
-     * @readonly
+     * MessageContentFile 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MessageContentFile
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MessageContentFile} from './message-content-file';
-     * <MessageContentFile />
      */
-    static get MessageContentFile() {
-        return replaceViews('chats/chat-content-file', MessageContentFile);
-    }
+    static replaceViewPath = 'chats/MessageContentFile';
 
     /**
      * React 组件属性类型检查

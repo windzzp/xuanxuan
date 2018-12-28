@@ -5,7 +5,6 @@ import Icon from '../../components/icon';
 import App from '../../core';
 import Chat from '../../core/models/chat';
 import _UserAvatar from '../common/user-avatar';
-import replaceViews from '../replace-views';
 import withReplaceView from '../with-replace-view';
 
 /**
@@ -38,18 +37,13 @@ const chatIcons = {
  */
 export default class ChatAvatar extends Component {
     /**
-     * 获取 ChatAvatar 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatAvatar>}
-     * @readonly
+     * ChatAvatar 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatAvatar
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatAvatar} from './chat-avatar';
-     * <ChatAvatar />
      */
-    static get ChatAvatar() {
-        return replaceViews('chats/chat-avatar', ChatAvatar);
-    }
+    static replaceViewPath = 'chats/ChatAvatar';
 
     /**
      * React 组件属性类型检查

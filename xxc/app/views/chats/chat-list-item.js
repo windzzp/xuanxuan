@@ -5,9 +5,16 @@ import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import Lang from '../../core/lang';
 import ROUTES from '../common/routes';
-import {ChatAvatar} from './chat-avatar';
+import _ChatAvatar from './chat-avatar';
 import App from '../../core';
-import replaceViews from '../replace-views';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatAvatar 可替换组件形式
+ * @type {Class<ChatAvatar>}
+ * @private
+ */
+const ChatAvatar = withReplaceView(_ChatAvatar);
 
 /**
  * ChatListItem 组件 ，显示一个聊天列表条目
@@ -20,18 +27,13 @@ import replaceViews from '../replace-views';
  */
 export default class ChatListItem extends Component {
     /**
-     * 获取 ChatListItem 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatListItem>}
-     * @readonly
+     * ChatListItem 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatListItem
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatListItem} from './chat-list-item';
-     * <ChatListItem />
      */
-    static get ChatListItem() {
-        return replaceViews('chats/chat-list-item', ChatListItem);
-    }
+    static replaceViewPath = 'chats/ChatListItem';
 
     /**
      * React 组件属性类型检查

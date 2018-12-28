@@ -10,7 +10,6 @@ import Messager from '../../components/messager';
 import Lang from '../../core/lang';
 import App from '../../core';
 import _UserAvatar from './user-avatar';
-import replaceViews from '../replace-views';
 import FileData from '../../core/models/file-data';
 import withReplaceView from '../with-replace-view';
 import platform from '../../platform';
@@ -43,18 +42,13 @@ const isBrowserPlatform = platform.isType('browser');
  */
 export default class FileListItem extends Component {
     /**
-     * 获取 FileListItem 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<FileListItem>}
-     * @readonly
+     * FileListItem 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof FileListItem
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {FileListItem} from './file-list-item';
-     * <FileListItem />
      */
-    static get FileListItem() {
-        return replaceViews('common/file-list-item', FileListItem);
-    }
+    static replaceViewPath = 'common/FileListItem';
 
     /**
      * React 组件属性类型检查

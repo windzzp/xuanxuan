@@ -2,8 +2,15 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ExtsView from 'ExtsView';
 import ROUTES from '../common/routes';
-import {ChatsIndex} from '../chats';
-import replaceViews from '../replace-views';
+import _ChatsIndex from '../chats';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatsIndex 可替换组件形式
+ * @type {Class<ChatsIndex>}
+ * @private
+ */
+const ChatsIndex = withReplaceView(_ChatsIndex);
 
 /**
  * 主界面视图路由清单
@@ -30,18 +37,13 @@ if (ExtsView) {
  */
 export default class CacheContainer extends Component {
     /**
-     * 获取 CacheContainer 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<CacheContainer>}
-     * @readonly
+     * CacheContainer 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof CacheContainer
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {CacheContainer} from './cache-container';
-     * <CacheContainer />
      */
-    static get CacheContainer() {
-        return replaceViews('main/cache-container', CacheContainer);
-    }
+    static replaceViewPath = 'main/CacheContainer';
 
     /**
      * React 组件属性类型检查

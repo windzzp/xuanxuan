@@ -9,10 +9,16 @@ import App from '../../core';
 import ROUTES from '../common/routes';
 import UserSettingDialog from '../common/user-setting-dialog';
 import _UserAvatar from '../common/user-avatar';
-import {StatusDot} from '../common/status-dot';
-import {UserMenu} from './user-menu';
-import replaceViews from '../replace-views';
+import _StatusDot from '../common/status-dot';
+import _UserMenu from './user-menu';
 import withReplaceView from '../with-replace-view';
+
+/**
+ * UserMenu 可替换组件形式
+ * @type {Class<UserMenu>}
+ * @private
+ */
+const UserMenu = withReplaceView(_UserMenu);
 
 /**
  * UserAvatar 可替换组件形式
@@ -20,6 +26,13 @@ import withReplaceView from '../with-replace-view';
  * @private
  */
 const UserAvatar = withReplaceView(_UserAvatar);
+
+/**
+ * StatusDot 可替换组件形式
+ * @type {Class<StatusDot>}
+ * @private
+ */
+const StatusDot = withReplaceView(_StatusDot);
 
 /**
  * 渲染导航条目
@@ -48,18 +61,13 @@ const NavLink = ({item}) => (
  */
 export default class Navbar extends Component {
     /**
-     * 获取 Navbar 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<Navbar>}
-     * @readonly
+     * Navbar 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof Navbar
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {Navbar} from './navbar';
-     * <Navbar />
      */
-    static get Navbar() {
-        return replaceViews('main/navbar', Navbar);
-    }
+    static replaceViewPath = 'main/Navbar';
 
     /**
      * React 组件属性类型检查

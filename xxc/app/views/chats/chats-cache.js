@@ -2,8 +2,15 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
-import {ChatView} from './chat-view';
-import replaceViews from '../replace-views';
+import _ChatView from './chat-view';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatView 可替换组件形式
+ * @type {Class<ChatView>}
+ * @private
+ */
+const ChatView = withReplaceView(_ChatView);
 
 /**
  * ChatsCache 组件 ，显示聊天缓存管理容器
@@ -16,18 +23,13 @@ import replaceViews from '../replace-views';
  */
 export default class ChatsCache extends Component {
     /**
-     * 获取 ChatsCache 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatsCache>}
-     * @readonly
+     * ChatsCache 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatsCache
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatsCache} from './chats-cache';
-     * <ChatsCache />
      */
-    static get ChatsCache() {
-        return replaceViews('chats/chat-caches', ChatsCache);
-    }
+    static replaceViewPath = 'chats/ChatsCache';
 
     /**
      * React 组件属性类型检查

@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import Config, {getSpecialVersionName} from '../../config';
 import DateHelper from '../../utils/date-helper';
-import replaceViews from '../replace-views';
 import platform from '../../platform';
 
 /**
@@ -22,18 +21,13 @@ const PKG = Config.pkg;
  */
 export default class BuildInfo extends PureComponent {
     /**
-     * 获取 BuildInfo 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<BuildInfo>}
-     * @readonly
+     * BuildInfo 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof BuildInfo
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {BuildInfo} from './build-info';
-     * <BuildInfo />
      */
-    static get BuildInfo() {
-        return replaceViews('common/build-info', BuildInfo);
-    }
+    static replaceViewPath = 'common/BuildInfo';
 
     /**
      * 处理点击事件

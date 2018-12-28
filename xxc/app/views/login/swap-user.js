@@ -4,9 +4,16 @@ import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import Lang from '../../core/lang';
 import User from '../../core/profile/user';
-import {UserListItem} from '../common/user-list-item';
-import replaceViews from '../replace-views';
+import _UserListItem from '../common/user-list-item';
 import {getUserListFromStore, removeUserFromStore} from '../../core/profile/user-store';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * UserListItem 可替换组件形式
+ * @type {Class<UserListItem>}
+ * @private
+ */
+const UserListItem = withReplaceView(_UserListItem);
 
 /**
  * SwapUser 组件 ，显示切换用户界面
@@ -19,18 +26,13 @@ import {getUserListFromStore, removeUserFromStore} from '../../core/profile/user
  */
 export default class SwapUser extends Component {
     /**
-     * 获取 SwapUser 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<SwapUser>}
-     * @readonly
+     * SwapUser 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof SwapUser
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {SwapUser} from './swap-user';
-     * <SwapUser />
      */
-    static get SwapUser() {
-        return replaceViews('login/swap-user', SwapUser);
-    }
+    static replaceViewPath = 'login/SwapUser';
 
     /**
      * React 组件属性类型检查

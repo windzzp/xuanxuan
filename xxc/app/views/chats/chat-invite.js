@@ -6,9 +6,16 @@ import SearchControl from '../../components/search-control';
 import Messager from '../../components/messager';
 import Lang from '../../core/lang';
 import App from '../../core';
-import {MemberList} from '../common/member-list';
+import _MemberList from '../common/member-list';
 import ROUTES from '../common/routes';
-import replaceViews from '../replace-views';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * MemberList 可替换组件形式
+ * @type {Class<MemberList>}
+ * @private
+ */
+const MemberList = withReplaceView(_MemberList);
 
 /**
  * ChatInvite 组件 ，显示邀请其他成员加入聊天界面
@@ -21,18 +28,13 @@ import replaceViews from '../replace-views';
  */
 export default class ChatInvite extends Component {
     /**
-     * 获取 ChatInvite 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatInvite>}
-     * @readonly
+     * ChatInvite 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatInvite
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatInvite} from './chat-invite';
-     * <ChatInvite />
      */
-    static get ChatInvite() {
-        return replaceViews('chats/chat-invite', ChatInvite);
-    }
+    static replaceViewPath = 'chats/ChatInvite';
 
     /**
      * React 组件属性类型检查

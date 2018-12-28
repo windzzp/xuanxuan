@@ -5,7 +5,6 @@ import App from '../../core';
 import Lang from '../../core/lang';
 import Emojione from '../../components/emojione';
 import ImageViewer from '../../components/image-viewer';
-import replaceViews from '../replace-views';
 import ImageHolder from '../../components/image-holder';
 import FileData from '../../core/models/file-data';
 import {showContextMenu} from '../../core/context-menu';
@@ -29,18 +28,13 @@ const isBrowser = platform.isType('browser');
  */
 export default class MessageContentImage extends Component {
     /**
-     * 获取 MessageContentImage 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MessageContentImage>}
-     * @readonly
+     * MessageContentImage 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MessageContentImage
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MessageContentImage} from './message-content-image';
-     * <MessageContentImage />
      */
-    static get MessageContentImage() {
-        return replaceViews('chats/message-content-image', MessageContentImage);
-    }
+    static replaceViewPath = 'chats/MessageContentImage';
 
     /**
      * React 组件属性类型检查

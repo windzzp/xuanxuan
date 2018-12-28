@@ -2,10 +2,17 @@ import React, {Component} from 'react';
 import ReactChatView from 'react-chatview';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
-import {MessageListItem} from './message-list-item'; // eslint-disable-line
-import replaceViews from '../replace-views';
+import _MessageListItem from './message-list-item'; // eslint-disable-line
 import App from '../../core';
 import platform from '../../platform';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * MessageListItem 可替换组件形式
+ * @type {Class<MessageListItem>}
+ * @private
+ */
+const MessageListItem = withReplaceView(_MessageListItem);
 
 /**
  * 是否为浏览器平台
@@ -33,18 +40,13 @@ const isFirefox = isBrowser && window.navigator.userAgent.includes('Firefox');
  */
 export default class MessageList extends Component {
     /**
-     * 获取 MessageList 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MessageList>}
-     * @readonly
+     * MessageList 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MessageList
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MessageList} from './message-list';
-     * <MessageList />
      */
-    static get MessageList() {
-        return replaceViews('chats/message-list', MessageList);
-    }
+    static replaceViewPath = 'chats/MessageList';
 
     /**
      * React 组件属性类型检查

@@ -2,13 +2,28 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Config from '../../config';
 import {classes} from '../../utils/html-helper';
-import {LoginForm} from './form'; // eslint-disable-line
-import {BuildInfo} from '../common/build-info'; // eslint-disable-line
+import _LoginForm from './form'; // eslint-disable-line
+import _BuildInfo from '../common/build-info'; // eslint-disable-line
 import PoweredInfo from '../common/powered-info';
 import App from '../../core';
-import replaceViews from '../replace-views';
+import withReplaceView from '../with-replace-view';
 import pkg from '../../package.json';
 import AboutDialog from '../common/about-dialog';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * LoginForm 可替换组件形式
+ * @type {Class<LoginForm>}
+ * @private
+ */
+const LoginForm = withReplaceView(_LoginForm);
+
+/**
+ * UserAvatar 可替换组件形式
+ * @type {Class<UserAvatar>}
+ * @private
+ */
+const BuildInfo = withReplaceView(_BuildInfo);
 
 /**
  * LoginIndex 组件 ，显示登录界面
@@ -21,18 +36,13 @@ import AboutDialog from '../common/about-dialog';
  */
 export default class LoginIndex extends PureComponent {
     /**
-     * 获取 LoginIndex 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<LoginIndex>}
-     * @readonly
+     * LoginIndex 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof LoginIndex
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {LoginIndex} from './index';
-     * <LoginIndex />
      */
-    static get LoginIndex() {
-        return replaceViews('login/index', LoginIndex);
-    }
+    static replaceViewPath = 'login/LoginIndex';
 
     /**
      * React 组件默认属性

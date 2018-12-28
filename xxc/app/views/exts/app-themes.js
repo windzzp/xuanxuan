@@ -8,7 +8,6 @@ import Avatar from '../../components/avatar';
 import OpenedApp from '../../exts/opened-app';
 import Exts from '../../exts';
 import App from '../../core';
-import replaceViews from '../replace-views';
 import Skin from '../../utils/skin';
 
 /**
@@ -22,18 +21,13 @@ import Skin from '../../utils/skin';
  */
 export default class AppThemes extends PureComponent {
     /**
-     * 获取 AppThemes 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<AppThemes>}
-     * @readonly
+     * AppThemes 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof AppThemes
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {AppThemes} from './app-themes';
-     * <AppThemes />
      */
-    static get AppThemes() {
-        return replaceViews('exts/app-themes', AppThemes);
-    }
+    static replaceViewPath = 'exts/AppThemes';
 
     /**
      * React 组件属性类型检查

@@ -4,7 +4,6 @@ import {classes} from '../../utils/html-helper';
 import Avatar from '../../components/avatar';
 import App from '../../core';
 import StringHelper from '../../utils/string-helper';
-import replaceViews from '../replace-views';
 import Config from '../../config';
 
 /**
@@ -18,18 +17,13 @@ import Config from '../../config';
  */
 export default class MessageBroadcast extends Component {
     /**
-     * 获取 MessageBroadcast 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MessageBroadcast>}
-     * @readonly
+     * MessageBroadcast 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MessageBroadcast
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MessageBroadcast} from './message-broadcast';
-     * <MessageBroadcast />
      */
-    static get MessageBroadcast() {
-        return replaceViews('chats/message-broadcast', MessageBroadcast);
-    }
+    static replaceViewPath = 'chats/MessageBroadcast';
 
     /**
      * React 组件属性类型检查
