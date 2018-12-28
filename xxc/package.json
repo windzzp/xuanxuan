@@ -46,7 +46,7 @@
     "url": "https://github.com/easysoft/xuanxuan.git"
   },
   "author": {
-    "name": "青岛易软天创网络科技有限公司",
+    "name": "easysoft",
     "email": "sunhao@cnezsoft.com"
   },
   "license": "ZPL 1.2",
@@ -62,7 +62,7 @@
     "react-hot"
   ],
   "homepage": "http://xuan.im",
-  "company": "青岛易软天创网络科技有限公司",
+  "company": "QingDao Nature Easy Soft Network Technology Co,LTD.",
   "devDependencies": {
     "archiver": "^3.0.0",
     "asar": "^0.14.3",
