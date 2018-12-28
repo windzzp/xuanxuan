@@ -838,6 +838,13 @@ addContextMenuCreator('message.text', ({message}) => {
             }
         });
     }
+    items.push({
+        label: Lang.string('chat.share'),
+        icon: 'mdi-share-outline',
+        click: () => {
+            ChatShareDialog.show(message);
+        }
+    })
     return items;
 });
 
