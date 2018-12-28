@@ -104,7 +104,7 @@ export default class MenuSearchList extends Component {
     componentDidMount() {
         hotkeys('up', 'chatsMenuSearch', e => {
             const {chats, selectIndex} = this;
-            const length = chats.length;
+            const {length} = chats;
             if (length > 1) {
                 this.setState({select: chats[((selectIndex - 1) + length) % length]});
             } else if (length) {
@@ -114,7 +114,7 @@ export default class MenuSearchList extends Component {
         });
         hotkeys('down', 'chatsMenuSearch', e => {
             const {chats, selectIndex} = this;
-            const length = chats.length;
+            const {length} = chats;
             if (length > 1) {
                 this.setState({select: chats[((selectIndex + 1) + length) % length]});
             } else if (length) {
@@ -124,15 +124,17 @@ export default class MenuSearchList extends Component {
         });
         hotkeys('enter', 'chatsMenuSearch', e => {
             const {select} = this;
-            if (this.props.onRequestClearSearch && select) {
-                window.location.hash = `#${ROUTES.chats.chat.id(select.gid, this.props.filter)}`;
-                this.props.onRequestClearSearch();
+            const {onRequestClearSearch, filter} = this.props;
+            if (onRequestClearSearch && select) {
+                window.location.hash = `#${ROUTES.chats.chat.id(select.gid, filter)}`;
+                onRequestClearSearch();
             }
             e.preventDefault();
         });
         hotkeys('esc', 'chatsMenuSearch', e => {
-            if (this.props.onRequestClearSearch) {
-                this.props.onRequestClearSearch();
+            const {onRequestClearSearch} = this.props;
+            if (onRequestClearSearch) {
+                onRequestClearSearch();
             }
             e.preventDefault();
         });
@@ -150,7 +152,8 @@ export default class MenuSearchList extends Component {
      * @todo 考虑使用 `UNSAFE_componentWillReceiveProps` 替换 `componentWillReceiveProps`
      */
     componentWillReceiveProps(nextProps) {
-        if (nextProps.search !== this.props.search) {
+        const {search} = this.props;
+        if (nextProps.search !== search) {
             this.setState({select: ''});
         }
     }
@@ -178,10 +181,11 @@ export default class MenuSearchList extends Component {
      */
     handleItemContextMenu = event => {
         const chat = App.im.chats.get(event.currentTarget.attributes['data-gid'].value);
+        const {filter} = this.props;
         showContextMenu('chat.menu', {
             event,
             chat,
-            menuType: this.props.filter,
+            menuType: filter,
             viewType: ''
         });
     };
@@ -240,9 +244,11 @@ export default class MenuSearchList extends Component {
             listViews.push(<ListItem key="showMore" icon="chevron-double-down" className="flex-middle item muted" title={<span className="title small">{Lang.format('common.clickShowMoreFormat', notShowCount)}</span>} onClick={this.handleRequestMorePage} />);
         }
 
-        return (<div className={classes('app-chats-menu-list list scroll-y', className)} {...other}>
-            {listViews}
-            {children}
-        </div>);
+        return (
+            <div className={classes('app-chats-menu-list list scroll-y', className)} {...other}>
+                {listViews}
+                {children}
+            </div>
+        );
     }
 }
