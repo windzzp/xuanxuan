@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import SearchControl from '../../components/search-control';
 import Icon from '../../components/icon';
 import Button from '../../components/button';
@@ -10,18 +10,6 @@ import OpenedApp from '../../exts/opened-app';
 import App from '../../core';
 import {ExtensionListItem} from './extension-list-item';
 import replaceViews from '../replace-views';
-
-/**
- * 扩展类型表
- * @type {{type: string, label:string}[]}
- * @private
- */
-const extensionTypes = [
-    {type: '', label: Lang.string('ext.extensions.all')},
-    {type: 'app', label: Lang.string('ext.extensions.apps')},
-    {type: 'plugin', label: Lang.string('ext.extensions.plugins')},
-    {type: 'theme', label: Lang.string('ext.extensions.themes')},
-];
 
 /**
  * AppExtensions 组件 ，显示“应用”扩展界面
@@ -230,6 +218,18 @@ export default class AppExtensions extends Component {
         const {search, type} = this.state;
         const extensions = search ? Exts.all.search(search, type) : Exts.all.getTypeList(type);
         const needRestartExts = extensions && extensions.filter(x => x.needRestart);
+
+        /**
+         * 扩展类型表
+         * @type {{type: string, label:string}[]}
+         * @private
+         */
+        const extensionTypes = [
+            {type: '', label: Lang.string('ext.extensions.all')},
+            {type: 'app', label: Lang.string('ext.extensions.apps')},
+            {type: 'plugin', label: Lang.string('ext.extensions.plugins')},
+            {type: 'theme', label: Lang.string('ext.extensions.themes')},
+        ];
 
         return (<div className={HTML.classes('app-ext-extensions dock column single', className)}>
             <header className="app-ext-extensions-header app-ext-common-header has-padding heading divider flex-none">

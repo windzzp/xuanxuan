@@ -12,9 +12,9 @@ import hotkeys from 'hotkeys-js';
 import pinyin from 'pinyin';
 import uuid from 'uuid';
 import HTMLParser from 'htmlparser';
-import platform from 'Platform';
+import platform from '../platform';
 import components from '../components';
-import lang from '../lang';
+import lang from '../core/lang';
 import utils from '../utils';
 import app from '../core';
 import views from '../views/external';
@@ -30,7 +30,7 @@ const nodeModules = {
     EmojionePicker,
     marked,
     md5,
-    fs: platform.fs,
+    fs: platform.access('fs'),
     extractZip,
     emojione,
     DraftJs,

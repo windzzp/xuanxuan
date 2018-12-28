@@ -6,7 +6,7 @@ import Avatar from '../../components/avatar';
 import Button from '../../components/button';
 import Icon from '../../components/icon';
 import Spinner from '../../components/spinner';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import Exts from '../../exts';
 import Markdown from '../../utils/markdown';
 import Emojione from '../../components/emojione';

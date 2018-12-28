@@ -809,6 +809,11 @@
       outline: fade(@color-primary, 20%) (3*@rem) solid;
       outline-offset: (4*@rem);
     }
+
+    .iconbutton {
+      height: (28*@rem);
+      line-height: (26*@rem);
+    }
   }
 
   &[data-name] {
@@ -853,7 +858,7 @@
   display: inline-flex;
   flex-direction: column;
   margin: @space-xs 0;
-  min-width: (300*@rem);
+  min-width: (200*@rem);
   max-width: (800*@rem);
   margin-right: (30*@rem);
 
@@ -1069,6 +1074,30 @@
 
   &.only-title {
     header > hgroup > h4 {font-size: (14*@rem);}
+  }
+}
+
+.webview.is-loading {
+  position: fixed!important;
+  bottom: -1000%;
+  left: -1000%;
+  visibility: hidden;
+}
+.webview-loading {
+  .app-message-card & {width: (300*@rem);}
+  padding: (40*@rem);
+  .content {max-width: 100%;}
+}
+.app-web-app,
+.webview-frame {
+  .webview-loading {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    &:after {display: none;}
+    .content {text-align: center;}
   }
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from '../../components/modal';
 import ChatAddCategory from './chat-add-category';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import {setChatCategory} from '../../core/im/im-server';
 
 const showChatAddCategoryDialog = (chat, callback) => {

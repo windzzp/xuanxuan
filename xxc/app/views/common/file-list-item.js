@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Platform from 'Platform';
 import {classes} from '../../utils/html-helper';
 import getFileIcon from '../../utils/mdi-file-icon';
 import {formatBytes} from '../../utils/string-helper';
@@ -8,12 +7,16 @@ import {formatDate} from '../../utils/date-helper';
 import Icon from '../../components/icon';
 import Avatar from '../../components/avatar';
 import Messager from '../../components/messager';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import _UserAvatar from './user-avatar';
 import replaceViews from '../replace-views';
 import FileData from '../../core/models/file-data';
 import withReplaceView from '../with-replace-view';
+import platform from '../../platform';
+
+// 从平台功能访问对象获取功能模块对象
+const {dialog, ui: platformUI} = platform.modules;
 
 /**
  * UserAvatar 可替换组件形式
@@ -27,7 +30,7 @@ const UserAvatar = withReplaceView(_UserAvatar);
  * @type {boolean}
  * @private
  */
-const isBrowserPlatform = Platform.type === 'browser';
+const isBrowserPlatform = platform.isType('browser');
 
 /**
  * FileListItem 组件 ，显示文件列表条目界面
@@ -174,8 +177,11 @@ export default class FileListItem extends Component {
      * @return {void}
      */
     handleDownloadBtnClick(file) {
-        if (Platform.dialog.showSaveDialog) {
-            Platform.dialog.showSaveDialog({filename: file.name}, filename => {
+        if (dialog.showSaveDialog) {
+            dialog.showSaveDialog({
+                title: Lang.string('dialog.fileSaveTo'),
+                filename: file.name
+            }, filename => {
                 if (filename) {
                     file.path = filename;
                     this.setState({download: 0});
@@ -187,12 +193,12 @@ export default class FileListItem extends Component {
                             actions: [{
                                 label: Lang.string('file.open'),
                                 click: () => {
-                                    Platform.ui.openFileItem(filename);
+                                    platformUI.openFileItem(filename);
                                 }
                             }, {
                                 label: Lang.string('file.openFolder'),
                                 click: () => {
-                                    Platform.ui.showItemInFolder(filename);
+                                    platformUI.showItemInFolder(filename);
                                 }
                             }]
                         });
@@ -247,8 +253,8 @@ export default class FileListItem extends Component {
                     actions = <Avatar className="avatar secondary outline small circle" label={`${Math.floor(download)}%`} />;
                 } else if (localPath) {
                     actions = [
-                        <div key="action-open" className="hint--top" data-hint={Lang.string('file.open')}><button onClick={Platform.ui.openFileItem.bind(this, localPath)} type="button" className="btn iconbutton text-primary rounded"><Icon name="open-in-app" /></button></div>,
-                        <div key="action-open-folder" className="hint--top-left" data-hint={Lang.string('file.openFolder')}><button onClick={Platform.ui.showItemInFolder.bind(this, localPath)} type="button" className="btn iconbutton text-primary rounded"><Icon name="folder-outline" /></button></div>,
+                        <div key="action-open" className="hint--top" data-hint={Lang.string('file.open')}><button onClick={platformUI.openFileItem.bind(this, localPath)} type="button" className="btn iconbutton text-primary rounded"><Icon name="open-in-app" /></button></div>,
+                        <div key="action-open-folder" className="hint--top-left" data-hint={Lang.string('file.openFolder')}><button onClick={platformUI.showItemInFolder.bind(this, localPath)} type="button" className="btn iconbutton text-primary rounded"><Icon name="folder-outline" /></button></div>,
                         <div key="action-download" className="hint--top" data-hint={Lang.string('file.download')}><button onClick={this.handleDownloadBtnClick.bind(this, file)} type="button" className="btn iconbutton text-primary rounded"><Icon name="download" /></button></div>
                     ];
                 } else {

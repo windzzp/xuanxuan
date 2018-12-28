@@ -23,7 +23,7 @@
     "comma-dangle": "off",
     "generator-star-spacing": "off",
     "import/no-extraneous-dependencies": "off",
-    "prefer-destructuring": ["warn", {"VariableDeclarator": true, "AssignmentExpression": false}],
+    "prefer-destructuring": ["warn", {"array": false, "object": true}],
     "no-console": "off",
     "no-use-before-define": "off",
     "no-multi-assign": "off",

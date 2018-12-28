@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes, rem} from '../../utils/html-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import Icon from '../../components/icon';
 import Avatar from '../../components/avatar';

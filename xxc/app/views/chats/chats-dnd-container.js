@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import {formatBytes} from '../../utils/string-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import {checkUploadFileSize} from '../../core/network/api';
 import Emojione from '../../components/emojione';

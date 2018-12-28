@@ -1,5 +1,4 @@
 // eslint-disable-next-line import/no-unresolved
-import Platform from 'Platform';
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Config from '../../config';
@@ -7,7 +6,7 @@ import InputControl from '../../components/input-control';
 import Checkbox from '../../components/checkbox';
 import Modal from '../../components/modal';
 import Icon from '../../components/icon';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import {classes} from '../../utils/html-helper';
 import {isNotEmptyString} from '../../utils/string-helper';
 import App from '../../core';
@@ -15,6 +14,10 @@ import SwapUserDialog from './swap-user-dialog';
 import replaceViews from '../replace-views';
 import Button from '../../components/button';
 import User, {isPasswordWithMD5Flag} from '../../core/profile/user';
+import platform from '../../platform';
+
+// 从平台访问对象获取模块功能
+const {ui: platformUI} = platform.modules;
 
 /**
  * 将服务器地址转换为简单形式
@@ -147,8 +150,8 @@ export default class LoginForm extends PureComponent {
         state.submitable = isNotEmptyString(state.serverUrl) && isNotEmptyString(state.account) && isNotEmptyString(state.password);
 
         let denyAutoLogin = false;
-        if (Platform.ui.isMainWindow) {
-            denyAutoLogin = !Platform.ui.isMainWindow();
+        if (platformUI.isMainWindow) {
+            denyAutoLogin = !platformUI.isMainWindow();
         }
 
         /**
@@ -427,12 +430,12 @@ export default class LoginForm extends PureComponent {
      * @return {void}
      */
     handleSettingBtnClick = e => {
-        const isOpenAtLogin = Platform.ui.isOpenAtLogin();
+        const isOpenAtLogin = platformUI.isOpenAtLogin();
         App.ui.showContextMenu({x: e.clientX, y: e.clientY}, [{
             label: Lang.string('login.openAtLogin'),
             checked: isOpenAtLogin,
             click: () => {
-                Platform.ui.setOpenAtLogin(!isOpenAtLogin);
+                platformUI.setOpenAtLogin(!isOpenAtLogin);
             }
         }]);
     };
@@ -515,7 +518,7 @@ export default class LoginForm extends PureComponent {
                     <Checkbox disabled={logining} checked={rememberPassword} onChange={this.handleRememberPasswordChanged} className="cell" label={Lang.string('login.rememberPassword')} />
                     <Checkbox disabled={logining} checked={autoLogin} onChange={this.handleAutoLoginChanged} className="cell" label={Lang.string('login.autoLogin')} />
                     {Config.ui['login.ldap'] && <Checkbox disabled={logining} checked={ldap} onChange={this.handleLDAPChanged} className="cell" label={Lang.string('login.ldap')} />}
-                    {Platform.ui.isOpenAtLogin ? <div data-hint={Lang.string('login.moreLoginSettings')} className="hint--top"><Button className="iconbutton rounded" icon="settings-box" onClick={this.handleSettingBtnClick} /></div> : null}
+                    {platformUI.isOpenAtLogin ? <div data-hint={Lang.string('login.moreLoginSettings')} className="hint--top"><Button className="iconbutton rounded" icon="settings-box" onClick={this.handleSettingBtnClick} /></div> : null}
                 </div>
             </div>
         );

@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Config from '../../config';
 import {classes} from '../../utils/html-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import {BuildInfo} from './build-info'; // eslint-disable-line
 import PoweredInfo from './powered-info';
 import replaceViews from '../replace-views';

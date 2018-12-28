@@ -1,31 +1,32 @@
 // eslint-disable-next-line import/no-unresolved
-import Platform from 'Platform';
 import Path from 'path';
-import {defaultApp, getAppExt} from './exts';
+import {getDefaultApp, getAppExt} from './exts';
 import OpenedApp from './opened-app';
-import Lang from '../lang';
+import Lang from '../core/lang';
 import {
     setExtensionDisabled, openInstallExtensionDialog, uninstallExtension, saveExtensionData,
 } from './manager';
 import Modal from '../components/modal';
 import Messager from '../components/messager';
 import ExtensionDetailDialog from '../views/exts/extension-detail-dialog';
+import platform from '../platform';
+
+// 从平台功能访问对象获取功能模块对象
+const {clipboard, ui: platformUI} = platform.modules;
 
 /**
  * 默认打开的应用
  * @type {OpenedApp}
  * @private
  */
-const defaultOpenedApp = new OpenedApp(defaultApp);
+let defaultOpenedApp = null;
 
 /**
  * 已打开的应用清单
  * @type {OpenedApp[]}
  * @private
  */
-const openedApps = [
-    defaultOpenedApp,
-];
+const openedApps = [];
 
 /**
  * 获取已打开的应用清单
@@ -46,7 +47,7 @@ export const isDefaultOpenedApp = id => id === defaultOpenedApp.id;
  * @returns {boolean} 如果返回 `true` 则为已经打开，否则为没有打开
  * @private
  */
-const isAppOpen = appNameOrID => openedApps.find(x => x.id === appNameOrID || x.app.name === appNameOrID);
+export const isAppOpen = appNameOrID => openedApps.find(x => x.id === appNameOrID || x.app.name === appNameOrID);
 
 /**
  * 查找打开的应用
@@ -343,7 +344,7 @@ export const createSettingContextMenu = extension => {
 export const showDevFolder = extension => {
     const {localPath} = extension;
     if (localPath) {
-        Platform.ui.showItemInFolder(Path.join(localPath, 'package.json'));
+        platformUI.showItemInFolder(Path.join(localPath, 'package.json'));
         return true;
     }
     return false;
@@ -365,9 +366,10 @@ export const createAppContextMenu = appExt => {
     if (appExt.webViewUrl && !appExt.isLocalWebView) {
         items.push({
             label: Lang.string('ext.app.openInBrowser'),
-            click: () => {
-                Platform.ui.openExternal(appExt.webViewUrl);
-            }
+            click: () => appExt.getEntryUrl().then(url => {
+                platformUI.openExternal(url);
+                return url;
+            })
         });
     }
 
@@ -453,7 +455,7 @@ export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
                         return url;
                     });
                 }
-            }
+            },
         });
     }
     if (theOpenedApp.id !== defaultOpenedApp.id) {
@@ -478,9 +480,21 @@ export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
         items.push({
             label: Lang.string('ext.app.openInBrowser'),
             click: () => {
-                Platform.ui.openExternal(appExt.webViewUrl);
+                const currentUrl = theOpenedApp.webview && theOpenedApp.webview.src;
+                return appExt.getEntryUrl(currentUrl).then(url => {
+                    platformUI.openExternal(url);
+                    return url;
+                });
             }
         });
+        if (theOpenedApp.webview && clipboard && clipboard.writeText) {
+            items.push({
+                label: Lang.string('ext.app.copyUrl'),
+                click: () => {
+                    clipboard.writeText(theOpenedApp.webview.src || appExt.webViewUrl);
+                },
+            });
+        }
     }
 
     if (appExt.canPinnedOnMenu) {
@@ -510,6 +524,12 @@ export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
     return items;
 };
 
+/**
+ * 创建导航上的应用上下文菜单项
+ * @param {AppExtension} appExt 打开的应用
+ * @param {function} refreshUI 请求刷新界面的回调函数
+ * @return {Object[]} 上下文菜单项清单
+ */
 export const createNavbarAppContextMenu = (appExt, refreshUI) => {
     const theOpenedApp = getOpenedApp(appExt.name);
     const items = [];
@@ -536,6 +556,15 @@ export const createNavbarAppContextMenu = (appExt, refreshUI) => {
         items.push(...createAppContextMenu(appExt));
     }
     return items;
+};
+
+/**
+ * 初始化扩展界面功能
+ * @return {void}
+ */
+export const initUI = () => {
+    defaultOpenedApp = new OpenedApp(getDefaultApp());
+    openedApps.push(defaultOpenedApp);
 };
 
 export default {

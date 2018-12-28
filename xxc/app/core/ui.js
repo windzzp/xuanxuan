@@ -1,4 +1,3 @@
-import Platform from 'Platform'; // eslint-disable-line
 import Config from '../config'; // eslint-disable-line
 import Server from './server';
 import MemberProfileDialog from '../views/common/member-profile-dialog';
@@ -6,7 +5,7 @@ import Messager from '../components/messager';
 import ContextMenu from '../components/context-menu';
 import modal from '../components/modal';
 import {isWebUrl, getSearchParam} from '../utils/html-helper';
-import Lang from '../lang';
+import Lang, {onLangChange} from './lang';
 import events from './events';
 import profile from './profile';
 import Notice from './notice';
@@ -15,6 +14,35 @@ import Store from '../utils/store';
 import {executeCommandLine, registerCommand, executeCommand} from './commander';
 import WebViewDialog from '../views/common/webview-dialog';
 import {addContextMenuCreator, showContextMenu} from './context-menu';
+import platform from '../platform';
+
+/**
+ * 平台提供的剪切板功能访问对象
+ * @type {Object}
+ * @private
+ */
+const clipboard = platform.access('clipboard');
+
+/**
+ * 平台提供的快捷键功能访问对象
+ * @type {Object}
+ * @private
+ */
+const shortcut = platform.access('shortcut');
+
+/**
+ * 平台提供的对话框功能访问对象
+ * @type {Object}
+ * @private
+ */
+const dialog = platform.access('dialog');
+
+/**
+ * 平台提供的通用界面交互访问对象
+ * @type {Object}
+ * @private
+ */
+const platformUI = platform.access('ui');
 
 /**
  * 事件表
@@ -37,33 +65,33 @@ addContextMenuCreator('image', ({url, dataType}) => {
             ImageViewer.show(url);
         }
     }];
-    if (Platform.clipboard && Platform.clipboard.writeImageFromUrl) {
+    if (clipboard && clipboard.writeImageFromUrl) {
         items.push({
             label: Lang.string('menu.image.copy'),
             click: () => {
-                Platform.clipboard.writeImageFromUrl(url, dataType);
+                clipboard.writeImageFromUrl(url, dataType);
             }
         });
     }
-    if (Platform.dialog && Platform.dialog.saveAsImageFromUrl) {
+    if (dialog && dialog.saveAsImageFromUrl) {
         items.push({
             label: Lang.string('menu.image.saveAs'),
             click: () => {
                 if (url.startsWith('file://')) {
                     url = url.substr(7);
                 }
-                return Platform.dialog.saveAsImageFromUrl(url, dataType).then(filename => {
+                return dialog.saveAsImageFromUrl(url, dataType).then(filename => {
                     if (filename) {
                         Messager.show(Lang.format('file.fileSavedAt.format', filename), {
-                            actions: Platform.ui.openFileItem ? [{
+                            actions: platformUI.openFileItem ? [{
                                 label: Lang.string('file.open'),
                                 click: () => {
-                                    Platform.ui.openFileItem(filename);
+                                    platformUI.openFileItem(filename);
                                 }
                             }, {
                                 label: Lang.string('file.openFolder'),
                                 click: () => {
-                                    Platform.ui.showItemInFolder(filename);
+                                    platformUI.showItemInFolder(filename);
                                 }
                             }] : null
                         });
@@ -72,14 +100,14 @@ addContextMenuCreator('image', ({url, dataType}) => {
             }
         });
     }
-    if (Platform.ui.openFileItem && dataType !== 'base64') {
+    if (platformUI.openFileItem && dataType !== 'base64') {
         items.push({
             label: Lang.string('menu.image.open'),
             click: () => {
                 if (url.startsWith('file://')) {
                     url = url.substr(7);
                 }
-                Platform.ui.openFileItem(url);
+                platformUI.openFileItem(url);
             }
         });
     }
@@ -99,7 +127,8 @@ addContextMenuCreator('member', ({member}) => {
 
 // 注册打开成员资料对话框命令
 registerCommand('showMemberProfile', (context, memberId) => {
-    memberId = memberId || context.options.memberId;
+    const {options} = context;
+    memberId = memberId || options.memberId;
     MemberProfileDialog.show(memberId);
 });
 
@@ -136,17 +165,17 @@ onAppLinkClick('Member', target => {
  * @private
  */
 let clearCopyCodeTip = null;
-if (Platform.clipboard && Platform.clipboard.writeText) {
+if (clipboard && clipboard.writeText) {
     // 注册处理拷贝代码命令
     registerCommand('copyCode', context => {
-        const element = context.targetElement;
+        const {targetElement: element} = context;
         if (element) {
             if (clearCopyCodeTip) {
                 clearTimeout(clearCopyCodeTip);
                 clearCopyCodeTip = null;
             }
             const code = element.nextElementSibling.innerText;
-            Platform.clipboard.writeText(code);
+            clipboard.writeText(code);
             element.setAttribute('data-hint', Lang.string('common.copied'));
             element.classList.add('hint--success');
             clearCopyCodeTip = setTimeout(() => {
@@ -201,7 +230,7 @@ Server.onUserLogout((user, code, reason, unexpected) => {
 });
 
 // 为 `<body>` 添加操作系统辅助类，例如 `'os-mac'` 或 `'os-win'`
-document.body.classList.add(`os-${Platform.env.os}`);
+document.body.classList.add(`os-${platform.access('env.os')}`);
 
 /**
  * 在扩展应用中功能打开链接
@@ -227,10 +256,10 @@ export const openUrlInDialog = (url, options, callback) => {
 
 // 注册在对话框中打开链接命令
 registerCommand('openUrlInDialog', (context, url) => {
-    if (!url && context.options && context.options.url) {
-        url = context.options.url;
+    const {options} = context;
+    if (!url && options && options.url) {
+        url = options.url;
     }
-    const options = context.options;
     if (url) {
         openUrlInDialog(url, options);
         return true;
@@ -262,7 +291,7 @@ registerCommand('#', (context, ...params) => {
  * @return {void}
  */
 export const openUrlInBrowser = url => {
-    return Platform.ui.openExternal(url);
+    return platformUI.openExternal(url);
 };
 
 // 注册在系统默认浏览器中打开链接命令
@@ -411,17 +440,17 @@ window.ondrop = e => {
 };
 
 // 如果平台支持自主处理退出策略则询问用户如何退出
-if (Platform.ui.onRequestQuit) {
-    Platform.ui.onRequestQuit(closeReason => {
+if (platformUI.onRequestQuit) {
+    platformUI.onRequestQuit(closeReason => {
         if (closeReason !== 'quit') {
             const user = profile.user;
             if (user && !user.isUnverified) {
                 const appCloseOption = user.config.appCloseOption;
-                if (appCloseOption === 'minimize' || !Platform.ui.showQuitConfirmDialog) {
-                    Platform.ui.hideWindow();
+                if (appCloseOption === 'minimize' || !platformUI.showQuitConfirmDialog) {
+                    platformUI.hideWindow();
                     return false;
-                } else if (appCloseOption !== 'close' && Platform.ui.showQuitConfirmDialog) {
-                    Platform.ui.showQuitConfirmDialog((result, checked) => {
+                } else if (appCloseOption !== 'close' && platformUI.showQuitConfirmDialog) {
+                    platformUI.showQuitConfirmDialog(Lang.string('dialog.appClose.title'), Lang.string('dialog.appClose.rememberOption'), [Lang.string('dialog.appClose.minimizeMainWindow'), Lang.string('dialog.appClose.quitApp'), Lang.string('dialog.appClose.cancelAction')], (result, checked) => {
                         if (checked && result) {
                             user.config.appCloseOption = result;
                         }
@@ -444,12 +473,12 @@ if (Platform.ui.onRequestQuit) {
  * @type {function}
  */
 let _quit = null;
-if (Platform.ui.quit) {
+if (platformUI.quit) {
     _quit = (delay = 1000, ignoreListener = true) => {
         if (ignoreListener) {
             Server.logout();
         }
-        Platform.ui.quit(delay, ignoreListener);
+        platformUI.quit(delay, ignoreListener);
     };
 }
 
@@ -460,21 +489,21 @@ if (Platform.ui.quit) {
 export const quit = _quit;
 
 // 监听应用窗口最小化事件
-if (Platform.ui.onWindowMinimize) {
-    Platform.ui.onWindowMinimize(() => {
+if (platformUI.onWindowMinimize) {
+    platformUI.onWindowMinimize(() => {
         const {userConfig} = profile;
         if (userConfig && userConfig.removeFromTaskbarOnHide) {
-            Platform.ui.setShowInTaskbar(false);
+            platformUI.setShowInTaskbar(false);
         }
     });
 }
 
 // 监听应用窗口失去焦点事件
-if (Platform.ui.onWindowBlur && Platform.ui.hideWindow) {
-    Platform.ui.onWindowBlur(() => {
+if (platformUI.onWindowBlur && platformUI.hideWindow) {
+    platformUI.onWindowBlur(() => {
         const {userConfig} = profile;
         if (userConfig && userConfig.hideWindowOnBlur) {
-            Platform.ui.hideWindow();
+            platformUI.hideWindow();
         }
     });
 }
@@ -489,14 +518,14 @@ export const reloadWindow = () => {
             Server.logout();
             setTimeout(() => {
                 Store.set('autoLoginNextTime', true);
-                if (Platform.ui.reloadWindow) {
-                    Platform.ui.reloadWindow();
+                if (platformUI.reloadWindow) {
+                    platformUI.reloadWindow();
                 } else {
                     window.location.reload();
                 }
             }, 1000);
         }
-        return Promise.resolve(confirm);
+        return Promise.resolve(confirmed);
     });
 };
 
@@ -544,9 +573,6 @@ export const setTitle = title => {
     document.title = title;
 };
 
-// 设置默认标题
-setTitle(Lang.string('app.title'));
-
 /**
  * 浏览器地址解析缓存
  * @private
@@ -577,7 +603,7 @@ export const getUrlMeta = (url, disableCache = false) => {
             return Promise.resolve(urlMetaCache.meta);
         }
     }
-    if (Platform.ui.getUrlMeta) {
+    if (platformUI.getUrlMeta) {
         let extInspector = null;
         if (global.ExtsRuntime) {
             extInspector = global.ExtsRuntime.getUrlInspector(url);
@@ -601,7 +627,7 @@ export const getUrlMeta = (url, disableCache = false) => {
                 return Promise.resolve(cardMeta);
             });
         }
-        return getUrl().then(Platform.ui.getUrlMeta).then(meta => {
+        return getUrl().then(platformUI.getUrlMeta).then(meta => {
             const {favicon} = meta;
             let cardMeta = {
                 url,
@@ -691,7 +717,7 @@ let globalHotkeys = null;
  * @private
  */
 const registerShortcut = (loginUser, loginError) => {
-    if (!Platform.shortcut) {
+    if (!shortcut) {
         return;
     }
     if (loginError) {
@@ -702,7 +728,7 @@ const registerShortcut = (loginUser, loginError) => {
         // eslint-disable-next-line prefer-destructuring
         globalHotkeys = userConfig.globalHotkeys;
         Object.keys(globalHotkeys).forEach(name => {
-            Platform.shortcut.registerGlobalShortcut(name, globalHotkeys[name], () => {
+            shortcut.registerGlobalShortcut(name, globalHotkeys[name], () => {
                 if (!isGlobalShortcutDisabled) {
                     executeCommandLine(`shortcut.${name}`);
                 } else if (DEBUG) {
@@ -719,19 +745,19 @@ const registerShortcut = (loginUser, loginError) => {
  * @private
  */
 const unregisterGlobalShortcut = () => {
-    if (!Platform.shortcut) {
+    if (!shortcut) {
         return;
     }
     if (globalHotkeys) {
         Object.keys(globalHotkeys).forEach(name => {
-            Platform.shortcut.unregisterGlobalShortcut(name);
+            shortcut.unregisterGlobalShortcut(name);
         });
         globalHotkeys = null;
     }
 };
 
 profile.onUserConfigChange((change, config) => {
-    if (Platform.shortcut && change && Object.keys(change).some(x => x.startsWith('shortcut.'))) {
+    if (shortcut && change && Object.keys(change).some(x => x.startsWith('shortcut.'))) {
         registerShortcut();
     }
     if (config.needSave) {
@@ -740,16 +766,16 @@ profile.onUserConfigChange((change, config) => {
 });
 
 // // 处理全局快捷键注册和反注册
-if (Platform.shortcut) {
+if (shortcut) {
     Server.onUserLogin(registerShortcut);
     Server.onUserLogout(unregisterGlobalShortcut);
 
-    if (Platform.ui.showAndFocusWindow) {
+    if (platformUI.showAndFocusWindow) {
         registerCommand('shortcut.focusWindowHotkey', () => {
-            if (Platform.ui.hideWindow && Platform.ui.isWindowOpenAndFocus) {
-                Platform.ui.hideWindow();
+            if (platformUI.hideWindow && platformUI.isWindowOpenAndFocus) {
+                platformUI.hideWindow();
             } else {
-                Platform.ui.showAndFocusWindow();
+                platformUI.showAndFocusWindow();
             }
         });
     }
@@ -818,8 +844,8 @@ window.addEventListener('hashchange', () => {
     }
 }, false);
 
-if (Platform.ui.onRequestOpenUrl) {
-    Platform.ui.onRequestOpenUrl((e, url) => {
+if (platformUI.onRequestOpenUrl) {
+    platformUI.onRequestOpenUrl((e, url) => {
         openUrl(url);
     });
 }
@@ -833,11 +859,13 @@ registerCommand('updateViewStyle', (context, viewID, style) => {
         if (typeof style === 'string') {
             style = JSON.parse(style);
         }
-        if (style.width && typeof style.width === 'number') {
-            style.width = `${style.width}px`;
-        }
-        if (style.height && typeof style.height === 'number') {
-            style.height = `${style.height}px`;
+        if (style) {
+            if (style.width && typeof style.width === 'number') {
+                style.width = `${style.width}px`;
+            }
+            if (style.height && typeof style.height === 'number') {
+                style.height = `${style.height}px`;
+            }
         }
         events.emit(`${EVENT.update_view_style}.${viewID}`, style, context.options);
     }
@@ -860,10 +888,15 @@ export const requestUpdateViewStyle = (viewID, style) => {
  */
 export const onUpdateViewStyle = (viewID, listener) => events.on(`${EVENT.update_view_style}.${viewID}`, listener);
 
+onLangChange(() => {
+    // 设置默认标题
+    setTitle(Lang.string('app.title'));
+});
+
 export default {
     entryParams,
     get canQuit() {
-        return !!Platform.ui.quit;
+        return !!platformUI.quit;
     },
     isSmallScreen,
     showMobileChatsMenu,

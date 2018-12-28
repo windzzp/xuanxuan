@@ -2,7 +2,7 @@ import Entity from './entity';
 import Pinyin from '../../utils/pinyin';
 import Status from '../../utils/status';
 import {matchScore} from '../../utils/search-score';
-import Lang from '../../lang';
+import Lang from '../lang';
 
 /**
  * 搜索匹配分值表

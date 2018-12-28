@@ -1,22 +1,22 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types'; // eslint-disable-line
-import Platform from 'Platform';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import Emojione from '../../components/emojione';
 import ImageViewer from '../../components/image-viewer';
 import replaceViews from '../replace-views';
 import ImageHolder from '../../components/image-holder';
 import FileData from '../../core/models/file-data';
 import {showContextMenu} from '../../core/context-menu';
+import platform from '../../platform';
 
 /**
  * 当前是否为浏览器平台
  * @type {boolean}
  * @private
  */
-const isBrowser = Platform.type === 'browser';
+const isBrowser = platform.isType('browser');
 
 /**
  * MessageContentImage 组件 ，显示聊天消息图片内容界面
@@ -249,7 +249,9 @@ export default class MessageContentImage extends Component {
         const holderProps = {
             width: image.width,
             height: image.height,
-            alt: image.name
+            alt: image.name,
+            downloadFailMessage: Lang.string('file.downloadFailed'),
+            uploadFailMessage: Lang.string('file.uploadFailed'),
         };
         image = FileData.create(image);
 

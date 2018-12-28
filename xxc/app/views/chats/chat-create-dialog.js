@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from '../../components/modal';
 import {ChatCreateView} from './chat-create';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 
 /**
  * 显示创建聊天对话框

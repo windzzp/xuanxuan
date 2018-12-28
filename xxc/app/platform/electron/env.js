@@ -1,6 +1,21 @@
 import os from 'os';
 import {remote as Remote} from 'electron';
 import path from 'path';
+import {getSearchParam} from '../../utils/html-helper';
+
+
+/**
+ * 访问地址参数表
+ * @type {Map<string, string>}
+ * @private
+ */
+const urlParams = getSearchParam();
+
+/**
+ * 当前窗口名称
+ * @type {string}
+ */
+const windowName = urlParams._name;
 
 /**
  * 操作系统平台
@@ -77,5 +92,6 @@ export default {
     get appPath() {
         return path.resolve(Remote.app.getAppPath(), '..');
     },
-    appRoot: Remote.getGlobal('entryPath')
+    appRoot: Remote.getGlobal('entryPath'),
+    windowName,
 };

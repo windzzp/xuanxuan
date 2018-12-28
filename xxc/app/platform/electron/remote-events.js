@@ -8,4 +8,6 @@ export default {
     capture_screen: 'capture.screen',
     app_ready: 'app.ready',
     open_url: 'window.open_url',
+    remote_lang_change: 'remote.lang.change',
+    lang_change: 'app.lang.change',
 };

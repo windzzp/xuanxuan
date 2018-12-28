@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-unresolved
-import Platform from 'Platform';
 import {ifEmptyStringThen} from '../utils/string-helper';
 import {getSearchParam} from '../utils/html-helper';
+import platform from '../platform';
 
 /**
  * 用户打开的扩展应用类
@@ -221,8 +221,8 @@ export default class OpenedApp {
      * @param {Electron.Webview} webview Webview 对象
      */
     set webview(webview) {
-        if (!this._webview && Platform.webview) {
-            Platform.webview.initWebview(webview);
+        if (!this._webview) {
+            platform.call('webview.initWebview', webview);
         }
         this._webview = webview;
     }

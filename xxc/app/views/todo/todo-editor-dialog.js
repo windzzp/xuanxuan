@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from '../../components/modal';
 import TodoEditor from './todo-editer';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 
 /**
  * 显示待办编辑对话框

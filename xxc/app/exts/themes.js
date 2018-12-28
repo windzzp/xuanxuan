@@ -49,7 +49,6 @@ let theDefaultThemeStyle;
  */
 let themeLinkElement = null;
 
-
 if (process.env.HOT) {
     themeLinkElement = document.querySelector('link[href^="blob:"]');
     theDefaultThemeStyle = themeLinkElement.href;
@@ -123,11 +122,6 @@ export const applyTheme = theme => {
     }
 };
 
-// 获取当前设置的主题，如果有则应用主题
-if (getCurrentTheme()) {
-    applyTheme();
-}
-
 /**
  * 设置当前所使用的主题
  * @param {string|Theme} theme 要应用的主题名称或者主题对象，`'default'` 为应用默认主题
@@ -195,6 +189,17 @@ export const searchThemes = (keys) => {
     });
     result.sort((x, y) => y.score - x.score);
     return result;
+};
+
+/**
+ * 初始化扩展主题
+ * @return {void}
+ */
+export const initThemes = () => {
+    // 获取当前设置的主题，如果有则应用主题
+    if (getCurrentTheme()) {
+        applyTheme();
+    }
 };
 
 export default {

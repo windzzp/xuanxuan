@@ -1,5 +1,4 @@
 // eslint-disable-next-line import/no-unresolved
-import Platfrom from 'Platform';
 import Md5 from 'md5';
 import Member from '../models/member';
 import UserConfig from './user-config';
@@ -7,6 +6,7 @@ import DelayAction from '../../utils/delay-action';
 import {isSameDay, isToday} from '../../utils/date-helper';
 import events from '../events';
 import Config from '../../config';
+import {saveUserToStore} from './user-store';
 
 /**
  * 用户密码 MD5 存储前缀
@@ -99,7 +99,7 @@ export default class User extends Member {
          * @private
          */
         this.saveUserAction = new DelayAction(() => {
-            Platfrom.config.saveUser(this);
+            saveUserToStore(this);
         });
 
         /**

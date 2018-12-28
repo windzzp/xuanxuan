@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Icon from './icon';
 import Avatar from './avatar';
-import Lang from '../lang';
 import {classes} from '../utils/html-helper';
 
 /**
@@ -34,6 +33,8 @@ export default class ImageHolder extends PureComponent {
         loadingText: PropTypes.string,
         previewUrl: PropTypes.string,
         children: PropTypes.any,
+        downloadFailMessage: PropTypes.node,
+        uploadFailMessage: PropTypes.node,
     };
 
     /**
@@ -56,6 +57,8 @@ export default class ImageHolder extends PureComponent {
         loadingText: '',
         previewUrl: null,
         children: null,
+        downloadFailMessage: '',
+        uploadFailMessage: '',
     };
 
     /**
@@ -64,7 +67,7 @@ export default class ImageHolder extends PureComponent {
      * @see https://doc.react-china.org/docs/react-component.html#render
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof ImageHolder
-     * @return {ReactNode}
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
      */
     render() {
         let {
@@ -80,6 +83,8 @@ export default class ImageHolder extends PureComponent {
             loadingText,
             previewUrl,
             children,
+            downloadFailMessage,
+            uploadFailMessage,
             ...other
         } = this.props;
 
@@ -100,12 +105,12 @@ export default class ImageHolder extends PureComponent {
         };
 
         if (status === 'broken') {
-            return <Avatar className="avatar-xl warning-pale text-warning app-message-image-placeholder" icon="image-broken" title={Lang.string('file.uploadFailed')} />;
+            return <Avatar className="avatar-xl warning-pale text-warning app-message-image-placeholder" icon="image-broken" title={uploadFailMessage} />;
         }
 
         let imgView = null;
         if (source) {
-            imgView = <img src={source} style={imgStyle} alt={alt || source} data-fail={Lang.string('file.downloadFailed')} onError={e => e.target.classList.add('broken')} />;
+            imgView = <img src={source} style={imgStyle} alt={alt || source} data-fail={downloadFailMessage} onError={e => e.target.classList.add('broken')} />;
         } else if (thumbnail) {
             imgView = <img src={thumbnail} style={imgStyle} alt={alt || thumbnail} />;
         } else if (status === 'broken') {

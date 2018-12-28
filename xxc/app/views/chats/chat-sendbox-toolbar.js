@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import {formatKeyDecoration} from '../../utils/shortcut';
 import Icon from '../../components/icon';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import replaceViews from '../replace-views';
 import {getMenuItemsForContext} from '../../core/context-menu';

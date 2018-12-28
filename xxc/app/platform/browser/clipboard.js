@@ -5,7 +5,7 @@ import clipboard from 'clipboard-polyfill'; // 考虑升级到 https://github.co
  * @param {string} text 要复制的文本
  * @return {void}
  */
-export const writeText = clipboard.writeText;
+export const writeText = clipboard.writeText; // eslint-disable-line
 
 /**
  * 将 HTML 文本复制到剪切板

@@ -2,7 +2,7 @@ import Marked from 'marked';
 import HighlightJS from 'highlight.js';
 import HTMLParser from 'htmlparser';
 import Config from '../config';
-import Lang from '../lang';
+import Lang from '../core/lang';
 import {strip} from './html-helper';
 
 /**

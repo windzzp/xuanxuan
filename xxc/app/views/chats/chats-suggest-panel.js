@@ -7,7 +7,7 @@ import replaceViews from '../replace-views';
 import FileData from '../../core/models/file-data';
 import ImageHolder from '../../components/image-holder';
 import Button from '../../components/button';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import ClickOutsideWrapper from '../../components/click-outside-wrapper';
 
 /**
@@ -169,7 +169,11 @@ export default class ChatsSuggestPanel extends PureComponent {
 
         let imageView = null;
         if (image) {
-            imageView = (<ImageHolder source={image.viewUrl}>
+            imageView = (<ImageHolder
+                source={image.viewUrl}
+                downloadFailMessage={Lang.string('file.downloadFailed')}
+                uploadFailMessage={Lang.string('file.uploadFailed')}
+            >
                 <div className="toolbar dock dock-bottom has-padding text-center">
                     <Button icon="message-image" className="green rounded" label={Lang.string('chat.sendClipboardImage')} onClick={this.handleSendBtnClick} />&nbsp; &nbsp;
                     <Button icon="close" className="blue rounded" label={Lang.string('common.close')} onClick={this.handleCloseBtnClick} />

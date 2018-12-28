@@ -1,26 +1,13 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import SearchControl from '../../components/search-control';
 import OpenedApp from '../../exts/opened-app';
 import App from '../../core';
 import Spinner from '../../components/spinner';
 import {FileList} from '../common/file-list';
 import replaceViews from '../replace-views';
-
-/**
- * 文件类型清单
- * @type {{type: string, label: string}[]}
- * @private
- */
-const fileTypes = [
-    {type: '', label: Lang.string('ext.files.all')},
-    {type: 'doc', label: Lang.string('ext.files.docs')},
-    {type: 'image', label: Lang.string('ext.files.images')},
-    {type: 'program', label: Lang.string('ext.files.programs')},
-    {type: 'other', label: Lang.string('ext.files.others')},
-];
 
 /**
  * 最大显示的文件数目
@@ -216,6 +203,19 @@ export default class AppFiles extends PureComponent {
         if (showFiles.length > MAX_SHOW_FILES_COUNT) {
             showFiles = showFiles.slice(0, MAX_SHOW_FILES_COUNT);
         }
+
+        /**
+         * 文件类型清单
+         * @type {{type: string, label: string}[]}
+         * @private
+         */
+        const fileTypes = [
+            {type: '', label: Lang.string('ext.files.all')},
+            {type: 'doc', label: Lang.string('ext.files.docs')},
+            {type: 'image', label: Lang.string('ext.files.images')},
+            {type: 'program', label: Lang.string('ext.files.programs')},
+            {type: 'other', label: Lang.string('ext.files.others')},
+        ];
 
         return (<div className={HTML.classes('app-ext-files dock single column', className)}>
             <header className="app-ext-files-header app-ext-common-header has-padding heading divider flex-none">

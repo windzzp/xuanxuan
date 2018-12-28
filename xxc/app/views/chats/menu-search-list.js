@@ -8,7 +8,7 @@ import {ChatListItem} from './chat-list-item';
 import replaceViews from '../replace-views';
 import ROUTES from '../common/routes';
 import ListItem from '../../components/list-item';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import Config from '../../config';
 
 /**

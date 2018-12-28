@@ -6,7 +6,7 @@ import Messager from '../../components/messager';
 import App from '../../core';
 import HTML from '../../utils/html-helper';
 import StringHelper from '../../utils/string-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 
 /**
  * UserChangePassword-Dialog 组件 ，显示修改用户密码界面

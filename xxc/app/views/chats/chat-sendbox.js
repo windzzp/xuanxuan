@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import {getKeyDecoration} from '../../utils/shortcut';
 import Emojione from '../../components/emojione';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import {DraftEditor} from '../common/draft-editor';
 import {ChatSendboxToolbar} from './chat-sendbox-toolbar';

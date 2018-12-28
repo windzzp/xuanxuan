@@ -5,7 +5,7 @@ import DateHelper from '../../utils/date-helper';
 import Icon from '../../components/icon';
 import Avatar from '../../components/avatar';
 import Pager from '../../components/pager';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import ChatMessage from '../../core/models/chat-message';
 import {ChatTitle} from './chat-title';

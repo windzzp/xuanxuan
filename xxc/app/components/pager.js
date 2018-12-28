@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import HTML from '../utils/html-helper';
 import Icon from './icon';
-import Lang from '../lang';
+import Lang from '../core/lang';
 
 /**
  * Pager 组件 ，显示一个分页控件

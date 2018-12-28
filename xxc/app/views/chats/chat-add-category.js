@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import {getChatCategories} from '../../core/im/im-chats';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import InputControl from '../../components/input-control';
 import Radio from '../../components/radio';
 import RadioGroup from '../../components/radio-group';

@@ -1,9 +1,12 @@
-import Platform from 'Platform';
 import extractZip from 'extract-zip';
 import Path from 'path';
 import server, {socket} from '../../core/server';
 import {createExtension} from '../extension';
 import timeSequence from '../../utils/time-sequence';
+import platform from '../../platform';
+
+// 从平台功能访问对象获取功能模块对象
+const {fs, net, ui: platformUI} = platform.modules;
 
 /**
  * 服务器扩展变更回调函数
@@ -55,14 +58,14 @@ const fetchTaskInterval = 1000 * 60 * 60 * 1.5;
 const checkLocalCache = ext => {
     return new Promise(resolve => {
         // 检查是否存在本地扩展包目录
-        Platform.fs.pathExists(ext.localPath).then(isLocalPathExists => {
+        fs.pathExists(ext.localPath).then(isLocalPathExists => {
             if (isLocalPathExists) {
                 // 如果本地扩展包目录已经存在则检查 md5 值是否一致
-                const md5Obj = Platform.fs.readJsonSync(Path.join(ext.localPath, 'md5.json'), {throws: false});
+                const md5Obj = fs.readJsonSync(Path.join(ext.localPath, 'md5.json'), {throws: false});
                 if (md5Obj && md5Obj.md5 === ext.md5) {
                     return resolve(true);
                 } else {
-                    Platform.fs.emptyDirSync(ext.localPath);
+                    fs.emptyDirSync(ext.localPath);
                 }
             }
             return resolve(false);
@@ -76,7 +79,7 @@ const checkLocalCache = ext => {
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
 const downloadRemoteExtension = ext => {
-    return Platform.net.downloadFile(currentUser, {
+    return net.downloadFile(currentUser, {
         url: ext.download,
         path: ext.remoteCachePath,
     }, progress => {
@@ -88,12 +91,12 @@ const downloadRemoteExtension = ext => {
         if (file.localPath) {
             return new Promise((resolve, reject) => {
                 extractZip(file.localPath, {dir: ext.localPath}, err => {
-                    Platform.fs.removeSync(file.localPath);
+                    fs.removeSync(file.localPath);
                     if (err) {
                         err.code = 'EXT_UNZIP_ERROR';
                         reject(err);
                     } else {
-                        Platform.fs.outputJsonSync(Path.join(ext.localPath, 'md5.json'), {md5: ext.md5, download: ext.download, downloadTime: new Date().getTime()});
+                        fs.outputJsonSync(Path.join(ext.localPath, 'md5.json'), {md5: ext.md5, download: ext.download, downloadTime: new Date().getTime()});
                         resolve(ext);
                     }
                 });
@@ -109,7 +112,7 @@ const downloadRemoteExtension = ext => {
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
 const loadRemoteExtension = ext => {
-    return Platform.fs.readJson(Path.join(ext.localPath, 'package.json'), {throws: false});
+    return fs.readJson(Path.join(ext.localPath, 'package.json'), {throws: false});
 };
 
 /**
@@ -253,7 +256,7 @@ export const getEntryVisitUrl = (extOrEntryID, referer = '') => {
  */
 const handleChatExtensions = msg => {
     if (currentUser && msg.isSuccess && msg.data.length) {
-        const baseUserExtsDir = Platform.ui.createUserDataPath(currentUser, '', 'extensions');
+        const baseUserExtsDir = platformUI.createUserDataPath(currentUser, '', 'extensions');
         msg.data.forEach(item => {
             item = Object.assign({}, item);
             const extPkg = Object.assign(Object.assign(item, {

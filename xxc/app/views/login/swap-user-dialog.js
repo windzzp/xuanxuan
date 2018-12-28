@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from '../../components/modal';
 import {SwapUser} from './swap-user';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 
 /**
  * 显示切换用户对话框

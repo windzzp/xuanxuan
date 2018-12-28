@@ -4,7 +4,7 @@ import HTML from '../../utils/html-helper';
 import {FileListItem} from './file-list-item';
 import replaceViews from '../replace-views';
 import ListItem from '../../components/list-item';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import Config from '../../config';
 
 /**

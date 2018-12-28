@@ -4,7 +4,7 @@ import SplitPane from 'react-split-pane';
 import {classes} from '../../utils/html-helper';
 import DateHelper from '../../utils/date-helper';
 import Avatar from '../../components/avatar';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import {ChatHeader} from './chat-header';
 import {ChatMessages} from './chat-messages';

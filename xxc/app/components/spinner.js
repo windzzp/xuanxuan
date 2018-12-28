@@ -26,6 +26,7 @@ export default class Spinner extends PureComponent {
         label: PropTypes.any,
         className: PropTypes.string,
         children: PropTypes.any,
+        labelClassName: PropTypes.string,
     };
 
     /**
@@ -42,6 +43,7 @@ export default class Spinner extends PureComponent {
         label: '',
         className: '',
         children: null,
+        labelClassName: '',
     };
 
     /**
@@ -57,6 +59,7 @@ export default class Spinner extends PureComponent {
             iconSize,
             iconName,
             iconClassName,
+            labelClassName,
             label,
             children,
             className,
@@ -66,7 +69,7 @@ export default class Spinner extends PureComponent {
         return (
             <div className={classes('spinner text-center', className)} {...other}>
                 <Icon name={iconName} className={iconClassName} size={iconSize} />
-                {label && <div className="muted small title">{label}</div>}
+                {label && <div className={classes('muted small title', labelClassName)}>{label}</div>}
                 {children}
             </div>
         );

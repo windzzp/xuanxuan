@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import {Tabs, TabPane} from '../../components/tabs';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import {ChatSidebarPeoples} from './chat-sidebar-peoples';
 import {ChatSidebarFiles} from './chat-sidebar-files';

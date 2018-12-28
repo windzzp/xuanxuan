@@ -6,7 +6,7 @@ import replaceViews from '../replace-views';
 import Button from '../../components/button';
 import Avatar from '../../components/avatar';
 import StringHelper from '../../utils/string-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import WebView from '../common/webview';
 
 /**

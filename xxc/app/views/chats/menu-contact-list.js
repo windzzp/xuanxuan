@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import {showContextMenu} from '../../core/context-menu';
 import Icon from '../../components/icon';
 import GroupList from '../../components/group-list';
@@ -392,6 +392,7 @@ export default class MenuContactList extends Component {
                 onExpandChange={this.onExpandChange}
                 hideEmptyGroup={groupType !== 'category'}
                 forceCollapse={!!this.state.dragging}
+                showMoreText={Lang.string('common.clickShowMoreFormat')}
             />
             {children}
         </div>);

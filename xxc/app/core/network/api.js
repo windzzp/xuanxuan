@@ -1,6 +1,13 @@
-import Platform from 'Platform'; // eslint-disable-line
 import Config from '../../config';
-import Lang from '../../lang';
+import Lang from '../lang';
+import platform from '../../platform';
+
+/**
+ * 平台提供的网络功能访问对象
+ * @type {Object}
+ * @private
+ */
+const platformNetwork = platform.access('net');
 
 /**
  * 登录前向 XXD 服务器请求获取服务器信息
@@ -20,7 +27,7 @@ export const requestServerInfo = user => {
         v: Config.pkg.version,
         lang: Lang.name,
     });
-    return Platform.net.postJSON(user.webServerInfoUrl, {
+    return platformNetwork.postJSON(user.webServerInfoUrl, {
         headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
         body: `data=${postData}`
     }).then(data => {
@@ -62,7 +69,7 @@ export const checkUploadFileSize = (user, size) => {
 export const getRanzhiServerInfo = (user) => {
     const {ranzhiUrl} = user;
     if (ranzhiUrl) {
-        return Platform.net.getJSON(`${ranzhiUrl}/index.php?mode=getconfig`).then(json => {
+        return platformNetwork.getJSON(`${ranzhiUrl}/index.php?mode=getconfig`).then(json => {
             if (json && json.version) {
                 json.url = ranzhiUrl;
                 json.isPathInfo = json.requestType.toUpperCase() === 'PATH_INFO';
@@ -75,7 +82,7 @@ export const getRanzhiServerInfo = (user) => {
 };
 
 export default {
-    downloadFile: Platform.net.downloadFile,
-    uploadFile: Platform.net.uploadFile,
-    checkFileCache: Platform.net.checkFileCache || (() => false)
+    downloadFile: platformNetwork.downloadFile,
+    uploadFile: platformNetwork.uploadFile,
+    checkFileCache: platformNetwork.checkFileCache || (() => false)
 };

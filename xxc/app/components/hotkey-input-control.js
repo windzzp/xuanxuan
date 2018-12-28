@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import InputControl from './input-control';
 import {classes} from '../utils/html-helper';
 import {getKeyDecoration, formatKeyDecoration, isOnlyModifyKeys} from '../utils/shortcut';
-import Lang from '../lang';
 
 /**
  * HotkeyInputControl 组件 ，显示一个快捷键输入框
@@ -26,6 +25,7 @@ export default class HotkeyInputControl extends Component {
         className: PropTypes.string,
         onChange: PropTypes.func,
         inputProps: PropTypes.object,
+        onlyMotifyKeysText: PropTypes.string,
     };
 
     /**
@@ -40,6 +40,7 @@ export default class HotkeyInputControl extends Component {
         onChange: null,
         inputProps: null,
         className: null,
+        onlyMotifyKeysText: ''
     };
 
     /**
@@ -91,7 +92,8 @@ export default class HotkeyInputControl extends Component {
         }
         const shortcut = getKeyDecoration(e);
         if (isOnlyModifyKeys(shortcut)) {
-            this.changeValue(shortcut, Lang.string('setting.hotkeys.cantSetOnlyMotifyKeys'));
+            const {onlyMotifyKeysText} = this.props;
+            this.changeValue(shortcut, onlyMotifyKeysText);
         } else {
             this.changeValue(shortcut);
         }
@@ -107,18 +109,19 @@ export default class HotkeyInputControl extends Component {
      * @return {void}
      */
     handleBlurEvent = e => {
-        if (isOnlyModifyKeys(this.state.value)) {
-            this.changeValue('', Lang.string('setting.hotkeys.cantSetOnlyMotifyKeys'));
+        const {value} = this.state;
+        if (isOnlyModifyKeys(value)) {
+            this.changeValue('', this.props.onlyMotifyKeysText); // eslint-disable-line
         }
     };
 
     /**
      * 获取输入框内的值
      * @memberof HotkeyInputControl
-     * @return {string}
+     * @return {string} 快捷键字符串
      */
     getValue() {
-        return this.state.value;
+        return this.state.value; // eslint-disable-line
     }
 
     /**
@@ -127,7 +130,7 @@ export default class HotkeyInputControl extends Component {
      * @see https://doc.react-china.org/docs/react-component.html#render
      * @see https://doc.react-china.org/docs/rendering-elements.html
      * @memberof HotkeyInputControl
-     * @return {ReactNode}
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
      */
     render() {
         const {
@@ -135,6 +138,7 @@ export default class HotkeyInputControl extends Component {
             defaultValue,
             className,
             inputProps,
+            onlyMotifyKeysText,
             ...other
         } = this.props;
 
