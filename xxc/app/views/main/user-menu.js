@@ -163,7 +163,19 @@ export default class UserMenu extends Component {
      */
     handleChangePasswordClick = () => {
         UserChangePasswordDialog.show();
+        this.requestClose();
     };
+
+    /**
+     * 处理语言切换按钮点击事件
+     * @memberof UserMenu
+     * @private
+     * @return {void}
+     */
+    handleSwitchBtnClick() {
+        showLanguageSwitchDialog();
+        this.requestClose();
+    }
 
     /**
      * React 组件生命周期函数：Render
@@ -208,7 +220,7 @@ export default class UserMenu extends Component {
                 {isSupportChangePassword ? <a className="item" onClick={this.handleChangePasswordClick}><div className="title">{Lang.string('usermenu.changePassword')}</div></a> : null}
                 <div className="divider" />
                 <a className="item" onClick={this.handleSettingItemClick}><div className="title">{Lang.string('usermenu.setting')}</div></a>
-                <a className="item" onClick={showLanguageSwitchDialog.bind(null, null)}><div className="title">{Lang.string('common.switchLanguage')}</div></a>
+                <a className="item" onClick={this.handleSwitchBtnClick}><div className="title">{Lang.string('common.switchLanguage')}</div></a>
                 <a className="item" onClick={this.handleAboutItemClick}><div className="title">{Lang.string('usermenu.about')}</div></a>
                 <div className="divider" />
                 <a className="item" onClick={this.handleLogoutClick}><div className="title">{Lang.string('usermenu.logout')}</div></a>

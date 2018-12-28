@@ -88,6 +88,7 @@ export default class DisplayLayer extends PureComponent {
         onShown: PropTypes.func,
         onHidden: PropTypes.func,
         onLoad: PropTypes.func,
+        listenUpdateStyle: PropTypes.bool,
         show: PropTypes.bool,
         hotkey: PropTypes.bool,
         cache: PropTypes.bool,
@@ -113,6 +114,7 @@ export default class DisplayLayer extends PureComponent {
      * @static
      */
     static defaultProps = {
+        listenUpdateStyle: false,
         plugName: null,
         animation: 'scale-from-top',
         modal: false,

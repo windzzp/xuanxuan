@@ -92,7 +92,7 @@ export default class GroupList extends PureComponent {
                     continue;
                 }
                 listViews.push(<GroupList
-                    key={item.key || item.id || i}
+                    key={item.key || `id-${item.id}` || `idx-${i}`}
                     group={(props && props.listConverter) ? props.listConverter(item) : item}
                     itemCreator={props && props.itemCreator}
                     toggleWithHeading={props && props.toggleWithHeading}

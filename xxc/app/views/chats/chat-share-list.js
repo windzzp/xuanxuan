@@ -2,8 +2,8 @@ import React from 'react';
 import _ChatListItem from './chat-list-item';
 import GroupList from '../../components/group-list';
 import App from '../../core';
-import Lang from '../../lang';
 import withReplaceView from '../with-replace-view';
+import Lang from '../../core/lang';
 
 /**
  * ChatListItem 可替换组件形式

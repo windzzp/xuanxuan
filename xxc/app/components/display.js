@@ -10,6 +10,7 @@ import DisplayContainer from './display-container';
  * @type {string}
  */
 const containerId = 'display-container';
+
 /**
  * 弹出层管理组件渲染元素
  * @private
@@ -25,7 +26,7 @@ if (!container) {
 
 /**
  * 用于存储弹出层管理组件实例
- * @type {DisplayContainer}
+ * @type {DisplayContainer} 弹出层容器组件
  * @private
  */
 let displayContainer = null;
@@ -35,7 +36,7 @@ ReactDOM.render(<DisplayContainer ref={e => {displayContainer = e;}} />, contain
  * 显示弹出层
  * @param {Object} props 弹出层初始化对象
  * @param {?Function} callback 操作完成后的回调函数
- * @return {DisplayLayer}
+ * @return {DisplayLayer} 弹出层组件
  * @function
  */
 export const displayShow = (props, callback) => (displayContainer && displayContainer.show(props, callback));
@@ -45,7 +46,7 @@ export const displayShow = (props, callback) => (displayContainer && displayCont
  * @param {string} id 弹出层 ID
  * @param {?Function} callback 操作完成后的回调函数
  * @param {?boolean} remove 是否在隐藏后从界面上移除元素
- * @return {DisplayLayer}
+ * @return {DisplayLayer} 弹出层组件
  * @function
  */
 export const displayHide = (id, callback, remove) => (displayContainer && displayContainer.hide(id, callback, remove));
@@ -54,7 +55,7 @@ export const displayHide = (id, callback, remove) => (displayContainer && displa
  * 隐藏并从界面上移除指定 ID 的弹出层
  * @param {string} id 弹出层 ID
  * @param {?Function} callback 操作完成后的回调函数
- * @return {DisplayLayer}
+ * @return {DisplayLayer} 弹出层组件
  * @function
  */
 export const displayRemove = (id, callback) => (displayContainer && displayContainer.remove(id, callback));
@@ -62,7 +63,7 @@ export const displayRemove = (id, callback) => (displayContainer && displayConta
 /**
  * 获取指定 ID 的弹出层组件实例
  * @param {string} id 弹出层 ID
- * @return {DisplayLayer}
+ * @return {DisplayLayer} 弹出层组件
  * @function
  */
 export const displayGetRef = id => {
@@ -75,7 +76,7 @@ export const displayGetRef = id => {
  * @param {string} id 弹出层 ID
  * @param {Object} newStyle CSS 样式对象
  * @param {?Function} callback 操作完成后的回调函数
- * @return {DisplayLayer}
+ * @return {DisplayLayer} 弹出层组件
  * @function
  */
 export const displaySetStyle = (id, newStyle, callback) => (displayContainer && displayContainer.setStyle(id, newStyle, callback));

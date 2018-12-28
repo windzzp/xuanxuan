@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Button from '../../components/button';
 import SelectBox from '../../components/select-box';
 import App from '../../core';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 
 const codeLanguage = [
     {label: Lang.string('common.default'), value: ''}, {label: 'C++', value: 'cpp'},

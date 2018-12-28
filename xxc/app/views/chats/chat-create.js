@@ -112,6 +112,8 @@ export default class ChatCreateView extends PureComponent {
             ...other
         } = this.props;
 
+        const {type} = this.state;
+
         return (
             <div
                 {...other}
@@ -124,18 +126,18 @@ export default class ChatCreateView extends PureComponent {
                     </div>
                     <div className="scroll-y flex-auto lighten">
                         <div className="list compact app-chat-create-types-menu">
-                            <a onClick={this.changeType.bind(this, 'normal')} className={'item' + (this.state.type === 'normal' ? ' white text-primary' : '')}>
+                            <a onClick={this.changeType.bind(this, 'normal')} className={'item' + (type === 'normal' ? ' white text-primary' : '')}>
                                 <Avatar icon="account-multiple-outline" iconClassName="text-blue icon-2x" />
                                 <div className="title">{Lang.string('chat.create.chatType.normal')}</div>
                             </a>
-                            <a onClick={this.changeType.bind(this, 'public')} className={'item' + (this.state.type === 'public' ? ' white text-primary' : '')}>
+                            <a onClick={this.changeType.bind(this, 'public')} className={'item' + (type === 'public' ? ' white text-primary' : '')}>
                                 <Avatar icon="access-point" iconClassName="text-green icon-2x" />
                                 <div className="title">{Lang.string('chat.create.chatType.public')}</div>
                             </a>
                         </div>
                     </div>
                 </div>
-                {this.state.type === 'normal' ? <ChatCreateGroups onRequestClose={onRequestClose} /> : <ChatJoinPublic onRequestClose={onRequestClose} />}
+                {type === 'normal' ? <ChatCreateGroups onRequestClose={onRequestClose} /> : <ChatJoinPublic onRequestClose={onRequestClose} />}
                 {children}
             </div>
         );

@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from '../../components/modal';
 import ChatShare from './chat-share';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 
 /**
  * 显示聊天历史记录对话框界面
