@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../../utils/html-helper';
+import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import ClickOutsideWrapper from '../../components/click-outside-wrapper';
 import Lang from '../../core/lang';
@@ -170,7 +170,7 @@ export default class UserMenu extends Component {
      * @private
      * @return {void}
      */
-    handleSwitchBtnClick() {
+    handleSwitchBtnClick = () => {
         showLanguageSwitchDialog();
         this.requestClose();
     }
@@ -200,7 +200,7 @@ export default class UserMenu extends Component {
             <ClickOutsideWrapper
                 {...other}
                 onClickOutside={onRequestClose}
-                className={HTML.classes('app-usermenu layer text-dark list', className)}
+                className={classes('app-usermenu layer text-dark list', className)}
             >
                 {
                     allStatus.map(statusName => {
