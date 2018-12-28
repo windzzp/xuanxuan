@@ -77,7 +77,7 @@ export const loadLanguage = (langName, notifyPlatform = true) => {
     if (langName !== langHelper.name) {
         return loadPlatformLangData(langName).then(platformLangData => {
             // 合并语言数据对象
-            const langData = Object.assign({}, platformLangData || LANG_ZH_CN, extraLangData && extraLangData[langName]);
+            const langData = Object.assign({}, LANG_ZH_CN, platformLangData, extraLangData && extraLangData[langName]);
 
             // 变更语言
             langHelper.change(langName, langData);
