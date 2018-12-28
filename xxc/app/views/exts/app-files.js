@@ -6,8 +6,15 @@ import SearchControl from '../../components/search-control';
 import OpenedApp from '../../exts/opened-app';
 import App from '../../core';
 import Spinner from '../../components/spinner';
-import {FileList} from '../common/file-list';
-import replaceViews from '../replace-views';
+import _FileList from '../common/file-list';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * FileList 可替换组件形式
+ * @type {Class<FileList>}
+ * @private
+ */
+const FileList = withReplaceView(_FileList);
 
 /**
  * 最大显示的文件数目
@@ -27,18 +34,13 @@ const MAX_SHOW_FILES_COUNT = 200;
  */
 export default class AppFiles extends PureComponent {
     /**
-     * 获取 AppFiles 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<AppFiles>}
-     * @readonly
+     * AppFiles 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof AppFiles
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {AppFiles} from './app-files';
-     * <AppFiles />
      */
-    static get AppFiles() {
-        return replaceViews('exts/app-files', AppFiles);
-    }
+    static replaceViewPath = 'exts/AppFiles';
 
     /**
      * React 组件属性类型检查

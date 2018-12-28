@@ -2,10 +2,17 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
-import {MessageList} from './message-list';
-import replaceViews from '../replace-views';
+import _MessageList from './message-list';
 import Spinner from '../../components/spinner';
 import Lang from '../../core/lang';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * MessageList 可替换组件形式
+ * @type {Class<MessageList>}
+ * @private
+ */
+const MessageList = withReplaceView(_MessageList);
 
 /**
  * ChatMessages 组件 ，显示一个聊天消息列表界面
@@ -18,18 +25,13 @@ import Lang from '../../core/lang';
  */
 export default class ChatMessages extends Component {
     /**
-     * 获取 ChatMessages 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatMessages>}
-     * @readonly
+     * ChatMessages 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatMessages
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatMessages} from './chat-messages';
-     * <ChatMessages />
      */
-    static get ChatMessages() {
-        return replaceViews('chats/chat-messages', ChatMessages);
-    }
+    static replaceViewPath = 'chats/ChatMessages';
 
     /**
      * React 组件属性类型检查

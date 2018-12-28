@@ -5,9 +5,23 @@ import Icon from '../../components/icon';
 import Avatar from '../../components/avatar';
 import Lang from '../../core/lang';
 import App from '../../core';
-import {MessageList} from './message-list';
-import {MessageListItem} from './message-list-item';
-import replaceViews from '../replace-views';
+import _MessageList from './message-list';
+import _MessageListItem from './message-list-item';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * MessageListItem 可替换组件形式
+ * @type {Class<MessageListItem>}
+ * @private
+ */
+const MessageListItem = withReplaceView(_MessageListItem);
+
+/**
+ * MessageList 可替换组件形式
+ * @type {Class<MessageList>}
+ * @private
+ */
+const MessageList = withReplaceView(_MessageList);
 
 const MANY_RESULT_COUNT = 200;
 const MAX_RESULT_COUNT = 500;
@@ -23,18 +37,13 @@ const MAX_RESULT_COUNT = 500;
  */
 export default class ChatSearchResult extends Component {
     /**
-     * 获取 ChatSearchResult 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatSearchResult>}
-     * @readonly
+     * ChatSearchResult 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatSearchResult
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatSearchResult} from './chat-search-result';
-     * <ChatSearchResult />
      */
-    static get ChatSearchResult() {
-        return replaceViews('chats/chat-search-result', ChatSearchResult);
-    }
+    static replaceViewPath = 'chats/ChatSearchResult';
 
     /**
      * React 组件属性类型检查

@@ -5,15 +5,22 @@ import Icon from '../../components/icon';
 import ClickOutsideWrapper from '../../components/click-outside-wrapper';
 import Lang from '../../core/lang';
 import App from '../../core';
-import {StatusDot} from '../common/status-dot';
+import _StatusDot from '../common/status-dot';
 import User from '../../core/profile/user';
 import UserProfileDialog from '../common/user-profile-dialog';
 import AboutDialog from '../common/about-dialog';
 import UserSettingDialog from '../common/user-setting-dialog';
 import UserChangePasswordDialog from '../common/user-change-password-dialog';
-import replaceViews from '../replace-views';
 import platform from '../../platform';
 import {showLanguageSwitchDialog} from '../common/language-switch-dialog';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * StatusDot 可替换组件形式
+ * @type {Class<StatusDot>}
+ * @private
+ */
+const StatusDot = withReplaceView(_StatusDot);
 
 /**
  * 用户状态名称清单
@@ -35,18 +42,13 @@ const isBrowser = platform.isType('browser');
 
 export default class UserMenu extends Component {
     /**
-     * 获取 UserMenu 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<UserMenu>}
-     * @readonly
+     * UserMenu 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof UserMenu
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {UserMenu} from './user-menu';
-     * <UserMenu />
      */
-    static get UserMenu() {
-        return replaceViews('main/user-menu', UserMenu);
-    }
+    static replaceViewPath = 'main/UserMenu';
 
     /**
      * React 组件属性类型检查

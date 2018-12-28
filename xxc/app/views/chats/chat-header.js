@@ -3,10 +3,17 @@ import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import App from '../../core';
-import {ChatTitle} from './chat-title';
-import replaceViews from '../replace-views';
+import _ChatTitle from './chat-title';
 import {getMenuItemsForContext} from '../../core/context-menu';
 import Config from '../../config';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatTitle 可替换组件形式
+ * @type {Class<ChatTitle>}
+ * @private
+ */
+const ChatTitle = withReplaceView(_ChatTitle);
 
 /**
  * ChatHeader 组件 ，显示一个聊天头部界面
@@ -19,18 +26,13 @@ import Config from '../../config';
  */
 export default class ChatHeader extends Component {
     /**
-     * 获取 ChatHeader 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatHeader>}
-     * @readonly
+     * ChatHeader 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatHeader
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatHeader} from './chat-header';
-     * <ChatHeader />
      */
-    static get ChatHeader() {
-        return replaceViews('chats/chat-header', ChatHeader);
-    }
+    static replaceViewPath = 'chats/ChatHeader';
 
     /**
      * React 组件属性类型检查

@@ -7,10 +7,24 @@ import {showContextMenu} from '../../core/context-menu';
 import Icon from '../../components/icon';
 import GroupList from '../../components/group-list';
 import Button from '../../components/button';
-import {ChatListItem} from './chat-list-item';
-import {MemberListItem} from '../common/member-list-item';
+import _ChatListItem from './chat-list-item';
+import _MemberListItem from '../common/member-list-item';
 import UserProfileDialog from '../common/user-profile-dialog';
-import replaceViews from '../replace-views';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatListItem 可替换组件形式
+ * @type {Class<ChatListItem>}
+ * @private
+ */
+const ChatListItem = withReplaceView(_ChatListItem);
+
+/**
+ * MemberListItem 可替换组件形式
+ * @type {Class<MemberListItem>}
+ * @private
+ */
+const MemberListItem = withReplaceView(_MemberListItem);
 
 /**
  * MenuContactList 组件 ，显示联系人列表界面
@@ -23,18 +37,13 @@ import replaceViews from '../replace-views';
  */
 export default class MenuContactList extends Component {
     /**
-     * 获取 MenuContactList 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MenuContactList>}
-     * @readonly
+     * MenuContactList 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MenuContactList
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MenuContactList} from './menu-contact-list';
-     * <MenuContactList />
      */
-    static get MenuContactList() {
-        return replaceViews('chats/menu-contact-list', MenuContactList);
-    }
+    static replaceViewPath = 'chats/MenuContactList';
 
     /**
      * React 组件属性类型检查

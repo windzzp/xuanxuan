@@ -2,12 +2,19 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
 import Member from '../../core/models/member';
-import {MemberListItem} from './member-list-item';
-import replaceViews from '../replace-views';
+import _MemberListItem from './member-list-item';
 import ListItem from '../../components/list-item';
 import Lang from '../../core/lang';
 import App from '../../core';
 import Config from '../../config';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * MemberListItem 可替换组件形式
+ * @type {Class<MemberListItem>}
+ * @private
+ */
+const MemberListItem = withReplaceView(_MemberListItem);
 
 /**
  * MemberList 组件 ，显示成员列表界面
@@ -20,18 +27,13 @@ import Config from '../../config';
  */
 export default class MemberList extends Component {
     /**
-     * 获取 MemberList 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MemberList>}
-     * @readonly
+     * MemberList 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MemberList
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MemberList} from './member-list';
-     * <MemberList />
      */
-    static get MemberList() {
-        return replaceViews('common/member-list', MemberList);
-    }
+    static replaceViewPath = 'common/MemberList';
 
     /**
      * React 组件属性类型检查

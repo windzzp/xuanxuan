@@ -1,12 +1,20 @@
 import React, {Component} from 'react';
-import HTML from '../../utils/html-helper';
+import {rem} from '../../utils/html-helper';
 import SearchControl from '../../components/search-control';
 import Lang from '../../core/lang';
 import GroupList from '../../components/group-list';
 import App from '../../core';
 import ChatShareList from './chat-share-list';
-import ChatListItem from './chat-list-item';
+import _ChatListItem from './chat-list-item';
 import Emojione from '../../components/emojione';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatListItem 可替换组件形式
+ * @type {Class<ChatListItem>}
+ * @private
+ */
+const ChatListItem = withReplaceView(_ChatListItem);
 
 export default class ChatShare extends Component {
     constructor(props) {
@@ -79,7 +87,7 @@ export default class ChatShare extends Component {
     };
 
     itemCreator = chat => {
-        if(chat.gid === 'littlexx') return;
+        if (chat.gid === 'littlexx') return;
         return (
             <ChatListItem
                 data-gid={chat.gid}
@@ -92,19 +100,27 @@ export default class ChatShare extends Component {
         );
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof ChatShare
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const {choosed, search} = this.state;
         const choosedItems = [];
 
         App.im.chats.forEach(chat => {
-            if(choosed[chat.gid]) {
+            if (choosed[chat.gid]) {
                 choosedItems.push(chat);
             }
         });
 
         return (
-            <div className={HTML.classes('single row outline space app-chat-share')}>
-                <div style={{width: HTML.rem(150)}}>
+            <div className="single row outline space app-chat-share">
+                <div style={{width: rem(150)}}>
                     <div className="has-padding-sm flex-none darken">
                         <SearchControl onSearchChange={this.handleSearchChange} />
                     </div>

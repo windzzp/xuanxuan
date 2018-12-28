@@ -7,13 +7,34 @@ import SearchControl from '../../components/search-control';
 import SelectBox from '../../components/select-box';
 import Lang from '../../core/lang';
 import App from '../../core';
-import {ChatListItem} from './chat-list-item';
-import {ChatHistory} from './chat-history';
-import {ChatSearchResult} from './chat-search-result';
-import replaceViews from '../replace-views';
+import _ChatListItem from './chat-list-item';
+import _ChatHistory from './chat-history';
+import _ChatSearchResult from './chat-search-result';
 import {getTimeBeforeDesc} from '../../utils/date-helper';
 import ListItem from '../../components/list-item';
 import Config from '../../config';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatSearchResult 可替换组件形式
+ * @type {Class<ChatSearchResult>}
+ * @private
+ */
+const ChatSearchResult = withReplaceView(_ChatSearchResult);
+
+/**
+ * ChatListItem 可替换组件形式
+ * @type {Class<ChatListItem>}
+ * @private
+ */
+const ChatListItem = withReplaceView(_ChatListItem);
+
+/**
+ * ChatHistory 可替换组件形式
+ * @type {Class<ChatHistory>}
+ * @private
+ */
+const ChatHistory = withReplaceView(_ChatHistory);
 
 /**
  * ChatsHistory 组件 ，显示聊天历史记录界面
@@ -26,18 +47,13 @@ import Config from '../../config';
  */
 export default class ChatsHistory extends Component {
     /**
-     * 获取 ChatsHistory 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatsHistory>}
-     * @readonly
+     * ChatsHistory 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatsHistory
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatsHistory} from './chats-history';
-     * <ChatsHistory />
      */
-    static get ChatsHistory() {
-        return replaceViews('chats/chats-hitory', ChatsHistory);
-    }
+    static replaceViewPath = 'chats/ChatsHistory';
 
     /**
      * React 组件属性类型检查

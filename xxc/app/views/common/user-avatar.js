@@ -5,7 +5,15 @@ import Icon from '../../components/icon';
 import Image from '../../components/image';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
-import {StatusDot} from './status-dot';
+import _StatusDot from './status-dot';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * StatusDot 可替换组件形式
+ * @type {Class<StatusDot>}
+ * @private
+ */
+const StatusDot = withReplaceView(_StatusDot);
 
 /**
  * UserAvatar 组件 ，显示用户头像界面

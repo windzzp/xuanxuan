@@ -9,8 +9,15 @@ import Spinner from '../../components/spinner';
 import Lang from '../../core/lang';
 import App from '../../core';
 import ROUTES from '../common/routes';
-import {ChatListItem} from './chat-list-item';
-import replaceViews from '../replace-views';
+import _ChatListItem from './chat-list-item';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatListItem 可替换组件形式
+ * @type {Class<ChatListItem>}
+ * @private
+ */
+const ChatListItem = withReplaceView(_ChatListItem);
 
 /**
  * ChatJoinPublic 组件 ，显示一个加入公共讨论组界面
@@ -23,18 +30,13 @@ import replaceViews from '../replace-views';
  */
 export default class ChatJoinPublic extends Component {
     /**
-     * 获取 ChatJoinPublic 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatJoinPublic>}
-     * @readonly
+     * ChatJoinPublic 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatJoinPublic
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatJoinPublic} from './chat-join-public';
-     * <ChatJoinPublic />
      */
-    static get ChatJoinPublic() {
-        return replaceViews('chats/chat-join-public', ChatJoinPublic);
-    }
+    static replaceViewPath = 'chats/ChatJoinPublic';
 
     /**
      * React 组件属性类型检查

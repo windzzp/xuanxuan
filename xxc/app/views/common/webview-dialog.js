@@ -1,8 +1,15 @@
 import React from 'react';
 import Modal from '../../components/modal';
-import WebViewFrame from './webview-frame';
+import _WebViewFrame from './webview-frame';
 import timeSequence from '../../utils/time-sequence';
+import withReplaceView from '../with-replace-view';
 
+/**
+ * WebViewFrame 可替换组件形式
+ * @type {Class<WebViewFrame>}
+ * @private
+ */
+const WebViewFrame = withReplaceView(_WebViewFrame);
 /**
  * 在对话框中显示一个网页
  * @param {string} sourceUrl 网页源地址

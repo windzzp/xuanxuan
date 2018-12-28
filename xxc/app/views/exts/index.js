@@ -8,14 +8,49 @@ import Icon from '../../components/icon';
 import Avatar from '../../components/avatar';
 import Messager from '../../components/messager';
 import Exts from '../../exts';
-import {WebApp} from './web-app';
-import {AppHome} from './app-home';
-import {AppExtensions} from './app-extensions';
-import {AppFiles} from './app-files';
-import {AppThemes} from './app-themes';
-import replaceViews from '../replace-views';
+import _WebApp from './web-app';
+import _AppHome from './app-home';
+import _AppExtensions from './app-extensions';
+import _AppFiles from './app-files';
+import _AppThemes from './app-themes';
 import App from '../../core';
 import {ifEmptyStringThen} from '../../utils/string-helper';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * WebApp 可替换组件形式
+ * @type {Class<WebApp>}
+ * @private
+ */
+const WebApp = withReplaceView(_WebApp);
+
+/**
+ * AppThemes 可替换组件形式
+ * @type {Class<AppThemes>}
+ * @private
+ */
+const AppThemes = withReplaceView(_AppThemes);
+
+/**
+ * AppHome 可替换组件形式
+ * @type {Class<AppHome>}
+ * @private
+ */
+const AppHome = withReplaceView(_AppHome);
+
+/**
+ * AppFiles 可替换组件形式
+ * @type {Class<AppFiles>}
+ * @private
+ */
+const AppFiles = withReplaceView(_AppFiles);
+
+/**
+ * AppExtensions 可替换组件形式
+ * @type {Class<AppExtensions>}
+ * @private
+ */
+const AppExtensions = withReplaceView(_AppExtensions);
 
 /**
  * 内置应用视图
@@ -40,18 +75,13 @@ const buildInView = {
  */
 export default class ExtsIndex extends Component {
     /**
-     * 获取 ExtsIndex 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ExtsIndex>}
-     * @readonly
+     * Index 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
-     * @memberof ExtsIndex
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ExtsIndex} from './index';
-     * <ExtsIndex />
+     * @memberof Index
      */
-    static get ExtsIndex() {
-        return replaceViews('exts/index', ExtsIndex);
-    }
+    static replaceViewPath = 'exts/ExtsIndex';
 
     /**
      * React 组件属性类型检查

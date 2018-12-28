@@ -1,6 +1,14 @@
 import React from 'react';
 import Modal from '../../components/modal';
-import {ExtensionDetail} from './extension-detail';
+import _ExtensionDetail from './extension-detail';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ExtensionDetail 可替换组件形式
+ * @type {Class<ExtensionDetail>}
+ * @private
+ */
+const ExtensionDetail = withReplaceView(_ExtensionDetail);
 
 /**
  * 显示扩展详情对话框

@@ -3,7 +3,6 @@ import Popover from '../../components/popover';
 import Lang from '../../core/lang';
 import profile from '../../core/profile';
 import DelayAction from '../../utils/delay-action';
-import replaceViews from '../replace-views';
 
 /**
  * 默认字体设置
@@ -77,18 +76,13 @@ const CONFIGS = [
  */
 export class ChangeFontView extends Component {
     /**
-     * 获取 ChatChangeFont-Popover 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatChangeFont-Popover>}
-     * @readonly
+     * ChangeFontView 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
-     * @memberof ChatChangeFont-Popover
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatChangeFont-Popover} from './chat-change-font-popover';
-     * <ChatChangeFont-Popover />
+     * @memberof ChangeFontView
      */
-    static get ChangeFontView() {
-        return replaceViews('chats/chat-change-font-popover', ChangeFontView);
-    }
+    static replaceViewPath = 'chats/ChangeFontView';
 
     /**
      * React 组件构造函数，创建一个 ChatChangeFont-Popover 组件实例，会在装配之前被调用。

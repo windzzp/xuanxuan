@@ -1,13 +1,27 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
-import replaceViews from '../replace-views';
-import MessageContentCard from './message-content-card';
+import _MessageContentCard from './message-content-card';
 import {getUrlMeta} from '../../core/ui';
-import WebView from '../common/webview';
+import _WebView from '../common/webview';
 import Lang from '../../core/lang';
 import Button from '../../components/button';
 import {showContextMenu} from '../../core/context-menu';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * MessageContentCard 可替换组件形式
+ * @type {Class<MessageContentCard>}
+ * @private
+ */
+const MessageContentCard = withReplaceView(_MessageContentCard);
+
+/**
+ * WebView 可替换组件形式
+ * @type {Class<WebView>}
+ * @private
+ */
+const WebView = withReplaceView(_WebView);
 
 /**
  * MessageContentUrl 组件 ，显示聊天消息网址卡片内容界面
@@ -20,19 +34,14 @@ import {showContextMenu} from '../../core/context-menu';
  */
 export default class MessageContentUrl extends PureComponent {
     /**
-     * 获取 MessageContentUrl 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MessageContentUrl>}
-     * @readonly
+     * MessageContentUrl 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MessageContentUrl
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MessageContentUrl} from './message-content-url';
-     * <MessageContentUrl />
      */
-    static get MessageContentUrl() {
-        return replaceViews('chats/message-content-url', MessageContentUrl);
-    }
-
+    static replaceViewPath = 'chats/MessageContentUrl';
+    
     /**
      * React 组件属性类型检查
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html

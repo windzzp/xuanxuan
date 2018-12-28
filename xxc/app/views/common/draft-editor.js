@@ -14,7 +14,6 @@ import Emojione from '../../components/emojione';
 import App from '../../core';
 import timeSequence from '../../utils/time-sequence';
 import Lang from '../../core/lang';
-import replaceViews from '../replace-views';
 
 /**
  * DraftJS Atomic 组件
@@ -120,18 +119,13 @@ const draftDecorator = new CompositeDecorator([{
 
 export default class DraftEditor extends PureComponent {
     /**
-     * 获取 DraftEditor 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<DraftEditor>}
-     * @readonly
+     * DraftEditor 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof DraftEditor
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {DraftEditor} from './draft-editor';
-     * <DraftEditor />
      */
-    static get DraftEditor() {
-        return replaceViews('common/draft-editor', DraftEditor);
-    }
+    static replaceViewPath = 'common/DraftEditor';
 
     /**
      * React 组件属性类型检查

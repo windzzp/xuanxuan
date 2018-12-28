@@ -1,9 +1,16 @@
 import React from 'react';
-import ChatListItem from './chat-list-item';
+import _ChatListItem from './chat-list-item';
 import GroupList from '../../components/group-list';
 import App from '../../core';
+import withReplaceView from '../with-replace-view';
 import Lang from '../../core/lang';
 
+/**
+ * ChatListItem 可替换组件形式
+ * @type {Class<ChatListItem>}
+ * @private
+ */
+const ChatListItem = withReplaceView(_ChatListItem);
 export default class ChatShareList extends React.Component {
     constructor(props) {
         super(props);

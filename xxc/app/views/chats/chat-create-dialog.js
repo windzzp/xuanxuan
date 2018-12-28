@@ -1,7 +1,15 @@
 import React from 'react';
 import Modal from '../../components/modal';
-import {ChatCreateView} from './chat-create';
+import _ChatCreateView from './chat-create';
 import Lang from '../../core/lang';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * UserAvatar 可替换组件形式
+ * @type {Class<ChatCreateView>}
+ * @private
+ */
+const ChatCreateView = withReplaceView(_ChatCreateView);
 
 /**
  * 显示创建聊天对话框

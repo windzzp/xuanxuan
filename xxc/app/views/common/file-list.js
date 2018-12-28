@@ -1,11 +1,17 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
-import {FileListItem} from './file-list-item';
-import replaceViews from '../replace-views';
+import _FileListItem from './file-list-item';
 import ListItem from '../../components/list-item';
 import Lang from '../../core/lang';
 import Config from '../../config';
+import withReplaceView from '../with-replace-view';
+/**
+ * FileListItem 可替换组件形式
+ * @type {Class<FileListItem>}
+ * @private
+ */
+const FileListItem = withReplaceView(_FileListItem);
 
 /**
  * FileList 组件 ，显示文件列表界面
@@ -18,18 +24,13 @@ import Config from '../../config';
  */
 export default class FileList extends Component {
     /**
-     * 获取 FileList 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<FileList>}
-     * @readonly
+     * FileList 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof FileList
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {FileList} from './file-list';
-     * <FileList />
      */
-    static get FileList() {
-        return replaceViews('common/file-list', FileList);
-    }
+    static replaceViewPath = 'common/FileList';
 
     /**
      * React 组件属性类型检查
