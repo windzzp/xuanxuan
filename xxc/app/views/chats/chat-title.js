@@ -9,6 +9,7 @@ import {StatusDot} from '../common/status-dot';
 import MemberProfileDialog from '../common/member-profile-dialog';
 import replaceViews from '../replace-views';
 import Config from '../../config';
+import Platform from 'Platform';
 
 /**
  * ChatTitle 组件 ，显示聊天界面标题
@@ -76,6 +77,16 @@ export default class ChatTitle extends Component {
             (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId)
         );
     }
+    /**
+     * 复制ID
+    */
+
+    copyId = () => {
+        let gid = this.props.chat.gid;
+        if (Platform.clipboard && Platform.clipboard.writeText) {
+            Platform.clipboard.writeText(gid);
+        }
+    }
 
     /**
      * React 组件生命周期函数：Render
@@ -113,7 +124,10 @@ export default class ChatTitle extends Component {
         const showStatusDot = theOtherOne && !Config.ui['chat.hideStatusDot'];
 
         return (<div className={classes('chat-title heading', className)} {...other}>
-            {hideChatAvatar ? null : <ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} onClick={onTitleClick} />}
+            {
+                (!denyShowMemberProfile && theOtherOne) ? <ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} onClick={onTitleClick} /> : <div className="hint--bottom-right has-padding-smhint--bottom" data-hint={chat.gid.slice(0,4) + '...点击复制'} onClick={this.copyId}><ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} /></div>
+            }
+            {/* {hideChatAvatar ? null : <ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} onClick={onTitleClick} />} */}
             {showStatusDot && <StatusDot status={theOtherOne.status} />}
             {
                 (!denyShowMemberProfile && theOtherOne) ? <a className="strong rounded title flex-none text-primary" onClick={onTitleClick}>{chatName}</a> : <strong className="title flex-none">{chatName}</strong>
