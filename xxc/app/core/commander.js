@@ -39,11 +39,9 @@ export const setCommandContext = (data) => {
  * (Get current command context data)
  *
  * @param {?Object} [newContext=null] 新的上下文参数 (New command context)
- * @return {Object}
+ * @return {Object} 上下文参数对象
  */
-export const getCommandContext = (newContext) => {
-    return Object.assign({}, context, newContext);
-};
+export const getCommandContext = (newContext) => Object.assign({}, context, newContext);
 
 /**
  * 执行命令
