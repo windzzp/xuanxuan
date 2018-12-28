@@ -9,6 +9,8 @@ import App from '../../core';
 import replaceViews from '../replace-views';
 import pkg from '../../package.json';
 import AboutDialog from '../common/about-dialog';
+import Lang, {getLangDisplayName} from '../../core/lang';
+import Icon from '../../components/icon';
 
 /**
  * LoginIndex 组件 ，显示登录界面
@@ -35,6 +37,19 @@ export default class LoginIndex extends PureComponent {
     }
 
     /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof LoginIndex
+     * @type {Object}
+     */
+    static propTypes = {
+        className: PropTypes.string,
+        userStatus: PropTypes.any,
+        children: PropTypes.any,
+    };
+
+    /**
      * React 组件默认属性
      * @see https://react.docschina.org/docs/react-component.html#defaultprops
      * @type {object}
@@ -47,18 +62,6 @@ export default class LoginIndex extends PureComponent {
         children: null,
     };
 
-    /**
-     * React 组件属性类型检查
-     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
-     * @static
-     * @memberof LoginIndex
-     * @type {Object}
-     */
-    static propTypes = {
-        className: PropTypes.string,
-        userStatus: PropTypes.any,
-        children: PropTypes.any,
-    };
 
     /**
      * React 组件生命周期函数：Render
@@ -83,6 +86,9 @@ export default class LoginIndex extends PureComponent {
 
         return (
             <div className={classes('app-login center-content', className)} {...other}>
+                <header className="dock-top dock-right has-padding-sm">
+                    <a className="btn text-white muted darken rounded" href="xxc:showLanguageSwitchDialog" title={Lang.string('common.switchLanguage')}><Icon name="web" />&nbsp; {getLangDisplayName()}</a>
+                </header>
                 <section>
                     <header className="text-center space-sm">
                         <img src={`${Config.media['image.path']}logo-inverse.png`} alt="logo" />
@@ -91,7 +97,7 @@ export default class LoginIndex extends PureComponent {
                     {App.ui.entryParams.loginTip && <div className="app-login-tip small text-center has-padding-v muted text-white">{App.ui.entryParams.loginTip}</div>}
                     {children}
                 </section>
-                <footer className="dock-right dock-bottom text-white muted has-padding-sm">
+                <footer className="dock-bottom text-white muted has-padding-sm text-center">
                     <BuildInfo className="small state has-padding-sm inline-block" onClick={() => AboutDialog.show()} />
                     {showPoweredBy ? '•' : null}
                     {showPoweredBy && <PoweredInfo className="state has-padding-sm inline-block strong small" />}

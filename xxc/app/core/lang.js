@@ -48,6 +48,17 @@ export const onLangChange = listener => events.on(LANG_CHANGE_EVENT, listener);
 export const getAllLangList = () => extraLangData.ALL || [{name: 'zh-cn', label: '简体中文'}];
 
 /**
+ * 获取应用显示名称
+ * @param {?String} langName 语言名称
+ * @return {String} 语言显示名称
+ */
+export const getLangDisplayName = (langName) => {
+    langName = langName || langHelper.name;
+    const langSetting = getAllLangList().find(x => x.name === langName);
+    return langSetting && langSetting.label;
+};
+
+/**
  * 获取平台预设的语言数据对象
  * 该语言数据默认会从 lang/ 目录下加载对应的语言文件
  * @param {String} langName 语言名称
