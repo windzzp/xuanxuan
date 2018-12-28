@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import HTML from '../../utils/html-helper';
 import SearchControl from '../../components/search-control';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import GroupList from '../../components/group-list';
 import App from '../../core';
 import ChatShareList from './chat-share-list';

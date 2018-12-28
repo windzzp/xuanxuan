@@ -2,7 +2,7 @@ import React from 'react';
 import ChatListItem from './chat-list-item';
 import GroupList from '../../components/group-list';
 import App from '../../core';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 
 export default class ChatShareList extends React.Component {
     constructor(props) {
