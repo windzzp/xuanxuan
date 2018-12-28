@@ -377,6 +377,34 @@ export default class ChatMessage extends Entity {
     }
 
     /**
+     * 获取消息额外数据属性值
+     *
+     * @param {String} name 属性名称
+     * @param {any} defaultValue 默认值
+     * @return {any} 属性值
+     * @memberof ChatMessage
+     */
+    getDataValue(name, defaultValue) {
+        const {data} = this;
+        if (!data) {
+            return defaultValue;
+        }
+        const value = data[name];
+        return value === undefined ? defaultValue : value;
+    }
+
+    /**
+     * 设置消息额外属性值
+     * @param {String|Map<String, any>} name 属性名称
+     * @param {?any} value 属性值
+     * @return {void}
+     */
+    setDataValue(name, value) {
+        const newDataObj = typeof name !== 'object' ? {[name]: value} : name;
+        this.data = Object.assign({}, this.$data, newDataObj);
+    }
+
+    /**
      * 获取消息发送日期时间戳
      * @memberof ChatMessage
      * @type {number}

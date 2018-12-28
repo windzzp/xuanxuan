@@ -486,6 +486,36 @@ export const sendTextMessage = (message, chat, isMarkdown = null) => {
 };
 
 /**
+ * 转发已有的消息到其他聊天
+ * @param {ChatMessage} originMessage 要转发的原始消息
+ * @param {Chat|Array<Chat>} chats 要转发到那些聊天
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const forwardMessage = async (originMessage, chats) => {
+    if (!Array.isArray(chats)) {
+        chats = [chats];
+    }
+    const forwardMessageData = {
+        forwardFrom: {
+            gid: originMessage.gid,
+            user: originMessage.senderId,
+            date: originMessage.date,
+        },
+    };
+    for (const chat of chats) {
+        const message = new ChatMessage({
+            user: profile.userId,
+            cgid: chat.gid,
+            type: originMessage.type,
+            content: originMessage.content,
+            contentType: originMessage.contentType,
+            data: forwardMessageData
+        });
+        await sendChatMessage(message, chat); // eslint-disable-line
+    }
+};
+
+/**
  * 创建一个 Emoji 聊天消息
  * @param {string} emojicon Emojicon 表情名称
  * @param {Chat|{gid:string}} chat 聊天对象
@@ -571,7 +601,7 @@ export const sendChatMessage = async (messages, chat, isSystemMessage = false) =
                 const specialVersion = specialVersionName ? ` for ${specialVersionName}` : '';
                 const contentLines = ['```'];
                 contentLines.push(
-                    `$$version       = '${PKG.version}${PKG.buildVersion ? ('.' + PKG.buildVersion) : ''}${specialVersion}';`,
+                    `$$version       = '${PKG.version}${PKG.buildVersion ? (`.${PKG.buildVersion}`) : ''}${specialVersion}';`,
                     `$$serverVersion = '${profile.user.serverVersion}';`,
                     `$$platform      = '${platform.type}';`,
                     `$$os            = '${platform.access('env.os')}';`
@@ -916,6 +946,7 @@ export default {
     dimissChat,
     inviteMembersToChat,
     fetchPublicChats,
+    forwardMessage,
     sendImageMessage,
     sendFileMessage,
     createBoardChatMessage,
