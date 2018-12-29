@@ -31,6 +31,7 @@ export default class ChatTitle extends Component {
      * import {ChatTitle} from './chat-title';
      * <ChatTitle />
      */
+    
     static get ChatTitle() {
         return replaceViews('chats/chat-title', ChatTitle);
     }
