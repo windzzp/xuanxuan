@@ -9,16 +9,9 @@ import App from '../core';
 import {setExtensionUser} from './extension';
 import {registerCommand, executeCommand, createCommandObject} from '../core/commander';
 import {fetchServerExtensions, detachServerExtensions, getEntryVisitUrl} from './server';
-import _ExtsView from '../views/exts/index';
+import ExtsView from '../views/exts/index';
 import _ExtsNavbarView from '../views/exts/navbar';
-import withReplaceView from '../with-replace-view';
-
-/**
- * ExtsView 可替换组件形式
- * @type {Class<ExtsView>}
- * @private
- */
-const ExtsView = withReplaceView(_ExtsView);
+import withReplaceView from '../views/with-replace-view';
 
 /**
  * ExtsNavbarView 可替换组件形式

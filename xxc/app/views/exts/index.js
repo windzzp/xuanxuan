@@ -74,14 +74,6 @@ const buildInView = {
  * <ExtsIndex />
  */
 export default class ExtsIndex extends Component {
-    /**
-     * Index 对应的可替换类路径名称
-     *
-     * @type {String}
-     * @static
-     * @memberof Index
-     */
-    static replaceViewPath = 'exts/ExtsIndex';
 
     /**
      * React 组件属性类型检查
