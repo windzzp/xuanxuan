@@ -3,6 +3,7 @@ import platform from '../platform';
 import {setStoreItem, getStoreItem} from '../utils/store';
 import LangHelper from '../utils/lang-helper';
 import events from './events';
+import Config from '../config';
 
 /**
  * 语言变更事件名称
@@ -135,7 +136,7 @@ export const initLang = (extraData) => {
     extraLangData = extraData;
 
     // 获取默认语言名称
-    const langName = getStoreItem('LANG_NAME') || platform.call('language.getPlatformLangName') || 'zh-cn';
+    const langName = getStoreItem('LANG_NAME') || Config.ui.defaultLang || platform.call('language.getPlatformLangName') || 'zh-cn';
 
     // 绑定处理平台请求语言变更的情况
     const setRequestChangeLangHandler = platform.access('language.setRequestChangeLangHandler');
