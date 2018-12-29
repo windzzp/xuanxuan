@@ -149,11 +149,9 @@ export default class ChatMessages extends Component {
         if (!chat.isLoadingOver && !this.loadChatMessagesTask) {
             this.loadChatMessagesTask = setTimeout(() => {
                 this.setState({loading: true}, () => {
-                    App.im.chats.loadChatMessages(chat).then(() => {
-                        return this.setState({loading: false});
-                    }).catch(() => {
-                        return this.setState({loading: false});
-                    });
+                    App.im.chats.loadChatMessages(chat)
+                        .then(() => this.setState({loading: false}))
+                        .catch(() => this.setState({loading: false}));
                     this.loadChatMessagesTask = null;
                 });
             }, delay);

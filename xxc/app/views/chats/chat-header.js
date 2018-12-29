@@ -73,11 +73,12 @@ export default class ChatHeader extends Component {
      */
     shouldComponentUpdate(nextProps) {
         const {chat} = nextProps;
-        return (this.props.className !== nextProps.className ||
-            this.props.children !== nextProps.children ||
-            this.props.chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId ||
-            (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId) ||
-            this.isSidebarHidden !== App.profile.userConfig.isChatSidebarHidden(chat.gid, chat.isOne2One)
+        const {className, children, chat: currentChat} = this.props;
+        return (className !== nextProps.className
+            || children !== nextProps.children
+            || currentChat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId
+            || (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId)
+            || this.isSidebarHidden !== App.profile.userConfig.isChatSidebarHidden(chat.gid, chat.isOne2One)
         );
     }
 
@@ -114,9 +115,7 @@ export default class ChatHeader extends Component {
                 {simpleChatView ? null : (
                     <div className="toolbar flex flex-middle text-rigth rounded">
                         {
-                            getMenuItemsForContext('chat.toolbar', {chat, showSidebarIcon}).map(item => {
-                                return <div key={item.id} className={`hint--${item.hintPosition || 'bottom'} has-padding-sm`} data-hint={item.label} onClick={item.click}><button className={`btn iconbutton rounded${item.className ? ` ${item.className}` : ''}`} type="button"><Icon className="icon-2x" name={item.icon} /></button></div>;
-                            })
+                            getMenuItemsForContext('chat.toolbar', {chat, showSidebarIcon}).map(item => <div key={item.id} className={`hint--${item.hintPosition || 'bottom'} has-padding-sm`} data-hint={item.label} onClick={item.click}><button className={`btn iconbutton rounded${item.className ? ` ${item.className}` : ''}`} type="button"><Icon className="icon-2x" name={item.icon} /></button></div>)
                         }
                     </div>
                 )}
