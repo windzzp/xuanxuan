@@ -8,6 +8,8 @@ import _Navbar from './navbar';
 import _GlobalMessage from './global-message';
 import _CacheContainer from './cache-container';
 import withReplaceView from '../with-replace-view';
+import {onLangChange} from '../../core/lang';
+import events from '../../core/events';
 
 /**
  * GlobalMessage 可替换组件形式
@@ -87,6 +89,9 @@ export default class MainIndex extends Component {
         this.onUserConfigChange = App.profile.onUserConfigChange(() => {
             this.forceUpdate();
         });
+        this.onLangChangeHandler = onLangChange(() => {
+            this.forceUpdate();
+        });
     }
 
     /**
@@ -100,7 +105,7 @@ export default class MainIndex extends Component {
      * @return {void}
      */
     componentWillUnmount() {
-        App.events.off(this.onUserConfigChange);
+        events.off(this.onUserConfigChange, this.onLangChangeHandler);
     }
 
     /**
@@ -118,24 +123,26 @@ export default class MainIndex extends Component {
             ...other
         } = this.props;
 
-        return (<div className={classes('app-main', className)} {...other}>
-            <GlobalMessage className="dock-top" />
-            <Navbar userStatus={userStatus} className="dock-left primary shadow-2" />
-            <Route path={ROUTES.apps.__} exact component={CacheContainer} />
-            <Route
-                path="/:app?"
-                exact
-                render={(props) => {
-                    if (props.match.url === '/' || props.match.url === '/index' || props.match.url === '/chats') {
-                        const activeChatId = App.im.ui.currentActiveChatId;
-                        if (activeChatId) {
-                            return <Redirect to={`/chats/recents/${activeChatId}`} />;
+        return (
+            <div className={classes('app-main', className)} {...other}>
+                <GlobalMessage className="dock-top" />
+                <Navbar userStatus={userStatus} className="dock-left primary shadow-2" />
+                <Route path={ROUTES.apps.__} exact component={CacheContainer} />
+                <Route
+                    path="/:app?"
+                    exact
+                    render={(props) => {
+                        if (props.match.url === '/' || props.match.url === '/index' || props.match.url === '/chats') {
+                            const activeChatId = App.im.ui.currentActiveChatId;
+                            if (activeChatId) {
+                                return <Redirect to={`/chats/recents/${activeChatId}`} />;
+                            }
+                            return <Redirect to="/chats/recents" />;
                         }
-                        return <Redirect to="/chats/recents" />;
-                    }
-                    return null;
-                }}
-            />
-        </div>);
+                        return null;
+                    }}
+                />
+            </div>
+        );
     }
 }

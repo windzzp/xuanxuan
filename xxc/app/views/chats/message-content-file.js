@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../../utils/html-helper';
+import {classes} from '../../utils/html-helper';
 import _FileListItem from '../common/file-list-item';
 import withReplaceView from '../with-replace-view';
+import {isJustLangSwitched} from '../../core/lang';
 
 /**
  * FileListItem 可替换组件形式
@@ -63,7 +64,7 @@ export default class MessageContentFile extends Component {
      * @memberof MessageContentFile
      */
     shouldComponentUpdate(nextProps) {
-        return nextProps.className !== this.props.className || nextProps.message !== this.props.message || nextProps.message.updateId !== this.lastMessageUpdateId;
+        return isJustLangSwitched() || nextProps.className !== this.props.className || nextProps.message !== this.props.message || nextProps.message.updateId !== this.lastMessageUpdateId;
     }
 
     /**
@@ -84,6 +85,6 @@ export default class MessageContentFile extends Component {
         const content = message.fileContent;
         this.lastMessageUpdateId = message.updateId;
 
-        return <FileListItem className={HTML.classes('app-message-content-file layer rounded flex-inline shadow-2 list-item', className)} file={content} {...other} />;
+        return <FileListItem className={classes('app-message-content-file layer rounded flex-inline shadow-2 list-item', className)} file={content} {...other} />;
     }
 }

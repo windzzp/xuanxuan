@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../../utils/html-helper';
+import {classes, rem} from '../../utils/html-helper';
 import {STATUS} from '../../core/models/member';
 import Lang from '../../core/lang';
 import App from '../../core';
@@ -97,12 +97,12 @@ export default class StatusDot extends PureComponent {
         }, style);
 
         if (size) {
-            size = HTML.rem(size);
+            size = rem(size);
             style.width = size;
             style.height = size;
         }
 
-        const dotView = <span className={HTML.classes('inline-block status-dot', className, `status-${status}`)} style={style} {...other} />;
+        const dotView = <span className={classes('inline-block status-dot', className, `status-${status}`)} style={style} {...other} />;
 
         if (label) {
             if (label === true) {

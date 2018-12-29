@@ -4,7 +4,7 @@ import {classes} from '../../utils/html-helper';
 import App from '../../core';
 import _MessageList from './message-list';
 import Spinner from '../../components/spinner';
-import Lang from '../../core/lang';
+import Lang, {isJustLangSwitched} from '../../core/lang';
 import withReplaceView from '../with-replace-view';
 
 /**
@@ -100,7 +100,7 @@ export default class ChatMessages extends Component {
      * @memberof ChatMessages
      */
     shouldComponentUpdate(nextProps, nextState) {
-        return nextState.loading !== this.state.loading || this.props.className !== nextProps.className || this.props.chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.updateId;
+        return isJustLangSwitched() || nextState.loading !== this.state.loading || this.props.className !== nextProps.className || this.props.chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.updateId;
     }
 
     /**

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
-import Lang from '../../core/lang';
+import Lang, {isJustLangSwitched} from '../../core/lang';
 import ROUTES from '../common/routes';
 import _ChatAvatar from './chat-avatar';
 import App from '../../core';
@@ -77,7 +77,8 @@ export default class ChatListItem extends Component {
      * @memberof ChatListItem
      */
     shouldComponentUpdate(nextProps) {
-        return (this.props.className !== nextProps.className ||
+        return (isJustLangSwitched() ||
+            this.props.className !== nextProps.className ||
             this.props.children !== nextProps.children ||
             this.props.chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId ||
             (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId) ||

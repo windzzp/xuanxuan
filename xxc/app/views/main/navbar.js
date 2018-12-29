@@ -111,21 +111,6 @@ export default class Navbar extends Component {
             showUserMenu: false,
             noticeBadge: 0,
         };
-
-        /**
-         * 导航项目列表
-         * @type {{to: string, label: string, icon: string, activeIcon: string}[]}
-         * @private
-         */
-        this.navbarItems = [
-            {
-                to: ROUTES.chats.recents.__, label: Lang.string('navbar.chats.label'), icon: 'comment-processing-outline', activeIcon: 'comment-processing'
-            }, {
-                to: ROUTES.chats.groups.__, label: Lang.string('navbar.groups.label'), icon: 'comment-multiple-outline', activeIcon: 'comment-multiple'
-            }, {
-                to: ROUTES.chats.contacts.__, label: Lang.string('navbar.contacts.label'), icon: 'account-group-outline', activeIcon: 'account-group'
-            },
-        ];
     }
 
     /**
@@ -242,6 +227,21 @@ export default class Navbar extends Component {
         const {showUserMenu} = this.state;
         const {ExtsRuntime} = global;
 
+        /**
+         * 导航项目列表
+         * @type {{to: string, label: string, icon: string, activeIcon: string}[]}
+         * @private
+         */
+        const navbarItems = [
+            {
+                to: ROUTES.chats.recents.__, label: Lang.string('navbar.chats.label'), icon: 'comment-processing-outline', activeIcon: 'comment-processing'
+            }, {
+                to: ROUTES.chats.groups.__, label: Lang.string('navbar.groups.label'), icon: 'comment-multiple-outline', activeIcon: 'comment-multiple'
+            }, {
+                to: ROUTES.chats.contacts.__, label: Lang.string('navbar.contacts.label'), icon: 'account-group-outline', activeIcon: 'account-group'
+            },
+        ];
+
         return (
             <div
                 className={classes('app-navbar', className, {
@@ -260,7 +260,7 @@ export default class Navbar extends Component {
                 </nav>
                 <nav className="dock-top app-nav-main">
                     {
-                        this.navbarItems.map(item => {
+                        navbarItems.map(item => {
                             return (<div key={item.to} className="hint--right nav-item" data-hint={item.label} onClick={this.handleMainNavItemClick}>
                                 <NavLink item={item} />
                                 {

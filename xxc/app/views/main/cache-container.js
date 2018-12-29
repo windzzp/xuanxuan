@@ -90,19 +90,22 @@ export default class CacheContainer extends Component {
             ...other
         } = this.props;
 
-        return (<div className="app-main-container dock" {...other}>
-            {
-                mainViews.map(item => {
-                    const isMatch = match.url.startsWith(item.path);
-                    if (isMatch) {
-                        item.active = true;
-                        return <item.view key={item.path} match={match} />;
-                    } else if (item.active) {
-                        return <item.view key={item.path} match={match} hidden />;
-                    }
-                    return null;
-                })
-            }
-        </div>);
+        return (
+            <div className="app-main-container dock" {...other}>
+                {
+                    mainViews.map(item => {
+                        const isMatch = match.url.startsWith(item.path);
+                        if (isMatch) {
+                            item.active = true;
+                            return <item.view key={item.path} match={match} />;
+                        }
+                        if (item.active) {
+                            return <item.view key={item.path} match={match} hidden />;
+                        }
+                        return null;
+                    })
+                }
+            </div>
+        );
     }
 }

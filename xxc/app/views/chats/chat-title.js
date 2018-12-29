@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
-import Lang from '../../core/lang';
+import Lang, {isJustLangSwitched} from '../../core/lang';
 import App from '../../core';
 import _ChatAvatar from './chat-avatar';
 import _StatusDot from '../common/status-dot';
@@ -79,7 +79,8 @@ export default class ChatTitle extends Component {
      * @memberof ChatTitle
      */
     shouldComponentUpdate(nextProps) {
-        return (this.props.className !== nextProps.className ||
+        return (isJustLangSwitched() ||
+            this.props.className !== nextProps.className ||
             this.props.children !== nextProps.children ||
             this.props.chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId ||
             (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId)

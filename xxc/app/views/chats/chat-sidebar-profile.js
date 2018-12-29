@@ -4,6 +4,7 @@ import HTML from '../../utils/html-helper';
 import App from '../../core';
 import _MemberProfile from '../common/member-profile';
 import withReplaceView from '../with-replace-view';
+import {isJustLangSwitched} from '../../core/lang';
 
 /**
  * MemberProfile 可替换组件形式
@@ -97,7 +98,7 @@ export default class ChatSidebarProfile extends Component {
      * @memberof ChatSidebarProfile
      */
     shouldComponentUpdate(nextProps) {
-        return nextProps.className !== this.props.className || nextProps.chat !== this.props.chat || nextProps.children !== this.props.children || nextProps.chat.getTheOtherOne(App).updateId !== this.lastMemberUpdateId;
+        return isJustLangSwitched() || nextProps.className !== this.props.className || nextProps.chat !== this.props.chat || nextProps.children !== this.props.children || nextProps.chat.getTheOtherOne(App).updateId !== this.lastMemberUpdateId;
     }
 
     /**

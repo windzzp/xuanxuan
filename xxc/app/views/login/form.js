@@ -6,7 +6,7 @@ import InputControl from '../../components/input-control';
 import Checkbox from '../../components/checkbox';
 import Modal from '../../components/modal';
 import Icon from '../../components/icon';
-import Lang from '../../core/lang';
+import Lang, {onLangChange} from '../../core/lang';
 import {classes} from '../../utils/html-helper';
 import {isNotEmptyString} from '../../utils/string-helper';
 import App from '../../core';
@@ -14,6 +14,7 @@ import SwapUserDialog from './swap-user-dialog';
 import Button from '../../components/button';
 import User, {isPasswordWithMD5Flag} from '../../core/profile/user';
 import platform from '../../platform';
+import events from '../../core/events';
 
 // 从平台访问对象获取模块功能
 const {ui: platformUI} = platform.modules;
@@ -176,6 +177,23 @@ export default class LoginForm extends PureComponent {
         if (this._autoLoginOnOpen) {
             this.login();
         }
+        this.onLangChangeHandler = onLangChange(() => {
+            this.forceUpdate();
+        });
+    }
+
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof LanguageSwitcher
+     * @return {void}
+     */
+    componentWillUnmount() {
+        events.off(this.onLangChangeHandler);
     }
 
     /**
