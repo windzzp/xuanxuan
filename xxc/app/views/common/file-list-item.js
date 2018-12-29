@@ -7,7 +7,7 @@ import {formatDate} from '../../utils/date-helper';
 import Icon from '../../components/icon';
 import Avatar from '../../components/avatar';
 import Messager from '../../components/messager';
-import Lang from '../../core/lang';
+import Lang, {isJustLangSwitched} from '../../core/lang';
 import App from '../../core';
 import _UserAvatar from './user-avatar';
 import FileData from '../../core/models/file-data';
@@ -123,7 +123,7 @@ export default class FileListItem extends Component {
      * @memberof FileListItem
      */
     shouldComponentUpdate(nextProps, nextStates) {
-        return nextStates.download !== this.state.download || nextStates.localPath !== this.state.localPath || nextProps.className !== this.props.className || nextProps.smallIcon !== this.props.smallIcon || nextProps.showSender !== this.props.showSender || nextProps.showDate !== this.props.showDate || nextProps.file !== this.props.file || nextProps.file.send !== this.props.file.send || nextProps.file.id !== this.props.file.id || nextProps.file.name !== this.props.file.name;
+        return isJustLangSwitched() || nextStates.download !== this.state.download || nextStates.localPath !== this.state.localPath || nextProps.className !== this.props.className || nextProps.smallIcon !== this.props.smallIcon || nextProps.showSender !== this.props.showSender || nextProps.showDate !== this.props.showDate || nextProps.file !== this.props.file || nextProps.file.send !== this.props.file.send || nextProps.file.id !== this.props.file.id || nextProps.file.name !== this.props.file.name;
     }
 
     /**

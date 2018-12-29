@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types'; // eslint-disable-line
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
-import Lang from '../../core/lang';
+import Lang, {isJustLangSwitched} from '../../core/lang';
 import Emojione from '../../components/emojione';
 import ImageViewer from '../../components/image-viewer';
 import ImageHolder from '../../components/image-holder';
@@ -108,7 +108,7 @@ export default class MessageContentImage extends Component {
      * @memberof MessageContentImage
      */
     shouldComponentUpdate(nextProps, nextState) {
-        return nextProps.className !== this.props.className || nextProps.message !== this.props.message || nextProps.message.updateId !== this.lastMessageUpdateId || nextState.download !== this.state.download || nextState.url || this.state.url;
+        return isJustLangSwitched() || nextProps.className !== this.props.className || nextProps.message !== this.props.message || nextProps.message.updateId !== this.lastMessageUpdateId || nextState.download !== this.state.download || nextState.url || this.state.url;
     }
 
     /**

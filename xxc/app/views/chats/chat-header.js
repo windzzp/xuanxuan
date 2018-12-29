@@ -7,6 +7,7 @@ import _ChatTitle from './chat-title';
 import {getMenuItemsForContext} from '../../core/context-menu';
 import Config from '../../config';
 import withReplaceView from '../with-replace-view';
+import {isJustLangSwitched} from '../../core/lang';
 
 /**
  * ChatTitle 可替换组件形式
@@ -74,7 +75,8 @@ export default class ChatHeader extends Component {
     shouldComponentUpdate(nextProps) {
         const {chat} = nextProps;
         const {className, children, chat: currentChat} = this.props;
-        return (className !== nextProps.className
+        return (isJustLangSwitched()
+            || className !== nextProps.className
             || children !== nextProps.children
             || currentChat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId
             || (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId)

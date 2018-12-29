@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../../utils/html-helper';
+import {classes} from '../../utils/html-helper';
 import _UserAvatar from './user-avatar';
 import _StatusDot from './status-dot';
 import Member from '../../core/models/member';
@@ -118,14 +118,16 @@ export default class MemberListItem extends Component {
             titleView = <div className="title">{member.displayName}</div>;
         }
 
-        return (<a
-            {...other}
-            className={HTML.classes('app-member-list-item item', className)}
-        >
-            <UserAvatar className={avatarClassName} size={avatarSize} user={member} />
-            {showStatusDot && <StatusDot status={member.status} />}
-            {titleView}
-            {children}
-        </a>);
+        return (
+            <a
+                {...other}
+                className={classes('app-member-list-item item', className)}
+            >
+                <UserAvatar className={avatarClassName} size={avatarSize} user={member} />
+                {showStatusDot && <StatusDot status={member.status} />}
+                {titleView}
+                {children}
+            </a>
+        );
     }
 }

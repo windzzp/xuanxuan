@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
 import Button from '../../components/button';
-import Lang from '../../core/lang';
+import Lang, {isJustLangSwitched} from '../../core/lang';
 import Config from '../../config';
 
 /**
@@ -60,7 +60,7 @@ export default class NotificationMessage extends Component {
      * @memberof NotificationMessage
      */
     shouldComponentUpdate(nextProps) {
-        return nextProps.className !== this.props.className || nextProps.contentConverter !== this.props.contentConverter || nextProps.message !== this.props.message || nextProps.message.content !== this.props.message.content;
+        return isJustLangSwitched() || nextProps.className !== this.props.className || nextProps.contentConverter !== this.props.contentConverter || nextProps.message !== this.props.message || nextProps.message.content !== this.props.message.content;
     }
 
     /**

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import {Tabs, TabPane} from '../../components/tabs';
-import Lang from '../../core/lang';
+import Lang, {isJustLangSwitched} from '../../core/lang';
 import App from '../../core';
 import _ChatSidebarPeoples from './chat-sidebar-peoples';
 import _ChatSidebarFiles from './chat-sidebar-files';
@@ -88,7 +88,7 @@ export default class ChatSidebar extends Component {
      * @memberof ChatSidebar
      */
     shouldComponentUpdate(nextProps) {
-        return this.props.className !== nextProps.className || this.props.children !== nextProps.children || this.props.closeButton !== nextProps.closeButton || this.props.chat !== nextProps.chat || this.lastChatId !== nextProps.updateId || (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId);
+        return isJustLangSwitched() || this.props.className !== nextProps.className || this.props.children !== nextProps.children || this.props.closeButton !== nextProps.closeButton || this.props.chat !== nextProps.chat || this.lastChatId !== nextProps.updateId || (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId);
     }
 
     /**

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import {formatDate, isSameDay, isToday} from '../../utils/date-helper';
 import App from '../../core';
-import Lang from '../../core/lang';
+import Lang, {isJustLangSwitched} from '../../core/lang';
 import Icon from '../../components/icon';
 import MemberProfileDialog from '../common/member-profile-dialog';
 import _UserAvatar from '../common/user-avatar';
@@ -194,7 +194,7 @@ export default class MessageListItem extends Component {
      * @memberof MessageListItem
      */
     shouldComponentUpdate(nextProps, nextState) {
-        return (
+        return (isJustLangSwitched() ||
             this.state.sharing !== nextState.sharing ||
             this.props.message !== nextProps.message || nextProps.message.updateId !== this.lastMessageUpdateId ||
             this.props.lastMessage !== nextProps.lastMessage ||

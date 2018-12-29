@@ -25,6 +25,12 @@ const langHelper = new LangHelper();
 let extraLangData = null;
 
 /**
+ * 上次变更语言的时间戳
+ * @type {number}
+ */
+let isJustLangSwitchedFlag = false;
+
+/**
  * 绑定语言变更事件
  * @param {function(String)} listener 事件回调函数
  * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
@@ -46,6 +52,12 @@ export const onLangChange = listener => events.on(LANG_CHANGE_EVENT, listener);
  * @return {Array<{name: String, label: String}>} 语言清单列表
  */
 export const getAllLangList = () => extraLangData.ALL || [{name: 'zh-cn', label: '简体中文'}];
+
+/**
+ * 是否刚刚变更了语言
+ * @return {boolean} 如果为 `true`，则为刚刚变更了语言，否则没有
+ */
+export const isJustLangSwitched = () => isJustLangSwitchedFlag;
 
 /**
  * 获取应用显示名称
@@ -87,6 +99,11 @@ export const loadLanguage = (langName, notifyPlatform = true) => {
     }
     if (langName !== langHelper.name) {
         return loadPlatformLangData(langName).then(platformLangData => {
+            isJustLangSwitchedFlag = true;
+            setTimeout(() => {
+                isJustLangSwitchedFlag = false;
+            }, 500);
+
             // 合并语言数据对象
             const langData = Object.assign({}, LANG_ZH_CN, platformLangData, extraLangData && extraLangData[langName]);
 

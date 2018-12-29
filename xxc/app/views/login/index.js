@@ -9,6 +9,8 @@ import App from '../../core';
 import withReplaceView from '../with-replace-view';
 import pkg from '../../package.json';
 import AboutDialog from '../common/about-dialog';
+import {getLangDisplayName} from '../../core/lang';
+import Icon from '../../components/icon';
 
 /**
  * LoginForm 可替换组件形式
@@ -92,6 +94,9 @@ export default class LoginIndex extends PureComponent {
 
         return (
             <div className={classes('app-login center-content', className)} {...other}>
+                <header className="has-padding-sm dock-right dock-top">
+                    <a href="xxc:showLanguageSwitchDialog" className="btn darken text-white rounded muted"><Icon name="web" />&nbsp;<small>{getLangDisplayName()}</small></a>
+                </header>
                 <section>
                     <header className="text-center space-sm">
                         <img src={`${Config.media['image.path']}logo-inverse.png`} alt="logo" />
@@ -100,7 +105,7 @@ export default class LoginIndex extends PureComponent {
                     {App.ui.entryParams.loginTip && <div className="app-login-tip small text-center has-padding-v muted text-white">{App.ui.entryParams.loginTip}</div>}
                     {children}
                 </section>
-                <footer className="dock-right dock-bottom text-white muted has-padding-sm">
+                <footer className="dock-bottom text-center text-white muted has-padding-sm">
                     <BuildInfo className="small state has-padding-sm inline-block" onClick={() => AboutDialog.show()} />
                     {showPoweredBy ? '•' : null}
                     {showPoweredBy && <PoweredInfo className="state has-padding-sm inline-block strong small" />}

@@ -95,13 +95,153 @@ export default class UserSetting extends Component {
          * @type {object}
          */
         this.state = Object.assign({}, this.props.settings);
+    }
+
+    /**
+     * 获取当前设置的个人配置对象
+     *
+     * @return {Object} 个人配置对象
+     * @memberof UserSetting
+     */
+    getSettings() {
+        return this.state;
+    }
+
+    /**
+     * 设置当前设置的个人配置对象
+     *
+     * @param {Object} settings 个人配置对象
+     * @memberof UserSetting
+     * @return {void}
+     */
+    setSettings(settings) {
+        this.setState(Object.assign({}, settings));
+    }
+
+    /**
+     * 修改个人配置
+     *
+     * @param {Object|{name: string}} item 配置项对象
+     * @param {any} value 配置项值
+     * @memberof UserSetting
+     * @return {void}
+     */
+    changeConfig(item, value) {
+        const {name} = item;
+        if (typeof value === 'object' && value.target) {
+            if (value.target.type === 'checkbox') {
+                value = value.target.checked;
+            } else {
+                value = value.target.value;
+            }
+        }
+        if (item.setConverter) {
+            value = item.setConverter(value);
+        }
+        this.setState({[name]: value});
+    }
+
+    /**
+     * 渲染普通配置项
+     *
+     * @param {Object} item 配置项对象
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     * @memberof UserSetting
+     */
+    renderConfigItem(item) {
+        if (item.hidden) {
+            let hidden = item.hidden;
+            if (typeof item.hidden === 'function') {
+                hidden = item.hidden(this.state);
+            }
+            if (hidden) {
+                return null;
+            }
+        }
+        switch (item.type) {
+        case 'boolean':
+            return this.renderBooleanItem(item);
+        case 'select':
+            return this.renderSelectItem(item);
+        case 'hotkey':
+            return this.renderHotkeyItem(item);
+        }
+        return null;
+    }
+
+    /**
+     * 渲染快捷键配置项
+     *
+     * @param {Object} item 配置项对象
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     * @memberof UserSetting
+     */
+    renderHotkeyItem(item) {
+        let value = this.state[item.name];
+        if (item.getConverter) {
+            value = item.getConverter(value);
+        }
+        return <HotkeyInputControl onlyMotifyKeysText={Lang.string('setting.hotkeys.cantSetOnlyMotifyKeys')} key={item.name} defaultValue={value} labelStyle={{flex: 1}} onChange={this.changeConfig.bind(this, item)} label={item.caption} className={classes('flex', item.className)} />;
+    }
+
+    /**
+     * 渲染选择框配置项
+     *
+     * @param {Object} item 配置项对象
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     * @memberof UserSetting
+     */
+    renderSelectItem(item) {
+        let value = this.state[item.name];
+        if (item.getConverter) {
+            value = item.getConverter(value);
+        }
+        const controlId = `selectbox-${timeSequence()}`;
+        return (<div className={classes('control flex', item.className)} key={item.name}>
+            <label htmlFor={controlId} style={{flex: '1 1 0%'}}>{item.caption}</label>
+            <SelectBox selectProps={{id: controlId}} value={value} options={item.options} onChange={this.changeConfig.bind(this, item)} selectClassName="rounded" />
+        </div>);
+    }
+
+    /**
+     * 渲染布尔值配置项
+     *
+     * @param {Object} item 配置项对象
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     * @memberof UserSetting
+     */
+    renderBooleanItem(item) {
+        let value = this.state[item.name];
+        if (item.getConverter) {
+            value = item.getConverter(value);
+        }
+        const checked = !!value;
+        return (<div className={classes('control', item.className)} key={item.name}>
+            <Checkbox checked={checked} label={item.caption} onChange={this.changeConfig.bind(this, item)} />
+        </div>);
+    }
+
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof UserSetting
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
+    render() {
+        const {
+            settings,
+            className,
+            ...other
+        } = this.props;
 
         /**
          * 个人配置界面列表项清单
          * @type {Map[]}
          * @private
          */
-        this.configs = [
+        const configs = [
             {
                 name: 'chats',
                 title: Lang.string('setting.section.chats'),
@@ -258,153 +398,13 @@ export default class UserSetting extends Component {
                 ]
             }
         ];
-    }
-
-    /**
-     * 获取当前设置的个人配置对象
-     *
-     * @return {Object} 个人配置对象
-     * @memberof UserSetting
-     */
-    getSettings() {
-        return this.state;
-    }
-
-    /**
-     * 设置当前设置的个人配置对象
-     *
-     * @param {Object} settings 个人配置对象
-     * @memberof UserSetting
-     * @return {void}
-     */
-    setSettings(settings) {
-        this.setState(Object.assign({}, settings));
-    }
-
-    /**
-     * 修改个人配置
-     *
-     * @param {Object|{name: string}} item 配置项对象
-     * @param {any} value 配置项值
-     * @memberof UserSetting
-     * @return {void}
-     */
-    changeConfig(item, value) {
-        const {name} = item;
-        if (typeof value === 'object' && value.target) {
-            if (value.target.type === 'checkbox') {
-                value = value.target.checked;
-            } else {
-                value = value.target.value;
-            }
-        }
-        if (item.setConverter) {
-            value = item.setConverter(value);
-        }
-        this.setState({[name]: value});
-    }
-
-    /**
-     * 渲染普通配置项
-     *
-     * @param {Object} item 配置项对象
-     * @return {ReactNode|string|number|null|boolean} React 渲染内容
-     * @memberof UserSetting
-     */
-    renderConfigItem(item) {
-        if (item.hidden) {
-            let hidden = item.hidden;
-            if (typeof item.hidden === 'function') {
-                hidden = item.hidden(this.state);
-            }
-            if (hidden) {
-                return null;
-            }
-        }
-        switch (item.type) {
-        case 'boolean':
-            return this.renderBooleanItem(item);
-        case 'select':
-            return this.renderSelectItem(item);
-        case 'hotkey':
-            return this.renderHotkeyItem(item);
-        }
-        return null;
-    }
-
-    /**
-     * 渲染快捷键配置项
-     *
-     * @param {Object} item 配置项对象
-     * @return {ReactNode|string|number|null|boolean} React 渲染内容
-     * @memberof UserSetting
-     */
-    renderHotkeyItem(item) {
-        let value = this.state[item.name];
-        if (item.getConverter) {
-            value = item.getConverter(value);
-        }
-        return <HotkeyInputControl onlyMotifyKeysText={Lang.string('setting.hotkeys.cantSetOnlyMotifyKeys')} key={item.name} defaultValue={value} labelStyle={{flex: 1}} onChange={this.changeConfig.bind(this, item)} label={item.caption} className={classes('flex', item.className)} />;
-    }
-
-    /**
-     * 渲染选择框配置项
-     *
-     * @param {Object} item 配置项对象
-     * @return {ReactNode|string|number|null|boolean} React 渲染内容
-     * @memberof UserSetting
-     */
-    renderSelectItem(item) {
-        let value = this.state[item.name];
-        if (item.getConverter) {
-            value = item.getConverter(value);
-        }
-        const controlId = `selectbox-${timeSequence()}`;
-        return (<div className={classes('control flex', item.className)} key={item.name}>
-            <label htmlFor={controlId} style={{flex: '1 1 0%'}}>{item.caption}</label>
-            <SelectBox selectProps={{id: controlId}} value={value} options={item.options} onChange={this.changeConfig.bind(this, item)} selectClassName="rounded" />
-        </div>);
-    }
-
-    /**
-     * 渲染布尔值配置项
-     *
-     * @param {Object} item 配置项对象
-     * @return {ReactNode|string|number|null|boolean} React 渲染内容
-     * @memberof UserSetting
-     */
-    renderBooleanItem(item) {
-        let value = this.state[item.name];
-        if (item.getConverter) {
-            value = item.getConverter(value);
-        }
-        const checked = !!value;
-        return (<div className={classes('control', item.className)} key={item.name}>
-            <Checkbox checked={checked} label={item.caption} onChange={this.changeConfig.bind(this, item)} />
-        </div>);
-    }
-
-    /**
-     * React 组件生命周期函数：Render
-     * @private
-     * @see https://doc.react-china.org/docs/react-component.html#render
-     * @see https://doc.react-china.org/docs/rendering-elements.html
-     * @memberof UserSetting
-     * @return {ReactNode|string|number|null|boolean} React 渲染内容
-     */
-    render() {
-        const {
-            settings,
-            className,
-            ...other
-        } = this.props;
 
         return (<div
             {...other}
             className={classes('app-user-setting space', className)}
         >
             {
-                this.configs.map(section => {
+                configs.map(section => {
                     if (section.hidden) {
                         return null;
                     }

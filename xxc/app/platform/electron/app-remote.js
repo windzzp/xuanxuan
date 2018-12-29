@@ -545,7 +545,10 @@ class AppRemote {
             autoHideMenuBar: !IS_MAC_OSX,
             backgroundColor: '#ffffff',
             show: DEBUG,
-            webPreferences: {webSecurity: false}
+            webPreferences: {
+                webSecurity: false,
+                nodeIntegration: true,
+            }
         }, options);
 
         let browserWindow = this.windows[name];

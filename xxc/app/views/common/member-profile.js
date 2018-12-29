@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import Avatar from '../../components/avatar';
-import Lang from '../../core/lang';
+import Lang, {isJustLangSwitched} from '../../core/lang';
 import App from '../../core';
 import ROUTES from './routes';
 import _UserAvatar from './user-avatar';
@@ -101,7 +101,7 @@ export default class MemberProfile extends Component {
      * @memberof MemberProfile
      */
     shouldComponentUpdate(nextProps) {
-        return nextProps.compact !== this.props.compact || nextProps.className !== this.props.className || nextProps.hideChatBtn !== this.props.hideChatBtn || nextProps.onRequestClose !== this.props.onRequestClose || nextProps.memberId !== this._memberId;
+        return isJustLangSwitched() || nextProps.compact !== this.props.compact || nextProps.className !== this.props.className || nextProps.hideChatBtn !== this.props.hideChatBtn || nextProps.onRequestClose !== this.props.onRequestClose || nextProps.memberId !== this._memberId;
     }
 
     /**
