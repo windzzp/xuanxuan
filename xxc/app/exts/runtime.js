@@ -64,13 +64,15 @@ App.ui.onReady(() => {
 
 // 监听用户登录事件，触发扩展的 `onUserLogin` 回调函数
 App.server.onUserLogin((user, error) => {
-    if (!error) {
+    if (user && !error) {
         setExtensionUser(user);
         forEachExtension(ext => {
             ext.callModuleMethod('onUserLogin', user);
         });
+        if (user.isOneline) {
+            fetchServerExtensions(user);
+        }
     }
-    fetchServerExtensions(user);
 });
 
 // 监听用户退出事件，触发扩展的 `onUserLogout` 回调函数
