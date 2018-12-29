@@ -69,7 +69,7 @@ App.server.onUserLogin((user, error) => {
         forEachExtension(ext => {
             ext.callModuleMethod('onUserLogin', user);
         });
-        if (user.isOneline) {
+        if (user.isOnline) {
             fetchServerExtensions(user);
         }
     }
