@@ -20,7 +20,6 @@ import Platform from 'Platform';
  * import ChatTitle from './chat-title';
  * <ChatTitle />
  */
-
 export default class ChatTitle extends Component {
     /**
      * 获取 ChatTitle 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
