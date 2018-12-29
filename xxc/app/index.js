@@ -8,9 +8,17 @@ import ReactDOM from 'react-dom';
 import './style/app.less';
 import './utils/debug';
 import './utils/react-debug';
-import {HomeIndex} from './views/index';
+import _HomeIndex from './views/index';
 import {ready} from './core/runtime';
 import {triggerReady} from './core/ui';
+import withReplaceView from './views/with-replace-view';
+
+/**
+ * HomeIndex 可替换组件形式
+ * @type {Class<HomeIndex>}
+ * @private
+ */
+const HomeIndex = withReplaceView(_HomeIndex);
 
 document.body.classList.add('no-animation');
 
