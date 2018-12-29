@@ -41,6 +41,18 @@ class PlatformModule {
     }
 
     /**
+     * 获取平台环境变量对象
+     * @type {Map<String, any>}
+     *
+     * @readonly
+     * @memberof PlatformModule
+     */
+    get env() {
+        const {$module} = this;
+        return $module && $module.env;
+    }
+
+    /**
      * 获取是否指定的平台类型
      * @param {String} type 平台类型名称
      * @memberof Index
