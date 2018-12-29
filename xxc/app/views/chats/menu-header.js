@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
 import SearchControl from '../../components/search-control';
@@ -15,7 +15,7 @@ import ChatCreateDialog from './chat-create-dialog';
  * import MenuHeader from './menu-header';
  * <MenuHeader />
  */
-export default class MenuHeader extends PureComponent {
+export default class MenuHeader extends Component {
     /**
      * MenuHeader 对应的可替换类路径名称
      *
