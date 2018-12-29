@@ -361,7 +361,7 @@ document.addEventListener('click', e => {
         target = target.parentNode;
     }
 
-    if (target && (target.tagName === 'A' || target.classList.contains('app-link')) && (target.attributes.href || target.attributes['data-url'])) {
+    if (target && ((target.tagName === 'A' && (!target.attributes.href || !target.attributes.href.value.startsWith('#/'))) || target.classList.contains('app-link')) && (target.attributes.href || target.attributes['data-url'])) {
         const link = (target.attributes['data-url'] || target.attributes.href).value;
         if (openUrl(link, target, e)) {
             e.preventDefault();
@@ -570,7 +570,12 @@ export const onReady = listener => {
  * @return {void}
  */
 export const setTitle = title => {
-    document.title = title;
+    const platformSetTitle = platform.access('ui.setWindowTitle');
+    if (platformSetTitle) {
+        platformSetTitle(title);
+    } else {
+        document.title = title;
+    }
 };
 
 /**

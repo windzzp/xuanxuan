@@ -134,6 +134,10 @@ export default class Navbar extends Component {
             }
         });
 
+        this.handleChatActiveEvent = App.im.ui.onActiveChat(() => {
+            this.forceUpdate();
+        });
+
         const hashFilters = window.location.hash.split('/');
         if (hashFilters[0] === '#') {
             this.lastFilterType = hashFilters[1];
@@ -151,7 +155,7 @@ export default class Navbar extends Component {
      * @return {void}
      */
     componentWillUnmount() {
-        App.events.off(this.noticeUpdateHandler, this.dataChangeEventHandler);
+        App.events.off(this.noticeUpdateHandler, this.dataChangeEventHandler, this.handleChatActiveEvent);
     }
 
     /**
@@ -226,6 +230,7 @@ export default class Navbar extends Component {
         const isAvatarOnTop = userConfig && userConfig.avatarPosition === 'top';
         const {showUserMenu} = this.state;
         const {ExtsRuntime} = global;
+        const activeChatID = App.im.ui.currentActiveChatId;
 
         /**
          * 导航项目列表
@@ -234,11 +239,11 @@ export default class Navbar extends Component {
          */
         const navbarItems = [
             {
-                to: ROUTES.chats.recents.__, label: Lang.string('navbar.chats.label'), icon: 'comment-processing-outline', activeIcon: 'comment-processing'
+                to: activeChatID ? ROUTES.chats.recents.id(activeChatID) : ROUTES.chats.recents.__, label: Lang.string('navbar.chats.label'), icon: 'comment-processing-outline', activeIcon: 'comment-processing'
             }, {
-                to: ROUTES.chats.groups.__, label: Lang.string('navbar.groups.label'), icon: 'comment-multiple-outline', activeIcon: 'comment-multiple'
+                to: activeChatID ? ROUTES.chats.groups.id(activeChatID) : ROUTES.chats.groups.__, label: Lang.string('navbar.groups.label'), icon: 'comment-multiple-outline', activeIcon: 'comment-multiple'
             }, {
-                to: ROUTES.chats.contacts.__, label: Lang.string('navbar.contacts.label'), icon: 'account-group-outline', activeIcon: 'account-group'
+                to: activeChatID ? ROUTES.chats.contacts.id(activeChatID) : ROUTES.chats.contacts.__, label: Lang.string('navbar.contacts.label'), icon: 'account-group-outline', activeIcon: 'account-group'
             },
         ];
 

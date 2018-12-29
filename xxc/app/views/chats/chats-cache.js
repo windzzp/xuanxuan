@@ -76,8 +76,6 @@ export default class ChatsCache extends Component {
             ...other
         } = this.props;
 
-        App.im.ui.activeChat(chatId);
-
         return (
             <div
                 {...other}
