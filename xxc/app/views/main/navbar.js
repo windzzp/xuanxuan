@@ -269,7 +269,7 @@ export default class Navbar extends Component {
                             return (<div key={item.to} className="hint--right nav-item" data-hint={item.label} onClick={this.handleMainNavItemClick}>
                                 <NavLink item={item} />
                                 {
-                                    (this.state.noticeBadge && item.to === ROUTES.chats.recents.__) ? <div className="label label-sm dock-right dock-top circle red badge">{this.state.noticeBadge}</div> : null
+                                    (this.state.noticeBadge && item.to.startsWith(ROUTES.chats.recents.__)) ? <div className="label label-sm dock-right dock-top circle red badge">{this.state.noticeBadge}</div> : null
                                 }
                             </div>);
                         })
