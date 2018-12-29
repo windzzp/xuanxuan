@@ -1146,7 +1146,17 @@
     .app-chat-share-content{
       height: 100%;
       overflow: auto;
-      // padding-bottom: 40px;
+      .app-group-list-root{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        align-content: flex-start;
+        .item{
+          width: 8rem;
+          position: relative;
+          display: flex;
+        }
+      }
     }
   }
   .list > .list{
