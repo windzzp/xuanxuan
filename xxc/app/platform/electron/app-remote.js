@@ -139,6 +139,7 @@ class AppRemote {
 
         onLangChange(() => {
             this.createAppMenu();
+            this.createDockMenu();
         });
     }
 
@@ -299,13 +300,11 @@ class AppRemote {
     }
 
     /**
-     * 通知主进程准备就绪并打开主界面窗口
-     * @memberof AppRemote
+     * 创建程序坞图标右键菜单
      * @return {void}
+     * @memberof AppRemote
      */
-    ready() {
-        this.openOrCreateWindow();
-
+    createDockMenu() {
         if (IS_MAC_OSX) {
             const dockMenu = Menu.buildFromTemplate([
                 {
@@ -317,6 +316,17 @@ class AppRemote {
             ]);
             ElectronApp.dock.setMenu(dockMenu);
         }
+    }
+
+    /**
+     * 通知主进程准备就绪并打开主界面窗口
+     * @memberof AppRemote
+     * @return {void}
+     */
+    ready() {
+        this.openOrCreateWindow();
+
+        this.createDockMenu();
 
         // 创建应用窗口菜单
         this.createAppMenu();
