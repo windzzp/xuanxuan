@@ -4,6 +4,7 @@ import {createExtension} from './extension';
 import {setOnInstalledExtensionChangeListener, getInstalledExtensions} from './extensions-db';
 import events from '../core/events';
 import {setServerOnChangeListener} from './server';
+import {onLangChange} from '../core/lang';
 
 /**
  * 事件名称表
@@ -198,7 +199,7 @@ export const onExtensionChange = listener => events.on(EVENT.onChange, listener)
 
 /**
  * 遍历已安装的扩展
- * @param {function(ext: Extension)} callback 遍历回调函数
+ * @param {function(Extension)} callback 遍历回调函数
  * @param {boolean} [includeDisabled=false] 是否包含已禁用的扩展
  * @return {void}
  */
@@ -275,6 +276,18 @@ export const initExtensions = () => {
     setServerOnChangeListener(onChangeListener);
 
     defaultApp = apps.find(x => x.buildIn && x.buildIn.asDefault) || exts.apps[0];
+
+    onLangChange(lang => {
+        const changedExts = [];
+        forEachExtension(ext => {
+            if (ext.buildIn) {
+                ext._pkg.displayName = lang.string(`exts.${ext.name}.label`);
+                ext._pkg.description = lang.string(`exts.${ext.name}.desc`);
+                changedExts.push(ext);
+            }
+        });
+        onChangeListener(changedExts, 'update');
+    });
 
     if (DEBUG) {
         console.collapse('Extensions Init', 'greenBg', `Total: ${exts.length}, Apps: ${apps.length}, Plugins: ${plugins.length}, Themes: ${themes.length}`, 'greenPale');
