@@ -336,6 +336,10 @@ export const createAppWindow = () => {
     callRemote('createAppWindow');
 };
 
+export const setWindowTitle = title => {
+    browserWindow.setTitle(title);
+};
+
 /**
  * 初始化
  * @param {Object} config 运行时配置
@@ -359,6 +363,7 @@ const init = (config) => {
 
 export default {
     init,
+    setWindowTitle,
     createAppWindow,
     userDataPath,
     browserWindowName,
