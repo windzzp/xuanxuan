@@ -4,12 +4,6 @@ import SelectBox from '../../components/select-box';
 import App from '../../core';
 import Lang from '../../core/lang';
 
-const codeLanguage = [
-    {label: Lang.string('common.default'), value: ''}, {label: 'C++', value: 'cpp'},
-    {label: 'C#', value: 'csharp'}, {label: 'JavaScript', value: 'js'}, {label: 'TypeScript', value: 'ts'},
-    'CSS', 'Diff', 'Ini', 'Java', 'Apache', 'Bash', 'JSON', 'Makefile', 'Perl', 'PHP', 'Python', 'Ruby', 'SQL', 'HTML'
-];
-
 export default class ChatCode extends Component {
     constructor(props) {
         super(props);
@@ -24,16 +18,15 @@ export default class ChatCode extends Component {
         const {chat, onRequestClose} = this.props;
         const codeLanguage = language.toLowerCase();
         const codeContent = '```' + codeLanguage + '\n' + desc + '\n```';
-        const textChatMessage = App.im.server.createTextChatMessage(codeContent, chat);
+
         if(desc === '') {
             onRequestClose();
             return;
         }
 
-        textChatMessage.contentType = 'text';
         onRequestClose();
         App.im.ui.activeChat(chat, 'recents');
-        await App.im.server.sendChatMessage(textChatMessage, chat); // eslint-disable-line
+        await App.im.server.sendTextMessage(codeContent, chat, true); // eslint-disable-line
     }
 
     /**
@@ -50,6 +43,11 @@ export default class ChatCode extends Component {
 
     render() {
         const {language} = this.state;
+        const codeLanguage = [
+            {label: Lang.string('common.default'), value: ''}, {label: 'C++', value: 'cpp'},
+            {label: 'C#', value: 'csharp'}, {label: 'JavaScript', value: 'js'}, {label: 'TypeScript', value: 'ts'},
+            'CSS', 'Diff', 'Ini', 'Java', 'Apache', 'Bash', 'JSON', 'Makefile', 'Perl', 'PHP', 'Python', 'Ruby', 'SQL', 'HTML'
+        ];
         return (
             <div>
                 <div className="desc" style={{position: 'relative'}}>

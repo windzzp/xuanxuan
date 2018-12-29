@@ -54,11 +54,12 @@ export default class ChatShare extends Component {
     handleShareBtnClick = () => {
         const {message, onRequestClose} = this.props;
         const {choosed} = this.state;
+
         onRequestClose();
         Object.keys(choosed).map((key) => {
             const chat = choosed[key];
             message.content = Emojione.toShort(message.content);
-            App.im.server.sendTextMessage(message.content, chat); // eslint-disable-line
+            App.im.server.sendTextMessage(message.content, chat, message.contentType === 'text' ? true : null); // eslint-disable-line
         });
     }
 
