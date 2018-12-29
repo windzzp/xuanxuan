@@ -9,7 +9,6 @@ import App from '../../core';
 import withReplaceView from '../with-replace-view';
 import pkg from '../../package.json';
 import AboutDialog from '../common/about-dialog';
-import withReplaceView from '../with-replace-view';
 
 /**
  * LoginForm 可替换组件形式
