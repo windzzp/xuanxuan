@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from '../../components/modal';
 import ChatCode from './chat-code';
+import { isAbsolute } from 'path';
 /**
  * 显示发送代码对话框界面
  * @param {Chat} chat 聊天对象
@@ -14,12 +15,13 @@ export const showChatCodeDialog = (chat, callback) => {
         style: {
             width: 600,
             height: 430,
-            top: '50%',
             left: '50%',
             marginLeft: -300,
-            marginTop: -250,
+            position: 'absolute',
+            bottom: 0,
         },
-        className: 'app-chat-code-dialog dock',
+        className: 'app-chat-code-dialog',
+        animation: 'enter-from-bottom',
         actions: false,
         content: <ChatCode chat={chat} onRequestClose={() => (Modal.hide(modalId))} />
     }, callback);
