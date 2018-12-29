@@ -7,7 +7,8 @@ import Lang from '../../core/lang';
 import InputControl from '../../components/input-control';
 import SelectBox from '../../components/select-box';
 import Button from '../../components/button';
-import App from '../../core';
+import {createTodo} from '../../core/todo';
+import {showMessager} from '../../components/messager';
 
 /**
  * 将时间字符串转换为秒数
@@ -158,10 +159,10 @@ export default class TodoEditor extends PureComponent {
         if (this.checkTodo()) {
             this.setState({loading: true}, () => {
                 const {todo} = this.state;
-                App.todo.createTodo(todo).then(newTodo => {
+                createTodo(todo).then(newTodo => {
                     const state = {loading: false};
                     if (newTodo && newTodo.id) {
-                        App.ui.showMessger(Lang.string('todo.createSuccess'), {type: 'success'});
+                        showMessager(Lang.string('todo.createSuccess'), {type: 'success'});
                         if (this.props.onRequestClose) {
                             this.props.onRequestClose();
                         }
@@ -169,6 +170,7 @@ export default class TodoEditor extends PureComponent {
                         state.errorMessage = Lang.error('COMMON_ERROR');
                     }
                     this.setState(state);
+                    return newTodo;
                 });
             });
         }
