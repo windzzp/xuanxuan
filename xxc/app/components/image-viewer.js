@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from './modal';
 import timeSequence from '../utils/time-sequence';
-import ImageViewerKeymouse from './image-viewer-keymouse'
+import ImageViewerKeymouse from './image-viewer-keymouse';
 
 /** @module image-viewer */
 
@@ -13,6 +13,7 @@ import ImageViewerKeymouse from './image-viewer-keymouse'
  * @return {DisplayLayer}
  * @function
  */
+
 export const showImageViewer = (imageSrc, props, callback) => {
     const modalId = `layer-image-viewer-${timeSequence()}`;
     return Modal.show(Object.assign({
