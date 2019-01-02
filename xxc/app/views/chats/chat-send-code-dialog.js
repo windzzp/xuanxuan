@@ -1,9 +1,15 @@
 import React from 'react';
 import Modal from '../../components/modal';
+<<<<<<< HEAD:xxc/app/views/chats/chat-code-dialog.js
 import ChatCode from './chat-code';
 import Lang from '../../core/lang';
 import { isAbsolute } from 'path';
 import LangHelper from '../../utils/lang-helper';
+=======
+import ChatCode from './chat-send-code';
+import Lang from '../../core/lang';
+
+>>>>>>> 79ea1ca634c397b97b1c7f645b1d6b8fb74c3f6a:xxc/app/views/chats/chat-send-code-dialog.js
 /**
  * 显示发送代码对话框界面
  * @param {Chat} chat 聊天对象
@@ -15,6 +21,7 @@ export const showChatCodeDialog = (chat, callback) => {
     let chatCode = '';
     return Modal.show({
         id: modalId,
+        title: Lang.string('chat.sendCodeDialog.title'),
         style: {
             width: 600,
             height: 430,

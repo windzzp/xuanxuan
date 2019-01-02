@@ -181,7 +181,6 @@ export default class ChatSendbox extends Component {
         this.clearContent();
         this.focusEditor();
         const {chat} = this.props;
-        App.im.ui.activeChat(chat, 'recents');
         for (let i = 0; i < contentList.length; ++i) {
             const content = contentList[i];
             if (content.type === 'text') {
@@ -196,6 +195,7 @@ export default class ChatSendbox extends Component {
                 await App.im.server.sendImageMessage(content.image, chat); // eslint-disable-line
             }
         }
+        App.im.ui.activeChat(chat, 'recents');
     }
 
     /**
