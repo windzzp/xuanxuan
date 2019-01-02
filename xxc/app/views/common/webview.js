@@ -443,6 +443,13 @@ export default class WebView extends PureComponent {
         const {webview} = this;
         const {onDomReady, fluidWidth, showCondition, style} = this.props;
         const {insertCss, executeJavaScript, onExecuteJavaScript, injectData} = this.props;
+        // Fixed [electron issue #15318](https://github.com/electron/electron/issues/15318)
+        // and [issue #14474](https://github.com/electron/electron/issues/14474)
+        if (this.isWebview) {
+            webview.blur();
+            webview.focus();
+        }
+
         if (insertCss) {
             webview.insertCSS(insertCss);
             if (DEBUG) {
