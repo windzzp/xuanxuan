@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
 import {rem} from '../../utils/html-helper';
 import SearchControl from '../../components/search-control';
+import PropTypes from 'prop-types';
 import Lang from '../../core/lang';
-import GroupList from '../../components/group-list';
 import App from '../../core';
 import ChatShareList from './chat-share-list';
 import _ChatListItem from './chat-list-item';
-import Emojione from '../../components/emojione';
 import Messager from '../../components/messager';
-import PropTypes from 'prop-types';
 import withReplaceView from '../with-replace-view';
+import timeSequence from '../../utils/time-sequence';
 
 /**
  * ChatListItem 可替换组件形式
@@ -100,24 +99,25 @@ export default class ChatShare extends Component {
     handleShareBtnClick = () => {
         const {message, onRequestClose} = this.props;
         const {choosed} = this.state;
-        const chats = [];
-        message.content = Emojione.toShort(message.content);
-
-        onRequestClose();
-
-        Object.keys(choosed).map((key) => {
-            chats.push(choosed[key]);
-            return key;
-        });
-        App.im.server.forwardMessage(message, chats, (progress) => {
-            if (chats.length > 3) {
+        const chats = Object.keys(choosed).map((key) => choosed[key]);
+        const messagerID = `messager-${timeSequence()}`;
+        App.im.server.forwardMessage(message, chats, (progress, index, total) => {
+            if (chats.length > 1) {
                 const progressVal = Math.round(progress * 100);
-                const messagerID = progressVal === 0 ? 1 : progressVal;
                 if (progressVal !== 100) {
-                    Messager.show(`${Lang.string('chat.share.sending')}(${progressVal}%)`, {id: messagerID}, () => {Messager.remove(messagerID);});
-                } else {
-                    Messager.show(Lang.string('chat.share.sendSuccess'), {id: messagerID, type: 'success', autoHide: 2000});
+                    Messager.show(`${Lang.string('chat.share.sending')}(${index}/${total})`, {
+                        id: messagerID, autoHide: false, closeButton: false, modal: true,
+                    });
                 }
+            }
+        }).then(() => {
+            Messager.show(Lang.format('chat.share.sendSuccess', chats.length), {
+                type: 'success', autoHide: true, id: messagerID, closeButton: true, modal: false,
+            });
+            return onRequestClose();
+        }).catch(error => {
+            if (DEBUG) {
+                console.warn('Forward message error', error);
             }
         });
     };
@@ -132,18 +132,6 @@ export default class ChatShare extends Component {
      */
     handleSearchChange = search => {
         this.setState({search});
-    };
-
-    /**
-     * 检查列表条目是否为分组
-     *
-     * @param {Object} item 列表条目
-     * @memberof MenuGroupList
-     * @returns {boolean} 如果返回 `true` 则为是分组，否则为不是分组
-     * @private
-     */
-    checkIsGroup = item => {
-        return item.list && item.entityType !== 'Chat';
     };
 
     itemCreator = chat => {

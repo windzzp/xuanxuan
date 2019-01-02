@@ -503,10 +503,10 @@ export const forwardMessage = async (originMessage, chats, onProgress) => {
             date: originMessage.date,
         },
     };
-    if (onProgress) {
-        onProgress(0);
-    }
     for (let i = 0; i < chats.length; ++i) {
+        if (onProgress) {
+            onProgress(i / chats.length, i + 1, chats.length);
+        }
         const chat = chats[i];
         const message = new ChatMessage({
             user: profile.userId,
@@ -517,9 +517,9 @@ export const forwardMessage = async (originMessage, chats, onProgress) => {
             data: forwardMessageData
         });
         await sendChatMessage(message, chat); // eslint-disable-line
-        if (onProgress) {
-            onProgress((i + 1) / chats.length);
-        }
+    }
+    if (onProgress) {
+        onProgress(1, chats.length, chats.length);
     }
 };
 
