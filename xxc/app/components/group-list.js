@@ -95,6 +95,7 @@ export default class GroupList extends PureComponent {
                     key={item.key || `id-${item.id}` || `idx-${i}`}
                     group={(props && props.listConverter) ? props.listConverter(item) : item}
                     itemCreator={props && props.itemCreator}
+                    className={props && props.className}
                     toggleWithHeading={props && props.toggleWithHeading}
                     headingCreator={props && props.headingCreator}
                     defaultExpand={props && props.defaultExpand}
@@ -256,7 +257,7 @@ export default class GroupList extends PureComponent {
 
         if (root) {
             return (
-                <div className={classes('app-group-list-root list', className)} {...other}>
+                <div className={classes('app-group-list-root group-list-root list', className)} {...other}>
                     {GroupList.render(list, this.props, this.state.page, this.handleRequestMorePage)}
                 </div>
             );
@@ -295,7 +296,7 @@ export default class GroupList extends PureComponent {
 
         return (
             <div
-                className={classes('app-group-list list', className, {'is-expand': expand, 'is-collapse': !expand})}
+                className={classes('app-group-list group-list list', className, {'is-expand': expand, 'is-collapse': !expand})}
                 {...other}
             >
                 {headingView}

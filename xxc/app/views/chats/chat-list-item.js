@@ -49,6 +49,7 @@ export default class ChatListItem extends Component {
         filterType: PropTypes.string,
         badge: PropTypes.any,
         notUserLink: PropTypes.any,
+        subname: PropTypes.any,
     };
 
     /**
@@ -65,6 +66,7 @@ export default class ChatListItem extends Component {
         filterType: null,
         badge: null,
         notUserLink: false,
+        subname: null,
     };
 
     /**
@@ -104,34 +106,36 @@ export default class ChatListItem extends Component {
             badge,
             children,
             notUserLink,
+            subname,
             ...other
         } = this.props;
 
         this.lastChatUpdateId = chat.updateId;
 
         const name = chat.getDisplayName(App);
-        let subname = null;
-        if (chat.isOne2One) {
-            const theOtherOne = chat.getTheOtherOne(App);
-            this.lastOtherOneUpdateId = theOtherOne.updateId;
-            if (theOtherOne.isOffline) {
-                subname = `[${Lang.string('member.status.offline')}]`;
-            }
-        } else if (chat.isSystem) {
-            if (chat.isRobot) {
-                const robotSubName = Lang.string('common.littlexxSubname');
-                if (robotSubName !== name) {
-                    subname = `(${robotSubName})`;
+        if (!subname && subname !== false) {
+            if (chat.isOne2One) {
+                const theOtherOne = chat.getTheOtherOne(App);
+                this.lastOtherOneUpdateId = theOtherOne.updateId;
+                if (theOtherOne.isOffline) {
+                    subname = `[${Lang.string('member.status.offline')}]`;
                 }
-            } else {
-                subname = `(${Lang.format('chat.membersCount.format', Lang.string('chat.all'))})`;
+            } else if (chat.isSystem) {
+                if (chat.isRobot) {
+                    const robotSubName = Lang.string('common.littlexxSubname');
+                    if (robotSubName !== name) {
+                        subname = `(${robotSubName})`;
+                    }
+                } else {
+                    subname = `(${Lang.format('chat.membersCount.format', Lang.string('chat.all'))})`;
+                }
+            } else if (chat.isGroup) {
+                subname = `(${Lang.format('chat.membersCount.format', chat.getMembersCount(App.members))})`;
             }
-        } else if (chat.isGroup) {
-            subname = `(${Lang.format('chat.membersCount.format', chat.getMembersCount(App.members))})`;
         }
 
         if (!badge && badge !== false) {
-            const noticeCount = chat.noticeCount;
+            const {noticeCount} = chat;
             if (noticeCount) {
                 badge = <div className={classes('label circle label-sm', chat.isMuteOrHidden ? 'blue' : 'red')}>{noticeCount > 99 ? '99+' : noticeCount}</div>;
             } else if (chat.mute) {

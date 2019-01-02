@@ -100,7 +100,7 @@ export default class ChatShare extends Component {
     handleShareBtnClick = () => {
         const {message, onRequestClose} = this.props;
         const {choosed} = this.state;
-        let chats = [];
+        const chats = [];
         message.content = Emojione.toShort(message.content);
 
         onRequestClose();
@@ -114,7 +114,7 @@ export default class ChatShare extends Component {
                 const progressVal = Math.round(progress * 100);
                 const messagerID = progressVal === 0 ? 1 : progressVal;
                 if (progressVal !== 100) {
-                    Messager.show(Lang.string('chat.share.sending') + '(' + progressVal + '%)', {id: messagerID}, () => {Messager.remove(messagerID);});
+                    Messager.show(`${Lang.string('chat.share.sending')}(${progressVal}%)`, {id: messagerID}, () => {Messager.remove(messagerID);});
                 } else {
                     Messager.show(Lang.string('chat.share.sendSuccess'), {id: messagerID, type: 'success', autoHide: 2000});
                 }
@@ -156,6 +156,8 @@ export default class ChatShare extends Component {
                 onClick={this.handleOnItemClick}
                 className="item"
                 notUserLink="disabled"
+                subname={false}
+                badge={false}
             />
         );
     };
@@ -170,25 +172,20 @@ export default class ChatShare extends Component {
      */
     render() {
         const {choosed, search} = this.state;
-        const choosedItems = [];
-
-        App.im.chats.forEach(chat => {
-            if (choosed[chat.gid]) {
-                choosedItems.push(chat);
-            }
-        });
+        const choosedItems = Object.keys(choosed).map(App.im.chats.get);
 
         return (
             <div className="single row outline space app-chat-share">
-                <div style={{width: rem(150)}}>
+                <div className="cell column single flex-none gray" style={{width: rem(200)}}>
                     <div className="has-padding-sm flex-none darken">
                         <SearchControl onSearchChange={this.handleSearchChange} />
                     </div>
-                    <div className="app-chat-share-menu">
+                    <div className="app-chat-share-menu flex-auto scroll-y">
                         <ChatShareList
                             onItemClick={this.onItemClick}
                             eventBindObject={this}
                             search={search}
+                            choosed={choosed}
                         />
                     </div>
                 </div>
@@ -197,12 +194,10 @@ export default class ChatShare extends Component {
                         <div className="title text-accent flex-auto">{Lang.string('chat.invite.choosed')} ({choosedItems.length})</div>
                         <div className="flex-none has-padding-h"><button type="button" disabled={!choosedItems.length} className="btn primary rounded btn-wide" onClick={this.handleShareBtnClick}>{Lang.string('chat.share')}</button></div>
                     </div>
-                    <div className="app-chat-share-content">
-                        <GroupList
-                            group={{list: choosedItems, root: true}}
-                            itemCreator={this.itemCreator}
-                            checkIsGroup={this.checkIsGroup}
-                        />
+                    <div className="app-chat-share-content list compact has-padding-sm">
+                        {
+                            choosedItems.map(this.itemCreator.bind(this))
+                        }
                     </div>
                 </div>
             </div>
