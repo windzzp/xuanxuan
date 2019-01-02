@@ -504,10 +504,10 @@ export const forwardMessage = async (originMessage, chats, onProgress) => {
         },
     };
     for (let i = 0; i < chats.length; ++i) {
-        if (onProgress) {
-            onProgress(i / chats.length, i + 1, chats.length);
-        }
         const chat = chats[i];
+        if (onProgress) {
+            onProgress(i / chats.length, i + 1, chats.length, chat);
+        }
         const message = new ChatMessage({
             user: profile.userId,
             cgid: chat.gid,
