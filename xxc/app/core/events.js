@@ -147,6 +147,7 @@ export class Events extends EventEmitter {
                 args.forEach((arg, argIdx) => {
                     console.log(`arg: ${argIdx}`, arg);
                 });
+                console.trace('stacktrace');
                 console.groupEnd();
             }
         }
