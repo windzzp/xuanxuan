@@ -227,8 +227,8 @@ export default class Navbar extends Component {
         ];
 
         const navbarItemsView = navbarItems.map(item => (
-            <div className="nav-item hint--right" data-hint={item.label}>
-                <Route path={item.to} key={item.to}>
+            <div className="nav-item hint--right" data-hint={item.label} key={item.to}>
+                <Route path={item.to}>
                     {
                         ({match, location}) => {
                             const isActive = location.pathname.startsWith(item.to);
