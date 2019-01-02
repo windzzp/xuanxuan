@@ -76,10 +76,23 @@ export const activeChat = (chat, menu) => {
         } else if (!urlHash.endsWith(`/${chat.gid}`)) {
             window.location.hash = `#/chats/recents/${chat.gid}`;
         }
+    }
+};
+
+/**
+ * 设置界面上激活的聊天
+ * @param {Chat|string} chat 聊天实例或者聊天 GID
+ * @return {void}
+ */
+export const setActiveChat = (chat) => {
+    if ((typeof chat === 'string') && chat.length) {
+        chat = chats.get(chat);
+    }
+    if (chat) {
         activeCaches[chat.gid] = true;
         if (chat.noticeCount) {
             chat.muteNotice();
-            chats.saveChatMessages(chat.messages);
+            chats.saveChatMessages(chat.messages, chat);
         }
         if (!activedChatId || chat.gid !== activedChatId) {
             activedChatId = chat.gid;
@@ -147,10 +160,16 @@ registerCommand('sendContentToChat', (context, content) => {
 export const onSendContentToChat = (cgid, listener) => events.on(`${EVENT.sendContentToChat}.${cgid}`, listener);
 
 /**
- * 获取缓存中的聊天消息 GID 列表
+ * 激活聊天并获取缓存中的聊天消息 GID 列表
+ * @param {?string} activeChatId 要激活的聊天 ID
  * @return {string[]} 聊天消息 GID 列表
  */
-export const getActivedCacheChatsGID = () => Object.keys(activeCaches);
+export const getActivedCacheChatsGID = (activeChatId) => {
+    if (activeChatId) {
+        activeCaches[activeChatId] = true;
+    }
+    return Object.keys(activeCaches);
+};
 
 // 添加聊天工具栏右键菜单生成器
 addContextMenuCreator('chat.toolbar', context => {
@@ -941,6 +960,7 @@ export const getcurrentActiveChat = () => activedChatId && chats.get(activedChat
 
 export default {
     activeChat,
+    setActiveChat,
     activeLastChat,
     onActiveChat,
     isActiveChat,

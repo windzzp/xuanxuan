@@ -104,7 +104,14 @@ export default class ChatSendbox extends Component {
                     this.editbox.appendContent(content.content);
                 }
             }
-            this.editbox.focus();
+            this.focusEditor();
+        });
+
+        this.onChatActiveHandler = App.im.ui.onActiveChat(chat => {
+            const {chat: thisChat} = this.props;
+            if (chat.gid === thisChat.gid) {
+                this.focusEditor();
+            }
         });
     }
 
@@ -119,7 +126,7 @@ export default class ChatSendbox extends Component {
      * @return {void}
      */
     componentWillUnmount() {
-        App.events.off(this.onSendContentToChatHandler);
+        App.events.off(this.onSendContentToChatHandler, this.onChatActiveHandler);
     }
 
     /**
@@ -143,7 +150,7 @@ export default class ChatSendbox extends Component {
         images.forEach(image => {
             this.editbox.appendImage(image);
         });
-        this.editbox.focus();
+        this.focusEditor();
     }
 
     /**
@@ -173,7 +180,8 @@ export default class ChatSendbox extends Component {
      * @return {void}
      */
     handleSendButtonClick = async () => {
-        if (this.state.sendButtonDisabled) {
+        const {sendButtonDisabled} = this.state;
+        if (sendButtonDisabled) {
             return;
         }
 
@@ -238,7 +246,8 @@ export default class ChatSendbox extends Component {
      * @return {void}
      */
     handlePreviewBtnClick = e => {
-        if (this.state.sendButtonDisabled) {
+        const {sendButtonDisabled} = this.state;
+        if (sendButtonDisabled) {
             return;
         }
 
@@ -258,7 +267,7 @@ export default class ChatSendbox extends Component {
             }
         });
         MessagesPreivewDialog.show(messages, {onHidden: () => {
-            this.editbox.focus();
+            this.focusEditor();
         }});
     };
 
@@ -270,7 +279,9 @@ export default class ChatSendbox extends Component {
      * @return {void}
      */
     handleOnFocus = e => {
-        App.im.ui.emitChatSendboxFocus(this.props.chat, this.editbox.getContent());
+        const {chat} = this.props;
+        const {editbox} = this;
+        App.im.ui.emitChatSendboxFocus(chat, editbox.getContent());
     };
 
     /**

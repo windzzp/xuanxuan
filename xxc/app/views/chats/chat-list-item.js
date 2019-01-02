@@ -84,8 +84,7 @@ export default class ChatListItem extends Component {
             (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId) ||
             this.props.filterType !== nextProps.filterType ||
             this.props.badge !== nextProps.badge ||
-            this.props.notUserLink !== nextProps.notUserLink ||
-            this.lastChatIsActive !== App.im.ui.isActiveChat(nextProps.chat.gid)
+            this.props.notUserLink !== nextProps.notUserLink
         );
     }
 
@@ -109,7 +108,6 @@ export default class ChatListItem extends Component {
         } = this.props;
 
         this.lastChatUpdateId = chat.updateId;
-        this.lastChatIsActive = App.im.ui.isActiveChat(chat.gid);
 
         const name = chat.getDisplayName(App);
         let subname = null;
@@ -146,7 +144,7 @@ export default class ChatListItem extends Component {
         if (notUserLink) {
             return (<a
                 href={notUserLink === 'disabled' ? null : `#${ROUTES.chats.chat.id(chat.gid, filterType)}`}
-                className={classes('app-chat-item flex-middle', className, {active: notUserLink !== 'disabled' && this.lastChatIsActive})}
+                className={classes('app-chat-item flex-middle', className)}
                 {...other}
             >
                 <ChatAvatar chat={chat} avatarClassName="avatar-sm" avatarSize={24} grayOffline className="flex-none" />
@@ -160,7 +158,7 @@ export default class ChatListItem extends Component {
         }
         return (<Link
             to={ROUTES.chats.chat.id(chat.gid, filterType)}
-            className={classes('app-chat-item flex-middle', className, {active: this.lastChatIsActive})}
+            className={classes('app-chat-item flex-middle', className)}
             {...other}
         >
             <ChatAvatar chat={chat} avatarClassName="avatar-sm" avatarSize={24} grayOffline className="flex-none" />

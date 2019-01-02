@@ -47,6 +47,7 @@ export default class MenuGroupList extends Component {
         search: PropTypes.string,
         filter: PropTypes.string,
         children: PropTypes.any,
+        activeChatId: PropTypes.string,
     };
 
     /**
@@ -61,6 +62,7 @@ export default class MenuGroupList extends Component {
         search: null,
         filter: null,
         children: null,
+        activeChatId: null,
     };
 
     /**
@@ -121,7 +123,8 @@ export default class MenuGroupList extends Component {
      * @memberof MenuContactList
      */
     itemCreator = chat => {
-        return <ChatListItem onContextMenu={this.handleItemContextMenu} data-gid={chat.gid} key={chat.gid} filterType={this.props.filter} chat={chat} className="item" />;
+        const {activeChatId, filter} = this.props;
+        return <ChatListItem onContextMenu={this.handleItemContextMenu} data-gid={chat.gid} key={chat.gid} filterType={filter} chat={chat} className={classes('item', {active: activeChatId === chat.gid})} />;
     };
 
     /**
@@ -293,6 +296,7 @@ export default class MenuGroupList extends Component {
             filter,
             className,
             children,
+            activeChatId,
             ...other
         } = this.props;
 

@@ -52,7 +52,8 @@ export default class MenuSearchList extends Component {
         onRequestClearSearch: PropTypes.func,
         startPageSize: PropTypes.number,
         morePageSize: PropTypes.number,
-        defaultPage: PropTypes.number
+        defaultPage: PropTypes.number,
+        activeChatId: PropTypes.string,
     };
 
     /**
@@ -70,7 +71,8 @@ export default class MenuSearchList extends Component {
         onRequestClearSearch: null,
         startPageSize: Config.ui['page.start.size'] || 20,
         morePageSize: Config.ui['page.more.size'] || 20,
-        defaultPage: 1
+        defaultPage: 1,
+        activeChatId: null,
     };
 
     /**
@@ -210,6 +212,7 @@ export default class MenuSearchList extends Component {
             startPageSize,
             morePageSize,
             defaultPage,
+            activeChatId,
             ...other
         } = this.props;
 
@@ -238,7 +241,7 @@ export default class MenuSearchList extends Component {
                 data-gid={chat.gid}
                 filterType={filter}
                 chat={chat}
-                className={classes('item', {hover: isSelected})}
+                className={classes('item', {hover: isSelected, active: activeChatId === chat.gid})}
             />);
         }
         const notShowCount = list.length - maxIndex;

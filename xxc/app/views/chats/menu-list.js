@@ -68,6 +68,7 @@ export default class MenuList extends Component {
         filter: PropTypes.string,
         children: PropTypes.any,
         onRequestClearSearch: PropTypes.func,
+        activeChatId: PropTypes.string,
     };
 
     /**
@@ -83,6 +84,7 @@ export default class MenuList extends Component {
         filter: null,
         children: null,
         onRequestClearSearch: null,
+        activeChatId: null,
     };
 
     /**
@@ -159,16 +161,17 @@ export default class MenuList extends Component {
             onRequestClearSearch,
             className,
             children,
+            activeChatId,
             ...other
         } = this.props;
 
         if (search) {
-            return <MenuSearchList className={className} search={search} onRequestClearSearch={onRequestClearSearch} {...other} />;
+            return <MenuSearchList className={className} search={search} activeChatId={activeChatId} onRequestClearSearch={onRequestClearSearch} {...other} />;
         } else if (filter === 'contacts') {
-            return <MenuContactList className={className} filter={filter} {...other} />;
+            return <MenuContactList className={className} filter={filter} activeChatId={activeChatId} {...other} />;
         } else if (filter === 'groups') {
-            return <MenuGroupList className={className} filter={filter} {...other} />;
+            return <MenuGroupList className={className} filter={filter} activeChatId={activeChatId} {...other} />;
         }
-        return <MenuRecentList className={className} filter="recents" {...other} />;
+        return <MenuRecentList className={className} filter="recents" activeChatId={activeChatId} {...other} />;
     }
 }
