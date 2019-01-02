@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import Button from '../../components/button';
 import SelectBox from '../../components/select-box';
-import App from '../../core';
 import Lang from '../../core/lang';
 import {rem} from '../../utils/html-helper';
 import Config from '../../config';
@@ -24,20 +21,6 @@ export default class ChatSendCode extends Component {
      * @memberof ChatSendCode
      * @type {Object}
      */
-    static propTypes = {
-        onRequestClose: PropTypes.func,
-    };
-
-    /**
-     * React 组件默认属性
-     * @see https://react.docschina.org/docs/react-component.html#defaultprops
-     * @type {object}
-     * @memberof ChatSendCode
-     * @static
-     */
-    static defaultProps = {
-        onRequestClose: null,
-    };
 
     /**
      * React 组件构造函数，创建一个 ChatCode 组件实例，会在装配之前被调用。
@@ -60,28 +43,6 @@ export default class ChatSendCode extends Component {
     }
 
     /**
-     * 处理发送代码按钮点击事件
-     * @memberof ChatSendCode
-     * @private
-     * @return {void}
-     */
-    handleSubmitBtnClick = async () => {
-        const {language, code} = this.state;
-        const {chat, onRequestClose} = this.props;
-        const codeLanguage = language.toLowerCase();
-        const codeContent = `\`\`\`${codeLanguage}\n${code}\n\`\`\``;
-
-        if (code === '') {
-            onRequestClose();
-            return;
-        }
-
-        onRequestClose();
-        await App.im.server.sendTextMessage(codeContent, chat, true); // eslint-disable-line
-        App.im.ui.activeChat(chat, 'recents');
-    }
-
-    /**
      * 处理待办属性变更事件
      * @param {string} name 属性名称
      * @param {string} val 属性值
@@ -94,6 +55,16 @@ export default class ChatSendCode extends Component {
     }
 
     /**
+     *  获取发送的语言和内容
+     *  @private
+     *  @return {Object} 发送的内容信息
+     */
+    getCode() {
+        const {language, code} = this.state;
+        return {language, code};
+    }
+
+    /**
      * React 组件生命周期函数：Render
      * @private
      * @see https://doc.react-china.org/docs/react-component.html#render
@@ -102,7 +73,6 @@ export default class ChatSendCode extends Component {
      * @return {ReactNode|string|number|null|boolean} React 渲染内容
      */
     render() {
-        const {onRequestClose} = this.props;
         const {language} = this.state;
         const codeLanguage = [
             {label: Lang.string('chat.sendCode.defaultLanguage'), value: ''},
@@ -125,10 +95,6 @@ export default class ChatSendCode extends Component {
                         placeholder={`${Lang.string('chat.sendCode.content.placeholder')}`}
                         onChange={e => this.handleCodeChange('code', e.target.value)}
                     />
-                </div>
-                <div className="has-padding-v toolbar">
-                    <Button className="primary btn-wide" label={Lang.string('chat.sendCode.sendBtnLabel')} onClick={this.handleSubmitBtnClick.bind(this)} /> &nbsp;
-                    <Button className="primary-pale text-primary btn-wide" label={Lang.string('common.cancel')} onClick={onRequestClose} />
                 </div>
             </div>
         );

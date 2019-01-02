@@ -4,8 +4,8 @@ import ChatShare from './chat-share';
 import Lang from '../../core/lang';
 
 /**
- * 显示聊天历史记录对话框界面
- * @param {Chat} chat 聊天对象
+ * 显示转发消息对话框界面
+ * @param {string} message 广播消息内容
  * @param {function} callback 回调函数
  * @return {void}
  */
