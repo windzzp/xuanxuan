@@ -78,6 +78,7 @@ export default class ChatTitle extends Component {
             (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId)
         );
     }
+    
     /**
      * 复制ID
     */
