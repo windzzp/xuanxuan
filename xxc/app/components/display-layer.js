@@ -363,26 +363,24 @@ export default class DisplayLayer extends PureComponent {
         if (newContent !== undefined) {
             content = newContent;
         }
-        if (typeof content === 'function') {
-            const contentResult = content();
-            const afterLoad = () => {
-                if (onLoad) {
-                    onLoad(true, this.state.content, this);
-                }
-                if (callback) {
-                    callback(true, this.state.content, this);
-                }
-            };
-            if (contentResult instanceof Promise) {
-                this.setState({loading: true, content: null});
-                contentResult.then(result => {
-                    this.setState({content: result, loading: false}, afterLoad);
-                }).catch(() => {
-                    this.setState({content: contentLoadFail, loading: false}, afterLoad);
-                });
-            } else {
-                this.setState({content: contentResult, loading: false}, afterLoad);
+        const contentResult = typeof content === 'function' ? content() : content;
+        const afterLoad = () => {
+            if (onLoad) {
+                onLoad(true, this.state.content, this);
             }
+            if (callback) {
+                callback(true, this.state.content, this);
+            }
+        };
+        if (contentResult instanceof Promise) {
+            this.setState({loading: true, content: null});
+            contentResult.then(result => {
+                this.setState({content: result, loading: false}, afterLoad);
+            }).catch(() => {
+                this.setState({content: contentLoadFail, loading: false}, afterLoad);
+            });
+        } else {
+            this.setState({content: contentResult, loading: false}, afterLoad);
         }
     }
 
