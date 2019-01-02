@@ -334,14 +334,16 @@ addContextMenuCreator('chat.sendbox.toolbar', context => {
         });
     }
 
-    items.push({
-        id: 'code',
-        icon: 'mdi-code-tags',
-        label: Lang.string('chat.sendbox.toolbar.code'),
-        click: () => {
-            ChatCodeDialog.show(chats.get(chatGid));
-        }
-    });
+    if (Config.ui['chat.sendCode.enable']) {
+        items.push({
+            id: 'code',
+            icon: 'mdi-code-tags',
+            label: Lang.string('chat.sendbox.toolbar.code'),
+            click: () => {
+                ChatCodeDialog.show(chats.get(chatGid));
+            }
+        });
+    }
 
     items.push({
         id: 'setFontSize',
