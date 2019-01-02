@@ -12,7 +12,7 @@ import ChatCommittersSettingDialog from '../../views/chats/chat-committers-setti
 import ChatsHistoryDialog from '../../views/chats/chats-history-dialog';
 import ChatInviteDialog from '../../views/chats/chat-invite-dialog';
 import ChatTipPopover from '../../views/chats/chat-tip-popover';
-import ChatCodeDialog from '../../views/chats/chat-code-dialog';
+import ChatSendCodeDialog from '../../views/chats/chat-send-code-dialog';
 import ChatShareDialog from '../../views/chats/chat-share-dialog';
 import EmojiPopover from '../../views/common/emoji-popover';
 import HotkeySettingDialog from '../../views/common/hotkey-setting-dialog';
@@ -340,7 +340,7 @@ addContextMenuCreator('chat.sendbox.toolbar', context => {
             icon: 'mdi-code-tags',
             label: Lang.string('chat.sendbox.toolbar.code'),
             click: () => {
-                ChatCodeDialog.show(chats.get(chatGid));
+                ChatSendCodeDialog.show(chats.get(chatGid));
             }
         });
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from '../../components/modal';
-import ChatCode from './chat-code';
+import ChatCode from './chat-send-code';
 import Lang from '../../core/lang';
 
 /**
