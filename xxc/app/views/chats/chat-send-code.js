@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import SelectBox from '../../components/select-box';
 import Lang from '../../core/lang';
-import {rem} from '../../utils/html-helper';
+import {rem, classes} from '../../utils/html-helper';
 import Config from '../../config';
+import {isNotEmptyString} from '../../utils/string-helper';
 
 /**
  * ChatSendCode 组件 ，显示ChatSendCode界面
@@ -39,19 +40,25 @@ export default class ChatSendCode extends Component {
         this.state = {
             language: '',
             code: '',
+            requireCodeWarning: false,
         };
     }
 
     /**
      * 处理待办属性变更事件
-     * @param {string} name 属性名称
-     * @param {string} val 属性值
+     * @param {Event} e 事件对象
      * @memberof TodoEditer
      * @private
      * @return {void}
      */
-    handleCodeChange(name, val) {
-        this.setState({[name]: val});
+    handleCodeChange = (e) => {
+        const code = e.target.value;
+        const newState = {code};
+        const {requireCodeWarning} = this.state;
+        if (requireCodeWarning && isNotEmptyString(code)) {
+            newState.requireCodeWarning = false;
+        }
+        this.setState(newState);
     }
 
     /**
@@ -65,6 +72,15 @@ export default class ChatSendCode extends Component {
     }
 
     /**
+     * 设置是否显示需要代码的提示
+     * @param {boolean} [requireCodeWarning=true] 如果为 `true`，则显示需要代码的提示
+     * @return {void}
+     */
+    setRequireCodeWarning(requireCodeWarning = true) {
+        this.setState({requireCodeWarning});
+    }
+
+    /**
      * React 组件生命周期函数：Render
      * @private
      * @see https://doc.react-china.org/docs/react-component.html#render
@@ -73,27 +89,27 @@ export default class ChatSendCode extends Component {
      * @return {ReactNode|string|number|null|boolean} React 渲染内容
      */
     render() {
-        const {language} = this.state;
+        const {language, requireCodeWarning} = this.state;
         const codeLanguage = [
             {label: Lang.string('chat.sendCode.defaultLanguage'), value: ''},
             ...Config.ui['chat.sendCode.langs'],
         ];
         return (
-            <div>
-                <div style={{position: 'relative'}}>
-                    <SelectBox
-                        style={{width: rem(140), right: rem(8), top: rem(8)}}
-                        value={language}
-                        options={codeLanguage}
-                        className="dock dock-right dock-top"
-                        selectClassName="rounded"
-                        onChange={this.handleCodeChange.bind(this, 'language')}
-                    />
+            <div className="relative">
+                <SelectBox
+                    style={{width: rem(140), right: rem(8), top: rem(8)}}
+                    value={language}
+                    options={codeLanguage}
+                    className="dock dock-right dock-top"
+                    selectClassName="rounded"
+                    onChange={this.handleCodeChange.bind(this, 'language')}
+                />
+                <div className={classes('control', {'has-error': requireCodeWarning})}>
                     <textarea
                         className="textarea rounded code"
                         rows="16"
                         placeholder={`${Lang.string('chat.sendCode.content.placeholder')}`}
-                        onChange={e => this.handleCodeChange('code', e.target.value)}
+                        onChange={this.handleCodeChange}
                     />
                 </div>
             </div>

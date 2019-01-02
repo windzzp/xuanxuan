@@ -3,6 +3,7 @@ import Modal from '../../components/modal';
 import ChatCode from './chat-send-code';
 import Lang from '../../core/lang';
 import App from '../../core';
+import {isEmptyString} from '../../utils/string-helper';
 
 /**
  * 处理发送代码按钮点击事件
@@ -38,8 +39,7 @@ export const showChatCodeDialog = (chat, callback) => {
         id: modalId,
         title: Lang.string('chat.sendCodeDialog.title'),
         style: {
-            width: 600,
-            height: 450,
+            width: 650,
             position: 'absolute',
             bottom: 0,
         },
@@ -51,12 +51,14 @@ export const showChatCodeDialog = (chat, callback) => {
                 label: Lang.string('chat.sendCode.sendBtnLabel'),
                 click: () => {
                     const codeInfo = chatSendCode.getCode();
+                    if (isEmptyString(codeInfo.code)) {
+                        chatSendCode.setRequireCodeWarning();
+                        return false;
+                    }
                     handleSubmitBtnClick(codeInfo.language, codeInfo.code, chat);
                 }
             },
-            {
-                type: 'cancel',
-            }
+            {type: 'cancel'}
         ],
         content: <ChatCode ref={e => {chatSendCode = e;}} chat={chat} />
     }, callback);
