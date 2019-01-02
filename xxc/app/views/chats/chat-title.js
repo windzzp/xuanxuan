@@ -1,5 +1,9 @@
+/* eslint-disable import/no-unresolved */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable import/no-cycle */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import Platform from 'Platform';
 import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import Lang, {isJustLangSwitched} from '../../core/lang';
@@ -15,6 +19,7 @@ import withReplaceView from '../with-replace-view';
  * @type {Class<ChatAvatar>}
  * @private
  */
+
 const ChatAvatar = withReplaceView(_ChatAvatar);
 
 /**
@@ -41,7 +46,10 @@ export default class ChatTitle extends Component {
      * @static
      * @memberof ChatTitle
      */
-    static replaceViewPath = 'chats/ChatTitle';
+
+    static get ChatTitle() {
+        return replaceViews('chats/chat-title', ChatTitle);
+    }
 
     /**
      * React 组件属性类型检查
@@ -88,6 +96,17 @@ export default class ChatTitle extends Component {
     }
 
     /**
+     * 复制ID
+    */
+
+    copyId = () => {
+        let gid = this.props.chat.gid;
+        if (Platform.clipboard && Platform.clipboard.writeText) {
+            Platform.clipboard.writeText(gid);
+        }
+    }
+
+    /**
      * React 组件生命周期函数：Render
      * @private
      * @see https://doc.react-china.org/docs/react-component.html#render
@@ -122,20 +141,25 @@ export default class ChatTitle extends Component {
 
         const showStatusDot = theOtherOne && !Config.ui['chat.hideStatusDot'];
 
-        return (<div className={classes('chat-title heading', className)} {...other}>
-            {hideChatAvatar ? null : <ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} onClick={onTitleClick} />}
-            {showStatusDot && <StatusDot status={theOtherOne.status} />}
-            {
-                (!denyShowMemberProfile && theOtherOne) ? <a className="strong rounded title flex-none text-primary" onClick={onTitleClick}>{chatName}</a> : <strong className="title flex-none">{chatName}</strong>
-            }
-            {(theOtherOne && !showStatusDot) ? <span className="muted">[{Lang.string(`member.status.${theOtherOne.statusName}`)}]</span> : null}
-            {chat.public && <div className="hint--bottom" data-hint={Lang.string('chat.public.label')}><Icon className="text-green" name="access-point" /></div>}
-            {chat.mute && <div className="hint--bottom" data-hint={Lang.string('chat.mute.label')}><Icon className="text-brown" name="bell-off" /></div>}
-            {chat.isDismissed && <div className="small label rounded dark">{Lang.string('chat.group.dismissed')}</div>}
-            {chat.isDeleteOne2One && <div className="small label rounded dark">{Lang.string('chat.deleted')}</div>}
-            {chatNoticeView}
-            <div className="flex-auto" />
-            {children}
-        </div>);
+        return (
+            <div className={classes('chat-title heading', className)} {...other}>
+                {
+                    (!denyShowMemberProfile && theOtherOne) ? <ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} onClick={onTitleClick} /> : <div className="hint--bottom-right has-padding-smhint--bottom" data-hint={chat.gid.slice(0,4) + '...点击复制'} onClick={this.copyId}><ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} /></div>
+                }
+                {/* {hideChatAvatar ? null : <ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} onClick={onTitleClick} />} */}
+                {showStatusDot && <StatusDot status={theOtherOne.status} />}
+                {
+                    (!denyShowMemberProfile && theOtherOne) ? <a className="strong rounded title flex-none text-primary" onClick={onTitleClick}>{chatName}</a> : <strong className="title flex-none">{chatName}</strong>
+                }
+                {(theOtherOne && !showStatusDot) ? <span className="muted">[{Lang.string(`member.status.${theOtherOne.statusName}`)}]</span> : null}
+                {chat.public && <div className="hint--bottom" data-hint={Lang.string('chat.public.label')}><Icon className="text-green" name="access-point" /></div>}
+                {chat.mute && <div className="hint--bottom" data-hint={Lang.string('chat.mute.label')}><Icon className="text-brown" name="bell-off" /></div>}
+                {chat.isDismissed && <div className="small label rounded dark">{Lang.string('chat.group.dismissed')}</div>}
+                {chat.isDeleteOne2One && <div className="small label rounded dark">{Lang.string('chat.deleted')}</div>}
+                {chatNoticeView}
+                <div className="flex-auto" />
+                {children}
+            </div>
+        );
     }
 }
