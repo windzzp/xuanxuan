@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
@@ -22,31 +23,31 @@ const isElectron = platform.isType('electron');
  */
 const defaultInjectJS = [
     "window.getXXCViewID = function(){return '{id}';};",
-    "window.getXXCCardFullWidth = function(){return {cardWidth};};",
-    "window.callXXCCommand = function(command, options) {",
+    'window.getXXCCardFullWidth = function(){return {cardWidth};};',
+    'window.callXXCCommand = function(command, options) {',
         "var url = command + '/';",
-        "if (options) {",
+        'if (options) {',
             "url += '?';",
-        "}",
-        "for (const name in options) {",
-            "if (options.hasOwnProperty(name)) {",
+        '}',
+        'for (const name in options) {',
+            'if (options.hasOwnProperty(name)) {',
                 "if (url[url.length - 1] !== '?') url += '&';",
                 "url += name + '=' + encodeURIComponent(options[name]);",
-            "}",
-        "}",
+            '}',
+        '}',
         "window.open('xxc:' + url, '_blank');",
-    "};",
-    "window.setXXCViewStyle = function(style, options) {",
+    '};',
+    'window.setXXCViewStyle = function(style, options) {',
         "if (style && typeof style !== 'string') style = JSON.stringify(style);",
         "var commandLine = 'updateViewStyle/{id}'",
         "if (style !== undefined) commandLine += '/' + encodeURIComponent(style);",
-        "window.callXXCCommand(commandLine, options);",
-    "};",
-    "window.showXXCView = function(show) {if(show === undefined) show = true; setXXCViewStyle(null, {show: !!show})};",
-    "window.adjustXXCViewHeight = function(height) {",
-        "window.setXXCViewStyle({height: height === undefined ? document.body.clientHeight : height})",
-    "};",
-    "if ({autoHeight}) window.adjustXXCViewHeight();",
+        'window.callXXCCommand(commandLine, options);',
+    '};',
+    'window.showXXCView = function(show) {if(show === undefined) show = true; setXXCViewStyle(null, {show: !!show})};',
+    'window.adjustXXCViewHeight = function(height) {',
+        'window.setXXCViewStyle({height: height === undefined ? document.body.clientHeight : height})',
+    '};',
+    'if ({autoHeight}) window.adjustXXCViewHeight();',
 ].join('\n');
 
 /**
@@ -114,11 +115,13 @@ export default class WebView extends PureComponent {
         onExecuteJavaScript: null,
         onNavigate: null,
         injectForm: null,
+        injectData: null,
         onDomReady: null,
         useMobileAgent: false,
         hideBeforeDOMReady: true,
         style: null,
         modalId: null,
+        fluidWidth: null,
         type: 'auto',
         showCondition: 'domReady',
         loadingContent: null,
@@ -232,11 +235,13 @@ export default class WebView extends PureComponent {
             }
         });
 
-        if (this.state.loading) {
+        const {loading} = this.state;
+        if (loading) {
+            const {maxLoadingTime} = this.props;
             this.loadingTimerID = setTimeout(() => {
                 this.setState({loading: false});
                 this.loadingTimerID = null;
-            }, this.props.maxLoadingTime);
+            }, maxLoadingTime);
         }
     }
 
@@ -441,8 +446,11 @@ export default class WebView extends PureComponent {
      */
     handleDomReady = () => {
         const {webview} = this;
-        const {onDomReady, fluidWidth, showCondition, style} = this.props;
-        const {insertCss, executeJavaScript, onExecuteJavaScript, injectData} = this.props;
+        const {
+            onDomReady, fluidWidth, showCondition, style,
+            insertCss, executeJavaScript, onExecuteJavaScript, injectData,
+        } = this.props;
+
         // Fixed [electron issue #15318](https://github.com/electron/electron/issues/15318)
         // and [issue #14474](https://github.com/electron/electron/issues/14474)
         if (this.isWebview) {
@@ -529,21 +537,12 @@ export default class WebView extends PureComponent {
             }
         }
 
+        const {loading} = this.state;
         const newState = {domReady: true};
-        if (this.state.loading && showCondition === 'domReady') {
+        if (loading && showCondition === 'domReady') {
             newState.loading = false;
         }
         this.setState(newState);
-        // if (!newState.loading) {
-        //     if (this.loadingTimerID) {
-        //         clearTimeout(this.loadingTimerID);
-        //     }
-        //     this.loadingTimerID = setTimeout(() => {
-        //         this.setState(newState);
-        //     }, 500);
-        // } else {
-        //     this.setState(newState);
-        // }
     };
 
     /**
@@ -614,7 +613,7 @@ export default class WebView extends PureComponent {
                     </div>
                 );
             }
-            views.push(<div key="loading" className="webview-loading has-padding-sm center-content state">{loadingView}</div>)
+            views.push(<div key="loading" className="webview-loading has-padding-sm center-content state">{loadingView}</div>);
         }
         return views.length > 1 ? views : views[0];
     }

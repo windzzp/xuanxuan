@@ -33,7 +33,7 @@ export default class WebViewFrame extends Component {
      * @memberof WebviewFrame
      */
     static replaceViewPath = 'common/WebviewFrame';
-    
+
     /**
      * React 组件属性类型检查
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
@@ -83,7 +83,7 @@ export default class WebViewFrame extends Component {
             title: props.src,
             favicon: 'mdi-web',
             loading: false,
-            maximize: false
+            isMaximize: false
         };
     }
 
@@ -140,8 +140,9 @@ export default class WebViewFrame extends Component {
      */
     handlePageTitleChange = (title, explicitSet) => {
         const {onPageTitleUpdated} = this.props;
-        if (title !== this.state.title) {
-            this.setState({title: title});
+        const {title: stateTitle} = this.state;
+        if (title !== stateTitle) {
+            this.setState({title});
         }
         if (onPageTitleUpdated) {
             onPageTitleUpdated(title, explicitSet);
@@ -239,7 +240,7 @@ export default class WebViewFrame extends Component {
             const displayEle = document.getElementById(displayId);
             if (displayEle) {
                 displayEle.classList.toggle('fullscreen');
-                this.setState({maximize: displayEle.classList.contains('fullscreen')});
+                this.setState({isMaximize: displayEle.classList.contains('fullscreen')});
             }
         }
     };
