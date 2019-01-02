@@ -328,6 +328,8 @@
     "chat.share.chats": "Recently",
     "chat.share.groups": "Groups",
     "chat.share.contacts": "Contacts",
+    "chat.share.sending": "send...",
+    "chat.share.sendSuccess": "Send Success",
     "chat.noMoreMessage": "No more messages.",
     "chat.loadMoreMessage": "Load history",
     "chat.sidebar.tab.profile.label": "Profile",

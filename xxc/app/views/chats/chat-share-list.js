@@ -4,6 +4,7 @@ import GroupList from '../../components/group-list';
 import App from '../../core';
 import withReplaceView from '../with-replace-view';
 import Lang from '../../core/lang';
+import PropTypes from 'prop-types';
 
 /**
  * ChatListItem 可替换组件形式
@@ -12,6 +13,38 @@ import Lang from '../../core/lang';
  */
 const ChatListItem = withReplaceView(_ChatListItem);
 export default class ChatShareList extends React.Component {
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof ChatShareList
+     * @type {Object}
+     */
+    static propTypes = {
+        onItemClick: PropTypes.func,
+        eventBindObject: PropTypes.object,
+        search: PropTypes.string,
+    }
+
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof ChatShareList
+     * @static
+     */
+    static defaultProps = {
+        onItemClick: null,
+        eventBindObject: null,
+        search: '',
+    }
+
+    /**
+     * React 组件构造函数，创建一个 ChatShareList 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
         this.state = {};
@@ -20,6 +53,7 @@ export default class ChatShareList extends React.Component {
     /**
      * 处理列表条目点击事件
      * @memberof MemberList
+     * @param {Event} e 事件对象
      * @private
      * @return {void}
      */
@@ -40,7 +74,7 @@ export default class ChatShareList extends React.Component {
      * @memberof MenuContactList
      */
     itemCreator = chat => {
-        if(chat.gid === 'littlexx') return;
+        if (chat.gid === 'littlexx') return;
         return (
             <ChatListItem
                 data-gid={chat.gid}
@@ -81,9 +115,9 @@ export default class ChatShareList extends React.Component {
         const groupType = 'dept';
         const {search} = this.props;
         const shareList = [
-            {id: 'contacts', title: Lang.string("chat.share.contacts"), list: App.im.chats.getContactsChats()},
-            {id: 'group', title: Lang.string("chat.share.groups"), list: App.im.chats.getGroups()},
-            {id: 'recent', title: Lang.string("chat.share.chats"), list: App.im.chats.getRecents()},
+            {id: 'contacts', title: Lang.string('chat.share.contacts'), list: App.im.chats.getContactsChats()},
+            {id: 'group', title: Lang.string('chat.share.groups'), list: App.im.chats.getGroups()},
+            {id: 'recent', title: Lang.string('chat.share.chats'), list: App.im.chats.getRecents()},
         ];
         let activeGroupList = '';
         const searchChats = App.im.chats.search(search);

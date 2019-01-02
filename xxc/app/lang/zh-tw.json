@@ -329,6 +329,8 @@
     "chat.share.chats": "最近聊天",
     "chat.share.groups": "討論組",
     "chat.share.contacts": "聯繫人",
+    "chat.share.sending": "轉發中...",
+    "chat.share.sendSuccess": "轉發成功",
     "chat.noMoreMessage": "沒有更多消息",
     "chat.loadMoreMessage": "加載更多歷史消息",
 
