@@ -848,7 +848,7 @@ addContextMenuCreator('message.text', ({message}) => {
         click: () => {
             ChatShareDialog.show(message);
         }
-    })
+    });
     return items;
 });
 
