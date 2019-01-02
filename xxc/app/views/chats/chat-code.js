@@ -65,10 +65,6 @@ export default class ChatCode extends Component {
                         onChange={e => this.handleCodeChange('desc', e.target.value)}
                     />
                 </div>
-                <div className="has-padding-v toolbar">
-                    <Button className="primary btn-wide" label={Lang.string('chat.sendbox.toolbar.code')} onClick={this.handleSubmitBtnClick.bind(this)} /> &nbsp;
-                    <Button className="primary-pale text-primary btn-wide" label={Lang.string('common.cancel')} onClick={this.props.onRequestClose} />
-                </div>
             </div>
         )
     }
