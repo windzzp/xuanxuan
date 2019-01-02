@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
 import _UserAvatar from './user-avatar';
-import replaceViews from '../replace-views';
 import withReplaceView from '../with-replace-view';
 
 /**
@@ -23,18 +22,13 @@ const UserAvatar = withReplaceView(_UserAvatar);
  */
 export default class UserListItem extends Component {
     /**
-     * 获取 UserListItem 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<UserListItem>}
-     * @readonly
+     * UserListItem 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof UserListItem
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {UserListItem} from './user-list-item';
-     * <UserListItem />
      */
-    static get UserListItem() {
-        return replaceViews('common/user-list-item', UserListItem);
-    }
+    static replaceViewPath = 'common/UserListItem';
 
     /**
      * React 组件属性类型检查

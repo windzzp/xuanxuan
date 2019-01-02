@@ -1,27 +1,22 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import SearchControl from '../../components/search-control';
 import Icon from '../../components/icon';
 import Button from '../../components/button';
 import Exts from '../../exts';
 import OpenedApp from '../../exts/opened-app';
 import App from '../../core';
-import {ExtensionListItem} from './extension-list-item';
-import replaceViews from '../replace-views';
+import _ExtensionListItem from './extension-list-item';
+import withReplaceView from '../with-replace-view';
 
 /**
- * 扩展类型表
- * @type {{type: string, label:string}[]}
+ * ExtensionListItem 可替换组件形式
+ * @type {Class<ExtensionListItem>}
  * @private
  */
-const extensionTypes = [
-    {type: '', label: Lang.string('ext.extensions.all')},
-    {type: 'app', label: Lang.string('ext.extensions.apps')},
-    {type: 'plugin', label: Lang.string('ext.extensions.plugins')},
-    {type: 'theme', label: Lang.string('ext.extensions.themes')},
-];
+const ExtensionListItem = withReplaceView(_ExtensionListItem);
 
 /**
  * AppExtensions 组件 ，显示“应用”扩展界面
@@ -34,18 +29,13 @@ const extensionTypes = [
  */
 export default class AppExtensions extends Component {
     /**
-     * 获取 AppExtensions 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<AppExtensions>}
-     * @readonly
+     * AppExtensions 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof AppExtensions
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {AppExtensions} from './app-extensions';
-     * <AppExtensions />
      */
-    static get AppExtensions() {
-        return replaceViews('exts/app-extensions', AppExtensions);
-    }
+    static replaceViewPath = 'exts/AppExtensions';
 
     /**
      * React 组件属性类型检查
@@ -230,6 +220,18 @@ export default class AppExtensions extends Component {
         const {search, type} = this.state;
         const extensions = search ? Exts.all.search(search, type) : Exts.all.getTypeList(type);
         const needRestartExts = extensions && extensions.filter(x => x.needRestart);
+
+        /**
+         * 扩展类型表
+         * @type {{type: string, label:string}[]}
+         * @private
+         */
+        const extensionTypes = [
+            {type: '', label: Lang.string('ext.extensions.all')},
+            {type: 'app', label: Lang.string('ext.extensions.apps')},
+            {type: 'plugin', label: Lang.string('ext.extensions.plugins')},
+            {type: 'theme', label: Lang.string('ext.extensions.themes')},
+        ];
 
         return (<div className={HTML.classes('app-ext-extensions dock column single', className)}>
             <header className="app-ext-extensions-header app-ext-common-header has-padding heading divider flex-none">

@@ -1,4 +1,4 @@
-import {EventEmitter} from 'Platform';
+import platform from '../platform';
 
 /**
  * 事件名称表
@@ -17,6 +17,11 @@ export const EVENT = {
  * @private
  */
 const DATA_CHANGE_DELAY = 110;
+
+/**
+ * 从平台模块获取 EventEmitter 类
+ */
+const EventEmitter = platform.access('EventEmitter');
 
 /**
  * 事件管理类
@@ -50,7 +55,7 @@ export class Events extends EventEmitter {
     /**
      * 绑定事件并返回一个 {Sysmbo} 作为事件绑定 ID 用于取消事件
      * @param  {string} event 事件名称
-     * @param  {Function} listener 事件回调函数
+     * @param  {function} listener 事件回调函数
      * @return {Symbol} 事件绑定 ID
      * @memberof Events
      */

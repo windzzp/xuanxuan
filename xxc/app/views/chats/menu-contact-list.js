@@ -2,27 +2,29 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import {showContextMenu} from '../../core/context-menu';
 import Icon from '../../components/icon';
 import GroupList from '../../components/group-list';
 import Button from '../../components/button';
-import {ChatListItem} from './chat-list-item';
-import {MemberListItem} from '../common/member-list-item';
+import _ChatListItem from './chat-list-item';
+import _MemberListItem from '../common/member-list-item';
 import UserProfileDialog from '../common/user-profile-dialog';
-import replaceViews from '../replace-views';
+import withReplaceView from '../with-replace-view';
 
 /**
- * 讨论组聊天类型表
- * @type {{label: string, data: string}[]}
+ * ChatListItem 可替换组件形式
+ * @type {Class<ChatListItem>}
  * @private
  */
-const GROUP_TYPES = [
-    {label: Lang.string('chats.menu.groupType.normal'), data: 'normal'},
-    {label: Lang.string('chats.menu.groupType.category'), data: 'category'},
-    {label: Lang.string('chats.menu.groupType.role'), data: 'role'},
-    {label: Lang.string('chats.menu.groupType.dept'), data: 'dept'},
-];
+const ChatListItem = withReplaceView(_ChatListItem);
+
+/**
+ * MemberListItem 可替换组件形式
+ * @type {Class<MemberListItem>}
+ * @private
+ */
+const MemberListItem = withReplaceView(_MemberListItem);
 
 /**
  * MenuContactList 组件 ，显示联系人列表界面
@@ -35,18 +37,13 @@ const GROUP_TYPES = [
  */
 export default class MenuContactList extends Component {
     /**
-     * 获取 MenuContactList 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MenuContactList>}
-     * @readonly
+     * MenuContactList 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MenuContactList
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MenuContactList} from './menu-contact-list';
-     * <MenuContactList />
      */
-    static get MenuContactList() {
-        return replaceViews('chats/menu-contact-list', MenuContactList);
-    }
+    static replaceViewPath = 'chats/MenuContactList';
 
     /**
      * React 组件属性类型检查
@@ -84,7 +81,7 @@ export default class MenuContactList extends Component {
      */
     constructor(props) {
         super(props);
-        const user = App.user;
+        const {user} = App;
 
         /**
          * React 组件状态对象
@@ -115,7 +112,7 @@ export default class MenuContactList extends Component {
      */
     set groupType(groupType) {
         this.setState({groupType}, () => {
-            const user = App.user;
+            const {user} = App;
             if (user) {
                 user.config.contactsGroupByType = groupType;
             }
@@ -140,7 +137,19 @@ export default class MenuContactList extends Component {
      * @return {void}
      */
     handleSettingBtnClick = e => {
-        const groupType = this.groupType;
+        /**
+         * 讨论组聊天类型表
+         * @type {{label: string, data: string}[]}
+         * @private
+         */
+        const GROUP_TYPES = [
+            {label: Lang.string('chats.menu.groupType.normal'), data: 'normal'},
+            {label: Lang.string('chats.menu.groupType.category'), data: 'category'},
+            {label: Lang.string('chats.menu.groupType.role'), data: 'role'},
+            {label: Lang.string('chats.menu.groupType.dept'), data: 'dept'},
+        ];
+
+        const {groupType} = this;
         const menus = GROUP_TYPES.map(type => ({
             hidden: type.data === 'dept' && !App.members.hasDepts,
             label: type.label,
@@ -148,11 +157,13 @@ export default class MenuContactList extends Component {
             icon: type.data === groupType ? 'check text-success' : false
         }));
         menus.splice(0, 0, {label: Lang.string('chats.menu.switchView'), disabled: true});
-        App.ui.showContextMenu({x: e.clientX, y: e.clientY, target: e.target}, menus, {onItemClick: item => {
-            if (item && item.data) {
-                this.groupType = item.data;
+        App.ui.showContextMenu({x: e.clientX, y: e.clientY, target: e.target}, menus, {
+            onItemClick: item => {
+                if (item && item.data) {
+                    this.groupType = item.data;
+                }
             }
-        }});
+        });
         e.stopPropagation();
     };
 
@@ -165,11 +176,12 @@ export default class MenuContactList extends Component {
      */
     handleItemContextMenu = (event) => {
         const chat = App.im.chats.get(event.currentTarget.attributes['data-gid'].value);
+        const {groupType} = this;
         showContextMenu('chat.menu', {
             event,
             chat,
             menuType: 'contacts',
-            viewType: this.state.groupType
+            viewType: groupType
         });
     }
 
@@ -182,7 +194,8 @@ export default class MenuContactList extends Component {
      * @memberof MenuContactList
      */
     itemCreator = chat => {
-        return <ChatListItem onContextMenu={this.handleItemContextMenu} data-gid={chat.gid} key={chat.gid} filterType={this.props.filter} chat={chat} className="item" />;
+        const {filter} = this.props;
+        return <ChatListItem onContextMenu={this.handleItemContextMenu} data-gid={chat.gid} key={chat.gid} filterType={filter} chat={chat} className="item" />;
     };
 
     /**
@@ -206,7 +219,8 @@ export default class MenuContactList extends Component {
      * @return {void}
      */
     handleDragOver(group, e) {
-        if (!this.state.dropTarget || this.state.dropTarget.id !== group.id) {
+        const {dropTarget} = this.state;
+        if (!dropTarget || dropTarget.id !== group.id) {
             this.setState({dropTarget: group});
         }
     }
@@ -302,19 +316,21 @@ export default class MenuContactList extends Component {
             'drop-top': isDragging && dropTarget.order < dragging.order,
             'drop-bottom': isDragging && dropTarget.order > dragging.order,
         };
-        return (<header
-            onContextMenu={this.handleHeadingContextMenu.bind(this, group)}
-            draggable={this.groupType === 'category'}
-            onDragOver={this.handleDragOver.bind(this, group)}
-            onDrop={this.handleDrop.bind(this, group)}
-            onDragStart={this.handleDragStart.bind(this, group)}
-            onDragEnd={this.handleDragEnd.bind(this, group)}
-            onClick={groupList.props.toggleWithHeading ? groupList.handleHeadingClick : null}
-            className={classes('heading', dragClasses)}
-        >
-            {iconView}
-            <div className="title"><strong>{group.title || Lang.string('chats.menu.group.other')}</strong> {countView}</div>
-        </header>);
+        return (
+            <header
+                onContextMenu={this.handleHeadingContextMenu.bind(this, group)}
+                draggable={this.groupType === 'category'}
+                onDragOver={this.handleDragOver.bind(this, group)}
+                onDrop={this.handleDrop.bind(this, group)}
+                onDragStart={this.handleDragStart.bind(this, group)}
+                onDragEnd={this.handleDragEnd.bind(this, group)}
+                onClick={groupList.props.toggleWithHeading ? groupList.handleHeadingClick : null}
+                className={classes('heading', dragClasses)}
+            >
+                {iconView}
+                <div className="title"><strong>{group.title || Lang.string('chats.menu.group.other')}</strong> {countView}</div>
+            </header>
+        );
     };
 
     /**
@@ -368,32 +384,38 @@ export default class MenuContactList extends Component {
             ...other
         } = this.props;
 
-        const groupType = this.groupType;
+        const {dragging} = this.state;
+        const {groupType} = this;
         const chats = App.im.chats.getContactsChats('onlineFirst', groupType);
-        const user = App.user;
+        const {user} = App;
         this.groupChats = chats;
 
-        return (<div className={classes('app-chats-menu-list app-contact-list app-chat-group-list list scroll-y', className)} {...other}>
-            {user ? <MemberListItem
-                className="flex-middle app-member-me"
-                member={user}
-                avatarSize={24}
-                showStatusDot={false}
-                onClick={this.handleUserItemClick}
-                title={<div className="title">{user.displayName} &nbsp;{user.role ? <div className="label rounded primary-pale text-gray small member-role-label">{user.getRoleName(App)}</div> : null}</div>}
-            >
-                <div className="btn-wrapper hint--left" data-hint={Lang.string('common.setting')}><Button onClick={this.handleSettingBtnClick} className="iconbutton rounded" icon="format-list-bulleted" /></div>
-            </MemberListItem> : null}
-            <GroupList
-                group={{list: chats, root: true}}
-                defaultExpand={this.defaultExpand}
-                itemCreator={this.itemCreator}
-                headingCreator={this.headingCreator}
-                onExpandChange={this.onExpandChange}
-                hideEmptyGroup={groupType !== 'category'}
-                forceCollapse={!!this.state.dragging}
-            />
-            {children}
-        </div>);
+        return (
+            <div className={classes('app-chats-menu-list app-contact-list app-chat-group-list list scroll-y', className)} {...other}>
+                {user ? (
+                    <MemberListItem
+                        className="flex-middle app-member-me"
+                        member={user}
+                        avatarSize={24}
+                        showStatusDot={false}
+                        onClick={this.handleUserItemClick}
+                        title={<div className="title">{user.displayName} &nbsp;{user.role ? <div className="label rounded primary-pale text-gray small member-role-label">{user.getRoleName(App)}</div> : null}</div>}
+                    >
+                        <div className="btn-wrapper hint--left" data-hint={Lang.string('common.setting')}><Button onClick={this.handleSettingBtnClick} className="iconbutton rounded" icon="format-list-bulleted" /></div>
+                    </MemberListItem>
+                ) : null}
+                <GroupList
+                    group={{list: chats, root: true}}
+                    defaultExpand={this.defaultExpand}
+                    itemCreator={this.itemCreator}
+                    headingCreator={this.headingCreator}
+                    onExpandChange={this.onExpandChange}
+                    hideEmptyGroup={groupType !== 'category'}
+                    forceCollapse={!!dragging}
+                    showMoreText={Lang.string('common.clickShowMoreFormat')}
+                />
+                {children}
+            </div>
+        );
     }
 }

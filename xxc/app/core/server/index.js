@@ -1,5 +1,4 @@
 // eslint-disable-next-line import/no-unresolved
-import Platform from 'Platform';
 import compareVersions from 'compare-versions';
 import pkg from '../../package.json';
 import Socket from '../network/socket';
@@ -11,6 +10,7 @@ import {requestServerInfo} from '../network/api';
 import notice from '../notice';
 import events from '../events';
 import limitTimePromise from '../../utils/limit-time-promise';
+import platform from '../../platform';
 
 /**
  * 判定服务器请求超时时间，单位毫秒
@@ -70,7 +70,7 @@ const checkServerVersion = serverVersion => {
         }
         console.warn(`The server version '${serverVersion}' not support, require the min version '${MIN_SUPPORT_VERSION}'.`);
     }
-    if (Platform.type === 'browser' && compareVersions(serverVersion, '1.2.0') < 0) {
+    if (platform.isType('browser') && compareVersions(serverVersion, '1.2.0') < 0) {
         const error = new Error('SERVER_VERSION_NOT_SUPPORT_IN_BROWSER');
         error.formats = [pkg.version, serverVersion, '1.2.0'];
         return error;

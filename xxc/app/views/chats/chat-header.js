@@ -3,10 +3,18 @@ import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import App from '../../core';
-import {ChatTitle} from './chat-title';
-import replaceViews from '../replace-views';
+import _ChatTitle from './chat-title';
 import {getMenuItemsForContext} from '../../core/context-menu';
 import Config from '../../config';
+import withReplaceView from '../with-replace-view';
+import {isJustLangSwitched} from '../../core/lang';
+
+/**
+ * ChatTitle 可替换组件形式
+ * @type {Class<ChatTitle>}
+ * @private
+ */
+const ChatTitle = withReplaceView(_ChatTitle);
 
 /**
  * ChatHeader 组件 ，显示一个聊天头部界面
@@ -19,18 +27,13 @@ import Config from '../../config';
  */
 export default class ChatHeader extends Component {
     /**
-     * 获取 ChatHeader 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatHeader>}
-     * @readonly
+     * ChatHeader 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatHeader
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatHeader} from './chat-header';
-     * <ChatHeader />
      */
-    static get ChatHeader() {
-        return replaceViews('chats/chat-header', ChatHeader);
-    }
+    static replaceViewPath = 'chats/ChatHeader';
 
     /**
      * React 组件属性类型检查
@@ -71,11 +74,13 @@ export default class ChatHeader extends Component {
      */
     shouldComponentUpdate(nextProps) {
         const {chat} = nextProps;
-        return (this.props.className !== nextProps.className ||
-            this.props.children !== nextProps.children ||
-            this.props.chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId ||
-            (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId) ||
-            this.isSidebarHidden !== App.profile.userConfig.isChatSidebarHidden(chat.gid, chat.isOne2One)
+        const {className, children, chat: currentChat} = this.props;
+        return (isJustLangSwitched()
+            || className !== nextProps.className
+            || children !== nextProps.children
+            || currentChat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId
+            || (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId)
+            || this.isSidebarHidden !== App.profile.userConfig.isChatSidebarHidden(chat.gid, chat.isOne2One)
         );
     }
 
@@ -112,9 +117,7 @@ export default class ChatHeader extends Component {
                 {simpleChatView ? null : (
                     <div className="toolbar flex flex-middle text-rigth rounded">
                         {
-                            getMenuItemsForContext('chat.toolbar', {chat, showSidebarIcon}).map(item => {
-                                return <div key={item.id} className={`hint--${item.hintPosition || 'bottom'} has-padding-sm`} data-hint={item.label} onClick={item.click}><button className={`btn iconbutton rounded${item.className ? ` ${item.className}` : ''}`} type="button"><Icon className="icon-2x" name={item.icon} /></button></div>;
-                            })
+                            getMenuItemsForContext('chat.toolbar', {chat, showSidebarIcon}).map(item => <div key={item.id} className={`hint--${item.hintPosition || 'bottom'} has-padding-sm`} data-hint={item.label} onClick={item.click}><button className={`btn iconbutton rounded${item.className ? ` ${item.className}` : ''}`} type="button"><Icon className="icon-2x" name={item.icon} /></button></div>)
                         }
                     </div>
                 )}

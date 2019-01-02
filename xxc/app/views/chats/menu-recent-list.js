@@ -2,9 +2,16 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
-import {ChatListItem} from './chat-list-item';
-import replaceViews from '../replace-views';
+import _ChatListItem from './chat-list-item';
 import {showContextMenu} from '../../core/context-menu';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatListItem 可替换组件形式
+ * @type {Class<ChatListItem>}
+ * @private
+ */
+const ChatListItem = withReplaceView(_ChatListItem);
 
 /**
  * MenuRecentList 组件 ，显示最近聊天列表界面
@@ -17,18 +24,13 @@ import {showContextMenu} from '../../core/context-menu';
  */
 export default class MenuRecentList extends Component {
     /**
-     * 获取 MenuRecentList 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MenuRecentList>}
-     * @readonly
+     * MenuRecentList 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MenuRecentList
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MenuRecentList} from './menu-recent-list';
-     * <MenuRecentList />
      */
-    static get MenuRecentList() {
-        return replaceViews('chats/menu-recent-list', MenuRecentList);
-    }
+    static replaceViewPath = 'chats/MenuRecentList';
 
     /**
      * React 组件属性类型检查

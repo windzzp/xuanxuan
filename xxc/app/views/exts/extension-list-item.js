@@ -4,16 +4,20 @@ import {classes} from '../../utils/html-helper';
 import Avatar from '../../components/avatar';
 import Button from '../../components/button';
 import Icon from '../../components/icon';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import Exts from '../../exts';
 import App from '../../core';
 import DateHelper from '../../utils/date-helper';
-import replaceViews from '../replace-views';
 
 export default class ExtensionListItem extends Component {
-    static get ExtensionListItem() {
-        return replaceViews('exts/extension-list-item', ExtensionListItem);
-    }
+    /**
+     * ExtensionListItem 对应的可替换类路径名称
+     *
+     * @type {String}
+     * @static
+     * @memberof ExtensionListItem
+     */
+    static replaceViewPath = 'exts/ExtensionListItem';
 
     static propTypes = {
         className: PropTypes.string,

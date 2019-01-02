@@ -1,6 +1,6 @@
 import Entity from './entity';
 import Status from '../../utils/status';
-import Lang from '../../lang';
+import Lang from '../lang';
 import Pinyin from '../../utils/pinyin';
 import ChatMessage from './chat-message';
 

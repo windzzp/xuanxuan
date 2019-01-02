@@ -345,9 +345,9 @@ const finishRecordCostTime = operation => {
 const printEstimateInfo = operation => {
     const costTimeText = getTimeCostText(operation);
     if (costTimeText) {
-        console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} 请耐心等待，预计操作耗时 ${chalk.bold(chalk.red(costTimeText))}...${chalk.grey(`(${operation})`)}`);
+        console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} 请耐心等待，预计操作耗时 ${chalk.bold(chalk.red(costTimeText))}...${chalk.grey(`(${formatDate(new Date())} ${operation})`)}`);
     } else {
-        console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} 请耐心等待，这可能需要花费几分钟时间...`);
+        console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} 请耐心等待，这可能需要花费几分钟时间...${chalk.grey(`(${formatDate(new Date())} ${operation})`)}`);
     }
     startRecordCostTime(operation);
 };
@@ -359,9 +359,9 @@ const printConsumeInfo = operation => {
     if (costTime) {
         const costTimeText = getTimeCostText(operation);
         if (estimateCostTimeText) {
-            console.log(`    ${chalk.bold(chalk.magentaBright('⇒'))} 操作实际耗时 ${chalk.bold(chalk.red(costTimeText))}，预计耗时 ${chalk.bold(estimateCostTimeText)}${chalk.grey(`(${operation})`)}`);
+            console.log(`    ${chalk.bold(chalk.magentaBright('⇒'))} 操作实际耗时 ${chalk.bold(chalk.red(costTimeText))}，预计耗时 ${chalk.bold(estimateCostTimeText)}${chalk.grey(`(${formatDate(new Date())} ${operation})`)}`);
         } else {
-            console.log(`    ${chalk.bold(chalk.magentaBright('⇒'))} 操作实际耗时 ${chalk.bold(chalk.red(costTimeText))}${chalk.grey(`(${operation})`)}`);
+            console.log(`    ${chalk.bold(chalk.magentaBright('⇒'))} 操作实际耗时 ${chalk.bold(chalk.red(costTimeText))}${chalk.grey(`(${formatDate(new Date())} ${operation})`)}`);
         }
     }
 };
@@ -394,11 +394,14 @@ const electronBuilder = {
     appId: config.appid || `com.cnezsoft.${config.name}`,
     compression: 'maximum',
     artifactName: config.artifactName,
-    // electronVersion: '1.7.9',
+    electronVersion: config.electronVersion,
     electronDownload: {mirror: 'https://npm.taobao.org/mirrors/electron/'},
     extraResources: [{
         from: 'app/build-in/',
         to: 'build-in'
+    }, {
+        from: 'app/lang/',
+        to: 'lang'
     }],
     dmg: {
         contents: [{
@@ -464,6 +467,13 @@ if (config.buildInPath) {
     electronBuilder.extraResources.push({
         from: path.resolve(configDirPath || __dirname, config.buildInPath),
         to: 'build-in'
+    });
+}
+
+if (config.langPath) {
+    electronBuilder.extraResources.push({
+        from: path.resolve(configDirPath || __dirname, config.langPath),
+        to: 'lang'
     });
 }
 
@@ -627,7 +637,7 @@ const createPackage = (osType, arch, debug = isDebug) => {
             stdio: verbose ? 'inherit' : 'ignore'
         })
             .on('close', async code => {
-                if (config.buildZip) {
+                if (config.buildZip && osType !== 'mac') {
                     const zipDir = path.join(packagesPath, osType === 'mac' ? 'mac' : (arch.includes('32') ? `${osType}-ia32-unpacked` : `${osType}-unpacked`)); // eslint-disable-line
                     const zipFileName = getArtifactName(osType, arch, 'zip', `${osType}Zip`);
                     const zipFile = path.join(packagesPath, zipFileName);
@@ -651,8 +661,9 @@ const buildBrowser = async (destRoot) => {
     const copyPKG = () => copyFiles('./app/package.json', destRoot);
     const copyManifest = () => copyFiles('./app/manifest.json', destRoot);
     const copyIcons = () => copyFiles('./resources/**/*', `${destRoot}/resources`);
+    const copyLang = () => copyFiles('./app/lang/**/*', destRoot);
 
-    await Promise.all([copyDist(), copyMedia(), copyAssets(), copyIndexHTML(), copyPKG(), copyManifest(), copyIcons()]);
+    await Promise.all([copyDist(), copyMedia(), copyAssets(), copyIndexHTML(), copyPKG(), copyManifest(), copyIcons(), copyLang()]);
 
     // 创建 zip
     const zipFile = path.resolve(destRoot, '../', `${config.name}.${config.version}.${isBeta ? 'beta.' : ''}${isDebug ? 'debug.' : ''}browser.zip`);
@@ -777,7 +788,7 @@ const printEstimateSummary = () => {
                 }
             }
         }
-        console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} 请耐心等待，预计完成所有操作耗时 ${chalk.bold(chalk.red(formatTime(costTime)))}...\n`);
+        console.log(`    ${chalk.bold(chalk.magentaBright('♥︎'))} 预计完成所有操作耗时 ${chalk.bold(chalk.red(formatTime(costTime)))}...\n`);
     }
     return costTime;
 };

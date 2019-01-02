@@ -1,6 +1,4 @@
-
 import fs from 'fs-extra';
-import config from '../common/config';
 import sound from '../common/sound';
 import env from './env';
 import screenshot from './screenshot';
@@ -17,14 +15,37 @@ import crypto from './crypto';
 import Socket from './socket';
 import clipboard from './clipboard';
 import webview from './webview';
-import buildIn from './build-in';
+import buildIn, {buildInPath} from './build-in';
+import language, {initLanguage} from './language';
 
 if (process.type !== 'renderer') {
     throw new Error('platform/electron/index.js must run in renderer process.');
 }
 
+export const init = ({config, lang}) => {
+    if (config) {
+        // 初始化 ion-sound 声音播放模块
+        sound.init(config.media['sound.path']);
+
+        // 初始化界面交互功能模块
+        ui.init(config);
+    }
+
+    if (lang) {
+        contextmenu.setLangObj(lang);
+    }
+
+    initLanguage();
+
+    if (DEBUG) {
+        console.color('Build-in Path', 'greenBg', buildInPath, 'greenPale');
+    }
+};
+
 const platform = {
     type: 'electron',
+    init,
+    language,
     env,
     screenshot,
     contextmenu,
@@ -35,7 +56,6 @@ const platform = {
     shortcut,
     dialog,
     fs,
-    config,
     sound,
     net,
     crypto,
@@ -45,9 +65,5 @@ const platform = {
     webview,
     buildIn,
 };
-
-if (DEBUG) {
-    global.$.Platform = platform;
-}
 
 export default platform;

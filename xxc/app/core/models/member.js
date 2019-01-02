@@ -2,7 +2,7 @@ import Entity from './entity';
 import Pinyin from '../../utils/pinyin';
 import Status from '../../utils/status';
 import {matchScore} from '../../utils/search-score';
-import Lang from '../../lang';
+import Lang, {isJustLangSwitched} from '../lang';
 
 /**
  * 搜索匹配分值表
@@ -23,7 +23,7 @@ const MATCH_SCORE_MAP = [
  * @type {Status}
  * @private
  */
-const STATUS = new Status({
+export const STATUS = new Status({
     unverified: 0, // 未登录
     disconnect: 1, // 登录过，但掉线了
     logined: 2, // 登录成功
@@ -403,7 +403,7 @@ export default class Member extends Entity {
      */
     getRoleName(app) {
         const {role} = this;
-        if (role && !this._role) {
+        if (role && (isJustLangSwitched() || !this._role)) {
             this._role = app.members.getRoleName(role);
         }
         return this._role;

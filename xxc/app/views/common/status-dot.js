@@ -1,10 +1,9 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../../utils/html-helper';
+import {classes, rem} from '../../utils/html-helper';
 import {STATUS} from '../../core/models/member';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
-import replaceViews from '../replace-views';
 
 /**
  * 状态颜色表
@@ -31,18 +30,13 @@ const statusColors = {
  */
 export default class StatusDot extends PureComponent {
     /**
-     * 获取 StatusDot 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<StatusDot>}
-     * @readonly
+     * StatusDot 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof StatusDot
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {StatusDot} from './status-dot';
-     * <StatusDot />
      */
-    static get StatusDot() {
-        return replaceViews('common/status-dot', StatusDot);
-    }
+    static replaceViewPath = 'common/StatusDot';
 
     /**
      * React 组件属性类型检查
@@ -103,12 +97,12 @@ export default class StatusDot extends PureComponent {
         }, style);
 
         if (size) {
-            size = HTML.rem(size);
+            size = rem(size);
             style.width = size;
             style.height = size;
         }
 
-        const dotView = <span className={HTML.classes('inline-block status-dot', className, `status-${status}`)} style={style} {...other} />;
+        const dotView = <span className={classes('inline-block status-dot', className, `status-${status}`)} style={style} {...other} />;
 
         if (label) {
             if (label === true) {

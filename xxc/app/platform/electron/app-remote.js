@@ -1,9 +1,9 @@
 import electron, {
-    BrowserWindow, app as ElectronApp, Tray, Menu, nativeImage, globalShortcut, ipcMain, dialog,
+    BrowserWindow, app as ElectronApp, Tray, Menu, nativeImage, globalShortcut, ipcMain, dialog, shell
 } from 'electron';
-import Lang from '../../lang';
 import EVENT from './remote-events';
-import Events from './events';
+import events from './events';
+import Lang, {onLangChange} from './lang-remote';
 
 if (typeof DEBUG === 'undefined') {
     global.DEBUG = process.env.NODE_ENV === 'debug' || process.env.NODE_ENV === 'development';
@@ -35,22 +35,6 @@ const SHOW_LOG = DEBUG;
 if (DEBUG && process.type === 'renderer') {
     console.error('AppRemote must run in main process.');
 }
-
-/**
- * 文本输入框右键菜单
- * @type {Menu}
- * @private
- */
-const INPUT_MENU = Menu.buildFromTemplate([
-    {role: 'undo', label: Lang.string('menu.undo')},
-    {role: 'redo', label: Lang.string('menu.redo')},
-    {type: 'separator'},
-    {role: 'cut', label: Lang.string('menu.cut')},
-    {role: 'copy', label: Lang.string('menu.copy')},
-    {role: 'paste', label: Lang.string('menu.paste')},
-    {type: 'separator'},
-    {role: 'selectall', label: Lang.string('menu.selectAll')}
-]);
 
 /**
  * Electron 主进程运行时管理类
@@ -89,13 +73,21 @@ class AppRemote {
             if (method === 'quit') return;
             if (result instanceof Promise) {
                 result.then(x => {
-                    e.sender.send(callBackEventName, x);
+                    try {
+                        e.sender.send(callBackEventName, x);
+                    } catch (err) {
+                        console.error('\n>> ERROR: Cannot send remote result to BrowserWindow.', err);
+                    }
                     return x;
                 }).catch(error => {
                     console.warn('Remote error', error);
                 });
             } else {
-                e.sender.send(callBackEventName, result);
+                try {
+                    e.sender.send(callBackEventName, result);
+                } catch (err) {
+                    console.error('\n>> ERROR: Cannot send remote result to BrowserWindow.', err);
+                }
             }
             if (DEBUG) {
                 console.info('\n>> Accept remote call', `${callBackEventName}.${method}(`, args, ')');
@@ -112,7 +104,7 @@ class AppRemote {
 
         // 绑定渲染进程请求绑定主进程事件
         ipcMain.on(EVENT.remote_on, (e, eventId, event) => {
-            Events.on(event, (...args) => {
+            events.on(event, (...args) => {
                 try {
                     e.sender.send(eventId, ...args);
                 } catch (_) {
@@ -128,29 +120,173 @@ class AppRemote {
 
         // 绑定渲染进程请求取消绑定主进程事件
         ipcMain.on(EVENT.remote_off, (e, eventId) => {
-            Events.off(eventId);
+            events.off(eventId);
             if (SHOW_LOG) console.log('\n>> REMOTE EVENT off', eventId);
         });
 
         // 绑定渲染进程请求触发主进程事件
         ipcMain.on(EVENT.remote_emit, (e, eventId, ...args) => {
-            Events.emit(eventId, ...args);
+            events.emit(eventId, ...args);
             if (SHOW_LOG) console.log('\n>> REMOTE EVENT emit', eventId);
         });
 
         // 绑定渲染进程通知准备就绪事件
         ipcMain.on(EVENT.app_ready, (e, config, windowName) => {
             Object.assign(this.appConfig, config);
-            const langInConfig = config.lang && config.lang[Lang.name];
-            if (langInConfig) {
-                Lang.update(langInConfig);
-            }
             this.createTrayIcon(windowName);
             if (SHOW_LOG) console.log('\n>> App ready.');
         });
 
-        // 设置 Electron 应用标题
-        ElectronApp.setName(Lang.string('app.title'));
+        onLangChange(() => {
+            this.createAppMenu();
+            this.createDockMenu();
+        });
+    }
+
+    /**
+     * 创建应用菜单
+     *
+     * @memberof AppRemote
+     * @return {void}
+     */
+    createAppMenu() {
+        if (process.platform === 'darwin') {
+            const template = [{
+                label: Lang.string('app.title'),
+                submenu: [{
+                    label: Lang.string('menu.about'),
+                    selector: 'orderFrontStandardAboutPanel:'
+                }, {
+                    type: 'separator'
+                }, {
+                    label: 'Services',
+                    submenu: []
+                }, {
+                    type: 'separator'
+                }, {
+                    label: Lang.string('menu.hideCurrentWindow'),
+                    accelerator: 'Command+H',
+                    selector: 'hide:'
+                }, {
+                    label: Lang.string('menu.hideOtherWindows'),
+                    accelerator: 'Command+Shift+H',
+                    selector: 'hideOtherApplications:'
+                }, {
+                    label: Lang.string('menu.showAllWindows'),
+                    selector: 'unhideAllApplications:'
+                }, {
+                    type: 'separator'
+                }, {
+                    label: Lang.string('menu.quit'),
+                    accelerator: 'Command+Q',
+                    click: () => {
+                        this.quit();
+                    }
+                }]
+            },
+            {
+                label: Lang.string('menu.edit'),
+                submenu: [{
+                    label: Lang.string('menu.undo'),
+                    accelerator: 'Command+Z',
+                    selector: 'undo:'
+                }, {
+                    label: Lang.string('menu.redo'),
+                    accelerator: 'Shift+Command+Z',
+                    selector: 'redo:'
+                }, {
+                    type: 'separator'
+                }, {
+                    label: Lang.string('menu.cut'),
+                    accelerator: 'Command+X',
+                    selector: 'cut:'
+                }, {
+                    label: Lang.string('menu.copy'),
+                    accelerator: 'Command+C',
+                    selector: 'copy:'
+                }, {
+                    label: Lang.string('menu.paste'),
+                    accelerator: 'Command+V',
+                    selector: 'paste:'
+                }, {
+                    label: Lang.string('menu.selectAll'),
+                    accelerator: 'Command+A',
+                    selector: 'selectAll:'
+                }]
+            },
+            {
+                label: Lang.string('menu.view'),
+                submenu: (DEBUG) ? [{
+                    label: Lang.string('menu.reload'),
+                    accelerator: 'Command+R',
+                    click: () => {
+                        this.currentFocusWindow.webContents.reload();
+                    }
+                }, {
+                    label: Lang.string('menu.toggleFullscreen'),
+                    accelerator: 'Ctrl+Command+F',
+                    click: () => {
+                        this.currentFocusWindow.setFullScreen(!this.currentFocusWindow.isFullScreen());
+                    }
+                }, {
+                    label: Lang.string('menu.toggleDeveloperTool'),
+                    accelerator: 'Alt+Command+I',
+                    click: () => {
+                        this.currentFocusWindow.toggleDevTools();
+                    }
+                }] : [{
+                    label: Lang.string('menu.toggleFullscreen'),
+                    accelerator: 'Ctrl+Command+F',
+                    click: () => {
+                        this.currentFocusWindow.setFullScreen(!this.currentFocusWindow.isFullScreen());
+                    }
+                }]
+            },
+            {
+                label: Lang.string('menu.window'),
+                submenu: [{
+                    label: Lang.string('menu.minimize'),
+                    accelerator: 'Command+M',
+                    selector: 'performMiniaturize:'
+                }, {
+                    label: Lang.string('menu.close'),
+                    accelerator: 'Command+W',
+                    selector: 'performClose:'
+                }, {
+                    type: 'separator'
+                }, {
+                    label: Lang.string('menu.bringAllToFront'),
+                    selector: 'arrangeInFront:'
+                }]
+            },
+            {
+                label: Lang.string('menu.help'),
+                submenu: [{
+                    label: Lang.string('menu.website'),
+                    click() {
+                        shell.openExternal(this.appConfig.pkg.homepage);
+                    }
+                }, {
+                    label: Lang.string('menu.project'),
+                    click() {
+                        shell.openExternal('https://github.com/easysoft/xuanxuan');
+                    }
+                }, {
+                    label: Lang.string('menu.community'),
+                    click() {
+                        shell.openExternal('https://github.com/easysoft/xuanxuan');
+                    }
+                }, {
+                    label: Lang.string('menu.issues'),
+                    click() {
+                        shell.openExternal('https://github.com/easysoft/xuanxuan/issues');
+                    }
+                }]
+            }];
+
+            const menu = Menu.buildFromTemplate(template);
+            Menu.setApplicationMenu(menu);
+        }
     }
 
     // 初始化并设置 Electron 应用入口路径
@@ -164,13 +300,11 @@ class AppRemote {
     }
 
     /**
-     * 通知主进程准备就绪并打开主界面窗口
-     * @memberof AppRemote
+     * 创建程序坞图标右键菜单
      * @return {void}
+     * @memberof AppRemote
      */
-    ready() {
-        this.openOrCreateWindow();
-
+    createDockMenu() {
         if (IS_MAC_OSX) {
             const dockMenu = Menu.buildFromTemplate([
                 {
@@ -181,6 +315,31 @@ class AppRemote {
                 }
             ]);
             ElectronApp.dock.setMenu(dockMenu);
+        }
+    }
+
+    /**
+     * 通知主进程准备就绪并打开主界面窗口
+     * @memberof AppRemote
+     * @return {void}
+     */
+    ready() {
+        this.openOrCreateWindow();
+
+        this.createDockMenu();
+
+        // 创建应用窗口菜单
+        this.createAppMenu();
+
+        // 设置关于窗口
+        if (typeof ElectronApp.setAboutPanelOptions === 'function') {
+            ElectronApp.setAboutPanelOptions({
+                applicationName: Lang.title,
+                applicationVersion: this.appConfig.pkg.version,
+                copyright: 'Copyright (C) 2017 cnezsoft.com',
+                credits: `Licence: ${this.appConfig.pkg.license}`,
+                version: DEBUG ? '[debug]' : ''
+            });
         }
     }
 
@@ -234,7 +393,10 @@ class AppRemote {
             }, {
                 label: Lang.string('common.exit'),
                 click: () => {
-                    this.windows[windowName].webContents.send(EVENT.remote_app_quit, 'quit');
+                    const browserWindow = this.windows[windowName];
+                    if (browserWindow) {
+                        browserWindow.webContents.send(EVENT.remote_app_quit, 'quit');
+                    }
                 }
             }
         ]);
@@ -329,7 +491,9 @@ class AppRemote {
                 });
             } else {
                 this.lastRequestCloseTime = now;
-                appWindow.webContents.send(EVENT.remote_app_quit);
+                if (appWindow) {
+                    appWindow.webContents.send(EVENT.remote_app_quit);
+                }
             }
             e.preventDefault();
             return false;
@@ -339,7 +503,22 @@ class AppRemote {
         appWindow.webContents.on('context-menu', (e, props) => {
             const {isEditable} = props;
             if (isEditable) {
-                INPUT_MENU.popup(appWindow);
+                /**
+                 * 文本输入框右键菜单
+                 * @type {Menu}
+                 * @private
+                 */
+                const inputMenu = Menu.buildFromTemplate([
+                    {role: 'undo', label: Lang.string('menu.undo')},
+                    {role: 'redo', label: Lang.string('menu.redo')},
+                    {type: 'separator'},
+                    {role: 'cut', label: Lang.string('menu.cut')},
+                    {role: 'copy', label: Lang.string('menu.copy')},
+                    {role: 'paste', label: Lang.string('menu.paste')},
+                    {type: 'separator'},
+                    {role: 'selectall', label: Lang.string('menu.selectAll')}
+                ]);
+                inputMenu.popup(appWindow);
             }
         });
 
@@ -376,7 +555,10 @@ class AppRemote {
             autoHideMenuBar: !IS_MAC_OSX,
             backgroundColor: '#ffffff',
             show: DEBUG,
-            webPreferences: {webSecurity: false}
+            webPreferences: {
+                webSecurity: false,
+                nodeIntegration: true,
+            }
         }, options);
 
         let browserWindow = this.windows[name];
@@ -462,6 +644,9 @@ class AppRemote {
                     message: 'The renderer process has been crashed, you can reload or close it.',
                     buttons: ['Reload', 'Close']
                 };
+                if (DEBUG) {
+                    console.error(`\n>> ERROR: ${messageBoxOptions.message}`);
+                }
                 dialog.showMessageBox(messageBoxOptions, (index) => {
                     if (index === 0) {
                         browserWindow.reload();
@@ -613,7 +798,10 @@ class AppRemote {
      * @return {void}
      */
     trayTooltip(tooltip, windowName = 'main') {
-        this._traysData[windowName].tray.setToolTip(tooltip || Lang.string('app.title'));
+        const trayData = this._traysData && this._traysData[windowName];
+        if (trayData) {
+            trayData.tray.setToolTip(tooltip || Lang.string('app.title'));
+        }
     }
 
     /**
@@ -625,21 +813,23 @@ class AppRemote {
      * @return {void}
      */
     flashTrayIcon(flash = true, windowName = 'main') {
-        const trayData = this._traysData[windowName];
-        if (flash) {
-            if (!trayData.flashTask) {
-                trayData.flashTask = setInterval(() => {
-                    if (trayData.tray) {
-                        trayData.tray.setImage(this._trayIcons[(trayData.iconCounter++) % 2]);
-                    }
-                }, 400);
+        const trayData = this._traysData && this._traysData[windowName];
+        if (trayData) {
+            if (flash) {
+                if (!trayData.flashTask) {
+                    trayData.flashTask = setInterval(() => {
+                        if (trayData.tray) {
+                            trayData.tray.setImage(this._trayIcons[(trayData.iconCounter++) % 2]);
+                        }
+                    }, 400);
+                }
+            } else {
+                if (trayData.flashTask) {
+                    clearInterval(trayData.flashTask);
+                    trayData.flashTask = null;
+                }
+                trayData.tray.setImage(this._trayIcons[0]);
             }
-        } else {
-            if (trayData.flashTask) {
-                clearInterval(trayData.flashTask);
-                trayData.flashTask = null;
-            }
-            trayData.tray.setImage(this._trayIcons[0]);
         }
     }
 
@@ -693,7 +883,7 @@ class AppRemote {
         if (SHOW_LOG) console.log('>> quit');
         try {
             globalShortcut.unregisterAll();
-        } catch (_) {}
+        } catch (_) {} // eslint-disable-line
         ElectronApp.quit();
     }
 

@@ -2,11 +2,18 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Config from '../../config';
 import {classes} from '../../utils/html-helper';
-import Lang from '../../lang';
-import {BuildInfo} from './build-info'; // eslint-disable-line
+import Lang from '../../core/lang';
+import _BuildInfo from './build-info'; // eslint-disable-line
 import PoweredInfo from './powered-info';
-import replaceViews from '../replace-views';
 import pkg from '../../package.json';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * UserAvatar 可替换组件形式
+ * @type {Class<UserAvatar>}
+ * @private
+ */
+const BuildInfo = withReplaceView(_BuildInfo);
 
 /**
  * About 组件 ，显示应用关于界面
@@ -19,18 +26,13 @@ import pkg from '../../package.json';
  */
 export default class About extends PureComponent {
     /**
-     * 获取 About 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<About>}
-     * @readonly
+     * About 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof About
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {About} from './about';
-     * <About />
      */
-    static get About() {
-        return replaceViews('common/about', About);
-    }
+    static replaceViewPath = 'common/About';
 
     /**
      * React 组件属性类型检查

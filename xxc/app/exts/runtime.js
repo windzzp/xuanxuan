@@ -1,13 +1,24 @@
 import Xext from './external-api';
-import Exts, {forEachExtension, getExt, getExts} from './exts';
-import ui from './ui';
+import Exts, {
+    forEachExtension, getExt, getExts, initExtensions
+} from './exts';
+import {initThemes} from './themes';
+import {showExtensionDetailDialog, openAppWithUrl, initUI} from './ui';
 import {reloadDevExtension} from './manager';
 import App from '../core';
 import {setExtensionUser} from './extension';
 import {registerCommand, executeCommand, createCommandObject} from '../core/commander';
 import {fetchServerExtensions, detachServerExtensions, getEntryVisitUrl} from './server';
 import ExtsView from '../views/exts/index';
-import ExtsNavbarView from '../views/exts/navbar';
+import _ExtsNavbarView from '../views/exts/navbar';
+import withReplaceView from '../views/with-replace-view';
+
+/**
+ * ExtsNavbarView 可替换组件形式
+ * @type {Class<ExtsNavbarView>}
+ * @private
+ */
+const ExtsNavbarView = withReplaceView(_ExtsNavbarView);
 
 // 将开放给扩展的模块设置为全局可访问
 global.Xext = Xext;
@@ -24,6 +35,8 @@ const replaceViews = {};
  * @return {void}
  */
 export const loadExtensionsModules = () => {
+    initExtensions();
+
     forEachExtension(ext => {
         if (ext.isDev) {
             const reloadExt = reloadDevExtension(ext);
@@ -37,6 +50,9 @@ export const loadExtensionsModules = () => {
             Object.assign(replaceViews, ext.replaceViews);
         }
     });
+
+    initThemes();
+    initUI();
 };
 
 // 监听应用的准备就绪事件，触发扩展的 `onReady` 回调函数
@@ -48,13 +64,15 @@ App.ui.onReady(() => {
 
 // 监听用户登录事件，触发扩展的 `onUserLogin` 回调函数
 App.server.onUserLogin((user, error) => {
-    if (!error) {
+    if (user && !error) {
         setExtensionUser(user);
         forEachExtension(ext => {
             ext.callModuleMethod('onUserLogin', user);
         });
+        if (user.isOnline) {
+            fetchServerExtensions(user);
+        }
     }
-    fetchServerExtensions(user);
 });
 
 // 监听用户退出事件，触发扩展的 `onUserLogout` 回调函数
@@ -126,13 +144,13 @@ registerCommand('extension', (context, extName, commandName, ...params) => {
 registerCommand('showExtensionDialog', (context, extName) => {
     const ext = getExt(extName);
     if (ext) {
-        return ui.showExtensionDetailDialog(ext);
+        return showExtensionDetailDialog(ext);
     }
 });
 
 // 注册 `openInApp` 命令，用于使用命令在扩展应用中打开链接
 registerCommand('openInApp', (context, appName, url) => {
-    ui.openAppWithUrl(appName, url);
+    openAppWithUrl(appName, url);
 });
 
 /**
@@ -166,9 +184,7 @@ export const getExtensionUrlInspector = (url, type = 'inspect') => {
  * @return {any} 网址打开处理器对象
  * @memberof Extension
  */
-export const getExtensionUrlOpener = url => {
-    return getExtensionUrlInspector(url, 'open');
-};
+export const getExtensionUrlOpener = url => getExtensionUrlInspector(url, 'open');
 
 /**
  * 获取指定的通知消息发送者信息配置对象
@@ -199,7 +215,6 @@ global.replaceViews = Object.assign(global.replaceViews || {}, replaceViews);
 
 export default {
     loadModules: loadExtensionsModules,
-    ui,
     getUrlInspector: getExtensionUrlInspector,
     getUrlOpener: getExtensionUrlOpener,
     exts: Exts,

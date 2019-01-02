@@ -1,22 +1,21 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types'; // eslint-disable-line
-import Platform from 'Platform';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
-import Lang from '../../lang';
+import Lang, {isJustLangSwitched} from '../../core/lang';
 import Emojione from '../../components/emojione';
 import ImageViewer from '../../components/image-viewer';
-import replaceViews from '../replace-views';
 import ImageHolder from '../../components/image-holder';
 import FileData from '../../core/models/file-data';
 import {showContextMenu} from '../../core/context-menu';
+import platform from '../../platform';
 
 /**
  * 当前是否为浏览器平台
  * @type {boolean}
  * @private
  */
-const isBrowser = Platform.type === 'browser';
+const isBrowser = platform.isType('browser');
 
 /**
  * MessageContentImage 组件 ，显示聊天消息图片内容界面
@@ -29,18 +28,13 @@ const isBrowser = Platform.type === 'browser';
  */
 export default class MessageContentImage extends Component {
     /**
-     * 获取 MessageContentImage 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MessageContentImage>}
-     * @readonly
+     * MessageContentImage 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MessageContentImage
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MessageContentImage} from './message-content-image';
-     * <MessageContentImage />
      */
-    static get MessageContentImage() {
-        return replaceViews('chats/message-content-image', MessageContentImage);
-    }
+    static replaceViewPath = 'chats/MessageContentImage';
 
     /**
      * React 组件属性类型检查
@@ -114,7 +108,7 @@ export default class MessageContentImage extends Component {
      * @memberof MessageContentImage
      */
     shouldComponentUpdate(nextProps, nextState) {
-        return nextProps.className !== this.props.className || nextProps.message !== this.props.message || nextProps.message.updateId !== this.lastMessageUpdateId || nextState.download !== this.state.download || nextState.url || this.state.url;
+        return isJustLangSwitched() || nextProps.className !== this.props.className || nextProps.message !== this.props.message || nextProps.message.updateId !== this.lastMessageUpdateId || nextState.download !== this.state.download || nextState.url || this.state.url;
     }
 
     /**
@@ -249,7 +243,9 @@ export default class MessageContentImage extends Component {
         const holderProps = {
             width: image.width,
             height: image.height,
-            alt: image.name
+            alt: image.name,
+            downloadFailMessage: Lang.string('file.downloadFailed'),
+            uploadFailMessage: Lang.string('file.uploadFailed'),
         };
         image = FileData.create(image);
 

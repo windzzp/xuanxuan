@@ -1,5 +1,4 @@
 // eslint-disable-next-line import/no-unresolved
-import Platform from 'Platform';
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Config from '../../config';
@@ -7,14 +6,18 @@ import InputControl from '../../components/input-control';
 import Checkbox from '../../components/checkbox';
 import Modal from '../../components/modal';
 import Icon from '../../components/icon';
-import Lang from '../../lang';
+import Lang, {onLangChange} from '../../core/lang';
 import {classes} from '../../utils/html-helper';
 import {isNotEmptyString} from '../../utils/string-helper';
 import App from '../../core';
 import SwapUserDialog from './swap-user-dialog';
-import replaceViews from '../replace-views';
 import Button from '../../components/button';
 import User, {isPasswordWithMD5Flag} from '../../core/profile/user';
+import platform from '../../platform';
+import events from '../../core/events';
+
+// 从平台访问对象获取模块功能
+const {ui: platformUI} = platform.modules;
 
 /**
  * 将服务器地址转换为简单形式
@@ -52,18 +55,13 @@ const simpleServerUrl = serverUrl => {
  */
 export default class LoginForm extends PureComponent {
     /**
-     * 获取 Form 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<Form>}
-     * @readonly
+     * Form 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
-     * @memberof LoginForm
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {Form} from './form';
-     * <Form />
+     * @memberof Form
      */
-    static get LoginForm() {
-        return replaceViews('login/form', LoginForm);
-    }
+    static replaceViewPath = 'login/LoginForm';
 
     /**
      * React 组件属性类型检查
@@ -147,8 +145,8 @@ export default class LoginForm extends PureComponent {
         state.submitable = isNotEmptyString(state.serverUrl) && isNotEmptyString(state.account) && isNotEmptyString(state.password);
 
         let denyAutoLogin = false;
-        if (Platform.ui.isMainWindow) {
-            denyAutoLogin = !Platform.ui.isMainWindow();
+        if (platformUI.isMainWindow) {
+            denyAutoLogin = !platformUI.isMainWindow();
         }
 
         /**
@@ -179,6 +177,23 @@ export default class LoginForm extends PureComponent {
         if (this._autoLoginOnOpen) {
             this.login();
         }
+        this.onLangChangeHandler = onLangChange(() => {
+            this.forceUpdate();
+        });
+    }
+
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof LanguageSwitcher
+     * @return {void}
+     */
+    componentWillUnmount() {
+        events.off(this.onLangChangeHandler);
     }
 
     /**
@@ -427,12 +442,12 @@ export default class LoginForm extends PureComponent {
      * @return {void}
      */
     handleSettingBtnClick = e => {
-        const isOpenAtLogin = Platform.ui.isOpenAtLogin();
+        const isOpenAtLogin = platformUI.isOpenAtLogin();
         App.ui.showContextMenu({x: e.clientX, y: e.clientY}, [{
             label: Lang.string('login.openAtLogin'),
             checked: isOpenAtLogin,
             click: () => {
-                Platform.ui.setOpenAtLogin(!isOpenAtLogin);
+                platformUI.setOpenAtLogin(!isOpenAtLogin);
             }
         }]);
     };
@@ -515,7 +530,7 @@ export default class LoginForm extends PureComponent {
                     <Checkbox disabled={logining} checked={rememberPassword} onChange={this.handleRememberPasswordChanged} className="cell" label={Lang.string('login.rememberPassword')} />
                     <Checkbox disabled={logining} checked={autoLogin} onChange={this.handleAutoLoginChanged} className="cell" label={Lang.string('login.autoLogin')} />
                     {Config.ui['login.ldap'] && <Checkbox disabled={logining} checked={ldap} onChange={this.handleLDAPChanged} className="cell" label={Lang.string('login.ldap')} />}
-                    {Platform.ui.isOpenAtLogin ? <div data-hint={Lang.string('login.moreLoginSettings')} className="hint--top"><Button className="iconbutton rounded" icon="settings-box" onClick={this.handleSettingBtnClick} /></div> : null}
+                    {platformUI.isOpenAtLogin ? <div data-hint={Lang.string('login.moreLoginSettings')} className="hint--top"><Button className="iconbutton rounded" icon="settings-box" onClick={this.handleSettingBtnClick} /></div> : null}
                 </div>
             </div>
         );

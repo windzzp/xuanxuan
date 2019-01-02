@@ -5,11 +5,39 @@ import {Route, Redirect} from 'react-router-dom';
 import SplitPane from 'react-split-pane';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
-import {Menu} from './menu';
-import {ChatsCache} from './chats-cache';
-import {ChatsDndContainer} from './chats-dnd-container';
-import {ChatsSuggestPanel} from './chats-suggest-panel';
-import replaceViews from '../replace-views';
+import _Menu from './menu';
+import _ChatsCache from './chats-cache';
+import _ChatsDndContainer from './chats-dnd-container';
+import _ChatsSuggestPanel from './chats-suggest-panel';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * Menu 可替换组件形式
+ * @type {Class<Menu>}
+ * @private
+ */
+const Menu = withReplaceView(_Menu);
+
+/**
+ * ChatsSuggestPanel 可替换组件形式
+ * @type {Class<ChatsSuggestPanel>}
+ * @private
+ */
+const ChatsSuggestPanel = withReplaceView(_ChatsSuggestPanel);
+
+/**
+ * ChatsDndContainer 可替换组件形式
+ * @type {Class<ChatsDndContainer>}
+ * @private
+ */
+const ChatsDndContainer = withReplaceView(_ChatsDndContainer);
+
+/**
+ * ChatsCache 可替换组件形式
+ * @type {Class<ChatsCache>}
+ * @private
+ */
+const ChatsCache = withReplaceView(_ChatsCache);
 
 /**
  * ChatsIndex 组件 ，显示聊天主界面
@@ -22,18 +50,13 @@ import replaceViews from '../replace-views';
  */
 export default class ChatsIndex extends Component {
     /**
-     * 获取 ChatsIndex 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatsIndex>}
-     * @readonly
+     * ChatsIndex 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatsIndex
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatsIndex} from './index';
-     * <ChatsIndex />
      */
-    static get ChatsIndex() {
-        return replaceViews('chats/index', ChatsIndex);
-    }
+    static replaceViewPath = 'chats/ChatsIndex';
 
     /**
      * React 组件属性类型检查

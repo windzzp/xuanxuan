@@ -8,10 +8,6 @@ import env from './env';
  */
 export const buildInPath = path.join(process.env.HOT ? env.appRoot : env.appPath, 'build-in');
 
-if (DEBUG) {
-    console.color('Build-in Path', 'greenBg', buildInPath, 'greenPale');
-}
-
 /**
  * 获取内置运行时配置
  * @return {Object} 运行时配置对象

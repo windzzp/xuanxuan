@@ -2,8 +2,16 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
 import App from '../../core';
-import {MemberProfile} from '../common/member-profile';
-import replaceViews from '../replace-views';
+import _MemberProfile from '../common/member-profile';
+import withReplaceView from '../with-replace-view';
+import {isJustLangSwitched} from '../../core/lang';
+
+/**
+ * MemberProfile 可替换组件形式
+ * @type {Class<MemberProfile>}
+ * @private
+ */
+const MemberProfile = withReplaceView(_MemberProfile);
 
 /**
  * ChatSidebarProfile 组件 ，显示一个聊天侧边栏个人资料界面
@@ -16,18 +24,13 @@ import replaceViews from '../replace-views';
  */
 export default class ChatSidebarProfile extends Component {
     /**
-     * 获取 ChatSidebarProfile 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatSidebarProfile>}
-     * @readonly
+     * ChatSidebarProfile 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatSidebarProfile
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatSidebarProfile} from './chat-sidebar-profile';
-     * <ChatSidebarProfile />
      */
-    static get ChatSidebarProfile() {
-        return replaceViews('chats/chat-sidebar-profile', ChatSidebarProfile);
-    }
+    static replaceViewPath = 'chats/ChatSidebarProfile';
 
     /**
      * React 组件属性类型检查
@@ -95,7 +98,7 @@ export default class ChatSidebarProfile extends Component {
      * @memberof ChatSidebarProfile
      */
     shouldComponentUpdate(nextProps) {
-        return nextProps.className !== this.props.className || nextProps.chat !== this.props.chat || nextProps.children !== this.props.children || nextProps.chat.getTheOtherOne(App).updateId !== this.lastMemberUpdateId;
+        return isJustLangSwitched() || nextProps.className !== this.props.className || nextProps.chat !== this.props.chat || nextProps.children !== this.props.children || nextProps.chat.getTheOtherOne(App).updateId !== this.lastMemberUpdateId;
     }
 
     /**

@@ -1,13 +1,11 @@
 import React, {PureComponent} from 'react';
 import Exts from '../../exts';
 import App from '../../core';
-import replaceViews from '../replace-views';
 import Avatar from '../../components/avatar';
 import ROUTES from '../common/routes';
 import Config from '../../config';
 import {classes} from '../../utils/html-helper';
-import Lang from '../../lang';
-
+import Lang from '../../core/lang';
 
 /**
  * ExtsNavbarView 组件 ，显示扩展应用导航
@@ -20,18 +18,13 @@ import Lang from '../../lang';
  */
 export default class ExtsNavbarView extends PureComponent {
     /**
-     * 获取 ExtsNavbarView 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ExtsNavbarView>}
-     * @readonly
+     * Navbar 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
-     * @memberof ExtsNavbarView
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ExtsNavbarView} from './app-home';
-     * <ExtsNavbarView />
+     * @memberof Navbar
      */
-    static get ExtsNavbarView() {
-        return replaceViews('exts/navbar', ExtsNavbarView);
-    }
+    static replaceViewPath = 'exts/ExtsNavbarView';
 
     /**
      * React 组件生命周期函数：`componentDidMount`

@@ -5,7 +5,8 @@ import InputControl from './input-control';
 import Icon from './icon';
 import StringHelper from '../utils/string-helper';
 import DelayAction from '../utils/delay-action';
-import Lang from '../lang';
+import Lang, {onLangChange} from '../core/lang';
+import events from '../core/events';
 
 /**
  * SearchControl 组件 ，显示一个搜索框
@@ -43,7 +44,7 @@ export default class SearchControl extends PureComponent {
      * @static
      */
     static defaultProps = {
-        placeholder: Lang.string('common.search'),
+        placeholder: null,
         changeDelay: 100,
         onSearchChange: null,
         onFocusChange: null,
@@ -83,6 +84,22 @@ export default class SearchControl extends PureComponent {
     }
 
     /**
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof SearchControl
+     * @return {void}
+     */
+    componentDidMount() {
+        this.onLangChangeHandler = onLangChange(() => {
+            this.forceUpdate();
+        });
+    }
+
+    /**
      * React 组件生命周期函数：`componentWillUnmount`
      * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
     任何在componentDidMount环节创建的DOM元素。
@@ -96,6 +113,8 @@ export default class SearchControl extends PureComponent {
         if (this.delaySearchChangeTask) {
             this.delaySearchChangeTask.destroy();
         }
+
+        events.off(this.onLangChangeHandler);
     }
 
     /**
@@ -211,10 +230,15 @@ export default class SearchControl extends PureComponent {
             onFocusChange,
             onBlur,
             defaultValue,
+            placeholder,
             ...other
         } = this.props;
 
         delete other.value;
+
+        if (placeholder === null) {
+            placeholder = Lang.string('common.search');
+        }
 
         return (<InputControl
             className={HTML.classes('search', className, {
@@ -228,6 +252,7 @@ export default class SearchControl extends PureComponent {
             onBlur={this.handleOnInputBlur}
             onChange={this.handleOnInputChange}
             ref={e => {this.inputControl = e;}}
+            placeholder={placeholder}
             {...other}
         >
             <Icon name="close" onClick={this.handleOnClearBtnClick} className="close state" />

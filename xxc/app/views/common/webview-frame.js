@@ -1,12 +1,19 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
-import WebView from './webview';
+import _WebView from './webview';
 import Avatar from '../../components/avatar';
 import Icon from '../../components/icon';
 import {openUrlInBrowser} from '../../core/ui';
-import replaceViews from '../replace-views';
 import Config from '../../config';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * WebView 可替换组件形式
+ * @type {Class<WebView>}
+ * @private
+ */
+const WebView = withReplaceView(_WebView);
 
 /**
  * WebviewFrame 组件 ，显示网页视图界面
@@ -19,19 +26,14 @@ import Config from '../../config';
  */
 export default class WebViewFrame extends Component {
     /**
-     * 获取 WebviewFrame 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<WebviewFrame>}
-     * @readonly
+     * WebviewFrame 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof WebviewFrame
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {WebviewFrame} from './webview-frame';
-     * <WebviewFrame />
      */
-    static get WebViewFrame() {
-        return replaceViews('common/webview-frame', WebViewFrame);
-    }
-
+    static replaceViewPath = 'common/WebviewFrame';
+    
     /**
      * React 组件属性类型检查
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html

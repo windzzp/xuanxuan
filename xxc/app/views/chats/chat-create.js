@@ -2,10 +2,24 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import Avatar from '../../components/avatar';
-import Lang from '../../lang';
-import {ChatCreateGroups} from './chat-create-groups';
-import {ChatJoinPublic} from './chat-join-public';
-import replaceViews from '../replace-views';
+import Lang from '../../core/lang';
+import _ChatCreateGroups from './chat-create-groups';
+import _ChatJoinPublic from './chat-join-public';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatCreateGroups 可替换组件形式
+ * @type {Class<ChatCreateGroups>}
+ * @private
+ */
+const ChatCreateGroups = withReplaceView(_ChatCreateGroups);
+
+/**
+ * ChatJoinPublic 可替换组件形式
+ * @type {Class<ChatJoinPublic>}
+ * @private
+ */
+const ChatJoinPublic = withReplaceView(_ChatJoinPublic);
 
 /**
  * ChatCreate 组件 ，显示创建聊天界面
@@ -18,18 +32,13 @@ import replaceViews from '../replace-views';
  */
 export default class ChatCreateView extends PureComponent {
     /**
-     * 获取 ChatCreate 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatCreate>}
-     * @readonly
+     * ChatCreateView 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
-     * @memberof ChatCreate
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatCreate} from './chat-create';
-     * <ChatCreate />
+     * @memberof ChatCreateView
      */
-    static get ChatCreateView() {
-        return replaceViews('chats/chat-create', ChatCreateView);
-    }
+    static replaceViewPath = 'chats/ChatCreateView';
 
     /**
      * React 组件属性类型检查
@@ -103,6 +112,8 @@ export default class ChatCreateView extends PureComponent {
             ...other
         } = this.props;
 
+        const {type} = this.state;
+
         return (
             <div
                 {...other}
@@ -115,18 +126,18 @@ export default class ChatCreateView extends PureComponent {
                     </div>
                     <div className="scroll-y flex-auto lighten">
                         <div className="list compact app-chat-create-types-menu">
-                            <a onClick={this.changeType.bind(this, 'normal')} className={'item' + (this.state.type === 'normal' ? ' white text-primary' : '')}>
+                            <a onClick={this.changeType.bind(this, 'normal')} className={'item' + (type === 'normal' ? ' white text-primary' : '')}>
                                 <Avatar icon="account-multiple-outline" iconClassName="text-blue icon-2x" />
                                 <div className="title">{Lang.string('chat.create.chatType.normal')}</div>
                             </a>
-                            <a onClick={this.changeType.bind(this, 'public')} className={'item' + (this.state.type === 'public' ? ' white text-primary' : '')}>
+                            <a onClick={this.changeType.bind(this, 'public')} className={'item' + (type === 'public' ? ' white text-primary' : '')}>
                                 <Avatar icon="access-point" iconClassName="text-green icon-2x" />
                                 <div className="title">{Lang.string('chat.create.chatType.public')}</div>
                             </a>
                         </div>
                     </div>
                 </div>
-                {this.state.type === 'normal' ? <ChatCreateGroups onRequestClose={onRequestClose} /> : <ChatJoinPublic onRequestClose={onRequestClose} />}
+                {type === 'normal' ? <ChatCreateGroups onRequestClose={onRequestClose} /> : <ChatJoinPublic onRequestClose={onRequestClose} />}
                 {children}
             </div>
         );

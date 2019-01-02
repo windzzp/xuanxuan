@@ -1,5 +1,3 @@
-import Config from '../../config';
-
 /**
  * 创建一个桌面通知
  * @param {string} title 通知标题
@@ -17,9 +15,7 @@ export const createNotification = (title, options, onClick) => {
     if (!onClick && options) {
         onClick = options.click;
     }
-    const notification = new Notification(title, Object.assign({
-        icon: `${Config.media['image.path']}icon.png`
-    }, options));
+    const notification = new Notification(title, options);
     if (onClick) {
         notification.onclick = onClick;
     }

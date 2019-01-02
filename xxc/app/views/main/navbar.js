@@ -1,19 +1,24 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Route, Link} from 'react-router-dom';
-import ExtsRuntime from 'ExtsRuntime'; // eslint-disable-line
 import Config from '../../config';
 import {rem, classes} from '../../utils/html-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import Avatar from '../../components/avatar';
 import App from '../../core';
 import ROUTES from '../common/routes';
 import UserSettingDialog from '../common/user-setting-dialog';
 import _UserAvatar from '../common/user-avatar';
-import {StatusDot} from '../common/status-dot';
-import {UserMenu} from './user-menu';
-import replaceViews from '../replace-views';
+import _StatusDot from '../common/status-dot';
+import _UserMenu from './user-menu';
 import withReplaceView from '../with-replace-view';
+
+/**
+ * UserMenu 可替换组件形式
+ * @type {Class<UserMenu>}
+ * @private
+ */
+const UserMenu = withReplaceView(_UserMenu);
 
 /**
  * UserAvatar 可替换组件形式
@@ -22,21 +27,12 @@ import withReplaceView from '../with-replace-view';
  */
 const UserAvatar = withReplaceView(_UserAvatar);
 
-
 /**
- * 导航项目列表
- * @type {{to: string, label: string, icon: string, activeIcon: string}[]}
+ * StatusDot 可替换组件形式
+ * @type {Class<StatusDot>}
  * @private
  */
-const navbarItems = [
-    {
-        to: ROUTES.chats.recents.__, label: Lang.string('navbar.chats.label'), icon: 'comment-processing-outline', activeIcon: 'comment-processing'
-    }, {
-        to: ROUTES.chats.groups.__, label: Lang.string('navbar.groups.label'), icon: 'comment-multiple-outline', activeIcon: 'comment-multiple'
-    }, {
-        to: ROUTES.chats.contacts.__, label: Lang.string('navbar.contacts.label'), icon: 'account-group-outline', activeIcon: 'account-group'
-    },
-];
+const StatusDot = withReplaceView(_StatusDot);
 
 /**
  * 渲染导航条目
@@ -65,18 +61,13 @@ const NavLink = ({item}) => (
  */
 export default class Navbar extends Component {
     /**
-     * 获取 Navbar 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<Navbar>}
-     * @readonly
+     * Navbar 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof Navbar
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {Navbar} from './navbar';
-     * <Navbar />
      */
-    static get Navbar() {
-        return replaceViews('main/navbar', Navbar);
-    }
+    static replaceViewPath = 'main/Navbar';
 
     /**
      * React 组件属性类型检查
@@ -143,6 +134,10 @@ export default class Navbar extends Component {
             }
         });
 
+        this.handleChatActiveEvent = App.im.ui.onActiveChat(() => {
+            this.forceUpdate();
+        });
+
         const hashFilters = window.location.hash.split('/');
         if (hashFilters[0] === '#') {
             this.lastFilterType = hashFilters[1];
@@ -160,7 +155,7 @@ export default class Navbar extends Component {
      * @return {void}
      */
     componentWillUnmount() {
-        App.events.off(this.noticeUpdateHandler, this.dataChangeEventHandler);
+        App.events.off(this.noticeUpdateHandler, this.dataChangeEventHandler, this.handleChatActiveEvent);
     }
 
     /**
@@ -233,7 +228,24 @@ export default class Navbar extends Component {
         const navbarWidth = Config.ui['navbar.width'];
         const {userConfig} = App.profile;
         const isAvatarOnTop = userConfig && userConfig.avatarPosition === 'top';
-        const {showUserMenu, noticeBadge} = this.state;
+        const {showUserMenu} = this.state;
+        const {ExtsRuntime} = global;
+        const activeChatID = App.im.ui.currentActiveChatId;
+
+        /**
+         * 导航项目列表
+         * @type {{to: string, label: string, icon: string, activeIcon: string}[]}
+         * @private
+         */
+        const navbarItems = [
+            {
+                to: activeChatID ? ROUTES.chats.recents.id(activeChatID) : ROUTES.chats.recents.__, label: Lang.string('navbar.chats.label'), icon: 'comment-processing-outline', activeIcon: 'comment-processing'
+            }, {
+                to: activeChatID ? ROUTES.chats.groups.id(activeChatID) : ROUTES.chats.groups.__, label: Lang.string('navbar.groups.label'), icon: 'comment-multiple-outline', activeIcon: 'comment-multiple'
+            }, {
+                to: activeChatID ? ROUTES.chats.contacts.id(activeChatID) : ROUTES.chats.contacts.__, label: Lang.string('navbar.contacts.label'), icon: 'account-group-outline', activeIcon: 'account-group'
+            },
+        ];
 
         return (
             <div
@@ -257,7 +269,7 @@ export default class Navbar extends Component {
                             return (<div key={item.to} className="hint--right nav-item" data-hint={item.label} onClick={this.handleMainNavItemClick}>
                                 <NavLink item={item} />
                                 {
-                                    (this.state.noticeBadge && item.to === ROUTES.chats.recents.__) ? <div className="label label-sm dock-right dock-top circle red badge">{this.state.noticeBadge}</div> : null
+                                    (this.state.noticeBadge && item.to.startsWith(ROUTES.chats.recents.__)) ? <div className="label label-sm dock-right dock-top circle red badge">{this.state.noticeBadge}</div> : null
                                 }
                             </div>);
                         })

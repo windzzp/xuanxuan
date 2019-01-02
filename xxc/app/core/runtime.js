@@ -1,5 +1,8 @@
-import ExtsRuntime from 'ExtsRuntime';
+import ExtsRuntime from 'ExtsRuntime'; // eslint-disable-line
 import events from './events';
+import lang, {initLang} from './lang';
+import config from '../config';
+import platform from '../platform';
 
 /**
  * 运行时事件表
@@ -15,7 +18,7 @@ const EVENT = {
  * @type {boolean}
  * @private
  */
-let isReadyed = false;
+let isReadied = false;
 
 /**
  * 绑定应用准备就绪事件
@@ -23,7 +26,7 @@ let isReadyed = false;
  * @return {boolean|Symbol} 如果应用已经准备就绪会立即执行回调函数并返回 `false`，否则会返回一个事件 ID
  */
 export const ready = (listener) => {
-    if (isReadyed) {
+    if (isReadied) {
         listener();
         return false;
     }
@@ -36,18 +39,21 @@ export const ready = (listener) => {
  * @return {void}
  */
 const sayReady = () => {
-    isReadyed = true;
+    isReadied = true;
     events.emit(EVENT.ready);
 };
 
-if (ExtsRuntime) {
-    setTimeout(() => {
+const run = async () => {
+    // 初始化应用
+    await initLang(config.lang);
+    if (ExtsRuntime) {
         ExtsRuntime.loadModules();
-        sayReady();
-    }, 0);
-    global.ExtsRuntime = ExtsRuntime;
-} else {
+        global.ExtsRuntime = ExtsRuntime;
+    }
+    platform.init({config, lang});
     sayReady();
-}
+};
+
+run();
 
 export default {ready};

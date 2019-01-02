@@ -1,17 +1,30 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes, rem} from '../../utils/html-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import Icon from '../../components/icon';
 import Avatar from '../../components/avatar';
 import SearchControl from '../../components/search-control';
 import Messager from '../../components/messager';
-import {MemberListItem} from '../common/member-list-item';
+import _MemberListItem from '../common/member-list-item';
 import ROUTES from '../common/routes';
-import replaceViews from '../replace-views';
-import {MemberList} from '../common/member-list';
+import _MemberList from '../common/member-list';
+import withReplaceView from '../with-replace-view';
 
+/**
+ * MemberList 可替换组件形式
+ * @type {Class<MemberList>}
+ * @private
+ */
+const MemberList = withReplaceView(_MemberList);
+
+/**
+ * MemberListItem 可替换组件形式
+ * @type {Class<MemberListItem>}
+ * @private
+ */
+const MemberListItem = withReplaceView(_MemberListItem);
 /**
  * ChatCreateGroups 组件 ，显示一个创建讨论组界面
  * @class ChatCreateGroups
@@ -23,18 +36,13 @@ import {MemberList} from '../common/member-list';
  */
 export default class ChatCreateGroups extends Component {
     /**
-     * 获取 ChatCreateGroups 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatCreateGroups>}
-     * @readonly
+     * ChatCreateGroups 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatCreateGroups
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatCreateGroups} from './chat-create-groups';
-     * <ChatCreateGroups />
      */
-    static get ChatCreateGroups() {
-        return replaceViews('chats/chat-create-groups', ChatCreateGroups);
-    }
+    static replaceViewPath = 'chats/ChatCreateGroups';
 
     /**
      * React 组件属性类型检查

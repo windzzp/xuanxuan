@@ -1,12 +1,19 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Platform from 'Platform';
-import HTML from '../../utils/html-helper';
+import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import User from '../../core/profile/user';
-import {UserListItem} from '../common/user-list-item';
-import replaceViews from '../replace-views';
+import _UserListItem from '../common/user-list-item';
+import {getUserListFromStore, removeUserFromStore} from '../../core/profile/user-store';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * UserListItem 可替换组件形式
+ * @type {Class<UserListItem>}
+ * @private
+ */
+const UserListItem = withReplaceView(_UserListItem);
 
 /**
  * SwapUser 组件 ，显示切换用户界面
@@ -19,18 +26,13 @@ import replaceViews from '../replace-views';
  */
 export default class SwapUser extends Component {
     /**
-     * 获取 SwapUser 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<SwapUser>}
-     * @readonly
+     * SwapUser 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof SwapUser
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {SwapUser} from './swap-user';
-     * <SwapUser />
      */
-    static get SwapUser() {
-        return replaceViews('login/swap-user', SwapUser);
-    }
+    static replaceViewPath = 'login/SwapUser';
 
     /**
      * React 组件属性类型检查
@@ -107,7 +109,7 @@ export default class SwapUser extends Component {
      * @return {void}
      */
     handleDeleteBtnClick(user, e) {
-        Platform.config.removeUser(user);
+        removeUserFromStore(user);
         this.forceUpdate();
         e.stopPropagation();
     }
@@ -128,32 +130,37 @@ export default class SwapUser extends Component {
             ...other
         } = this.props;
 
-        const userList = Platform.config.userList();
+        const userList = getUserListFromStore();
+        const {hover} = this.state;
 
-        return (<div
-            {...other}
-            className={HTML.classes('app-swap-user list has-padding-v', className)}
-        >
-            {
-                userList.map(user => {
-                    user = User.create(user);
-                    const userIdentify = user.identify;
-                    const isHover = this.state.hover === userIdentify;
-                    const isActive = userIdentify === identify;
-                    return (<UserListItem
-                        key={user.identify}
-                        user={user}
-                        onMouseEnter={this.handleMouseEnter.bind(this, userIdentify)}
-                        onMouseLeave={this.handleMouseLeave}
-                        className={isActive ? 'primary-pale' : ''}
-                        onClick={onSelectUser.bind(null, user)}
-                    >
-                        {
-                            isHover ? <div style={{zIndex: 10}} className="hint--top" data-hint={Lang.string('common.remove')}><button onClick={this.handleDeleteBtnClick.bind(this, user)} type="button" className="btn iconbutton rounded"><Icon name="delete text-danger" /></button></div> : isActive ? <Icon name="check text-success" /> : null
-                        }
-                    </UserListItem>);
-                })
-            }
-        </div>);
+        return (
+            <div
+                {...other}
+                className={classes('app-swap-user list has-padding-v', className)}
+            >
+                {
+                    userList.map(user => {
+                        user = User.create(user);
+                        const userIdentify = user.identify;
+                        const isHover = hover === userIdentify;
+                        const isActive = userIdentify === identify;
+                        return (
+                            <UserListItem
+                                key={user.identify}
+                                user={user}
+                                onMouseEnter={this.handleMouseEnter.bind(this, userIdentify)}
+                                onMouseLeave={this.handleMouseLeave}
+                                className={isActive ? 'primary-pale' : ''}
+                                onClick={onSelectUser.bind(null, user)}
+                            >
+                                {
+                                    isHover ? <div style={{zIndex: 10}} className="hint--top" data-hint={Lang.string('common.remove')}><button onClick={this.handleDeleteBtnClick.bind(this, user)} type="button" className="btn iconbutton rounded"><Icon name="delete text-danger" /></button></div> : isActive ? <Icon name="check text-success" /> : null
+                                }
+                            </UserListItem>
+                        );
+                    })
+                }
+            </div>
+        );
     }
 }

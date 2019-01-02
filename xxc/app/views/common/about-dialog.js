@@ -1,7 +1,15 @@
 import React from 'react';
 import Modal from '../../components/modal';
-import {About} from './about';
-import Lang from '../../lang';
+import _About from './about';
+import Lang from '../../core/lang';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * UserAvatar 可替换组件形式
+ * @type {Class<UserAvatar>}
+ * @private
+ */
+const About = withReplaceView(_About);
 
 /**
  * 显示应用关于对话框

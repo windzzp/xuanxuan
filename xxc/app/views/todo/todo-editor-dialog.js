@@ -1,7 +1,15 @@
 import React from 'react';
 import Modal from '../../components/modal';
-import TodoEditor from './todo-editer';
-import Lang from '../../lang';
+import _TodoEditor from './todo-editer';
+import Lang from '../../core/lang';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * TodoEditor 可替换组件形式
+ * @type {Class<TodoEditor>}
+ * @private
+ */
+const TodoEditor = withReplaceView(_TodoEditor);
 
 /**
  * 显示待办编辑对话框

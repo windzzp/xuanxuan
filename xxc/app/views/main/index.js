@@ -4,10 +4,33 @@ import {Route, Redirect} from 'react-router-dom';
 import {classes} from '../../utils/html-helper';
 import ROUTES from '../common/routes';
 import App from '../../core';
-import {Navbar} from './navbar';
-import {GlobalMessage} from './global-message';
-import {CacheContainer} from './cache-container';
-import replaceViews from '../replace-views';
+import _Navbar from './navbar';
+import _GlobalMessage from './global-message';
+import _CacheContainer from './cache-container';
+import withReplaceView from '../with-replace-view';
+import {onLangChange} from '../../core/lang';
+import events from '../../core/events';
+
+/**
+ * GlobalMessage 可替换组件形式
+ * @type {Class<GlobalMessage>}
+ * @private
+ */
+const GlobalMessage = withReplaceView(_GlobalMessage);
+
+/**
+ * CacheContainer 可替换组件形式
+ * @type {Class<CacheContainer>}
+ * @private
+ */
+const CacheContainer = withReplaceView(_CacheContainer);
+
+/**
+ * Navbar 可替换组件形式
+ * @type {Class<Navbar>}
+ * @private
+ */
+const Navbar = withReplaceView(_Navbar);
 
 /**
  * Index 组件 ，显示主界面
@@ -20,18 +43,13 @@ import replaceViews from '../replace-views';
  */
 export default class MainIndex extends Component {
     /**
-     * 获取 Index 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<Index>}
-     * @readonly
+     * MainIndex 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
-     * @memberof Index
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {Index} from './index';
-     * <Index />
+     * @memberof MainIndex
      */
-    static get MainIndex() {
-        return replaceViews('main/index', MainIndex);
-    }
+    static replaceViewPath = 'main/MainIndex';
 
     /**
      * React 组件属性类型检查
@@ -71,6 +89,9 @@ export default class MainIndex extends Component {
         this.onUserConfigChange = App.profile.onUserConfigChange(() => {
             this.forceUpdate();
         });
+        this.onLangChangeHandler = onLangChange(() => {
+            this.forceUpdate();
+        });
     }
 
     /**
@@ -84,7 +105,7 @@ export default class MainIndex extends Component {
      * @return {void}
      */
     componentWillUnmount() {
-        App.events.off(this.onUserConfigChange);
+        events.off(this.onUserConfigChange, this.onLangChangeHandler);
     }
 
     /**
@@ -102,24 +123,26 @@ export default class MainIndex extends Component {
             ...other
         } = this.props;
 
-        return (<div className={classes('app-main', className)} {...other}>
-            <GlobalMessage className="dock-top" />
-            <Navbar userStatus={userStatus} className="dock-left primary shadow-2" />
-            <Route path={ROUTES.apps.__} exact component={CacheContainer} />
-            <Route
-                path="/:app?"
-                exact
-                render={(props) => {
-                    if (props.match.url === '/' || props.match.url === '/index' || props.match.url === '/chats') {
-                        const activeChatId = App.im.ui.currentActiveChatId;
-                        if (activeChatId) {
-                            return <Redirect to={`/chats/recents/${activeChatId}`} />;
+        return (
+            <div className={classes('app-main', className)} {...other}>
+                <GlobalMessage className="dock-top" />
+                <Navbar userStatus={userStatus} className="dock-left primary shadow-2" />
+                <Route path={ROUTES.apps.__} exact component={CacheContainer} />
+                <Route
+                    path="/:app?"
+                    exact
+                    render={(props) => {
+                        if (props.match.url === '/' || props.match.url === '/index' || props.match.url === '/chats') {
+                            const activeChatId = App.im.ui.currentActiveChatId;
+                            if (activeChatId) {
+                                return <Redirect to={`/chats/recents/${activeChatId}`} />;
+                            }
+                            return <Redirect to="/chats/recents" />;
                         }
-                        return <Redirect to="/chats/recents" />;
-                    }
-                    return null;
-                }}
-            />
-        </div>);
+                        return null;
+                    }}
+                />
+            </div>
+        );
     }
 }

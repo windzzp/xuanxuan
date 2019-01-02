@@ -4,14 +4,42 @@ import SplitPane from 'react-split-pane';
 import {classes} from '../../utils/html-helper';
 import DateHelper from '../../utils/date-helper';
 import Avatar from '../../components/avatar';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
-import {ChatHeader} from './chat-header';
-import {ChatMessages} from './chat-messages';
-import {ChatSendbox} from './chat-sendbox';
-import {ChatSidebar} from './chat-sidebar';
-import replaceViews from '../replace-views';
+import _ChatHeader from './chat-header';
+import _ChatMessages from './chat-messages';
+import _ChatSendbox from './chat-sendbox';
+import _ChatSidebar from './chat-sidebar';
 import Config from '../../config';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatSidebar 可替换组件形式
+ * @type {Class<ChatSidebar>}
+ * @private
+ */
+const ChatSidebar = withReplaceView(_ChatSidebar);
+
+/**
+ * ChatSendbox 可替换组件形式
+ * @type {Class<ChatSendbox>}
+ * @private
+ */
+const ChatSendbox = withReplaceView(_ChatSendbox);
+
+/**
+ * ChatMessages 可替换组件形式
+ * @type {Class<ChatMessages>}
+ * @private
+ */
+const ChatMessages = withReplaceView(_ChatMessages);
+
+/**
+ * ChatHeader 可替换组件形式
+ * @type {Class<ChatHeader>}
+ * @private
+ */
+const ChatHeader = withReplaceView(_ChatHeader);
 
 /**
  * ChatView 组件 ，显示聊天界面
@@ -24,18 +52,13 @@ import Config from '../../config';
  */
 export default class ChatView extends Component {
     /**
-     * 获取 ChatView 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatView>}
-     * @readonly
+     * ChatView 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatView
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatView} from './chat-view';
-     * <ChatView />
      */
-    static get ChatView() {
-        return replaceViews('chats/chat-view', ChatView);
-    }
+    static replaceViewPath = 'chats/ChatView';
 
     /**
      * React 组件属性类型检查

@@ -1,9 +1,23 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes, getSearchParam} from '../../utils/html-helper';
-import {MenuHeader} from './menu-header';
-import {MenuList} from './menu-list';
-import replaceViews from '../replace-views';
+import _MenuHeader from './menu-header';
+import _MenuList from './menu-list';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * MenuList 可替换组件形式
+ * @type {Class<MenuList>}
+ * @private
+ */
+const MenuList = withReplaceView(_MenuList);
+
+/**
+ * MenuHeader 可替换组件形式
+ * @type {Class<MenuHeader>}
+ * @private
+ */
+const MenuHeader = withReplaceView(_MenuHeader);
 
 /**
  * Menu 组件 ，显示聊天列表界面
@@ -16,18 +30,13 @@ import replaceViews from '../replace-views';
  */
 export default class Menu extends Component {
     /**
-     * 获取 Menu 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<Menu>}
-     * @readonly
+     * Menu 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof Menu
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {Menu} from './menu';
-     * <Menu />
      */
-    static get Menu() {
-        return replaceViews('chats/menu', Menu);
-    }
+    static replaceViewPath = 'chats/Menu';
 
     /**
      * React 组件属性类型检查

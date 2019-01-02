@@ -1,12 +1,19 @@
-import Platform from 'Platform';
 import {saveChatMessages, onChatMessages, forEachChat} from './im-chats';
 import {isActiveChat, renderChatMessageContent, getcurrentActiveChat} from './im-ui';
 import DelayAction from '../../utils/delay-action';
 import {isMatchWindowCondition, updateNotice} from '../notice';
-import Lang from '../../lang';
+import Lang from '../lang';
 import profile from '../profile';
 import members from '../members';
 import Config from '../../config';
+import platform from '../../platform';
+
+/**
+ * 平台提供的通用界面交互访问对象
+ * @type {Object}
+ * @private
+ */
+const platformUI = platform.access('ui');
 
 /**
  * 获取描述聊天消息内容的纯文本形式
@@ -70,7 +77,7 @@ const updateChatNoticeTask = new DelayAction(() => {
             if (!isChatActive && muteOnChatNotActive) {
                 return;
             }
-            const {isWindowFocus} = Platform.ui;
+            const {isWindowFocus} = platformUI;
             if (isWindowFocus && isChatActive) {
                 const mutedMessages = chat.muteNotice();
                 if (mutedMessages && mutedMessages.length) {
@@ -95,7 +102,7 @@ const updateChatNoticeTask = new DelayAction(() => {
     });
 
     let message = null;
-    if (total && notMuteCount > 0 && lastNoticeInfo.notMuteCount < notMuteCount && lastNoticeInfo.total < total && userConfig.enableWindowNotification && (Platform.type === 'browser' || isMatchWindowCondition(userConfig.windowNotificationCondition))) {
+    if (total && notMuteCount > 0 && lastNoticeInfo.notMuteCount < notMuteCount && lastNoticeInfo.total < total && userConfig.enableWindowNotification && (platform.isType('browser') || isMatchWindowCondition(userConfig.windowNotificationCondition))) {
         message = userConfig.safeWindowNotification ? {
             title: Lang.format('notification.receviedMessages.format', total),
         } : {
@@ -111,8 +118,8 @@ const updateChatNoticeTask = new DelayAction(() => {
         }
         message.click = () => {
             window.location.hash = `#/chats/recents/${lastNoticeChat.gid}`;
-            if (Platform.ui.showAndFocusWindow) {
-                Platform.ui.showAndFocusWindow();
+            if (platformUI.showAndFocusWindow) {
+                platformUI.showAndFocusWindow();
             }
         };
     }
@@ -158,8 +165,8 @@ export const updateChatNotice = () => {
 onChatMessages(updateChatNotice);
 
 // 监听界面窗口激活事件
-if (Platform.ui.onWindowFocus) {
-    Platform.ui.onWindowFocus(() => {
+if (platformUI.onWindowFocus) {
+    platformUI.onWindowFocus(() => {
         const activedChat = getcurrentActiveChat();
         if (activedChat && activedChat.noticeCount) {
             activedChat.muteNotice();
@@ -169,8 +176,8 @@ if (Platform.ui.onWindowFocus) {
 }
 
 // 监听界面窗口还原事件
-if (Platform.ui.onWindowRestore) {
-    Platform.ui.onWindowRestore(() => {
+if (platformUI.onWindowRestore) {
+    platformUI.onWindowRestore(() => {
         const activedChat = getcurrentActiveChat();
         if (lastNoticeChat && lastNoticeChat.noticeCount && (!activedChat || (!activedChat.noticeCount && activedChat.gid !== lastNoticeChat.gid))) {
             window.location.hash = `#/chats/recents/${lastNoticeChat.gid}`;

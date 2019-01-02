@@ -46,7 +46,7 @@
     "url": "https://github.com/easysoft/xuanxuan.git"
   },
   "author": {
-    "name": "青岛易软天创网络科技有限公司",
+    "name": "easysoft",
     "email": "sunhao@cnezsoft.com"
   },
   "license": "ZPL 1.2",
@@ -62,7 +62,7 @@
     "react-hot"
   ],
   "homepage": "http://xuan.im",
-  "company": "青岛易软天创网络科技有限公司",
+  "company": "QingDao Nature Easy Soft Network Technology Co,LTD.",
   "devDependencies": {
     "archiver": "^3.0.0",
     "asar": "^0.14.3",
@@ -93,7 +93,7 @@
     "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
     "electron": "^4.0.0",
-    "electron-builder": "20.24.4",
+    "electron-builder": "^20.38.4",
     "electron-devtools-installer": "^2.2.4",
     "esdoc": "^1.1.0",
     "esdoc-ecmascript-proposal-plugin": "^1.0.0",
@@ -102,7 +102,7 @@
     "esdoc-jsx-plugin": "^1.0.0",
     "esdoc-react-plugin": "^1.0.1",
     "esdoc-standard-plugin": "^1.0.0",
-    "eslint": "^5.9.0",
+    "eslint": "^5.11.0",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-import-resolver-babel-module": "^4.0.0-beta.3",
     "eslint-import-resolver-webpack": "^0.10.1",

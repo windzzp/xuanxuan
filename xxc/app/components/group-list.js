@@ -1,11 +1,12 @@
+/* eslint-disable react/sort-comp */
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../utils/html-helper';
 import Icon from './icon';
 import Heading from './heading';
 import ListItem from './list-item';
-import Lang from '../lang';
 import Config from '../config';
+import {formatString} from '../utils/string-helper';
 
 /**
  * GroupList 组件 ，显示一个分组列表
@@ -40,6 +41,7 @@ export default class GroupList extends PureComponent {
         startPageSize: PropTypes.number,
         morePageSize: PropTypes.number,
         defaultPage: PropTypes.number,
+        showMoreText: PropTypes.node,
     }
 
     /**
@@ -65,7 +67,8 @@ export default class GroupList extends PureComponent {
         forceCollapse: false,
         startPageSize: Config.ui['page.start.size'] || 20,
         morePageSize: Config.ui['page.more.size'] || 20,
-        defaultPage: 1
+        defaultPage: 1,
+        showMoreText: ''
     }
 
     /**
@@ -74,7 +77,7 @@ export default class GroupList extends PureComponent {
      * @param {Object} props 组件属性
      * @param {number} page 页码
      * @param {Function?} onRequestMore 当点击更多时的回调函数
-     * @return {ReactNode}
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
      * @static
      * @memberof GroupList
      */
@@ -89,7 +92,7 @@ export default class GroupList extends PureComponent {
                     continue;
                 }
                 listViews.push(<GroupList
-                    key={item.key || item.id || i}
+                    key={item.key || `id-${item.id}` || `idx-${i}`}
                     group={(props && props.listConverter) ? props.listConverter(item) : item}
                     itemCreator={props && props.itemCreator}
                     toggleWithHeading={props && props.toggleWithHeading}
@@ -104,6 +107,7 @@ export default class GroupList extends PureComponent {
                     startPageSize={props && props.startPageSize}
                     morePageSize={props && props.morePageSize}
                     defaultPage={props && props.defaultPage}
+                    showMoreText={props && props.showMoreText}
                 />);
             } else if (props && props.itemCreator) {
                 listViews.push(props.itemCreator(item, i));
@@ -113,7 +117,8 @@ export default class GroupList extends PureComponent {
         }
         const notShowCount = list.length - maxIndex;
         if (notShowCount) {
-            listViews.push(<ListItem key="showMore" icon="chevron-double-down" className="flex-middle item muted" title={<span className="title small">{Lang.format('common.clickShowMoreFormat', notShowCount)}</span>} onClick={onRequestMore} />);
+            const showMoreText = (props && props.showMoreText) ? formatString(props.showMoreText, notShowCount) : '...';
+            listViews.push(<ListItem key="showMore" icon="chevron-double-down" className="flex-middle item muted" title={<span className="title small">{showMoreText}</span>} onClick={onRequestMore} />);
         }
         return listViews;
     }
@@ -239,6 +244,7 @@ export default class GroupList extends PureComponent {
             startPageSize,
             morePageSize,
             defaultPage,
+            showMoreText,
             ...other
         } = this.props;
 

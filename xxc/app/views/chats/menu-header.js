@@ -1,11 +1,10 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
 import SearchControl from '../../components/search-control';
 import Icon from '../../components/icon';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import ChatCreateDialog from './chat-create-dialog';
-import replaceViews from '../replace-views';
 
 /**
  * MenuHeader 组件 ，显示聊天菜单头部界面
@@ -16,20 +15,15 @@ import replaceViews from '../replace-views';
  * import MenuHeader from './menu-header';
  * <MenuHeader />
  */
-export default class MenuHeader extends PureComponent {
+export default class MenuHeader extends Component {
     /**
-     * 获取 MenuHeader 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MenuHeader>}
-     * @readonly
+     * MenuHeader 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MenuHeader
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MenuHeader} from './menu-header';
-     * <MenuHeader />
      */
-    static get MenuHeader() {
-        return replaceViews('chats/menu-header', MenuHeader);
-    }
+    static replaceViewPath = 'chats/MenuHeader';
 
     /**
      * React 组件属性类型检查

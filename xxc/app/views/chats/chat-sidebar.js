@@ -3,12 +3,33 @@ import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import {Tabs, TabPane} from '../../components/tabs';
-import Lang from '../../lang';
+import Lang, {isJustLangSwitched} from '../../core/lang';
 import App from '../../core';
-import {ChatSidebarPeoples} from './chat-sidebar-peoples';
-import {ChatSidebarFiles} from './chat-sidebar-files';
-import {ChatSidebarProfile} from './chat-sidebar-profile';
-import replaceViews from '../replace-views';
+import _ChatSidebarPeoples from './chat-sidebar-peoples';
+import _ChatSidebarFiles from './chat-sidebar-files';
+import _ChatSidebarProfile from './chat-sidebar-profile';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatSidebarProfile 可替换组件形式
+ * @type {Class<ChatSidebarProfile>}
+ * @private
+ */
+const ChatSidebarProfile = withReplaceView(_ChatSidebarProfile);
+
+/**
+ * ChatSidebarPeoples 可替换组件形式
+ * @type {Class<ChatSidebarPeoples>}
+ * @private
+ */
+const ChatSidebarPeoples = withReplaceView(_ChatSidebarPeoples);
+
+/**
+ * ChatSidebarFiles 可替换组件形式
+ * @type {Class<ChatSidebarFiles>}
+ * @private
+ */
+const ChatSidebarFiles = withReplaceView(_ChatSidebarFiles);
 
 /**
  * ChatSidebar 组件 ，显示一个聊天侧边栏界面
@@ -21,18 +42,13 @@ import replaceViews from '../replace-views';
  */
 export default class ChatSidebar extends Component {
     /**
-     * 获取 ChatSidebar 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatSidebar>}
-     * @readonly
+     * ChatSidebar 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatSidebar
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatSidebar} from './chat-sidebar';
-     * <ChatSidebar />
      */
-    static get ChatSidebar() {
-        return replaceViews('chats/chat-sidebar', ChatSidebar);
-    }
+    static replaceViewPath = 'chats/ChatSidebar';
 
     /**
      * React 组件属性类型检查
@@ -72,7 +88,7 @@ export default class ChatSidebar extends Component {
      * @memberof ChatSidebar
      */
     shouldComponentUpdate(nextProps) {
-        return this.props.className !== nextProps.className || this.props.children !== nextProps.children || this.props.closeButton !== nextProps.closeButton || this.props.chat !== nextProps.chat || this.lastChatId !== nextProps.updateId || (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId);
+        return isJustLangSwitched() || this.props.className !== nextProps.className || this.props.children !== nextProps.children || this.props.closeButton !== nextProps.closeButton || this.props.chat !== nextProps.chat || this.lastChatId !== nextProps.updateId || (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId);
     }
 
     /**

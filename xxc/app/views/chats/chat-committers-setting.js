@@ -2,12 +2,11 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import members from '../../core/members';
 import Chat from '../../core/models/chat';
 import SelectBox from '../../components/select-box';
 import Checkbox from '../../components/checkbox';
-import replaceViews from '../replace-views';
 
 /**
  * ChatCommittersSetting 组件 ，显示设置聊天白名单界面
@@ -20,19 +19,14 @@ import replaceViews from '../replace-views';
  */
 export default class ChatCommittersSetting extends PureComponent {
     /**
-     * 获取 ChatCommittersSetting 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatCommittersSetting>}
-     * @readonly
+     * ChatCommittersSetting 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatCommittersSetting
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatCommittersSetting} from './chat-committers-setting';
-     * <ChatCommittersSetting />
      */
-    static get ChatCommittersSetting() {
-        return replaceViews('chats/chat-committers-setting', ChatCommittersSetting);
-    }
-
+    static replaceViewPath = 'chats/ChatCommittersSetting';
+    
     /**
      * React 组件属性类型检查
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html

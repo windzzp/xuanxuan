@@ -5,13 +5,35 @@ import DateHelper from '../../utils/date-helper';
 import Icon from '../../components/icon';
 import Avatar from '../../components/avatar';
 import Pager from '../../components/pager';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import App from '../../core';
 import ChatMessage from '../../core/models/chat-message';
-import {ChatTitle} from './chat-title';
-import {MessageList} from './message-list';
-import {MessageListItem} from './message-list-item';
-import replaceViews from '../replace-views';
+import _ChatTitle from './chat-title';
+import _MessageList from './message-list';
+import _MessageListItem from './message-list-item';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * MessageListItem 可替换组件形式
+ * @type {Class<MessageListItem>}
+ * @private
+ */
+const MessageListItem = withReplaceView(_MessageListItem);
+
+
+/**
+ * MessageList 可替换组件形式
+ * @type {Class<MessageList>}
+ * @private
+ */
+const MessageList = withReplaceView(_MessageList);
+
+/**
+ * ChatTitle 可替换组件形式
+ * @type {Class<ChatTitle>}
+ * @private
+ */
+const ChatTitle = withReplaceView(_ChatTitle);
 
 /**
  * ChatHistory 组件 ，显示一个查看聊天记录界面
@@ -24,18 +46,13 @@ import replaceViews from '../replace-views';
  */
 export default class ChatHistory extends Component {
     /**
-     * 获取 ChatHistory 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatHistory>}
-     * @readonly
+     * ChatHistory 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatHistory
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatHistory} from './chat-history';
-     * <ChatHistory />
      */
-    static get ChatHistory() {
-        return replaceViews('chats/chat-history', ChatHistory);
-    }
+    static replaceViewPath = 'chats/ChatHistory';
 
     /**
      * React 组件属性类型检查

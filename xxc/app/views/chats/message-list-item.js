@@ -3,22 +3,70 @@ import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import {formatDate, isSameDay, isToday} from '../../utils/date-helper';
 import App from '../../core';
-import Lang from '../../lang';
+import Lang, {isJustLangSwitched} from '../../core/lang';
 import Icon from '../../components/icon';
 import MemberProfileDialog from '../common/member-profile-dialog';
 import _UserAvatar from '../common/user-avatar';
-import {MessageDivider} from './message-divider';
-import {MessageContentFile} from './message-content-file';
-import {MessageContentImage} from './message-content-image';
-import {MessageContentText} from './message-content-text';
-import {MessageBroadcast} from './message-broadcast';
-import {NotificationMessage} from './notification-message';
-import {MessageContentUrl} from './message-content-url';
-import replaceViews from '../replace-views';
+import _MessageDivider from './message-divider';
+import _MessageContentFile from './message-content-file';
+import _MessageContentImage from './message-content-image';
+import _MessageContentText from './message-content-text';
+import _MessageBroadcast from './message-broadcast';
+import _NotificationMessage from './notification-message';
+import _MessageContentUrl from './message-content-url';
 import ChatMessage from '../../core/models/chat-message';
 import {showContextMenu} from '../../core/context-menu';
 import Config from '../../config';
 import withReplaceView from '../with-replace-view';
+
+/**
+ * MessageDivider 可替换组件形式
+ * @type {Class<MessageDivider>}
+ * @private
+ */
+const MessageDivider = withReplaceView(_MessageDivider);
+
+/**
+ * MessageContentUrl 可替换组件形式
+ * @type {Class<MessageContentUrl>}
+ * @private
+ */
+const MessageContentUrl = withReplaceView(_MessageContentUrl);
+
+/**
+ * MessageContentText 可替换组件形式
+ * @type {Class<MessageContentText>}
+ * @private
+ */
+const MessageContentText = withReplaceView(_MessageContentText);
+
+/**
+ * MessageContentImage 可替换组件形式
+ * @type {Class<MessageContentImage>}
+ * @private
+ */
+const MessageContentImage = withReplaceView(_MessageContentImage);
+
+/**
+ * NotificationMessage 可替换组件形式
+ * @type {Class<NotificationMessage>}
+ * @private
+ */
+const NotificationMessage = withReplaceView(_NotificationMessage);
+
+/**
+ * MessageContentFile 可替换组件形式
+ * @type {Class<MessageContentFile>}
+ * @private
+ */
+const MessageContentFile = withReplaceView(_MessageContentFile);
+
+/**
+ * MessageBroadcast 可替换组件形式
+ * @type {Class<MessageBroadcast>}
+ * @private
+ */
+const MessageBroadcast = withReplaceView(_MessageBroadcast);
 
 /**
  * UserAvatar 可替换组件形式
@@ -45,18 +93,13 @@ const showTimeLabelInterval = 1000 * 60 * 5;
  */
 export default class MessageListItem extends Component {
     /**
-     * 获取 MessageListItem 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MessageListItem>}
-     * @readonly
+     * MessageListItem 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MessageListItem
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MessageListItem} from './message-list-item';
-     * <MessageListItem />
      */
-    static get MessageListItem() {
-        return replaceViews('chats/message-list-item', MessageListItem);
-    }
+    static replaceViewPath = 'chats/MessageListItem';
 
     /**
      * React 组件属性类型检查
@@ -151,7 +194,7 @@ export default class MessageListItem extends Component {
      * @memberof MessageListItem
      */
     shouldComponentUpdate(nextProps, nextState) {
-        return (
+        return (isJustLangSwitched() ||
             this.state.sharing !== nextState.sharing ||
             this.props.message !== nextProps.message || nextProps.message.updateId !== this.lastMessageUpdateId ||
             this.props.lastMessage !== nextProps.lastMessage ||

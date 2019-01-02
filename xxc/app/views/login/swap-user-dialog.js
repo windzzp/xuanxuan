@@ -1,7 +1,15 @@
 import React from 'react';
 import Modal from '../../components/modal';
-import {SwapUser} from './swap-user';
-import Lang from '../../lang';
+import _SwapUser from './swap-user';
+import Lang from '../../core/lang';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * SwapUser 可替换组件形式
+ * @type {Class<SwapUser>}
+ * @private
+ */
+const SwapUser = withReplaceView(_SwapUser);
 
 /**
  * 显示切换用户对话框

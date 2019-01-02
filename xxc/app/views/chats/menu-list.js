@@ -2,11 +2,39 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import App from '../../core';
 import {showContextMenu} from '../../core/context-menu';
-import {MenuContactList} from './menu-contact-list';
-import {MenuGroupList} from './menu-group-list';
-import {MenuSearchList} from './menu-search-list';
-import {MenuRecentList} from './menu-recent-list';
-import replaceViews from '../replace-views';
+import _MenuContactList from './menu-contact-list';
+import _MenuGroupList from './menu-group-list';
+import _MenuSearchList from './menu-search-list';
+import _MenuRecentList from './menu-recent-list';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * MenuSearchList 可替换组件形式
+ * @type {Class<MenuSearchList>}
+ * @private
+ */
+const MenuSearchList = withReplaceView(_MenuSearchList);
+
+/**
+ * MenuRecentList 可替换组件形式
+ * @type {Class<MenuRecentList>}
+ * @private
+ */
+const MenuRecentList = withReplaceView(_MenuRecentList);
+
+/**
+ * MenuGroupList 可替换组件形式
+ * @type {Class<MenuGroupList>}
+ * @private
+ */
+const MenuGroupList = withReplaceView(_MenuGroupList);
+
+/**
+ * MenuContactList 可替换组件形式
+ * @type {Class<MenuContactList>}
+ * @private
+ */
+const MenuContactList = withReplaceView(_MenuContactList);
 
 /**
  * MenuList 组件 ，显示聊天列表界面
@@ -19,18 +47,13 @@ import replaceViews from '../replace-views';
  */
 export default class MenuList extends Component {
     /**
-     * 获取 MenuList 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MenuList>}
-     * @readonly
+     * MenuList 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MenuList
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MenuList} from './menu-list';
-     * <MenuList />
      */
-    static get MenuList() {
-        return replaceViews('chats/menu-list', MenuList);
-    }
+    static replaceViewPath = 'chats/MenuList';
 
     /**
      * React 组件属性类型检查

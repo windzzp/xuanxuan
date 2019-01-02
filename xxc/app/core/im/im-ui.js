@@ -1,8 +1,7 @@
-import Platform from 'Platform';
 import events from '../events';
 import profile from '../profile';
 import chats from './im-chats';
-import Lang from '../../lang';
+import Lang from '../lang';
 import Server from './im-server';
 import members from '../members';
 import StringHelper from '../../utils/string-helper';
@@ -13,6 +12,8 @@ import ChatCommittersSettingDialog from '../../views/chats/chat-committers-setti
 import ChatsHistoryDialog from '../../views/chats/chats-history-dialog';
 import ChatInviteDialog from '../../views/chats/chat-invite-dialog';
 import ChatTipPopover from '../../views/chats/chat-tip-popover';
+import ChatCodeDialog from '../../views/chats/chat-code-dialog';
+import ChatShareDialog from '../../views/chats/chat-share-dialog';
 import EmojiPopover from '../../views/common/emoji-popover';
 import HotkeySettingDialog from '../../views/common/hotkey-setting-dialog';
 import Markdown from '../../utils/markdown';
@@ -29,6 +30,7 @@ import {
 import ui from '../ui';
 import {registerCommand, executeCommandLine} from '../commander';
 import Config from '../../config';
+import platform from '../../platform';
 
 /**
  * 当前激活的聊天实例 ID
@@ -133,7 +135,8 @@ export const sendContentToChat = (content, type = 'text', cgid = null, clear = f
 };
 
 registerCommand('sendContentToChat', (context, content) => {
-    sendContentToChat(content || context.options.content, context.options.type, context.options.cgid, context.options.clear);
+    const {options} = context;
+    sendContentToChat(content || options.content, options.type, options.cgid, options.clear);
 });
 
 /**
@@ -222,9 +225,9 @@ addContextMenuCreator('chat.toolbar', context => {
  * @return {void}
  */
 export const captureAndCutScreenImage = (hiddenWindows = false) => {
-    if (Platform.screenshot) {
+    if (platform.has('screenshot')) {
         const captureScreenChatId = activedChatId;
-        Platform.screenshot.captureAndCutScreenImage(0, hiddenWindows).then(image => {
+        platform.access('screenshot').captureAndCutScreenImage(0, hiddenWindows).then(image => {
             activeChat(captureScreenChatId);
             return image && sendContentToChat(image, 'image', captureScreenChatId);
         }).catch(error => {
@@ -233,7 +236,7 @@ export const captureAndCutScreenImage = (hiddenWindows = false) => {
             }
         });
     } else {
-        throw new Error(`The platform(${Platform.type}) not support capture screenshot.`);
+        throw new Error(`The platform(${platform.type}) not support capture screenshot.`);
     }
 };
 
@@ -242,8 +245,8 @@ export const captureAndCutScreenImage = (hiddenWindows = false) => {
  * @return {Object[]} 右键菜单项清单
  */
 export const createCatureScreenContextMenuItems = () => {
-    if (!Platform.screenshot) {
-        throw new Error(`The platform(${Platform.type}) not support take screenshots.`);
+    if (!platform.has('screenshot')) {
+        throw new Error(`The platform(${platform.type}) not support take screenshots.`);
     }
     const items = [{
         id: 'captureScreen',
@@ -280,7 +283,9 @@ addContextMenuCreator('chat.sendbox.toolbar', context => {
         icon: 'mdi-emoticon',
         label: Lang.string('chat.sendbox.toolbar.emoticon'),
         click: e => {
-            EmojiPopover.show({x: e.pageX, y: e.pageY, target: e.target, placement: 'top'}, emoji => {
+            EmojiPopover.show({
+                x: e.pageX, y: e.pageY, target: e.target, placement: 'top'
+            }, emoji => {
                 sendContentToChat(`${Emojione.convert(emoji.unicode || Emojione.emojioneList[emoji.shortname].uc_base)} `);
             });
         }
@@ -291,7 +296,7 @@ addContextMenuCreator('chat.sendbox.toolbar', context => {
             icon: 'mdi-image',
             label: Lang.string('chat.sendbox.toolbar.image'),
             click: () => {
-                Platform.dialog.showOpenDialog({
+                platform.access('dialog').showOpenDialog({
                     filters: [
                         {name: 'Images', extensions: ['jpg', 'png', 'gif']},
                     ]
@@ -306,7 +311,7 @@ addContextMenuCreator('chat.sendbox.toolbar', context => {
             icon: 'mdi-file-outline',
             label: Lang.string('chat.sendbox.toolbar.file'),
             click: () => {
-                Platform.dialog.showOpenDialog(null, files => {
+                platform.access('dialog').showOpenDialog(null, files => {
                     if (files && files.length) {
                         Server.sendFileMessage(files[0], chats.get(chatGid));
                     }
@@ -314,7 +319,7 @@ addContextMenuCreator('chat.sendbox.toolbar', context => {
             }
         });
     }
-    if (Platform.screenshot && userConfig) {
+    if (platform.has('screenshot') && userConfig) {
         items.push({
             id: 'captureScreen',
             icon: 'mdi-content-cut rotate-270 inline-block',
@@ -328,6 +333,16 @@ addContextMenuCreator('chat.sendbox.toolbar', context => {
             }
         });
     }
+
+    items.push({
+        id: 'code',
+        icon: 'mdi-code-tags',
+        label: Lang.string('chat.sendbox.toolbar.code'),
+        click: () => {
+            ChatCodeDialog.show(chats.get(chatGid));
+        }
+    });
+
     items.push({
         id: 'setFontSize',
         icon: 'mdi-format-size',
@@ -361,7 +376,7 @@ addContextMenuCreator('chat.sendbox.toolbar', context => {
                     menuItems.push({
                         icon: 'mdi-help-circle',
                         label: Lang.string('chat.sendbox.toolbar.markdownGuide'),
-                        url: Platform.type === 'browser' ? mdHintUrl : `!openUrlInDialog/${encodeURIComponent(mdHintUrl)}/?size=lg&insertCss=${encodeURIComponent('.wikistyle>p:first-child{display:none!important}')}`
+                        url: platform.isType('browser') ? mdHintUrl : `!openUrlInDialog/${encodeURIComponent(mdHintUrl)}/?size=lg&insertCss=${encodeURIComponent('.wikistyle>p:first-child{display:none!important}')}`
                     });
                 }
 
@@ -384,6 +399,7 @@ addContextMenuCreator('chat.sendbox.toolbar', context => {
             }
         });
     }
+
     return items;
 });
 
@@ -765,9 +781,7 @@ addContextMenuCreator('chat.group', ({group, type = 'contact'}) => {
                 const defaultCategoryName = profile.user.config[type === 'contact' ? 'contactsDefaultCategoryName' : 'groupsDefaultCategoryName'] || Lang.string('chats.menu.group.default');
                 return Modal.confirm(Lang.format('chats.menu.group.delete.tip.format', defaultCategoryName), {
                     title: Lang.format('chats.menu.group.delete.confirm.format', group.title)
-                }).then(result => {
-                    return result && renameChatCategory(group, type, '');
-                });
+                }).then(result => result && renameChatCategory(group, type, ''));
             }
         });
     }
@@ -777,7 +791,7 @@ addContextMenuCreator('chat.group', ({group, type = 'contact'}) => {
 // 添加文本消息上下文菜单生成器
 addContextMenuCreator('message.text', ({message}) => {
     const items = [];
-    if (message.isTextContent && Platform.clipboard && Platform.clipboard.writeText) {
+    if (message.isTextContent && platform.has('clipboard.writeText')) {
         items.push({
             icon: 'mdi-content-copy',
             label: Lang.string('chat.message.copy'),
@@ -794,12 +808,13 @@ addContextMenuCreator('message.text', ({message}) => {
                 if (copyHtmlText === undefined) {
                     copyHtmlText = message.renderedTextContent(renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : linkMembersInText);
                 }
-                if (Platform.clipboard.write) {
-                    Platform.clipboard.write({text: message.isPlainTextContent ? copyHtmlText : strip(copyHtmlText), html: copyHtmlText});
-                } else if (Platform.clipboard.writeHTML) {
-                    Platform.clipboard.writeHTML(copyHtmlText);
-                } else if (Platform.clipboard.writeText) {
-                    Platform.clipboard.writeText(copyPlainText);
+                const clipboard = platform.access('clipboard');
+                if (clipboard.write) {
+                    clipboard.write({text: message.isPlainTextContent ? copyHtmlText : strip(copyHtmlText), html: copyHtmlText});
+                } else if (clipboard.writeHTML) {
+                    clipboard.writeHTML(copyHtmlText);
+                } else if (clipboard.writeText) {
+                    clipboard.writeText(copyPlainText);
                 }
             }
         });
@@ -808,7 +823,7 @@ addContextMenuCreator('message.text', ({message}) => {
                 icon: 'mdi-markdown',
                 label: Lang.string('chat.message.copyMarkdown'),
                 click: () => {
-                    Platform.clipboard.writeText(message.content);
+                    platform.call('clipboard.writeText', message.content);
                 }
             });
         }
@@ -826,6 +841,13 @@ addContextMenuCreator('message.text', ({message}) => {
             }
         });
     }
+    items.push({
+        label: Lang.string('chat.share'),
+        icon: 'mdi-share-outline',
+        click: () => {
+            ChatShareDialog.show(message);
+        }
+    })
     return items;
 });
 
@@ -856,19 +878,19 @@ chats.onChatsInit(initChats => {
 });
 
 // 如果平台支持截图，绑定截图全局快捷键
-if (Platform.screenshot) {
+if (platform.has('screenshot')) {
     registerCommand('shortcut.captureScreenHotkey', () => {
         captureAndCutScreenImage();
     });
 }
 
 // 如果平台支持读取剪切板图片则绑定推荐发送剪切板图片命令
-if (Platform.clipboard && Platform.clipboard.getNewImage) {
+if (platform.has('clipboard.getNewImage')) {
     registerCommand('suggestClipboardImage', () => {
         if (!profile.userConfig.listenClipboardImage) {
             return;
         }
-        const newImage = Platform.clipboard.getNewImage();
+        const newImage = platform.call('clipboard.getNewImage');
         if (newImage) {
             events.emit(EVENT.suggestSendImage, newImage);
         }

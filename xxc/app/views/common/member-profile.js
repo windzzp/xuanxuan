@@ -3,14 +3,20 @@ import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import Avatar from '../../components/avatar';
-import Lang from '../../lang';
+import Lang, {isJustLangSwitched} from '../../core/lang';
 import App from '../../core';
 import ROUTES from './routes';
 import _UserAvatar from './user-avatar';
-import {StatusDot} from './status-dot';
-import replaceViews from '../replace-views';
+import _StatusDot from './status-dot';
 import Config from '../../config';
 import withReplaceView from '../with-replace-view';
+
+/**
+ * StatusDot 可替换组件形式
+ * @type {Class<StatusDot>}
+ * @private
+ */
+const StatusDot = withReplaceView(_StatusDot);
 
 /**
  * UserAvatar 可替换组件形式
@@ -30,18 +36,13 @@ const UserAvatar = withReplaceView(_UserAvatar);
  */
 export default class MemberProfile extends Component {
     /**
-     * 获取 MemberProfile 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MemberProfile>}
-     * @readonly
+     * MemberProfile 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MemberProfile
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MemberProfile} from './member-profile';
-     * <MemberProfile />
      */
-    static get MemberProfile() {
-        return replaceViews('common/member-profile', MemberProfile);
-    }
+    static replaceViewPath = 'common/MemberProfile';
 
     /**
      * React 组件属性类型检查
@@ -100,7 +101,7 @@ export default class MemberProfile extends Component {
      * @memberof MemberProfile
      */
     shouldComponentUpdate(nextProps) {
-        return nextProps.compact !== this.props.compact || nextProps.className !== this.props.className || nextProps.hideChatBtn !== this.props.hideChatBtn || nextProps.onRequestClose !== this.props.onRequestClose || nextProps.memberId !== this._memberId;
+        return isJustLangSwitched() || nextProps.compact !== this.props.compact || nextProps.className !== this.props.className || nextProps.hideChatBtn !== this.props.hideChatBtn || nextProps.onRequestClose !== this.props.onRequestClose || nextProps.memberId !== this._memberId;
     }
 
     /**

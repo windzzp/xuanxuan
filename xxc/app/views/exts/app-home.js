@@ -1,14 +1,13 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import HTML from '../../utils/html-helper';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import AppAvatar from '../../components/app-avatar';
 import SearchControl from '../../components/search-control';
 import Button from '../../components/button';
 import Exts from '../../exts';
 import ROUTES from '../common/routes';
 import App from '../../core';
-import replaceViews from '../replace-views';
 
 /**
  * AppHome 组件 ，显示应用“主页”界面
@@ -21,18 +20,13 @@ import replaceViews from '../replace-views';
  */
 export default class AppHome extends PureComponent {
     /**
-     * 获取 AppHome 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<AppHome>}
-     * @readonly
+     * AppHome 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof AppHome
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {AppHome} from './app-home';
-     * <AppHome />
      */
-    static get AppHome() {
-        return replaceViews('exts/app-home', AppHome);
-    }
+    static replaceViewPath = 'exts/AppHome';
 
     /**
      * React 组件属性类型检查

@@ -4,12 +4,19 @@ import hotkeys from 'hotkeys-js';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
 import {showContextMenu} from '../../core/context-menu';
-import {ChatListItem} from './chat-list-item';
-import replaceViews from '../replace-views';
+import _ChatListItem from './chat-list-item';
 import ROUTES from '../common/routes';
 import ListItem from '../../components/list-item';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import Config from '../../config';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatListItem 可替换组件形式
+ * @type {Class<ChatListItem>}
+ * @private
+ */
+const ChatListItem = withReplaceView(_ChatListItem);
 
 /**
  * MenuSearchList 组件 ，显示聊天搜索结果列表界面
@@ -22,18 +29,13 @@ import Config from '../../config';
  */
 export default class MenuSearchList extends Component {
     /**
-     * 获取 MenuSearchList 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MenuSearchList>}
-     * @readonly
+     * MenuSearchList 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MenuSearchList
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MenuSearchList} from './menu-search-list';
-     * <MenuSearchList />
      */
-    static get MenuSearchList() {
-        return replaceViews('chats/menu-search-list', MenuSearchList);
-    }
+    static replaceViewPath = 'chats/MenuSearchList';
 
     /**
      * React 组件属性类型检查
@@ -104,7 +106,7 @@ export default class MenuSearchList extends Component {
     componentDidMount() {
         hotkeys('up', 'chatsMenuSearch', e => {
             const {chats, selectIndex} = this;
-            const length = chats.length;
+            const {length} = chats;
             if (length > 1) {
                 this.setState({select: chats[((selectIndex - 1) + length) % length]});
             } else if (length) {
@@ -114,7 +116,7 @@ export default class MenuSearchList extends Component {
         });
         hotkeys('down', 'chatsMenuSearch', e => {
             const {chats, selectIndex} = this;
-            const length = chats.length;
+            const {length} = chats;
             if (length > 1) {
                 this.setState({select: chats[((selectIndex + 1) + length) % length]});
             } else if (length) {
@@ -124,15 +126,17 @@ export default class MenuSearchList extends Component {
         });
         hotkeys('enter', 'chatsMenuSearch', e => {
             const {select} = this;
-            if (this.props.onRequestClearSearch && select) {
-                window.location.hash = `#${ROUTES.chats.chat.id(select.gid, this.props.filter)}`;
-                this.props.onRequestClearSearch();
+            const {onRequestClearSearch, filter} = this.props;
+            if (onRequestClearSearch && select) {
+                window.location.hash = `#${ROUTES.chats.chat.id(select.gid, filter)}`;
+                onRequestClearSearch();
             }
             e.preventDefault();
         });
         hotkeys('esc', 'chatsMenuSearch', e => {
-            if (this.props.onRequestClearSearch) {
-                this.props.onRequestClearSearch();
+            const {onRequestClearSearch} = this.props;
+            if (onRequestClearSearch) {
+                onRequestClearSearch();
             }
             e.preventDefault();
         });
@@ -150,7 +154,8 @@ export default class MenuSearchList extends Component {
      * @todo 考虑使用 `UNSAFE_componentWillReceiveProps` 替换 `componentWillReceiveProps`
      */
     componentWillReceiveProps(nextProps) {
-        if (nextProps.search !== this.props.search) {
+        const {search} = this.props;
+        if (nextProps.search !== search) {
             this.setState({select: ''});
         }
     }
@@ -178,10 +183,11 @@ export default class MenuSearchList extends Component {
      */
     handleItemContextMenu = event => {
         const chat = App.im.chats.get(event.currentTarget.attributes['data-gid'].value);
+        const {filter} = this.props;
         showContextMenu('chat.menu', {
             event,
             chat,
-            menuType: this.props.filter,
+            menuType: filter,
             viewType: ''
         });
     };
@@ -240,9 +246,11 @@ export default class MenuSearchList extends Component {
             listViews.push(<ListItem key="showMore" icon="chevron-double-down" className="flex-middle item muted" title={<span className="title small">{Lang.format('common.clickShowMoreFormat', notShowCount)}</span>} onClick={this.handleRequestMorePage} />);
         }
 
-        return (<div className={classes('app-chats-menu-list list scroll-y', className)} {...other}>
-            {listViews}
-            {children}
-        </div>);
+        return (
+            <div className={classes('app-chats-menu-list list scroll-y', className)} {...other}>
+                {listViews}
+                {children}
+            </div>
+        );
     }
 }

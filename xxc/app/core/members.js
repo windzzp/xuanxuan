@@ -1,7 +1,7 @@
 import Member from './models/member';
 import {getCurrentUser, onSwapUser} from './profile';
 import events from './events';
-import Lang from '../lang';
+import Lang from './lang';
 
 /**
  * 缓存当前用户所有用户信息

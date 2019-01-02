@@ -1,5 +1,4 @@
-import Platform from 'Platform'; // eslint-disable-line
-import Config from '../../config'; // eslint-disable-line
+import Config, {getSpecialVersionName} from '../../config'; // eslint-disable-line
 import {socket} from '../server';
 import imServerHandlers from './im-server-handlers';
 import events from '../events';
@@ -11,7 +10,7 @@ import Messager from '../../components/messager';
 import {formatBytes} from '../../utils/string-helper';
 import {createPhpTimestramp} from '../../utils/date-helper';
 import ChatMessage from '../models/chat-message';
-import Lang from '../../lang';
+import Lang from '../lang';
 import {getImageInfo} from '../../utils/image';
 import FileData from '../models/file-data';
 import {checkUploadFileSize, uploadFile} from './im-files';
@@ -19,6 +18,7 @@ import {isWebUrl} from '../../utils/html-helper';
 import {
     updateChatMessages, getChat, queryChats, initChats,
 } from './im-chats';
+import platform from '../../platform';
 
 /**
  * 适合使用 Base64 格式发送图片的最大文件大小
@@ -439,15 +439,22 @@ export const sendBoardChatMessage = (message, chat) => {
  * 创建一个文本聊天消息
  * @param {string} message 消息内容
  * @param {Chat|{gid:string}} chat 聊天对象
+ * @param {boolean} [isMarkdown=null] 是否为 Markdown 格式消息，如果为 `null` 则根据用户设置判断
  * @return {ChatMessage} 聊天消息实例
  */
-export const createTextChatMessage = (message, chat) => {
+export const createTextChatMessage = (message, chat, isMarkdown = null) => {
     const {userConfig} = profile;
+    let contentType;
+    if (isMarkdown === null || isMarkdown === undefined) {
+        contentType = (Config.ui['chat.sendMarkdown'] && userConfig && userConfig.sendMarkdown) ? ChatMessage.CONTENT_TYPES.text : ChatMessage.CONTENT_TYPES.plain;
+    } else {
+        contentType = isMarkdown ? ChatMessage.CONTENT_TYPES.text : ChatMessage.CONTENT_TYPES.plain;
+    }
     return new ChatMessage({
         content: message,
         user: profile.userId,
         cgid: chat.gid,
-        contentType: (Config.ui['chat.sendMarkdown'] && userConfig && userConfig.sendMarkdown) ? ChatMessage.CONTENT_TYPES.text : ChatMessage.CONTENT_TYPES.plain
+        contentType
     });
 };
 
@@ -471,10 +478,41 @@ const createUrlObjectMessage = (url, chat) => {
  * 发送一个文本类聊天消息
  * @param {string} message 文本消息内容
  * @param {Chat|{gid:string}} chat 聊天对象
+ * @param {boolean} [isMarkdown=null] 文本内容是否为 Markdown 格式
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
-export const sendTextMessage = (message, chat) => {
-    return sendChatMessage(message && isWebUrl(message.trim()) ? createUrlObjectMessage(message, chat) : createTextChatMessage(message, chat), chat);
+export const sendTextMessage = (message, chat, isMarkdown = null) => {
+    return sendChatMessage(message && isWebUrl(message.trim()) ? createUrlObjectMessage(message, chat) : createTextChatMessage(message, chat, isMarkdown), chat);
+};
+
+/**
+ * 转发已有的消息到其他聊天
+ * @param {ChatMessage} originMessage 要转发的原始消息
+ * @param {Chat|Array<Chat>} chats 要转发到那些聊天
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const forwardMessage = async (originMessage, chats) => {
+    if (!Array.isArray(chats)) {
+        chats = [chats];
+    }
+    const forwardMessageData = {
+        forwardFrom: {
+            gid: originMessage.gid,
+            user: originMessage.senderId,
+            date: originMessage.date,
+        },
+    };
+    for (const chat of chats) {
+        const message = new ChatMessage({
+            user: profile.userId,
+            cgid: chat.gid,
+            type: originMessage.type,
+            content: originMessage.content,
+            contentType: originMessage.contentType,
+            data: forwardMessageData
+        });
+        await sendChatMessage(message, chat); // eslint-disable-line
+    }
 };
 
 /**
@@ -559,23 +597,24 @@ export const sendChatMessage = async (messages, chat, isSystemMessage = false) =
         const command = message.getCommand();
         if (command) {
             if (command.action === 'version') {
-                const specialVersion = Config.system.specialVersion ? ` for ${Config.system.specialVersion}` : '';
+                const specialVersionName = getSpecialVersionName();
+                const specialVersion = specialVersionName ? ` for ${specialVersionName}` : '';
                 const contentLines = ['```'];
                 contentLines.push(
-                    `$$version       = '${PKG.version}${PKG.buildVersion ? ('.' + PKG.buildVersion) : ''}${specialVersion}';`,
+                    `$$version       = '${PKG.version}${PKG.buildVersion ? (`.${PKG.buildVersion}`) : ''}${specialVersion}';`,
                     `$$serverVersion = '${profile.user.serverVersion}';`,
-                    `$$platform      = '${Platform.type}';`,
-                    `$$os            = '${Platform.env.os}';`
+                    `$$platform      = '${platform.type}';`,
+                    `$$os            = '${platform.access('env.os')}';`
                 );
-                if (Platform.env.arch) {
-                    contentLines.push(`$$arch          = '${Platform.env.arch}';`);
+                if (platform.has('env.arch')) {
+                    contentLines.push(`$$arch          = '${platform.access('env.arch')}';`);
                 }
                 contentLines.push('```');
                 message.content = contentLines.join('\n');
-            } else if (command.action === 'dataPath' && Platform.ui.createUserDataPath) {
+            } else if (command.action === 'dataPath' && platform.has('ui.createUserDataPath')) {
                 const contentLines = ['```'];
                 contentLines.push(
-                    `$$dataPath = '${Platform.ui.createUserDataPath(profile.user, '', '')}';`,
+                    `$$dataPath = '${platform.call('ui.createUserDataPath', profile.user, '', '')}';`,
                 );
                 contentLines.push('```');
                 message.content = contentLines.join('\n');
@@ -907,6 +946,7 @@ export default {
     dimissChat,
     inviteMembersToChat,
     fetchPublicChats,
+    forwardMessage,
     sendImageMessage,
     sendFileMessage,
     createBoardChatMessage,

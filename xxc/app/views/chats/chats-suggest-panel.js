@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import Config from '../../config';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
-import replaceViews from '../replace-views';
 import FileData from '../../core/models/file-data';
 import ImageHolder from '../../components/image-holder';
 import Button from '../../components/button';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import ClickOutsideWrapper from '../../components/click-outside-wrapper';
 
 /**
@@ -21,18 +20,13 @@ import ClickOutsideWrapper from '../../components/click-outside-wrapper';
  */
 export default class ChatsSuggestPanel extends PureComponent {
     /**
-     * 获取 ChatsSuggestPanel 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatsSuggestPanel>}
-     * @readonly
+     * ChatsSuggestPanel 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatsSuggestPanel
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatsSuggestPanel} from './chats-suggest-panel';
-     * <ChatsSuggestPanel />
      */
-    static get ChatsSuggestPanel() {
-        return replaceViews('chats/chats-suggest-panel', ChatsSuggestPanel);
-    }
+    static replaceViewPath = 'chats/ChatsSuggestPanel';
 
     /**
      * React 组件属性类型检查
@@ -169,7 +163,11 @@ export default class ChatsSuggestPanel extends PureComponent {
 
         let imageView = null;
         if (image) {
-            imageView = (<ImageHolder source={image.viewUrl}>
+            imageView = (<ImageHolder
+                source={image.viewUrl}
+                downloadFailMessage={Lang.string('file.downloadFailed')}
+                uploadFailMessage={Lang.string('file.uploadFailed')}
+            >
                 <div className="toolbar dock dock-bottom has-padding text-center">
                     <Button icon="message-image" className="green rounded" label={Lang.string('chat.sendClipboardImage')} onClick={this.handleSendBtnClick} />&nbsp; &nbsp;
                     <Button icon="close" className="blue rounded" label={Lang.string('common.close')} onClick={this.handleCloseBtnClick} />

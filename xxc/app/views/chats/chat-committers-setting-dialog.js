@@ -1,8 +1,16 @@
 import React from 'react';
 import Modal from '../../components/modal';
-import {ChatCommittersSetting} from './chat-committers-setting';
-import Lang from '../../lang';
+import _ChatCommittersSetting from './chat-committers-setting';
+import Lang from '../../core/lang';
 import App from '../../core';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatCommittersSetting 可替换组件形式
+ * @type {Class<ChatCommittersSetting>}
+ * @private
+ */
+const ChatCommittersSetting = withReplaceView(_ChatCommittersSetting);
 
 /**
  * 显示设置聊天白名单对话框

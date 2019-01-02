@@ -2,14 +2,29 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
-import Lang from '../../lang';
+import Lang, {isJustLangSwitched} from '../../core/lang';
 import App from '../../core';
-import {ChatAvatar} from './chat-avatar';
-import {StatusDot} from '../common/status-dot';
+import _ChatAvatar from './chat-avatar';
+import _StatusDot from '../common/status-dot';
 import MemberProfileDialog from '../common/member-profile-dialog';
-import replaceViews from '../replace-views';
 import Config from '../../config';
 import Platform from 'Platform';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatAvatar 可替换组件形式
+ * @type {Class<ChatAvatar>}
+ * @private
+ */
+
+const ChatAvatar = withReplaceView(_ChatAvatar);
+
+/**
+ * StatusDot 可替换组件形式
+ * @type {Class<StatusDot>}
+ * @private
+ */
+const StatusDot = withReplaceView(_StatusDot);
 
 /**
  * ChatTitle 组件 ，显示聊天界面标题
@@ -22,14 +37,11 @@ import Platform from 'Platform';
  */
 export default class ChatTitle extends Component {
     /**
-     * 获取 ChatTitle 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatTitle>}
-     * @readonly
+     * ChatTitle 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatTitle
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatTitle} from './chat-title';
-     * <ChatTitle />
      */
     
     static get ChatTitle() {
@@ -72,12 +84,14 @@ export default class ChatTitle extends Component {
      * @memberof ChatTitle
      */
     shouldComponentUpdate(nextProps) {
-        return (this.props.className !== nextProps.className ||
+        return (isJustLangSwitched() ||
+            this.props.className !== nextProps.className ||
             this.props.children !== nextProps.children ||
             this.props.chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId ||
             (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId)
         );
     }
+    
     /**
      * 复制ID
     */

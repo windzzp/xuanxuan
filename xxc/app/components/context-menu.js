@@ -4,8 +4,6 @@ import {classes} from '../utils/html-helper';
 import Icon from './icon';
 import timeSequence from '../utils/time-sequence';
 
-/** @module context-menu */
-
 /**
  * 显示上下文菜单
  * @param {{x: Number, y: Number}} position 菜单显示位置，需要提供 X 和 Y 轴坐标
@@ -25,10 +23,8 @@ export const showContextMenu = (position, menus, props = {}, callback = null) =>
         style,
     } = props;
 
-    if (!position) {
-        if (DEBUG) {
-            throw new Error('Position is not defined to show the popover.');
-        }
+    if (!position && DEBUG) {
+        throw new Error('Position is not defined to show the popover.');
     }
 
     if (!props.id) {
@@ -58,7 +54,7 @@ export const showContextMenu = (position, menus, props = {}, callback = null) =>
         }
         const {
             id,
-            className,
+            className: thisItemClassName,
             hidden,
             click,
             url,
@@ -66,6 +62,7 @@ export const showContextMenu = (position, menus, props = {}, callback = null) =>
             type,
             disabled,
             data,
+            icon,
             ...other
         } = item;
         if (hidden) {
@@ -73,34 +70,43 @@ export const showContextMenu = (position, menus, props = {}, callback = null) =>
         }
         if (render) {
             return render(item);
-        } else if (type === 'divider' || type === 'separator') {
-            return <div key={id || idx} className={classes('divider', className)} {...other} />;
         }
-        const iconView = item.icon && Icon.render(item.icon, {className: 'item-left-icon'});
+        if (type === 'divider' || type === 'separator') {
+            return <div key={id || idx} className={classes('divider', thisItemClassName)} {...other} />;
+        }
+        const iconView = icon && Icon.render(icon, {className: 'item-left-icon'});
         if (iconView) {
             hasIconLeft = true;
         }
-        return (<a href={url} onClick={handleItemClick.bind(null, item, idx)} key={id || idx} className={classes('item', itemClassName, className, {disabled})} {...other}>
-            {iconView}
-            {item.label && <span className="title">{item.label}</span>}
-            {item.checked && <Icon name="check" />}
-        </a>);
+        return (
+            <a href={url} onClick={handleItemClick.bind(null, item, idx)} key={id || idx} className={classes('item', itemClassName, thisItemClassName, {disabled})} {...other}>
+                {iconView}
+                {item.label && <span className="title">{item.label}</span>}
+                {item.checked && <Icon name="check" />}
+            </a>
+        );
     });
-    content = (<div className={classes('list dropdown-menu', menuClassName, {'has-icon-left': hasIconLeft})}>
-        {itemsView}
-        {content}
-    </div>);
+    content = (
+        <div className={classes('list dropdown-menu', menuClassName, {'has-icon-left': hasIconLeft})}>
+            {itemsView}
+            {content}
+        </div>
+    );
 
     const x = position.x || 0;
     const y = position.y || 0;
-    style = Object.assign({maxWidth: window.innerWidth, maxHeight: window.innerHeight, left: x, top: y}, style);
+    style = Object.assign({
+        maxWidth: window.innerWidth, maxHeight: window.innerHeight, left: x, top: y
+    }, style);
 
     className = classes('contextmenu layer', className);
 
-    props = Object.assign({backdropClassName: 'clean', animation: false}, props, {className, style, content, plugName: 'contextmenu'});
-    delete props.menuClassName;
-    delete props.itemClassName;
-    delete props.onItemClick;
+    props = Object.assign({backdropClassName: 'clean', animation: false}, props, {
+        className, style, content, plugName: 'contextmenu'
+    });
+    delete props.menuClassName;  // eslint-disable-line
+    delete props.itemClassName; // eslint-disable-line
+    delete props.onItemClick; // eslint-disable-line
 
     return Display.show(props, display => {
         const ele = display.displayElement;

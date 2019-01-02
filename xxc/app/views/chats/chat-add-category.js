@@ -2,12 +2,11 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import {getChatCategories} from '../../core/im/im-chats';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import InputControl from '../../components/input-control';
 import Radio from '../../components/radio';
 import RadioGroup from '../../components/radio-group';
 import SelectBox from '../../components/select-box';
-import replaceViews from '../replace-views';
 
 /**
  * ChatAddCategory 组件 ，显示一个添加聊天分类界面
@@ -20,18 +19,13 @@ import replaceViews from '../replace-views';
  */
 export default class ChatAddCategory extends Component {
     /**
-     * 获取 ChatAddCategory 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<ChatAddCategory>}
-     * @readonly
+     * ChatAddCategory 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof ChatAddCategory
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {ChatAddCategory} from './chat-add-category';
-     * <ChatAddCategory />
      */
-    static get ChatAddCategory() {
-        return replaceViews('chats/chat-add-category', ChatAddCategory);
-    }
+    static replaceViewPath = 'chats/ChatAddCategory';
 
     /**
      * React 组件属性类型检查

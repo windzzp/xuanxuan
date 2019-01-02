@@ -2,12 +2,19 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
-import Lang from '../../lang';
+import Lang from '../../core/lang';
 import {showContextMenu} from '../../core/context-menu';
 import Icon from '../../components/icon';
 import GroupList from '../../components/group-list';
-import {ChatListItem} from './chat-list-item';
-import replaceViews from '../replace-views';
+import _ChatListItem from './chat-list-item';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatListItem 可替换组件形式
+ * @type {Class<ChatListItem>}
+ * @private
+ */
+const ChatListItem = withReplaceView(_ChatListItem);
 
 /**
  * MenuGroupList 组件 ，显示讨论组列表界面
@@ -20,18 +27,13 @@ import replaceViews from '../replace-views';
  */
 export default class MenuGroupList extends Component {
     /**
-     * 获取 MenuGroupList 组件的可替换类（使用可替换组件类使得扩展中的视图替换功能生效）
-     * @type {Class<MenuGroupList>}
-     * @readonly
+     * MenuGroupList 对应的可替换类路径名称
+     *
+     * @type {String}
      * @static
      * @memberof MenuGroupList
-     * @example <caption>可替换组件类调用方式</caption>
-     * import {MenuGroupList} from './menu-group-list';
-     * <MenuGroupList />
      */
-    static get MenuGroupList() {
-        return replaceViews('chats/menu-group-list', MenuGroupList);
-    }
+    static replaceViewPath = 'chats/MenuGroupList';
 
     /**
      * React 组件属性类型检查
@@ -306,7 +308,8 @@ export default class MenuGroupList extends Component {
                     hideEmptyGroup: true,
                     checkIsGroup: this.checkIsGroup,
                     onExpandChange: this.onExpandChange,
-                    forceCollapse: !!this.state.dragging
+                    forceCollapse: !!this.state.dragging,
+                    showMoreText: Lang.string('common.clickShowMoreFormat'),
                 })
             }
             {children}

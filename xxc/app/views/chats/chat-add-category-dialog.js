@@ -1,8 +1,16 @@
 import React from 'react';
 import Modal from '../../components/modal';
-import ChatAddCategory from './chat-add-category';
-import Lang from '../../lang';
+import _ChatAddCategory from './chat-add-category';
+import Lang from '../../core/lang';
 import {setChatCategory} from '../../core/im/im-server';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatAddCategory 可替换组件形式
+ * @type {Class<ChatAddCategory>}
+ * @private
+ */
+const ChatAddCategory = withReplaceView(_ChatAddCategory);
 
 const showChatAddCategoryDialog = (chat, callback) => {
     const modalId = 'app-chat-add-category-dialog';

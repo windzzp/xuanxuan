@@ -1,5 +1,4 @@
 import WS from 'ws';
-import Config from '../../config';
 import crypto from './crypto';
 import Status from '../../utils/status';
 
@@ -168,7 +167,7 @@ export default class Socket {
         this.status = STATUS.CONNECTING;
         this.client = new WS(this.url, {
             rejectUnauthorized: false,
-            headers: {version: Config.pkg.version}
+            headers: {version: this.options.version}
         });
 
         if (DEBUG) {

@@ -1,10 +1,9 @@
 // eslint-disable-next-line import/no-unresolved
-import Platform from 'Platform';
 import events from '../events';
-import UserConfig from './user-config';
 import User from './user';
-import Lang from '../../lang';
+import Lang from '../lang';
 import notice from '../notice';
+import {getUserFromStore} from './user-store';
 
 /**
  * 事件表
@@ -30,7 +29,7 @@ let user = null;
 export const createUser = userData => {
     if (!(userData instanceof User)) {
         const newUser = new User(userData);
-        newUser.$set(Object.assign({}, Platform.config.getUser(newUser.identify), userData));
+        newUser.$set(Object.assign({}, getUserFromStore(newUser.identify), userData));
         if (userData.password) {
             newUser.password = userData.password;
         }
@@ -42,7 +41,7 @@ export const createUser = userData => {
 /**
  * 设置当前登录的用户实例
  * @param {!User} newUser 新的用户实例
- * @return {User}
+ * @return {User} 用户对象
  */
 export const setCurrentUser = newUser => {
     if (!(newUser instanceof User)) {
@@ -93,7 +92,7 @@ export const onUserConfigChange = listener => (events.on(User.EVENT.config_chang
  * 获取上次保存的用户数据
  * @return {Object}
  */
-export const getLastSavedUser = () => Platform.config.getUser();
+export const getLastSavedUser = () => getUserFromStore();
 
 /**
  * 判定给定的用户或成员是否是当前登录用户
@@ -116,18 +115,17 @@ export const getUserStatus = () => user && user.status;
 
 /**
  * 检查当前登录的用户是否验证通过过
- * @returns {boolean}
+ * @returns {boolean} 如果为 `true` 则验证通过，否则为没有验证通过
  */
 export const isUserVertified = () => user && user.isVertified;
 
 /**
  * 检查当前登录的用户是否在线
- * @returns {boolean}
+ * @returns {boolean}  如果为 `true` 则用户在线，否则为不在线
  */
 export const isUserOnline = () => user && user.isOnline;
 
 export default {
-    UserConfig,
     EVENT,
     createUser,
     setUser: setCurrentUser,

@@ -1,7 +1,15 @@
 import React from 'react';
 import Modal from '../../components/modal';
-import {ChatInvite} from './chat-invite';
-import Lang from '../../lang';
+import _ChatInvite from './chat-invite';
+import Lang from '../../core/lang';
+import withReplaceView from '../with-replace-view';
+
+/**
+ * ChatInvite 可替换组件形式
+ * @type {Class<ChatInvite>}
+ * @private
+ */
+const ChatInvite = withReplaceView(_ChatInvite);
 
 /**
  * 显示邀请其他成员加入聊天对话框

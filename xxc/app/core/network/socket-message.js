@@ -1,5 +1,5 @@
 import Config from '../../config';
-import Lang from '../../lang';
+import Lang from '../lang';
 
 /**
  * Socket 服务消息类

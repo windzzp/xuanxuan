@@ -1124,3 +1124,42 @@
     background: rgba(255,255,255,.75);
   }
 }
+
+.app-chat-share-dialog{
+  width: (650*@rem);
+  height: (400*@rem);
+
+  .app-chat-share{
+    height: (320*@rem);
+    
+    .app-chat-share-menu{
+      height: 100%;
+      overflow: hidden;
+      padding-bottom: 40px;
+      
+      .group-list{
+        height: 100%;
+        overflow: auto;
+      }
+    }
+
+    .app-chat-share-content{
+      height: 100%;
+      overflow: auto;
+      .app-group-list-root{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        align-content: flex-start;
+        .item{
+          width: 8rem;
+          position: relative;
+          display: flex;
+        }
+      }
+    }
+  }
+  .list > .list{
+    margin-left: 1rem;
+  }
+}

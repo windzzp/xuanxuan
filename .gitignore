@@ -50,6 +50,7 @@ xxc/app/media-build
 xxc/build/build-config.*.json
 xxc/build/electron-config.json
 xxc/build/electron-builder.json
+xxc/build/build-time-cost.json
 xxc/build/build.*
 
 .idea
@@ -76,3 +77,4 @@ docs/pdf
 docs/*/*-convert.md
 docs/**/*.md
 docs/**/*.md
+docs/

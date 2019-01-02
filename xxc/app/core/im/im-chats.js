@@ -11,7 +11,7 @@ import StringHelper from '../../utils/string-helper';
 import {getTimeBeforeDesc} from '../../utils/date-helper';
 import TaskQueue from '../../utils/task-queue';
 import timeSequence from '../../utils/time-sequence';
-import Lang from '../../lang';
+import Lang from '../lang';
 import Server from '../server';
 
 /**
