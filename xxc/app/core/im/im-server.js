@@ -403,10 +403,10 @@ export const setChatCategory = (chat, category) => {
  */
 export const sendSocketMessageForChat = (socketMessage, chat) => {
     if (chat.id) {
-        return socket.send(socketMessage);
+        return socket.sendAndListen(socketMessage);
     }
     return createChat(chat).then(() => {
-        return socket.send(socketMessage);
+        return socket.sendAndListen(socketMessage);
     });
 };
 
