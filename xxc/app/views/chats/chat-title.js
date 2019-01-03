@@ -1,9 +1,6 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable import/no-cycle */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Platform from 'Platform';
+import Platform from '../../platform';
 import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import Lang, {isJustLangSwitched} from '../../core/lang';
@@ -13,6 +10,7 @@ import _StatusDot from '../common/status-dot';
 import MemberProfileDialog from '../common/member-profile-dialog';
 import Config from '../../config';
 import withReplaceView from '../with-replace-view';
+
 
 /**
  * ChatAvatar 可替换组件形式
@@ -40,16 +38,13 @@ const StatusDot = withReplaceView(_StatusDot);
  */
 export default class ChatTitle extends Component {
     /**
-     * ChatTitle 对应的可替换类路径名称
+     * ChatMessages 对应的可替换类路径名称
      *
      * @type {String}
      * @static
-     * @memberof ChatTitle
+     * @memberof ChatMessages
      */
-
-    static get ChatTitle() {
-        return replaceViews('chats/chat-title', ChatTitle);
-    }
+    static replaceViewPath = 'chats/chat-title';
 
     /**
      * React 组件属性类型检查
@@ -77,6 +72,13 @@ export default class ChatTitle extends Component {
         children: null,
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            copyIdName: Lang.string('chat.copyDiscussionGroupID'),
+        };
+    }
+
     /**
      * React 组件生命周期函数：`shouldComponentUpdate`
      * 让React知道当前状态或属性的改变是否不影响组件的输出。默认行为是在每一次状态的改变重渲，在大部分情况下你应该依赖于默认行为。
@@ -87,23 +89,28 @@ export default class ChatTitle extends Component {
      * @memberof ChatTitle
      */
     shouldComponentUpdate(nextProps) {
-        return (isJustLangSwitched() ||
-            this.props.className !== nextProps.className ||
-            this.props.children !== nextProps.children ||
-            this.props.chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId ||
-            (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId)
+        return (isJustLangSwitched()
+            || this.props.className !== nextProps.className
+            || this.props.children !== nextProps.children
+            || this.props.chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId
+            || (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId)
         );
     }
 
     /**
      * 复制ID
+     * @param {string} gid 讨论组ID
+     * @return {void}
     */
 
     copyId = () => {
-        let gid = this.props.chat.gid;
-        if (Platform.clipboard && Platform.clipboard.writeText) {
-            Platform.clipboard.writeText(gid);
-        }
+        const {chat} = this.props;
+        const {gid} = chat;
+        Platform.call('clipboard.writeText', gid);
+        this.setState({
+            copyIdName: '555'
+        });
+        console.log('122');
     }
 
     /**
@@ -121,7 +128,7 @@ export default class ChatTitle extends Component {
             children,
             ...other
         } = this.props;
-
+        const {copyIdName} = this.state;
         const denyShowMemberProfile = Config.ui['chat.denyShowMemberProfile'];
         const chatName = chat.getDisplayName(App, true);
         const theOtherOne = chat.isOne2One ? chat.getTheOtherOne(App) : null;
@@ -144,7 +151,7 @@ export default class ChatTitle extends Component {
         return (
             <div className={classes('chat-title heading', className)} {...other}>
                 {
-                    (!denyShowMemberProfile && theOtherOne) ? <ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} onClick={onTitleClick} /> : <div className="hint--bottom-right has-padding-smhint--bottom" data-hint={chat.gid.slice(0,4) + '...点击复制'} onClick={this.copyId}><ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} /></div>
+                    (!denyShowMemberProfile && theOtherOne) ? <ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} onClick={onTitleClick} /> : <div className="hint--bottom-right has-padding-smhint--bottom" data-hint={`${chat.gid.slice(0, 7)}` + copyIdName} onClick={this.copyId.bind(this)}><ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} /></div>
                 }
                 {/* {hideChatAvatar ? null : <ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} onClick={onTitleClick} />} */}
                 {showStatusDot && <StatusDot status={theOtherOne.status} />}

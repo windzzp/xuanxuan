@@ -324,6 +324,8 @@
     "chat.sidebar.tab.files.loading": "Finding files...",
     "chat.sidebar.close": "Close the sidebar",
     "chat.message.resend": "Resend",
+    "chat.copyDiscussionGroupID": "... Click to copy the discussion group ID",
+
     "todo.create": "Create to-do",
     "todo.edit": "Edit To Do",
     "todo.label.name": "name",
