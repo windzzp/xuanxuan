@@ -116,13 +116,14 @@ export default class ChatShare extends Component {
             }
         }).then(() => {
             Messager.show(Lang.format('chat.share.sendSuccess', chats.length), {
-                type: 'success', autoHide: 5000, id: messagerID, closeButton: true, modal: false,
+                type: 'success', autoHide: 3000, id: messagerID, closeButton: true, backdrop: false, modal: false,
             });
             return onRequestClose();
         }).catch(error => {
             if (DEBUG) {
                 console.warn('Forward message error', error);
             }
+            Messager.hide(messagerID);
         });
     };
 
