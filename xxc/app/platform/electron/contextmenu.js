@@ -1,5 +1,5 @@
 import {remote} from 'electron';
-import ui from './ui';
+import {browserWindow} from './ui';
 
 /**
  * 语言文本访问对象
@@ -40,16 +40,16 @@ export const createContextMenu = menu => {
  * @param {Menu|Object[]} menu 要创建的上下文菜单项清单或者上下文菜单实例
  * @param {number} x 菜单显示在 X 轴上的位置
  * @param {number} y 菜单显示在 Y 轴上的位置
- * @param {BrowserWindow} browserWindow 应用窗口实例
+ * @param {BrowserWindow} windowObj 应用窗口实例
  * @return {void}
  */
-export const popupContextMenu = (menu, x, y, browserWindow) => {
+export const popupContextMenu = (menu, x, y, windowObj) => {
     if (typeof x === 'object') {
         y = x.clientY;
         x = x.clientX;
     }
     menu = createContextMenu(menu);
-    menu.popup(browserWindow || ui.browserWindow, x, y);
+    menu.popup(windowObj || browserWindow, x, y);
 };
 
 /**
@@ -59,7 +59,7 @@ export const popupContextMenu = (menu, x, y, browserWindow) => {
  * @param {number} y 菜单显示在 Y 轴上的位置
  * @return {void}
  */
-export const showInputContextMenu = (windowObj, x, y) => {
+export const showInputContextMenu = (x, y, windowObj) => {
     /**
      * 文本输入框右键菜单
      * @type {Menu}
@@ -85,7 +85,7 @@ export const showInputContextMenu = (windowObj, x, y) => {
  * @param {number} y 菜单显示在 Y 轴上的位置
  * @return {void}
  */
-export const showSelectionContextMenu = (windowObj, x, y) => {
+export const showSelectionContextMenu = (x, y, windowObj) => {
     /**
      * 文本选择右键菜单
      * @type {Menu}
