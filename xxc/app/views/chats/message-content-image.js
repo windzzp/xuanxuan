@@ -174,7 +174,8 @@ export default class MessageContentImage extends Component {
             event,
             url: this.state.url || this.imageUrl,
             dataType: this.imageType,
-            file: this.props.message.attachFile
+            file: this.props.message.attachFile,
+            message: this.props.message
         });
     };
 
@@ -188,7 +189,7 @@ export default class MessageContentImage extends Component {
     handleEmojiContextMenu = event => {
         if (isBrowser) return;
         const image = this.props.message.imageContent;
-        showContextMenu('emoji', {event, emoji: Emojione.shortnameToUnicode(image.content)});
+        showContextMenu('emoji', {event, message: this.props.message, emoji: Emojione.shortnameToUnicode(image.content)});
     };
 
     /**

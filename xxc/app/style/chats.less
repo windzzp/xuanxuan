@@ -254,7 +254,8 @@
     margin-bottom: @space-sm;
   }
 
-  &.content-type-text {
+  &.content-type-text,
+  &.content-type-image {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -263,6 +264,9 @@
     > .app-message-content-text {
       margin-right: @space-xs;
       min-width: (50*@rem);
+    }
+    > .img-holder {
+      flex: auto;
     }
     > .actions {
       flex: none;

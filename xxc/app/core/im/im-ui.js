@@ -871,6 +871,32 @@ addContextMenuCreator('message.text', ({message}) => {
     return items;
 });
 
+addContextMenuCreator('message.image', context => {
+    const {message} = context;
+    const items = [{
+        label: Lang.string('chat.share'),
+        icon: 'mdi-share-outline',
+        click: () => {
+            ChatShareDialog.show(message);
+        }
+    }];
+    return items;
+});
+
+addContextMenuCreator('image,emoji', ({message}) => {
+    const items = [];
+    if (message) {
+        items.push({
+            label: Lang.string('chat.share'),
+            icon: 'mdi-share-outline',
+            click: () => {
+                ChatShareDialog.show(message);
+            }
+        });
+    }
+    return items;
+});
+
 // 绑定用户切换事件
 profile.onSwapUser(user => {
     activedChatId = null;

@@ -321,7 +321,7 @@ export default class MessageListItem extends Component {
      */
     handleShareBtnClick = event => {
         const {message} = this.props;
-        if (showContextMenu('message.text', {
+        if (showContextMenu(this.isImageContent ? 'message.image' : 'message.text', {
             event,
             message,
             options: {
@@ -346,9 +346,10 @@ export default class MessageListItem extends Component {
             return;
         }
 
+        const {message} = this.props;
         if (showContextMenu(this.isUrlContent ? 'link' : 'message.text', {
             event,
-            message: this.props.message,
+            message,
             options: {
                 copy: !this.isUrlContent,
                 selectAll: true,
@@ -446,7 +447,8 @@ export default class MessageListItem extends Component {
                             <a
                                 className="title rounded text-primary"
                                 onContextMenu={staticUI ? null : this.handleUserContextMenu}
-                                onClick={staticUI ? MemberProfileDialog.show.bind(null, sender, null) : this.handleSenderNameClick.bind(this, sender, message)}>
+                                onClick={staticUI ? MemberProfileDialog.show.bind(null, sender, null) : this.handleSenderNameClick.bind(this, sender, message)}
+                            >
                                 {senderName}
                             </a>
                         )}
@@ -464,6 +466,7 @@ export default class MessageListItem extends Component {
             contentView = <MessageContentFile message={message} />;
         } else if (message.isImageContent) {
             contentView = <MessageContentImage message={message} />;
+            this.isImageContent = true;
         } else if (message.isObjectContent) {
             const {objectContent} = message;
             if (objectContent && objectContent.type === ChatMessage.OBJECT_TYPES.url && objectContent.url) {
@@ -494,9 +497,9 @@ export default class MessageListItem extends Component {
         }
 
         let actionsView = null;
-        if (this.isTextContent) {
+        if (this.isTextContent || this.isImageContent) {
             actionsView = (<div className="actions">
-                <div className="hint--top-left"><button className="btn btn-sm iconbutton rounded" type="button" onClick={this.handleShareBtnClick}><Icon name="share" /></button></div>
+                <div className="hint--top-left"><button className="btn btn-sm iconbutton rounded" type="button" onClick={this.handleShareBtnClick}><Icon name="dots-vertical" /></button></div>
             </div>);
         }
 
@@ -515,7 +518,7 @@ export default class MessageListItem extends Component {
                 {showDateDivider && <MessageDivider date={message.date} />}
                 {headerView}
                 {timeLabelView}
-                {contentView && <div className={classes(`app-message-content content-type-${message.contentType}`, {'content-type-text': message.isPlainTextContent})} onContextMenu={this.isTextContent ? this.handleContentContextMenu : null}>{contentView}{actionsView}</div>}
+                {contentView && <div className={classes(`app-message-content content-type-${message.contentType}`, {'content-type-text': message.isPlainTextContent})} onContextMenu={(this.isTextContent) ? this.handleContentContextMenu : null}>{contentView}{actionsView}</div>}
                 {resendButtonsView}
             </div>
         );
