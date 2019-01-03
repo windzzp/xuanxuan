@@ -98,7 +98,7 @@ export default class ChatTitle extends Component {
     }
 
     /**
-     * 复制ID
+     * 复制讨论组ID
      * @param {string} gid 讨论组ID
      * @return {void}
     */
@@ -107,10 +107,6 @@ export default class ChatTitle extends Component {
         const {chat} = this.props;
         const {gid} = chat;
         Platform.call('clipboard.writeText', gid);
-        this.setState({
-            copyIdName: '555'
-        });
-        console.log('122');
     }
 
     /**
