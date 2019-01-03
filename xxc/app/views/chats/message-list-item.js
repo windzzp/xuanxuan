@@ -465,10 +465,10 @@ export default class MessageListItem extends Component {
         } else if (message.isImageContent) {
             contentView = <MessageContentImage message={message} />;
         } else if (message.isObjectContent) {
-            const objectContent = message.objectContent;
+            const {objectContent} = message;
             if (objectContent && objectContent.type === ChatMessage.OBJECT_TYPES.url && objectContent.url) {
                 const sleep = sleepUrlCard === null ? !isToday(message.date) : sleepUrlCard;
-                contentView = <MessageContentUrl url={objectContent.url} data={objectContent} sleep={sleep} cgid={message.cgid} />;
+                contentView = <MessageContentUrl url={objectContent.url} data={objectContent} sleep={sleep} cgid={message.cgid} message={message} />;
                 this.isUrlContent = true;
             } else {
                 contentView = <div className="box red-pale">[Unknown Object]</div>;
