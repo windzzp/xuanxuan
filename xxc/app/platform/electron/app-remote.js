@@ -132,8 +132,10 @@ class AppRemote {
 
         // 绑定渲染进程通知准备就绪事件
         ipcMain.on(EVENT.app_ready, (e, config, windowName) => {
-            Object.assign(this.appConfig, config);
-            this.createTrayIcon(windowName);
+            if (windowName) {
+                Object.assign(this.appConfig, config);
+                this.createTrayIcon(windowName);
+            }
             if (SHOW_LOG) console.log('\n>> App ready.');
         });
 
