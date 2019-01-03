@@ -116,7 +116,7 @@ export default class ChatShare extends Component {
             }
         }).then(() => {
             Messager.show(Lang.format('chat.share.sendSuccess', chats.length), {
-                type: 'success', autoHide: true, id: messagerID, closeButton: true, modal: false,
+                type: 'success', autoHide: 5000, id: messagerID, closeButton: true, modal: false,
             });
             return onRequestClose();
         }).catch(error => {
