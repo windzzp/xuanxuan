@@ -307,7 +307,7 @@
     "chat.sendbox.placeholder.sendMessage": "Send Message",
     "chat.sendbox.placeholder.memberIsOffline": "Send Message（{0} is offline. Your message will be seen when the receiver is online.",
     "chat.sendCodeDialog.title": "Send code",
-    "chat.sendCode.content.placeholder": "Write in code",
+    "chat.sendCode.content.placeholder": "Write code here",
     "chat.sendCode.defaultLanguage": "Code lang (Auto)",
     "chat.sendCode.sendBtnLabel": "Send",
     "chat.atHim": "@s/he",
