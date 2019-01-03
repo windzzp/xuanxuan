@@ -23,7 +23,7 @@ export const showImageViewer = (imageSrc, props, callback) => {
         onClick: () => {
             Modal.hide(modalId);
         },
-        content: <AdvanceImageViewer src={imageSrc} />
+        content: <AdvanceImageViewer src={imageSrc} onRequestClsoe={() => Modal.hide(modalId)} />
     }, props, {
         id: modalId
     }), callback);
