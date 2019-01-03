@@ -480,6 +480,9 @@ if (config.langPath) {
 // 安装包输出目录
 const packagesPath = path.join(__dirname, '../', electronBuilder.directories.output);
 
+// app/index.html 文件内容
+let electronIndexHTML = null;
+
 // 输出打包配置文件
 const outputConfigFiles = () => {
     console.log(`${chalk.cyanBright(chalk.bold('❖ 创建打包配置文件:'))}\n`);
@@ -510,6 +513,7 @@ const outputConfigFiles = () => {
         // 输出应用 package.json 文件
         fse.outputJsonSync('./app/package.json', Object.assign({}, createPackageObj(), appPkg), {spaces: 4});
         console.log(`    ${chalk.green(chalk.bold('✓'))} 创建 ${chalk.underline('./app/package.json')}`);
+
         // 输出 manifest 文件
         fse.outputJsonSync('./app/manifest.json', {
             name: config.productName,
@@ -553,6 +557,11 @@ const outputConfigFiles = () => {
             }],
         }, {spaces: 4});
         console.log(`    ${chalk.green(chalk.bold('✓'))} 创建 ${chalk.underline('./app/manifest.json')}`);
+
+        // 输出 index.build.html 文件
+        electronIndexHTML = fse.readFileSync('./app/index.html', {encoding: 'utf-8'});
+        fse.writeFileSync('./app/index.html', electronIndexHTML.replace(/<title>(.*)<\/title>/g, `<title>${config.productName}</title>`), {encoding: 'utf-8'});
+        console.log(`    ${chalk.green(chalk.bold('✓'))} 更新 ${chalk.underline('./app/index.html')}`);
     }
     console.log();
 };
@@ -581,6 +590,9 @@ const revertConfigFiles = () => {
 
     fse.outputFileSync(path.resolve(__dirname, '../app/style/custom.less'), '');
     console.log(`    ${chalk.green(chalk.bold('✓'))} 移除自定义样式 ${chalk.underline(path.resolve(__dirname, '../app/style/custom.less'))}`);
+
+    fse.outputFileSync(path.resolve(__dirname, '../app/index.html'), electronIndexHTML.replace(/<title>(.*)<\/title>/g, `<title>${pkg.productName}</title>`), {encoding: 'utf-8'});
+    console.log(`    ${chalk.green(chalk.bold('✓'))} 还原 ${chalk.underline(path.resolve(__dirname, '../app/index.html'))}`);
 };
 
 // 处理和编译应用源文件
