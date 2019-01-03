@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from './modal';
 import timeSequence from '../utils/time-sequence';
-import ImageViewerKeymouse from './image-viewer-keymouse';
+import AdvanceImageViewer from './AdvanceImageViewer';
 
 /** @module image-viewer */
 
@@ -23,7 +23,7 @@ export const showImageViewer = (imageSrc, props, callback) => {
         onClick: () => {
             Modal.hide(modalId);
         },
-        content: <ImageViewerKeymouse src={imageSrc} />
+        content: <AdvanceImageViewer src={imageSrc} />
     }, props, {
         id: modalId
     }), callback);
