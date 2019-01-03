@@ -19,7 +19,7 @@ export const showImageViewer = (imageSrc, props, callback) => {
     return Modal.show(Object.assign({
         closeButton: true,
         actions: false,
-        className: 'layer-image-viewer',
+        className: 'layer-image-viewer dock clean',
         onClick: () => {
             Modal.hide(modalId);
         },

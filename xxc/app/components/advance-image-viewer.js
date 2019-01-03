@@ -218,7 +218,7 @@ export default class AdvanceImageViewer extends Component {
         };
         const {src} = this.props;
         return (
-            <div className="keymouse">
+            <div className="dock darken center-content">
                 <img
                     style={style}
                     src={src}
