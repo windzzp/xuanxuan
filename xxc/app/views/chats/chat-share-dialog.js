@@ -9,7 +9,7 @@ import Lang from '../../core/lang';
  * @param {function} callback 回调函数
  * @return {void}
  */
-export const showShareDialog = (message, callback) => {
+export const showChatShareDialog = (message, callback) => {
     const modalId = 'app-chat-share-dialog';
     return Modal.show({
         id: modalId,
@@ -21,5 +21,5 @@ export const showShareDialog = (message, callback) => {
 };
 
 export default {
-    show: showShareDialog,
+    show: showChatShareDialog,
 };

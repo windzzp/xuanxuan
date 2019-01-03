@@ -1,4 +1,5 @@
 import {showChatCodeDialog} from './chats/chat-send-code-dialog';
+import {showChatShareDialog} from './chats/chat-share-dialog';
 import {registerCommand} from '../core/commander';
 import {getChat} from '../core/im/im-chats';
 import {getCurrentActiveChatGID} from '../core/im/im-ui';
@@ -13,5 +14,10 @@ export default () => {
             return;
         }
         showChatCodeDialog(chat);
+    });
+
+    registerCommand('showChatShareDialog', (context) => {
+        const {message} = context;
+        showChatShareDialog(message);
     });
 };
