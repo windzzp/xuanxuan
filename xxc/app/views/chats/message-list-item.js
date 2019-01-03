@@ -321,7 +321,7 @@ export default class MessageListItem extends Component {
      */
     handleShareBtnClick = event => {
         const {message} = this.props;
-        if (showContextMenu(this.isImageContent ? 'message.image' : 'message.text', {
+        if (showContextMenu(this.isFileContent ? 'message.file' : this.isImageContent ? 'message.image' : 'message.text', {
             event,
             message,
             options: {
@@ -464,6 +464,7 @@ export default class MessageListItem extends Component {
             contentView = <NotificationMessage message={message} />;
         } else if (message.isFileContent) {
             contentView = <MessageContentFile message={message} />;
+            this.isFileContent = true;
         } else if (message.isImageContent) {
             contentView = <MessageContentImage message={message} />;
             this.isImageContent = true;
@@ -497,7 +498,7 @@ export default class MessageListItem extends Component {
         }
 
         let actionsView = null;
-        if (this.isTextContent || this.isImageContent) {
+        if (this.isTextContent || this.isImageContent || this.isFileContent) {
             actionsView = (<div className="actions">
                 <div className="hint--top-left"><button className="btn btn-sm iconbutton rounded" type="button" onClick={this.handleShareBtnClick}><Icon name="dots-vertical" /></button></div>
             </div>);

@@ -871,7 +871,7 @@ addContextMenuCreator('message.text', ({message}) => {
     return items;
 });
 
-addContextMenuCreator('message.image', context => {
+addContextMenuCreator('message.image,message.file', context => {
     const {message} = context;
     const items = [{
         label: Lang.string('chat.share'),

@@ -250,11 +250,16 @@
   transition-timing-function: @animation-type;
   transition-property: outline, background, padding;
 
+  &.content-type-file {
+    padding-bottom: @space-sm;
+  }
+
   .app-file-list-item {
-    margin-bottom: @space-sm;
+    flex: none;
   }
 
   &.content-type-text,
+  &.content-type-file,
   &.content-type-image {
     display: flex;
     flex-direction: row;
