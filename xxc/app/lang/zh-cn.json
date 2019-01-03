@@ -342,7 +342,7 @@
     "chat.sidebar.close": "关闭侧边栏",
 
     "chat.message.resend": "重新发送",
-    "chat.copyDiscussionGroupID": "... 点击复制讨论组ID",
+    "chat.copyChatGID": "复制聊天 ID",
 
 
     "todo.create": "创建待办",

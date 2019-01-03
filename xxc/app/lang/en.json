@@ -339,7 +339,7 @@
     "chat.sidebar.tab.files.loading": "Searching files…",
     "chat.sidebar.close": "Close sidebar",
     "chat.message.resend": "Resend",
-    "chat.copyDiscussionGroupID": "... Click to copy the discussion group ID",
+    "chat.copyChatGID": "Copy chat ID",
 
     "todo.create": "Create to-do",
     "todo.edit": "Edit To Do",

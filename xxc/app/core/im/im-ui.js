@@ -555,6 +555,16 @@ addContextMenuCreator('chat.menu', context => {
         }
     }
 
+    if (platform.has('clipboard.writeText')) {
+        tryAddDividerItem(menu);
+        menu.push({
+            label: Lang.string('chat.copyChatGID'),
+            click: () => {
+                platform.call('clipboard.writeText', chat.gid);
+            }
+        });
+    }
+
     return tryRemoveLastDivider(menu);
 });
 

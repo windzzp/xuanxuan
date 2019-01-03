@@ -72,10 +72,16 @@ export default class ChatTitle extends Component {
         children: null,
     };
 
+    /**
+     * React 组件构造函数，创建一个 ChatTitle 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
         this.state = {
-            copyIdName: Lang.string('chat.copyDiscussionGroupID'),
+            copiedChatID: false
         };
     }
 
@@ -88,8 +94,9 @@ export default class ChatTitle extends Component {
      * @returns {boolean} 如果返回 `true` 则继续渲染组件，否则为 `false` 而后的 `UNSAFE_componentWillUpdate()`，`render()`， 和 `componentDidUpdate()` 将不会被调用
      * @memberof ChatTitle
      */
-    shouldComponentUpdate(nextProps) {
+    shouldComponentUpdate(nextProps, nextState) {
         return (isJustLangSwitched()
+            || nextState.copiedChatID !== this.state.copiedChatID
             || this.props.className !== nextProps.className
             || this.props.children !== nextProps.children
             || this.props.chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId
@@ -98,15 +105,40 @@ export default class ChatTitle extends Component {
     }
 
     /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof ChatTitle
+     * @return {void}
+     */
+    componentWillUnmount() {
+        if (this.copiedHintTimer) {
+            clearTimeout(this.copiedHintTimer);
+            this.copiedHintTimer = null;
+        }
+    }
+
+    /**
      * 复制讨论组ID
      * @param {string} gid 讨论组ID
      * @return {void}
     */
-
-    copyId = () => {
+    copyChatID = () => {
         const {chat} = this.props;
         const {gid} = chat;
         Platform.call('clipboard.writeText', gid);
+        this.setState({copiedChatID: true}, () => {
+            if (this.copiedHintTimer) {
+                clearTimeout(this.copiedHintTimer);
+            }
+            this.copiedHintTimer = setTimeout(() => {
+                this.setState({copiedChatID: false});
+                this.copiedHintTimer = null;
+            }, 1000);
+        });
     }
 
     /**
@@ -124,7 +156,7 @@ export default class ChatTitle extends Component {
             children,
             ...other
         } = this.props;
-        const {copyIdName} = this.state;
+        const {copiedChatID} = this.state;
         const denyShowMemberProfile = Config.ui['chat.denyShowMemberProfile'];
         const chatName = chat.getDisplayName(App, true);
         const theOtherOne = chat.isOne2One ? chat.getTheOtherOne(App) : null;
@@ -133,7 +165,6 @@ export default class ChatTitle extends Component {
         this.lastChatUpdateId = chat.updateId;
 
         let chatNoticeView = null;
-        const hideChatAvatar = Config.ui['chat.hideChatAvatar'];
 
         if (Config.ui['chat.showNoticeOnChatTitle']) {
             const {noticeCount} = chat;
@@ -144,12 +175,19 @@ export default class ChatTitle extends Component {
 
         const showStatusDot = theOtherOne && !Config.ui['chat.hideStatusDot'];
 
+        const hideChatAvatar = Config.ui['chat.hideChatAvatar'];
+        let chatAvatarView = null;
+        if (!hideChatAvatar) {
+            if ((!denyShowMemberProfile && theOtherOne)) {
+                chatAvatarView = <ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} onClick={onTitleClick} />;
+            } else {
+                chatAvatarView = <div className={classes('hint--bottom-right', {'hint--success': copiedChatID})} data-hint={`${chat.gid.slice(0, 7)}...${Lang.string(copiedChatID ? 'common.copied' : 'chat.copyChatGID')}`} onClick={this.copyChatID}><ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} /></div>;
+            }
+        }
+
         return (
             <div className={classes('chat-title heading', className)} {...other}>
-                {
-                    (!denyShowMemberProfile && theOtherOne) ? <ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} onClick={onTitleClick} /> : <div className="hint--bottom-right has-padding-smhint--bottom" data-hint={`${chat.gid.slice(0, 7)}` + copyIdName} onClick={this.copyId.bind(this)}><ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} /></div>
-                }
-                {/* {hideChatAvatar ? null : <ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} onClick={onTitleClick} />} */}
+                {chatAvatarView}
                 {showStatusDot && <StatusDot status={theOtherOne.status} />}
                 {
                     (!denyShowMemberProfile && theOtherOne) ? <a className="strong rounded title flex-none text-primary" onClick={onTitleClick}>{chatName}</a> : <strong className="title flex-none">{chatName}</strong>
