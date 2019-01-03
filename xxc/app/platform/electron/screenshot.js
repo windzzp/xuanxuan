@@ -108,9 +108,9 @@ const getCanvas = (width, height) => {
  * @return {void}
  */
 const drawFrame = ({
-    ctx, video, x, y, width, height, availTop = window.screen.availTop
+    ctx, video, x, y, width, height,
 }) => {
-    ctx.drawImage(video, x, y, width, height, 0, -availTop, width, height);
+    ctx.drawImage(video, x, y, width, height, 0, 0, width, height);
 };
 
 /**
