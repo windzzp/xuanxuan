@@ -314,24 +314,37 @@ export const saveScreenshotImage = (options, filePath, hideCurrentWindow) => {
  */
 export const openCaptureScreenWindow = (file, display, onClosed) => {
     return new Promise((resolve, reject) => {
-        const captureWindow = new Remote.BrowserWindow({
+        const bounds = {
             x: display ? display.bounds.x : 0,
             y: display ? display.bounds.y : 0,
             width: display ? display.bounds.width : window.screen.width,
             height: display ? display.bounds.height : window.screen.height,
+        };
+        const captureWindow = new Remote.BrowserWindow({
+            x: bounds.x,
+            y: bounds.y,
+            width: bounds.width,
+            height: bounds.height,
+            minWidth: bounds.width,
+            minHeight: bounds.height,
             alwaysOnTop: !DEBUG,
+            autoHideMenuBar: true,
             fullscreen: true,
-            frame: true,
+            frame: false,
             show: false,
-            // title: `${Lang.string('imageCutter.captureScreen')} - ${display.id}`,
+            movable: false,
+            thickFrame: false,
             titleBarStyle: 'hidden',
             resizable: false,
+            skipTaskbar: true,
+            kiosk: true,
         });
         if (DEBUG) {
             captureWindow.openDevTools();
         }
         captureWindow.loadURL(`file://${ui.appRoot}/index.html?fromWindow=${ui.browserWindowName}#image-cutter/${encodeURIComponent(file.path)}`);
         captureWindow.webContents.on('did-finish-load', () => {
+            captureWindow.setBounds(bounds);
             captureWindow.show();
             captureWindow.focus();
             resolve(captureWindow);
