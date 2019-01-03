@@ -35,22 +35,6 @@ const UserAvatar = withReplaceView(_UserAvatar);
 const StatusDot = withReplaceView(_StatusDot);
 
 /**
- * 渲染导航条目
- * @param {{item: {to: string, label: string, icon: string, activeIcon: string}}} param0 React 属性对象
- * @return {ReactNode|string|number|null|boolean} React 渲染内容
- */
-const NavLink = ({item}) => (
-    <Route
-        path={item.to}
-        children={({match}) => (
-            <Link className={'block' + (match ? ' active' : '')} to={item.to}>
-                <Avatar size={Config.ui['navbar.width']} icon={match ? item.activeIcon : item.icon} />
-            </Link>
-        )}
-    />
-);
-
-/**
  * Navbar 组件 ，显示主导航界面
  * @class Navbar
  * @see https://react.docschina.org/docs/components-and-props.html
@@ -134,10 +118,6 @@ export default class Navbar extends Component {
             }
         });
 
-        this.handleChatActiveEvent = App.im.ui.onActiveChat(() => {
-            this.forceUpdate();
-        });
-
         const hashFilters = window.location.hash.split('/');
         if (hashFilters[0] === '#') {
             this.lastFilterType = hashFilters[1];
@@ -155,7 +135,7 @@ export default class Navbar extends Component {
      * @return {void}
      */
     componentWillUnmount() {
-        App.events.off(this.noticeUpdateHandler, this.dataChangeEventHandler, this.handleChatActiveEvent);
+        App.events.off(this.noticeUpdateHandler, this.dataChangeEventHandler);
     }
 
     /**
@@ -230,7 +210,6 @@ export default class Navbar extends Component {
         const isAvatarOnTop = userConfig && userConfig.avatarPosition === 'top';
         const {showUserMenu} = this.state;
         const {ExtsRuntime} = global;
-        const activeChatID = App.im.ui.currentActiveChatId;
 
         /**
          * 导航项目列表
@@ -239,13 +218,30 @@ export default class Navbar extends Component {
          */
         const navbarItems = [
             {
-                to: activeChatID ? ROUTES.chats.recents.id(activeChatID) : ROUTES.chats.recents.__, label: Lang.string('navbar.chats.label'), icon: 'comment-processing-outline', activeIcon: 'comment-processing'
+                to: ROUTES.chats.recents.__, label: Lang.string('navbar.chats.label'), icon: 'comment-processing-outline', activeIcon: 'comment-processing'
             }, {
-                to: activeChatID ? ROUTES.chats.groups.id(activeChatID) : ROUTES.chats.groups.__, label: Lang.string('navbar.groups.label'), icon: 'comment-multiple-outline', activeIcon: 'comment-multiple'
+                to: ROUTES.chats.groups.__, label: Lang.string('navbar.groups.label'), icon: 'comment-multiple-outline', activeIcon: 'comment-multiple'
             }, {
-                to: activeChatID ? ROUTES.chats.contacts.id(activeChatID) : ROUTES.chats.contacts.__, label: Lang.string('navbar.contacts.label'), icon: 'account-group-outline', activeIcon: 'account-group'
+                to: ROUTES.chats.contacts.__, label: Lang.string('navbar.contacts.label'), icon: 'account-group-outline', activeIcon: 'account-group'
             },
         ];
+
+        const navbarItemsView = navbarItems.map(item => (
+            <div className="nav-item hint--right" data-hint={item.label} key={item.to}>
+                <Route path={item.to}>
+                    {
+                        ({match, location}) => {
+                            const isActive = location.pathname.startsWith(item.to);
+                            return (
+                                <Link className={classes('block', {active: isActive})} to={item.to}>
+                                    <Avatar size={Config.ui['navbar.width']} icon={match ? item.activeIcon : item.icon} />
+                                </Link>
+                            );
+                        }
+                    }
+                </Route>
+            </div>
+        ));
 
         return (
             <div
@@ -264,16 +260,7 @@ export default class Navbar extends Component {
                     {showUserMenu && <UserMenu className={`dock-left dock-${isAvatarOnTop ? 'top' : 'bottom'}`} style={{left: rem(navbarWidth)}} onRequestClose={this.handleUserMenuRequestClose} />}
                 </nav>
                 <nav className="dock-top app-nav-main">
-                    {
-                        navbarItems.map(item => {
-                            return (<div key={item.to} className="hint--right nav-item" data-hint={item.label} onClick={this.handleMainNavItemClick}>
-                                <NavLink item={item} />
-                                {
-                                    (this.state.noticeBadge && item.to.startsWith(ROUTES.chats.recents.__)) ? <div className="label label-sm dock-right dock-top circle red badge">{this.state.noticeBadge}</div> : null
-                                }
-                            </div>);
-                        })
-                    }
+                    {navbarItemsView}
                     {ExtsRuntime && ExtsRuntime.ExtsNavbarView && <ExtsRuntime.ExtsNavbarView />}
                 </nav>
                 {

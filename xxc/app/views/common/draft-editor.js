@@ -117,6 +117,15 @@ const draftDecorator = new CompositeDecorator([{
 }]);
 
 
+/**
+ * DraftEditor 组件 ，显示消息编辑器界面
+ * @class DraftEditor
+ * @see https://react.docschina.org/docs/components-and-props.html
+ * @extends {Component}
+ * @example @lang jsx
+ * import DraftEditor from './draft-editor';
+ * <DraftEditor />
+ */
 export default class DraftEditor extends PureComponent {
     /**
      * DraftEditor 对应的可替换类路径名称
@@ -181,6 +190,23 @@ export default class DraftEditor extends PureComponent {
         this.blockRendererFn = this.blockRendererFn.bind(this);
         this.handlePastedText = this.handlePastedText.bind(this);
         this.handlePastedFiles = this.handlePastedFiles.bind(this);
+    }
+
+    /**
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof DraftEditor
+     * @return {void}
+     */
+    componentDidMount() {
+        if (this.lastFocusTimer) {
+            clearTimeout(this.lastFocusTimer);
+            this.lastFocusTimer = null;
+        }
     }
 
     /**
@@ -310,8 +336,13 @@ export default class DraftEditor extends PureComponent {
      * @return {void}
      */
     focus(delay = 100) {
-        setTimeout(() => {
+        if (this.lastFocusTimer) {
+            clearTimeout(this.lastFocusTimer);
+            this.lastFocusTimer = null;
+        }
+        this.lastFocusTimer = setTimeout(() => {
             this.editor.focus();
+            this.lastFocusTimer = null;
         }, delay);
     }
 

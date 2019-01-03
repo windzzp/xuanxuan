@@ -8,7 +8,7 @@
 .app-nav-profile {
   z-index: 1031;
 }
-.app-nav-main > div > a.active {
+.app-nav-main > div > a.active:after {
   transform: scale(1);
   opacity: 1;
   background-color: rgba(255,255,255,.15);
@@ -291,6 +291,99 @@
   background-color: rgba(0,0,0,.05);
   box-shadow: 0 0 (@rem) rgba(0,0,0,.5);
 }
+
+.group-list {
+  margin-left: 0;
+  position: relative;
+
+  .heading {
+    transition: @animation-type @animation-speed-fast;
+    transition-property: opacity, background-color;
+    cursor: pointer;
+
+    > .icon {
+      margin-left: (4*@rem);
+      opacity: .7;
+      color: @color-primary;
+      transition: opacity @animation-type @animation-speed-fast;
+    }
+
+    > .title {
+      padding-left: (4*@rem);
+      opacity: .7;
+      font-weight: normal;
+      color: @color-primary;
+      text-transform: none;
+    }
+
+    &:hover {
+      .darken;
+      > .title,
+      > .icon {
+        opacity: 1;
+      }
+    }
+
+    &.drop-top:before,
+    &.drop-bottom:before {
+      content: ' ';
+      display: block;
+      height: (3*@rem);
+      border: @color-accent dotted (1*@rem);
+      left: @space-xs;
+      right: @space-xs;
+      position: absolute;
+      z-index: 10;
+    }
+
+    &.drop-top:before {
+      top: (-1*@rem);
+    }
+
+    &.drop-bottom:before {
+      bottom: (-1*@rem);
+    }
+  }
+
+  &:before {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0,0,255,.15);
+    transition: transform @animation-speed-normal @animation-type;
+    content: ' ';
+    width: (4*@rem);
+    z-index: 10;
+    transform: translate(-50%, -50%) scale(0, 0);
+  }
+
+  &:hover:before {
+    transform: translate(0, 0) scale(1, 1);
+  }
+}
+
+> .group-list-root {
+  margin: 0;
+}
+
+.group-list,
+.group-list-root {
+  > .group-list > .group-list {
+    > .heading {padding-left: (16*@rem);}
+    > .item {padding-left: (24*@rem);}
+  }
+  > .group-list > .group-list > .group-list {
+    > .heading {padding-left: (36*@rem);}
+    > .item {padding-left: (44*@rem);}
+  }
+  > .group-list > .group-list > .group-list .group-list {
+    > .heading {padding-left: (56*@rem);}
+    > .item {padding-left: (64*@rem);}
+  }
+}
+
 
 .layer-image-viewer{
   background: none;

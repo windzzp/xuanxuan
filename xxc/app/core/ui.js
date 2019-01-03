@@ -651,6 +651,8 @@ export const getUrlMeta = (url, disableCache = false) => {
                 cardMeta.contentType = 'video';
                 cardMeta.clickable = 'title';
                 cardMeta.icon = 'mdi-video text-red icon-2x';
+            } else if (!cardMeta.title && !cardMeta.subtitle) {
+                cardMeta.title = url;
             }
             if (cardMeta.image && cardMeta.image.startsWith('//')) {
                 cardMeta.image = `https:${cardMeta.image}`;

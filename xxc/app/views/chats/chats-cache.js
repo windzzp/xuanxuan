@@ -40,9 +40,9 @@ export default class ChatsCache extends Component {
      */
     static propTypes = {
         className: PropTypes.string,
-        chatId: PropTypes.any,
         children: PropTypes.any,
         filterType: PropTypes.any,
+        activeChatId: PropTypes.string,
     };
 
     /**
@@ -54,10 +54,28 @@ export default class ChatsCache extends Component {
      */
     static defaultProps = {
         className: null,
-        chatId: null,
         children: null,
         filterType: false,
+        activeChatId: null,
     };
+
+    /**
+     * React 组件生命周期函数：`componentDidUpdate`
+     * componentDidUpdate()会在更新发生后立即被调用。该方法并不会在初始化渲染时调用。
+     *
+     * @param {Object} prevProps 更新前的属性值
+     * @param {Object} prevState 更新前的状态值
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidUpdate
+     * @private
+     * @memberof ChatsCache
+     * @return {void}
+     */
+    componentDidUpdate() {
+        const {activeChatId} = this.props;
+        if (this.activeChatId !== activeChatId) {
+            App.im.ui.setActiveChat(activeChatId);
+        }
+    }
 
     /**
      * React 组件生命周期函数：Render
@@ -69,10 +87,10 @@ export default class ChatsCache extends Component {
      */
     render() {
         const {
-            chatId,
             filterType,
             className,
             children,
+            activeChatId,
             ...other
         } = this.props;
 
@@ -82,9 +100,9 @@ export default class ChatsCache extends Component {
                 className={classes('app-chats-cache', className)}
             >
                 {
-                    App.im.ui.getActivedCacheChatsGID().map(cgid => {
+                    App.im.ui.getActivedCacheChatsGID(activeChatId).map(cgid => {
                         if (cgid) {
-                            return <ChatView key={cgid} chatGid={cgid} hidden={!App.im.ui.isActiveChat(cgid)} />;
+                            return <ChatView key={cgid} chatGid={cgid} hidden={activeChatId !== cgid} />;
                         }
                         if (DEBUG) {
                             console.warn('Cannot render undefined chat cache.');

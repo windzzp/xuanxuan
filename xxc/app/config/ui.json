@@ -27,6 +27,8 @@
     "app.showPoweredBy": "auto",
     "chat.showMeAsMySenderName": false,
     "login.skipHTTPSecurityAlert": false,
+    "chat.sendCode.enable": true,
+    "chat.sendCode.langs": ["HTML", {"label": "JavaScript", "value": "js"}, "CSS", "Java", "PHP", "Python", "JSON", {"label": "C++", "value": "cpp"}, "C", {"label": "C#", "value": "csharp"}, "Swift", "Go", "Bash", "XML", "yaml", {"label": "TypeScript", "value": "ts"}, "Less", "SCSS", "Dart", "Ruby", "SQL", {"label": "Kotlin", "value": "kt"}, "Ini", "Apache", "Makefile", "Perl", "Diff", "CMake"],
     "login.ldap": true,
     "todo.enable": true,
     "webview.frame.hiddenNavButtons": false

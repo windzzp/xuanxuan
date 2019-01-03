@@ -165,17 +165,18 @@ export const getLastActiveChat = () => {
 /**
  * 保存聊天消息到数据库
  * @param {Array.<ChatMessage>} messages 聊天消息列表
- * @param {?Chat} chat 要保存的聊天对象
+ * @param {?Chat|?Array<Chat>} chat 要保存的聊天对象
  * @return {Promise}
  */
-export const saveChatMessages = (messages, chat) => {
+export const saveChatMessages = (messages, chats) => {
     if (!Array.isArray(messages)) {
         messages = [messages];
     }
 
     Events.emit(EVENT.messages, messages);
-    if (chat) {
-        updateChats(chat);
+
+    if (chats) {
+        updateChats(chats);
     }
 
     // Save messages to database

@@ -403,10 +403,10 @@ export const setChatCategory = (chat, category) => {
  */
 export const sendSocketMessageForChat = (socketMessage, chat) => {
     if (chat.id) {
-        return socket.send(socketMessage);
+        return socket.sendAndListen(socketMessage);
     }
     return createChat(chat).then(() => {
-        return socket.send(socketMessage);
+        return socket.sendAndListen(socketMessage);
     });
 };
 
@@ -489,9 +489,10 @@ export const sendTextMessage = (message, chat, isMarkdown = null) => {
  * 转发已有的消息到其他聊天
  * @param {ChatMessage} originMessage 要转发的原始消息
  * @param {Chat|Array<Chat>} chats 要转发到那些聊天
+ * @param {function(number)} onProgress 发送进度变更回调函数
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
-export const forwardMessage = async (originMessage, chats) => {
+export const forwardMessage = async (originMessage, chats, onProgress) => {
     if (!Array.isArray(chats)) {
         chats = [chats];
     }
@@ -502,7 +503,11 @@ export const forwardMessage = async (originMessage, chats) => {
             date: originMessage.date,
         },
     };
-    for (const chat of chats) {
+    for (let i = 0; i < chats.length; ++i) {
+        const chat = chats[i];
+        if (onProgress) {
+            onProgress(i / chats.length, i + 1, chats.length, chat);
+        }
         const message = new ChatMessage({
             user: profile.userId,
             cgid: chat.gid,
@@ -512,6 +517,9 @@ export const forwardMessage = async (originMessage, chats) => {
             data: forwardMessageData
         });
         await sendChatMessage(message, chat); // eslint-disable-line
+    }
+    if (onProgress) {
+        onProgress(1, chats.length, chats.length);
     }
 };
 

@@ -1,9 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import _ChatListItem from './chat-list-item';
 import GroupList from '../../components/group-list';
 import App from '../../core';
 import withReplaceView from '../with-replace-view';
 import Lang from '../../core/lang';
+import Icon from '../../components/icon';
+import {classes} from '../../utils/html-helper';
 
 /**
  * ChatListItem 可替换组件形式
@@ -11,7 +14,42 @@ import Lang from '../../core/lang';
  * @private
  */
 const ChatListItem = withReplaceView(_ChatListItem);
+
 export default class ChatShareList extends React.Component {
+    /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof ChatShareList
+     * @type {Object}
+     */
+    static propTypes = {
+        onItemClick: PropTypes.func,
+        eventBindObject: PropTypes.object,
+        choosed: PropTypes.object,
+        search: PropTypes.string,
+    }
+
+    /**
+     * React 组件默认属性
+     * @see https://react.docschina.org/docs/react-component.html#defaultprops
+     * @type {object}
+     * @memberof ChatShareList
+     * @static
+     */
+    static defaultProps = {
+        onItemClick: null,
+        eventBindObject: null,
+        search: '',
+        choosed: null,
+    }
+
+    /**
+     * React 组件构造函数，创建一个 ChatShareList 组件实例，会在装配之前被调用。
+     * @see https://react.docschina.org/docs/react-component.html#constructor
+     * @param {Object?} props 组件属性对象
+     * @constructor
+     */
     constructor(props) {
         super(props);
         this.state = {};
@@ -20,6 +58,7 @@ export default class ChatShareList extends React.Component {
     /**
      * 处理列表条目点击事件
      * @memberof MemberList
+     * @param {Event} e 事件对象
      * @private
      * @return {void}
      */
@@ -40,15 +79,18 @@ export default class ChatShareList extends React.Component {
      * @memberof MenuContactList
      */
     itemCreator = chat => {
-        if(chat.gid === 'littlexx') return;
+        if (chat.gid === 'littlexx') return;
+        const {choosed} = this.props;
         return (
             <ChatListItem
                 data-gid={chat.gid}
                 key={chat.gid}
                 chat={chat}
                 onClick={this.handleOnItemClick}
-                className="item"
+                className={classes('item', {'primary-pale': choosed[chat.gid]})}
                 notUserLink="disabled"
+                badge={choosed[chat.gid] ? <Icon name="check" className="text-green" /> : null}
+                subname={false}
             />
         );
     };
@@ -65,65 +107,57 @@ export default class ChatShareList extends React.Component {
         return item.list && item.entityType !== 'Chat';
     };
 
-    /**
-     * 处理分组展开折叠变更事件
-     * @param {boolean} expanded 是否展开
-     * @param {Object} group 分组信息
-     * @memberof MenuContactList
-     * @private
-     * @return {void}
-     */
-    onExpandChange = (expanded, group) => {
-        App.profile.userConfig.setChatMenuGroupState('contacts', this.groupType, group.id, expanded);
-    };
-
     render() {
         const groupType = 'dept';
         const {search} = this.props;
-        const shareList = [
-            {id: 'contacts', title: Lang.string("chat.share.contacts"), list: App.im.chats.getContactsChats()},
-            {id: 'group', title: Lang.string("chat.share.groups"), list: App.im.chats.getGroups()},
-            {id: 'recent', title: Lang.string("chat.share.chats"), list: App.im.chats.getRecents()},
-        ];
-        let activeGroupList = '';
-        const searchChats = App.im.chats.search(search);
+        let shareGroupList = '';
 
-        if(search === '') {
-            activeGroupList = (
-                <div className="flex-auto compact group-list">
-                    <GroupList
-                        group={shareList[0]}
-                        defaultExpand={false}
-                        itemCreator={this.itemCreator}
-                        onExpandChange={this.onExpandChange}
-                        hideEmptyGroup={groupType !== 'category'}
-                    />
-                    <GroupList
-                        group={shareList[1]}
-                        defaultExpand={false}
-                        itemCreator={this.itemCreator}
-                        checkIsGroup={this.checkIsGroup}
-                        onExpandChange={this.onExpandChange}
-                    />
-                    <GroupList
-                        group={shareList[2]}
-                        itemCreator={this.itemCreator}
-                        onExpandChange={this.onExpandChange}
-                        checkIsGroup={this.checkIsGroup}
-                    />
-                </div>
-            );
-        }else{
-            activeGroupList = (
-                <div className="flex-auto compact group-list">
-                    <GroupList
-                        group={{list: searchChats, root: true}}
-                        itemCreator={this.itemCreator}
-                        checkIsGroup={this.checkIsGroup}
-                    />
-                </div>
+        if (search === '') {
+            const shareList = {
+                contacts: {id: 'contacts', title: Lang.string('chat.share.contacts'), list: App.im.chats.getContactsChats()},
+                groups: {id: 'group', title: Lang.string('chat.share.groups'), list: App.im.chats.getGroups()},
+                recents: {id: 'recent', title: Lang.string('chat.share.chats'), list: App.im.chats.getRecents()},
+            };
+            shareGroupList = [
+                <GroupList
+                    key="contacts"
+                    className="compact"
+                    group={shareList.contacts}
+                    defaultExpand={false}
+                    itemCreator={this.itemCreator.bind(this)}
+                    hideEmptyGroup={groupType !== 'category'}
+                    showMoreText={Lang.string('common.clickShowMoreFormat')}
+                />,
+                <GroupList
+                    key="groups"
+                    className="compact"
+                    group={shareList.groups}
+                    defaultExpand={false}
+                    itemCreator={this.itemCreator.bind(this)}
+                    checkIsGroup={this.checkIsGroup}
+                    showMoreText={Lang.string('common.clickShowMoreFormat')}
+                />,
+                <GroupList
+                    key="recents"
+                    className="compact"
+                    group={shareList.recents}
+                    itemCreator={this.itemCreator.bind(this)}
+                    checkIsGroup={this.checkIsGroup}
+                    showMoreText={Lang.string('common.clickShowMoreFormat')}
+                />
+            ];
+        } else {
+            const searchChats = App.im.chats.search(search);
+            shareGroupList = (
+                <GroupList
+                    className="compact"
+                    group={{list: searchChats, root: true}}
+                    itemCreator={this.itemCreator.bind(this)}
+                    checkIsGroup={this.checkIsGroup}
+                    showMoreText={Lang.string('common.clickShowMoreFormat')}
+                />
             );
         }
-        return activeGroupList;
+        return shareGroupList;
     }
 }

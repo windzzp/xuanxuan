@@ -43,6 +43,7 @@ export default class MenuRecentList extends Component {
         className: PropTypes.string,
         filter: PropTypes.string,
         children: PropTypes.any,
+        activeChatId: PropTypes.string,
     };
 
     /**
@@ -56,6 +57,7 @@ export default class MenuRecentList extends Component {
         className: null,
         filter: null,
         children: null,
+        activeChatId: null,
     };
 
     /**
@@ -88,6 +90,7 @@ export default class MenuRecentList extends Component {
             filter,
             className,
             children,
+            activeChatId,
             ...other
         } = this.props;
 
@@ -98,7 +101,7 @@ export default class MenuRecentList extends Component {
             if (activeChat && activeChat.gid === chat.gid) {
                 hasActiveChatItem = true;
             }
-            return <ChatListItem onContextMenu={this.handleItemContextMenu} data-gid={chat.gid} key={chat.gid} filterType={filter} chat={chat} className="item" />;
+            return <ChatListItem onContextMenu={this.handleItemContextMenu} data-gid={chat.gid} key={chat.gid} filterType={filter} chat={chat} className={classes('item', {active: activeChatId === chat.gid})} />;
         });
         if (!hasActiveChatItem && activeChat) {
             chatItemsView.splice(0, 0, <ChatListItem onContextMenu={this.handleItemContextMenu} data-gid={activeChat.gid} key={activeChat.gid} filterType={filter} chat={activeChat} className="item" />);

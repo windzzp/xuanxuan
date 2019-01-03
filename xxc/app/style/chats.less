@@ -737,44 +737,10 @@
         bottom: (-1*@rem);
       }
     }
-
-    &:before {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      background-color: rgba(0,0,255,.15);
-      transition: transform @animation-speed-normal @animation-type;
-      content: ' ';
-      width: (4*@rem);
-      z-index: 10;
-      transform: translate(-50%, -50%) scale(0, 0);
-    }
-
-    &:hover:before {
-      transform: translate(0, 0) scale(1, 1);
-    }
   }
 
   > .app-group-list-root {
     margin: 0;
-  }
-}
-
-.app-chat-group-list,
-.app-group-list-root {
-  > .app-group-list > .app-group-list {
-    > .heading {padding-left: (16*@rem);}
-    > .item {padding-left: (24*@rem);}
-  }
-  > .app-group-list > .app-group-list > .app-group-list {
-    > .heading {padding-left: (36*@rem);}
-    > .item {padding-left: (44*@rem);}
-  }
-  > .app-group-list > .app-group-list > .app-group-list .app-group-list {
-    > .heading {padding-left: (56*@rem);}
-    > .item {padding-left: (64*@rem);}
   }
 }
 
@@ -1125,41 +1091,29 @@
   }
 }
 
-.app-chat-share-dialog{
-  width: (650*@rem);
-  height: (400*@rem);
+.app-chat-share-dialog {
+  width: (744*@rem);
 
-  .app-chat-share{
-    height: (320*@rem);
-    
-    .app-chat-share-menu{
-      height: 100%;
-      overflow: hidden;
-      padding-bottom: 40px;
-      
-      .group-list{
-        height: 100%;
-        overflow: auto;
-      }
-    }
-
-    .app-chat-share-content{
-      height: 100%;
-      overflow: auto;
-      .app-group-list-root{
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        align-content: flex-start;
-        .item{
-          width: 8rem;
-          position: relative;
-          display: flex;
-        }
-      }
-    }
-  }
   .list > .list{
     margin-left: 1rem;
+  }
+}
+
+.app-chat-share {
+  min-height: (400*@rem);
+  max-height: (500*@rem);
+}
+
+.app-chat-share-content {
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  .item {
+    width: 8rem;
+    position: relative;
+    display: flex;
   }
 }

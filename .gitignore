@@ -45,6 +45,7 @@ xxc/app/manifest.json
 xxc/app/media-build
 
 # User custom files
+*.custom.*
 *.custom
 *-backup
 xxc/build/build-config.*.json

@@ -49,6 +49,7 @@ export default class ChatListItem extends Component {
         filterType: PropTypes.string,
         badge: PropTypes.any,
         notUserLink: PropTypes.any,
+        subname: PropTypes.any,
     };
 
     /**
@@ -65,6 +66,7 @@ export default class ChatListItem extends Component {
         filterType: null,
         badge: null,
         notUserLink: false,
+        subname: null,
     };
 
     /**
@@ -84,8 +86,7 @@ export default class ChatListItem extends Component {
             (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId) ||
             this.props.filterType !== nextProps.filterType ||
             this.props.badge !== nextProps.badge ||
-            this.props.notUserLink !== nextProps.notUserLink ||
-            this.lastChatIsActive !== App.im.ui.isActiveChat(nextProps.chat.gid)
+            this.props.notUserLink !== nextProps.notUserLink
         );
     }
 
@@ -105,35 +106,36 @@ export default class ChatListItem extends Component {
             badge,
             children,
             notUserLink,
+            subname,
             ...other
         } = this.props;
 
         this.lastChatUpdateId = chat.updateId;
-        this.lastChatIsActive = App.im.ui.isActiveChat(chat.gid);
 
         const name = chat.getDisplayName(App);
-        let subname = null;
-        if (chat.isOne2One) {
-            const theOtherOne = chat.getTheOtherOne(App);
-            this.lastOtherOneUpdateId = theOtherOne.updateId;
-            if (theOtherOne.isOffline) {
-                subname = `[${Lang.string('member.status.offline')}]`;
-            }
-        } else if (chat.isSystem) {
-            if (chat.isRobot) {
-                const robotSubName = Lang.string('common.littlexxSubname');
-                if (robotSubName !== name) {
-                    subname = `(${robotSubName})`;
+        if (!subname && subname !== false) {
+            if (chat.isOne2One) {
+                const theOtherOne = chat.getTheOtherOne(App);
+                this.lastOtherOneUpdateId = theOtherOne.updateId;
+                if (theOtherOne.isOffline) {
+                    subname = `[${Lang.string('member.status.offline')}]`;
                 }
-            } else {
-                subname = `(${Lang.format('chat.membersCount.format', Lang.string('chat.all'))})`;
+            } else if (chat.isSystem) {
+                if (chat.isRobot) {
+                    const robotSubName = Lang.string('common.littlexxSubname');
+                    if (robotSubName !== name) {
+                        subname = `(${robotSubName})`;
+                    }
+                } else {
+                    subname = `(${Lang.format('chat.membersCount.format', Lang.string('chat.all'))})`;
+                }
+            } else if (chat.isGroup) {
+                subname = `(${Lang.format('chat.membersCount.format', chat.getMembersCount(App.members))})`;
             }
-        } else if (chat.isGroup) {
-            subname = `(${Lang.format('chat.membersCount.format', chat.getMembersCount(App.members))})`;
         }
 
         if (!badge && badge !== false) {
-            const noticeCount = chat.noticeCount;
+            const {noticeCount} = chat;
             if (noticeCount) {
                 badge = <div className={classes('label circle label-sm', chat.isMuteOrHidden ? 'blue' : 'red')}>{noticeCount > 99 ? '99+' : noticeCount}</div>;
             } else if (chat.mute) {
@@ -146,7 +148,7 @@ export default class ChatListItem extends Component {
         if (notUserLink) {
             return (<a
                 href={notUserLink === 'disabled' ? null : `#${ROUTES.chats.chat.id(chat.gid, filterType)}`}
-                className={classes('app-chat-item flex-middle', className, {active: notUserLink !== 'disabled' && this.lastChatIsActive})}
+                className={classes('app-chat-item flex-middle', className)}
                 {...other}
             >
                 <ChatAvatar chat={chat} avatarClassName="avatar-sm" avatarSize={24} grayOffline className="flex-none" />
@@ -160,7 +162,7 @@ export default class ChatListItem extends Component {
         }
         return (<Link
             to={ROUTES.chats.chat.id(chat.gid, filterType)}
-            className={classes('app-chat-item flex-middle', className, {active: this.lastChatIsActive})}
+            className={classes('app-chat-item flex-middle', className)}
             {...other}
         >
             <ChatAvatar chat={chat} avatarClassName="avatar-sm" avatarSize={24} grayOffline className="flex-none" />

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Config from '../../config';
 import {Route, Redirect} from 'react-router-dom';
 import SplitPane from 'react-split-pane';
 import {classes} from '../../utils/html-helper';
@@ -108,27 +107,27 @@ export default class ChatsIndex extends Component {
             match
         } = this.props;
 
-        App.im.ui.activeChat(match.params.id);
-
-        return (<div className={classes('dock app-chats', className, {hidden})}>
-            <SplitPane split="vertical" maxSize={400} minSize={200} defaultSize={200} paneStyle={{userSelect: 'none'}}>
-                <Menu className="dock" filter={match.params.filterType} />
-                <ChatsCache onClick={this.handChatsCacheClick} className="dock" filterType={match.params.filterType} chatId={match.params.id}>
-                    <ChatsDndContainer className="dock" />
-                </ChatsCache>
-            </SplitPane>
-            <Route
-                path="/chats/:filterType"
-                exact
-                render={props => {
-                    const activeChatId = App.im.ui.currentActiveChatId;
-                    if (activeChatId) {
-                        return <Redirect to={`${props.match.url}/${activeChatId}`} />;
-                    }
-                    return null;
-                }}
-            />
-            <ChatsSuggestPanel />
-        </div>);
+        return (
+            <div className={classes('dock app-chats', className, {hidden})}>
+                <SplitPane split="vertical" maxSize={400} minSize={200} defaultSize={200} paneStyle={{userSelect: 'none'}}>
+                    <Menu className="dock" filter={match.params.filterType} activeChatId={match.params.id} />
+                    <ChatsCache onClick={this.handChatsCacheClick} className="dock" filterType={match.params.filterType} activeChatId={match.params.id}>
+                        <ChatsDndContainer className="dock" />
+                    </ChatsCache>
+                </SplitPane>
+                <Route
+                    path="/chats/:filterType"
+                    exact
+                    render={props => {
+                        const activeChatId = App.im.ui.currentActiveChatId;
+                        if (activeChatId) {
+                            return <Redirect to={`${props.match.url}/${activeChatId}`} />;
+                        }
+                        return null;
+                    }}
+                />
+                <ChatsSuggestPanel />
+            </div>
+        );
     }
 }

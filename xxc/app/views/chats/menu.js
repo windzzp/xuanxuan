@@ -49,6 +49,7 @@ export default class Menu extends Component {
         className: PropTypes.string,
         filter: PropTypes.string,
         children: PropTypes.any,
+        activeChatId: PropTypes.string,
     };
 
     /**
@@ -62,6 +63,7 @@ export default class Menu extends Component {
         className: null,
         filter: null,
         children: null,
+        activeChatId: null,
     };
 
     /**
@@ -146,6 +148,7 @@ export default class Menu extends Component {
             filter,
             className,
             children,
+            activeChatId,
             ...other
         } = this.props;
 
@@ -158,7 +161,7 @@ export default class Menu extends Component {
                 onSearchFocus={this.handleSearchFocusChange}
                 className="dock-top"
             />
-            <MenuList onRequestClearSearch={this.onRequestClearSearch} search={this.state.searchFocus ? this.state.search : ''} filter={filter} className="dock-bottom" />
+            <MenuList onRequestClearSearch={this.onRequestClearSearch} search={this.state.searchFocus ? this.state.search : ''} filter={filter} activeChatId={activeChatId} className="dock-bottom" />
             {children}
         </div>);
     }

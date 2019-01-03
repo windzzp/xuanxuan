@@ -10,6 +10,7 @@ import withReplaceView from '../with-replace-view';
  * @private
  */
 const WebViewFrame = withReplaceView(_WebViewFrame);
+
 /**
  * 在对话框中显示一个网页
  * @param {string} sourceUrl 网页源地址
