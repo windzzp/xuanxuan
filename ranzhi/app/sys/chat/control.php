@@ -36,9 +36,12 @@ class chat extends control
      */
     public function login($account = '', $password = '', $status = '', $userID = 0, $version = '')
     {
-        $this->app->loadModuleConfig('ldap');
-        if(empty($this->config->ldap->turnon)) $password = md5($password . $account);
         $user = $this->loadModel('user')->identify($account, $password);
+        if(!$user)
+        {
+            $password = md5($password . $account);
+            $user     = $this->loadModel('user')->identify($account, $password);
+        }
 
         if($user)
         {
