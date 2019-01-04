@@ -337,7 +337,6 @@ export const openCaptureScreenWindow = (file, display, onClosed) => {
             titleBarStyle: 'hidden',
             resizable: false,
             skipTaskbar: true,
-            kiosk: true,
         });
         if (DEBUG) {
             captureWindow.openDevTools();
