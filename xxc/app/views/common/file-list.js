@@ -88,7 +88,8 @@ export default class FileList extends Component {
      * @return {void}
      */
     handleRequestMorePage = () => {
-        this.setState({page: this.state.page + 1});
+        const {page} = this.state;
+        this.setState({page: page + 1});
     };
 
     /**
@@ -122,7 +123,7 @@ export default class FileList extends Component {
                 } else {
                     itemProps = listItemProps;
                 }
-                listViews.push(<FileListItem {...itemProps} key={file.id} file={file} />);
+                listViews.push(<FileListItem {...itemProps} key={`${i}-${file.id}`} file={file} />);
             }
             const notShowCount = files.length - maxIndex;
             if (notShowCount) {
@@ -130,9 +131,13 @@ export default class FileList extends Component {
             }
         }
 
-        return (<div
-            {...other}
-            className={HTML.classes('app-file-list list', className)}
-        >{listViews}</div>);
+        return (
+            <div
+                {...other}
+                className={HTML.classes('app-file-list list', className)}
+            >
+                {listViews}
+            </div>
+        );
     }
 }
