@@ -11,7 +11,7 @@ http://xuan.im
 
 ## 最近更新
 
-🎉 2.2 新增应用窗口多开和固定扩展应用图标到导航上的功能，修复了大量已知问题。[查看更新详情→](https://github.com/easysoft/xuanxuan/releases/tag/v2.2.0)
+🎉 2.3 本次更新增加多语言支持，新增消息批量分享、发送代码等功能，优化了图片浏览交互体验，并修复了一些 bug，欢迎大家更新体验。[查看更新详情→](https://github.com/easysoft/xuanxuan/releases/tag/v2.3.0)
 
 ## 特色功能
 
