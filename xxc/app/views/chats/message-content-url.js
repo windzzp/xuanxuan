@@ -220,14 +220,14 @@ export default class MessageContentUrl extends PureComponent {
         if (event.target.tagName === 'WEBVIEW') {
             return;
         }
-        const {url} = this.props;
-        showContextMenu('link', {
+        const {url, message} = this.props;
+        showContextMenu('link,message.url', {
             url,
             event,
+            message,
             options: {
                 copy: true,
                 selectAll: false,
-                linkTarget: true
             }
         });
     };
@@ -236,7 +236,7 @@ export default class MessageContentUrl extends PureComponent {
         const {url, message} = this.props;
         const {webviewContent, content} = card;
         const menu = [];
-        menu.push(...getMenuItemsForContext('link', {url}));
+        menu.push(...getMenuItemsForContext('link', {url, event: e}));
         menu.push({
             label: Lang.string('chat.share'),
             icon: 'mdi-share-outline',
