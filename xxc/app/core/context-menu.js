@@ -177,12 +177,32 @@ export const removeContextMenuCreator = creatorId => {
  * @return {Object[]}
  */
 export const getMenuItemsForContext = (contextName, context = {}) => {
+    if (typeof contextName === 'string' && contextName.includes(',')) {
+        contextName = contextName.split(',');
+    }
+    if (Array.isArray(contextName)) {
+        const items = [];
+        const {contexts, options} = context;
+        let linkTarget = options && options.linkTarget;
+        contextName.forEach(name => {
+            name = name.trim();
+            const theContext = Object.assign({}, context, contexts && contexts[name]);
+            if (linkTarget && theContext.options && theContext.options.linkTarget) {
+                linkTarget = false;
+            } else if (theContext.options) {
+                theContext.options.linkTarget = false;
+            }
+            items.push(...getMenuItemsForContext(name, theContext));
+        });
+        return items;
+    }
+
     const {event, options} = context;
     const items = [];
 
     // Get context menu items for link target element
     let linkItemsCount = 0;
-    if (event && options && options.linkTarget && event.target.tagName === 'A' && contextName !== 'link') {
+    if (event && options && options.linkTarget && contextName !== 'link') {
         const linkItems = getInnerMenuItemsForContext('link', context);
         if (linkItems && linkItems.length) {
             linkItemsCount = linkItems.length;
