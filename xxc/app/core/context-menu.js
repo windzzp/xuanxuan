@@ -326,7 +326,7 @@ export const showContextMenu = (contextName, context) => {
 // 添加链接上下文菜单生成器
 addContextMenuCreator('link', context => {
     const {event, options, url} = context;
-    const link = options && options.url ? options.url : (url || event.target.href);
+    const link = ((options && options.url ? options.url : (url || event.target.href)) || '').trim();
     if (isWebUrl(link)) {
         let linkText = document.getSelection().toString().trim();
         if (event && linkText === '') {
