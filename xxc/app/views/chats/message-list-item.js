@@ -223,7 +223,8 @@ export default class MessageListItem extends Component {
      * @return {void}
      */
     componentDidUpdate() {
-        if (!this.props.ignoreStatus) {
+        const {ignoreStatus} = this.props;
+        if (!ignoreStatus) {
             this.checkResendMessage();
         }
     }
@@ -401,10 +402,12 @@ export default class MessageListItem extends Component {
         }
 
         if (message.isBroadcast) {
-            return (<div className={classes('app-message-item app-message-item-broadcast', className)} {...other}>
-                {showDateDivider && <MessageDivider date={message.date} />}
-                <MessageBroadcast contentConverter={textContentConverter} style={basicFontStyle} message={message} />
-            </div>);
+            return (
+                <div className={classes('app-message-item app-message-item-broadcast', className)} {...other}>
+                    {showDateDivider && <MessageDivider date={message.date} />}
+                    <MessageBroadcast contentConverter={textContentConverter} style={basicFontStyle} message={message} />
+                </div>
+            );
         }
 
         const needCheckResend = !ignoreStatus && message.needCheckResend;
@@ -491,17 +494,21 @@ export default class MessageListItem extends Component {
         }
 
         if (!staticUI && !ignoreStatus && needResend) {
-            resendButtonsView = (<nav className="nav nav-sm app-message-item-actions">
-                <a onClick={this.handleResendBtnClick}><Icon name="refresh" /> {Lang.string('chat.message.resend')}</a>
-                <a onClick={this.handleDeleteBtnClick}><Icon name="delete" /> {Lang.string('common.delete')}</a>
-            </nav>);
+            resendButtonsView = (
+                <nav className="nav nav-sm app-message-item-actions">
+                    <a onClick={this.handleResendBtnClick}><Icon name="refresh" /> {Lang.string('chat.message.resend')}</a>
+                    <a onClick={this.handleDeleteBtnClick}><Icon name="delete" /> {Lang.string('common.delete')}</a>
+                </nav>
+            );
         }
 
         let actionsView = null;
         if (this.isTextContent || this.isImageContent || this.isFileContent) {
-            actionsView = (<div className="actions">
-                <div className="hint--top-left"><button className="btn btn-sm iconbutton rounded" type="button" onClick={this.handleShareBtnClick}><Icon name="dots-vertical" /></button></div>
-            </div>);
+            actionsView = (
+                <div className="actions">
+                    <div className="hint--top-left"><button className="btn btn-sm iconbutton rounded" type="button" onClick={this.handleShareBtnClick}><Icon name="dots-vertical" /></button></div>
+                </div>
+            );
         }
 
         return (

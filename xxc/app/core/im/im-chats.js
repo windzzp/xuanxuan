@@ -600,7 +600,7 @@ export const queryChats = (condition, sortList) => {
  * 获取最近激活的聊天
  * @param {bool} [includeStar=true] 是否包含收藏的聊天
  * @param {boolean|String|Function} sortList 是否排序或者指定排序规则
- * @return {Array.<Chat>}
+ * @return {Array<Chat>}
  */
 export const getRecentChats = (includeStar = true, sortList = true) => {
     const all = getAllChats();
