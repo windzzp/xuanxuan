@@ -102,7 +102,7 @@ export default class ChatSendCode extends Component {
                     options={codeLanguage}
                     className="dock dock-right dock-top"
                     selectClassName="rounded"
-                    onChange={this.handleCodeChange.bind(this, 'language')}
+                    onChange={this.handleCodeChange}
                 />
                 <div className={classes('control', {'has-error': requireCodeWarning})}>
                     <textarea
