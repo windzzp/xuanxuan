@@ -2,7 +2,7 @@
 
 ## v 2.3.0
 
-[2019-01-03]
+[2019-01-04]
 
 本次更新增加多语言支持，新增消息批量分享、发送代码等功能，优化了图片浏览交互体验，并修复了一些 bug，欢迎大家更新体验。
 
@@ -22,7 +22,8 @@
 * 修复 在 Mac 上点击程序坞上的应用图标没有激活最后一个应用窗口的问题；
 * 修复 设置聊天白名单复选框勾选没有反应的问题（[bug #67](http://xuan.5upm.com/bug-view-67.html)）；
 * 修复 在 Windows 扩展图标有时无法正确显示的问题；
-* 修复 应用内页面有时无法激活输入框的问题（[electron issue #15318](https://github.com/electron/electron/issues/15318)、[issue #14474](https://github.com/electron/electron/issues/14474)），
+* 修复 应用内页面有时无法激活输入框的问题（[electron issue #15318](https://github.com/electron/electron/issues/15318)、[issue #14474](https://github.com/electron/electron/issues/14474)）；
+* 修复 截图操作之后同时出现两个通知栏图标的问题；
 * 开发相关：
   * 客户端：
     * 增加 复制聊天 ID 功能（在聊天列表上点击右键复制 ID，或者点击讨论组图标进行复制）；
@@ -38,6 +39,19 @@
     * 修复 了扩展远程设置有时失效的问题。
   * 后端（xxb）:
     * 数据表 `sys_user` 中的 `status` 字段名称变更为 `clientStatus`；
+
+### 下载地址
+
+本次 2.3.0 更新只包括客户端部分，XXD 仍然是 2.2.0 版本，XXB 版本为 2.1.0。
+
+* Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.win.debug.setup.exe)；
+* MacOS：[xuanxuan.2.3.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.mac.dmg)；
+* Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.linux.amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.linux.x86_64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.linux.i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.linux.i686.rpm)；
+* 浏览器端：[xuanxuan.2.3.0.browser.zip](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.browser.zip)；
+* XXD Server： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.linux.ia32.tar.gz)；
+* 服务器端：
+  * XXB 2.1：[Windows 64位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb.2.1.0.win64.exe)、[Windows 32位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb.2.1.0.win32.exe)、[Linux 64位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb.2.1.0.zbox_64.tar.gz)、[Linux 32位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb.2.1.0.zbox_32.tar.gz)、[Linux rpm安装包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb-2.1.0-1.noarch.rpm)、[Linux deb安装包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxb_2.1.0_1_all.deb)；
+  * 然之：[5.0.0 稳定版](https://www.ranzhi.org/download/5.0.stable-134.html)、[扩展包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.ranzhi.2.2.0.zip)。
 
 ## v 2.2.0
 
