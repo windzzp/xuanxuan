@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
  * @param {{left: number, top: number, width: number, height: number}} rect 要判定对矩形区域
  * @return {boolean} 如果在矩形区域内则返回 <code>true</code> 否则 返回 <code>false</code>
  */
-const isPiontInRect = (point, rect) => (
+const isPointInReact = (point, rect) => (
     rect.width > 0 && rect.height > 0
         && point.left >= rect.left
         && point.left <= (rect.left + rect.width)
@@ -28,7 +28,7 @@ const isPiontInRect = (point, rect) => (
 const caculatePosition = (pos, area) => {
     const halfHotSize = 5;
     const hotSize = halfHotSize + halfHotSize;
-    if (isPiontInRect(pos, {
+    if (isPointInReact(pos, {
         left: area.left + halfHotSize,
         top: area.top + halfHotSize,
         width: area.width - hotSize,
@@ -36,7 +36,7 @@ const caculatePosition = (pos, area) => {
     })) {
         return 'center';
     }
-    if (isPiontInRect(pos, {
+    if (isPointInReact(pos, {
         left: area.left - halfHotSize,
         top: area.top + halfHotSize,
         width: hotSize,
@@ -44,7 +44,7 @@ const caculatePosition = (pos, area) => {
     })) {
         return 'left';
     }
-    if (isPiontInRect(pos, {
+    if (isPointInReact(pos, {
         left: (area.left + area.width) - halfHotSize,
         top: area.top + halfHotSize,
         width: hotSize,
@@ -52,7 +52,7 @@ const caculatePosition = (pos, area) => {
     })) {
         return 'right';
     }
-    if (isPiontInRect(pos, {
+    if (isPointInReact(pos, {
         left: area.left + halfHotSize,
         top: area.top - halfHotSize,
         width: area.width - hotSize,
@@ -60,7 +60,7 @@ const caculatePosition = (pos, area) => {
     })) {
         return 'top';
     }
-    if (isPiontInRect(pos, {
+    if (isPointInReact(pos, {
         left: area.left + halfHotSize,
         top: (area.top + area.height) - halfHotSize,
         width: area.width - hotSize,
@@ -68,7 +68,7 @@ const caculatePosition = (pos, area) => {
     })) {
         return 'bottom';
     }
-    if (isPiontInRect(pos, {
+    if (isPointInReact(pos, {
         left: area.left - halfHotSize,
         top: area.top - halfHotSize,
         width: hotSize,
@@ -76,7 +76,7 @@ const caculatePosition = (pos, area) => {
     })) {
         return 'top-left';
     }
-    if (isPiontInRect(pos, {
+    if (isPointInReact(pos, {
         left: (area.left + area.width) - halfHotSize,
         top: area.top - halfHotSize,
         width: hotSize,
@@ -84,7 +84,7 @@ const caculatePosition = (pos, area) => {
     })) {
         return 'top-right';
     }
-    if (isPiontInRect(pos, {
+    if (isPointInReact(pos, {
         left: area.left - halfHotSize,
         top: (area.top + area.height) - halfHotSize,
         width: hotSize,
@@ -92,7 +92,7 @@ const caculatePosition = (pos, area) => {
     })) {
         return 'bottom-left';
     }
-    if (isPiontInRect(pos, {
+    if (isPointInReact(pos, {
         left: (area.left + area.width) - halfHotSize,
         top: (area.top + area.height) - halfHotSize,
         width: hotSize,
