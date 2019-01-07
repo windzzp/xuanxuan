@@ -9,7 +9,7 @@ import {
 import Modal from '../components/modal';
 import Messager from '../components/messager';
 import ExtensionDetailDialog from '../views/exts/extension-detail-dialog';
-import ExtensionShareDialog from '../views/exts/extension-share-dialog';
+import ChatShareDialog from '../views/chats/chat-share-dialog';
 import platform from '../platform';
 
 // 从平台功能访问对象获取功能模块对象
@@ -374,10 +374,13 @@ export const createAppContextMenu = appExt => {
         });
         items.push({
             label: Lang.string('ext.app.share'),
-            click: () => appExt.getEntryUrl().then(url => {
-                const promise = {app: {_webViewUrl: url}};
-                ExtensionShareDialog.show(promise);
-                return url;
+            click: () => appExt.getEntryUrl().then(urlVal => {
+                const message = {
+                    _entityType: 'AppUrl',
+                    url: urlVal,
+                };
+                ChatShareDialog.show(message);
+                return urlVal;
             })
         });
     }
@@ -431,7 +434,11 @@ export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
         items.push({
             label: Lang.string('ext.app.share'),
             click: () => {
-                ExtensionShareDialog.show(theOpenedApp);
+                const message = {
+                    _entityType: 'AppUrl',
+                    url: theOpenedApp.app._webViewUrl,
+                };
+                ChatShareDialog.show(message);
             }
         });
         items.push({
