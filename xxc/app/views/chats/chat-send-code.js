@@ -45,10 +45,10 @@ export default class ChatSendCode extends Component {
     }
 
     /**
-     * 处理待办属性变更事件
+     * 处理代码变更事件
      * @param {Event} e 事件对象
-     * @memberof TodoEditer
      * @private
+     * @memberof ChatSendCode
      * @return {void}
      */
     handleCodeChange = (e) => {
@@ -59,7 +59,18 @@ export default class ChatSendCode extends Component {
             newState.requireCodeWarning = false;
         }
         this.setState(newState);
-    }
+    };
+
+    /**
+     * 处理语言变更事件
+     * @param {String} language select 组件变更的值
+     * @memberof ChatSendCode
+     * @private
+     * @return {void}
+     */
+    handleLangChange = language => {
+        this.setState({language});
+    };
 
     /**
      *  获取发送的语言和内容
@@ -75,6 +86,7 @@ export default class ChatSendCode extends Component {
      * 设置是否显示需要代码的提示
      * @param {boolean} [requireCodeWarning=true] 如果为 `true`，则显示需要代码的提示
      * @return {void}
+     * @memberof ChatSendCode
      */
     setRequireCodeWarning(requireCodeWarning = true) {
         this.setState({requireCodeWarning});
@@ -85,7 +97,7 @@ export default class ChatSendCode extends Component {
      * @private
      * @see https://doc.react-china.org/docs/react-component.html#render
      * @see https://doc.react-china.org/docs/rendering-elements.html
-     * @memberof ChatCode
+     * @memberof ChatSendCode
      * @return {ReactNode|string|number|null|boolean} React 渲染内容
      */
     render() {
@@ -102,7 +114,7 @@ export default class ChatSendCode extends Component {
                     options={codeLanguage}
                     className="dock dock-right dock-top"
                     selectClassName="rounded"
-                    onChange={this.handleCodeChange}
+                    onChange={this.handleLangChange}
                 />
                 <div className={classes('control', {'has-error': requireCodeWarning})}>
                     <textarea
