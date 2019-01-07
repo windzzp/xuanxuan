@@ -496,7 +496,6 @@ export const forwardMessage = async (originMessage, chats, onProgress) => {
     if (!Array.isArray(chats)) {
         chats = [chats];
     }
-    const isFromAppUrl = originMessage._entityType === "AppUrl" ? true : false;
     const forwardMessageData = {
         forwardFrom: {
             gid: originMessage.gid,
@@ -509,27 +508,46 @@ export const forwardMessage = async (originMessage, chats, onProgress) => {
         if (onProgress) {
             onProgress(i / chats.length, i + 1, chats.length, chat);
         }
-
-        if(!isFromAppUrl)
-        {
-            const message = new ChatMessage({
-                user: profile.userId,
-                cgid: chat.gid,
-                type: originMessage.type,
-                content: originMessage.content,
-                contentType: originMessage.contentType,
-                data: forwardMessageData
-            });
-            await sendChatMessage(message, chat); // eslint-disable-line
-        }else{
-            const message = createUrlObjectMessage(originMessage.url, chat);
-            await sendChatMessage(message, chat); // eslint-disable-line
-        }
+        const message = new ChatMessage({
+            user: profile.userId,
+            cgid: chat.gid,
+            type: originMessage.type,
+            content: originMessage.content,
+            contentType: originMessage.contentType,
+            data: forwardMessageData
+        });
+        await sendChatMessage(message, chat); // eslint-disable-line
     }
     if (onProgress) {
         onProgress(1, chats.length, chats.length);
     }
 };
+
+/**
+ * 分享应用Url到其他聊天
+ * @param {ChatMessage} originMessage 要转发的原始消息
+ * @param {Chat|Array<Chat>} chats 要转发到哪些聊天
+ * @param {function(number)} onProgress 发送进度变更回调函数
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const shareMessage = async (originMessage, chats, onProgress) => {
+    if (!Array.isArray(chats)) {
+        chats = [chats];
+    }
+    for (let i = 0; i < chats.length; ++i) {
+        const chat = chats[i];
+        if (onProgress) {
+            onProgress(i / chats.length, i + 1, chats.length, chat);
+        }
+        const message = createUrlObjectMessage(originMessage.url, chat);
+        console.log(message)
+        await sendChatMessage(message, chat); // eslint-disable-line
+    }
+    if (onProgress) {
+        onProgress(1, chats.length, chats.length);
+    }
+};
+
 
 /**
  * 创建一个 Emoji 聊天消息
@@ -963,6 +981,7 @@ export default {
     inviteMembersToChat,
     fetchPublicChats,
     forwardMessage,
+    shareMessage,
     sendImageMessage,
     sendFileMessage,
     createBoardChatMessage,

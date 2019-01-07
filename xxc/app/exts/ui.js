@@ -376,7 +376,7 @@ export const createAppContextMenu = appExt => {
             label: Lang.string('ext.app.share'),
             click: () => appExt.getEntryUrl().then(urlVal => {
                 const message = {
-                    _entityType: 'AppUrl',
+                    _entityType: 'appUrl',
                     url: urlVal,
                 };
                 ChatShareDialog.show(message);
@@ -435,7 +435,7 @@ export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
             label: Lang.string('ext.app.share'),
             click: () => {
                 const message = {
-                    _entityType: 'AppUrl',
+                    _entityType: 'appUrl',
                     url: theOpenedApp.app._webViewUrl,
                 };
                 ChatShareDialog.show(message);
