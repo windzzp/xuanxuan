@@ -9,6 +9,7 @@ import {
 import Modal from '../components/modal';
 import Messager from '../components/messager';
 import ExtensionDetailDialog from '../views/exts/extension-detail-dialog';
+import ExtensionShareDialog from '../views/exts/extension-share-dialog';
 import platform from '../platform';
 
 // 从平台功能访问对象获取功能模块对象
@@ -371,6 +372,14 @@ export const createAppContextMenu = appExt => {
                 return url;
             })
         });
+        items.push({
+            label: Lang.string('ext.app.share'),
+            click: () => appExt.getEntryUrl().then(url => {
+                const promise = {app: {_webViewUrl: url}};
+                ExtensionShareDialog.show(promise);
+                return url;
+            })
+        });
     }
 
     if (appExt.canPinnedOnMenu) {
@@ -419,6 +428,12 @@ export const createAppContextMenu = appExt => {
 export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
     const items = [];
     if (theOpenedApp.webview) {
+        items.push({
+            label: Lang.string('ext.app.share'),
+            click: () => {
+                ExtensionShareDialog.show(theOpenedApp);
+            }
+        });
         items.push({
             label: Lang.string('ext.app.refresh'),
             click: () => {

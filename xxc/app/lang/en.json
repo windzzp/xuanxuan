@@ -380,6 +380,7 @@
     "ext.home.manageInExtensionsApp": "Manage in extension",
     "ext.home.addMoreApps": "Add more",
     "ext.app.open": "Open",
+    "ext.app.share": "Share",
     "ext.app.about": "About",
     "ext.app.openInBrowser": "Open in browser",
     "ext.app.copyUrl": "copy link",

@@ -496,6 +496,7 @@ export const forwardMessage = async (originMessage, chats, onProgress) => {
     if (!Array.isArray(chats)) {
         chats = [chats];
     }
+    const isFromAppUrl = originMessage._entityType === "AppUrl" ? true : false;
     const forwardMessageData = {
         forwardFrom: {
             gid: originMessage.gid,
@@ -508,15 +509,22 @@ export const forwardMessage = async (originMessage, chats, onProgress) => {
         if (onProgress) {
             onProgress(i / chats.length, i + 1, chats.length, chat);
         }
-        const message = new ChatMessage({
-            user: profile.userId,
-            cgid: chat.gid,
-            type: originMessage.type,
-            content: originMessage.content,
-            contentType: originMessage.contentType,
-            data: forwardMessageData
-        });
-        await sendChatMessage(message, chat); // eslint-disable-line
+
+        if(!isFromAppUrl)
+        {
+            const message = new ChatMessage({
+                user: profile.userId,
+                cgid: chat.gid,
+                type: originMessage.type,
+                content: originMessage.content,
+                contentType: originMessage.contentType,
+                data: forwardMessageData
+            });
+            await sendChatMessage(message, chat); // eslint-disable-line
+        }else{
+            const message = createUrlObjectMessage(originMessage.url, chat);
+            await sendChatMessage(message, chat); // eslint-disable-line
+        }
     }
     if (onProgress) {
         onProgress(1, chats.length, chats.length);

@@ -383,6 +383,7 @@
     "ext.home.manageInExtensionsApp": "在扩展中管理",
     "ext.home.addMoreApps": "添加更多应用",
     "ext.app.open": "打开",
+    "ext.app.share": "分享",
     "ext.app.about": "关于",
     "ext.app.openInBrowser": "在浏览器中打开",
     "ext.app.copyUrl": "复制链接",
