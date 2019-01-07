@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../../utils/html-helper';
-import DateHelper from '../../utils/date-helper';
+import {classes} from '../../utils/html-helper';
+import {formatDate, isToday, isYestoday} from '../../utils/date-helper';
 import Lang from '../../core/lang';
 
 /**
@@ -67,16 +67,18 @@ export default class MessageDivider extends PureComponent {
 
         let dateStr = null;
         if (date) {
-            dateStr = DateHelper.formatDate(date, 'YYYY-M-d');
-            if (DateHelper.isToday(date)) {
+            dateStr = formatDate(date, 'YYYY-M-d');
+            if (isToday(date)) {
                 dateStr = `${Lang.string('time.today')} ${dateStr}`;
-            } else if (DateHelper.isYestoday(date)) {
+            } else if (isYestoday(date)) {
                 dateStr = `${Lang.string('time.yestoday')} ${dateStr}`;
             }
         }
 
-        return (<div className={HTML.classes('app-message-divider', className)} {...other}>
-            <div className="content">{dateStr}{children}</div>
-        </div>);
+        return (
+            <div className={classes('app-message-divider', className)} {...other}>
+                <div className="content">{dateStr}{children}</div>
+            </div>
+        );
     }
 }

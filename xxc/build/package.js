@@ -65,19 +65,17 @@ const customFormatString = (str, format, ...args) => {
 const isEmpty = val => val === undefined || val === null || !val.length;
 
 // 复制文件
-const copyFiles = (source, dest, options) => {
-    return new Promise((resolve, reject) => {
-        cpx.copy(source, dest, options, err => {
-            if (err) {
-                console.error(`复制文件失败，原路径：${source} 目标路径：${dest}`, err);
-                reject(err);
-            } else {
-                console.log(`    ${chalk.green(chalk.bold('✓'))} 复制 ${chalk.underline(source)} → ${chalk.underline(dest)}`);
-                resolve(dest);
-            }
-        });
+const copyFiles = (source, dest, options) => new Promise((resolve, reject) => {
+    cpx.copy(source, dest, options, err => {
+        if (err) {
+            console.error(`复制文件失败，原路径：${source} 目标路径：${dest}`, err);
+            reject(err);
+        } else {
+            console.log(`    ${chalk.green(chalk.bold('✓'))} 复制 ${chalk.underline(source)} → ${chalk.underline(dest)}`);
+            resolve(dest);
+        }
     });
-};
+});
 
 // 获取当前操作系统平台类型
 const getCurrentPlatform = () => {
