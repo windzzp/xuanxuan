@@ -150,7 +150,7 @@ export default class MessageContentUrl extends PureComponent {
      */
     getFluidCardWidth = () => {
         const {cgid} = this.props;
-        const messageListEle = document.querySelector(cgid ? `#chat-view-${cgid} .app-message-list` : '.app-chats .app-chat:not(.hidden) .app-message-list');
+        const messageListEle = document.querySelector(cgid ? `#chat-view-${cgid.replace('&', '_')} .app-message-list` : '.app-chats .app-chat:not(.hidden) .app-message-list');
         if (messageListEle) {
             return messageListEle.clientWidth - 80;
         }
