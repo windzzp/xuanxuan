@@ -123,7 +123,7 @@ export default class WebView extends PureComponent {
         modalId: null,
         fluidWidth: null,
         type: 'auto',
-        showCondition: 'domReady',
+        showCondition: 'immediately',
         loadingContent: null,
         maxLoadingTime: 10000,
     };
