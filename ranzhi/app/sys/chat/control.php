@@ -55,13 +55,10 @@ class chat extends control
 
                 $this->loadModel('action')->create('user', $user->id, 'loginXuanxuan', '', 'xuanxuan-v' . (empty($version) ? '?' : $version), $user->account);
 
-                $users = $this->chat->getUserList($status = 'online');
-                $user->signed = $this->chat->getSignedTime($account);
-
+                $user->signed    = $this->chat->getSignedTime($account);
                 $user->ranzhiUrl = commonModel::getSysURL();
                 $user->status    = $user->clientStatus;
 
-                $this->output->users = array_keys($users);
                 $this->output->data  = $user;
             }
         }
