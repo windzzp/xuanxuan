@@ -728,16 +728,19 @@ export const getContactsChats = (sortList = 'onlineFirst', groupedBy = false) =>
     }
     if (groupedBy === 'dept') {
         const groupsMap = {};
-        Object.keys(members.depts).forEach(deptId => {
-            const dept = members.depts[deptId];
-            groupsMap[deptId] = {
-                id: deptId,
-                title: dept.name,
-                dept,
-                list: [],
-                onlineCount: 0
-            };
-        });
+        const {depts} = members;
+        if (depts) {
+            Object.keys(depts).forEach(deptId => {
+                const dept = depts[deptId];
+                groupsMap[deptId] = {
+                    id: deptId,
+                    title: dept.name,
+                    dept,
+                    list: [],
+                    onlineCount: 0
+                };
+            });
+        }
         contactChats.forEach(chat => {
             const member = chat.getTheOtherOne(app);
             const isDeleteOne2One = member.isDeleted;
