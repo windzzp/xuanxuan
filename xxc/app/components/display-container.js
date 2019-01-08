@@ -110,7 +110,13 @@ export default class DisplayContainer extends Component {
                     item.ref.loadContent(content);
                 }
                 all[id] = Object.assign(item, {props});
-                this.setState({all}, callback);
+                this.setState({all}, () => {
+                    if (!item.ref.isShow) {
+                        item.ref.show(callback);
+                    } else if (callback) {
+                        callback();
+                    }
+                });
             } else {
                 if (cache && style) {
                     item.ref.setStyle(style);
