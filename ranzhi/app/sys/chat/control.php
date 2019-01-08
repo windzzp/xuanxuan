@@ -940,20 +940,39 @@ class chat extends control
             }
         }
 
-        /* Create messages. */
-        $messages = $this->chat->createMessage($messages, $userID);
-        $this->chat->saveOfflineMessages($messages, $offlineUsers);
-
-        if(dao::isError())
+        if(isset($message->deleted) and $message->deleted)
         {
-            $this->output->result  = 'fail';
-            $this->output->message = 'Send message failed.';
+            $messages = $this->chat->retract($message->gid);
+
+            if(dao::isError())
+            {
+                $this->output->result  = 'fail';
+                $this->output->message = 'Retract message failed.';
+            }
+            else
+            {
+                $this->output->result = 'success';
+                $this->output->users  = $onlineUsers;
+                $this->output->data   = $messages;
+            }
         }
         else
         {
-            $this->output->result = 'success';
-            $this->output->users  = $onlineUsers;
-            $this->output->data   = $messages;
+            /* Create messages. */
+            $messages = $this->chat->createMessage($messages, $userID);
+            $this->chat->saveOfflineMessages($messages, $offlineUsers);
+
+            if(dao::isError())
+            {
+                $this->output->result  = 'fail';
+                $this->output->message = 'Send message failed.';
+            }
+            else
+            {
+                $this->output->result = 'success';
+                $this->output->users  = $onlineUsers;
+                $this->output->data   = $messages;
+            }
         }
 
         die($this->app->encrypt($this->output));
