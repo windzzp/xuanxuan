@@ -335,14 +335,14 @@ func ReportAndGetNotify(server string, lang string) (map[int64][]byte, error) {
         return nil, util.Errorf("%s\n", "no ranzhi server name")
     }
     //get offline data and sendfail message id from SQLite.
-    offline, _ := util.DBSelectOffline(server)
+    offline, _  := util.DBSelectOffline(server)
     sendfail, _ := util.DBSelectSendfail(server)
 
     //create json map for xxb
     trunk := make(map[string]interface{})
     params := make(map[string]interface{})
 
-    params["offline"] = offline
+    params["offline"]  = offline
     params["sendfail"] = sendfail
 
     trunk["module"] = "chat"
@@ -364,16 +364,18 @@ func ReportAndGetNotify(server string, lang string) (map[int64][]byte, error) {
 
     messageList := make(map[int64][]byte)
     switch decodeData["data"].(type) {
-      case map[string]interface{} :
-          data := decodeData["data"].(map[string]interface{})
-          for userID, messages := range data {
-              userNotify := make(map[string]interface{})
-              userNotify["module"] = "chat"
-              userNotify["method"] = "notify"
-              userNotify["data"] = messages
-              uid, _ := util.String2Int64(userID)
-              messageList[uid] = ApiUnparse(userNotify, util.Token)
-          }
+        case map[string]interface{} :
+            data := decodeData["data"].(map[string]interface{})
+            for userID, messages := range data {
+                if messages != nil && messages != "" {
+                    userNotify := make(map[string]interface{})
+                    userNotify["module"] = "chat"
+                    userNotify["method"] = "notify"
+                    userNotify["data"]   = messages
+                    uid, _ := util.String2Int64(userID)
+                    messageList[uid] = ApiUnparse(userNotify, util.Token)
+                }
+            }
     }
 
     go util.DBDeleteOffline(server, offline)
