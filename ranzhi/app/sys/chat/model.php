@@ -188,30 +188,6 @@ class chatModel extends model
     }
 
     /**
-     * Retract one message.
-     * 
-     * @param  string $gid 
-     * @access public
-     * @return void
-     */
-    public function retract($gid = '')
-    {
-        $message = $this->dao->select('id, gid, cgid, user, date, order, deleted')->from(TABLE_IM_MESSAGE)->where('gid')->eq($gid)->fetch();
-
-        $messageLife = (strtotime(helper::now()) - strtotime($message->date)) / 60;
-        if($messageLife <= $this->config->chat->retract->validTime)
-        {
-            $message->deleted = 1;
-            $this->dao->update(TABLE_IM_MESSAGE)->set('deleted')->eq($message->deleted)->where('gid')->eq($gid)->exec();
-        }
-
-        $messages = array();
-        $messages[] = $message;
-
-        return $messages;
-    }
-
-    /**
      * Get message list.
      *
      * @param  array  $idList
@@ -663,6 +639,30 @@ class chatModel extends model
         $this->dao->update(TABLE_IM_CHAT)->set('lastActiveTime')->eq(helper::now())->where('gid')->in($chatList)->exec();
 
         return $this->getMessageList($idList);
+    }
+
+    /**
+     * Retract one message.
+     *
+     * @param  string $gid
+     * @access public
+     * @return void
+     */
+    public function retractMessage($gid = '')
+    {
+        $message = $this->dao->select('id, gid, cgid, user, date, order, deleted')->from(TABLE_IM_MESSAGE)->where('gid')->eq($gid)->fetch();
+
+        $messageLife = (strtotime(helper::now()) - strtotime($message->date)) / 60;
+        if($messageLife <= $this->config->chat->retract->validTime)
+        {
+            $message->deleted = 1;
+            $this->dao->update(TABLE_IM_MESSAGE)->set('deleted')->eq($message->deleted)->where('gid')->eq($gid)->exec();
+        }
+
+        $messages = array();
+        $messages[] = $message;
+
+        return $messages;
     }
 
     /**
