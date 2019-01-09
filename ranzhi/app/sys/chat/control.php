@@ -914,6 +914,18 @@ class chat extends control
 
             $errors[] = $error;
         }
+        elseif($chat->type == 'group')
+        {
+            $members = $this->chat->getMemberListByGID($chat->gid);
+            if(!in_array($message->user, $members))
+            {
+                $error = new stdclass();
+                $error->gid      = $message->cgid;
+                $error->messages = $this->lang->chat->notInGroup;
+
+                $errors[] = $error;
+            }
+        }
 
         if($errors)
         {
