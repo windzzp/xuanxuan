@@ -7,6 +7,7 @@ import members from '../members';
 import imServer, {handleReceiveChatMessages, handleInitChats, updateChatHistory} from './im-server';
 import imUI from './im-ui';
 import Config from '../../config';
+import {updateChatTyping} from './im-chat-typing';
 
 /**
  * 处理服务器推送修改聊天名称消息
@@ -341,6 +342,21 @@ const chatNotify = (msg, socket) => {
 };
 
 /**
+ * 处理聊天用户状态变更事件
+ * @param {SocketMessage} msg Socket 消息对象
+ * @return {boolean} 返回操作结果
+ * @private
+ */
+const chatTyping = (msg) => {
+    if (msg.isSuccess) {
+        const {data} = msg;
+        if (data) {
+            updateChatTyping(data.cgid, data.typing, data.user);
+        }
+    }
+};
+
+/**
  * Socket 服务器推送消息处理函数
  * @type {Object<string, Function(msg: SocketMessage, socket: Socket)>}
  */
@@ -360,5 +376,6 @@ export default {
     'chat/dismiss': chatDismiss,
     'chat/changepublic': chatChangepublic,
     'chat/getpubliclist': chatGetpubliclist,
-    'chat/notify': chatNotify
+    'chat/notify': chatNotify,
+    'chat/typing': chatTyping,
 };
