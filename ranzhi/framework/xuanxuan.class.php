@@ -40,9 +40,7 @@ class xuanxuan extends router
 
         $this->setViewType();
         $this->setInput();
-
-        $lang = empty($this->input['lang']) ? 'zh-cn' : $this->input['lang'];
-        $this->setClientLang($lang);
+        $this->setXXBLang();
     }
 
     /**
@@ -76,6 +74,20 @@ class xuanxuan extends router
         $this->input['method']  = !empty($input->method) ? $input->method : '';
         $this->input['lang']    = !empty($input->lang)   ? $input->lang   : '';
         $this->input['params']  = !empty($input->params) ? $input->params : array();
+    }
+
+    /**
+     * Set xxb lang.
+     *
+     * @access public
+     * @return void
+     */
+    public function setXXBLang()
+    {
+        $row = $this->dbh->query('SELECT `value` FROM ' . TABLE_CONFIG . " WHERE `owner`='system' AND `module`='common' AND `section`='xuanxuan' AND `key`='xxbLang'")->fetch();
+        $xxbLang = empty($row) ? 'zh-cn' : $row->value;
+
+        $this->setClientLang($xxbLang);
     }
 
     /**
