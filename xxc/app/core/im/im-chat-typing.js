@@ -71,7 +71,7 @@ export const sendChatTyping = (chat, typing) => {
 export const updateChatSendboxStatus = (chat, hasContent) => {
     const user = getCurrentUser();
     if (!user || !user.isVersionSupport('chatTyping')) {
-        // return;
+        return;
     }
 
     const status = chatSendboxStatus[chat.gid] || {
