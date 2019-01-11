@@ -87,11 +87,13 @@ func switchMethod(message []byte, parseData api.ParseData, client *Client) error
 
     switch parseData.Module() + "." + parseData.Method() {
     case "chat.login":
-
         if err := chatLogin(parseData, client); err != nil {
             return err
         }
+        break
 
+    case "chat.typing":
+        chatTyping(parseData, client)
         break
 
     case "chat.logout":
@@ -112,6 +114,31 @@ func switchMethod(message []byte, parseData api.ParseData, client *Client) error
     }
 
     return nil
+}
+
+func chatTyping(parseData api.ParseData, client *Client) error {
+
+    params, _ := parseData["params"]
+    ret := params.([]interface{})
+
+    typingData := make(map[string]interface{})
+    typingData["cgid"]   = ret[1]
+    typingData["typing"] = ret[2]
+    typingData["user"]   = parseData["userID"]
+
+    typing := make(map[string]interface{})
+    typing["module"] = "chat"
+    typing["method"] = "typing"
+    typing["result"] = "success"
+    typing["data"]   = typingData
+
+    x2cMessage := api.ApiUnparse(typing, util.Token)
+    sendUsers := make([]int64, len(ret[0].([]interface{})))
+    for i, v := range ret[0].([]interface{}) {
+        sendUsers[i] = int64(v.(float64))
+    }
+
+    return X2cSend(client.serverName, sendUsers, x2cMessage, client)
 }
 
 //用户登录

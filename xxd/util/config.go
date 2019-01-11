@@ -120,18 +120,18 @@ func getCommonPort(config *goconfig.ConfigFile) (err error) {
 func getIsHttps(config *goconfig.ConfigFile) (err error) {
     https, err := config.GetValue("server", "https")
     if err != nil {
+        https, err := config.GetValue("server", "isHttps")
+        if err != nil {
+            log.Fatal("config: get server https error,", err)
+        }
+        Config.IsHttps = https
+    } else {
         https = removeComment(https)
         if https == "on"{
             Config.IsHttps = "1"
         } else {
             Config.IsHttps = "0"
         }
-    } else {
-        https, err := config.GetValue("server", "isHttps")
-        if err != nil {
-            log.Fatal("config: get server https error,", err)
-        }
-        Config.IsHttps = https
     }
     return
 }
