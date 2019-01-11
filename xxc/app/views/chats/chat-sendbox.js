@@ -9,6 +9,7 @@ import _DraftEditor from '../common/draft-editor';
 import _ChatSendboxToolbar from './chat-sendbox-toolbar';
 import MessagesPreivewDialog from './messages-preview-dialog';
 import withReplaceView from '../with-replace-view';
+import {updateChatSendboxStatus} from '../../core/im/im-chat-typing';
 
 /**
  * DraftEditor 可替换组件形式
@@ -76,7 +77,8 @@ export default class ChatSendbox extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sendButtonDisabled: true
+            sendButtonDisabled: true,
+            typing: false,
         };
     }
 
@@ -214,7 +216,12 @@ export default class ChatSendbox extends Component {
      * @return {void}
      */
     handleOnChange = (contentState) => {
-        this.setState({sendButtonDisabled: !contentState.hasText()});
+        const {chat} = this.props;
+        const hasContent = contentState.hasText();
+        this.setState({sendButtonDisabled: !hasContent});
+        if (chat.isOne2One) {
+            updateChatSendboxStatus(chat, hasContent);
+        }
     }
 
     /**

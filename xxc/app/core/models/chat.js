@@ -993,6 +993,15 @@ export default class Chat extends Entity {
     }
 
     /**
+     * 获取聊天成员中除了我之外的其他用户 ID
+     * @param {String|number} currentUserID 当前用户 ID
+     * @return {Array<String|number>} 返回其他用户ID列表
+     */
+    getOtherMembersID(currentUserID) {
+        return Array.from(this.members).filter(x => x !== currentUserID);
+    }
+
+    /**
      * 获取一对一聊天对方成员
      *
      * @param {{members: {get: function(id: number):Member}}} app 用于获取系统成员的辅助对象

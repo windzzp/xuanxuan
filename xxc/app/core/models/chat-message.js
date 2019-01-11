@@ -3,6 +3,11 @@ import Status from '../../utils/status';
 import Member from './member';
 
 /**
+ * 允许用户发送消息后在此时间内删除消息
+ */
+const DELETE_MESSAGE_TIME = 1000*60*2;
+
+/**
  * 聊天消息状态管理器
  *
  * @private
@@ -115,6 +120,7 @@ export default class ChatMessage extends Entity {
         content: {type: 'string', defaultValue: null},
         unread: {type: 'boolean', indexed: true, defaultValue: false},
         status: {type: 'int', indexed: true},
+        deleted: {type: 'boolean'},
         data: {type: 'json'},
     });
 
@@ -157,7 +163,7 @@ export default class ChatMessage extends Entity {
      * @memberof ChatMessage
      */
     plainServer() {
-        return {
+        const data = {
             gid: this.gid,
             cgid: this.cgid,
             type: this.type,
@@ -167,6 +173,10 @@ export default class ChatMessage extends Entity {
             user: this.senderId,
             order: this.order,
         };
+        if (this.deleted) {
+            data.deleted = true;
+        }
+        return data;
     }
 
     /**
@@ -349,6 +359,24 @@ export default class ChatMessage extends Entity {
      */
     set unread(unread) {
         this.$set('unread', unread);
+    }
+
+    /**
+     * 获取是否删除（已撤销）
+     * @memberof ChatMessage
+     * @type {boolean}
+     */
+    get deleted() {
+        return this.$get('deleted');
+    }
+
+    /**
+     * 判断当前消息是否能够删除
+     * @param {String|number} 当前用户 ID
+     * @returns {boolean} 如果返回 `true` 则能够删除，否则为不能删除
+     */
+    canDelete(userID) {
+        return this.id && userID === this.senderId && (new Date().getTime() - this.sendTime) <= DELETE_MESSAGE_TIME;
     }
 
     /**
