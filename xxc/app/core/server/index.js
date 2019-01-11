@@ -102,6 +102,7 @@ const checkVersionSupport = user => {
         changePwdWithMD5: compareVersions(serverVersion, '2.0.0') > 0,
         retractChatMessage: compareVersionValue4 >= 0,
         chatTyping: compareVersionValue4 >= 0,
+        skipSendBroadcast: compareVersionValue4 >= 0,
     };
 };
 

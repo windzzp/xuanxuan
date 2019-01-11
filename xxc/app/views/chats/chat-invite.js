@@ -141,8 +141,11 @@ export default class ChatInvite extends Component {
             App.im.ui.createGroupChat(members).then(newChat => {
                 const groupUrl = `#${ROUTES.chats.groups.id(newChat.gid)}`;
                 this.requestClose();
-                App.im.server.sendBoardChatMessage(Lang.format('chat.inviteAndCreateNewChat.format', `@${App.profile.user.account}`, `[**[${newChat.getDisplayName(App)}](${groupUrl})**]`), chat);
+                if (App.profile.user.isVersionSupport('skipSendBroadcast')) {
+                    App.im.server.sendBoardChatMessage(Lang.format('chat.inviteAndCreateNewChat.format', `@${App.profile.user.account}`, `[**[${newChat.getDisplayName(App)}](${groupUrl})**]`), chat);
+                }
                 window.location.hash = groupUrl;
+                return newChat;
             }).catch(error => {
                 if (error) {
                     Messager.show(Lang.error(error), {type: 'danger'});
@@ -150,11 +153,12 @@ export default class ChatInvite extends Component {
             });
         } else {
             App.im.server.inviteMembersToChat(chat, members).then(chat => {
-                if (chat) {
+                if (chat && App.profile.user.isVersionSupport('skipSendBroadcast')) {
                     const broadcast = App.im.server.createBoardChatMessage(Lang.format('chat.inviteMembersJoinChat.format', `@${App.profile.user.account}`, members.map(x => `@${x.account}`).join('、')), chat);
                     App.im.server.sendChatMessage(broadcast, chat);
                 }
                 this.requestClose();
+                return chat;
             }).catch(error => {
                 if (error) {
                     Messager.show(Lang.error(error), {type: 'danger'});

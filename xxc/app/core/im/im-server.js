@@ -212,7 +212,7 @@ export const createChat = chat => {
     }).then(theChat => {
         if (theChat) {
             const groupUrl = `#/chats/groups/${theChat.gid}`;
-            if (theChat.isGroup) {
+            if (profile.user.isVersionSupport('skipSendBroadcast') && theChat.isGroup) {
                 sendBoardChatMessage(Lang.format('chat.createNewChat.format', `@${profile.user.account}`, `[**[${theChat.getDisplayName({members, user: profile.user})}](${groupUrl})**]`), theChat);
             }
         }
@@ -575,7 +575,7 @@ export const renameChat = (chat, newName) => {
                 method: 'changename',
                 params: [chat.gid, newName]
             }).then(theChat => {
-                if (theChat) {
+                if (profile.user.isVersionSupport('skipSendBroadcast') && theChat) {
                     sendBoardChatMessage(Lang.format('chat.rename.someRenameGroup.format', `@${profile.user.account}`, `**${newName}**`), theChat);
                 }
                 return Promise.resolve(theChat);
@@ -834,7 +834,7 @@ export const joinChat = (chat, join = true) => {
         method: 'joinchat',
         params: [chat.gid, join]
     }).then(theChat => {
-        if (theChat && theChat.isMember(profile.userId)) {
+        if (profile.user.isVersionSupport('skipSendBroadcast') && theChat && theChat.isMember(profile.userId)) {
             sendBoardChatMessage(Lang.format('chat.join.message', `@${profile.userAccount}`), theChat);
         }
         return Promise.resolve(theChat);

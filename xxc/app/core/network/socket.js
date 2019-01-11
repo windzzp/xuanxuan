@@ -139,7 +139,7 @@ export default class AppSocket extends Socket {
     setHandler(pathname, func) {
         if (typeof pathname === 'object') {
             Object.keys(pathname).forEach(name => {
-                this.handlers[name.toLowerCase()] = pathname[name];
+            this.handlers[name.toLowerCase()] = pathname[name];
             });
         } else {
             this.handlers[pathname.toLowerCase()] = func;
