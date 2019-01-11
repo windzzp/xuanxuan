@@ -589,6 +589,9 @@ const revertConfigFiles = () => {
     fse.outputFileSync(path.resolve(__dirname, '../app/style/custom.less'), '');
     console.log(`    ${chalk.green(chalk.bold('✓'))} 移除自定义样式 ${chalk.underline(path.resolve(__dirname, '../app/style/custom.less'))}`);
 
+    if (!electronIndexHTML) {
+        electronIndexHTML = fse.readFileSync('./app/index.html', {encoding: 'utf-8'});
+    }
     fse.outputFileSync(path.resolve(__dirname, '../app/index.html'), electronIndexHTML.replace(/<title>(.*)<\/title>/g, `<title>${pkg.productName}</title>`), {encoding: 'utf-8'});
     console.log(`    ${chalk.green(chalk.bold('✓'))} 还原 ${chalk.underline(path.resolve(__dirname, '../app/index.html'))}`);
 };
