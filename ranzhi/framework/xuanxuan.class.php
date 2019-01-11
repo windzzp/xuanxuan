@@ -316,16 +316,26 @@ class xuanxuan extends router
     /**
      * Encrypt an output object.
      *
-     * @param  object $output
+     * @param  mixed  $output   array | object
      * @access public
      * @return string
      */
     public function encrypt($output = null)
     {
-        if(is_object($output))
+        if(is_array($output))
+        {
+            foreach($output as $op)
+            {
+                $op->lang = $this->getClientLang();
+                $op->v    = $this->config->xuanxuan->version;
+            }
+        }
+        elseif(is_object($output))
         {
             $output->lang = $this->getClientLang();
             $output->v    = $this->config->xuanxuan->version;
+
+            $output = array($output);
         }
 
         $output = helper::jsonEncode($output);
