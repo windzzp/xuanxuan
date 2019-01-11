@@ -103,6 +103,7 @@ const checkVersionSupport = user => {
         retractChatMessage: compareVersionValue4 >= 0,
         chatTyping: compareVersionValue4 >= 0,
         skipSendBroadcast: compareVersionValue4 >= 0,
+        sendMessageToLocalOne2OneChat: compareVersionValue4 >= 0,
     };
 };
 

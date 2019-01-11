@@ -402,7 +402,7 @@ export const setChatCategory = (chat, category) => {
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
 export const sendSocketMessageForChat = (socketMessage, chat) => {
-    if (chat.id) {
+    if (chat.id || (chat.isOne2One && profile.user.isVersionSupport('sendMessageToLocalOne2OneChat'))) {
         return socket.sendAndListen(socketMessage);
     }
     return createChat(chat).then(() => {
@@ -849,7 +849,7 @@ export const joinChat = (chat, join = true) => {
 export const exitChat = (chat) => {
     if (chat.canExit(profile.user)) {
         return joinChat(chat, false).then(theChat => {
-            if (theChat && !theChat.isMember(profile.userId)) {
+            if (profile.user.isVersionSupport('skipSendBroadcast') && theChat && !theChat.isMember(profile.userId)) {
                 sendBoardChatMessage(Lang.format('chat.exit.message', `@${profile.userAccount}`), theChat);
             }
             return Promise.resolve(theChat);
