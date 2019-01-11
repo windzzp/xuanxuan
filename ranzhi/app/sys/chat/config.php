@@ -5,3 +5,6 @@ $config->chat->require->edit   = 'gid, name, type';
 
 $config->chat->user = new stdclass();
 $config->chat->user->canEditFields = array('avatar', 'birthday', 'gender', 'email', 'skype', 'qq', 'yahoo', 'gtalk', 'wangwang', 'site', 'mobile', 'phone', 'address', 'zipcode', 'clientStatus');
+
+$config->chat->retract = new stdclass();
+$config->chat->retract->validTime = 2;

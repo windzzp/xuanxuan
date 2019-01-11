@@ -374,14 +374,10 @@ export const createAppContextMenu = appExt => {
         });
         items.push({
             label: Lang.string('ext.app.share'),
-            click: () => appExt.getEntryUrl().then(urlVal => {
-                const message = {
-                    _entityType: 'appUrl',
-                    url: urlVal,
-                };
-                ChatShareDialog.show(message);
-                return urlVal;
-            })
+            click: () => {
+                const currentUrl = appExt._webViewUrl || (appExt._pkg && appExt._pkg.webViewUrl);
+                ChatShareDialog.show(currentUrl);
+            }
         });
     }
 
@@ -434,11 +430,8 @@ export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
         items.push({
             label: Lang.string('ext.app.share'),
             click: () => {
-                const message = {
-                    _entityType: 'appUrl',
-                    url: theOpenedApp.app._webViewUrl,
-                };
-                ChatShareDialog.show(message);
+                const currentUrl = theOpenedApp.webview && theOpenedApp.webview.src;
+                ChatShareDialog.show(currentUrl);
             }
         });
         items.push({
