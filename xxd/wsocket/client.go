@@ -121,9 +121,9 @@ func chatLogin(parseData api.ParseData, client *Client) error {
         client.serverName = util.Config.DefaultServer
     }
 
-    if(util.Config.MaxOnlineUser > 0) {
+    if util.Config.MaxOnlineUser > 0 {
         onlineUser := len(client.hub.clients[client.serverName])
-        if(int64(onlineUser) >= util.Config.MaxOnlineUser) {
+        if int64(onlineUser) >= util.Config.MaxOnlineUser {
             client.send <- api.BlockLogin()
             return util.Errorf("Exceeded the maximum limit.")
         }
