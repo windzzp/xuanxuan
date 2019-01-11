@@ -652,15 +652,15 @@ export const sendChatMessage = async (messages, chat, isSystemMessage = false) =
 
     return sendSocketMessageForChat({
         method: 'message',
-        params: {
-            messages: messages.map(m => {
+        params: [
+            messages.map(m => {
                 const msgObj = m.plainServer();
                 if (!profile.user.isVersionSupport('messageOrder')) {
                     delete msgObj.order;
                 }
                 return msgObj;
             })
-        }
+        ]
     }, chat);
 };
 
@@ -940,6 +940,23 @@ export const fetchChat = cgid => {
             0,
             false
         ]
+    });
+};
+
+/**
+ * 请求删除消息（撤销消息）
+ * @param {ChatMessage} message 要删除的消息对象
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const deleteChatMessage = (message) => {
+    if (!message.canDelete(profile.userId)) {
+        return Promise.reject();
+    }
+    const messageData = message.plainServer();
+    messageData.deleted = true;
+    return socket.sendAndListen({
+        method: 'message',
+        params: [[messageData]]
     });
 };
 

@@ -340,6 +340,8 @@
     "chat.sidebar.close": "Close sidebar",
     "chat.message.resend": "Resend",
     "chat.copyChatGID": "Copy chat ID",
+    "chat.message.retract": "Retract",
+    "chat.message.retracted": "{0} retracted a message",
 
     "todo.create": "Create to-do",
     "todo.edit": "Edit To Do",

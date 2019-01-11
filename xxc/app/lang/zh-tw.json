@@ -333,6 +333,8 @@
     "chat.share.sendSuccess": "已成功轉發到 {0} 個聊天",
     "chat.noMoreMessage": "沒有更多消息",
     "chat.loadMoreMessage": "加載更多歷史消息",
+    "chat.message.retract": "撤回",
+    "chat.message.retracted": "{0} 撤回了一條消息",
 
     "chat.sidebar.tab.profile.label": "資料",
     "chat.sidebar.tab.peoples.label": "成員",

@@ -14,10 +14,13 @@ import _MessageContentText from './message-content-text';
 import _MessageBroadcast from './message-broadcast';
 import _NotificationMessage from './notification-message';
 import _MessageContentUrl from './message-content-url';
+import _MessageContentRetracted from './message-content-retracted';
 import ChatMessage from '../../core/models/chat-message';
 import {showContextMenu} from '../../core/context-menu';
 import Config from '../../config';
 import withReplaceView from '../with-replace-view';
+
+const MessageContentRetracted = withReplaceView(_MessageContentRetracted);
 
 /**
  * MessageDivider 可替换组件形式
@@ -406,6 +409,15 @@ export default class MessageListItem extends Component {
                 <div className={classes('app-message-item app-message-item-broadcast', className)} {...other}>
                     {showDateDivider && <MessageDivider date={message.date} />}
                     <MessageBroadcast contentConverter={textContentConverter} style={basicFontStyle} message={message} />
+                </div>
+            );
+        }
+
+        if (message.deleted) {
+            return (
+                <div className={classes('app-message-item app-message-item-broadcast', className)} {...other}>
+                    {showDateDivider && <MessageDivider date={message.date} />}
+                    <MessageContentRetracted style={basicFontStyle} message={message} />
                 </div>
             );
         }
