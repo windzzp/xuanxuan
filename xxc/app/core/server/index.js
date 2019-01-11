@@ -88,6 +88,7 @@ const checkVersionSupport = user => {
     const compareVersionValue = compareVersions(serverVersion, '1.3.0');
     const compareVersionValue2 = compareVersions(serverVersion, '1.4.0');
     const compareVersionValue3 = compareVersions(serverVersion, '1.6.0');
+    const compareVersionValue4 = compareVersions(serverVersion, '2.4.0');
     return {
         messageOrder: compareVersionValue >= 0,
         userGetListWithId: compareVersionValue >= 0,
@@ -99,6 +100,7 @@ const checkVersionSupport = user => {
         muteChat: compareVersionValue3 > 0,
         hideChat: compareVersionValue3 > 0,
         changePwdWithMD5: compareVersions(serverVersion, '2.0.0') > 0,
+        chatTyping: compareVersionValue4 >= 0,
     };
 };
 

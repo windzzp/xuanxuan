@@ -240,6 +240,7 @@
     "chat.mute.label": "Mute is on. You will not receive notifications of this conversation.",
     "chat.public.setPublic": "Set Public",
     "chat.public.setPrivate": "Set Private",
+    "chat.one2one.typing": "typing...",
     "chat.create.title": "Create",
     "chat.create.join": "Join",
     "chat.create.chatWith.format": "Chat with “{0}”",
