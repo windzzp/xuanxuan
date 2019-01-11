@@ -914,6 +914,19 @@ class chat extends control
 
             $errors[] = $error;
         }
+        elseif($chat->type == 'group' and $message->type == 'normal')
+        {
+            /* User who is not in the group should not send message. */
+            $members = $this->chat->getMemberListByGID($chat->gid);
+            if(!in_array($message->user, $members))
+            {
+                $error = new stdclass();
+                $error->gid      = $message->cgid;
+                $error->messages = $this->lang->chat->notInGroup;
+
+                $errors[] = $error;
+            }
+        }
 
         if($errors)
         {
@@ -942,7 +955,8 @@ class chat extends control
 
         if(isset($message->deleted) and $message->deleted)
         {
-            $messages = $this->chat->retract($message->gid);
+            /* Retract message. */
+            $messages = $this->chat->retractMessage($message->gid);
 
             if(dao::isError())
             {
