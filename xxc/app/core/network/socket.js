@@ -36,10 +36,11 @@ const EVENT = {
  * @param {string} moduleName 消息操作模块名称
  * @param {string} methodName 消息操作方法名称
  * @param {number} [timeout=LISTEN_TIMEOUT]
+ * @param {string} rid 请求 ID
  * @return {Promise}
  * @private
  */
-const listenMessage = (moduleName, methodName, timeout = LISTEN_TIMEOUT) => {
+const listenMessage = (moduleName, methodName, rid, timeout = LISTEN_TIMEOUT) => {
     return new Promise((resolve, reject) => {
         let listenHandler = null;
         const listenTimer = setTimeout(() => {
@@ -49,7 +50,7 @@ const listenMessage = (moduleName, methodName, timeout = LISTEN_TIMEOUT) => {
             reject();
         }, timeout);
         listenHandler = events.on(EVENT.message, (msg, result) => {
-            if (msg.module === moduleName && msg.method === methodName) {
+            if (msg.module === moduleName && msg.method === methodName && (!msg.rid || msg.rid === rid)) {
                 if (listenTimer) {
                     clearTimeout(listenTimer);
                 }
@@ -192,14 +193,14 @@ export default class AppSocket extends Socket {
     /**
      * 通过 Socket 发送消息并监听服务器对此消息的回应
      * @param {Object<string, any>|SocketMessage} msg 要发送的 SocketMessage 实例或者用于创建 SocketMessage 实例的属性对象
-     * @param {Function(result: any): any} check 用于检查服务器返回结果的函数
-     * @return {Promise}
+     * @param {function(any)} check 用于检查服务器返回结果的函数
+     * @returns {Promise} 使用 Promise 异步返回处理结果
      * @memberof AppSocket
      */
     sendAndListen(msg, check) {
         return new Promise((resolve, reject) => {
             msg = SocketMessage.create(msg);
-            listenMessage(msg.module, msg.method).then((result) => {
+            listenMessage(msg.module, msg.method, msg.createRequestID()).then((result) => {
                 if (check) {
                     result = check(result);
                 }
@@ -288,7 +289,7 @@ export default class AppSocket extends Socket {
                 return Promise.reject(new Error('User is not defined.'));
             }
             const onConnect = () => {
-                listenMessage('chat', 'login').then((result, msg) => {
+                listenMessage('chat', 'login', 'login').then((result, msg) => {
                     if (result) {
                         this.startPing();
                         this.syncUserSettings();
@@ -307,7 +308,8 @@ export default class AppSocket extends Socket {
                         user.account,
                         user.passwordForServer,
                         'online'
-                    ]
+                    ],
+                    rid: 'login'
                 });
             };
             this.init(user.socketUrl, Object.assign({

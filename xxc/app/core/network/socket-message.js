@@ -1,3 +1,4 @@
+import UUID from 'uuid/v4';
 import Config from '../../config';
 import Lang from '../lang';
 
@@ -55,6 +56,17 @@ export default class SocketMessage {
             v: Config.pkg.version,
             lang: Lang.name
         }, data);
+    }
+
+    /**
+     * 生成请求 ID
+     * @return {String} 当前数据包消息请求 ID
+     */
+    createRequestID() {
+        if (this.rid) {
+            this.rid = UUID();
+        }
+        return this.rid;
     }
 
     /**
