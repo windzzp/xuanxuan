@@ -35,7 +35,7 @@ export default class ChatShare extends Component {
      * @type {Object}
      */
     static propTypes = {
-        message: PropTypes.object,
+        message: PropTypes.any,
         onRequestClose: PropTypes.func,
     }
 
@@ -101,57 +101,31 @@ export default class ChatShare extends Component {
         const {choosed} = this.state;
         const chats = Object.keys(choosed).map((key) => choosed[key]);
         const messagerID = `messager-${timeSequence()}`;
-        if (message._entityType === 'appUrl') {
-            App.im.server.shareMessage(message, chats, (progress, index, total, chat) => {
-                if (chats.length > 1) {
-                    const progressVal = Math.round(progress * 100);
-                    if (progressVal !== 100) {
-                        Messager.show(`${Lang.string('chat.share.sending')}(${index}/${total})`, {
-                            id: messagerID, autoHide: false, closeButton: false, modal: true,
-                        });
-                    }
-                    if (chat && choosed[chat.gid]) {
-                        delete choosed[chat.gid];
-                        this.setState({choosed});
-                    }
+        
+        App.im.server.shareMessage(message, chats, (progress, index, total, chat) => {
+            if (chats.length > 1) {
+                const progressVal = Math.round(progress * 100);
+                if (progressVal !== 100) {
+                    Messager.show(`${Lang.string('chat.share.sending')}(${index}/${total})`, {
+                        id: messagerID, autoHide: false, closeButton: false, modal: true,
+                    });
                 }
-            }).then(() => {
-                Messager.show(Lang.format('chat.share.sendSuccess', chats.length), {
-                    type: 'success', autoHide: 3000, id: messagerID, closeButton: true, backdrop: false, modal: false,
-                });
-                return onRequestClose();
-            }).catch(error => {
-                if (DEBUG) {
-                    console.warn('Forward message error', error);
+                if (chat && choosed[chat.gid]) {
+                    delete choosed[chat.gid];
+                    this.setState({choosed});
                 }
-                Messager.hide(messagerID);
+            }
+        }).then(() => {
+            Messager.show(Lang.format('chat.share.sendSuccess', chats.length), {
+                type: 'success', autoHide: 3000, id: messagerID, closeButton: true, backdrop: false, modal: false,
             });
-        } else {
-            App.im.server.forwardMessage(message, chats, (progress, index, total, chat) => {
-                if (chats.length > 1) {
-                    const progressVal = Math.round(progress * 100);
-                    if (progressVal !== 100) {
-                        Messager.show(`${Lang.string('chat.share.sending')}(${index}/${total})`, {
-                            id: messagerID, autoHide: false, closeButton: false, modal: true,
-                        });
-                    }
-                    if (chat && choosed[chat.gid]) {
-                        delete choosed[chat.gid];
-                        this.setState({choosed});
-                    }
-                }
-            }).then(() => {
-                Messager.show(Lang.format('chat.share.sendSuccess', chats.length), {
-                    type: 'success', autoHide: 3000, id: messagerID, closeButton: true, backdrop: false, modal: false,
-                });
-                return onRequestClose();
-            }).catch(error => {
-                if (DEBUG) {
-                    console.warn('Forward message error', error);
-                }
-                Messager.hide(messagerID);
-            });
-        }
+            return onRequestClose();
+        }).catch(error => {
+            if (DEBUG) {
+                console.warn('Forward message error', error);
+            }
+            Messager.hide(messagerID);
+        });
     };
 
     /**
