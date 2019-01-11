@@ -32,6 +32,7 @@ type ConfigIni struct {
     UploadFileSize int64
 
     MaxOnlineUser int64
+    DebugLevel int64
 
     // multiSite or singleSite
     SiteType      string
@@ -50,11 +51,11 @@ func init() {
     dir, _ := os.Getwd()
     data, err := goconfig.LoadConfigFile(dir + "/" + configPath)
     if err != nil {
-
         Config.Ip = "0.0.0.0"
         Config.ChatPort = "11444"
         Config.CommonPort = "11443"
-        Config.IsHttps = "1"
+        Config.IsHttps = "0"
+        Config.DebugLevel = 0
 
         Config.UploadPath = "tmpfile"
         Config.UploadFileSize = 32 * MB
@@ -76,6 +77,7 @@ func init() {
     getChatPort(data)
     getCommonPort(data)
     getIsHttps(data)
+    getDebugLevel(data)
     getUploadPath(data)
     getRanzhi(data)
     getLogPath(data)
@@ -86,50 +88,74 @@ func init() {
 
 //获取配置文件IP
 func getIP(config *goconfig.ConfigFile) (err error) {
-    Config.Ip, err = config.GetValue("server", "ip")
+    ip, err := config.GetValue("server", "ip")
     if err != nil {
         log.Fatal("config: get server ip error,", err)
     }
-
-    return
+	Config.Ip = removeComment(ip)
+	return
 }
 
 //会话端口
 func getChatPort(config *goconfig.ConfigFile) (err error) {
-    Config.ChatPort, err = config.GetValue("server", "chatPort")
+    chatPort, err := config.GetValue("server", "chatPort")
     if err != nil {
         log.Fatal("config: get server chart port error,", err)
     }
-
+	Config.ChatPort = removeComment(chatPort)
     return
 }
 
 //服务端口
 func getCommonPort(config *goconfig.ConfigFile) (err error) {
-    Config.CommonPort, err = config.GetValue("server", "commonPort")
+    commonPort, err := config.GetValue("server", "commonPort")
     if err != nil {
         log.Fatal("config: get server upload port error,", err)
     }
-
+	Config.CommonPort = removeComment(commonPort)
     return
 }
 
 //判断是否启用https
 func getIsHttps(config *goconfig.ConfigFile) (err error) {
-    Config.IsHttps, err = config.GetValue("server", "isHttps")
+    https, err := config.GetValue("server", "https")
     if err != nil {
-        log.Fatal("config: get server upload port error,", err)
+        https = removeComment(https)
+        if https == "on"{
+            Config.IsHttps = "1"
+        } else {
+            Config.IsHttps = "0"
+        }
+    } else {
+        https, err := config.GetValue("server", "isHttps")
+        if err != nil {
+            log.Fatal("config: get server https error,", err)
+        }
+        Config.IsHttps = https
     }
     return
 }
 
+//调试级别
+func getDebugLevel(config *goconfig.ConfigFile) (err error) {
+	debug, err := config.GetValue("server", "debugLevel")
+	if err != nil {
+        Config.DebugLevel = 0
+        return nil
+	}
+	debugString := removeComment(debug)
+	debugInt, _ := String2Int64(debugString)
+	Config.DebugLevel = debugInt
+	return
+}
+
 //获取上传目录
 func getUploadPath(config *goconfig.ConfigFile) (err error) {
-    Config.UploadPath, err = config.GetValue("server", "uploadPath")
+    uploadPath, err := config.GetValue("server", "uploadPath")
     if err != nil {
         log.Fatal("config: get server upload path error,", err)
     }
-
+    Config.UploadPath = removeComment(uploadPath)
     return
 }
 
@@ -144,6 +170,7 @@ func getUploadFileSize(config *goconfig.ConfigFile) error {
         log.Printf("config: get server upload file size error:%v, default size 32MB.", err)
         return err
     }
+    uploadFileSize = removeComment(uploadFileSize)
 
     switch size, suffix := sizeSuffix(uploadFileSize); suffix {
     case "K":
@@ -176,26 +203,19 @@ func getUploadFileSize(config *goconfig.ConfigFile) error {
     return err
 }
 
+//同时在线人数
 func getMaxOnlineUser(config *goconfig.ConfigFile) error {
-
     Config.MaxOnlineUser = 0
-    var maxOnlineUser int64 = 0
-
     onlineUser, err := config.GetValue("server", "maxOnlineUser")
     if err != nil {
         log.Printf("config: get server maxUser error:%v, default size 0.", err)
         return err
     }
+    onlineUser = removeComment(onlineUser)
+    maxOnlineUser, _ := String2Int64(onlineUser)
+    Config.MaxOnlineUser = maxOnlineUser
 
-    if maxOnlineUser, err = String2Int64(onlineUser); err == nil {
-        Config.MaxOnlineUser = maxOnlineUser
-    }
-
-    if err != nil {
-        log.Println("upload file size parse error:", err)
-    }
-
-    return err
+    return nil
 }
 
 //获取服务器列表,conf中[ranzhi]段不能改名.
@@ -215,7 +235,7 @@ func getRanzhi(config *goconfig.ConfigFile) {
         Config.SiteType = "multiSite"
     }
 
-    for _, ranzhiName := range keyList {
+    for index, ranzhiName := range keyList {
         ranzhiServer, err := config.GetValue(section, ranzhiName)
         if err != nil {
             log.Fatal("config: get backend server error,", err)
@@ -227,8 +247,12 @@ func getRanzhi(config *goconfig.ConfigFile) {
             log.Fatal("config: backend server config error")
         }
 
-        if len(serverInfo) >= 3 && serverInfo[2] == "default" {
-            Config.DefaultServer = ranzhiName
+        if serverInfo[1] == "88888888888888888888888888888888" && Config.DebugLevel == 0 {
+			log.Fatal("config: The key cannot be set to 88888888888888888888888888888888")
+		}
+
+		if (len(serverInfo) >= 3 && serverInfo[2] == "default") || index == 0 {
+			Config.DefaultServer = ranzhiName
         }
 
         Config.RanzhiServer[ranzhiName] = RanzhiServer{serverInfo[0], []byte(serverInfo[1])}
@@ -237,23 +261,31 @@ func getRanzhi(config *goconfig.ConfigFile) {
 
 //获取日志路径
 func getLogPath(config *goconfig.ConfigFile) (err error) {
-    dir, _ := os.Getwd()
-    logPath, err := config.GetValue("log", "logPath")
+    logPath, err := config.GetValue("server", "logPath")
     if err != nil {
-        log.Fatal("config: get server log path error,", err)
+        Config.LogPath, err = config.GetValue("log", "logPath")
+        if err != nil {
+            log.Fatal("config: get server log path error,", err)
+        }
+    } else {
+        Config.LogPath = removeComment(logPath)
     }
-    Config.LogPath = dir + "/" + logPath
     return
 }
 
 //获取证书路径
 func getCrtPath(config *goconfig.ConfigFile) (err error) {
     dir, _ := os.Getwd()
-    crtPath, err := config.GetValue("certificate", "crtPath")
+    crtPath, err := config.GetValue("server", "certPath")
     if err != nil {
-        log.Fatal("config: get certificate crt path error,", err)
+        Config.CrtPath, err = config.GetValue("certificate", "crtPath")
+        if err != nil {
+            log.Fatal("config: get certificate crt path error,", err)
+        }
+    } else {
+        crtPath = removeComment(crtPath)
+        Config.CrtPath = dir + "/" + crtPath
     }
-    Config.CrtPath = dir + "/" + crtPath
     return
 }
 
@@ -271,4 +303,12 @@ func sizeSuffix(uploadFileSize string) (string, string) {
     }
 
     return uploadFileSize, ""
+}
+
+func removeComment(value string) (string) {
+	if strings.Index(value, "#") > 0 {
+		valid := strings.Split(value, "#")
+		return strings.TrimSpace(valid[0])
+	}
+	return value
 }

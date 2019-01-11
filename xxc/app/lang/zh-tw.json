@@ -244,6 +244,7 @@
     "chat.mute.label": "已開啟免打擾，在後台運行不會收到此會話的提醒",
     "chat.public.setPublic": "設為公開",
     "chat.public.setPrivate": "設為私密",
+    "chat.one2one.typing": "正在輸入...",
     "chat.create.title": "新建聊天",
     "chat.create.join": "加入",
     "chat.create.chatWith.format": "和 “{0}” 開聊",

@@ -123,7 +123,7 @@ export const isYestoday = (date, now) => (isSameDay((now || new Date()).getTime(
  * @return {string}
  * @function
  */
-export const formatDate = (date, format = 'yyyy-MM-dd hh:ss') => {
+export const formatDate = (date, format = 'yyyy-MM-dd hh:mm') => {
     date = createDate(date);
 
     const dateInfo = {

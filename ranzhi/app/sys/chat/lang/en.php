@@ -16,5 +16,6 @@ $lang->chat->needLogin        = 'You need login first.';
 $lang->chat->notExist         = 'Chat do not exist.';
 $lang->chat->changeRenameTo   = 'Rename chat to ';
 $lang->chat->multiChats       = 'Messages belong to different chats.';
+$lang->chat->notInGroup       = 'You are not in this chat group.';
 
 $lang->chat->errorKey = 'The key should be a 32 byte string including letters or numbers.';

@@ -51,6 +51,7 @@ class chat extends control
                 $data = new stdclass();
                 $data->id           = $user->id;
                 $data->clientStatus = $status;
+                $data->clientLang   = $this->app->getClientLang();
                 $user = $this->chat->editUser($data);
 
                 $this->loadModel('action')->create('user', $user->id, 'loginXuanxuan', '', 'xuanxuan-v' . (empty($version) ? '?' : $version), $user->account);
@@ -59,7 +60,7 @@ class chat extends control
                 $user->ranzhiUrl = commonModel::getSysURL();
                 $user->status    = $user->clientStatus;
 
-                $this->output->data  = $user;
+                $this->output->data = $user;
             }
         }
         else
@@ -914,6 +915,19 @@ class chat extends control
 
             $errors[] = $error;
         }
+        elseif($chat->type == 'group' and $message->type == 'normal')
+        {
+            /* User who is not in the group should not send message. */
+            $members = $this->chat->getMemberListByGID($chat->gid);
+            if(!in_array($message->user, $members))
+            {
+                $error = new stdclass();
+                $error->gid      = $message->cgid;
+                $error->messages = $this->lang->chat->notInGroup;
+
+                $errors[] = $error;
+            }
+        }
 
         if($errors)
         {
@@ -942,7 +956,8 @@ class chat extends control
 
         if(isset($message->deleted) and $message->deleted)
         {
-            $messages = $this->chat->retract($message->gid);
+            /* Retract message. */
+            $messages = $this->chat->retractMessage($message->gid);
 
             if(dao::isError())
             {
