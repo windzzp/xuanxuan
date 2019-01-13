@@ -376,6 +376,47 @@ class chatModel extends model
     }
 
     /**
+     * Get chat group pairs.
+     *
+     * @access public
+     * @return array
+     */
+    public function getChatGroupPairs()
+    {
+        $groups = $this->dao->select('id, name')->from(TABLE_IM_CHAT)
+            ->where('type')->eq('group')
+            ->andWhere('dismissDate')->eq('0000-00-00 00:00:00')
+            ->fetchPairs();
+
+        if(empty($groups)) return array();
+
+        return $groups;
+    }
+
+    /**
+     * Get one chat group users.
+     *
+     * @param  int    $groupID
+     * @access public
+     * @return array
+     */
+    public function getChatGroupUsers($groupID = 0)
+    {
+        $gid = $this->dao->findByID($groupID)->from(TABLE_IM_CHAT)->fetch('gid');
+
+        if(empty($gid)) return array();
+
+        $userList = $this->dao->select('id, user')->from(TABLE_IM_CHATUSER)
+            ->where('cgid')->eq($gid)
+            ->andWhere('quit')->eq('0000-00-00 00:00:00')
+            ->fetchPairs('id', 'user');
+        $userPais = $this->dao->select('id, realname')->from(TABLE_USER)->where('id')->in($userList)->fetchPairs();
+
+        if(empty($userPais)) return array();
+        return $userPais;
+    }
+
+    /**
      * Create a chat.
      *
      * @param  string $gid

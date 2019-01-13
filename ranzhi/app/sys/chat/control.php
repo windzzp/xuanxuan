@@ -1340,4 +1340,35 @@ class chat extends control
         $this->output->users  = array($userID);
         die($this->app->encrypt($this->output));
     }
+
+    /**
+     * Get chat group pairs.
+     *
+     * @access public
+     * @return void
+     */
+    public function getChatGroupPairs()
+    {
+        $groupPairs = $this->chat->getChatGroupPairs();
+
+        $this->view->groupPairs = $groupPairs;
+
+        $this->display();
+    }
+
+    /**
+     * Get one chat group users.
+     *
+     * @param  int    $groupID
+     * @access public
+     * @return void
+     */
+    public function getChatGroupUsers($groupID)
+    {
+        $groupUsers = $this->chat->getChatGroupUsers($groupID);
+
+        $this->view->groupUsers = $groupUsers;
+
+        $this->display();
+    }
 }
