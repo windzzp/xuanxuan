@@ -18,7 +18,7 @@
   <form id='ajaxForm' method='post'>
     <table class='table table-form w-p40'>
       <tr>
-        <th class='w-80px'><?php echo $lang->chat->version;?></th>
+        <th class='w-100px'><?php echo $lang->chat->version;?></th>
         <td><?php echo $config->xuanxuan->global->version;?></td>
         <td></td>
       </tr>
@@ -26,6 +26,11 @@
         <th><?php echo $lang->chat->key;?></th>
         <td><?php echo html::input('key', $config->xuanxuan->key, "class='form-control'");?></td>
         <td><?php echo html::a('javascript:void(0)', $lang->chat->createKey, 'onclick="createKey()"');?></td>
+      </tr>
+      <tr>
+        <th><?php echo $lang->chat->xxbLang;?></th>
+        <td><?php echo html::select('xxbLang', $config->langs, $config->xuanxuan->xxbLang, "class='form-control'");?></td>
+        <td></td>
       </tr>
       <tr>
         <th></th>

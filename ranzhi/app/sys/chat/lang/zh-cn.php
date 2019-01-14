@@ -1,6 +1,7 @@
 <?php
 $lang->chat->settings    = '喧喧设置';
 $lang->chat->version     = '版本';
+$lang->chat->xxbLang     = '服务器端语言';
 $lang->chat->key         = '密钥';
 $lang->chat->systemGroup = '系统';
 
@@ -19,3 +20,11 @@ $lang->chat->multiChats       = '消息不属于同一个会话。';
 $lang->chat->notInGroup       = '用户不在此讨论组内。';
 
 $lang->chat->errorKey = '<strong>密钥</strong> 应该为数字或字母的组合，长度为32位。';
+
+$lang->chat->broadcast = new stdclass();
+$lang->chat->broadcast->createChat  = '@%s 创建了讨论组。';
+$lang->chat->broadcast->joinChat    = '';
+$lang->chat->broadcast->quiteChat   = '';
+$lang->chat->broadcast->renameChat  = '';
+$lang->chat->broadcast->dismissChat = '';
+$lang->chat->broadcast->inviteUser  = '';

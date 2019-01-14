@@ -133,6 +133,46 @@ class chatModel extends model
     }
 
     /**
+     * Get output data of user list.
+     *
+     * @param  int    $userID
+     * @access public
+     * @return object
+     */
+    public function getUserListOutput($idList = array(), $userID)
+    {
+        $output = new stdclass();
+        $output->module = 'chat';
+        $output->method = 'userGetList';
+
+        $users = $this->getUserList($status = '', $idList, $idAsKey = false);
+        if(dao::isError())
+        {
+            $output->result  = 'fail';
+            $output->message = 'Get userlist failed.';
+        }
+        else
+        {
+            $output->result = 'success';
+            $output->users  = !empty($userID) ? array($userID) : array();
+            $output->data   = $users;
+
+            $this->app->loadLang('user', 'sys');
+            $roles = $this->lang->user->roleList;
+
+            $allDepts = $this->loadModel('tree')->getListByType('dept');
+            $depts = array();
+            foreach($allDepts as $id => $dept)
+            {
+                $depts[$id] = array('name' => $dept->name, 'order' => (int)$dept->order, 'parent' => (int)$dept->parent);
+            }
+            $output->roles = $roles;
+            $output->depts = $depts;
+        }
+        return $output;
+    }
+
+    /**
      * Edit a user.
      *
      * @param  object $user
@@ -299,6 +339,38 @@ class chatModel extends model
     }
 
     /**
+     * Get output data of chat list.
+     *
+     * @param  int    $userID
+     * @access public
+     * @return object
+     */
+    public function getListOutput($userID)
+    {
+        $output = new stdclass();
+        $output->module = 'chat';
+        $output->method = 'getList';
+
+        $chatList = $this->getListByUserID($userID);
+        foreach($chatList as $chat)
+        {
+            $chat->members = $this->getMemberListByGID($chat->gid);
+        }
+        if(dao::isError())
+        {
+            $output->result  = 'fail';
+            $output->message = 'Get chat list failed.';
+        }
+        else
+        {
+            $output->result = 'success';
+            $output->users  = array($userID);
+            $output->data   = $chatList;
+        }
+        return $output;
+    }
+
+    /**
      * Get chat list by userID.
      *
      * @param  int    $userID
@@ -373,6 +445,75 @@ class chatModel extends model
             ->andWhere('status')->eq('waiting')
             ->exec();
         return $messages;
+    }
+
+    /**
+     * Get output data of offline messages.
+     *
+     * @param  int    $userID
+     * @access public
+     * @return object
+     */
+    public function getOfflineMessagesOutput($userID)
+    {
+        $output = new stdclass();
+        $output->module = 'chat';
+        $output->method = 'message';
+
+        $messages = $this->getOfflineMessages($userID);
+        if(dao::isError())
+        {
+            $output->result  = 'fail';
+            $output->message = 'Get offline messages fail.';
+        }
+        else
+        {
+            $output->result = 'success';
+            $output->users  = array($userID);
+            $output->data   = $messages;
+        }
+        return $output;
+    }
+
+    /**
+     * Get chat group pairs.
+     *
+     * @access public
+     * @return array
+     */
+    public function getChatGroupPairs()
+    {
+        $groups = $this->dao->select('id, name')->from(TABLE_IM_CHAT)
+            ->where('type')->eq('group')
+            ->andWhere('dismissDate')->eq('0000-00-00 00:00:00')
+            ->fetchPairs();
+
+        if(empty($groups)) return array();
+
+        return $groups;
+    }
+
+    /**
+     * Get one chat group users.
+     *
+     * @param  int    $groupID
+     * @access public
+     * @return array
+     */
+    public function getChatGroupUsers($groupID = 0)
+    {
+        $gid = $this->dao->findByID($groupID)->from(TABLE_IM_CHAT)->fetch('gid');
+
+        if(empty($gid)) return array();
+
+        $userList = $this->dao->select('id, user')->from(TABLE_IM_CHATUSER)
+            ->where('cgid')->eq($gid)
+            ->andWhere('quit')->eq('0000-00-00 00:00:00')
+            ->fetchPairs('id', 'user');
+        $userPais = $this->dao->select('id, realname')->from(TABLE_USER)->where('id')->in($userList)->fetchPairs();
+
+        if(empty($userPais)) return array();
+        return $userPais;
     }
 
     /**
@@ -595,6 +736,10 @@ class chatModel extends model
         return !dao::isError();
     }
 
+    public function createBroadcast($type)
+    {
+    }
+
     /**
      * Create messages.
      *
@@ -710,6 +855,34 @@ class chatModel extends model
 
         $this->dao->update(TABLE_IM_MESSAGESTATUS)->set('status')->eq('sent')->where('gid')->in($gids)->andWhere('user')->eq($userID)->exec();
         return $notify;
+    }
+
+    /**
+     * Get output data of offline notify.
+     *
+     * @param  int    $userID
+     * @access public
+     * @return object
+     */
+    public function getOfflineNotifyOutput($userID)
+    {
+        $output = new stdclass();
+        $output->module = 'chat';
+        $output->method = 'notify';
+
+        $messages = $this->getOfflineNotify($userID);
+        if(dao::isError())
+        {
+            $output->result  = 'fail';
+            $output->message = 'Get offline notify fail.';
+        }
+        else
+        {
+            $output->result = 'success';
+            $output->users  = array($userID);
+            $output->data   = $messages;
+        }
+        return $output;
     }
 
     /**

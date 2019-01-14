@@ -40,9 +40,7 @@ class xuanxuan extends router
 
         $this->setViewType();
         $this->setInput();
-
-        $lang = empty($this->input['lang']) ? 'zh-cn' : $this->input['lang'];
-        $this->setClientLang($lang);
+        $this->setClientLang();
     }
 
     /**
@@ -69,6 +67,7 @@ class xuanxuan extends router
         $input = file_get_contents("php://input");
         $input = $this->decrypt($input);
 
+        $this->input['rid']     = !empty($input->rid)    ? $input->rid    : '';
         $this->input['version'] = !empty($input->v)      ? $input->v      : '';
         $this->input['userID']  = !empty($input->userID) ? $input->userID : '';
         $this->input['client']  = !empty($input->client) ? $input->client : '';
@@ -76,6 +75,25 @@ class xuanxuan extends router
         $this->input['method']  = !empty($input->method) ? $input->method : '';
         $this->input['lang']    = !empty($input->lang)   ? $input->lang   : '';
         $this->input['params']  = !empty($input->params) ? $input->params : array();
+    }
+
+    /**
+     * 根据用户浏览器的语言设置和服务器配置，选择显示的语言。
+     * 优先级：$lang参数 > session > cookie > 浏览器 > 配置文件。
+     *
+     * Set the language.
+     * Using the order of method $lang param, session, cookie, browser and the default lang.
+     *
+     * @param   string $lang  zh-cn|zh-tw|zh-hk|en
+     * @access  public
+     * @return  void
+     */
+    public function setClientLang($lang = '')
+    {
+        $row  = $this->dbh->query('SELECT `value` FROM ' . TABLE_CONFIG . " WHERE `owner`='system' AND `module`='common' AND `section`='xuanxuan' AND `key`='xxbLang'")->fetch();
+        $lang = empty($row) ? 'zh-cn' : $row->value;
+
+        parent::setClientLang($lang);
     }
 
     /**
@@ -146,6 +164,7 @@ class xuanxuan extends router
 
         $this->session->set('userID', $userID);
         $this->session->set('clientIP', $client);
+        $this->session->set('clientLang', $lang);
 
         $this->setModuleName($module);
         $this->setMethodName($method);
@@ -326,16 +345,19 @@ class xuanxuan extends router
         {
             foreach($output as $op)
             {
+                if($op->module == $this->input['module'] && $op->method == $this->input['method'])
+                {
+                    $op->rid = $this->input['rid'];
+                }
                 $op->lang = $this->getClientLang();
                 $op->v    = $this->config->xuanxuan->version;
             }
         }
         elseif(is_object($output))
         {
+            $output->rid  = $this->input['rid'];
             $output->lang = $this->getClientLang();
             $output->v    = $this->config->xuanxuan->version;
-
-            $output = array($output);
         }
 
         $output = helper::jsonEncode($output);
