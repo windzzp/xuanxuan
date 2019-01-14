@@ -85,8 +85,14 @@ const chatError = (msg, socket) => {
 const chatSettings = (msg, socket) => {
     if (msg.isSuccess) {
         const {user} = socket;
-        if (msg.data && msg.data.lastSaveTime > user.config.lastSaveTime && user.config.hash !== msg.data.hash) {
-            user.config.reset(msg.data);
+        const {config} = user;
+        const {data} = msg;
+        if (data && config.hash !== data.hash) {
+            if (data.lastSaveTime && data.lastSaveTime > config.lastSaveTime) {
+                config.reset(data);
+            } else {
+                config.set(data);
+            }
         }
     }
 };
