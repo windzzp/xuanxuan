@@ -80,14 +80,16 @@ export default class MessageContentText extends Component {
             ...other
         } = this.props;
 
-        const content = message.renderedTextContent(App.im.ui.renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : App.im.ui.linkMembersInText);
+        const content = message.renderedTextContent(App.im.ui.renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : App.im.ui.linkMembersInText, contentConverter);
 
-        return (<div
-            {...other}
-            className={classes('app-message-content-text markdown-content', className, {
-                'is-content-block': message.isBlockContent
-            })}
-            dangerouslySetInnerHTML={{__html: contentConverter ? contentConverter(content) : content}}
-        />);
+        return (
+            <div
+                {...other}
+                className={classes('app-message-content-text markdown-content', className, {
+                    'is-content-block': message.isBlockContent
+                })}
+                dangerouslySetInnerHTML={{__html: content}}
+            />
+        );
     }
 }

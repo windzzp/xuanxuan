@@ -133,19 +133,26 @@ export default class NotificationMessage extends ChatMessage {
         }
         if (data.data) {
             // eslint-disable-next-line prefer-destructuring
-            data = data.data;
+            data = Object.assign({}, typeof data.data === 'string' ? JSON.parse(data.data) : data.data, data, {data: null});
+        }
+        if (typeof data === 'string') {
+            data = JSON.parse(data);
         }
 
-        let content = `#### ${data.title}`;
-        if (isNotEmptyString(data.subtitle)) {
-            content += `\n##### ${data.subtitle}`;
-        }
-        if (isNotEmptyString(data.content)) {
-            content += `\n${data.content}`;
+        let {content} = data;
+
+        if (content === undefined) {
+            content = `#### ${data.title}`;
+            if (isNotEmptyString(data.subtitle)) {
+                content += `\n##### ${data.subtitle}`;
+            }
+            if (isNotEmptyString(data.content)) {
+                content += `\n${data.content}`;
+            }
         }
 
         return new NotificationMessage({
-            cgid: 'littlexx',
+            cgid: data.cgid || 'littlexx',
             content,
             contentType: data.contentType,
             data,
