@@ -347,23 +347,22 @@ export default class AppSocket extends Socket {
     /**
      * 发起上传用户个人配置请求
      *
+     * @param {boolean} [onlyChanges=false] 是否仅导出变更的部分
      * @returns {Promise} 使用 Promise 异步返回处理结果
      * @memberof AppSocket
      */
-    uploadUserSettings() {
+    uploadUserSettings(onlyChanges = false) {
         const {user} = this;
-        const needSaveId = user.config.needSave;
+        const uploadSettings = user.config.exportCloud(onlyChanges);
+        if (!uploadSettings) {
+            return Promise.reject();
+        }
         return this.sendAndListen({
             method: 'settings',
             params: [
                 user.account,
-                user.config.exportCloud()
+                uploadSettings
             ]
-        }).then(() => {
-            if (user.config.needSave === needSaveId) {
-                user.config.makeSave();
-            }
-            return user;
         });
     }
 

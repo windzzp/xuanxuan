@@ -89,6 +89,13 @@ export const onUserStatusChange = listener => (events.on(User.EVENT.status_chang
 export const onUserConfigChange = listener => (events.on(User.EVENT.config_change, listener));
 
 /**
+ * 绑定用户配置请求上传事件
+ * @param {Funcion} listener 事件回调函数
+ * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
+ */
+export const onUserConfigRequestUpload = listener => (events.on(User.EVENT.config_request_upload, listener));
+
+/**
  * 获取上次保存的用户数据
  * @return {Object}
  */
@@ -132,6 +139,7 @@ export default {
     onSwapUser,
     onUserStatusChange,
     onUserConfigChange,
+    onUserConfigRequestUpload,
     getLastSavedUser,
     isCurrentUser,
 

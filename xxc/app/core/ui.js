@@ -767,8 +767,11 @@ profile.onUserConfigChange((change, config) => {
     if (shortcut && change && Object.keys(change).some(x => x.startsWith('shortcut.'))) {
         registerShortcut();
     }
-    if (config.needSave) {
-        Server.socket.uploadUserSettings();
+});
+
+profile.onUserConfigRequestUpload((changes, config) => {
+    if (changes && Object.keys(changes).length) {
+        Server.socket.uploadUserSettings(true);
     }
 });
 

@@ -34,7 +34,15 @@ export default class UserConfig {
         this.changeAction = new DelayAction(() => {
             this.onChange(this.lastChange, this);
             this.lastChange = null;
+            if (typeof this.onRequestUpload === 'function') {
+                this.uploadAction.do();
+            }
         });
+
+        this.uploadAction = new DelayAction(() => {
+            this.onRequestUpload(this.newChanges, this);
+            this.newChanges = null;
+        }, 5000);
 
         const {groupsCategories} = this;
         Object.keys(groupsCategories).forEach(x => {
@@ -63,48 +71,42 @@ export default class UserConfig {
     /**
      * 导出用于上传到服务器的数据存储对象
      *
+     * @param {boolean} [onlyChanges=false] 是否仅导出变更的部分
      * @return {Object<string, any>}
      * @memberof UserConfig
      */
-    exportCloud() {
+    exportCloud(onlyChanges = false) {
+        const uploadChanges = onlyChanges ? this.newChanges : this.$;
         const config = {};
-        Object.keys(this.$).forEach(key => {
+        Object.keys(uploadChanges).forEach(key => {
             if (key.indexOf('local.') !== 0) {
                 config[key] = this.$[key];
             }
         });
-        config.hash = md5(JSON.stringify(config));
-        this.hash = config.hash;
-        return config;
+        if (Object.keys(config).length) {
+            if (!onlyChanges) {
+                config.hash = md5(JSON.stringify(config));
+                this.hash = config.hash;
+            }
+            return config;
+        }
+        return null;
     }
 
     /**
      * 将用户配置标记已变更
      *
      * @param {Object<string, any>} change 要变更的数据
-     * @param {boolean} [reset=false] 是否标记为全部重置
      * @return {void}
      * @memberof UserConfig
      */
-    makeChange(change, reset = false) {
+    makeChange(change) {
         this.lastChange = Object.assign({}, this.lastChange, change);
+        this.newChanges = Object.assign({}, this.newChanges, this.lastChange);
         this.$.lastChangeTime = new Date().getTime();
-        if (!reset) {
-            this.needSave = this.$.lastChangeTime;
-        }
         if (typeof this.onChange === 'function') {
             this.changeAction.do();
         }
-    }
-
-    /**
-     * 将用户配置数据标记为需要存储
-     *
-     * @memberof UserConfig
-     * @return {void}
-     */
-    makeSave() {
-        this.needSave = false;
     }
 
     /**
@@ -139,9 +141,22 @@ export default class UserConfig {
      */
     set(keyOrObj, value, reset = false) {
         if (typeof keyOrObj === 'object') {
-            Object.assign(this.$, keyOrObj);
-            this.makeChange(keyOrObj, reset);
+            const newSettings = {};
+            Object.keys(keyOrObj).forEach(key => {
+                const newValue = keyOrObj[key];
+                if (this.$ && this.$[key] === newValue) {
+                    return;
+                }
+                newSettings[key] = newValue;
+            });
+            if (Object.keys(newSettings).length) {
+                Object.assign(this.$, newSettings);
+                this.makeChange(newSettings, reset);
+            }
         } else {
+            if (this.$ && this.$[keyOrObj] === value) {
+                return;
+            }
             this.$[keyOrObj] = value;
             this.makeChange({[keyOrObj]: value}, reset);
         }
