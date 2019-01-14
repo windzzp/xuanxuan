@@ -51,7 +51,7 @@ class chat extends control
                 $data = new stdclass();
                 $data->id           = $user->id;
                 $data->clientStatus = $status;
-                $data->clientLang   = $this->app->getClientLang();
+                $data->clientLang   = $this->session->clientLang;
                 $user = $this->chat->editUser($data);
 
                 $this->loadModel('action')->create('user', $user->id, 'loginXuanxuan', '', 'xuanxuan-v' . (empty($version) ? '?' : $version), $user->account);
