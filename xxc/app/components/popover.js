@@ -123,7 +123,7 @@ export const showPopover = (position, content, props = {}, callback = null) => {
         arrowStyle.top = Math.max(top + arrowSize.height / 2, Math.min(top + height - arrowSize.height / 2, y));
         break;
     case 'bottom':
-        top = Math.max(0, Math.min(windowHeight - height, y + arrowSize.height));
+        top = Math.max(0, y + arrowSize.height);
         if (align === 'start') {
             left = Math.floor(Math.max(0, Math.min(windowWidth - width, x - arrow.width / 2)));
         } else if (align === 'end') {
