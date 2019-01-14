@@ -141,7 +141,7 @@ export default class NotificationMessage extends ChatMessage {
 
         let {content} = data;
 
-        if (content === undefined) {
+        if (!content) {
             content = `#### ${data.title}`;
             if (isNotEmptyString(data.subtitle)) {
                 content += `\n##### ${data.subtitle}`;
