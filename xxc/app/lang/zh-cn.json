@@ -131,6 +131,7 @@
     "error.TIMEOUT": "网络连接超时。",
     "error.SERVER_IS_BUSY": "服务器正忙，请稍后重试。",
     "error.STATUS_401": "需要提供正确的用户和密码。",
+    "error.STATUS_500": "所请求的服务器遇到意外的情况并阻止其执行请求。请检查服务器地址，并确保 XXD 服务配置正确。",
     "error.USER_INFO_REQUIRED": "用户信息不可用。",
     "error.SOCKET_AbnormalClosure": "与服务器的连接意外终止。",
     "error.Unauthorized": "用户验证失败，用户名或密码不正确。",

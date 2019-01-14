@@ -23,7 +23,8 @@ mode: 请求的模式，如 cors、 no-cors 或者 same-origin。
  * @returns {Promise<Response, error>} 使用 Promise 异步返回处理结果
  */
 export const request = (url, options) => (new Promise((resolve, reject) => {
-    window.fetch(url, options).then(response => {
+    const requestObj = new Request(url, options);
+    window.fetch(requestObj).then(response => {
         if (response.ok) {
             if (DEBUG) {
                 console.collapse(`HTTP ${(options && options.method) || 'GET'}`, 'blueBg', url, 'bluePale', 'OK', 'greenPale');
@@ -35,7 +36,30 @@ export const request = (url, options) => (new Promise((resolve, reject) => {
             resolve(response);
         } else {
             const error = new Error(response.statusMessage || `Status code is ${response.status}.`);
-            error.code = response.status === 401 ? 'STATUS_401' : (response.statusMessage || 'WRONG_STATUS');
+            error.detail = [
+                `Fetch from ${requestObj.url}`,
+                '    Request:',
+                `        Method: ${requestObj.method || ''}`,
+                `        Headers: ${options && options.headers ? JSON.stringify(options.headers) : ''}`,
+                `        Context: ${requestObj.context || ''}`,
+                `        Referrer: ${requestObj.referrer || ''}`,
+                `        ReferrerPolicy: ${requestObj.referrerPolicy || ''}`,
+                `        Mode: ${requestObj.mode || ''}`,
+                `        Credentials: ${requestObj.credentials || ''}`,
+                `        Redirect: ${requestObj.redirect || ''}`,
+                `        Integrity: ${requestObj.integrity || ''}`,
+                `        Cache: ${requestObj.cache || ''}`,
+                '    Response:',
+                `        Type: ${response.type || ''}`,
+                `        Url: ${response.url || ''}`,
+                `        UseFinalURL: ${response.useFinalURL || ''}`,
+                `        Status: ${response.status || ''}`,
+                `        OK: ${response.ok || ''}`,
+                `        Redirected : ${response.redirected || ''}`,
+                `        StatusText: ${response.statusText || ''}`,
+                // `        Headers: ${JSON.stringify(response.headers) || ''}`,
+            ].join('\n');
+            error.code = response.status === 401 ? 'STATUS_401' : response.status === 500 ? 'STATUS_500' : (response.statusMessage || 'WRONG_STATUS');
             if (DEBUG) {
                 console.collapse(`HTTP ${(options && options.method) || 'GET'}`, 'blueBg', url, 'bluePale', error.code || 'ERROR', 'redPale');
                 console.log('options', options);
@@ -48,6 +72,20 @@ export const request = (url, options) => (new Promise((resolve, reject) => {
         return response;
     }).catch(error => {
         error.code = 'WRONG_CONNECT';
+        error.detail = [
+            `Fetch.${(options && options.method) || 'GET'} from ${url}`,
+            '    Request:',
+            `        Method: ${requestObj.method || ''}`,
+            // `        Headers: ${JSON.stringify(requestObj.headers) || ''}`,
+            `        Context: ${requestObj.context || ''}`,
+            `        Referrer: ${requestObj.referrer || ''}`,
+            `        ReferrerPolicy: ${requestObj.referrerPolicy || ''}`,
+            `        Mode: ${requestObj.mode || ''}`,
+            `        Credentials: ${requestObj.credentials || ''}`,
+            `        Redirect: ${requestObj.redirect || ''}`,
+            `        Integrity: ${requestObj.integrity || ''}`,
+            `        Cache: ${requestObj.cache || ''}`,
+        ].join('\n');
         if (DEBUG) {
             console.collapse(`HTTP ${(options && options.method) || 'GET'}`, 'blueBg', url, 'bluePale', error.code || 'ERROR', 'redPale');
             console.log('options', options);
@@ -186,10 +224,14 @@ export const getJSONData = async (url, options) => {
             return Promise.resolve(json.data);
         }
         const error = new Error(json.message || json.reason || `The server data result is ${jsonResult}`);
+        error.detail = [
+            `Fetch json data from ${url}`,
+            `    JSON: ${JSON.stringify(json)}`,
+        ].join('\n');
         error.code = 'WRONG_RESULT';
         return Promise.reject(error);
     }
-    const error = new Error('Server return a null json.');
+    const error = new Error(`Server return a null json when get json from ${url}.`);
     error.code = 'WRONG_DATA';
     return Promise.reject(error);
 };
