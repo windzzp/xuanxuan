@@ -1026,18 +1026,32 @@ class chat extends control
     /**
      * Save or get settings.
      *
-     * @param  string $account
-     * @param  string $settings
-     * @param  int    $userID
+     * @param  string               $account
+     * @param  string|array|object  $settings
+     * @param  int                  $userID
      * @access public
      * @return void
      */
     public function settings($account = '', $settings = '', $userID = 0)
     {
         $this->loadModel('setting');
-        if($settings)
+
+        $settingsObj  = new stdclass();
+        $userSettings = json_decode($this->setting->getItem("owner=system&app=sys&module=chat&section=settings&key=$account"));
+
+        if(is_array($settings))
         {
-            $this->setting->setItem("system.sys.chat.settings.$account", helper::jsonEncode($settings));
+            foreach($settings as $settingKey) $settingsObj->$settingKey = isset($userSettings->$settingKey) ? $userSettings->$settingKey : '';
+        }
+        elseif(is_object($settings))
+        {
+            $settingsObj = $settings;
+            foreach($settings as $settingKey => $settingValue) $userSettings->$settingKey = $settingValue;
+            $this->setting->setItem("system.sys.chat.settings.$account", helper::jsonEncode($userSettings));
+        }
+        else
+        {
+            $settingsObj = $userSettings;
         }
 
         if(dao::isError())
@@ -1049,7 +1063,7 @@ class chat extends control
         {
             $this->output->result = 'success';
             $this->output->users  = array($userID);
-            $this->output->data   = !empty($settings) ? $settings : json_decode($this->setting->getItem("owner=system&app=sys&module=chat&section=settings&key=$account"));
+            $this->output->data   = $settingsObj;
         }
 
         die($this->app->encrypt($this->output));
