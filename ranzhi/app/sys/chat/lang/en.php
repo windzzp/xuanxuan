@@ -1,6 +1,7 @@
 <?php
 $lang->chat->settings    = 'Xuanxuan Settings';
 $lang->chat->version     = 'Version';
+$lang->chat->xxbLang     = 'Server Lang';
 $lang->chat->key         = 'Secret';
 $lang->chat->systemGroup = 'System';
 

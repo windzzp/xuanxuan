@@ -2,7 +2,7 @@ import events from '../events';
 import profile from '../profile';
 import chats from './im-chats';
 import Lang from '../lang';
-import Server from './im-server';
+import Server, {deleteChatMessage} from './im-server';
 import members from '../members';
 import StringHelper from '../../utils/string-helper';
 import DateHelper from '../../utils/date-helper';
@@ -878,6 +878,26 @@ addContextMenuCreator('message.text', ({message}) => {
             ChatShareDialog.show(message);
         }
     });
+    return items;
+});
+
+// 添加撤回按钮
+addContextMenuCreator('message.text,message.image,message.file,message.url', context => {
+    const items = [];
+    if (!profile.user.isVersionSupport('retractChatMessage')) {
+        return items;
+    }
+
+    const {message} = context;
+    if (message && message.canDelete(profile.userId)) {
+        items.push({
+            label: Lang.string('chat.message.retract'),
+            icon: 'undo-variant',
+            click: () => {
+                deleteChatMessage(message);
+            }
+        });
+    }
     return items;
 });
 

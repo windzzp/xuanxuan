@@ -212,7 +212,7 @@ export const createChat = chat => {
     }).then(theChat => {
         if (theChat) {
             const groupUrl = `#/chats/groups/${theChat.gid}`;
-            if (theChat.isGroup) {
+            if (profile.user.isVersionSupport('skipSendBroadcast') && theChat.isGroup) {
                 sendBoardChatMessage(Lang.format('chat.createNewChat.format', `@${profile.user.account}`, `[**[${theChat.getDisplayName({members, user: profile.user})}](${groupUrl})**]`), theChat);
             }
         }
@@ -402,7 +402,7 @@ export const setChatCategory = (chat, category) => {
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
 export const sendSocketMessageForChat = (socketMessage, chat) => {
-    if (chat.id) {
+    if (chat.id || (chat.isOne2One && profile.user.isVersionSupport('sendMessageToLocalOne2OneChat'))) {
         return socket.sendAndListen(socketMessage);
     }
     return createChat(chat).then(() => {
@@ -575,7 +575,7 @@ export const renameChat = (chat, newName) => {
                 method: 'changename',
                 params: [chat.gid, newName]
             }).then(theChat => {
-                if (theChat) {
+                if (profile.user.isVersionSupport('skipSendBroadcast') && theChat) {
                     sendBoardChatMessage(Lang.format('chat.rename.someRenameGroup.format', `@${profile.user.account}`, `**${newName}**`), theChat);
                 }
                 return Promise.resolve(theChat);
@@ -652,15 +652,15 @@ export const sendChatMessage = async (messages, chat, isSystemMessage = false) =
 
     return sendSocketMessageForChat({
         method: 'message',
-        params: {
-            messages: messages.map(m => {
+        params: [
+            messages.map(m => {
                 const msgObj = m.plainServer();
                 if (!profile.user.isVersionSupport('messageOrder')) {
                     delete msgObj.order;
                 }
                 return msgObj;
             })
-        }
+        ]
     }, chat);
 };
 
@@ -834,7 +834,7 @@ export const joinChat = (chat, join = true) => {
         method: 'joinchat',
         params: [chat.gid, join]
     }).then(theChat => {
-        if (theChat && theChat.isMember(profile.userId)) {
+        if (profile.user.isVersionSupport('skipSendBroadcast') && theChat && theChat.isMember(profile.userId)) {
             sendBoardChatMessage(Lang.format('chat.join.message', `@${profile.userAccount}`), theChat);
         }
         return Promise.resolve(theChat);
@@ -849,7 +849,7 @@ export const joinChat = (chat, join = true) => {
 export const exitChat = (chat) => {
     if (chat.canExit(profile.user)) {
         return joinChat(chat, false).then(theChat => {
-            if (theChat && !theChat.isMember(profile.userId)) {
+            if (profile.user.isVersionSupport('skipSendBroadcast') && theChat && !theChat.isMember(profile.userId)) {
                 sendBoardChatMessage(Lang.format('chat.exit.message', `@${profile.userAccount}`), theChat);
             }
             return Promise.resolve(theChat);
@@ -940,6 +940,23 @@ export const fetchChat = cgid => {
             0,
             false
         ]
+    });
+};
+
+/**
+ * 请求删除消息（撤销消息）
+ * @param {ChatMessage} message 要删除的消息对象
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const deleteChatMessage = (message) => {
+    if (!message.canDelete(profile.userId)) {
+        return Promise.reject();
+    }
+    const messageData = message.plainServer();
+    messageData.deleted = true;
+    return socket.sendAndListen({
+        method: 'message',
+        params: [[messageData]]
     });
 };
 

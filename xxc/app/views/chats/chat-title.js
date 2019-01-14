@@ -10,6 +10,8 @@ import _StatusDot from '../common/status-dot';
 import MemberProfileDialog from '../common/member-profile-dialog';
 import Config from '../../config';
 import withReplaceView from '../with-replace-view';
+import {onChatTypingChange} from '../../core/im/im-chat-typing';
+import events from '../../core/events';
 
 
 /**
@@ -81,8 +83,28 @@ export default class ChatTitle extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            copiedChatID: false
+            copiedChatID: false,
+            typing: false,
         };
+    }
+
+    /**
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof ChatTitle
+     * @return {void}
+     */
+    componentDidMount() {
+        const {chat} = this.props;
+        if (chat.isOne2One) {
+            this.onChatTypingHandler = onChatTypingChange(chat.gid, (typing, typeUserID) => {
+                this.setState({typing});
+            });
+        }
     }
 
     /**
@@ -118,6 +140,9 @@ export default class ChatTitle extends Component {
         if (this.copiedHintTimer) {
             clearTimeout(this.copiedHintTimer);
             this.copiedHintTimer = null;
+        }
+        if (this.onChatTypingHandler) {
+            events.off(this.onChatTypingHandler);
         }
     }
 
@@ -156,7 +181,7 @@ export default class ChatTitle extends Component {
             children,
             ...other
         } = this.props;
-        const {copiedChatID} = this.state;
+        const {copiedChatID, typing} = this.state;
         const denyShowMemberProfile = Config.ui['chat.denyShowMemberProfile'];
         const chatName = chat.getDisplayName(App, true);
         const theOtherOne = chat.isOne2One ? chat.getTheOtherOne(App) : null;
@@ -185,6 +210,11 @@ export default class ChatTitle extends Component {
             }
         }
 
+        let typingView = null;
+        if (typing) {
+            typingView = <small className="muted small">{Lang.string('chat.one2one.typing')}</small>;
+        }
+
         return (
             <div className={classes('chat-title heading', className)} {...other}>
                 {chatAvatarView}
@@ -198,6 +228,7 @@ export default class ChatTitle extends Component {
                 {chat.isDismissed && <div className="small label rounded dark">{Lang.string('chat.group.dismissed')}</div>}
                 {chat.isDeleteOne2One && <div className="small label rounded dark">{Lang.string('chat.deleted')}</div>}
                 {chatNoticeView}
+                {typingView}
                 <div className="flex-auto" />
                 {children}
             </div>

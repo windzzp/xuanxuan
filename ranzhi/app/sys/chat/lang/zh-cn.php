@@ -1,6 +1,7 @@
 <?php
 $lang->chat->settings    = '喧喧设置';
 $lang->chat->version     = '版本';
+$lang->chat->xxbLang     = '服务器端语言';
 $lang->chat->key         = '密钥';
 $lang->chat->systemGroup = '系统';
 
