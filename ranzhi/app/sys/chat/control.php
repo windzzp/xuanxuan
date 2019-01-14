@@ -63,10 +63,10 @@ class chat extends control
                 $this->output->data = $user;
             }
 
-            $userList = getUserListOutput($idList = array(), $userID);
-            $chatList = getListOutput($userID);
-            $messages = getOfflineMessagesOutput($userID);
-            $notifies = getOfflineNotifyOutput($userID);
+            $userList = $this->chat->getUserListOutput($idList = array(), $userID);
+            $chatList = $this->chat->getListOutput($userID);
+            $messages = $this->chat->getOfflineMessagesOutput($userID);
+            $notifies = $this->chat->getOfflineNotifyOutput($userID);
 
             $this->output = array($this->output, $userList, $chatList, $messages, $notifies);
         }
@@ -290,6 +290,10 @@ class chat extends control
             $this->output->result = 'success';
             $this->output->users  = array_keys($users);
             $this->output->data   = $chat;
+
+            $broadcast = $this->chat->getBroadcast('createChat', $chat, array_keys($users), $userID);
+
+            if($broadcast) $this->output = array($this->output, $broadcast);
         }
 
         die($this->app->encrypt($this->output));
@@ -411,6 +415,11 @@ class chat extends control
             $this->output->result = 'success';
             $this->output->users  = $users;
             $this->output->data   = $chat;
+
+            $type      = $join ? 'joinChat' : 'quitChat';
+            $broadcast = $this->chat->getBroadcast($type, $chat, $users, $userID);
+
+            if($broadcast) $this->output = array($this->output, $broadcast);
         }
 
         die($this->app->encrypt($this->output));
@@ -459,6 +468,9 @@ class chat extends control
             $this->output->users  = array_keys($users);
             $this->output->data   = $chat;
 
+            $broadcast = $this->chat->getBroadcast('renameChat', $chat, array_keys($users), $userID);
+
+            if($broadcast) $this->output = array($this->output, $broadcast);
         }
 
         die($this->app->encrypt($this->output));
@@ -505,6 +517,10 @@ class chat extends control
             $this->output->result = 'success';
             $this->output->users  = array_keys($users);
             $this->output->data   = $chat;
+
+            $broadcast = $this->chat->getBroadcast('dismissChat', $chat, array_keys($users), $userID);
+
+            if($broadcast) $this->output = array($this->output, $broadcast);
         }
 
         die($this->app->encrypt($this->output));
@@ -803,6 +819,13 @@ class chat extends control
             $this->output->result = 'success';
             $this->output->users  = array_keys($users);
             $this->output->data   = $chat;
+
+            if($join)
+            {
+                $broadcast = $this->chat->getBroadcast('inviteUser', $chat, array_keys($users), $userID, $members);
+
+                if($broadcast) $this->output = array($this->output, $broadcast);
+            }
         }
         die($this->app->encrypt($this->output));
     }
@@ -1026,18 +1049,32 @@ class chat extends control
     /**
      * Save or get settings.
      *
-     * @param  string $account
-     * @param  string $settings
-     * @param  int    $userID
+     * @param  string               $account
+     * @param  string|array|object  $settings
+     * @param  int                  $userID
      * @access public
      * @return void
      */
     public function settings($account = '', $settings = '', $userID = 0)
     {
         $this->loadModel('setting');
-        if($settings)
+
+        $settingsObj  = new stdclass();
+        $userSettings = json_decode($this->setting->getItem("owner=system&app=sys&module=chat&section=settings&key=$account"));
+
+        if(is_array($settings))
         {
-            $this->setting->setItem("system.sys.chat.settings.$account", helper::jsonEncode($settings));
+            foreach($settings as $settingKey) $settingsObj->$settingKey = isset($userSettings->$settingKey) ? $userSettings->$settingKey : '';
+        }
+        elseif(is_object($settings))
+        {
+            $settingsObj = $settings;
+            foreach($settings as $settingKey => $settingValue) $userSettings->$settingKey = $settingValue;
+            $this->setting->setItem("system.sys.chat.settings.$account", helper::jsonEncode($userSettings));
+        }
+        else
+        {
+            $settingsObj = $userSettings;
         }
 
         if(dao::isError())
@@ -1049,7 +1086,7 @@ class chat extends control
         {
             $this->output->result = 'success';
             $this->output->users  = array($userID);
-            $this->output->data   = !empty($settings) ? $settings : json_decode($this->setting->getItem("owner=system&app=sys&module=chat&section=settings&key=$account"));
+            $this->output->data   = $settingsObj;
         }
 
         die($this->app->encrypt($this->output));

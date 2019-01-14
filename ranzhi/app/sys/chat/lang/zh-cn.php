@@ -21,10 +21,12 @@ $lang->chat->notInGroup       = '用户不在此讨论组内。';
 
 $lang->chat->errorKey = '<strong>密钥</strong> 应该为数字或字母的组合，长度为32位。';
 
+$lang->chat->connector = '、';
+
 $lang->chat->broadcast = new stdclass();
-$lang->chat->broadcast->createChat  = '@%s 创建了讨论组。';
-$lang->chat->broadcast->joinChat    = '';
-$lang->chat->broadcast->quiteChat   = '';
-$lang->chat->broadcast->renameChat  = '';
-$lang->chat->broadcast->dismissChat = '';
-$lang->chat->broadcast->inviteUser  = '';
+$lang->chat->broadcast->createChat  = '@%s 创建了讨论组 **[%s](#/chats/groups/%s)**。';
+$lang->chat->broadcast->joinChat    = '@%s 加入了讨论组。';
+$lang->chat->broadcast->quitChat    = '@%s 退出了当前讨论组。';
+$lang->chat->broadcast->renameChat  = '@%s 将讨论组名称更改为 **[%s](#/chats/groups/%s)**。';
+$lang->chat->broadcast->inviteUser  = '@%s 邀请 %s 加入了讨论组。';
+$lang->chat->broadcast->dismissChat = '@%s 解散了当前讨论组。';

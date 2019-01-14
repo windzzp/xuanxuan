@@ -20,3 +20,13 @@ $lang->chat->multiChats       = 'Messages belong to different chats.';
 $lang->chat->notInGroup       = 'You are not in this chat group.';
 
 $lang->chat->errorKey = 'The key should be a 32 byte string including letters or numbers.';
+
+$lang->chat->connector = ', ';
+
+$lang->chat->broadcast = new stdclass();
+$lang->chat->broadcast->createChat  = '@%s created the group **[%s](#/chats/groups/%s)**.';
+$lang->chat->broadcast->joinChat    = '@%s joined.';
+$lang->chat->broadcast->quitChat    = '@%s quited.';
+$lang->chat->broadcast->renameChat  = '@%s renamed the group to **[%s](#/chats/groups/%s)**.';
+$lang->chat->broadcast->inviteUser  = '@%s invited %s to join.';
+$lang->chat->broadcast->dismissChat = '@%s dismissed the group.';

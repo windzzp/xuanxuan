@@ -555,6 +555,90 @@ class chatModel extends model
     }
 
     /**
+     * Get content of broadcast.
+     *
+     * @param  string $type
+     * @param  object $chat
+     * @param  int    $userID
+     * @param  array  $members
+     * @access public
+     * @return string
+     */
+    public function getBroadcastContent($type, $chat, $userID, $members)
+    {
+        $user = $this->getUserByUserID($userID);
+        
+        if($type == 'createChat' or $type == 'renameChat') return sprintf($this->lang->chat->broadcast->$type, $user->account, $chat->name, $chat->gid);
+        
+        if($type == 'inviteUser')
+        {
+            foreach($members as $member) $member = '@' . $member;
+            $members = implode($this->lang->chat->connector, $members);
+
+            return sprintf($this->lang->chat->broadcast->$type, $user->account, $members);
+        }
+        
+        return sprintf($this->lang->chat->broadcast->$type, $user->account);
+    }
+
+    /**
+     * Create a output of broadcast.
+     *
+     * @param  string $type
+     * @param  object $chat
+     * @param  array  $onlineUsers
+     * @param  int    $userID
+     * @param  array  $members
+     * @access public
+     * @return object
+     */
+    public function createBroadcast($type, $chat, $onlineUsers, $userID, $members = array())
+    {
+        $message = new stdclass();
+        $message->gid       = $this->creatGID();
+        $message->cgid      = $chat->gid;
+        $message->type      = 'broadcast';
+        $message->conteType = 'text';
+        $message->content   = $this->getBroadcastContent($type, $chat, $userID, $members); 
+        $message->date      = time();
+        $message->user      = $userID;
+        $message->order     = 1;
+
+        /* If quit a chat, only send broadcast to the admins or the created user of chat. */
+        if($type == 'quitChat')
+        {
+            $chat->members = array();
+            if($chat->admins)   $chat->members = explode(',', trim($chat->admins, ','));
+            if(!$chat->members) $chat->members = array($chat->createdBy);
+            $users       = $this->chat->getUserList($status = 'online', array_values($chat->members));
+            $onlineUsers = array_keys($users);
+        }
+
+        /* Save broadcast to im_message. */
+        $messages     = $this->createMessage(array($messages), $userID);
+        $offlineUsers = $this->getUserList($status = 'offline', array_values($chat->members));
+        $this->saveOfflineMessages($messages, array_keys($offlineUsers));
+
+        $output = new stdclass();
+        $output->module = 'chat';
+        $output->method = 'message';
+
+        if(dao::isError())
+        {
+            $output->result  = 'fail';
+            $output->message = 'Send message failed.';
+        }
+        else
+        {
+            $output->result = 'success';
+            $output->users  = $onlineUsers;
+            $output->data   = $messages;
+        }
+
+        return $output;
+    }
+
+    /**
      * Update a chat.
      *
      * @param  object $chat
@@ -1048,7 +1132,7 @@ class chatModel extends model
 	 */
 	public function createGID()
 	{
-	    $id = md5(time(). mt_rand());
+	    $id = md5(microtime(). mt_rand());
         return substr($id, 0, 8) . '-' . substr($id, 8, 4) . '-' . substr($id, 12, 4) . '-' . substr($id, 16, 4) . '-' . substr($id, 20, 12);
 	}
 
