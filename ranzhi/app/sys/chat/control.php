@@ -290,6 +290,10 @@ class chat extends control
             $this->output->result = 'success';
             $this->output->users  = array_keys($users);
             $this->output->data   = $chat;
+
+            $broadcast = $this->chat->getBroadcast('createChat', $chat, array_keys($users), $userID);
+
+            if($broadcast) $this->output = array($this->output, $broadcast);
         }
 
         die($this->app->encrypt($this->output));
@@ -411,6 +415,11 @@ class chat extends control
             $this->output->result = 'success';
             $this->output->users  = $users;
             $this->output->data   = $chat;
+
+            $type      = $join ? 'joinChat' : 'quitChat';
+            $broadcast = $this->chat->getBroadcast($type, $chat, $users, $userID);
+
+            if($broadcast) $this->output = array($this->output, $broadcast);
         }
 
         die($this->app->encrypt($this->output));
@@ -459,6 +468,9 @@ class chat extends control
             $this->output->users  = array_keys($users);
             $this->output->data   = $chat;
 
+            $broadcast = $this->chat->getBroadcast('renameChat', $chat, array_keys($users), $userID);
+
+            if($broadcast) $this->output = array($this->output, $broadcast);
         }
 
         die($this->app->encrypt($this->output));
@@ -505,6 +517,10 @@ class chat extends control
             $this->output->result = 'success';
             $this->output->users  = array_keys($users);
             $this->output->data   = $chat;
+
+            $broadcast = $this->chat->getBroadcast('dismissChat', $chat, array_keys($users), $userID);
+
+            if($broadcast) $this->output = array($this->output, $broadcast);
         }
 
         die($this->app->encrypt($this->output));
@@ -803,6 +819,13 @@ class chat extends control
             $this->output->result = 'success';
             $this->output->users  = array_keys($users);
             $this->output->data   = $chat;
+
+            if($join)
+            {
+                $broadcast = $this->chat->getBroadcast('inviteUser', $chat, array_keys($users), $userID, $members);
+
+                if($broadcast) $this->output = array($this->output, $broadcast);
+            }
         }
         die($this->app->encrypt($this->output));
     }
