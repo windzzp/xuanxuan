@@ -12,6 +12,7 @@ package api
 import (
     "encoding/json"
     "xxd/util"
+    "strings"
 )
 
 type ParseData map[string]interface{}
@@ -26,7 +27,7 @@ func ApiParse(message, token []byte) (ParseData, error) {
 
     parseData := make(ParseData)
     if err := json.Unmarshal([]byte(jsonData), &parseData); err != nil {
-        util.LogError().Println("Warning: JSON unmarshal error:", err)
+        util.LogError().Println("Warning: JSON Unmarshal error:", err)
         return nil, err
     }
 
@@ -37,7 +38,7 @@ func ApiParse(message, token []byte) (ParseData, error) {
 func ApiUnparse(parseData ParseData, token []byte) []byte {
     jsonData, err := json.Marshal(parseData)
     if err != nil {
-        util.LogError().Println("json unmarshal error:", err)
+        util.LogError().Println("json Marshal error:", err)
         return nil
     }
 
@@ -65,6 +66,43 @@ func SwapToken(message, fromToken, toToken []byte) ([]byte, error) {
     }
 
     return message, nil
+}
+
+//处理后端返回的合并数据，并兼容原始数据
+func ProcessResponse(jsonData []byte) (map[int]map[string]interface{}, error) {
+    retMessage := make(map[int]map[string]interface{})
+
+    if strings.Index(string(jsonData), "[") == 0 {
+        var retData []map[string]interface{}
+        if err := json.Unmarshal(jsonData, &retData); err != nil {
+            util.LogError().Println("Warning: message data unmarshal json error:", err)
+            return nil, err
+        }
+
+        for key, value := range retData {
+            parseData := ParseData(value)
+            retMessage[key] = make(map[string]interface{})
+            retMessage[key]["users"]   = parseData.SendUsers()
+            retMessage[key]["message"] = ApiUnparse(parseData, util.Token)
+            if parseData.Module() == "chat" && parseData.Method() == "login" {
+               retMessage[key]["userID"] = parseData.LoginUserID()
+            }
+        }
+    }else {
+        parseData := make(ParseData)
+        if err := json.Unmarshal(jsonData, &parseData); err != nil {
+            util.LogError().Println("Warning: JSON Unmarshal error:", err)
+            return nil, err
+        }
+
+        retMessage[0] = make(map[string]interface{})
+        retMessage[0]["users"]   = parseData.SendUsers()
+        retMessage[0]["message"] = ApiUnparse(parseData, util.Token)
+        if parseData.Module() == "chat" && parseData.Method() == "login" {
+            retMessage[0]["userID"] = parseData.LoginUserID()
+        }
+    }
+    return retMessage, nil
 }
 
 //获取module
@@ -143,6 +181,18 @@ func (pd ParseData) SendUsers() []int64 {
 
     delete(pd, "users")
     return array
+}
+
+//用户ID
+func (pd ParseData) LoginUserID() int64 {
+    data, ok := pd["data"]
+    if !ok {
+        return -1
+    }
+
+    intfData := data.(map[string]interface{})
+    ret := int64(intfData["id"].(float64))
+    return ret
 }
 
 //测试

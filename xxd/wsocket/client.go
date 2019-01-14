@@ -148,6 +148,7 @@ func chatLogin(parseData api.ParseData, client *Client) error {
         client.serverName = util.Config.DefaultServer
     }
 
+    //判断最大在线用户数
     if util.Config.MaxOnlineUser > 0 {
         onlineUser := len(client.hub.clients[client.serverName])
         if int64(onlineUser) >= util.Config.MaxOnlineUser {
@@ -156,26 +157,27 @@ func chatLogin(parseData api.ParseData, client *Client) error {
         }
     }
 
+    //当前用户语言
     client.lang = parseData.Lang()
     if _, ok := util.Languages[client.lang]; ok == false {
         util.Languages[client.lang] = client.lang
     }
 
-    loginData, userID, ok := api.ChatLogin(parseData)
-    if userID == -1 {
-        util.LogError().Println("chat login error")
-        return util.Errorf("%s", "chat login error")
-    }
-
-    if !ok {
+    //map[int]map[string]interface{}
+    retMessages, err := api.ChatLogin(parseData)
+    if err != nil {
         // 登录失败返回错误信息
-        client.send <- loginData
+        client.send <- retMessages[0]["message"].([]byte)
         return util.Errorf("%s", "chat login error")
     }
-    // 成功后返回login数据给客户端
-    client.send <- loginData
 
-    client.userID = userID
+    for key, _ := range retMessages {
+        if key == 0 {
+            client.userID = retMessages[0]["userID"].(int64)
+
+        }
+        client.send <- retMessages[key]["message"].([]byte)
+    }
 
     // 生成并存储文件会员
     userFileSessionID, err := api.UserFileSessionID(client.serverName, client.userID, client.lang)
@@ -187,45 +189,9 @@ func chatLogin(parseData api.ParseData, client *Client) error {
     // 成功后返回userFileSessionID数据给客户端
     client.send <- userFileSessionID
 
-    // 获取所有用户列表
-    getList, err := api.UserGetlist(client.serverName, client.userID, client.lang)
-    if err != nil {
-        util.LogError().Println("chat user get user list error:", err)
-        //返回给客户端登录失败的错误信息
-        return err
-    }
-    // 成功后返回usergl数据给客户端
-    client.send <- getList
-
-    // 获取当前登录用户所有会话数据,组合好的数据放入send发送队列
-    chatList, err := api.Getlist(client.serverName, client.userID, client.lang)
-    if err != nil {
-        util.LogError().Println("chat get list error:", err)
-        // 返回给客户端登录失败的错误信息
-        return err
-    }
-    // 成功后返回gl数据给客户端
-    client.send <- chatList
-
-    //获取离线消息
-    offlineMessages, err := api.GetofflineMessages(client.serverName, client.userID, client.lang)
-    if err != nil {
-        util.LogError().Println("chat get offline messages error")
-        // 返回给客户端登录失败的错误信息
-        return err
-    }
-    client.send <- offlineMessages
-
-    offlineNotify, err := api.GetOfflineNotify(client.serverName, client.userID, client.lang)
-    if err != nil {
-        util.LogError().Println("chat get offline notify error")
-        return err
-    }
-    client.send <- offlineNotify
-
     // 推送当前登录用户信息给其他在线用户
     // 因为是broadcast类型，所以不需要初始化userID
-    client.hub.broadcast <- SendMsg{serverName: client.serverName, message: loginData}
+    client.hub.broadcast <- SendMsg{serverName: client.serverName, message: retMessages[0]["message"].([]byte)}
 
     cRegister := &ClientRegister{client: client, retClient: make(chan *Client)}
     defer close(cRegister.retClient)
@@ -249,12 +215,17 @@ func chatLogout(userID int64, client *Client) error {
     if client.repeatLogin {
         return nil
     }
-    x2cMessage, sendUsers, err := api.ChatLogout(client.serverName, client.userID, client.lang)
+    retMessages, err := api.ChatLogout(client.serverName, client.userID, client.lang)
     if err != nil {
         return err
     }
+
+    for key, _ := range retMessages {
+        X2cSend(client.serverName, retMessages[key]["users"].([]int64), retMessages[key]["message"].([]byte), client)
+    }
+
     util.DelUid(client.serverName, util.Int642String(client.userID))
-    return X2cSend(client.serverName, sendUsers, x2cMessage, client)
+    return nil
 }
 
 //交换数据
@@ -263,7 +234,8 @@ func transitData(message []byte, userID int64, client *Client) error {
         return util.Errorf("%s", "user id err")
     }
 
-    x2cMessage, sendUsers, err := api.TransitData(message, client.serverName)
+    retMessages, err := api.TransitData(message, client.serverName)
+
     if err != nil {
         // 与然之服务器交互失败后，生成error并返回到客户端
         errMsg, retErr := api.RetErrorMsg("0", "time out")
@@ -275,7 +247,11 @@ func transitData(message []byte, userID int64, client *Client) error {
         return err
     }
 
-    return X2cSend(client.serverName, sendUsers, x2cMessage, client)
+    for key, _ := range retMessages {
+        X2cSend(client.serverName, retMessages[key]["users"].([]int64), retMessages[key]["message"].([]byte), client)
+    }
+
+    return nil
 }
 
 //Send the message from XXD to XXC.

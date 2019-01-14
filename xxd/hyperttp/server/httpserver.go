@@ -279,6 +279,7 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
 
     r.ParseForm()
 
+    /*
     ok, err := api.VerifyLogin([]byte(r.Form["data"][0]))
     if err != nil {
         util.LogError().Println("verify login error:", err)
@@ -291,6 +292,7 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
         w.WriteHeader(http.StatusUnauthorized)
         return
     }
+    */
 
     chatPort, err := util.String2Int(util.Config.ChatPort)
     if err != nil {

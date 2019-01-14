@@ -17,82 +17,59 @@ import (
 var newline = []byte{'\n'}
 
 // 从客户端发来的登录请求，通过该函数转发到后台服务器进行登录验证
-func ChatLogin(clientData ParseData) ([]byte, int64, bool) {
+func ChatLogin(clientData ParseData) (map[int]map[string]interface{}, error) {
     ranzhiServer, ok := RanzhiServer(clientData.ServerName())
     if !ok {
         util.LogError().Println("no ranzhi server name")
-        return nil, -1, false
+        return nil, util.Errorf("%s\n", "no ranzhi server name")
     }
 
-    // 到http服务器请求，返回加密的结果
+    // 到http服务器请求，返回加密的结果，可能包含多个数组, type []byte
     retMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, ApiUnparse(clientData, ranzhiServer.RanzhiToken))
     if err != nil {
         util.LogError().Println("hyperttp request info error:", err)
-        return nil, -1, false
+        return nil, err
     }
 
-    // 解析http服务器的数据,返回 ParseData 类型的数据
-    retData, err := ApiParse(retMessage, ranzhiServer.RanzhiToken)
+    //解密数据
+    jsonData, err := aesDecrypt(retMessage, ranzhiServer.RanzhiToken)
     if err != nil {
-        util.LogError().Println("api parse error:", err)
-        return nil, -1, false
+        util.LogError().Println("Warning: message data decrypt error:", err)
+        return nil, err
     }
-
-    retMessage, err = SwapToken(retMessage, ranzhiServer.RanzhiToken, util.Token)
-    if err != nil {
-        util.LogError().Println("chat login swap token error:", err)
-        return nil, -1, false
-    }
-
-    result := retData.Result() == "success"
-    if !result {
-        return nil, 0, false
-    }
-
-    // 返回值：
-    // 1、返回给客户端加密后的数据
-    // 2、返回用户的ID
-    // 3、返回登录的结果
-    return retMessage, retData.loginUserID(), result
+    return ProcessResponse(jsonData)
 }
 
 //客户端退出
-func ChatLogout(serverName string, userID int64, lang string) ([]byte, []int64, error) {
+func ChatLogout(serverName string, userID int64, lang string) (map[int]map[string]interface{}, error) {
     ranzhiServer, ok := RanzhiServer(serverName)
     if !ok {
         util.LogError().Println("no ranzhi server name")
-        return nil, nil, util.Errorf("%s\n", "no ranzhi server name")
+        return nil, util.Errorf("%s\n", "no ranzhi server name")
     }
 
     request := []byte(`{"module":"chat","method":"logout","lang":"` + lang + `","userID":` + util.Int642String(userID) + `}`)
     message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
     if err != nil {
         util.LogError().Println("aes encrypt error:", err)
-        return nil, nil, err
+        return nil, err
     }
 
     // 到http服务器请求user get list数据
     r2xMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, message)
     if err != nil {
         util.LogError().Println("hyperttp request info error:", err)
-        return nil, nil, err
+        return nil, err
     }
 
-    // 解析http服务器的数据,返回 ParseData 类型的数据
-    parseData, err := ApiParse(r2xMessage, ranzhiServer.RanzhiToken)
+    //解密数据
+    jsonData, err := aesDecrypt(r2xMessage, ranzhiServer.RanzhiToken)
     if err != nil {
-        util.LogError().Println("api parse error", err)
-        return nil, nil, err
+        util.LogError().Println("Warning: message data decrypt error:", err)
+        return nil, err
     }
 
-    sendUsers := parseData.SendUsers()
-
-    x2cMessage := ApiUnparse(parseData, util.Token)
-    if x2cMessage == nil {
-        return nil, nil, err
-    }
-
-    return x2cMessage, sendUsers, nil
+    return ProcessResponse(jsonData)
 
 }
 
@@ -110,10 +87,9 @@ func RepeatLogin() []byte {
     return message
 }
 
-
-//重新登录
+//禁止登录
 func BlockLogin() []byte {
-    blockLogin := []byte(`{"module":"chat","method":"blockLogin","message":"同时在线超出系统限制"}`)
+    blockLogin := []byte(`{"module":"chat","method":"blockLogin","message":"Online users exceed system limits."}`)
 
     message, err := aesEncrypt(blockLogin, util.Token)
     if err != nil {
@@ -139,42 +115,35 @@ func TestLogin() []byte {
 }
 
 // 除登录和退出的数据中转.
-func TransitData(clientData []byte, serverName string) ([]byte, []int64, error) {
+func TransitData(clientData []byte, serverName string) (map[int]map[string]interface{}, error) {
     ranzhiServer, ok := RanzhiServer(serverName)
     if !ok {
         util.LogError().Println("no ranzhi server name")
-        return nil, nil, util.Errorf("%s\n", "no ranzhi server name")
+        return nil, util.Errorf("%s\n", "no ranzhi server name")
     }
 
     //交换token
     message, err := SwapToken(clientData, util.Token, ranzhiServer.RanzhiToken)
     if err != nil {
         util.LogError().Println("transit data swap token error:", err)
-        return nil, nil, err
+        return nil,  err
     }
 
     // ranzhi to xxd message
     r2xMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, message)
     if err != nil {
         util.LogError().Println("hyperttp request info error:", err)
-        return nil, nil, err
+        return nil, err
     }
 
-    parseData, err := ApiParse(r2xMessage, ranzhiServer.RanzhiToken)
+    //解密数据
+    jsonData, err := aesDecrypt(r2xMessage, ranzhiServer.RanzhiToken)
     if err != nil {
-        util.LogError().Println("api parse error:", err)
-        return nil, nil, err
+        util.LogError().Println("Warning: message data decrypt error:", err)
+        return nil, err
     }
 
-    sendUsers := parseData.SendUsers()
-
-    // xxd to client message
-    x2cMessage := ApiUnparse(parseData, util.Token)
-    if x2cMessage == nil {
-        return nil, nil, err
-    }
-
-    return x2cMessage, sendUsers, nil
+    return ProcessResponse(jsonData)
 }
 
 //获取用户列表
@@ -226,106 +195,6 @@ func UserFileSessionID(serverName string, userID int64, lang string) ([]byte, er
     }
 
     return sessionData, nil
-}
-
-//获取用户的会话列表
-func Getlist(serverName string, userID int64, lang string) ([]byte, error) {
-    ranzhiServer, ok := RanzhiServer(serverName)
-    if !ok {
-        util.LogError().Println("no ranzhi server name")
-        return nil, util.Errorf("%s\n", "no ranzhi server name")
-    }
-
-    // 固定的json格式
-    request := []byte(`{"module":"chat","method":"getlist", "lang":"` + lang + `", "userID":` + util.Int642String(userID) + `}`)
-    message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
-    if err != nil {
-        util.LogError().Println("aes encrypt error:", err)
-        return nil, err
-    }
-
-    // 到http服务器请求get list数据
-    retMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, message)
-    if err != nil {
-        util.LogError().Println("hyperttp request info error:", err)
-        return nil, err
-    }
-
-    //由于http服务器和客户端的token不一致，所以需要进行交换
-    retData, err := SwapToken(retMessage, ranzhiServer.RanzhiToken, util.Token)
-    if err != nil {
-        util.LogError().Println("get list swap token error:", err)
-        return nil, err
-    }
-
-    return retData, nil
-
-}
-
-//获取离线消息
-func GetofflineMessages(serverName string, userID int64, lang string) ([]byte, error) {
-    ranzhiServer, ok := RanzhiServer(serverName)
-    if !ok {
-        util.LogError().Println("no ranzhi server name")
-        return nil, util.Errorf("%s\n", "no ranzhi server name")
-    }
-
-    // 固定的json格式
-    request := []byte(`{"module":"chat","method":"getOfflineMessages", "lang":"` + lang + `", "userID":` + util.Int642String(userID) + `}`)
-    message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
-    if err != nil {
-        util.LogError().Println("aes encrypt error:", err)
-        return nil, err
-    }
-
-    // 到http服务器请求get list数据
-    retMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, message)
-    if err != nil {
-        util.LogError().Println("hyperttp request info error:", err)
-        return nil, err
-    }
-
-    //由于http服务器和客户端的token不一致，所以需要进行交换
-    retData, err := SwapToken(retMessage, ranzhiServer.RanzhiToken, util.Token)
-    if err != nil {
-        util.LogError().Println("get off line message swap token error:", err)
-        return nil, err
-    }
-
-    return retData, nil
-}
-
-//获取离线通知
-func GetOfflineNotify(serverName string, userID int64, lang string) ([]byte, error) {
-    ranzhiServer, ok := RanzhiServer(serverName)
-    if !ok {
-        util.LogError().Println("no ranzhi server name")
-        return nil, util.Errorf("%s\n", "no ranzhi server name")
-    }
-
-    // 固定的json格式
-    request := []byte(`{"module":"chat","method":"getOfflineNotify", "lang":"` + lang + `", "userID":` + util.Int642String(userID) + `}`)
-    message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
-    if err != nil {
-        util.LogError().Println("aes encrypt error:", err)
-        return nil, err
-    }
-
-    // 到http服务器请求get list数据
-    retMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, message)
-    if err != nil {
-        util.LogError().Println("hyperttp request info error:", err)
-        return nil, err
-    }
-
-    //由于http服务器和客户端的token不一致，所以需要进行交换
-    retData, err := SwapToken(retMessage, ranzhiServer.RanzhiToken, util.Token)
-    if err != nil {
-        util.LogError().Println("get off line message swap token error:", err)
-        return nil, err
-    }
-
-    return retData, nil
 }
 
 func ReportAndGetNotify(server string, lang string) (map[int64][]byte, error) {
