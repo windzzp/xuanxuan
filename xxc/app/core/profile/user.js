@@ -24,6 +24,7 @@ const EVENT = {
     config_change: 'user.config.change',
     status_change: 'user.status.change',
     reconnect: 'user.reconnect',
+    config_request_upload: 'user.config.requestUpload'
 };
 
 /**
@@ -231,13 +232,20 @@ export default class User extends Member {
     get config() {
         if (!this._config) {
             this._config = new UserConfig(this.$get('config'));
-            this._config.onChange = (change, config) => {
+            this._config.onChange = (changes, config) => {
                 // Save user to config file
                 this.save();
 
                 // Emit user config change event
                 if (this.isEventsEnable) {
-                    events.emit(EVENT.config_change, change, config, this);
+                    events.emit(EVENT.config_change, changes, config, this);
+                }
+            };
+
+            this._config.onRequestUpload = (changes, config) => {
+                // Emit user config change event
+                if (this.isEventsEnable) {
+                    events.emit(EVENT.config_request_upload, changes, config, this);
                 }
             };
         }
