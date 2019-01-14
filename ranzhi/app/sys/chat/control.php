@@ -63,10 +63,10 @@ class chat extends control
                 $this->output->data = $user;
             }
 
-            $userList = getUserListOutput($idList = array(), $userID);
-            $chatList = getListOutput($userID);
-            $messages = getOfflineMessagesOutput($userID);
-            $notifies = getOfflineNotifyOutput($userID);
+            $userList = $this->chat->getUserListOutput($idList = array(), $userID);
+            $chatList = $this->chat->getListOutput($userID);
+            $messages = $this->chat->getOfflineMessagesOutput($userID);
+            $notifies = $this->chat->getOfflineNotifyOutput($userID);
 
             $this->output = array($this->output, $userList, $chatList, $messages, $notifies);
         }
