@@ -466,13 +466,20 @@ export default class LoginForm extends PureComponent {
     };
 
     handleClickMessageDetailBtn = e => {
-        const {messageDetail} = this.state;
+        const {messageDetail, message} = this.state;
         if (messageDetail) {
             const bounding = e.target.getBoundingClientRect();
             const content = (
-                <pre className="has-padding danger-pale code small scroll-x scroll-y no-margin user-selectable" style={{maxHeight: 350}}>
-                    {messageDetail}
-                </pre>
+                <div>
+                    <div className="heading danger-pale">
+                        <div className="avatar"><Icon name="alert text-danger" /></div>
+                        <div className="title text-danger strong">{message}</div>
+                        {platform.has('clipboard.writeText') && <nav className="nav"><a onClick={() => platform.call('clipboard.writeText', `${message}\n${messageDetail}`)}>{Lang.string('common.copy')}</a></nav>}
+                    </div>
+                    <pre className="has-padding code small scroll-x scroll-y no-margin user-selectable" style={{maxHeight: 350}}>
+                        {messageDetail}
+                    </pre>
+                </div>
             );
             return Popover.show({
                 x: Math.floor(bounding.x + (bounding.width / 2)),
