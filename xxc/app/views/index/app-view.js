@@ -96,6 +96,7 @@ export default class AppView extends PureComponent {
      */
     render() {
         const {isUserVertified} = App.profile;
+        const {userStatus} = this.state;
         return (
             <div
                 className="affix"
@@ -105,14 +106,14 @@ export default class AppView extends PureComponent {
                 }}
             >
                 <LoginIndex
-                    userStatus={this.state.userStatus}
+                    userStatus={userStatus}
                     className="dock-left"
                     style={{
                         width: '100%',
                         left: '-100%',
                     }}
                 />
-                <MainIndex userStatus={this.state.userStatus} className={`dock${isUserVertified ? ' app-user-vertified' : ''}`} />
+                <MainIndex userStatus={userStatus} className={`dock${isUserVertified ? ' app-user-vertified' : ''}`} />
             </div>
         );
     }

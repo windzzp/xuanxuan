@@ -120,10 +120,10 @@ export const getChat = (gid) => {
  * @return {ChatMessage}
  */
 export const createChatMessage = message => {
-    if (message instanceof ChatMessage) {
+    if (message instanceof ChatMessage || message instanceof NotificationMessage) {
         return message;
     }
-    if (message.type === 'notification') {
+    if (message.type === 'notification' || message.type === 'notify') {
         message = NotificationMessage.create(message);
     } else {
         message = ChatMessage.create(message);
@@ -270,7 +270,6 @@ export const countChatMessages = (cgid, filter) => {
  * @return {Promise}
  */
 export const getChatMessages = (chat, queryCondition, limit = CHATS_LIMIT_DEFAULT, offset = 0, reverse = true, skipAdd = true, rawData = false, returnCount = false) => {
-    // console.log('getChatMessages', {chat, queryCondition, limit, offset, reverse, skipAdd, rawData, returnCount});
     if (!db.database || !db.database.chatMessages) {
         return Promise.resolve([]);
     }
@@ -349,7 +348,12 @@ const processChatMessageQueue = () => {
             isGetChatMessagesQueueBusy = false;
             processChatMessageQueue();
         };
-        getChatMessages(getChat(chat), queryCondition, limit, offset, reverse, skipAdd, rawData, returnCount).then(handleChatMessageQueueResult).catch(handleChatMessageQueueResult);
+        getChatMessages(getChat(chat), queryCondition, limit, offset, reverse, skipAdd, rawData, returnCount).then(handleChatMessageQueueResult).catch(err => {
+            if (DEBUG) {
+                console.error('getChatMessages.error', err);
+            }
+            handleChatMessageQueueResult(err);
+        });
     }
 };
 
@@ -403,13 +407,16 @@ export const loadChatMessages = (chat, inQueue = true) => {
     }
     const limit = loadingOffset ? 20 : CHATS_LIMIT_DEFAULT;
     return (inQueue ? getChatMessagesInQueue : getChatMessages)(chat, null, limit, loadingOffset, true, false).then(chatMessages => {
-        if (!chatMessages || chatMessages.length < limit) {
+        if (chatMessages instanceof Error || !chatMessages || chatMessages.length < limit) {
             loadingOffset = true;
         } else {
             loadingOffset += limit;
         }
         chat.loadingOffset = loadingOffset;
         return Promise.resolve(chatMessages);
+    }).catch((error) => {
+        chat.loadingOffset = loadingOffset;
+        return Promise.resolve([]);
     });
 };
 

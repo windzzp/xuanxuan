@@ -23,7 +23,8 @@ mode: 请求的模式，如 cors、 no-cors 或者 same-origin。
  * @returns {Promise<Response, error>} 使用 Promise 异步返回处理结果
  */
 export const request = (url, options) => (new Promise((resolve, reject) => {
-    window.fetch(url, options).then(response => {
+    const requestObj = new Request(url, options);
+    window.fetch(requestObj).then(response => {
         if (response.ok) {
             if (DEBUG) {
                 console.collapse(`HTTP ${(options && options.method) || 'GET'}`, 'blueBg', url, 'bluePale', 'OK', 'greenPale');
@@ -35,7 +36,22 @@ export const request = (url, options) => (new Promise((resolve, reject) => {
             resolve(response);
         } else {
             const error = new Error(response.statusMessage || `Status code is ${response.status}.`);
-            error.code = response.status === 401 ? 'STATUS_401' : (response.statusMessage || 'WRONG_STATUS');
+            error.request = request;
+            error.response = response;
+            error.detail = [
+                `Fetch from ${requestObj.url}`,
+                '    Request:',
+                `        Method: ${requestObj.method || ''}`,
+                `        Headers: ${options && options.headers ? JSON.stringify(options.headers) : ''}`,
+                '    Response:',
+                `        Type: ${response.type || ''}`,
+                `        Status: ${response.status || ''}`,
+                `        OK: ${response.ok || ''}`,
+                `        Redirected : ${response.redirected || ''}`,
+                `        StatusText: ${response.statusText || ''}`,
+                // `        Headers: ${JSON.stringify(response.headers) || ''}`,
+            ].join('\n');
+            error.code = response.status === 401 ? 'STATUS_401' : response.status === 500 ? 'STATUS_500' : (response.statusMessage || 'WRONG_STATUS');
             if (DEBUG) {
                 console.collapse(`HTTP ${(options && options.method) || 'GET'}`, 'blueBg', url, 'bluePale', error.code || 'ERROR', 'redPale');
                 console.log('options', options);
@@ -48,6 +64,13 @@ export const request = (url, options) => (new Promise((resolve, reject) => {
         return response;
     }).catch(error => {
         error.code = 'WRONG_CONNECT';
+        error.request = request;
+        error.detail = [
+            `Fetch.${(options && options.method) || 'GET'} from ${url}`,
+            '    Request:',
+            `        Method: ${requestObj.method || ''}`,
+            // `        Headers: ${JSON.stringify(requestObj.headers) || ''}`,
+        ].join('\n');
         if (DEBUG) {
             console.collapse(`HTTP ${(options && options.method) || 'GET'}`, 'blueBg', url, 'bluePale', error.code || 'ERROR', 'redPale');
             console.log('options', options);
@@ -158,8 +181,29 @@ export const postJSON = async (url, options) => {
     if (options instanceof FormData) {
         options = {body: options};
     }
-    const response = await request(url, Object.assign({method: 'POST'}, options));
-    return response.json();
+    try {
+        const response = await request(url, Object.assign({method: 'POST'}, options));
+        const json = await response.json();
+        return json;
+    } catch (error) {
+        const {response} = error;
+        if (response) {
+            const responseText = await response.text();
+            if (!error.detail) {
+                error.detail = [
+                    `Fetch json from ${url}`,
+                    '    Response:',
+                    `        Type: ${response.type || ''}`,
+                    `        Status: ${response.status || ''}`,
+                    `        OK: ${response.ok || ''}`,
+                    `        Redirected : ${response.redirected || ''}`,
+                    `        StatusText: ${response.statusText || ''}`,
+                ].join('\n');
+            }
+            error.detail = `${responseText}\n-------------------\n${error.detail}`;
+        }
+        throw error;
+    }
 };
 
 /**
@@ -186,10 +230,14 @@ export const getJSONData = async (url, options) => {
             return Promise.resolve(json.data);
         }
         const error = new Error(json.message || json.reason || `The server data result is ${jsonResult}`);
+        error.detail = [
+            `Fetch json data from ${url}`,
+            `    JSON: ${JSON.stringify(json)}`,
+        ].join('\n');
         error.code = 'WRONG_RESULT';
         return Promise.reject(error);
     }
-    const error = new Error('Server return a null json.');
+    const error = new Error(`Server return a null json when get json from ${url}.`);
     error.code = 'WRONG_DATA';
     return Promise.reject(error);
 };

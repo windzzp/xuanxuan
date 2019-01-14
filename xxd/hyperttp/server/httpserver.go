@@ -273,7 +273,7 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
     w.Header().Add("Access-Control-Allow-Credentials", "true")
 
     if r.Method != "POST" {
-        fmt.Fprintln(w, "not supported request")
+        fmt.Fprintln(w, "Not supported request which is not with 'POST' method, a post request required.")
         return
     }
 
@@ -282,21 +282,23 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
     /*
     ok, err := api.VerifyLogin([]byte(r.Form["data"][0]))
     if err != nil {
-        util.LogError().Println("verify login error:", err)
+        util.LogError().Println("Verify authentication credentials error: ", err)
         w.WriteHeader(http.StatusInternalServerError)
+        fmt.Fprintln(w, "Verify authentication credentials error: " + err.Error())
         return
     }
 
     if !ok {
-        //util.Println("auth error")
         w.WriteHeader(http.StatusUnauthorized)
+        fmt.Fprintln(w, "Authorize to backend server error.")
         return
     }
     */
 
     chatPort, err := util.String2Int(util.Config.ChatPort)
     if err != nil {
-        util.LogError().Println("string to int error:", err)
+        util.LogError().Println("Convert chat port to number error: ", err)
+        fmt.Fprintln(w, "Chat port \"" + util.Config.ChatPort + "\" is incorrect.")
         w.WriteHeader(http.StatusInternalServerError)
         return
     }
@@ -311,7 +313,8 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
 
     jsonData, err := json.Marshal(info)
     if err != nil {
-        util.LogError().Println("json unmarshal error:", err)
+        util.LogError().Println("Json unmarshal error: ", err)
+        fmt.Fprintln(w, "Json unmarshal error: " + err.Error())
         w.WriteHeader(http.StatusInternalServerError)
         return
     }

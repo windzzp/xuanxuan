@@ -424,7 +424,7 @@ export default class MessageListItem extends Component {
 
         const needCheckResend = !ignoreStatus && message.needCheckResend;
         const needResend = !ignoreStatus && needCheckResend && message.needResend;
-        const isNotification = message.isNotification;
+        const {isNotification} = message;
 
         if (hideHeader === 0) {
             hideHeader = !showDateDivider && lastMessage && lastMessage.senderId === message.senderId && lastMessage.type === message.type;
@@ -476,7 +476,7 @@ export default class MessageListItem extends Component {
         }
 
         if (isNotification) {
-            contentView = <NotificationMessage message={message} />;
+            contentView = <NotificationMessage message={message} contentConverter={textContentConverter} />;
         } else if (message.isFileContent) {
             contentView = <MessageContentFile message={message} />;
             this.isFileContent = true;

@@ -79,7 +79,7 @@ export default class NotificationMessage extends Component {
             ...other
         } = this.props;
 
-        const content = message.renderedTextContent(App.im.ui.renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : App.im.ui.linkMembersInText);
+        const content = message.renderedTextContent(App.im.ui.renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : App.im.ui.linkMembersInText, contentConverter);
         const {notification, actions} = message;
 
         let actionsButtons = [];
@@ -92,12 +92,14 @@ export default class NotificationMessage extends Component {
             });
         }
 
-        return (<div
-            {...other}
-            className={classes('app-message-notification layer rounded shadow-2', className)}
-        >
-            <div className="markdown-content" dangerouslySetInnerHTML={{__html: contentConverter ? contentConverter(content) : content}} />
-            {actionsButtons && actionsButtons.length ? <nav className="actions nav gray">{actionsButtons}</nav> : null}
-        </div>);
+        return (
+            <div
+                {...other}
+                className={classes('app-message-notification layer rounded shadow-2', className)}
+            >
+                <div className="markdown-content" dangerouslySetInnerHTML={{__html: content}} />
+                {actionsButtons && actionsButtons.length ? <nav className="actions nav gray">{actionsButtons}</nav> : null}
+            </div>
+        );
     }
 }

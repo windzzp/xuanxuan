@@ -15,6 +15,7 @@ import Button from '../../components/button';
 import User, {isPasswordWithMD5Flag} from '../../core/profile/user';
 import platform from '../../platform';
 import events from '../../core/events';
+import Popover from '../../components/popover';
 
 // 从平台访问对象获取模块功能
 const {ui: platformUI} = platform.modules;
@@ -116,6 +117,7 @@ export default class LoginForm extends PureComponent {
             rememberPassword: true,
             autoLogin: false,
             message: '',
+            messageDetail: '',
             submitable: false,
             logining: false,
             ldap: false,
@@ -223,9 +225,20 @@ export default class LoginForm extends PureComponent {
             return user;
         }).catch(error => {
             if (DEBUG) {
-                console.error('Login failed with error:', error);
+                console.error('Login failed with error:', {error});
             }
-            this.setState({message: error ? Lang.error(error) : null, logining: false});
+            const message = error ? Lang.error(error) : null;
+            let messageDetail = null;
+            if (error !== message || error.message !== message) {
+                messageDetail = (typeof error === 'object' && error.message) ? error.message : error;
+            }
+            if (error.detail) {
+                messageDetail += `\n-------------------\n${error.detail}`;
+            }
+            if (error.stack) {
+                messageDetail += `\n-------------------\nStack: ${error.stack}`;
+            }
+            this.setState({message, messageDetail, logining: false});
         });
     }
 
@@ -452,6 +465,30 @@ export default class LoginForm extends PureComponent {
         }]);
     };
 
+    handleClickMessageDetailBtn = e => {
+        const {messageDetail, message} = this.state;
+        if (messageDetail) {
+            const bounding = e.target.getBoundingClientRect();
+            const content = (
+                <div>
+                    <div className="heading danger-pale">
+                        <div className="avatar"><Icon name="alert text-danger" /></div>
+                        <div className="title text-danger strong">{message}</div>
+                        {platform.has('clipboard.writeText') && <nav className="nav"><a onClick={() => platform.call('clipboard.writeText', `${message}\n${messageDetail}`)}>{Lang.string('common.copy')}</a></nav>}
+                    </div>
+                    <pre className="has-padding code small scroll-x scroll-y no-margin user-selectable" style={{maxHeight: 350}}>
+                        {messageDetail}
+                    </pre>
+                </div>
+            );
+            return Popover.show({
+                x: Math.floor(bounding.x + (bounding.width / 2)),
+                y: Math.floor(bounding.y + (bounding.height / 2)),
+                placement: 'bottom'
+            }, content, {width: 520, height: 'auto'});
+        }
+    };
+
     /**
      * React 组件生命周期函数：Render
      * @private
@@ -480,6 +517,7 @@ export default class LoginForm extends PureComponent {
             submitable,
             logining,
             ldap,
+            messageDetail,
         } = this.state;
 
         let serverView = null;
@@ -501,7 +539,7 @@ export default class LoginForm extends PureComponent {
 
         return (
             <div className={classes('app-login-form', className)} {...other}>
-                {message && <div className="app-login-message danger box">{message}</div>}
+                {message && <div className="app-login-message danger box">{message} {messageDetail ? <a className="small inline-block" onClick={this.handleClickMessageDetailBtn}>{Lang.string('common.viewDetail')}...</a> : null}</div>}
                 {serverView}
                 <InputControl
                     value={account}
