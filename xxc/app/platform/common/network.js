@@ -36,23 +36,15 @@ export const request = (url, options) => (new Promise((resolve, reject) => {
             resolve(response);
         } else {
             const error = new Error(response.statusMessage || `Status code is ${response.status}.`);
+            error.request = request;
+            error.response = response;
             error.detail = [
                 `Fetch from ${requestObj.url}`,
                 '    Request:',
                 `        Method: ${requestObj.method || ''}`,
                 `        Headers: ${options && options.headers ? JSON.stringify(options.headers) : ''}`,
-                `        Context: ${requestObj.context || ''}`,
-                `        Referrer: ${requestObj.referrer || ''}`,
-                `        ReferrerPolicy: ${requestObj.referrerPolicy || ''}`,
-                `        Mode: ${requestObj.mode || ''}`,
-                `        Credentials: ${requestObj.credentials || ''}`,
-                `        Redirect: ${requestObj.redirect || ''}`,
-                `        Integrity: ${requestObj.integrity || ''}`,
-                `        Cache: ${requestObj.cache || ''}`,
                 '    Response:',
                 `        Type: ${response.type || ''}`,
-                `        Url: ${response.url || ''}`,
-                `        UseFinalURL: ${response.useFinalURL || ''}`,
                 `        Status: ${response.status || ''}`,
                 `        OK: ${response.ok || ''}`,
                 `        Redirected : ${response.redirected || ''}`,
@@ -72,19 +64,12 @@ export const request = (url, options) => (new Promise((resolve, reject) => {
         return response;
     }).catch(error => {
         error.code = 'WRONG_CONNECT';
+        error.request = request;
         error.detail = [
             `Fetch.${(options && options.method) || 'GET'} from ${url}`,
             '    Request:',
             `        Method: ${requestObj.method || ''}`,
             // `        Headers: ${JSON.stringify(requestObj.headers) || ''}`,
-            `        Context: ${requestObj.context || ''}`,
-            `        Referrer: ${requestObj.referrer || ''}`,
-            `        ReferrerPolicy: ${requestObj.referrerPolicy || ''}`,
-            `        Mode: ${requestObj.mode || ''}`,
-            `        Credentials: ${requestObj.credentials || ''}`,
-            `        Redirect: ${requestObj.redirect || ''}`,
-            `        Integrity: ${requestObj.integrity || ''}`,
-            `        Cache: ${requestObj.cache || ''}`,
         ].join('\n');
         if (DEBUG) {
             console.collapse(`HTTP ${(options && options.method) || 'GET'}`, 'blueBg', url, 'bluePale', error.code || 'ERROR', 'redPale');
@@ -196,8 +181,29 @@ export const postJSON = async (url, options) => {
     if (options instanceof FormData) {
         options = {body: options};
     }
-    const response = await request(url, Object.assign({method: 'POST'}, options));
-    return response.json();
+    try {
+        const response = await request(url, Object.assign({method: 'POST'}, options));
+        const json = await response.json();
+        return json;
+    } catch (error) {
+        const {response} = error;
+        if (response) {
+            const responseText = await response.text();
+            if (!error.detail) {
+                error.detail = [
+                    `Fetch json from ${url}`,
+                    '    Response:',
+                    `        Type: ${response.type || ''}`,
+                    `        Status: ${response.status || ''}`,
+                    `        OK: ${response.ok || ''}`,
+                    `        Redirected : ${response.redirected || ''}`,
+                    `        StatusText: ${response.statusText || ''}`,
+                ].join('\n');
+            }
+            error.detail = `${responseText}\n-------------------\n${error.detail}`;
+        }
+        throw error;
+    }
 };
 
 /**
