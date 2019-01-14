@@ -62,6 +62,13 @@ class chat extends control
 
                 $this->output->data = $user;
             }
+
+            $userList = getUserListOutput($idList = array(), $userID);
+            $chatList = getListOutput($userID);
+            $messages = getOfflineMessagesOutput($userID);
+            $notifies = getOfflineNotifyOutput($userID);
+
+            $this->output = array($this->output, $userList, $chatList, $messages, $notifies);
         }
         else
         {
@@ -111,41 +118,8 @@ class chat extends control
      */
     public function userGetList($idList = '', $userID = 0)
     {
-        $users = $this->chat->getUserList($status = '', $idList, $idAsKey = false);
-
-        if(dao::isError())
-        {
-            $this->output->result  = 'fail';
-            $this->output->message = 'Get userlist failed.';
-        }
-        else
-        {
-
-            $this->output->result = 'success';
-            $this->output->users  = !empty($userID) ? array($userID) : array();
-            $this->output->data   = $users;
-
-            if(empty($idList))
-            {
-                $this->app->loadLang('user', 'sys');
-                $roles = $this->lang->user->roleList;
-
-                $allDepts = $this->loadModel('tree')->getListByType('dept');
-                $depts = array();
-                foreach($allDepts as $id => $dept)
-                {
-                    $depts[$id] = array('name' => $dept->name, 'order' => (int)$dept->order, 'parent' => (int)$dept->parent);
-                }
-                $this->output->roles = $roles;
-                $this->output->depts = $depts;
-            }
-            else
-            {
-                $this->output->partial = $idList;
-            }
-        }
-
-        die($this->app->encrypt($this->output));
+        $output = $this->chat->getUserListOutput($idList, $userID)
+        die($this->app->encrypt($output));
     }
 
     /**
@@ -237,23 +211,8 @@ class chat extends control
      */
     public function getList($userID = 0)
     {
-        $chatList = $this->chat->getListByUserID($userID);
-        foreach($chatList as $chat)
-        {
-            $chat->members = $this->chat->getMemberListByGID($chat->gid);
-        }
-        if(dao::isError())
-        {
-            $this->output->result  = 'fail';
-            $this->output->message = 'Get chat list failed.';
-        }
-        else
-        {
-            $this->output->result = 'success';
-            $this->output->users  = array($userID);
-            $this->output->data   = $chatList;
-        }
-        die($this->app->encrypt($this->output));
+        $output = $this->chat->getListOutput($userID);
+        die($this->app->encrypt($output));
     }
 
     /**
@@ -294,20 +253,8 @@ class chat extends control
      */
     public function getOfflineMessages($userID = 0)
     {
-        $messages = $this->chat->getOfflineMessages($userID);
-        if(dao::isError())
-        {
-            $this->output->result  = 'fail';
-            $this->output->message = 'Get offline messages fail.';
-        }
-        else
-        {
-            $this->output->result = 'success';
-            $this->output->users  = array($userID);
-            $this->output->data   = $messages;
-        }
-        $this->output->method = 'message';
-        die($this->app->encrypt($this->output));
+        $output = $this->chat->getOfflineMessagesOutput($userID);
+        die($this->app->encrypt($output));
     }
 
     /**
@@ -1168,20 +1115,8 @@ class chat extends control
      */
     public function getOfflineNotify($userID = 0)
     {
-        $messages = $this->chat->getOfflineNotify($userID);
-        if(dao::isError())
-        {
-            $this->output->result  = 'fail';
-            $this->output->message = 'Get offline notify fail.';
-        }
-        else
-        {
-            $this->output->result = 'success';
-            $this->output->users  = array($userID);
-            $this->output->data   = $messages;
-        }
-        $this->output->method = 'notify';
-        die($this->app->encrypt($this->output));
+        $output = $this->chat->getOfflineNotifyOutput($userID);
+        die($this->app->encrypt($output));
     }
 
     /**
