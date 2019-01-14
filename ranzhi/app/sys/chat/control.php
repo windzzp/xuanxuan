@@ -118,7 +118,7 @@ class chat extends control
      */
     public function userGetList($idList = '', $userID = 0)
     {
-        $output = $this->chat->getUserListOutput($idList, $userID)
+        $output = $this->chat->getUserListOutput($idList, $userID);
         die($this->app->encrypt($output));
     }
 
@@ -822,6 +822,7 @@ class chat extends control
         foreach($messages as $key => $message)
         {
             $chats[$message->cgid] = $message->cgid;
+            if(isset($message->type) && $message->type == 'broadcast') unset($messages[$key]);
         }
         if(count($chats) > 1)
         {
@@ -831,9 +832,27 @@ class chat extends control
             die($this->app->encrypt($this->output));
         }
         /* Check whether the logon user can send message in chat. */
+        $newChat = false;
         $errors  = array();
         $message = current($messages);
         $chat    = $this->chat->getByGID($message->cgid, true);
+        if(!$chat)
+        {
+            $members = explode('&', $message->cgid);
+            if(count($members) == 2) $chat = $this->chat->create($message->cgid, '', 'one2one', $members, 0, false, $userID);
+            if(dao::isError())
+            {
+                $error = new stdclass();
+                $error->gid      = $message->cgid;
+                $error->messages = 'Create chat fail.';
+
+                $errors[] = $error;
+            }
+            else
+            {
+                $newChat = true;
+            }
+        }
         if(!$chat)
         {
             $error = new stdclass();
@@ -934,6 +953,18 @@ class chat extends control
                 $this->output->result = 'success';
                 $this->output->users  = $onlineUsers;
                 $this->output->data   = $messages;
+            }
+
+            if($newChat)
+            {
+                $chatOutput = new stdclass();
+                $chatOutput->module = 'chat';
+                $chatOutput->method = 'create';
+                $chatOutput->result = 'success';
+                $chatOutput->users  = $onlineUsers;
+                $chatOutput->data   = $chat;
+
+                $this->output = array($chatOutput, $this->output);
             }
         }
 
