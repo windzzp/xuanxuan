@@ -61,7 +61,19 @@ func VerifyLogin(body []byte) (bool, error) {
         return false, err
     }
 
-    parseData, err = ApiParse(r2xMessage, ranzhiServer.RanzhiToken)
+    //解密数据
+    jsonData, err := aesDecrypt(r2xMessage, ranzhiServer.RanzhiToken)
+    if err != nil {
+        util.LogError().Println("Warning: message data decrypt error:", err)
+        return false, err
+    }
+
+    retMessage, err := ProcessResponse(jsonData)
+    if err != nil {
+        return false, err
+    }
+
+    parseData, err = ApiParse(retMessage[0]["message"].([]byte), util.Token)
     if err != nil {
         return false, err
     }
