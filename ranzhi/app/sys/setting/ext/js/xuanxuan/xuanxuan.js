@@ -1,3 +1,11 @@
+$(function()
+{
+    $('[name=debug]').change(function()
+    {
+        $('.viewDebug').toggle($(this).val() == 1);
+    });
+})
+
 /**
  * create key for an entry.
  * 

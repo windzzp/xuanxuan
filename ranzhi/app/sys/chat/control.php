@@ -1374,4 +1374,60 @@ class chat extends control
 
         $this->display();
     }
+
+    /**
+     * Debug xuanxuan.
+     *
+     * @access public
+     * @return void
+     */
+    public function debug()
+    {
+        if(RUN_MODE != 'front') die('Access Denied');
+
+        $this->lang->menuGroups->chat = 'system';
+        $this->lang->chat->menu       = $this->lang->system->menu;
+        $this->lang->chat->menuOrder  = $this->lang->system->menuOrder;
+
+        $this->view->title = $this->lang->chat->debug;
+        $this->display();
+    }
+
+    /**
+     * Read content of log file and display.
+     *
+     * @access public
+     * @return void
+     */
+    public function showLog()
+    {
+        $logFile = $this->app->getLogRoot() . 'xuanxuan.log.php';
+        if(!file_exists($logFile)) $this->send(array('result' => 'fail', 'message' => $this->lang->chat->noLogFile));
+
+        $line = $this->config->chat->logLine;
+        $pos  = -2;
+        $eof  = '';
+        $log  = '';
+        $fp   = fopen($logFile, 'r');
+        while($line > 0)
+        {
+            while($eof != "\n")
+            {
+                if(!fseek($fp, $pos, SEEK_END))
+                {
+                    $eof = fgetc($fp);
+                    $pos--;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            $log .= fgets($fp) . '<br>';
+            $eof  = '';
+            $line--;
+        }
+
+        $this->send(array('result' => 'success', 'logs' => $log));
+    }
 }

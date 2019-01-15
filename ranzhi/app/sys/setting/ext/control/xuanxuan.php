@@ -15,11 +15,12 @@ class setting extends control
         if($_POST)
         {
             if(strlen($this->post->key) != 32 or !validater::checkREG($this->post->key, '|^[A-Za-z0-9]+$|')) $this->send(array('result' => 'fail', 'message' => array('key' => $this->lang->chat->errorKey)));
-            if($this->post->key) $this->loadModel('setting')->setItem('system.sys.common.xuanxuan.key', $this->post->key);
-            if($this->post->xxbLang) $this->loadModel('setting')->setItem('system.sys.common.xuanxuan.xxbLang', $this->post->xxbLang);
+
+            $settings = fixer::input('post')->get();
+            $this->loadModel('setting')->setItems('system.sys.common.xuanxuan', $settings);
             if(dao::isError()) $this->send(array('result' => 'fail', 'message' => dao::getError()));
 
-            $this->send(array('result' => 'success', 'message' => $this->lang->saveSuccess));
+            $this->send(array('result' => 'success', 'message' => $this->lang->saveSuccess, 'locate' => 'reload'));
         }
 
         $this->lang->menuGroups->setting = 'system';

@@ -41,6 +41,7 @@ class xuanxuan extends router
         $this->setViewType();
         $this->setInput();
         $this->setClientLang();
+        $this->setXuanDebug();
     }
 
     /**
@@ -51,7 +52,7 @@ class xuanxuan extends router
      */
     public function setViewType()
     {
-        $this->viewType = 'json';
+        $this->viewType = RUN_MODE == 'xuanxuan' ? 'json' : 'html';
     }
 
     /**
@@ -62,19 +63,28 @@ class xuanxuan extends router
      */
     public function setInput()
     {
-        $this->initAES();
+        if(RUN_MODE == 'xuanxuan')
+        {
+            $this->initAES();
 
-        $input = file_get_contents("php://input");
-        $input = $this->decrypt($input);
+            $input = file_get_contents("php://input");
+            $input = $this->decrypt($input);
 
-        $this->input['rid']     = !empty($input->rid)    ? $input->rid    : '';
-        $this->input['version'] = !empty($input->v)      ? $input->v      : '';
-        $this->input['userID']  = !empty($input->userID) ? $input->userID : '';
-        $this->input['client']  = !empty($input->client) ? $input->client : '';
-        $this->input['module']  = !empty($input->module) ? $input->module : '';
-        $this->input['method']  = !empty($input->method) ? $input->method : '';
-        $this->input['lang']    = !empty($input->lang)   ? $input->lang   : '';
-        $this->input['params']  = !empty($input->params) ? $input->params : array();
+            $this->input['rid']     = !empty($input->rid)    ? $input->rid    : '';
+            $this->input['version'] = !empty($input->v)      ? $input->v      : '';
+            $this->input['userID']  = !empty($input->userID) ? $input->userID : '';
+            $this->input['client']  = !empty($input->client) ? $input->client : '';
+            $this->input['module']  = !empty($input->module) ? $input->module : '';
+            $this->input['method']  = !empty($input->method) ? $input->method : '';
+            $this->input['lang']    = !empty($input->lang)   ? $input->lang   : '';
+            $this->input['params']  = !empty($input->params) ? $input->params : array();
+        }
+        else
+        {
+            $this->input['module'] = 'chat';
+            $this->input['method'] = 'debug';
+            $this->input['params'] = array();
+        }
     }
 
     /**
@@ -94,6 +104,22 @@ class xuanxuan extends router
         $lang = empty($row) ? 'zh-cn' : $row->value;
 
         parent::setClientLang($lang);
+    }
+
+    /**
+     * Set debug.
+     *
+     * @access public
+     * @return void
+     */
+    public function setXuanDebug()
+    {
+        $row   = $this->dbh->query('SELECT `value` FROM ' . TABLE_CONFIG . " WHERE `owner`='system' AND `module`='common' AND `section`='xuanxuan' AND `key`='debug'")->fetch();
+        $debug = empty($row) ? false : ($row->value == 1);
+
+        $this->config->debug = $debug;
+
+        parent::setDebug();
     }
 
     /**
@@ -142,29 +168,36 @@ class xuanxuan extends router
         $module = strtolower($module);
         $method = strtolower($method);
 
-        if(!isset($this->config->xuanxuan->enabledMethods[$module][$method]))
+        if(RUN_MODE == 'xuanxuan')
         {
-            $data = new stdclass();
-            $data->module = 'chat';
-            $data->method = 'kickoff';
-            $data->data   = 'Illegal Requset.';
-            die($this->encrypt($data));
-        }
+            if(!isset($this->config->xuanxuan->enabledMethods[$module][$method]))
+            {
+                $data = new stdclass();
+                $data->module = 'chat';
+                $data->method = 'kickoff';
+                $data->data   = 'Illegal Requset.';
+                die($this->encrypt($data));
+            }
 
-        if($module == 'chat' && $method == 'login' && is_array($params))
-        {
-            /* params[0] is the server name. */
-            unset($params[0]);
-        }
-        if(is_array($params))
-        {
-            $params[] = $userID;
-            $params[] = $version;
-        }
+            if($module == 'chat' && $method == 'login' && is_array($params))
+            {
+                /* params[0] is the server name. */
+                unset($params[0]);
+            }
+            if(is_array($params))
+            {
+                $params[] = $userID;
+                $params[] = $version;
+            }
 
-        $this->session->set('userID', $userID);
-        $this->session->set('clientIP', $client);
-        $this->session->set('clientLang', $lang);
+            $this->session->set('userID', $userID);
+            $this->session->set('clientIP', $client);
+            $this->session->set('clientLang', $lang);
+        }
+        elseif($module != 'chat' or $method != 'debug')
+        {
+            die('Access Denied');
+        }
 
         $this->setModuleName($module);
         $this->setMethodName($method);

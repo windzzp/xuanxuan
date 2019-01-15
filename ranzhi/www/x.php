@@ -5,8 +5,15 @@ error_reporting(E_ALL);
 /* Start output buffer. */
 ob_start();
 
-/* Define the run mode as front. */
-define('RUN_MODE', 'xuanxuan');
+/* Define the run mode. */
+if(strpos($_SERVER['HTTP_USER_AGENT'], 'easysoft/xuan.im') !== false)
+{
+    define('RUN_MODE', 'xuanxuan');
+}
+else
+{
+    define('RUN_MODE', 'front');
+}
 
 /* Load the framework. */
 include '../framework/xuanxuan.class.php';
