@@ -15,3 +15,28 @@ function createKey()
     $('#key').val(key);
     return false;
 }
+
+$(function()
+{
+    $('[name^=https]').change(function()
+    {
+        var value = $(this).val();
+        $('#isHttps').val(value);
+        if(value == 1)
+        {
+            $('.sslTR').show();
+        }
+        else
+        {
+            $('.sslTR').hide();
+        }
+    });
+
+    $('#os').change(function()
+    {
+        var os = $(this).val();
+        var backend = $('#backend').val();
+        $('.download-package').attr('href', createLink('setting', 'downloadXXD', "backend=" + backend + "&type=package&os=" + os));
+    });
+    $('#os').change();
+});
