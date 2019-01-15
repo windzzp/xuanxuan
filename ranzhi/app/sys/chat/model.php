@@ -820,10 +820,6 @@ class chatModel extends model
         return !dao::isError();
     }
 
-    public function createBroadcast($type)
-    {
-    }
-
     /**
      * Create messages.
      *
