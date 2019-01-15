@@ -61,7 +61,19 @@ func VerifyLogin(body []byte) (bool, error) {
         return false, err
     }
 
-    parseData, err = ApiParse(r2xMessage, ranzhiServer.RanzhiToken)
+    //解密数据
+    jsonData, err := aesDecrypt(r2xMessage, ranzhiServer.RanzhiToken)
+    if err != nil {
+        util.LogError().Println("Warning: message data decrypt error:", err)
+        return false, err
+    }
+
+    retMessage, err := ProcessResponse(jsonData)
+    if err != nil {
+        return false, err
+    }
+
+    parseData, err = ApiParse(retMessage[0]["message"].([]byte), util.Token)
     if err != nil {
         return false, err
     }
@@ -94,18 +106,6 @@ func UploadFileInfo(serverName string, jsonData []byte) (string, error) {
 
     // 然之服务器返回存储文件的id
     return parseData.FileID(), nil
-}
-
-//用户ID
-func (pd ParseData) loginUserID() int64 {
-    data, ok := pd["data"]
-    if !ok {
-        return -1
-    }
-
-    intfData := data.(map[string]interface{})
-    ret := int64(intfData["id"].(float64))
-    return ret
 }
 
 //文件id
