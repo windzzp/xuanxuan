@@ -34,6 +34,7 @@ public function upgradeXuanxuan($fromVersion)
         case '2.1.0' : $this->execSQL($this->getUpgradeFile('xuanxuan2.1.0'));
         case '2.2.0' : $this->execSQL($this->getUpgradeFile('xuanxuan2.2.0'));
             $this->processXuanxuanKey();
+        case '2.3.0' : $this->execSQL($this->getUpgradeFile('xuanxuan2.3.0'));
         default : $this->loadModel('setting')->setItem('system.sys.xuanxuan.global.version', $this->config->xuanxuan->version);
     }
 }
