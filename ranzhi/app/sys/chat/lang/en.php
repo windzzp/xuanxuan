@@ -71,6 +71,10 @@ $lang->chat->placeholder->xxd->maxOnlineUser  = 'Maximum number of user online';
 $lang->chat->placeholder->xxd->sslcrt         = 'Copy the certificate content here';
 $lang->chat->placeholder->xxd->sslkey         = 'Copy the certificate key here';
 
+$lang->chat->notify = new stdclass();
+$lang->chat->notify->noUserList = 'Not set user id list.';
+$lang->chat->notify->noSender   = 'Not set sender information.';
+
 $lang->chat->osList['win_i386']      = 'Windows_i386';
 $lang->chat->osList['win_x86_64']    = 'Windows_x86_64';
 $lang->chat->osList['linux_i386']    = 'Linux_i386';

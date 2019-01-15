@@ -71,6 +71,10 @@ $lang->chat->placeholder->xxd->maxOnlineUser  = '最大在线人数';
 $lang->chat->placeholder->xxd->sslcrt         = '请将证书内容复制到此处';
 $lang->chat->placeholder->xxd->sslkey         = '请将证书密钥复制到此处';
 
+$lang->chat->notify = new stdclass();
+$lang->chat->notify->noUserList = '没有设置消息发送用户列表';
+$lang->chat->notify->noSender   = '没有设置发送方信息';
+
 $lang->chat->osList['win_i386']      = 'Windows 32位';
 $lang->chat->osList['win_x86_64']    = 'Windows 64位';
 $lang->chat->osList['linux_i386']    = 'Linux 32位';
