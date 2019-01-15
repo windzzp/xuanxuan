@@ -14,6 +14,7 @@ import (
     "os"
     "runtime"
     "database/sql"
+    "bufio"
 )
 
 const Version = "v2.3.0"
@@ -25,7 +26,7 @@ var DBConn *sql.DB
 var Languages map[string]string
 
 func init() {
-
+    dir, _ := os.Getwd()
     isTest := flag.Bool("test", false, "server test model")
     flag.Parse()
     IsTest = *isTest
@@ -38,16 +39,19 @@ func init() {
     Languages = make(map[string]string)
     if IsTest {
         Printf("Server test model is %t \n", IsTest)
-        Printf("Test token: %s \n", string(Token))
-        Printf("xuan xuan chat listen port:%s\n", Config.ChatPort)
     }
 
+
     Printf("XXD %s is running \n", Version)
+    Printf("XXD runs the directory %s \n", dir)
+    Printf("XXD token is %s \n", string(Token))
     Printf("System: %s-%s\n", runtime.GOOS, runtime.GOARCH)
     Printf("---------------------------------------- \n")
 
     LogInfo().Printf("XXD %s is running \n", Version)
-    LogInfo().Printf("ProgramName:%s,System:%s-%s\n", GetProgramName(), runtime.GOOS, runtime.GOARCH)
+    LogInfo().Printf("XXD runs the directory %s \n", dir)
+    LogInfo().Printf("XXD token is %s \n", string(Token))
+    LogInfo().Printf("ProgramName:%s, System:%s-%s\n", GetProgramName(), runtime.GOOS, runtime.GOARCH)
     LogInfo().Printf("---------------------------------------- \n")
 
     // 设置 cpu 使用
@@ -59,7 +63,18 @@ func GetNumGoroutine() int {
 }
 
 func Exit(extStr string) {
-    Println(extStr)
-    DBConn.Close()
-    os.Exit(1)
+    Println("Press ESC button or Ctrl-C to exit this program")
+    for {
+        consoleReader := bufio.NewReaderSize(os.Stdin, 1)
+        input, _ := consoleReader.ReadByte()
+        ascii := input
+
+        // ESC = 27 and Ctrl-C = 3
+        if ascii == 27 || ascii == 3 {
+            Println(extStr)
+            DBConn.Close()
+            os.Exit(1)
+            os.Exit(0)
+        }
+    }
 }

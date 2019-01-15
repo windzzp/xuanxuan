@@ -29,7 +29,7 @@ func InitWs() {
     })
 
     addr := util.Config.Ip + ":" + util.Config.ChatPort
-    util.LogInfo().Println("websocket start,listen addr:", addr, webSocket)
+    util.LogInfo().Println("Websocket start, listen addr:", addr, webSocket)
 
     go cronReport(hub)
 
@@ -38,19 +38,19 @@ func InitWs() {
         err := http.ListenAndServe(addr, nil)
         if err != nil {
             util.LogError().Println("websocket server listen err:", err)
-            util.Exit("websocket server listen err")
+            util.Exit("Websocket server listen err")
         }
     } else {
         crt, key, error := server.CreateSignedCertKey()
         if error != nil {
-            util.LogError().Println("ssl config err:", error)
-            util.Exit("wss ssl create file err")
+            util.LogError().Println("WSS SSL config err:", error)
+            util.Exit("WSS SSL create file err")
         }
 
         err := http.ListenAndServeTLS(addr, crt, key, nil)
         if err != nil {
-            util.LogError().Println("wss websocket server listen err:", err)
-            util.Exit("wss websocket server listen err")
+            util.LogError().Println("WSS websocket server listen err:", err)
+            util.Exit("WSS websocket server listen err")
         }
     }
 }

@@ -71,7 +71,7 @@ func dataProcessing(message []byte, client *Client) error {
     parseData, err := api.ApiParse(message, util.Token)
 	parseData["client"] = client.conn.RemoteAddr()
     if err != nil {
-        util.LogError().Println("receive client message error")
+        util.LogError().Println("Receive client message error")
         return err
     }
 
@@ -99,9 +99,9 @@ func switchMethod(message []byte, parseData api.ParseData, client *Client) error
     case "chat.logout":
         client.conn.Close()
         /*
-           if err := chatLogout(parseData.UserID(), client); err != nil {
-               return err
-           }
+        if err := chatLogout(parseData.UserID(), client); err != nil {
+            return err
+        }
         */
         break
 
@@ -182,7 +182,7 @@ func chatLogin(parseData api.ParseData, client *Client) error {
     // 生成并存储文件会员
     userFileSessionID, err := api.UserFileSessionID(client.serverName, client.userID, client.lang)
     if err != nil {
-        util.LogError().Println("chat user create file session error:", err)
+        util.LogError().Println("Chat user create file session error:", err)
         //返回给客户端登录失败的错误信息
         return err
     }
@@ -286,16 +286,16 @@ func (c *Client) readPump() {
         _, message, err := c.conn.ReadMessage()
         if err != nil {
             if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
-                util.LogError().Printf("error: %v", err)
+                util.LogError().Printf("Is unexpected close error: %v", err)
             }
 
-            util.LogError().Printf("error: %v", err)
+            util.LogError().Printf("read pump errorerror: %v", err)
             break
         }
 
         //返回user id 、登录响应的数据、ok
         if dataProcessing(message, c) != nil {
-            util.LogInfo().Println("client exit ip:", c.conn.RemoteAddr())
+            util.LogInfo().Println("Client exit ip:", c.conn.RemoteAddr())
             break
         }
     }
@@ -349,7 +349,7 @@ func (c *Client) writePump() {
 func sendFail(message []byte, c *Client) {
     parseData, err := api.ApiParse(message, util.Token)
     if err != nil {
-        util.LogError().Println("receive client message error")
+        util.LogError().Println("Receive client message error")
         return
     }
 
@@ -375,13 +375,13 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 
     conn, err := upgrader.Upgrade(w, r, header)
     if err != nil {
-        util.LogError().Println("serve ws upgrader error:", err)
+        util.LogError().Println("Serve ws upgrader error:", err)
         return
     }
 
     client := &Client{hub: hub, conn: conn, send: make(chan []byte, 256), repeatLogin: false, cVer: r.Header.Get("version")}
 
-    util.LogInfo().Println("client ip:", conn.RemoteAddr())
+    util.LogInfo().Println("Client ip:", conn.RemoteAddr())
     go client.writePump()
     client.readPump()
 }

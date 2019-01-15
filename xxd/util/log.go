@@ -66,31 +66,37 @@ func LogError() *log.Logger {
     return logHandle
 }
 
-func LogWarning() *log.Logger {
-    logHandle.SetPrefix("[warning] ")
-    return logHandle
-}
-
-func LogDebug() *log.Logger {
-    logHandle.SetPrefix("[debug] ")
-    return logHandle
-}
-
+//输出到日志,换行
 func (l *logger) Println(v ...interface{}) {
-    mu.RLock()
-    defer mu.RUnlock()
+    if Config.DebugLevel == 1 {
+        Println(v...)
+    }
 
-    logHandle.Println(v...)
+    if Config.DebugLevel > 0 {
+        mu.RLock()
+        defer mu.RUnlock()
+
+        logHandle.Println(v...)
+    }
 }
 
+//输出到日志，格式化
 func (l *logger) Printf(format string, v ...interface{}) {
-    mu.RLock()
-    defer mu.RUnlock()
+    if Config.DebugLevel == 1 {
+        Printf(format, v...)
+    }
 
-    logHandle.Printf(format, v...)
+    if Config.DebugLevel > 0 {
+        mu.RLock()
+        defer mu.RUnlock()
+
+        logHandle.Printf(format, v...)
+    }
 }
 
+//字符串被包装成了 error 类型
 func Errorf(format string, v ...interface{}) error {
+    LogError().Printf(format, v...)
     return fmt.Errorf(format, v...)
 }
 

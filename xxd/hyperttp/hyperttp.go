@@ -41,7 +41,7 @@ func RequestInfo(addr string, postData []byte) ([]byte, error) {
     for i = 0; i < requestCount; i++ {
         req, err := http.NewRequest("POST", addr, bytes.NewReader(postData))
         if err != nil {
-            util.LogError().Printf("http new request error, addr [%s] error:%v", addr, err)
+            util.LogError().Printf("Http new request error, addr [%s] error:%v", addr, err)
         }
 
         req.Header.Set("Content-type", "application/x-www-form-urlencoded")
@@ -49,7 +49,7 @@ func RequestInfo(addr string, postData []byte) ([]byte, error) {
         req.Header.Set("xxd-version", util.Version)
         resp, err = client.Do(req)
         if err != nil {
-            util.LogError().Printf("request addr [%s] error:%v", addr, err)
+            util.LogError().Printf("Request addr [%s] error:%v", addr, err)
 
             util.SleepMillisecond(200)
             continue
@@ -60,19 +60,19 @@ func RequestInfo(addr string, postData []byte) ([]byte, error) {
             break
         }
 
-        util.LogError().Printf(" request status code:%v", resp.StatusCode)
+        util.LogError().Printf("Request status code:%v", resp.StatusCode)
         util.SleepMillisecond(200)
     }
 
     if i >= requestCount {
-        return nil, util.Errorf("%s", "http request error, request count > 3")
+        return nil, util.Errorf("%s", "Http request error, request count > 3")
     }
 
     defer resp.Body.Close()
 
     body, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        util.LogError().Println("request body read error:", err)
+        util.LogError().Println("Request body read error:", err)
         return nil, err
     }
 

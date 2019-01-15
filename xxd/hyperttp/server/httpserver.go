@@ -57,13 +57,13 @@ type Stat interface {
 func InitHttp() {
     crt, key, err := CreateSignedCertKey()
     if err != nil {
-        util.LogError().Println("Warning: SSL certificate creation failed!")
+        util.LogError().Println("InitHttp error SSL certificate creation failed!")
         return
     }
 
     err = api.StartXXD()
     if err != nil {
-        util.Exit("Warning: Backend server login error")
+        util.Exit("InitHttp error Backend server login error")
     }
 
     mux := http.NewServeMux()
@@ -74,10 +74,20 @@ func InitHttp() {
 
     addr := util.Config.Ip + ":" + util.Config.CommonPort
 
+    var https = "Off"
+    var protocol = "http"
+    if util.Config.IsHttps == "1" {
+        https = "On"
+        protocol = "https"
+    }
+
+    util.Println("XXC connection address: ", protocol, "://", util.Config.Ip)
+    util.Println("HTTPS enabled is ", https)
     util.Println("Listen IP: ", util.Config.Ip)
     util.Println("ChatPort port: ", util.Config.ChatPort)
     util.Println("CommonPort port: ", util.Config.CommonPort)
 
+    util.LogInfo().Println("HTTPS enabled is ", https)
     util.LogInfo().Println("Listen IP: ", util.Config.Ip)
     util.LogInfo().Println("ChatPort port: ", util.Config.ChatPort)
     util.LogInfo().Println("CommonPort port: ", util.Config.CommonPort)
@@ -104,7 +114,7 @@ func InitHttp() {
 //文件下载
 func fileDownload(w http.ResponseWriter, r *http.Request) {
     if r.Method != "GET" {
-        fmt.Fprintln(w, "not supported request")
+        fmt.Fprintln(w, "Not supported request")
         return
     }
 
@@ -122,11 +132,12 @@ func fileDownload(w http.ResponseWriter, r *http.Request) {
     reqSid := r.Form["sid"][0]
     reqGid := r.Form["gid"][0]
     session,err :=util.GetUid(serverName, reqGid)
-    util.Println("Info: file_session:",session)
+    util.LogError().Println("File download file sessionid ", session)
     if err!=nil {
-        fmt.Fprintln(w, "Warning: Not supported request")
+        fmt.Fprintln(w, "Warning: Get file sessionid error")
         return
     }
+
     if reqSid != string(util.GetMD5( session  + reqFileName )) {
         w.WriteHeader(http.StatusUnauthorized)
         return
@@ -166,7 +177,7 @@ func fileUpload(w http.ResponseWriter, r *http.Request) {
     w.Header().Add("Access-Control-Allow-Credentials", "true")
 
     if r.Method != "POST" {
-        fmt.Fprintln(w, "not supported request")
+        fmt.Fprintln(w, "Not supported request")
         return
     }
 
@@ -186,8 +197,8 @@ func fileUpload(w http.ResponseWriter, r *http.Request) {
 
     file, handler, err := r.FormFile("file")
     if err != nil {
-        util.LogError().Println("form file error:", err)
-        fmt.Fprintln(w, "form file error")
+        util.LogError().Println("Form file error:", err)
+        fmt.Fprintln(w, "Form file error")
         return
     }
     defer file.Close()
@@ -195,9 +206,9 @@ func fileUpload(w http.ResponseWriter, r *http.Request) {
     nowTime := util.GetUnixTime()
     savePath := util.Config.UploadPath + serverName + "/" + util.GetYmdPath(nowTime)
     if err := util.Mkdir(savePath); err != nil {
-        util.LogError().Println("mkdir error:", err)
+        util.LogError().Println("File upload mkdir error:", err)
         w.WriteHeader(http.StatusInternalServerError)
-        fmt.Fprintln(w, "mkdir error")
+        fmt.Fprintln(w, "File upload mkdir error.")
         return
     }
 
@@ -212,16 +223,16 @@ func fileUpload(w http.ResponseWriter, r *http.Request) {
     }
 
     if fileSize <= 0 {
-        util.LogError().Println("get file size error")
+        util.LogError().Println("Get file size error")
         w.WriteHeader(http.StatusInternalServerError)
-        fmt.Fprintln(w, "get file size error")
+        fmt.Fprintln(w, "Get file size error")
         return
     }
 
     if fileSize > util.Config.UploadFileSize {
-        // 400
+        util.LogError().Println("File is too large")
         w.WriteHeader(http.StatusBadRequest)
-        fmt.Fprintln(w, "file is too large")
+        fmt.Fprintln(w, "File is too large")
         return
     }
 
@@ -250,9 +261,9 @@ func fileUpload(w http.ResponseWriter, r *http.Request) {
     //util.Println(saveFile)
     f, err := os.OpenFile(saveFile, os.O_WRONLY|os.O_CREATE, 0644)
     if err != nil {
-        util.LogError().Println("open file error:", err)
+        util.LogError().Println("Open file error:", err)
         w.WriteHeader(http.StatusInternalServerError)
-        fmt.Fprintln(w, "open file error")
+        fmt.Fprintln(w, "Open file error")
         return
     }
     defer f.Close()
@@ -311,8 +322,8 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
 
     jsonData, err := json.Marshal(info)
     if err != nil {
-        util.LogError().Println("Json unmarshal error: ", err)
-        fmt.Fprintln(w, "Json unmarshal error: " + err.Error())
+        util.LogError().Println("Json marshal error: ", err)
+        fmt.Fprintln(w, "Json marshal error: " + err.Error())
         w.WriteHeader(http.StatusInternalServerError)
         return
     }

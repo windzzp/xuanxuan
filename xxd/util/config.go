@@ -68,8 +68,8 @@ func init() {
         Config.CrtPath = dir + "/certificate/"
         Config.MaxOnlineUser = 0
 
-        log.Println("config init error，use default conf!")
-        log.Println(Config)
+        LogError().Println("Config init error, don't load xxd.conf file, use default conf!")
+		LogError().Println(Config)
         return
     }
 
@@ -167,7 +167,7 @@ func getUploadFileSize(config *goconfig.ConfigFile) error {
 
     uploadFileSize, err := config.GetValue("server", "uploadFileSize")
     if err != nil {
-        log.Printf("config: get server upload file size error:%v, default size 32MB.", err)
+        LogError().Printf("config: get server upload file size error:%v, default size 32MB.", err)
         return err
     }
     uploadFileSize = removeComment(uploadFileSize)
@@ -192,12 +192,12 @@ func getUploadFileSize(config *goconfig.ConfigFile) error {
         if fileSize, err = String2Int64(size); err == nil {
             Config.UploadFileSize = fileSize
         } else {
-            log.Println("config: get server upload file size error, default size 32MB.")
+           LogError().Println("config: get server upload file size error, default size 32MB.")
         }
     }
 
     if err != nil {
-        log.Println("upload file size parse error:", err)
+       LogError().Println("upload file size parse error:", err)
     }
 
     return err
@@ -208,7 +208,7 @@ func getMaxOnlineUser(config *goconfig.ConfigFile) error {
     Config.MaxOnlineUser = 0
     onlineUser, err := config.GetValue("server", "maxOnlineUser")
     if err != nil {
-        log.Printf("config: get server maxUser error:%v, default size 0.", err)
+        LogError().Printf("config: get server maxUser error:%v, default size 0.", err)
         return err
     }
     onlineUser = removeComment(onlineUser)
@@ -275,7 +275,6 @@ func getLogPath(config *goconfig.ConfigFile) (err error) {
 
 //获取证书路径
 func getCrtPath(config *goconfig.ConfigFile) (err error) {
-    dir, _ := os.Getwd()
     crtPath, err := config.GetValue("server", "certPath")
     if err != nil {
         Config.CrtPath, err = config.GetValue("certificate", "crtPath")
@@ -284,7 +283,7 @@ func getCrtPath(config *goconfig.ConfigFile) (err error) {
         }
     } else {
         crtPath = removeComment(crtPath)
-        Config.CrtPath = dir + "/" + crtPath
+        Config.CrtPath = crtPath
     }
     return
 }

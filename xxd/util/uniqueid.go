@@ -21,7 +21,7 @@ func CreateUid(serverName string, userID int64, key string) error {
     url := Config.LogPath + serverName + "/"
 
     if err := Mkdir(url); err != nil {
-        LogError().Println("mkdir error %s\n", err)
+        LogError().Println("Create public uid for the websocket and HTTP protocols, mkdir error ", err)
         return err
     }
 
@@ -34,10 +34,9 @@ func CreateUid(serverName string, userID int64, key string) error {
         return err
     }
 
-    LogInfo().Println("Session file:", fileName)
+    LogInfo().Println("Session filename:", fileName)
     fout.WriteString(key)
-    LogInfo().Println("Session created:", key)
-
+    LogInfo().Println("Session created :", key)
     return nil
 }
 
