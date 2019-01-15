@@ -1,9 +1,19 @@
 <?php
-$lang->chat->settings    = 'Xuanxuan Settings';
+$lang->chat->settings = 'Xuanxuan Settings';
+$lang->chat->debug    = 'Debug';
+
 $lang->chat->version     = 'Version';
 $lang->chat->xxbLang     = 'Server Lang';
 $lang->chat->key         = 'Secret';
 $lang->chat->systemGroup = 'System';
+$lang->chat->url         = 'URL';
+$lang->chat->createKey   = 'New';
+$lang->chat->connector   = ', ';
+$lang->chat->viewDebug   = 'View Debug';
+$lang->chat->log         = 'Log';
+
+$lang->chat->debugStatus[0] = 'Off';
+$lang->chat->debugStatus[1] = 'On';
 
 $lang->chat->xxdServer       = 'Zentao Server';
 $lang->chat->createKey       = 'New';
@@ -26,10 +36,9 @@ $lang->chat->notExist         = 'Chat do not exist.';
 $lang->chat->changeRenameTo   = 'Rename chat to ';
 $lang->chat->multiChats       = 'Messages belong to different chats.';
 $lang->chat->notInGroup       = 'You are not in this chat group.';
-
-$lang->chat->errorKey = 'The key should be a 32 byte string including letters or numbers.';
-
-$lang->chat->connector = ', ';
+$lang->chat->errorKey         = 'The key should be a 32 byte string including letters or numbers.';
+$lang->chat->debugTips        = 'Xuanxuan is working.<br>%s with administrator to get more information.';
+$lang->chat->noLogFile        = 'No log file.';
 
 $lang->chat->xxdServerTip   = 'XXD server address contains protocol and host and port，such as http://192.168.1.35 or http://www.backend.com, that can not be 127.0.0.1.';
 $lang->chat->xxdServerEmpty = 'XXD server address is empty.';

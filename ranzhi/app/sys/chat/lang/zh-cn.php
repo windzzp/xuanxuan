@@ -1,9 +1,19 @@
 <?php
-$lang->chat->settings    = '喧喧设置';
+$lang->chat->settings = '喧喧设置';
+$lang->chat->debug    = '调试功能';
+
 $lang->chat->version     = '版本';
 $lang->chat->xxbLang     = '服务器端语言';
 $lang->chat->key         = '密钥';
 $lang->chat->systemGroup = '系统';
+$lang->chat->url         = '访问地址';
+$lang->chat->createKey   = '重新生成密钥';
+$lang->chat->connector   = '、';
+$lang->chat->viewDebug   = '查看调试信息';
+$lang->chat->log         = '日志';
+
+$lang->chat->debugStatus[0] = '关闭';
+$lang->chat->debugStatus[1] = '打开';
 
 $lang->chat->xxdServer       = '喧喧服务器';
 $lang->chat->createKey       = '重新生成密钥';
@@ -26,10 +36,9 @@ $lang->chat->notExist         = '会话不存在。';
 $lang->chat->changeRenameTo   = '将会话名称更改为';
 $lang->chat->multiChats       = '消息不属于同一个会话。';
 $lang->chat->notInGroup       = '用户不在此讨论组内。';
-
-$lang->chat->errorKey = '<strong>密钥</strong> 应该为数字或字母的组合，长度为32位。';
-
-$lang->chat->connector = '、';
+$lang->chat->errorKey         = '<strong>密钥</strong> 应该为数字或字母的组合，长度为32位。';
+$lang->chat->debugTips        = '喧喧已经可以使用。<br>使用管理员账号%s并访问此页面，可以查看更多debug信息。';
+$lang->chat->noLogFile        = '没有日志文件。';
 
 $lang->chat->xxdServerTip   = 'XXD服务器地址为完整的协议+地址+端口，示例：http://192.168.1.35 或 http://www.backend.com ，不能使用127.0.0.1。';
 $lang->chat->xxdServerEmpty = 'XXD服务器地址为空。';

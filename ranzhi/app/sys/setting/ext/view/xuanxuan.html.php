@@ -19,18 +19,27 @@
   <form method='post' id='ajaxForm' class='form-ajax'>
     <table class='table table-form'>
       <tr>
-        <th class='w-120px'><?php echo $lang->chat->version;?></th>
-        <td class='w-p20'><?php echo $config->xuanxuan->global->version;?></td>
+        <th class='w-100px'><?php echo $lang->chat->version;?></th>
+        <td class='w-300px'><?php echo $config->xuanxuan->global->version;?></td>
         <td></td>
       </tr>
       <tr>
         <th><?php echo $lang->chat->key;?></th>
-        <td><?php echo $type == 'edit' ? html::input('key', zget($config->xuanxuan, 'key', ''), "class='form-control'") : zget($config->xuanxuan, 'key', '');?></td>
+        <td><?php echo $type == 'edit' ? html::input('key', zget($config->xuanxuan, 'key', ''), "class='form-control' readonly='readonly'") : zget($config->xuanxuan, 'key', '');?></td>
         <td><?php echo $type == 'edit' ? html::a('javascript:void(0)', $lang->chat->createKey, 'onclick="createKey()"') : '';?></td>
       </tr>
       <tr>
         <th><?php echo $lang->chat->xxbLang;?></th>
         <td><?php echo $type == 'edit' ? html::select('xxbLang', $config->langs, $config->xuanxuan->xxbLang, "class='form-control'") : zget($config->langs, $config->xuanxuan->xxbLang, '');?></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th><?php echo $lang->chat->debug;?></th>
+        <td>
+          <?php $debug = zget($config->xuanxuan, 'debug', 0);?>
+          <?php echo html::radio('debug', $lang->chat->debugStatus, $debug);?>
+          <?php if($debug) echo html::a('/x.php', $lang->chat->viewDebug, "class='viewDebug'");?>
+        </td>
         <td></td>
       </tr>
       <tr>
