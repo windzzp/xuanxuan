@@ -85,7 +85,7 @@ func ProcessResponse(jsonData []byte) (map[int]map[string]interface{}, error) {
             retMessage[key]["users"]   = parseData.SendUsers()
             retMessage[key]["message"] = ApiUnparse(parseData, util.Token)
             if parseData.Module() == "chat" && parseData.Method() == "login" && parseData.Result() == "success" {
-               retMessage[key]["userID"] = parseData.LoginUserID()
+                retMessage[key]["userID"] = parseData.LoginUserID()
             }
         }
     }else {

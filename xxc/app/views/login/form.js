@@ -465,6 +465,13 @@ export default class LoginForm extends PureComponent {
         }]);
     };
 
+    /**
+     * 处理点击错误消息详情按钮事件
+     * @param {Event} e 事件对象
+     * @private
+     * @memberof LoginForm
+     * @return {void}
+     */
     handleClickMessageDetailBtn = e => {
         const {messageDetail, message} = this.state;
         if (messageDetail) {
