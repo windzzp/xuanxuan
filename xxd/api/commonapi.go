@@ -84,7 +84,7 @@ func ProcessResponse(jsonData []byte) (map[int]map[string]interface{}, error) {
             retMessage[key] = make(map[string]interface{})
             retMessage[key]["users"]   = parseData.SendUsers()
             retMessage[key]["message"] = ApiUnparse(parseData, util.Token)
-            if parseData.Module() == "chat" && parseData.Method() == "login" {
+            if parseData.Module() == "chat" && parseData.Method() == "login" && parseData.Result() == "success" {
                retMessage[key]["userID"] = parseData.LoginUserID()
             }
         }
@@ -98,7 +98,7 @@ func ProcessResponse(jsonData []byte) (map[int]map[string]interface{}, error) {
         retMessage[0] = make(map[string]interface{})
         retMessage[0]["users"]   = parseData.SendUsers()
         retMessage[0]["message"] = ApiUnparse(parseData, util.Token)
-        if parseData.Module() == "chat" && parseData.Method() == "login" {
+        if parseData.Module() == "chat" && parseData.Method() == "login" && parseData.Result() == "success" {
             retMessage[0]["userID"] = parseData.LoginUserID()
         }
     }

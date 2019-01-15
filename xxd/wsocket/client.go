@@ -165,7 +165,7 @@ func chatLogin(parseData api.ParseData, client *Client) error {
 
     //map[int]map[string]interface{}
     retMessages, err := api.ChatLogin(parseData)
-    if err != nil {
+    if err != nil || retMessages[0]["userID"] == nil {
         // 登录失败返回错误信息
         client.send <- retMessages[0]["message"].([]byte)
         return util.Errorf("%s", "chat login error")
