@@ -94,12 +94,12 @@ func InitHttp() {
 
     if util.Config.IsHttps != "1" {
         if err := http.ListenAndServe(addr, mux); err != nil {
-            util.Log("error", "Warning: http server listen error:", err)
+            util.Log("error", "Warning: http server listen error: %s", err)
             util.Exit("Warning: http server listen error")
         }
     }else{
         if err := http.ListenAndServeTLS(addr, crt, key, mux); err != nil {
-            util.Log("error", "Warning: https server listen error:", err)
+            util.Log("error", "Warning: https server listen error: %s", err)
             util.Exit("Warning: https server listen error")
         }
     }
