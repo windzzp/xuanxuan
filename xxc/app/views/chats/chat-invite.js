@@ -141,7 +141,7 @@ export default class ChatInvite extends Component {
             App.im.ui.createGroupChat(members).then(newChat => {
                 const groupUrl = `#${ROUTES.chats.groups.id(newChat.gid)}`;
                 this.requestClose();
-                if (App.profile.user.isVersionSupport('skipSendBroadcast')) {
+                if (App.profile.user.isVersionSupport('needSendBroadcast')) {
                     App.im.server.sendBoardChatMessage(Lang.format('chat.inviteAndCreateNewChat.format', `@${App.profile.user.account}`, `[**[${newChat.getDisplayName(App)}](${groupUrl})**]`), chat);
                 }
                 window.location.hash = groupUrl;
@@ -153,7 +153,7 @@ export default class ChatInvite extends Component {
             });
         } else {
             App.im.server.inviteMembersToChat(chat, members).then(chat => {
-                if (chat && App.profile.user.isVersionSupport('skipSendBroadcast')) {
+                if (chat && App.profile.user.isVersionSupport('needSendBroadcast')) {
                     const broadcast = App.im.server.createBoardChatMessage(Lang.format('chat.inviteMembersJoinChat.format', `@${App.profile.user.account}`, members.map(x => `@${x.account}`).join('、')), chat);
                     App.im.server.sendChatMessage(broadcast, chat);
                 }

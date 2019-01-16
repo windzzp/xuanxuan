@@ -567,9 +567,9 @@ class chatModel extends model
     public function getBroadcastContent($type, $chat, $userID, $members)
     {
         $user = $this->getUserByUserID($userID);
-        
+
         if($type == 'createChat' or $type == 'renameChat') return sprintf($this->lang->chat->broadcast->$type, $user->account, $chat->name, $chat->gid);
-        
+
         if($type == 'inviteUser')
         {
             foreach($members as $member) $member = '@' . $member;
@@ -577,7 +577,7 @@ class chatModel extends model
 
             return sprintf($this->lang->chat->broadcast->$type, $user->account, $members);
         }
-        
+
         return sprintf($this->lang->chat->broadcast->$type, $user->account);
     }
 
@@ -595,14 +595,14 @@ class chatModel extends model
     public function createBroadcast($type, $chat, $onlineUsers, $userID, $members = array())
     {
         $message = new stdclass();
-        $message->gid       = $this->creatGID();
-        $message->cgid      = $chat->gid;
-        $message->type      = 'broadcast';
-        $message->conteType = 'text';
-        $message->content   = $this->getBroadcastContent($type, $chat, $userID, $members); 
-        $message->date      = time();
-        $message->user      = $userID;
-        $message->order     = 1;
+        $message->gid         = $this->createGID();
+        $message->cgid        = $chat->gid;
+        $message->type        = 'broadcast';
+        $message->contentType = 'text';
+        $message->content     = $this->getBroadcastContent($type, $chat, $userID, $members);
+        $message->date        = helper::now();
+        $message->user        = $userID;
+        $message->order       = 1;
 
         /* If quit a chat, only send broadcast to the admins or the created user of chat. */
         if($type == 'quitChat')
@@ -615,7 +615,7 @@ class chatModel extends model
         }
 
         /* Save broadcast to im_message. */
-        $messages     = $this->createMessage(array($messages), $userID);
+        $messages     = $this->createMessage(array($message), $userID);
         $offlineUsers = $this->getUserList($status = 'offline', array_values($chat->members));
         $this->saveOfflineMessages($messages, array_keys($offlineUsers));
 
@@ -1270,7 +1270,7 @@ class chatModel extends model
         if(strpos($fileName, $extension) === false) $fileName .= $extension;
 
         /* urlencode the fileName for ie. */
-        $isIE11 = (strpos($this->server->http_user_agent, 'Trident') !== false and strpos($this->server->http_user_agent, 'rv:11.0') !== false); 
+        $isIE11 = (strpos($this->server->http_user_agent, 'Trident') !== false and strpos($this->server->http_user_agent, 'rv:11.0') !== false);
         if(strpos($this->server->http_user_agent, 'MSIE') !== false or $isIE11) $fileName = urlencode($fileName);
 
         /* Judge the content type. */

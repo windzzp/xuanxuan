@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import Config, {getSpecialVersionName} from '../../config';
-import DateHelper from '../../utils/date-helper';
+import {formatDate} from '../../utils/date-helper';
 import platform from '../../platform';
 
 /**
@@ -65,6 +65,6 @@ export default class BuildInfo extends PureComponent {
      */
     render() {
         const specialVersion = getSpecialVersionName();
-        return <div onClick={this.handleClick} {...this.props}>v{PKG.version}{PKG.distributeTime ? (` (${DateHelper.format(PKG.distributeTime, 'YYYYMMDDHHmm')})`) : null}{PKG.buildVersion ? `.${PKG.buildVersion}` : null} {specialVersion ? (` for ${specialVersion}`) : ''} {DEBUG ? '[debug]' : ''}</div>;
+        return <div onClick={this.handleClick} {...this.props}><span className="hint hint--top" data-hint={`build at ${formatDate(PKG.buildTime)}`}>v{PKG.version}{PKG.distributeTime ? (` (${formatDate(PKG.distributeTime, 'YYYYMMDDHHmm')})`) : null}{PKG.buildVersion ? `.${PKG.buildVersion}` : null} {specialVersion ? (` for ${specialVersion}`) : ''} {DEBUG ? '[debug]' : ''}</span></div>;
     }
 }

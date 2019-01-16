@@ -48,6 +48,10 @@ if (configurations) {
     updateConfig(configurations);
 }
 
+if (!pkg.buildTime && DEBUG && process.env.NODE_ENV === 'development') {
+    pkg.buildTime = new Date();
+}
+
 // 内置的运行时配置
 const buildInConfig = platform.call('buildIn.getBuildInConfig');
 

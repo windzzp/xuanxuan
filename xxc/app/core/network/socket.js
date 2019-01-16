@@ -114,7 +114,7 @@ export default class AppSocket extends Socket {
     send(msg) {
         return new Promise((resolve) => {
             msg = SocketMessage.create(msg);
-            if (!msg.userID) {
+            if (!msg.userID && msg.pathname !== 'chat/login') {
                 msg.userID = this.user.id;
             }
             super.send(msg.json, () => {
