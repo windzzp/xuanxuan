@@ -1404,6 +1404,8 @@ class chat extends control
         $logFile = $this->app->getLogRoot() . 'xuanxuan.log.php';
         if(!file_exists($logFile)) $this->send(array('result' => 'fail', 'message' => $this->lang->chat->noLogFile));
 
+        if(!function_exists('fopen')) $this->send(array('result' => 'fail', 'message' => $this->lang->chat->noFopen));
+
         $line = $this->config->chat->logLine;
         $pos  = -2;
         $eof  = '';

@@ -39,6 +39,7 @@ $lang->chat->notInGroup       = 'You are not in this chat group.';
 $lang->chat->errorKey         = 'The key should be a 32 byte string including letters or numbers.';
 $lang->chat->debugTips        = 'Xuanxuan is working.<br>%s with administrator to get more information.';
 $lang->chat->noLogFile        = 'No log file.';
+$lang->chat->noFopen          = 'Function fopen disabled. Find the following file to see log : %s.';
 
 $lang->chat->xxdServerTip   = 'XXD server address contains protocol and host and port，such as http://192.168.1.35 or http://www.backend.com, that can not be 127.0.0.1.';
 $lang->chat->xxdServerEmpty = 'XXD server address is empty.';
