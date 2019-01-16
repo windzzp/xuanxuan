@@ -624,6 +624,7 @@ export const sendChatMessage = async (messages, chat, isSystemMessage = false) =
                 const contentLines = ['```'];
                 contentLines.push(
                     `$$version       = '${PKG.version}${PKG.buildVersion ? (`.${PKG.buildVersion}`) : ''}${specialVersion}';`,
+                    `$$buildTime     = '${PKG.buildTime}';`,
                     `$$serverVersion = '${profile.user.serverVersion}';`,
                     `$$platform      = '${platform.type}';`,
                     `$$os            = '${platform.access('env.os')}';`
