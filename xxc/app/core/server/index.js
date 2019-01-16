@@ -140,11 +140,33 @@ export const login = (user) => {
             return Promise.reject(versionError);
         }
         user.setVersionSupport(checkVersionSupport(user));
-        return socket.login(user, {
-            onClose: (_, code, reason, unexpected) => {
-                notice.update();
-                events.emit(EVENT.loginout, user, code, reason, unexpected);
-            }
+        return new Promise((resolve, reject) => {
+            let isLoginFinished = false;
+            socket.login(user, {
+                onClose: (_, code, reason, unexpected) => {
+                    notice.update();
+                    events.emit(EVENT.loginout, user, code, reason, unexpected);
+                    if (!isLoginFinished) {
+                        const error = new Error('Socket connection is unexpectedly disconnected when logging in.');
+                        error.code = 'SOCKET_CLOSED';
+                        error.detail = 'Usually because the server encountered an unhandled error.';
+                        isLoginFinished = true;
+                        reject(error);
+                    }
+                }
+            }).then(_ => {
+                if (!isLoginFinished) {
+                    isLoginFinished = true;
+                    resolve(_);
+                }
+                return _;
+            }).catch(_ => {
+                if (!isLoginFinished) {
+                    isLoginFinished = true;
+                    reject(_);
+                }
+                return _;
+            });
         });
     }).then(() => {
         user.endLogin(true);

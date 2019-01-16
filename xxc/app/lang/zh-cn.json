@@ -140,6 +140,7 @@
     "error.SERVER_VERSION_NOT_SUPPORT_IN_BROWSER": "浏览器端（{0}）不支持所连接服务器版本 {1}，需要服务器版本为 {2} 以上。",
     "error.RANZHI_SERVER_NOTSET": "没有找到然之服务器设置。",
     "error.COMMON_ERROR": "操作失败，请稍后重试。",
+    "error.SOCKET_CLOSED": "服务器意外断开了 Socket 连接。",
 
     "login.serverUrl.label": "服务器",
     "login.serverUrl.hint": "https://xuanxuan.chat",
