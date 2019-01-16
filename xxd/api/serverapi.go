@@ -37,7 +37,7 @@ func StartXXD() error {
             return err
         }
 
-        util.Println("Backend server address: ", serverInfo.RanzhiAddr)
+        util.Println("[Debug] Backend server address: ", serverInfo.RanzhiAddr)
     }
     return nil
 }

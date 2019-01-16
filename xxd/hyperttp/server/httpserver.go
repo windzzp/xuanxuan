@@ -81,16 +81,16 @@ func InitHttp() {
         protocol = "https"
     }
 
-    util.Println("XXC connection address: ", protocol, "://", util.Config.Ip)
-    util.Println("HTTPS enabled is ", https)
-    util.Println("Listen IP: ", util.Config.Ip)
-    util.Println("ChatPort port: ", util.Config.ChatPort)
-    util.Println("CommonPort port: ", util.Config.CommonPort)
+    util.Println("[Info] XXC connection address: ", protocol, "://", util.Config.Ip)
+    util.Println("[Info] Https enabled ", https)
+    util.Println("[Info] Listen IP: ", util.Config.Ip)
+    util.Println("[Info] ChatPort port: ", util.Config.ChatPort)
+    util.Println("[Info] CommonPort port: ", util.Config.CommonPort)
 
-    util.Log("info", "HTTPS enabled is ", https)
-    util.Log("info", "Listen IP: ", util.Config.Ip)
-    util.Log("info", "ChatPort port: ", util.Config.ChatPort)
-    util.Log("info", "CommonPort port: ", util.Config.CommonPort)
+    util.Log("info", "Https enabled %s", https)
+    util.Log("info", "Listen IP:  %s", util.Config.Ip)
+    util.Log("info", "ChatPort port: %s", util.Config.ChatPort)
+    util.Log("info", "CommonPort port: %s", util.Config.CommonPort)
 
     if util.Config.IsHttps != "1" {
         if err := http.ListenAndServe(addr, mux); err != nil {

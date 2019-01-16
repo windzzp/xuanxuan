@@ -27,7 +27,7 @@ var logHandle *log.Logger
 
 func init() {
     if err := newLog(); err != nil {
-        fmt.Printf("create log error %s\n", err)
+        fmt.Printf("create log error %s", err)
     }
 }
 
@@ -36,7 +36,7 @@ func newLog() error {
     defer mu.Unlock()
 
     if err := Mkdir(Config.LogPath); err != nil {
-        fmt.Printf("mkdir error %s\n", err)
+        fmt.Printf("mkdir error %s", err)
         return err
     }
 
@@ -47,7 +47,7 @@ func newLog() error {
     fileName := fmt.Sprintf("%s_%s.log", Config.LogPath+GetProgramName(), GetYmd())
     fd, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
     if err != nil {
-        fmt.Printf("create file error %s\n", err)
+        fmt.Printf("create file error %s", err)
         return err
     }
 
@@ -83,7 +83,7 @@ func (l *logger) Printf(format string, v ...interface{}) {
 }
 
 //字符串被包装成了 error 类型
-func Errorf(format string, v ...interface{}) error {
+func Errorf(format string, v...interface{}) error {
     Log("error", format, v...)
     return fmt.Errorf(format, v...)
 }
@@ -101,12 +101,12 @@ func CheckLog() {
     fileName := fmt.Sprintf("%s_%s.log", Config.LogPath+GetProgramName(), GetYmd())
     if IsNotExist(fileName) {
         if err := newLog(); err != nil {
-            fmt.Printf("create log error %s\n", err)
+            fmt.Printf("create log error %s", err)
         }
     }
 
     if err := filepath.Walk(Config.LogPath, walkFunc); err != nil {
-        Log("error", "filePath %s walk error: %s\n", Config.LogPath, err)
+        Log("error", "filePath %s walk error: %s", Config.LogPath, err)
     }
 }
 
@@ -122,7 +122,7 @@ func walkFunc(path string, info os.FileInfo, err error) error {
     if GetUnixTime()-info.ModTime().Unix() > saveLogTime {
         err := Rm(path)
         if err != nil {
-            Log("error", "remove file [%s] error: %s\n", info.Name(), err)
+            Log("error", "remove file [%s] error: %s", info.Name(), err)
             return err
         }
     }
@@ -132,12 +132,19 @@ func walkFunc(path string, info os.FileInfo, err error) error {
 
 func Log(level string, format string, v...interface{}) {
     format = format + "\n"
-    if Config.DebugLevel == 2 {
-        Printf(format, v...)
+    if Config.DebugLevel > 0 {
+        Printf("[Debug] " + format, v...)
     }
+
     if level == "info" {
         LogInfo().Printf(format, v...)
     } else {
         LogError().Printf(format, v...)
+    }
+}
+
+func LogDetail(detail string){
+    if Config.DebugLevel == 2 {
+        LogError().Println(detail)
     }
 }

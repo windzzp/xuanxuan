@@ -42,16 +42,16 @@ func init() {
     }
 
 
-    Printf("XXD %s is running \n", Version)
-    Printf("XXD runs the directory %s \n", dir)
-    Printf("XXD token is %s \n", string(Token))
-    Printf("System: %s-%s\n", runtime.GOOS, runtime.GOARCH)
+    Printf("[Info] XXD %s is running \n", Version)
+    Printf("[Info] XXD runs the directory %s \n", dir)
+    Printf("[Info] XXD token is %s \n", string(Token))
+    Printf("[Info] System: %s-%s", runtime.GOOS, runtime.GOARCH)
     Printf("---------------------------------------- \n")
 
-    Log("info", "XXD %s is running \n", Version)
-    Log("info", "XXD runs the directory %s \n", dir)
-    Log("info", "XXD token is %s \n", string(Token))
-    Log("info", "ProgramName:%s, System:%s-%s\n", GetProgramName(), runtime.GOOS, runtime.GOARCH)
+    Log("info", "XXD %s is running", Version)
+    Log("info", "XXD runs the directory %s", dir)
+    Log("info", "XXD token is %s", string(Token))
+    Log("info", "ProgramName:%s, System:%s-%s", GetProgramName(), runtime.GOOS, runtime.GOARCH)
     Log("info", "---------------------------------------- \n")
 
     // 设置 cpu 使用
