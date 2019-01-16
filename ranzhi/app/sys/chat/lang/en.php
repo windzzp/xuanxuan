@@ -12,8 +12,8 @@ $lang->chat->connector   = ', ';
 $lang->chat->viewDebug   = 'View Debug';
 $lang->chat->log         = 'Log';
 
-$lang->chat->debugStatus[0] = 'Off';
 $lang->chat->debugStatus[1] = 'On';
+$lang->chat->debugStatus[0] = 'Off';
 
 $lang->chat->xxdServer       = 'Zentao Server';
 $lang->chat->createKey       = 'New';

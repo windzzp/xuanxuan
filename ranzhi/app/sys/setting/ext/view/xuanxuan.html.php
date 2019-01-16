@@ -11,7 +11,7 @@
  */
 ?>
 <?php include '../../../common/view/header.html.php';?>
-<?php js::set('backend');?>
+<?php js::set('backend', $backend);?>
 <div class='panel'>
   <div class='panel-heading'>
     <strong><?php echo $lang->chat->settings;?></strong>
@@ -31,15 +31,6 @@
       <tr>
         <th><?php echo $lang->chat->xxbLang;?></th>
         <td><?php echo $type == 'edit' ? html::select('xxbLang', $config->langs, $config->xuanxuan->xxbLang, "class='form-control'") : zget($config->langs, $config->xuanxuan->xxbLang, '');?></td>
-        <td></td>
-      </tr>
-      <tr>
-        <th><?php echo $lang->chat->debug;?></th>
-        <td>
-          <?php $debug = zget($config->xuanxuan, 'debug', 0);?>
-          <?php echo html::radio('debug', $lang->chat->debugStatus, $debug);?>
-          <?php if($debug) echo html::a('/x.php', $lang->chat->viewDebug, "class='viewDebug'");?>
-        </td>
         <td></td>
       </tr>
       <tr>
@@ -101,6 +92,15 @@
       <tr class='sslTR <?php if($isHttps == 0 || empty($type)) echo 'hide';?>'>
         <th><?php echo $lang->chat->xxd->sslkey;?></th>
         <td><?php echo html::textarea('sslkey',  zget($config->xuanxuan, 'sslkey', ''), "placeholder='{$lang->chat->placeholder->xxd->sslkey}' class='form-control'");?></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th><?php echo $lang->chat->debug;?></th>
+        <td>
+          <?php $debug = zget($config->xuanxuan, 'debug', 0);?>
+          <?php echo $type == 'edit' ? html::radio('debug', $lang->chat->debugStatus, $debug) : zget($lang->chat->debugStatus, $debug);?>
+          <?php if($debug) echo html::a('/x.php', $lang->chat->viewDebug, "class='viewDebug'");?>
+        </td>
         <td></td>
       </tr>
       <?php if(!$type):?>

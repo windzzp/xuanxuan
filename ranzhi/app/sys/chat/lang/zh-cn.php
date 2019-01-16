@@ -12,8 +12,8 @@ $lang->chat->connector   = '、';
 $lang->chat->viewDebug   = '查看调试信息';
 $lang->chat->log         = '日志';
 
-$lang->chat->debugStatus[0] = '关闭';
-$lang->chat->debugStatus[1] = '打开';
+$lang->chat->debugStatus[1] = '启用';
+$lang->chat->debugStatus[0] = '不启用';
 
 $lang->chat->xxdServer       = '喧喧服务器';
 $lang->chat->createKey       = '重新生成密钥';
