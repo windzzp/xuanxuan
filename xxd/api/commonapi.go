@@ -21,13 +21,13 @@ type ParseData map[string]interface{}
 func ApiParse(message, token []byte) (ParseData, error) {
     jsonData, err := aesDecrypt(message, token)
     if err != nil {
-        util.LogError().Println("ApiParse json data decrypt error:", err)
+        util.Log("error", "ApiParse json data decrypt error:", err)
         return nil, err
     }
 
     parseData := make(ParseData)
     if err := json.Unmarshal([]byte(jsonData), &parseData); err != nil {
-        util.LogError().Println("ApiParse json Unmarshal error:", err)
+        util.Log("error", "ApiParse json Unmarshal error:", err)
         return nil, err
     }
 
@@ -38,13 +38,13 @@ func ApiParse(message, token []byte) (ParseData, error) {
 func ApiUnparse(parseData ParseData, token []byte) []byte {
     jsonData, err := json.Marshal(parseData)
     if err != nil {
-        util.LogError().Println("ApiUnparse json Marshal error:", err)
+        util.Log("error", "ApiUnparse json Marshal error:", err)
         return nil
     }
 
     message, err := aesEncrypt(jsonData, token)
     if err != nil {
-        util.LogError().Println("ApiUnparse json data encrypt error:", err)
+        util.Log("error", "ApiUnparse json data encrypt error:", err)
         return nil
     }
 
@@ -55,13 +55,13 @@ func ApiUnparse(parseData ParseData, token []byte) []byte {
 func SwapToken(message, fromToken, toToken []byte) ([]byte, error) {
     jsonData, err := aesDecrypt(message, fromToken)
     if err != nil {
-        util.LogError().Println("SwapToken json data aes decrypt error:", err)
+        util.Log("error", "SwapToken json data aes decrypt error:", err)
         return nil, err
     }
 
     message, err = aesEncrypt(jsonData, toToken)
     if err != nil {
-        util.LogError().Println("SwapToken json data aes encrypt error:", err)
+        util.Log("error", "SwapToken json data aes encrypt error:", err)
         return nil, err
     }
 
@@ -75,7 +75,7 @@ func ProcessResponse(jsonData []byte) (map[int]map[string]interface{}, error) {
     if strings.Index(string(jsonData), "[") == 0 {
         var retData []map[string]interface{}
         if err := json.Unmarshal(jsonData, &retData); err != nil {
-            util.LogError().Println("ProcessResponse multidata json data unmarshal error:", err)
+            util.Log("error", "ProcessResponse multidata json data unmarshal error:", err)
             return nil, err
         }
 
@@ -91,7 +91,7 @@ func ProcessResponse(jsonData []byte) (map[int]map[string]interface{}, error) {
     }else {
         parseData := make(ParseData)
         if err := json.Unmarshal(jsonData, &parseData); err != nil {
-            util.LogError().Println("ProcessResponse json data Unmarshal error:", err)
+            util.Log("error", "ProcessResponse json data Unmarshal error:", err)
             return nil, err
         }
 

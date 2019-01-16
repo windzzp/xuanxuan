@@ -68,7 +68,7 @@ func pkcs5UnPadding(origData []byte) []byte {
     // 去掉最后一个字节 unpadding 次
     unpadding := int(origData[length-1])
     if unpadding > length {
-        util.LogError().Println("Aes unpadding len > data length")
+        util.Log("error", "Aes unpadding len > data length")
         return nil
     }
 

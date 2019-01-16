@@ -2,7 +2,7 @@ $(document).ready(function()
 {
     if(v.showLog == 1)
     {
-        setInterval('showLog()', 5000);
+        setInterval('showLog()', 3000);
         showLog();
     }
 
