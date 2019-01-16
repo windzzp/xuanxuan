@@ -1432,12 +1432,12 @@ class chat extends control
     }
 
     /**
-     * Message notification.
+     * Message notification api.
      *
      * @access public
      * @return void
      */
-    public function notify()
+    public function notifyMSG()
     {
         $response = array();
         $response['result']  = true;
