@@ -11,7 +11,6 @@
  */
 ?>
 <?php include '../../../common/view/header.html.php';?>
-<?php js::set('backend');?>
 <div class='panel'>
   <div class='panel-heading'>
     <strong><?php echo $lang->chat->settings;?></strong>
