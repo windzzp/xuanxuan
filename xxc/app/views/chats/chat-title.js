@@ -118,6 +118,7 @@ export default class ChatTitle extends Component {
      */
     shouldComponentUpdate(nextProps, nextState) {
         return (isJustLangSwitched()
+            || nextState.typing !== this.state.typing
             || nextState.copiedChatID !== this.state.copiedChatID
             || this.props.className !== nextProps.className
             || this.props.children !== nextProps.children

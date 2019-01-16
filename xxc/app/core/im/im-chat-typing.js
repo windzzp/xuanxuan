@@ -22,6 +22,7 @@ const msgSendInterval = 3000;
  * @type {Object}
  */
 const chatSendboxStatus = {};
+const userTypingStatus = {};
 
 /**
  * 通知界面聊天输入状态变更
@@ -31,7 +32,10 @@ const chatSendboxStatus = {};
  * @return {void}
  */
 export const updateChatTyping = (cgid, typing, typeUserID) => {
-    events.emit(`${EVENT.chat_typing_change}.${cgid}`, typing, typeUserID);
+    if (userTypingStatus[typeUserID] !== typing) {
+        userTypingStatus[typeUserID] = typing;
+        events.emit(`${EVENT.chat_typing_change}.${cgid}`, typing, typeUserID);
+    }
 };
 
 /**
@@ -77,13 +81,19 @@ export const updateChatSendboxStatus = (chat, hasContent) => {
     const status = chatSendboxStatus[chat.gid] || {
         typingTime: 0,
     };
+
+    const now = new Date();
+    const {typingTime} = status;
+
+    if (!typingTime && !hasContent) {
+        return;
+    }
+
     if (status.delayTimer) {
         clearTimeout(status.delayTimer);
         status.delayTimer = null;
     }
-    const now = new Date();
 
-    const {typingTime} = status;
     if (hasContent) {
         // 如果还没更新过状态，或者上次更新状态是3秒之前
         if (!typingTime || (now - typingTime) > msgSendInterval) {
@@ -95,9 +105,17 @@ export const updateChatSendboxStatus = (chat, hasContent) => {
             status.typingTime = 0;
             status.delayTimer = null;
         }, 1000);
-    } else if (typingTime && (now - typingTime) > msgSendInterval) {
-        sendChatTyping(chat, false);
-        status.typingTime = 0;
+    } else if (typingTime) {
+        if ((now - typingTime) > msgSendInterval) {
+            sendChatTyping(chat, false);
+            status.typingTime = 0;
+        } else {
+            status.delayTimer = setTimeout(() => {
+                sendChatTyping(chat, false);
+                status.typingTime = 0;
+                status.delayTimer = null;
+            }, 1000);
+        }
     }
     chatSendboxStatus[chat.gid] = status;
 };

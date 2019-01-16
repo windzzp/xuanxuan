@@ -78,7 +78,6 @@ export default class ChatSendbox extends Component {
         super(props);
         this.state = {
             sendButtonDisabled: true,
-            typing: false,
         };
     }
 
@@ -220,7 +219,11 @@ export default class ChatSendbox extends Component {
         const hasContent = contentState.hasText();
         this.setState({sendButtonDisabled: !hasContent});
         if (chat.isOne2One) {
-            updateChatSendboxStatus(chat, hasContent);
+            const lastContentText = contentState.getPlainText();
+            if (lastContentText !== this.contentText) {
+                this.contentText = lastContentText;
+                updateChatSendboxStatus(chat, hasContent);
+            }
         }
     }
 
