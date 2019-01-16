@@ -615,7 +615,7 @@ class chatModel extends model
         }
 
         /* Save broadcast to im_message. */
-        $messages     = $this->createMessage(array($messages), $userID);
+        $messages     = $this->createMessage(array($message), $userID);
         $offlineUsers = $this->getUserList($status = 'offline', array_values($chat->members));
         $this->saveOfflineMessages($messages, array_keys($offlineUsers));
 
