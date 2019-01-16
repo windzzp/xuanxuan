@@ -337,7 +337,7 @@
     "chat.noMoreMessage": "没有更多消息",
     "chat.loadMoreMessage": "加载更多历史消息",
     "chat.message.retract": "撤回",
-    "chat.message.retracted": "{0} 撤回了一条消息",
+    "chat.message.retracted": "{0}撤回了一条消息。",
 
     "chat.sidebar.tab.profile.label": "资料",
     "chat.sidebar.tab.peoples.label": "成员",

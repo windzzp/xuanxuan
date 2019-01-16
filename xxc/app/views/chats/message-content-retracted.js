@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
-import Avatar from '../../components/avatar';
 import Lang from '../../core/lang';
 import App from '../../core';
+import _UserAvatar from '../common/user-avatar';
+import withReplaceView from '../with-replace-view';
+
+const UserAvatar = withReplaceView(_UserAvatar);
 
 /**
  * MessageContentRetracted 组件 ，显示广播聊天消息条目
@@ -67,9 +70,11 @@ export default class MessageContentRetracted extends Component {
 
         const sender = message.getSender(App.members);
 
-        return (<div className={classes('app-message-broadcast has-padding-xs space-sm primary-pale flex-inline flex-middle row single', className)} {...other}>
-            <Avatar className="avatar-sm flex-none" icon="bell text-secondary" />
-            <div className="content markdown-content">{Lang.format('chat.message.retracted', sender.displayName)}</div>
-        </div>);
+        return (
+            <div className={classes('app-message-broadcast has-padding-xs space-sm primary-pale flex-inline flex-middle row single muted', className)} {...other}>
+                <UserAvatar user={sender} size={20} />
+                <div className="content markdown-content">{Lang.format('chat.message.retracted', sender.displayName)}&nbsp;</div>
+            </div>
+        );
     }
 }
