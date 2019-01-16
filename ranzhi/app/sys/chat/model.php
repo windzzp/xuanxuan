@@ -875,7 +875,7 @@ class chatModel extends model
      */
     public function retractMessage($gid = '')
     {
-        $message = $this->dao->select('id, gid, cgid, user, date, order, deleted')->from(TABLE_IM_MESSAGE)->where('gid')->eq($gid)->fetch();
+        $message = $this->dao->select('id, gid, cgid, user, date, `order`, deleted')->from(TABLE_IM_MESSAGE)->where('gid')->eq($gid)->fetch();
 
         $messageLife = (strtotime(helper::now()) - strtotime($message->date)) / 60;
         if($messageLife <= $this->config->chat->retract->validTime)
