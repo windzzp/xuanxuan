@@ -600,7 +600,7 @@ class chatModel extends model
         $message->type        = 'broadcast';
         $message->contentType = 'text';
         $message->content     = $this->getBroadcastContent($type, $chat, $userID, $members);
-        $message->date        = time();
+        $message->date        = helper::now();
         $message->user        = $userID;
         $message->order       = 1;
 
