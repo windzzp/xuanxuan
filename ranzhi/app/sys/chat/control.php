@@ -291,7 +291,7 @@ class chat extends control
             $this->output->users  = array_keys($users);
             $this->output->data   = $chat;
 
-            $broadcast = $this->chat->getBroadcast('createChat', $chat, array_keys($users), $userID);
+            $broadcast = $this->chat->createBroadcast('createChat', $chat, array_keys($users), $userID);
 
             if($broadcast) $this->output = array($this->output, $broadcast);
         }
