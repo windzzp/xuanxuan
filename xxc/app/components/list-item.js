@@ -95,11 +95,13 @@ export default class ListItem extends PureComponent {
         let contentView = null;
         const multiLines = subtitleView || children;
         if (multiLines) {
-            contentView = (<div className="content">
-                {titleView}
-                {subtitleView}
-                {children}
-            </div>);
+            contentView = (
+                <div className="content">
+                    {titleView}
+                    {subtitleView}
+                    {children}
+                </div>
+            );
         } else {
             contentView = titleView;
         }
