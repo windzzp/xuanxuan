@@ -372,13 +372,6 @@ export const createAppContextMenu = appExt => {
                 return url;
             })
         });
-        items.push({
-            label: Lang.string('ext.app.share'),
-            click: () => {
-                const currentUrl = appExt._webViewUrl || (appExt._pkg && appExt._pkg.webViewUrl);
-                ChatShareDialog.show(currentUrl);
-            }
-        });
     }
 
     if (appExt.canPinnedOnMenu) {
@@ -502,14 +495,21 @@ export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
                 });
             }
         });
-        if (theOpenedApp.webview && clipboard && clipboard.writeText) {
+        if (clipboard && clipboard.writeText) {
             items.push({
                 label: Lang.string('ext.app.copyUrl'),
                 click: () => {
-                    clipboard.writeText(theOpenedApp.webview.src || appExt.webViewUrl);
+                    clipboard.writeText(theOpenedApp.webview ? theOpenedApp.webview.src : appExt.webViewUrl);
                 },
             });
         }
+        items.push({
+            label: Lang.string('ext.app.share'),
+            click: () => {
+                const currentUrl = theOpenedApp.webview ? theOpenedApp.webview.src : appExt.webViewUrl;
+                ChatShareDialog.show(currentUrl);
+            }
+        });
     }
 
     if (appExt.canPinnedOnMenu) {
