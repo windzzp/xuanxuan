@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `im_message` (
   `content` text NOT NULL DEFAULT '',
   `contentType` enum('text', 'plain', 'emotion', 'image', 'file', 'object') NOT NULL DEFAULT 'text',
   `data` text NOT NULL DEFAULT '',
+  `deleted` enum('0','1') NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `mgid` (`gid`),
   KEY `mcgid` (`cgid`),
