@@ -123,7 +123,7 @@ func TransitData(clientData []byte, serverName string) (map[int]map[string]inter
     //交换token
     message, err := SwapToken(clientData, util.Token, ranzhiServer.RanzhiToken)
     if err != nil {
-        util.Log("error", "Transit data swap token error:", err)
+        util.Log("error", "Transit data swap token error: %s", err)
         return nil, err
     }
 
@@ -131,14 +131,14 @@ func TransitData(clientData []byte, serverName string) (map[int]map[string]inter
     r2xMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, message)
     if err != nil {
         util.LogDetail(string(r2xMessage))
-        util.Log("error", "XXB hyperttp request info error:", err)
+        util.Log("error", "XXB hyperttp request info error: %s", err)
         return nil, err
     }
 
     //解密数据
     jsonData, err := aesDecrypt(r2xMessage, ranzhiServer.RanzhiToken)
     if err != nil {
-        util.Log("error", "XXB request json data decrypt error:", err)
+        util.Log("error", "XXB request json data decrypt error: %s", err)
         return nil, err
     }
 
@@ -157,7 +157,7 @@ func UserGetlist(serverName string, userID int64, lang string) ([]byte, error) {
 
     message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
     if err != nil {
-        util.Log("error", "Chat userGetlist byte aes encrypt error:", err)
+        util.Log("error", "Chat userGetlist byte aes encrypt error: %s", err)
         return nil, err
     }
 
@@ -165,14 +165,14 @@ func UserGetlist(serverName string, userID int64, lang string) ([]byte, error) {
     retMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, message)
     if err != nil {
         util.LogDetail(string(retMessage))
-        util.Log("error", "UserGetlist hyperttp request info error:", err)
+        util.Log("error", "UserGetlist hyperttp request info error: %s", err)
         return nil, err
     }
 
     //由于http服务器和客户端的token不一致，所以需要进行交换
     retData, err := SwapToken(retMessage, ranzhiServer.RanzhiToken, util.Token)
     if err != nil {
-        util.Log("error", "User get list swap token error:", err)
+        util.Log("error", "User get list swap token error: %s", err)
         return nil, err
     }
 
@@ -189,7 +189,7 @@ func UserFileSessionID(serverName string, userID int64, lang string) ([]byte, er
 
     sessionData, err := aesEncrypt(sessionData, util.Token)
     if err != nil {
-        util.Log("error", "Session data aes encrypt error:", err)
+        util.Log("error", "Session data aes encrypt error: %s", err)
         return nil, err
     }
 
@@ -221,7 +221,7 @@ func ReportAndGetNotify(server string, lang string) (map[int64][]byte, error) {
     retMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, ApiUnparse(trunk, ranzhiServer.RanzhiToken))
     if err != nil {
         util.LogDetail(string(retMessage))
-        util.Log("error", "Report and get notify hyperttp request info error:", err)
+        util.Log("error", "Report and get notify hyperttp request info error: %s", err)
         return nil, err
     }
 
@@ -262,7 +262,7 @@ func CheckUserChange(serverName string, lang string) ([]byte, error) {
 
     message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
     if err != nil {
-        util.Log("error", "Chat checkUserChange byte aes encrypt error:", err)
+        util.Log("error", "Chat checkUserChange byte aes encrypt error: %s", err)
         return nil, err
     }
 
@@ -270,13 +270,13 @@ func CheckUserChange(serverName string, lang string) ([]byte, error) {
     retMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, message)
     if err != nil {
         util.LogDetail(string(retMessage))
-        util.Log("error", "CheckUserChange hyperttp request info error:", err)
+        util.Log("error", "CheckUserChange hyperttp request info error: %s", err)
         return nil, err
     }
 
     decodeData, _ := ApiParse(retMessage, ranzhiServer.RanzhiToken)
     if decodeData.Result() != "success" {
-        util.Log("error", "CheckUserChange request info status: ", decodeData.Result())
+        util.Log("error", "CheckUserChange request info status: %s", decodeData.Result())
         return nil, err
     }
 
@@ -292,7 +292,7 @@ func RetErrorMsg(errCode, errMsg string) ([]byte, error) {
     errApi := `{"module":"chat","method":"error","code":` + errCode + `,"message":"` + errMsg + `"}`
     message, err := aesEncrypt([]byte(errApi), util.Token)
     if err != nil {
-        util.Log("error", "To XXC error message aes encrypt error:", err)
+        util.Log("error", "To XXC error message aes encrypt error: %s", err)
         return nil, err
     }
 
