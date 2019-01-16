@@ -595,7 +595,7 @@ class chatModel extends model
     public function createBroadcast($type, $chat, $onlineUsers, $userID, $members = array())
     {
         $message = new stdclass();
-        $message->gid       = $this->creatGID();
+        $message->gid       = $this->createGID();
         $message->cgid      = $chat->gid;
         $message->type      = 'broadcast';
         $message->conteType = 'text';
