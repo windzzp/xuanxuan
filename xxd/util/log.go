@@ -68,35 +68,23 @@ func LogError() *log.Logger {
 
 //输出到日志,换行
 func (l *logger) Println(v ...interface{}) {
-    if Config.DebugLevel == 1 {
-        Println(v...)
-    }
+    mu.RLock()
+    defer mu.RUnlock()
 
-    if Config.DebugLevel > 0 {
-        mu.RLock()
-        defer mu.RUnlock()
-
-        logHandle.Println(v...)
-    }
+    logHandle.Println(v...)
 }
 
 //输出到日志，格式化
 func (l *logger) Printf(format string, v ...interface{}) {
-    if Config.DebugLevel == 1 {
-        Printf(format, v...)
-    }
+    mu.RLock()
+    defer mu.RUnlock()
 
-    if Config.DebugLevel > 0 {
-        mu.RLock()
-        defer mu.RUnlock()
-
-        logHandle.Printf(format, v...)
-    }
+    logHandle.Printf(format, v...)
 }
 
 //字符串被包装成了 error 类型
 func Errorf(format string, v ...interface{}) error {
-    LogError().Printf(format, v...)
+    Log("error", format, v...)
     return fmt.Errorf(format, v...)
 }
 
@@ -118,7 +106,7 @@ func CheckLog() {
     }
 
     if err := filepath.Walk(Config.LogPath, walkFunc); err != nil {
-        LogError().Printf("filePath %s walk error: %s\n", Config.LogPath, err)
+        Log("error", "filePath %s walk error: %s\n", Config.LogPath, err)
     }
 }
 
@@ -134,10 +122,22 @@ func walkFunc(path string, info os.FileInfo, err error) error {
     if GetUnixTime()-info.ModTime().Unix() > saveLogTime {
         err := Rm(path)
         if err != nil {
-            LogError().Printf("remove file [%s] error: %s\n", info.Name(), err)
+            Log("error", "remove file [%s] error: %s\n", info.Name(), err)
             return err
         }
     }
 
     return nil
+}
+
+func Log(level string, format string, v...interface{}) {
+    format = format + "\n"
+    if Config.DebugLevel == 2 {
+        Printf(format, v...)
+    }
+    if level == "info" {
+        LogInfo().Printf(format, v...)
+    } else {
+        LogError().Printf(format, v...)
+    }
 }

@@ -21,7 +21,7 @@ func CreateUid(serverName string, userID int64, key string) error {
     url := Config.LogPath + serverName + "/"
 
     if err := Mkdir(url); err != nil {
-        LogError().Println("Create public uid for the websocket and HTTP protocols, mkdir error ", err)
+        Log("error", "Create public uid for the websocket and HTTP protocols, mkdir error ", err)
         return err
     }
 
@@ -30,13 +30,13 @@ func CreateUid(serverName string, userID int64, key string) error {
     fout,err := os.Create(fileName)
     defer fout.Close()
     if err != nil {
-        LogError().Println("Create file error",fileName,err)
+        Log("error", "Create file error",fileName,err)
         return err
     }
 
-    LogInfo().Println("Session filename:", fileName)
+    Log("info", "Session filename:", fileName)
     fout.WriteString(key)
-    LogInfo().Println("Session created :", key)
+    Log("info", "Session created :", key)
     return nil
 }
 
@@ -52,12 +52,12 @@ func GetUid(serverName string, userID string) (string,error) {
 
     file, err := os.Open(url)
     if err != nil {
-        LogError().Println("Cannot open file",url,err)
+        Log("error", "Cannot open file",url,err)
         return "",err
     }
     data, err := ioutil.ReadAll(file)
     if err != nil {
-        LogError().Println("Cannot read file",url,err)
+        Log("error", "Cannot read file",url,err)
         return "",err
     }
     return string(data),nil
@@ -68,7 +68,7 @@ func DelUid(serverName string, userID string) error {
     url := Config.LogPath + serverName + "/" + userID
     err := Rm(url)
     if err != nil {
-        LogError().Println("Cannot delete file",url,err)
+        Log("error", "Cannot delete file",url,err)
         return err
     }
     return nil

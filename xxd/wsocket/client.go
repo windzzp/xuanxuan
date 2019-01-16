@@ -71,7 +71,7 @@ func dataProcessing(message []byte, client *Client) error {
     parseData, err := api.ApiParse(message, util.Token)
 	parseData["client"] = client.conn.RemoteAddr()
     if err != nil {
-        util.LogError().Println("Receive client message error")
+        util.Log("error", "Receive client message error")
         return err
     }
 
@@ -108,7 +108,7 @@ func switchMethod(message []byte, parseData api.ParseData, client *Client) error
     default:
         err := transitData(message, parseData.UserID(), client)
         if err != nil {
-            util.LogError().Println(err)
+            util.Log("error", "Transit data error: ", err)
         }
         break
     }
@@ -182,7 +182,7 @@ func chatLogin(parseData api.ParseData, client *Client) error {
     // 生成并存储文件会员
     userFileSessionID, err := api.UserFileSessionID(client.serverName, client.userID, client.lang)
     if err != nil {
-        util.LogError().Println("Chat user create file session error:", err)
+        util.Log("error", "Chat user create file session error:", err)
         //返回给客户端登录失败的错误信息
         return err
     }
@@ -286,16 +286,16 @@ func (c *Client) readPump() {
         _, message, err := c.conn.ReadMessage()
         if err != nil {
             if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
-                util.LogError().Printf("Is unexpected close error: %v", err)
+                util.Log("error", "Is unexpected close error: %v", err)
             }
 
-            util.LogError().Printf("read pump errorerror: %v", err)
+            util.Log("error", "read pump errorerror: %v", err)
             break
         }
 
         //返回user id 、登录响应的数据、ok
         if dataProcessing(message, c) != nil {
-            util.LogInfo().Println("Client exit ip:", c.conn.RemoteAddr())
+            util.Log("info", "Client exit ip:", c.conn.RemoteAddr())
             break
         }
     }
@@ -320,26 +320,26 @@ func (c *Client) writePump() {
             if !ok {
                 // The hub closed the channel.
                 c.conn.WriteMessage(websocket.CloseMessage, []byte{})
-                util.LogError().Println("The hub closed the channel")
+                util.Log("error", "The hub closed the channel")
                 return
             }
             if err := c.conn.WriteMessage(websocket.BinaryMessage, message); err != nil {
                 go sendFail(message, c)
-                util.LogError().Println("write message error", err)
+                util.Log("error", "write message error", err)
                 return
             }
 
             n := len(c.send)
             for i := 0; i < n; i++ {
                 if err := c.conn.WriteMessage(websocket.BinaryMessage, <-c.send); err != nil {
-                    util.LogError().Println("write message error", err)
+                    util.Log("error", "write message error", err)
                     return
                 }
             }
         case <-ticker.C:
             c.conn.SetWriteDeadline(time.Now().Add(writeWait))
             if err := c.conn.WriteMessage(websocket.PingMessage, []byte{}); err != nil {
-                util.LogError().Println("write ping message error:", err)
+                util.Log("error", "write ping message error:", err)
                 return
             }
         }
@@ -349,7 +349,7 @@ func (c *Client) writePump() {
 func sendFail(message []byte, c *Client) {
     parseData, err := api.ApiParse(message, util.Token)
     if err != nil {
-        util.LogError().Println("Receive client message error")
+        util.Log("error", "Receive client message error")
         return
     }
 
@@ -375,13 +375,13 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 
     conn, err := upgrader.Upgrade(w, r, header)
     if err != nil {
-        util.LogError().Println("Serve ws upgrader error:", err)
+        util.Log("error", "Serve ws upgrader error:", err)
         return
     }
 
     client := &Client{hub: hub, conn: conn, send: make(chan []byte, 256), repeatLogin: false, cVer: r.Header.Get("version")}
 
-    util.LogInfo().Println("Client ip:", conn.RemoteAddr())
+    util.Log("info", "Client ip:", conn.RemoteAddr())
     go client.writePump()
     client.readPump()
 }

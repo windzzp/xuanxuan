@@ -85,7 +85,7 @@ func write(filename, crtType string, p []byte) error {
     filename = util.Config.CrtPath + filename
     err := util.Mkdir(util.Config.CrtPath)
     if err != nil {
-        util.LogError().Println("Certificate dir create err,", err)
+        util.Log("error", "Certificate dir create err,", err)
     }
 
     fileHandle, err := os.Create(filename)

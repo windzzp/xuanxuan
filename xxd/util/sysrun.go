@@ -48,11 +48,11 @@ func init() {
     Printf("System: %s-%s\n", runtime.GOOS, runtime.GOARCH)
     Printf("---------------------------------------- \n")
 
-    LogInfo().Printf("XXD %s is running \n", Version)
-    LogInfo().Printf("XXD runs the directory %s \n", dir)
-    LogInfo().Printf("XXD token is %s \n", string(Token))
-    LogInfo().Printf("ProgramName:%s, System:%s-%s\n", GetProgramName(), runtime.GOOS, runtime.GOARCH)
-    LogInfo().Printf("---------------------------------------- \n")
+    Log("info", "XXD %s is running \n", Version)
+    Log("info", "XXD runs the directory %s \n", dir)
+    Log("info", "XXD token is %s \n", string(Token))
+    Log("info", "ProgramName:%s, System:%s-%s\n", GetProgramName(), runtime.GOOS, runtime.GOARCH)
+    Log("info", "---------------------------------------- \n")
 
     // 设置 cpu 使用
     runtime.GOMAXPROCS(runtime.NumCPU())
@@ -62,7 +62,9 @@ func GetNumGoroutine() int {
     return runtime.NumGoroutine()
 }
 
-func Exit(extStr string) {
+func Exit(v... interface{}) {
+    Println(v...)
+
     Println("Press ESC button or Ctrl-C to exit this program")
     for {
         consoleReader := bufio.NewReaderSize(os.Stdin, 1)
@@ -71,10 +73,10 @@ func Exit(extStr string) {
 
         // ESC = 27 and Ctrl-C = 3
         if ascii == 27 || ascii == 3 {
-            Println(extStr)
             DBConn.Close()
             os.Exit(1)
             os.Exit(0)
         }
     }
+    return
 }
