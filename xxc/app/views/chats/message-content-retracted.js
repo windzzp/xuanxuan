@@ -71,9 +71,9 @@ export default class MessageContentRetracted extends Component {
         const sender = message.getSender(App.members);
 
         return (
-            <div className={classes('app-message-broadcast has-padding-xs space-sm primary-pale flex-inline flex-middle row single muted', className)} {...other}>
+            <div className={classes('app-message-broadcast app-message-retracted has-padding-xs space-sm primary-pale flex-inline flex-middle row single muted', className)} {...other}>
                 <UserAvatar user={sender} size={20} />
-                <div className="content markdown-content">{Lang.format('chat.message.retracted', sender.displayName)}&nbsp;</div>
+                <div className="content markdown-content">{Lang.format('chat.message.retracted', sender.displayName)}</div>
             </div>
         );
     }
