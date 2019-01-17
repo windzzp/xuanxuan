@@ -122,12 +122,6 @@ export default class ChatSendbox extends Component {
                 this.focusEditor();
             }
         });
-
-        // 撤回消息，添加撤回内容到输入框
-        this.onDeleteChatMessage = App.im.server.onDeleteChatMessage(message => {
-            this.editbox.appendContent(message.content);
-            this.focusEditor();
-        });
     }
 
     /**
@@ -141,7 +135,7 @@ export default class ChatSendbox extends Component {
      * @return {void}
      */
     componentWillUnmount() {
-        App.events.off(this.onSendContentToChatHandler, this.onChatActiveHandler, this.onDeleteChatMessage);
+        App.events.off(this.onSendContentToChatHandler, this.onChatActiveHandler);
     }
 
     /**

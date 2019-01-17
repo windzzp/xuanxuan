@@ -894,7 +894,9 @@ addContextMenuCreator('message.text,message.image,message.file,message.url', con
             label: Lang.string('chat.message.retract'),
             icon: 'undo-variant',
             click: () => {
-                deleteChatMessage(message);
+                deleteChatMessage(message).then(() => {
+                    if(typeof message.content === 'string') sendContentToChat(message.content, 'text', message.cgid);
+                });
             }
         });
     }
