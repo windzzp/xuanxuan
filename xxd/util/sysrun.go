@@ -48,7 +48,7 @@ func init() {
     Printf("[Info] System: %s-%s \n", runtime.GOOS, runtime.GOARCH)
     Printf("---------------------------------------- \n")
 
-    Log("info", "XXD %s is running", Version)
+    Log("info", "XXD %s %s is running", Version, Build)
     Log("info", "XXD runs the directory %s", dir)
     Log("info", "ProgramName:%s, System:%s-%s", GetProgramName(), runtime.GOOS, runtime.GOARCH)
 
