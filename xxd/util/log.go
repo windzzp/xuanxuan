@@ -132,7 +132,7 @@ func walkFunc(path string, info os.FileInfo, err error) error {
 
 func Log(level string, format string, v...interface{}) {
     format = format + "\n"
-    if Config.DebugLevel > 0 {
+    if Config.Debug > 0 {
         Printf("[Debug] " + format, v...)
     }
 
@@ -144,7 +144,7 @@ func Log(level string, format string, v...interface{}) {
 }
 
 func LogDetail(detail string){
-    if Config.DebugLevel == 2 {
+    if Config.Debug == 2 {
         LogError().Println(detail)
     }
 }
