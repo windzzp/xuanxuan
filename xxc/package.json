@@ -31,6 +31,7 @@
     "package-all-beta": "npm run package -- --platform=all --arch=all --beta --clean && npm run package -- --platform=mac,win --arch=x64 --debug --beta",
     "package-browser": "npm run package -- --platform=browser",
     "hot-server-browser": "npm run hot-server -- --target=browser",
+    "check-lang": "node --max_old_space_size=2096 -r babel-register ./tools/check-lang.js",
     "docs": "./node_modules/.bin/esdoc",
     "eslint": "eslint ./app"
   },

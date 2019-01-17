@@ -10,7 +10,6 @@ import _ChatSendboxToolbar from './chat-sendbox-toolbar';
 import MessagesPreivewDialog from './messages-preview-dialog';
 import withReplaceView from '../with-replace-view';
 import {updateChatSendboxStatus} from '../../core/im/im-chat-typing';
-
 /**
  * DraftEditor 可替换组件形式
  * @type {Class<ChatSendboxToolbar>}
@@ -24,6 +23,15 @@ const DraftEditor = withReplaceView(_DraftEditor);
  * @private
  */
 const ChatSendboxToolbar = withReplaceView(_ChatSendboxToolbar);
+
+/**
+ * 事件表
+ * @type {Object<string, string>}
+ * @private
+ */
+const EVENT = {
+    sendboxAppendContent: 'im.chat.sendbox.appendContent'
+};
 
 /**
  * ChatSendbox 组件 ，显示一个聊天发送框
@@ -78,7 +86,6 @@ export default class ChatSendbox extends Component {
         super(props);
         this.state = {
             sendButtonDisabled: true,
-            typing: false,
         };
     }
 
@@ -115,6 +122,12 @@ export default class ChatSendbox extends Component {
                 this.focusEditor();
             }
         });
+
+        // 撤回消息，添加撤回内容到输入框
+        this.onDeleteChatMessage = App.im.server.onDeleteChatMessage(message => {
+            this.editbox.appendContent(message.content);
+            this.focusEditor();
+        });
     }
 
     /**
@@ -128,7 +141,7 @@ export default class ChatSendbox extends Component {
      * @return {void}
      */
     componentWillUnmount() {
-        App.events.off(this.onSendContentToChatHandler, this.onChatActiveHandler);
+        App.events.off(this.onSendContentToChatHandler, this.onChatActiveHandler, this.onDeleteChatMessage);
     }
 
     /**
@@ -220,7 +233,11 @@ export default class ChatSendbox extends Component {
         const hasContent = contentState.hasText();
         this.setState({sendButtonDisabled: !hasContent});
         if (chat.isOne2One) {
-            updateChatSendboxStatus(chat, hasContent);
+            const lastContentText = contentState.getPlainText();
+            if (lastContentText !== this.contentText) {
+                this.contentText = lastContentText;
+                updateChatSendboxStatus(chat, hasContent);
+            }
         }
     }
 

@@ -1232,7 +1232,7 @@ export default class Chat extends Entity {
                     return;
                 } else {
                     this._messages.push(message);
-                    if (!localMessage && userId !== message.senderId) {
+                    if (!localMessage && userId !== message.senderId && !message.deleted) {
                         message.unread = true;
                         noticeCount += 1;
                     } else {
