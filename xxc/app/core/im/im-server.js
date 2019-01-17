@@ -963,6 +963,8 @@ export const deleteChatMessage = (message) => {
     if (!message.canDelete(profile.userId)) {
         return Promise.reject();
     }
+    events.emit(EVENT.message_delete, message);
+    events.off(EVENT.message_delete);
     const messageData = message.plainServer();
     messageData.deleted = true;
     return socket.sendAndListen({
