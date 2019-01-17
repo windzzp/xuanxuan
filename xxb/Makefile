@@ -1,4 +1,5 @@
 VERSION=$(shell head -n 1 VERSION)
+TIME = $(shell date)
 
 all: xxb
 
@@ -53,6 +54,7 @@ xxb:
 	cp -r ./doc xxb/
 	php build/xxb.php
 	cat xxb/db/xuanxuan.sql >> xxb/db/xxb.sql
+	cd xxb/config/ext; echo '$$config->buildDate = "build at $(TIME)";' >> xxb.php
 	sed -i 's/ranzhi\.sql/xxb\.sql/' xxb/app/sys/install/model.php
 	sed -i '/runable/s#^#//#' xxb/app/sys/common/view/footer.html.php
 	sed -i '/checkVersion/s#^#//#' xxb/app/sys/user/view/login.html.php
