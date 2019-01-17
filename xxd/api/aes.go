@@ -24,7 +24,6 @@ func aesEncrypt(origData, key []byte) ([]byte, error) {
     }
     blockSize := block.BlockSize()
     util.LogDetail("「aesEncrypt」origData : " + string(origData))
-    util.LogDetail("「aesEncrypt」BlockSize : " + string(blockSize))
     origData = pkcs5Padding(origData, blockSize)
     blockMode := cipher.NewCBCEncrypter(block, key[:blockSize])
     crypted := make([]byte, len(origData))

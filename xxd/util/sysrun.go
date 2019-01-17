@@ -18,6 +18,7 @@ import (
 )
 
 const Version = "v2.4.0"
+const Build = "BuildForXXD"
 
 var Run bool = true
 var IsTest bool = false
@@ -42,7 +43,7 @@ func init() {
     }
 
 
-    Printf("[Info] XXD %s is running \n", Version)
+    Printf("[Info] XXD %s %s is running \n", Version, Build)
     Printf("[Info] XXD runs the directory %s \n", dir)
     Printf("[Info] System: %s-%s \n", runtime.GOOS, runtime.GOARCH)
     Printf("---------------------------------------- \n")
