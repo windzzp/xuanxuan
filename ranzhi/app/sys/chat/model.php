@@ -434,7 +434,6 @@ class chatModel extends model
             ->where('t1.user')->eq($userID)
             ->andWhere('t1.status')->eq('waiting')
             ->andWhere('t2.type')->ne('notify')
-            ->andWhere('t2.deleted')->eq(0)
             ->orderBy('t2.order desc, t2.id desc')
             ->fetchAll();
         if(empty($messages)) return array();
@@ -882,7 +881,6 @@ class chatModel extends model
         {
             $message->deleted = 1;
             $this->dao->update(TABLE_IM_MESSAGE)->set('deleted')->eq($message->deleted)->where('gid')->eq($gid)->exec();
-            $this->dao->delete()->from(TABLE_IM_MESSAGESTATUS)->where('gid')->eq($gid)->exec();
         }
 
         $messages = array();
@@ -927,7 +925,6 @@ class chatModel extends model
                 ->where('t1.user')->eq($userID)
                 ->andWhere('t1.status')->eq('waiting')
                 ->andWhere('t2.type')->eq('notify')
-                ->andWhere('t2.deleted')->eq(0)
                 ->fetchAll();
 
         if(empty($messages)) return array();
@@ -1028,7 +1025,7 @@ class chatModel extends model
             $messageData = json_decode($message->data);
             $data->id          = $message->id;
             $data->gid         = $message->gid;
-            $data->content     = $message->content;
+            $data->content     = $message->deleted ? '' : $message->content;
             $data->date        = strtotime($message->date);
             $data->contentType = $message->contentType;
             $data->title       = $messageData->title;
