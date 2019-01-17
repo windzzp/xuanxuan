@@ -37,7 +37,7 @@ func InitWs() {
     if util.Config.IsHttps != "1" {
         err := http.ListenAndServe(addr, nil)
         if err != nil {
-            util.Log("error", "webSocket server listen err: %s", err)
+            util.Log("error", "WebSocket server listen err: %s", err)
             util.Exit("WebSocket server listen err")
         }
     } else {

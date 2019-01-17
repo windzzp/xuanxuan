@@ -51,18 +51,18 @@ func newLog() error {
         return err
     }
 
-    logHandle = log.New(fd, "", log.Ltime|log.Lshortfile)
+    logHandle = log.New(fd, "", log.Ldate|log.Ltime)
 
     return nil
 }
 
 func LogInfo() *log.Logger {
-    logHandle.SetPrefix("[info] ")
+    logHandle.SetPrefix("[I] ")
     return logHandle
 }
 
 func LogError() *log.Logger {
-    logHandle.SetPrefix("[error] ")
+    logHandle.SetPrefix("[E] ")
     return logHandle
 }
 
@@ -133,7 +133,7 @@ func walkFunc(path string, info os.FileInfo, err error) error {
 func Log(level string, format string, v...interface{}) {
     format = format + "\n"
     if Config.Debug > 0 {
-        Printf("[Debug] " + format, v...)
+        Printf("[D] " + format, v...)
     }
 
     if level == "info" {
@@ -145,6 +145,6 @@ func Log(level string, format string, v...interface{}) {
 
 func LogDetail(detail string){
     if Config.Debug == 2 {
-        LogError().Println(detail)
+        LogInfo().Println(detail)
     }
 }
