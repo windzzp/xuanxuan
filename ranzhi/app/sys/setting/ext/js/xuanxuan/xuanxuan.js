@@ -21,6 +21,10 @@ function createKey()
         key += chars[Math.floor(Math.random() * chars.length)];
     }   
     $('#key').val(key);
+
+    $('#key').css({'margin-bottom' : 0, 'border-color' : ''});
+    $('#keyLabel').remove();
+
     return false;
 }
 

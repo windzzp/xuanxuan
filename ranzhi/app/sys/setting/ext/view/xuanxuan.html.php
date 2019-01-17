@@ -24,7 +24,14 @@
       </tr>
       <tr>
         <th><?php echo $lang->chat->key;?></th>
-        <td><?php echo $type == 'edit' ? html::input('key', zget($config->xuanxuan, 'key', ''), "class='form-control' readonly='readonly'") : zget($config->xuanxuan, 'key', '');?></td>
+        <td>
+          <?php $key   = zget($config->xuanxuan, 'key', '');?>
+          <?php $style = (!$key or $key == str_repeat(8, 32)) ? "style='margin-bottom: 0px; border-color: rgb(149, 59, 57);'" : '';?>
+          <?php echo $type == 'edit' ? html::input('key', zget($config->xuanxuan, 'key', ''), "class='form-control' readonly='readonly' $style") : zget($config->xuanxuan, 'key', '');?>
+          <?php if($type == 'edit' && (!$key or $key == str_repeat(8, 32))):?>
+          <span id="keyLabel" for="key" class="text-error red"><?php echo !$key ? $lang->chat->errorKey : $lang->chat->defaultKey;?></span>
+          <?php endif;?>
+        </td>
         <td><?php echo $type == 'edit' ? html::a('javascript:void(0)', $lang->chat->createKey, 'onclick="createKey()"') : '';?></td>
       </tr>
       <tr>

@@ -13,6 +13,8 @@ class setting extends control
     {
         if($this->app->user->admin != 'super') die(js::locate('back'));
 
+        if($type != 'edit' && (!zget($this->config->xuanxuan, 'key', '') or zget($this->config->xuanxuan, 'key', '') == str_repeat(8, 32))) $this->locate(inlink('xuanxuan', 'backend=xxb&type=edit'));
+
         $this->app->loadLang('chat', 'sys');
         if($_POST)
         {
@@ -20,6 +22,7 @@ class setting extends control
             $setting = fixer::input('post')->join('staff', ',')->remove('https')->get();
 
             if(strlen($this->post->key) != 32 or !validater::checkREG($this->post->key, '|^[A-Za-z0-9]+$|')) $errors['key'] = $this->lang->chat->errorKey;
+            if($this->post->key == str_repeat(8, 32)) $errors['key'] = $this->lang->chat->defaultKey;
             if(!is_numeric($setting->chatPort) or (int)$setting->chatPort <= 0 or (int)$setting->chatPort > 65535) $errors['chatPort'] = $this->lang->chat->xxdPortError;
             if(!is_numeric($setting->commonPort) or (int)$setting->commonPort <= 0 or (int)$setting->commonPort > 65535) $errors['commonPort'] = $this->lang->chat->xxdPortError;
             if($setting->isHttps)
