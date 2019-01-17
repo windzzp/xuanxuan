@@ -65,7 +65,7 @@ func GetNumGoroutine() int {
 func Exit(v... interface{}) {
     Println(v...)
 
-    Println("Press ESC button or Ctrl-C to exit this program")
+    Println("Press Ctrl-C to exit this program")
     for {
         consoleReader := bufio.NewReaderSize(os.Stdin, 1)
         input, _ := consoleReader.ReadByte()
