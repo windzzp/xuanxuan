@@ -31,7 +31,7 @@ type ConfigIni struct {
     UploadFileSize int64
 
     MaxOnlineUser int64
-    DebugLevel int64
+    Debug int64
 
     // multiSite or singleSite
     SiteType      string
@@ -54,7 +54,7 @@ func init() {
         Config.ChatPort = "11444"
         Config.CommonPort = "11443"
         Config.IsHttps = "0"
-        Config.DebugLevel = 0
+        Config.Debug = 0
 
         Config.UploadPath = "tmpfile"
         Config.UploadFileSize = 32 * MB
@@ -75,7 +75,7 @@ func init() {
     getChatPort(data)
     getCommonPort(data)
     getIsHttps(data)
-    getDebugLevel(data)
+    getDebug(data)
     getUploadPath(data)
     getRanzhi(data)
     getLogPath(data)
@@ -135,15 +135,15 @@ func getIsHttps(config *goconfig.ConfigFile) (err error) {
 }
 
 //调试级别
-func getDebugLevel(config *goconfig.ConfigFile) (err error) {
-	debug, err := config.GetValue("server", "debugLevel")
+func getDebug(config *goconfig.ConfigFile) (err error) {
+	debug, err := config.GetValue("server", "Debug")
 	if err != nil {
-        Config.DebugLevel = 0
+        Config.Debug = 0
         return nil
 	}
 	debugString := removeComment(debug)
 	debugInt, _ := String2Int64(debugString)
-	Config.DebugLevel = debugInt
+	Config.Debug = debugInt
 	return
 }
 
@@ -245,7 +245,7 @@ func getRanzhi(config *goconfig.ConfigFile) {
             Exit("config: backend server config error")
         }
 
-        if serverInfo[1] == "88888888888888888888888888888888" && Config.DebugLevel == 0 {
+        if serverInfo[1] == "88888888888888888888888888888888" && Config.Debug == 0 {
 			Exit("config: The key cannot be set to 88888888888888888888888888888888")
 		}
 
