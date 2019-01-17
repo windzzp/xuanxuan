@@ -425,6 +425,7 @@ export default class MessageListItem extends Component {
 
         if (message.deleted) {
             events.emit(EVENT.message_delete, message);
+            events.off(EVENT.message_delete);
             return (
                 <div className={classes('app-message-item app-message-item-broadcast', className)} {...other}>
                     {showDateDivider && <MessageDivider date={message.date} />}
