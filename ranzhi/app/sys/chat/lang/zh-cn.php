@@ -37,6 +37,7 @@ $lang->chat->changeRenameTo   = '将会话名称更改为';
 $lang->chat->multiChats       = '消息不属于同一个会话。';
 $lang->chat->notInGroup       = '用户不在此讨论组内。';
 $lang->chat->errorKey         = '<strong>密钥</strong> 应该为数字或字母的组合，长度为32位。';
+$lang->chat->defaultKey       = '请勿使用默认<strong>密钥</strong>。';
 $lang->chat->debugTips        = '喧喧已经可以使用。<br>使用管理员账号%s并访问此页面，可以查看更多debug信息。';
 $lang->chat->noLogFile        = '没有日志文件。';
 $lang->chat->noFopen          = '未启用fopen函数，请按以下路径自行查看日志文件：%s。';
