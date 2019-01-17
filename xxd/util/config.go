@@ -18,7 +18,6 @@ import (
 type RanzhiServer struct {
     RanzhiAddr  string
     RanzhiToken []byte
-    //RanzhiEncrypt bool
 }
 
 type ConfigIni struct {
@@ -82,6 +81,17 @@ func init() {
     getCrtPath(data)
     getUploadFileSize(data)
     getMaxOnlineUser(data)
+
+    fixConfigFile(data)
+}
+
+func fixConfigFile(config *goconfig.ConfigFile) error {
+    section := config.GetKeyList("certificate")
+    if len(section) > 0 {
+        Println("The configuration file has been updated to the latest.")
+        Println("The old configuration file is backed up for you as xxd.conf.old")
+    }
+    return nil
 }
 
 //获取配置文件IP
@@ -136,7 +146,7 @@ func getIsHttps(config *goconfig.ConfigFile) (err error) {
 
 //调试级别
 func getDebug(config *goconfig.ConfigFile) (err error) {
-	debug, err := config.GetValue("server", "Debug")
+	debug, err := config.GetValue("server", "debug")
 	if err != nil {
         Config.Debug = 0
         return nil
@@ -216,7 +226,7 @@ func getMaxOnlineUser(config *goconfig.ConfigFile) error {
     return nil
 }
 
-//获取服务器列表,conf中[ranzhi]段不能改名.
+//获取服务器列表,conf中[backend]段不能改名.
 func getRanzhi(config *goconfig.ConfigFile) {
     var section = "backend"
     var keyList []string
