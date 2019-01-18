@@ -25,12 +25,23 @@ var IsTest bool = false
 var Token []byte
 var DBConn *sql.DB
 var Languages map[string]string
+var DebugCli int64 = 0
 
 func init() {
     dir, _ := os.Getwd()
     isTest := flag.Bool("test", false, "server test model")
+    debugv := flag.Bool("v", false, "Debug level 1")
+    debugvv := flag.Bool("vv", false, "Debug level 2")
     flag.Parse()
     IsTest = *isTest
+    if *debugv == true {
+        DebugCli = 1
+    }
+    if *debugvv == true {
+        DebugCli = 2
+    }
+
+    println(DebugCli)
 
     DBConn = InitDB()
 
@@ -41,7 +52,6 @@ func init() {
     if IsTest {
         Printf("Server test model is %t \n", IsTest)
     }
-
 
     Printf("[Info] XXD %s %s is running \n", Version, Build)
     Printf("[Info] XXD runs the directory %s \n", dir)
@@ -62,6 +72,8 @@ func init() {
     LogDetail("「Config」LogPath：" + Config.LogPath)
     LogDetail("「Config」CrtPath：" + Config.CrtPath)
     LogDetail("「Config」MaxOnlineUser：" + string(Config.MaxOnlineUser))
+
+    LogDetail("")
 
     // 设置 cpu 使用
     runtime.GOMAXPROCS(runtime.NumCPU())
