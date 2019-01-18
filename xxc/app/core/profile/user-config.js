@@ -33,10 +33,10 @@ export default class UserConfig {
 
         this.changeAction = new DelayAction(() => {
             this.onChange(this.lastChange, this);
-            this.lastChange = null;
-            if (typeof this.onRequestUpload === 'function') {
+            if (this.newChanges && typeof this.onRequestUpload === 'function') {
                 this.uploadAction.do();
             }
+            this.lastChange = null;
         });
 
         this.uploadAction = new DelayAction(() => {
