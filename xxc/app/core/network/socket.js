@@ -313,6 +313,7 @@ export default class AppSocket extends Socket {
             }
             const onConnect = () => {
                 listenMessage('chat', 'login', 'login').then((result) => {
+                    this.isLogging = false;
                     if (result) {
                         this.startPing();
                         this.syncUserSettings();
@@ -321,7 +322,6 @@ export default class AppSocket extends Socket {
                     } else {
                         reject(new Error('Login result is not success.'));
                     }
-                    this.isLogging = false;
                     return result;
                 }).catch(reject);
                 this.send({
