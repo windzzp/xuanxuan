@@ -223,7 +223,6 @@ export default class AppSocket extends Socket {
      */
     onInit() {
         this.lastHandTime = 0;
-        this.lastHandTime = 0;
     }
 
     /**
@@ -354,8 +353,15 @@ export default class AppSocket extends Socket {
     uploadUserSettings(onlyChanges = false) {
         const {user} = this;
         const uploadSettings = user.config.exportCloud(onlyChanges);
+        user.config.newChanges = null;
         if (!uploadSettings) {
             return Promise.reject();
+        }
+        if (!this.isConnected || !user.isOnline) {
+            if (DEBUG) {
+                console.warn('Socket is disconnected, cannot uplad user settings of', uploadSettings);
+            }
+            return Promise.resolve();
         }
         return this.sendAndListen({
             method: 'settings',

@@ -244,7 +244,7 @@ export default class User extends Member {
 
             this._config.onRequestUpload = (changes, config) => {
                 // Emit user config change event
-                if (this.isEventsEnable) {
+                if (this.isEventsEnable && this.isOnline) {
                     events.emit(EVENT.config_request_upload, changes, config, this);
                 }
             };
