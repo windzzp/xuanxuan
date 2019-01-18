@@ -887,7 +887,7 @@ addContextMenuCreator('message.text,message.image,message.file,message.url', con
     if (!profile.user.isVersionSupport('retractChatMessage')) {
         return items;
     }
-
+    
     const {message} = context;
     if (message && message.canDelete(profile.userId)) {
         items.push({
@@ -895,7 +895,9 @@ addContextMenuCreator('message.text,message.image,message.file,message.url', con
             icon: 'undo-variant',
             click: () => {
                 deleteChatMessage(message).then(() => {
-                    if(typeof message.content === 'string') sendContentToChat(message.content, 'text', message.cgid);
+                    if(message.isTextContent){
+                        sendContentToChat(message.content, 'text', message.cgid);
+                    }
                 });
             }
         });
