@@ -122,7 +122,7 @@
     "chat.toolbor.unstar": "取消收藏",
 
     "chats.chat.search.result.format": "在 “{0}” 中找到 {1} 个结果",
-    "chats.chat.selectOneOnMenu": "请在左侧选择一个聊天会话。",
+    "chats.chat.selectOneOnMenu": "请在左侧选择一个聊天。",
     "chats.create.label": "新建聊天…",
     "chats.drapNDropFileMessage": "拖放文件或图片到此处来发送",
     "chats.history.fetchAll": "云端同步",
