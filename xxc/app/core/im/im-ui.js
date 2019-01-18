@@ -953,7 +953,7 @@ chats.onChatsInit(initChats => {
         }
     }
     if (!db.database.isExists) {
-        Server.fetchChatsHistory('all', DateHelper.getTimeBeforeDesc('threeMonth'));
+        Server.fetchChatsHistory('all', DateHelper.getTimeBeforeDesc('oneMonth'));
         if (DEBUG) {
             console.color('Fetch all history for new database', 'greenPale');
         }
