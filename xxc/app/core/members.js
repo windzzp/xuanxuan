@@ -200,8 +200,12 @@ export const getMember = (idOrAccount) => {
 export const guessMember = (search) => {
     let member = members[search];
     if (!member) {
+        const isMatchID = search[0] === '#';
         const findId = Object.keys(members).find(x => {
             const xMember = members[x];
+            if (isMatchID) {
+                return `#${xMember.id}` === search;
+            }
             return xMember.account === search || xMember.realname === search;
         });
         if (findId) {

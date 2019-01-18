@@ -546,7 +546,7 @@ export default class LoginForm extends PureComponent {
 
         return (
             <div className={classes('app-login-form', className)} {...other}>
-                {message && <div className="app-login-message danger box">{message} {messageDetail ? <a className="small label rounded darken-2 outline" onClick={this.handleClickMessageDetailBtn}>{Lang.string('common.viewDetail')}»</a> : null}</div>}
+                {message && <div className="app-login-message danger box">{message} {messageDetail ? <a className="small label rounded darken-2 outline" onClick={this.handleClickMessageDetailBtn}>{Lang.string('common.viewDetail')} »</a> : null}</div>}
                 {serverView}
                 <InputControl
                     value={account}

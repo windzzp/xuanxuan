@@ -683,7 +683,7 @@ export const linkMembersInText = (text, {format = '<a class="app-link {className
     if (text && text.indexOf('@') > -1) {
         const langAtAll = Lang.string('chat.message.atAll');
         const {userAccount} = profile;
-        text = text.replace(/@([\w\u4e00-\u9fa5]+)/g, (mentionAt, mention) => {
+        text = text.replace(/@(#?\d+|[\d\w\u4e00-\u9fa5]+)/g, (mentionAt, mention) => {
             const m = members.guess(mention);
             if (m) {
                 return StringHelper.format(format, {
@@ -953,7 +953,7 @@ chats.onChatsInit(initChats => {
         }
     }
     if (!db.database.isExists) {
-        Server.fetchChatsHistory('all', DateHelper.getTimeBeforeDesc('threeMonth'));
+        Server.fetchChatsHistory('all', DateHelper.getTimeBeforeDesc('oneMonth'));
         if (DEBUG) {
             console.color('Fetch all history for new database', 'greenPale');
         }

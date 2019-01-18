@@ -571,10 +571,11 @@ class chatModel extends model
 
         if($type == 'inviteUser')
         {
-            foreach($members as $member) $member = '@' . $member;
-            $members = implode($this->lang->chat->connector, $members);
+            $memberIDs = array();
+            foreach($members as $member) $memberIDs[] = '@#' . $member;
+            $memberIDs = implode($this->lang->chat->connector, $memberIDs);
 
-            return sprintf($this->lang->chat->broadcast->$type, $user->account, $members);
+            return sprintf($this->lang->chat->broadcast->$type, $user->account, $memberIDs);
         }
 
         return sprintf($this->lang->chat->broadcast->$type, $user->account);
