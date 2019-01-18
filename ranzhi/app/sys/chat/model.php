@@ -214,7 +214,7 @@ class chatModel extends model
         }
         else
         {
-            $memberList = $this->dao->select('user as id')
+            $memberList = $this->dao->select('user')
                 ->from(TABLE_IM_CHATUSER)
                 ->where('quit')->eq('0000-00-00 00:00:00')
                 ->beginIF($gid)->andWhere('cgid')->eq($gid)->fi()
@@ -607,15 +607,19 @@ class chatModel extends model
         if($type == 'quitChat')
         {
             $chat->members = array();
-            if($chat->admins)   $chat->members = explode(',', trim($chat->admins, ','));
-            if(!$chat->members) $chat->members = array($chat->createdBy);
-            $users       = $this->chat->getUserList($status = 'online', array_values($chat->members));
+            if($chat->admins) $chat->members = explode(',', trim($chat->admins, ','));
+            if(!$chat->members)
+            {
+                $user = $this->loadModel('user')->getByAccount($chat->createdBy);
+                if($user) $chat->members = array($user->id);
+            }
+            $users       = $this->getUserList($status = 'online', $chat->members);
             $onlineUsers = array_keys($users);
         }
 
         /* Save broadcast to im_message. */
         $messages     = $this->createMessage(array($message), $userID);
-        $offlineUsers = $this->getUserList($status = 'offline', array_values($chat->members));
+        $offlineUsers = $this->getUserList($status = 'offline', $chat->members);
         $this->saveOfflineMessages($messages, array_keys($offlineUsers));
 
         $output = new stdclass();
