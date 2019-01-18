@@ -264,7 +264,7 @@
     "error.SOCKET_CLOSED": "The server unexpectedly disconnected the Socket connection.",
     "error.SOCKET_ERROR": "Failed to connect to the server. Unknown error.",
     "error.SOCKET_TIMEOUT": "Server connection timeout.",
-    "error.STATUS_401": "Use the correct account and password.",
+    "error.STATUS_401": "The account name or password is incorrect.",
     "error.STATUS_500": "The server encountered an error while processing the request.",
     "error.THEME_HAS_NO_CSS_FILE": "No CSS file is found for the selected theme.",
     "error.TIMEOUT": "Timeout.",

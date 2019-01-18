@@ -264,7 +264,7 @@
     "error.SOCKET_CLOSED": "服務器意外斷開了 Socket 連接。",
     "error.SOCKET_ERROR": "服務器連接失敗，發生了未知錯誤。",
     "error.SOCKET_TIMEOUT": "服務器連接超時。",
-    "error.STATUS_401": "需要提供正確的用戶和密碼。",
+    "error.STATUS_401": "驗證失敗，賬號名稱或密碼不正確。",
     "error.STATUS_500": "服務器處理請求錯誤。",
     "error.THEME_HAS_NO_CSS_FILE": "所選的主題沒有找到可用的 CSS 樣式文件。",
     "error.TIMEOUT": "網絡連接超時。",
