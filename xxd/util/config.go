@@ -100,25 +100,26 @@ func fixConfigFile(config *goconfig.ConfigFile) error {
         config.DeleteSection("log")
         config.DeleteSection("certificate")
 
-        config.SetValue("server", "ip", config.MustValue("server", "ip", "0.0.0.0"))
-        config.SetValue("server", "commonPort", config.MustValue("server", "commonPort", "11443"))
-        config.SetValue("server", "chatPort", config.MustValue("server", "chatPort", "11444"))
+        config.MustValueSet("server", "ip", Config.Ip)
+        config.MustValueSet("server", "commonPort", Config.CommonPort)
+        config.MustValueSet("server", "chatPort", Config.ChatPort)
         https := "on"
         if Config.IsHttps == "0" {
             https = "off"
         }
-        config.SetValue("server", "https", https)
-        config.SetValue("server", "uploadPath", config.MustValue("server", "uploadPath", "files/"))
-        config.SetValue("server", "uploadFileSize", config.MustValue("server", "uploadFileSize", "32M"))
-        config.SetValue("server", "maxOnlineUser", config.MustValue("server", "maxOnlineUser", "0"))
-        config.SetValue("server", "logPath", config.MustValue("log", "logPath", "log/"))
-        config.SetValue("server", "certPath", config.MustValue("certificate", "crtPath", "cert/"))
-        config.SetValue("server", "debug", "0")
+        config.MustValueSet("server", "https", https)
+        config.MustValueSet("server", "uploadPath", Config.UploadPath)
+        config.MustValueSet("server", "uploadFileSize", "32M")
+        config.MustValueSet("server", "maxOnlineUser", Int642String(Config.MaxOnlineUser))
+        config.MustValueSet("server", "logPath", Config.LogPath)
+        config.MustValueSet("server", "crtPath", Config.CrtPath)
+        config.MustValueSet("server", "debug", "0")
 
         for key, value := range Config.RanzhiServer {
             server := RanzhiServer(value)
-            config.SetValue("backend", key, server.RanzhiAddr + "," + string(server.RanzhiToken))
+            config.MustValueSet("backend", key, server.RanzhiAddr + "," + string(server.RanzhiToken))
         }
+
         goconfig.SaveConfigFile(config, dir + "/" + configPath)
 
         Println("The configuration file has been updated to the latest.")
