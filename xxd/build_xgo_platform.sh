@@ -1,6 +1,9 @@
 #!/bin/sh
 
 version=xxd.$1
+TIME=$(date "+%Y-%m-%d %H:%M:%S")
+
+sed -i '' "s/BuildForXXD/Build at ${TIME}/g" util/sysrun.go
 
 echo "build version:"$version
 
