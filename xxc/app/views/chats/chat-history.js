@@ -369,11 +369,12 @@ export default class ChatHistory extends Component {
      * @private
      * @return {void}
      */
-    handleFecthBtnClick = e => {
-        const chat = this.props.chat;
+    handleFecthBtnClick = () => {
+        const {chat} = this.props;
         if (chat.id) {
             this.setState({loading: true, message: Lang.string('chats.history.fetchingMessages')});
-            App.im.server.fetchChatsHistory(this.props.chat.gid);
+            const {gid} = {chat};
+            App.im.server.fetchChatsHistory(gid);
         } else {
             this.setState({loading: false, message: Lang.string('chats.history.localChat'), messages: []});
         }
