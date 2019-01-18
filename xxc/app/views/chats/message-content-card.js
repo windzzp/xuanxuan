@@ -130,6 +130,12 @@ export default class MessageContentCard extends Component {
                         <source src={contentUrl} type={originContentType} />
                     </video>
                 );
+            } else if (contentType === 'audio') {
+                topView = (
+                    <audio controls className="fluid">
+                        <source src={contentUrl} type={originContentType} />
+                    </audio>
+                );
             }
         }
         if (!topView && image) {

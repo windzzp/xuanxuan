@@ -651,6 +651,11 @@ export const getUrlMeta = (url, disableCache = false) => {
                 cardMeta.contentType = 'video';
                 cardMeta.clickable = 'title';
                 cardMeta.icon = 'mdi-video text-red icon-2x';
+            } else if (meta.isAudio) {
+                cardMeta.contentUrl = url;
+                cardMeta.contentType = 'audio';
+                cardMeta.clickable = 'title';
+                cardMeta.icon = 'mdi-music text-yellow icon-2x';
             } else if (!cardMeta.title && !cardMeta.subtitle) {
                 cardMeta.title = url;
             }
