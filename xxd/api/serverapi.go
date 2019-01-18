@@ -24,6 +24,10 @@ func StartXXD() error {
     }
 
     startXXD := []byte(`{"module":"chat","method":"serverStart"}`)
+    if len(util.Config.RanzhiServer) == 0 {
+        util.Exit("No backend server available in the configuration file.")
+    }
+
     for serverName, serverInfo := range util.Config.RanzhiServer {
         message, err := aesEncrypt(startXXD, serverInfo.RanzhiToken)
         if err != nil {
