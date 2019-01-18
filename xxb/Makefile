@@ -1,4 +1,5 @@
 VERSION=$(shell head -n 1 VERSION)
+TIME = $(shell date)
 
 all: xxb
 
@@ -24,6 +25,7 @@ xxb:
 	cp -r ./zdoo/lib/pinyin xxb/lib/
 	cp -r ./zdoo/lib/snoopy xxb/lib/
 	cp -r ./zdoo/config xxb/
+	cp -r ./zdoo/www/api.php xxb/www/
 	cp -r ./zdoo/www/js xxb/www/
 	cp -r ./zdoo/www/sys xxb/www/
 	cp -r ./zdoo/www/theme xxb/www/
@@ -53,6 +55,7 @@ xxb:
 	cp -r ./doc xxb/
 	php build/xxb.php
 	cat xxb/db/xuanxuan.sql >> xxb/db/xxb.sql
+	cd xxb/config/ext; echo '$$config->buildDate = "build at $(TIME)";' >> xxb.php
 	sed -i 's/ranzhi\.sql/xxb\.sql/' xxb/app/sys/install/model.php
 	sed -i '/runable/s#^#//#' xxb/app/sys/common/view/footer.html.php
 	sed -i '/checkVersion/s#^#//#' xxb/app/sys/user/view/login.html.php

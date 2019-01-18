@@ -894,13 +894,20 @@ addContextMenuCreator('message.text,message.image,message.file,message.url', con
             label: Lang.string('chat.message.retract'),
             icon: 'undo-variant',
             click: () => {
-                deleteChatMessage(message);
+                const {isTextContent, content, cgid} = message;
+                return deleteChatMessage(message).then(() => {
+                    if (isTextContent && content) {
+                        return sendContentToChat(content, 'text', cgid);
+                    }
+                    return Promise.resolve();
+                });
             }
         });
     }
     return items;
 });
 
+// 添加转发按钮
 addContextMenuCreator('message.image,message.file,message.url,message.share', context => {
     const {message} = context;
     const items = [{

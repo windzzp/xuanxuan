@@ -19,7 +19,6 @@ import ChatMessage from '../../core/models/chat-message';
 import {showContextMenu} from '../../core/context-menu';
 import Config from '../../config';
 import withReplaceView from '../with-replace-view';
-import events from '../../core/events';
 
 const MessageContentRetracted = withReplaceView(_MessageContentRetracted);
 
@@ -85,15 +84,6 @@ const UserAvatar = withReplaceView(_UserAvatar);
  * @private
  */
 const showTimeLabelInterval = 1000 * 60 * 5;
-
-/**
- * 事件名称表
- * @type {Object}
- * @private
- */
-const EVENT = {
-    message_delete: 'im.server.message.delete',
-};
 
 /**
  * MessageListItem 组件 ，显示聊天列表条目界面
@@ -424,8 +414,6 @@ export default class MessageListItem extends Component {
         }
 
         if (message.deleted) {
-            events.emit(EVENT.message_delete, message);
-            events.off(EVENT.message_delete);
             return (
                 <div className={classes('app-message-item app-message-item-broadcast', className)} {...other}>
                     {showDateDivider && <MessageDivider date={message.date} />}

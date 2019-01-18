@@ -84,7 +84,7 @@ func dataProcessing(message []byte, client *Client) error {
 
 //根据不同的消息体选择对应的处理方法
 func switchMethod(message []byte, parseData api.ParseData, client *Client) error {
-
+    util.LogDetail("「switchMethod」API Module : " + parseData.Module() + ", Method : " + parseData.Method())
     switch parseData.Module() + "." + parseData.Method() {
     case "chat.login":
         if err := chatLogin(parseData, client); err != nil {

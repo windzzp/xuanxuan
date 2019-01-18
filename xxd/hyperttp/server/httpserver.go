@@ -27,13 +27,9 @@ type retCInfo struct {
     // encrypt key
     Token string `json:"token"`
 
-    // multiSite or singleSite
-    SiteType string `json:"siteType"`
-
     UploadFileSize int64 `json:"uploadFileSize"`
 
     ChatPort  int  `json:"chatPort"`
-    TestModel bool `json:"testModel"`
 }
 
 // route
@@ -84,13 +80,13 @@ func InitHttp() {
     util.Println("[Info] XXC connection address: ", protocol, "://", util.Config.Ip)
     util.Println("[Info] Https enabled ", https)
     util.Println("[Info] Listen IP: ", util.Config.Ip)
-    util.Println("[Info] ChatPort port: ", util.Config.ChatPort)
-    util.Println("[Info] CommonPort port: ", util.Config.CommonPort)
+    util.Println("[Info] Chat port: ", util.Config.ChatPort)
+    util.Println("[Info] Common port: ", util.Config.CommonPort)
 
     util.Log("info", "Https enabled %s", https)
     util.Log("info", "Listen IP:  %s", util.Config.Ip)
-    util.Log("info", "ChatPort port: %s", util.Config.ChatPort)
-    util.Log("info", "CommonPort port: %s", util.Config.CommonPort)
+    util.Log("info", "Chat port: %s", util.Config.ChatPort)
+    util.Log("info", "Common port: %s", util.Config.CommonPort)
 
     if util.Config.IsHttps != "1" {
         if err := http.ListenAndServe(addr, mux); err != nil {
@@ -132,7 +128,7 @@ func fileDownload(w http.ResponseWriter, r *http.Request) {
     reqSid := r.Form["sid"][0]
     reqGid := r.Form["gid"][0]
     session,err :=util.GetUid(serverName, reqGid)
-    util.Log("error", "File download file sessionid ", session)
+    util.Log("error", "File download file sessionid %s", session)
     if err!=nil {
         fmt.Fprintln(w, "Warning: Get file sessionid error")
         return
@@ -145,7 +141,7 @@ func fileDownload(w http.ResponseWriter, r *http.Request) {
 
     fileTime, err := util.String2Int64(reqFileTime)
     if err != nil {
-        util.Log("error", "Warning: file download,time undefined:", err)
+        util.Log("error", "Warning: file download,time undefined: %s", err)
         w.WriteHeader(http.StatusInternalServerError)
         return
     }
@@ -197,7 +193,7 @@ func fileUpload(w http.ResponseWriter, r *http.Request) {
 
     file, handler, err := r.FormFile("file")
     if err != nil {
-        util.Log("error", "Form file error:", err)
+        util.Log("error", "Form file error: %s", err)
         fmt.Fprintln(w, "Form file error")
         return
     }
@@ -206,7 +202,7 @@ func fileUpload(w http.ResponseWriter, r *http.Request) {
     nowTime := util.GetUnixTime()
     savePath := util.Config.UploadPath + serverName + "/" + util.GetYmdPath(nowTime)
     if err := util.Mkdir(savePath); err != nil {
-        util.Log("error", "File upload mkdir error:", err)
+        util.Log("error", "File upload mkdir error: %s", err)
         w.WriteHeader(http.StatusInternalServerError)
         fmt.Fprintln(w, "File upload mkdir error.")
         return
@@ -247,7 +243,7 @@ func fileUpload(w http.ResponseWriter, r *http.Request) {
     //util.Println(x2rJson)
     fileID, err := api.UploadFileInfo(serverName, []byte(x2rJson))
     if err != nil {
-        util.Log("error", "Upload file info error:", err)
+        util.Log("error", "Upload file info error: %s", err)
         w.WriteHeader(http.StatusInternalServerError)
         fmt.Fprintln(w, "Upload file info error")
         return
@@ -261,7 +257,7 @@ func fileUpload(w http.ResponseWriter, r *http.Request) {
     //util.Println(saveFile)
     f, err := os.OpenFile(saveFile, os.O_WRONLY|os.O_CREATE, 0644)
     if err != nil {
-        util.Log("error", "Open file error:", err)
+        util.Log("error", "Open file error: %s", err)
         w.WriteHeader(http.StatusInternalServerError)
         fmt.Fprintln(w, "Open file error")
         return
@@ -306,7 +302,7 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
 
     chatPort, err := util.String2Int(util.Config.ChatPort)
     if err != nil {
-        util.Log("error", "Convert chat port to number error: ", err)
+        util.Log("error", "Convert chat port to number error: %s", err)
         fmt.Fprintln(w, "Chat port \"" + util.Config.ChatPort + "\" is incorrect.")
         w.WriteHeader(http.StatusInternalServerError)
         return
@@ -315,14 +311,12 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
     info := retCInfo{
         Version:        util.Version,
         Token:          string(util.Token),
-        SiteType:       util.Config.SiteType,
         UploadFileSize: util.Config.UploadFileSize,
-        ChatPort:       chatPort,
-        TestModel:      util.IsTest}
+        ChatPort:       chatPort}
 
     jsonData, err := json.Marshal(info)
     if err != nil {
-        util.Log("error", "Json marshal error: ", err)
+        util.Log("error", "Json marshal error: %s", err)
         fmt.Fprintln(w, "Json marshal error: " + err.Error())
         w.WriteHeader(http.StatusInternalServerError)
         return

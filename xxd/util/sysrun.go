@@ -18,6 +18,7 @@ import (
 )
 
 const Version = "v2.4.0"
+const Build = "BuildForXXD"
 
 var Run bool = true
 var IsTest bool = false
@@ -42,17 +43,25 @@ func init() {
     }
 
 
-    Printf("[Info] XXD %s is running \n", Version)
+    Printf("[Info] XXD %s %s is running \n", Version, Build)
     Printf("[Info] XXD runs the directory %s \n", dir)
-    Printf("[Info] XXD token is %s \n", string(Token))
     Printf("[Info] System: %s-%s \n", runtime.GOOS, runtime.GOARCH)
     Printf("---------------------------------------- \n")
 
-    Log("info", "XXD %s is running", Version)
+    Log("info", "XXD %s %s is running", Version, Build)
     Log("info", "XXD runs the directory %s", dir)
-    Log("info", "XXD token is %s", string(Token))
     Log("info", "ProgramName:%s, System:%s-%s", GetProgramName(), runtime.GOOS, runtime.GOARCH)
-    Log("info", "---------------------------------------- \n")
+
+    LogDetail("「Config」IP：" + Config.Ip)
+    LogDetail("「Config」ChatPort：" + Config.ChatPort)
+    LogDetail("「Config」CommonPort：" + Config.CommonPort)
+    LogDetail("「Config」IsHttps：" + Config.IsHttps)
+    LogDetail("「Config」Debug：" + string(Config.Debug))
+    LogDetail("「Config」UploadPath：" + Config.UploadPath)
+    LogDetail("「Config」UploadFileSize：" + string(Config.UploadFileSize))
+    LogDetail("「Config」LogPath：" + Config.LogPath)
+    LogDetail("「Config」CrtPath：" + Config.CrtPath)
+    LogDetail("「Config」MaxOnlineUser：" + string(Config.MaxOnlineUser))
 
     // 设置 cpu 使用
     runtime.GOMAXPROCS(runtime.NumCPU())
@@ -65,7 +74,7 @@ func GetNumGoroutine() int {
 func Exit(v... interface{}) {
     Println(v...)
 
-    Println("Press Ctrl-C to exit this program")
+    Println("Press Ctrl+C to exit this program")
     for {
         consoleReader := bufio.NewReaderSize(os.Stdin, 1)
         input, _ := consoleReader.ReadByte()

@@ -26,13 +26,13 @@ func ChatLogin(clientData ParseData) (map[int]map[string]interface{}, error) {
     // 到http服务器请求，返回加密的结果，可能包含多个数组, type []byte
     retMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, ApiUnparse(clientData, ranzhiServer.RanzhiToken))
     if err != nil {
-        util.LogDetail(string(retMessage))
         util.Log("error", "ChatLogin hyperttp request info error:", err)
         return nil, err
     }
 
     //解密数据
     jsonData, err := aesDecrypt(retMessage, ranzhiServer.RanzhiToken)
+    util.LogDetail("「ChatLogin」jsonData : " + string(jsonData))
     if err != nil {
         util.Log("error", "ChatLogin request json data decrypt error:", err)
         return nil, err
@@ -57,13 +57,13 @@ func ChatLogout(serverName string, userID int64, lang string) (map[int]map[strin
     // 到http服务器请求user get list数据
     r2xMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, message)
     if err != nil {
-        util.LogDetail(string(r2xMessage))
         util.Log("error", "ChatLogout hyperttp request info error:", err)
         return nil, err
     }
 
     //解密数据
     jsonData, err := aesDecrypt(r2xMessage, ranzhiServer.RanzhiToken)
+    util.LogDetail("「ChatLogout」jsonData : " + string(jsonData))
     if err != nil {
         util.Log("error", "ChatLogout XXB request json data decrypt error:", err)
         return nil, err
@@ -120,6 +120,7 @@ func TransitData(clientData []byte, serverName string) (map[int]map[string]inter
         return nil, util.Errorf("%s", "TransitData not found xxb server name")
     }
 
+    util.LogDetail("「TransitData」server : " + serverName)
     //交换token
     message, err := SwapToken(clientData, util.Token, ranzhiServer.RanzhiToken)
     if err != nil {
@@ -130,13 +131,13 @@ func TransitData(clientData []byte, serverName string) (map[int]map[string]inter
     // xxb to xxd message
     r2xMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, message)
     if err != nil {
-        util.LogDetail(string(r2xMessage))
         util.Log("error", "XXB hyperttp request info error: %s", err)
         return nil, err
     }
 
     //解密数据
     jsonData, err := aesDecrypt(r2xMessage, ranzhiServer.RanzhiToken)
+    util.LogDetail("「TransitData」jsonData : " + string(jsonData))
     if err != nil {
         util.Log("error", "XXB request json data decrypt error: %s", err)
         return nil, err
@@ -149,22 +150,21 @@ func TransitData(clientData []byte, serverName string) (map[int]map[string]inter
 func UserGetlist(serverName string, userID int64, lang string) ([]byte, error) {
     ranzhiServer, ok := RanzhiServer(serverName)
     if !ok {
-        return nil, util.Errorf("%s", "UserGetlist not found xxb server name")
+        return nil, util.Errorf("%s", "UserGetList not found xxb server name")
     }
 
     // 固定的json格式
-    request := []byte(`{"module":"chat","method":"userGetlist", "lang":"` + lang + `", "params":[""],"userID":` + util.Int642String(userID) + `}`)
+    request := []byte(`{"module":"chat","method":"userGetList", "lang":"` + lang + `", "params":[""],"userID":` + util.Int642String(userID) + `}`)
 
     message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
     if err != nil {
-        util.Log("error", "Chat userGetlist byte aes encrypt error: %s", err)
+        util.Log("error", "Chat UserGetList byte aes encrypt error: %s", err)
         return nil, err
     }
 
     // 到http服务器请求user get list数据
     retMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, message)
     if err != nil {
-        util.LogDetail(string(retMessage))
         util.Log("error", "UserGetlist hyperttp request info error: %s", err)
         return nil, err
     }
@@ -220,7 +220,6 @@ func ReportAndGetNotify(server string, lang string) (map[int64][]byte, error) {
     //send message to xxb and get notify data
     retMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, ApiUnparse(trunk, ranzhiServer.RanzhiToken))
     if err != nil {
-        util.LogDetail(string(retMessage))
         util.Log("error", "Report and get notify hyperttp request info error: %s", err)
         return nil, err
     }
@@ -269,7 +268,6 @@ func CheckUserChange(serverName string, lang string) ([]byte, error) {
     // 到http服务器请求user get list数据
     retMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, message)
     if err != nil {
-        util.LogDetail(string(retMessage))
         util.Log("error", "CheckUserChange hyperttp request info error: %s", err)
         return nil, err
     }

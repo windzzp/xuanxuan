@@ -31,6 +31,7 @@
     "promise/param-names": "error",
     "promise/catch-or-return": "error",
     "promise/no-native": "off",
+    "react/destructuring-assignment": "warn",
     "react/sort-comp": ["error", {
       "order": ["type-annotations", "static-methods", "lifecycle", "everything-else", "render"]
     }],
@@ -68,9 +69,13 @@
     "import/no-unresolved": "warn",
     "import/no-named-as-default-member": "warn",
     "import/extensions": "off",
+    "import/no-cycle": "warn",
+    "react/jsx-wrap-multilines": "warn",
+    "react/jsx-closing-tag-location": "warn",
     "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
     "class-methods-use-this": "warn",
     "no-lonely-if": "warn",
+    "prefer-promise-reject-errors": "warn",
     "react/jsx-no-target-blank": "warn",
     "react/jsx-one-expression-per-line": "off",
     "valid-jsdoc": "warn",

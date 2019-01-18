@@ -38,7 +38,6 @@ const EVENT = {
     history_end: 'im.chats.history.end',
     message_send: 'im.server.message.send',
     message_receive: 'im.server.message.receive',
-    message_delete: 'im.server.message.delete',
 };
 
 /**
@@ -917,15 +916,6 @@ export const onReceiveChatMessages = listener => {
 };
 
 /**
- * 绑定删除聊天消息事件
- * @param {Funcion} listener 事件回调函数
- * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
- */
-export const onDeleteChatMessage = listener => {
-    return events.on(EVENT.message_delete, listener);
-}
-
-/**
  * 向服务器主动请求获取用户聊天列表
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
@@ -1008,7 +998,6 @@ export default {
     handleReceiveChatMessages,
     handleInitChats,
     onSendChatMessages,
-    onDeleteChatMessage,
     onReceiveChatMessages,
     kickOfMemberFromChat,
 

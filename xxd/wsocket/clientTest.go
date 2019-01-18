@@ -51,7 +51,7 @@ func chatTestLogin(parseData api.ParseData, client *Client) error {
     if retClient := <-cRegister.retClient; retClient.repeatLogin {
         retClient.send <- api.RepeatLogin()
 
-        util.Println("[Debug] chat test login error")
+        util.Println("[D] chat test login error")
         return util.Errorf("%s", "chat test login error")
     }
 

@@ -37,7 +37,9 @@ func StartXXD() error {
             return err
         }
 
-        util.Println("[Debug] Backend server address: ", serverInfo.RanzhiAddr)
+        util.Println("[D] Backend server name: ", serverName)
+        util.Println("[D] Backend server address: ", serverInfo.RanzhiAddr)
+        util.Println("[D] Backend server token: ", string(serverInfo.RanzhiToken))
     }
     return nil
 }
@@ -62,6 +64,7 @@ func VerifyLogin(body []byte) (bool, error) {
 
     //解密数据
     jsonData, err := aesDecrypt(r2xMessage, ranzhiServer.RanzhiToken)
+    util.LogDetail("「VerifyLogin」jsonData : " + string(jsonData))
     if err != nil {
         util.Log("error", "VerifyLogin request json data decrypt error:", err)
         return false, err
