@@ -76,11 +76,11 @@ func init() {
     getIsHttps(data)
     getDebug(data)
     getUploadPath(data)
-    getRanzhi(data)
     getLogPath(data)
     getCrtPath(data)
     getUploadFileSize(data)
     getMaxOnlineUser(data)
+    getRanzhi(data)
 
     fixConfigFile(data)
 }
@@ -88,6 +88,39 @@ func init() {
 func fixConfigFile(config *goconfig.ConfigFile) error {
     section := config.GetKeyList("certificate")
     if len(section) > 0 {
+        dir, _ := os.Getwd()
+        err := goconfig.SaveConfigFile(config, dir + "/" + configPath + ".old")
+        if err != nil {
+            Exit("[config] The config directory has no write permissions, %s", err)
+        }
+
+        config.DeleteSection("server")
+        config.DeleteSection("backend")
+        config.DeleteSection("ranzhi")
+        config.DeleteSection("log")
+        config.DeleteSection("certificate")
+
+        config.SetValue("server", "ip", config.MustValue("server", "ip", "0.0.0.0"))
+        config.SetValue("server", "commonPort", config.MustValue("server", "commonPort", "11443"))
+        config.SetValue("server", "chatPort", config.MustValue("server", "chatPort", "11444"))
+        https := "on"
+        if Config.IsHttps == "0" {
+            https = "off"
+        }
+        config.SetValue("server", "https", https)
+        config.SetValue("server", "uploadPath", config.MustValue("server", "uploadPath", "files/"))
+        config.SetValue("server", "uploadFileSize", config.MustValue("server", "uploadFileSize", "32M"))
+        config.SetValue("server", "maxOnlineUser", config.MustValue("server", "maxOnlineUser", "0"))
+        config.SetValue("server", "logPath", config.MustValue("log", "logPath", "log/"))
+        config.SetValue("server", "certPath", config.MustValue("certificate", "crtPath", "cert/"))
+        config.SetValue("server", "debug", "0")
+
+        for key, value := range Config.RanzhiServer {
+            server := RanzhiServer(value)
+            config.SetValue("backend", key, server.RanzhiAddr + "," + string(server.RanzhiToken))
+        }
+        goconfig.SaveConfigFile(config, dir + "/" + configPath)
+
         Println("The configuration file has been updated to the latest.")
         Println("The old configuration file is backed up for you as xxd.conf.old")
     }
@@ -260,7 +293,7 @@ func getRanzhi(config *goconfig.ConfigFile) {
             Exit("[config] backend server config error")
         }
 
-        if serverInfo[1] == "88888888888888888888888888888888" && Config.Debug == 0 {
+        if serverInfo[1] == "88888888888888888888888888888888" {
 			Exit("[config] The key cannot be set to 88888888888888888888888888888888")
 		}
 
