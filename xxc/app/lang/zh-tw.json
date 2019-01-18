@@ -265,7 +265,7 @@
     "error.SOCKET_ERROR": "服務器連接失敗，發生了未知錯誤。",
     "error.SOCKET_TIMEOUT": "服務器連接超時。",
     "error.STATUS_401": "需要提供正確的用戶和密碼。",
-    "error.STATUS_500": "服務器處理請求時失敗。",
+    "error.STATUS_500": "服務器處理請求錯誤。",
     "error.THEME_HAS_NO_CSS_FILE": "所選的主題沒有找到可用的 CSS 樣式文件。",
     "error.TIMEOUT": "網絡連接超時。",
     "error.UNSUPPORT_VERSION": "此服務器版本不受支持。",

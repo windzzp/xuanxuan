@@ -265,7 +265,7 @@
     "error.SOCKET_ERROR": "服务器连接失败，发生了未知错误。",
     "error.SOCKET_TIMEOUT": "服务器连接超时。",
     "error.STATUS_401": "需要提供正确的用户和密码。",
-    "error.STATUS_500": "服务器处理请求时失败。",
+    "error.STATUS_500": "服务器处理请求错误。",
     "error.THEME_HAS_NO_CSS_FILE": "所选的主题没有找到可用的 CSS 样式文件。",
     "error.TIMEOUT": "网络连接超时。",
     "error.UNSUPPORT_VERSION": "此服务器版本不受支持。",
