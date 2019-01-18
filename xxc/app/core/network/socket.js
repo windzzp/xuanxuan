@@ -385,7 +385,7 @@ export default class AppSocket extends Socket {
         }
         if (!this.isConnected || !user.isOnline) {
             if (DEBUG) {
-                console.warn('Socket is disconnected, cannot uplad user settings of', uploadSettings);
+                console.warn('Socket is disconnected, cannot upload user settings of', uploadSettings);
             }
             return Promise.resolve();
         }
