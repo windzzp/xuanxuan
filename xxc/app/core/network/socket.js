@@ -165,6 +165,19 @@ export default class AppSocket extends Socket {
      * @return {void}
      */
     handleMessage(msg) {
+        if (this.isLogging && msg.pathname !== 'chat/login') {
+            if (!this.waitingMessageList) {
+                this.waitingMessageList = [];
+            }
+            this.waitingMessageList.push(msg);
+            if (DEBUG) {
+                console.collapse('SOCKET WAITING Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale');
+                console.log('msg', msg);
+                console.log('socket', this);
+                console.groupEnd();
+            }
+            return;
+        }
         if (DEBUG) {
             console.collapse('SOCKET Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale');
             console.log('msg', msg);
@@ -188,6 +201,17 @@ export default class AppSocket extends Socket {
             result = msg.isSuccess;
         }
         events.emit(EVENT.message, msg, result);
+    }
+
+    /**
+     * 处理登录成功之前等待处理的消息
+     * @return {void}
+     */
+    handleWaitingMessages() {
+        const {waitingMessageList} = this;
+        if (waitingMessageList && waitingMessageList.length) {
+            waitingMessageList.forEach(msg => this.handleMessage(msg));
+        }
     }
 
     /**
@@ -288,11 +312,12 @@ export default class AppSocket extends Socket {
                 return Promise.reject(new Error('User is not defined.'));
             }
             const onConnect = () => {
-                listenMessage('chat', 'login', 'login').then((result, msg) => {
+                listenMessage('chat', 'login', 'login').then((result) => {
                     if (result) {
                         this.startPing();
                         this.syncUserSettings();
                         resolve(user);
+                        this.handleWaitingMessages();
                     } else {
                         reject(new Error('Login result is not success.'));
                     }
@@ -317,7 +342,8 @@ export default class AppSocket extends Socket {
                 version: Config.pkg.version,
                 connect: true,
                 onConnect,
-                onConnectFail: (e) => {
+                onConnectFail: e => {
+                    this.isLogging = false;
                     reject(e);
                 }
             }, options));
