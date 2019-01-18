@@ -887,17 +887,19 @@ addContextMenuCreator('message.text,message.image,message.file,message.url', con
     if (!profile.user.isVersionSupport('retractChatMessage')) {
         return items;
     }
-    
+
     const {message} = context;
     if (message && message.canDelete(profile.userId)) {
         items.push({
             label: Lang.string('chat.message.retract'),
             icon: 'undo-variant',
             click: () => {
-                deleteChatMessage(message).then(() => {
-                    if(message.isTextContent){
-                        sendContentToChat(message.content, 'text', message.cgid);
+                const {isTextContent, content, cgid} = message;
+                return deleteChatMessage(message).then(() => {
+                    if (isTextContent && content) {
+                        return sendContentToChat(content, 'text', cgid);
                     }
+                    return Promise.resolve();
                 });
             }
         });
@@ -905,6 +907,7 @@ addContextMenuCreator('message.text,message.image,message.file,message.url', con
     return items;
 });
 
+// 添加转发按钮
 addContextMenuCreator('message.image,message.file,message.url,message.share', context => {
     const {message} = context;
     const items = [{
