@@ -22,8 +22,8 @@ const requestCount = 3
 
 // http 请求
 func RequestInfo(addr string, postData []byte) ([]byte, error) {
-    util.LogDetail("「RequestInfo」addr : " + addr)
-    util.LogDetail("「RequestInfo」post data : " + string(addr))
+    util.LogDetail("[RequestInfo」addr : " + addr)
+    util.LogDetail("[RequestInfo」post data : " + string(addr))
 
     if postData == nil || addr == "" {
         return nil, util.Errorf("post data or addr is null")

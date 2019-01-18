@@ -41,7 +41,7 @@ func aesDecrypt(crypted, key []byte) ([]byte, error) {
     blockSize := block.BlockSize()
     cryptedSize := len(crypted)
     if cryptedSize == 0 || cryptedSize%blockSize != 0 {
-        return nil, fmt.Errorf("%s", "「aesDecrypt」 AES decrypt error, Blocks entered are incomplete.")
+        return nil, fmt.Errorf("%s", "[aesDecrypt] AES decrypt error, Blocks entered are incomplete.")
     }
 
     blockMode := cipher.NewCBCDecrypter(block, key[:blockSize])
@@ -50,7 +50,7 @@ func aesDecrypt(crypted, key []byte) ([]byte, error) {
     blockMode.CryptBlocks(origData, crypted)
     origData = pkcs5UnPadding(origData)
     if origData == nil {
-        return nil, fmt.Errorf("%s", "「aesDecrypt」 pkcs5 UnPadding error")
+        return nil, fmt.Errorf("%s", "[aesDecrypt] pkcs5 UnPadding error")
     }
 
     return origData, nil
@@ -67,7 +67,7 @@ func pkcs5UnPadding(origData []byte) []byte {
     // 去掉最后一个字节 unpadding 次
     unpadding := int(origData[length-1])
     if unpadding > length {
-        fmt.Println("「aesDecrypt」 AES unpadding len > data length")
+        fmt.Println("[aesDecrypt] AES unpadding len > data length")
         return nil
     }
 
