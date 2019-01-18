@@ -131,7 +131,9 @@ export default class NotificationMessage extends ChatMessage {
         if (data instanceof NotificationMessage) {
             return data;
         }
-        if (data.data) {
+        if (data.type === 'notification' && data.contentType === 'object' && data.content) {
+            data = Object.assign({}, typeof data.content === 'string' ? JSON.parse(data.content) : data.content, data, {data: null, content: null});
+        } else if (data.data) {
             // eslint-disable-next-line prefer-destructuring
             data = Object.assign({}, typeof data.data === 'string' ? JSON.parse(data.data) : data.data, data, {data: null});
         }

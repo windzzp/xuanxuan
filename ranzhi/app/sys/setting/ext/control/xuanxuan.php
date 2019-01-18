@@ -13,6 +13,7 @@ class setting extends control
     {
         if($this->app->user->admin != 'super') die(js::locate('back'));
 
+        if($type != 'edit' && !isset($this->config->xuanxuan->set)) $this->locate(inlink('xuanxuan', 'backend=xxb&type=edit'));
         if($type != 'edit' && (!zget($this->config->xuanxuan, 'key', '') or zget($this->config->xuanxuan, 'key', '') == str_repeat(8, 32))) $this->locate(inlink('xuanxuan', 'backend=xxb&type=edit'));
 
         $this->app->loadLang('chat', 'sys');
@@ -38,6 +39,7 @@ class setting extends control
             if($errors) $this->send(array('result' => 'fail', 'message' => $errors));
 
             $result = $this->loadModel('setting')->setItems('system.sys.common.xuanxuan', $setting);
+            $this->loadModel('setting')->setItem('system.common.xuanxuan.set', 1);
             if(!$result) $this->send(array('result' => 'fail', 'message' => dao::getError()));
 
             $this->send(array('result' => 'success', 'message' => $this->lang->saveSuccess, 'locate' => inlink('xuanxuan', "backend=$backend")));

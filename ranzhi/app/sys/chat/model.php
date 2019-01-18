@@ -214,7 +214,7 @@ class chatModel extends model
         }
         else
         {
-            $memberList = $this->dao->select('user as id')
+            $memberList = $this->dao->select('user')
                 ->from(TABLE_IM_CHATUSER)
                 ->where('quit')->eq('0000-00-00 00:00:00')
                 ->beginIF($gid)->andWhere('cgid')->eq($gid)->fi()
@@ -607,15 +607,19 @@ class chatModel extends model
         if($type == 'quitChat')
         {
             $chat->members = array();
-            if($chat->admins)   $chat->members = explode(',', trim($chat->admins, ','));
-            if(!$chat->members) $chat->members = array($chat->createdBy);
-            $users       = $this->chat->getUserList($status = 'online', array_values($chat->members));
+            if($chat->admins) $chat->members = explode(',', trim($chat->admins, ','));
+            if(!$chat->members)
+            {
+                $user = $this->loadModel('user')->getByAccount($chat->createdBy);
+                if($user) $chat->members = array($user->id);
+            }
+            $users       = $this->getUserList($status = 'online', $chat->members);
             $onlineUsers = array_keys($users);
         }
 
         /* Save broadcast to im_message. */
         $messages     = $this->createMessage(array($message), $userID);
-        $offlineUsers = $this->getUserList($status = 'offline', array_values($chat->members));
+        $offlineUsers = $this->getUserList($status = 'offline', $chat->members);
         $this->saveOfflineMessages($messages, array_keys($offlineUsers));
 
         $output = new stdclass();
@@ -874,7 +878,7 @@ class chatModel extends model
      */
     public function retractMessage($gid = '')
     {
-        $message = $this->dao->select('id, gid, cgid, user, date, `order`, deleted')->from(TABLE_IM_MESSAGE)->where('gid')->eq($gid)->fetch();
+        $message = $this->dao->select('id, gid, cgid, user, date, `order`, deleted, type, contentType')->from(TABLE_IM_MESSAGE)->where('gid')->eq($gid)->fetch();
 
         $messageLife = (strtotime(helper::now()) - strtotime($message->date)) / 60;
         if($messageLife <= $this->config->chat->retract->validTime)
@@ -883,6 +887,10 @@ class chatModel extends model
             $this->dao->update(TABLE_IM_MESSAGE)->set('deleted')->eq($message->deleted)->where('gid')->eq($gid)->exec();
         }
 
+        $message->date  = strtotime($message->date);
+        $message->order = (int)($message->order);
+        $message->id    = (int)($message->id);
+        $message->user  = (int)($message->user);
         $messages = array();
         $messages[] = $message;
 
@@ -1234,6 +1242,8 @@ class chatModel extends model
         $url    = sprintf($this->config->chat->xxdDownloadUrl, $backend);
         $result = commonModel::http($url, $data);
 
+        $this->loadModel('setting')->setItem('system.common.xxserver.installed', 1);
+
         if($type == 'config')
         {
             $this->sendDownHeader('xxd.conf', 'conf', $result, strlen($result));
@@ -1243,7 +1253,6 @@ class chatModel extends model
             header("Location: $result");
         }
 
-        $this->loadModel('setting')->setItem('system.common.xxserver.installed', 1);
         exit;
     }
 

@@ -27,9 +27,6 @@ type retCInfo struct {
     // encrypt key
     Token string `json:"token"`
 
-    // multiSite or singleSite
-    SiteType string `json:"siteType"`
-
     UploadFileSize int64 `json:"uploadFileSize"`
 
     ChatPort  int  `json:"chatPort"`
@@ -314,7 +311,6 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
     info := retCInfo{
         Version:        util.Version,
         Token:          string(util.Token),
-        SiteType:       util.Config.SiteType,
         UploadFileSize: util.Config.UploadFileSize,
         ChatPort:       chatPort}
 

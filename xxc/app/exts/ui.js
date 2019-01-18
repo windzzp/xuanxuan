@@ -421,13 +421,6 @@ export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
     const items = [];
     if (theOpenedApp.webview) {
         items.push({
-            label: Lang.string('ext.app.share'),
-            click: () => {
-                const currentUrl = theOpenedApp.webview && theOpenedApp.webview.src;
-                ChatShareDialog.show(currentUrl);
-            }
-        });
-        items.push({
             label: Lang.string('ext.app.refresh'),
             click: () => {
                 if (theOpenedApp.webview) {

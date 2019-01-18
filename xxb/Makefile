@@ -25,6 +25,7 @@ xxb:
 	cp -r ./zdoo/lib/pinyin xxb/lib/
 	cp -r ./zdoo/lib/snoopy xxb/lib/
 	cp -r ./zdoo/config xxb/
+	cp -r ./zdoo/www/api.php xxb/www/
 	cp -r ./zdoo/www/js xxb/www/
 	cp -r ./zdoo/www/sys xxb/www/
 	cp -r ./zdoo/www/theme xxb/www/
