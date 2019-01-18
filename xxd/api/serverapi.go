@@ -27,13 +27,13 @@ func StartXXD() error {
     for serverName, serverInfo := range util.Config.RanzhiServer {
         message, err := aesEncrypt(startXXD, serverInfo.RanzhiToken)
         if err != nil {
-            util.Log("error", "Backend server error: AES encrypt error %s, [%s] server login error", err, serverName)
+            util.Log("error", "「StartXXD」 json data AES encrypt error %s for server name %s", err, serverName)
             return err
         }
 
         _, err = hyperttp.RequestInfo(serverInfo.RanzhiAddr, message)
         if err != nil {
-            util.Log("error", "Backend server error: Start xxb to server [%s], login error: [%s]", serverName, err)
+            util.Log("error", "「StartXXD」 Failed to connect to server [%s], error info: [%s]", serverName, err)
             return err
         }
 
@@ -48,13 +48,13 @@ func StartXXD() error {
 func VerifyLogin(body []byte) (bool, error) {
     parseData := make(ParseData)
     if err := json.Unmarshal(body, &parseData); err != nil {
-        util.Log("error", "VerifyLogin json data unmarshal error:", err)
+        util.Log("error", "「VerifyLogin」 json data unmarshal error:", err)
         return false, err
     }
 
     ranzhiServer, ok := RanzhiServer(parseData.ServerName())
     if !ok {
-        return false, util.Errorf("Backend server [%s] not found. ", parseData.ServerName())
+        return false, util.Errorf("「VerifyLogin」 backend server [%s] cannot found. ", parseData.ServerName())
     }
 
     r2xMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, ApiUnparse(parseData, ranzhiServer.RanzhiToken))
@@ -64,9 +64,9 @@ func VerifyLogin(body []byte) (bool, error) {
 
     //解密数据
     jsonData, err := aesDecrypt(r2xMessage, ranzhiServer.RanzhiToken)
-    util.LogDetail("「VerifyLogin」jsonData : " + string(jsonData))
+    util.LogDetail("「VerifyLogin」request json data : " + string(jsonData))
     if err != nil {
-        util.Log("error", "VerifyLogin request json data decrypt error:", err)
+        util.Log("error", "「VerifyLogin」request json data decrypt error:", err)
         return false, err
     }
 
@@ -87,12 +87,12 @@ func VerifyLogin(body []byte) (bool, error) {
 func UploadFileInfo(serverName string, jsonData []byte) (string, error) {
     ranzhiServer, ok := RanzhiServer(serverName)
     if !ok {
-        return "", util.Errorf("UploadFileInfo backend server name not found")
+        return "", util.Errorf("「UploadFileInfo」 backend server name %s cannot found", serverName)
     }
 
     message, err := aesEncrypt(jsonData, ranzhiServer.RanzhiToken)
     if err != nil {
-        util.Log("error", "UploadFileInfo json data AES encrypt error:", err)
+        util.Log("error", "「UploadFileInfo」 json data AES encrypt error: %s", err)
         return "", err
     }
 

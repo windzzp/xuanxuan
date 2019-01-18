@@ -22,8 +22,11 @@ const requestCount = 3
 
 // http 请求
 func RequestInfo(addr string, postData []byte) ([]byte, error) {
+    util.LogDetail("「RequestInfo」addr : " + addr)
+    util.LogDetail("「RequestInfo」post data : " + string(addr))
+
     if postData == nil || addr == "" {
-        return nil, util.Errorf("%s", "post data or addr is null")
+        return nil, util.Errorf("post data or addr is null")
     }
 
     // 根据配置文件的不同创建 http 或者 https 的客户端
@@ -60,7 +63,7 @@ func RequestInfo(addr string, postData []byte) ([]byte, error) {
             break
         }
 
-        util.Log("error", "Request status code:%v", resp.StatusCode)
+        util.Log("error", "Request status code: %v", resp.StatusCode)
         util.SleepMillisecond(200)
     }
 
@@ -72,10 +75,11 @@ func RequestInfo(addr string, postData []byte) ([]byte, error) {
 
     body, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        util.Log("error", "Request body read error:", err)
+        util.Log("error", "Request body error:", err)
         return nil, err
     }
 
+    util.Log("info", "\r\n")
     // 返回然之服务器的数据
     return body, nil
 }

@@ -43,7 +43,7 @@ func aesDecrypt(crypted, key []byte) ([]byte, error) {
     blockSize := block.BlockSize()
     cryptedSize := len(crypted)
     if cryptedSize == 0 || cryptedSize%blockSize != 0 {
-        return nil, util.Errorf("%s", "Aes eecrypt error, input not full blocks.")
+        return nil, util.Errorf("%s", "AES decrypt error, Blocks entered are incomplete.")
     }
 
     blockMode := cipher.NewCBCDecrypter(block, key[:blockSize])

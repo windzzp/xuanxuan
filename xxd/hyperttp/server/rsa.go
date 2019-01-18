@@ -52,6 +52,9 @@ func CreateSignedCertKey() (string, string, error) {
     crtPath := util.Config.CrtPath + util.GetProgramName() + ".crt"
     keyPath := util.Config.CrtPath + util.GetProgramName() + ".key"
 
+    util.LogDetail("「CreateSignedCertKey」crtPath " + crtPath)
+    util.LogDetail("「CreateSignedCertKey」keyPath " + keyPath)
+
     if !util.IsNotExist(crtPath) && !util.IsNotExist(keyPath) {
         return crtPath, keyPath, nil
     }
@@ -85,7 +88,7 @@ func write(filename, crtType string, p []byte) error {
     filename = util.Config.CrtPath + filename
     err := util.Mkdir(util.Config.CrtPath)
     if err != nil {
-        util.Log("error", "Certificate dir create err,", err)
+        util.Log("error", "「CreateSignedCertKey」Certificate dir create error :%s", err)
     }
 
     fileHandle, err := os.Create(filename)

@@ -66,7 +66,7 @@ func init() {
         Config.CrtPath = dir + "/certificate/"
         Config.MaxOnlineUser = 0
 
-        Log("error", "Config init error, don't load xxd.conf file, use default conf!")
+        Log("error", "「config」 %s can't be loaded. Use default conf!", configPath)
         return
     }
 
@@ -98,7 +98,7 @@ func fixConfigFile(config *goconfig.ConfigFile) error {
 func getIP(config *goconfig.ConfigFile) (err error) {
     ip, err := config.GetValue("server", "ip")
     if err != nil {
-        Exit("config: get server ip error,", err)
+        Exit("「config」 get server chat port error %s", err)
     }
 	Config.Ip = removeComment(ip)
 	return
@@ -108,7 +108,7 @@ func getIP(config *goconfig.ConfigFile) (err error) {
 func getChatPort(config *goconfig.ConfigFile) (err error) {
     chatPort, err := config.GetValue("server", "chatPort")
     if err != nil {
-        Exit("config: get server chart port error,", err)
+        Exit("「config」 get server chat port error,", err)
     }
 	Config.ChatPort = removeComment(chatPort)
     return
@@ -118,7 +118,7 @@ func getChatPort(config *goconfig.ConfigFile) (err error) {
 func getCommonPort(config *goconfig.ConfigFile) (err error) {
     commonPort, err := config.GetValue("server", "commonPort")
     if err != nil {
-        Exit("config: get server upload port error,", err)
+        Exit("「config」 get server upload port error,", err)
     }
 	Config.CommonPort = removeComment(commonPort)
     return
@@ -129,8 +129,9 @@ func getIsHttps(config *goconfig.ConfigFile) (err error) {
     https, err := config.GetValue("server", "https")
     if err != nil {
         https, err := config.GetValue("server", "isHttps")
+        LogDetail("「config」 get isHttps value" + https)
         if err != nil {
-            Exit("config: get server https error,", err)
+            Exit("「config」 get server https error,", err)
         }
         Config.IsHttps = https
     } else {
@@ -153,6 +154,9 @@ func getDebug(config *goconfig.ConfigFile) (err error) {
 	}
 	debugString := removeComment(debug)
 	debugInt, _ := String2Int64(debugString)
+	if DebugCli > 0 {
+        debugInt = DebugCli
+    }
 	Config.Debug = debugInt
 	return
 }
@@ -161,7 +165,7 @@ func getDebug(config *goconfig.ConfigFile) (err error) {
 func getUploadPath(config *goconfig.ConfigFile) (err error) {
     uploadPath, err := config.GetValue("server", "uploadPath")
     if err != nil {
-        Exit("config: get server upload path error,", err)
+        Exit("「config」 get server upload path error,", err)
     }
     Config.UploadPath = removeComment(uploadPath)
     return
@@ -175,7 +179,7 @@ func getUploadFileSize(config *goconfig.ConfigFile) error {
 
     uploadFileSize, err := config.GetValue("server", "uploadFileSize")
     if err != nil {
-        Log("error", "config: get server upload file size error:%v, default size 32MB.", err)
+        Log("error", "「config」 get server upload file size error:%v, default size 32MB.", err)
         return err
     }
     uploadFileSize = removeComment(uploadFileSize)
@@ -200,12 +204,12 @@ func getUploadFileSize(config *goconfig.ConfigFile) error {
         if fileSize, err = String2Int64(size); err == nil {
             Config.UploadFileSize = fileSize
         } else {
-           Log("error", "config: get server upload file size error, default size 32MB.")
+           Log("error", "「config」 get server upload file size error, default size 32MB.")
         }
     }
 
     if err != nil {
-       Log("error", "upload file size parse error:", err)
+       Log("error", "「config」 upload file size parse error:", err)
     }
 
     return err
@@ -216,7 +220,7 @@ func getMaxOnlineUser(config *goconfig.ConfigFile) error {
     Config.MaxOnlineUser = 0
     onlineUser, err := config.GetValue("server", "maxOnlineUser")
     if err != nil {
-        Log("error", "config: get server maxUser error:%v, default size 0.", err)
+        Log("error", "「config」 get server maxUser error:%v, default size 0.", err)
         return err
     }
     onlineUser = removeComment(onlineUser)
@@ -246,17 +250,18 @@ func getRanzhi(config *goconfig.ConfigFile) {
     for index, ranzhiName := range keyList {
         ranzhiServer, err := config.GetValue(section, ranzhiName)
         if err != nil {
-            Exit("config: get backend server error,", err)
+            Exit("「config」 get backend server error,", err)
         }
 
         serverInfo := strings.Split(ranzhiServer, ",")
         //逗号前面是地址，后面是token，token长度固定为32
         if len(serverInfo) < 2 || len(serverInfo[1]) != 32 {
-            Exit("config: backend server config error")
+            LogDetail("serverInfo" + ranzhiServer + "，the token len is " + string(len(serverInfo[1])))
+            Exit("「config」 backend server config error")
         }
 
         if serverInfo[1] == "88888888888888888888888888888888" && Config.Debug == 0 {
-			Exit("config: The key cannot be set to 88888888888888888888888888888888")
+			Exit("「config」 The key cannot be set to 88888888888888888888888888888888")
 		}
 
 		if (len(serverInfo) >= 3 && serverInfo[2] == "default") || index == 0 {
@@ -273,7 +278,7 @@ func getLogPath(config *goconfig.ConfigFile) (err error) {
     if err != nil {
         Config.LogPath, err = config.GetValue("log", "logPath")
         if err != nil {
-            Exit("config: get server log path error,", err)
+            Exit("「config」 get server log path error,", err)
         }
     } else {
         Config.LogPath = removeComment(logPath)
@@ -287,7 +292,7 @@ func getCrtPath(config *goconfig.ConfigFile) (err error) {
     if err != nil {
         Config.CrtPath, err = config.GetValue("certificate", "crtPath")
         if err != nil {
-            Exit("config: get certificate crt path error,", err)
+            Exit("「config」 get certificate crt path error,", err)
         }
     } else {
         crtPath = removeComment(crtPath)
