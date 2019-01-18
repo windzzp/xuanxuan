@@ -20,15 +20,15 @@ type ParseData map[string]interface{}
 // 对通讯的api进行解析
 func ApiParse(message, token []byte) (ParseData, error) {
     jsonData, err := aesDecrypt(message, token)
-    util.LogDetail("「ApiParse」json data : " + string(jsonData))
+    util.LogDetail("[ApiParse」json data : " + string(jsonData))
     if err != nil {
-        util.Log("error", "「ApiParse」 json data decrypt error:", err)
+        util.Log("error", "[ApiParse] json data decrypt error:", err)
         return nil, err
     }
 
     parseData := make(ParseData)
     if err := json.Unmarshal([]byte(jsonData), &parseData); err != nil {
-        util.Log("error", "「ApiParse」 json unmarshal error:", err)
+        util.Log("error", "[ApiParse] json unmarshal error:", err)
         return nil, err
     }
 
@@ -39,13 +39,13 @@ func ApiParse(message, token []byte) (ParseData, error) {
 func ApiUnparse(parseData ParseData, token []byte) []byte {
     jsonData, err := json.Marshal(parseData)
     if err != nil {
-        util.Log("error", "「ApiUnparse」 json marshal error:", err)
+        util.Log("error", "[ApiUnparse] json marshal error:", err)
         return nil
     }
-    util.LogDetail("「ApiUnparse」json data : " + string(jsonData))
+    util.LogDetail("[ApiUnparse」json data : " + string(jsonData))
     message, err := aesEncrypt(jsonData, token)
     if err != nil {
-        util.Log("error", "「ApiUnparse」 json data encrypt error:", err)
+        util.Log("error", "[ApiUnparse] json data encrypt error:", err)
         return nil
     }
 
@@ -56,13 +56,13 @@ func ApiUnparse(parseData ParseData, token []byte) []byte {
 func SwapToken(message, fromToken, toToken []byte) ([]byte, error) {
     jsonData, err := aesDecrypt(message, fromToken)
     if err != nil {
-        util.Log("error", "「SwapToken」 json data AES decrypt error:", err)
+        util.Log("error", "[SwapToken] json data AES decrypt error:", err)
         return nil, err
     }
-    util.LogDetail("「SwapToken」 json data" + string(jsonData))
+    util.LogDetail("[SwapToken] json data" + string(jsonData))
     message, err = aesEncrypt(jsonData, toToken)
     if err != nil {
-        util.Log("error", "「SwapToken」 json data AES encrypt error:", err)
+        util.Log("error", "[SwapToken] json data AES encrypt error:", err)
         return nil, err
     }
 
@@ -75,9 +75,9 @@ func ProcessResponse(jsonData []byte) (map[int]map[string]interface{}, error) {
 
     if strings.Index(string(jsonData), "[") == 0 {
         var retData []map[string]interface{}
-        util.LogDetail("「ProcessResponse」 multi json data" + string(jsonData))
+        util.LogDetail("[ProcessResponse] multi json data" + string(jsonData))
         if err := json.Unmarshal(jsonData, &retData); err != nil {
-            util.Log("error", "「ProcessResponse」 multi json data unmarshal error %s", err)
+            util.Log("error", "[ProcessResponse] multi json data unmarshal error %s", err)
             return nil, err
         }
 
@@ -92,9 +92,9 @@ func ProcessResponse(jsonData []byte) (map[int]map[string]interface{}, error) {
         }
     }else {
         parseData := make(ParseData)
-        util.LogDetail("「ProcessResponse」 jsonData" + string(jsonData))
+        util.LogDetail("[ProcessResponse] jsonData" + string(jsonData))
         if err := json.Unmarshal(jsonData, &parseData); err != nil {
-            util.Log("error", "「ProcessResponse」 json data Unmarshal error: %s", err)
+            util.Log("error", "[ProcessResponse] json data Unmarshal error: %s", err)
             return nil, err
         }
 

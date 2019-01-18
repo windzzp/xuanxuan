@@ -84,7 +84,7 @@ func dataProcessing(message []byte, client *Client) error {
 
 //根据不同的消息体选择对应的处理方法
 func switchMethod(message []byte, parseData api.ParseData, client *Client) error {
-    util.LogDetail("「switchMethod」API Module : " + parseData.Module() + ", Method : " + parseData.Method())
+    util.LogDetail("[switchMethod」API Module : " + parseData.Module() + ", Method : " + parseData.Method())
     switch parseData.Module() + "." + parseData.Method() {
     case "chat.login":
         if err := chatLogin(parseData, client); err != nil {
@@ -281,7 +281,7 @@ func (c *Client) readPump() {
     c.conn.SetReadDeadline(time.Now().Add(pongWait))
     c.conn.SetPongHandler(func(string) error { c.conn.SetReadDeadline(time.Now().Add(pongWait)); return nil })
 
-    util.LogDetail("「readPump」readPump pumps messages from the websocket connection to the hub.")
+    util.LogDetail("[readPump」readPump pumps messages from the websocket connection to the hub.")
     for util.Run {
         _, message, err := c.conn.ReadMessage()
         if err != nil {
@@ -312,7 +312,7 @@ func (c *Client) writePump() {
         ticker.Stop()
         c.conn.Close()
     }()
-    util.LogDetail("「writePump」writePump pumps messages from the hub to the websocket connection.")
+    util.LogDetail("[writePump」writePump pumps messages from the hub to the websocket connection.")
     for util.Run {
         select {
         case message, ok := <-c.send:
@@ -350,7 +350,7 @@ func (c *Client) writePump() {
 func sendFail(message []byte, c *Client) {
     parseData, err := api.ApiParse(message, util.Token)
     if err != nil {
-        util.Log("error", "「sendFail」 Receive client message error")
+        util.Log("error", "[sendFail] Receive client message error")
         return
     }
 
@@ -376,14 +376,14 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 
     conn, err := upgrader.Upgrade(w, r, header)
     if err != nil {
-        util.Log("error", "「serveWs」Serve ws upgrader error: %s", err)
+        util.Log("error", "[serveWs」Serve ws upgrader error: %s", err)
         return
     }
 
     client := &Client{hub: hub, conn: conn, send: make(chan []byte, 256), repeatLogin: false, cVer: r.Header.Get("version")}
-    util.LogDetail("「serveWs」Create web socket conn")
+    util.LogDetail("[serveWs」Create web socket conn")
 
-    util.Log("info", "「serveWs」Client ip: %s", conn.RemoteAddr())
+    util.Log("info", "[serveWs」Client ip: %s", conn.RemoteAddr())
     go client.writePump()
     client.readPump()
 }

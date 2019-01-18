@@ -20,21 +20,21 @@ var newline = []byte{'\n'}
 func ChatLogin(clientData ParseData) (map[int]map[string]interface{}, error) {
     ranzhiServer, ok := RanzhiServer(clientData.ServerName())
     if !ok {
-        return nil, util.Errorf("「ChatLogin」 cannot found xxb server name %s", clientData.ServerName())
+        return nil, util.Errorf("[ChatLogin] cannot found xxb server name %s", clientData.ServerName())
     }
 
     // 到http服务器请求，返回加密的结果，可能包含多个数组, type []byte
     retMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, ApiUnparse(clientData, ranzhiServer.RanzhiToken))
     if err != nil {
-        util.Log("error", "「ChatLogin」 hyperttp request info error: %s", err)
+        util.Log("error", "[ChatLogin] hyperttp request info error: %s", err)
         return nil, err
     }
 
     //解密数据
     jsonData, err := aesDecrypt(retMessage, ranzhiServer.RanzhiToken)
-    util.LogDetail("「ChatLogin」request json data : " + string(jsonData))
+    util.LogDetail("[ChatLogin」request json data : " + string(jsonData))
     if err != nil {
-        util.Log("error", "「ChatLogin」request json data decrypt error: %s", err)
+        util.Log("error", "[ChatLogin」request json data decrypt error: %s", err)
         return nil, err
     }
     return ProcessResponse(jsonData)
@@ -44,28 +44,28 @@ func ChatLogin(clientData ParseData) (map[int]map[string]interface{}, error) {
 func ChatLogout(serverName string, userID int64, lang string) (map[int]map[string]interface{}, error) {
     ranzhiServer, ok := RanzhiServer(serverName)
     if !ok {
-        return nil, util.Errorf("「ChatLogout」 cannot found xxb server name %s", serverName)
+        return nil, util.Errorf("[ChatLogout] cannot found xxb server name %s", serverName)
     }
 
     request := []byte(`{"module":"chat","method":"logout","lang":"` + lang + `","userID":` + util.Int642String(userID) + `}`)
     message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
     if err != nil {
-        util.Errorf("「ChatLogout」 AES encrypt error: %s", err)
+        util.Errorf("[ChatLogout] AES encrypt error: %s", err)
         return nil, err
     }
 
     // 到http服务器请求user get list数据
     r2xMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, message)
     if err != nil {
-        util.Log("error", "「ChatLogout」 hyperttp request info error: %s", err)
+        util.Log("error", "[ChatLogout] hyperttp request info error: %s", err)
         return nil, err
     }
 
     //解密数据
     jsonData, err := aesDecrypt(r2xMessage, ranzhiServer.RanzhiToken)
-    util.LogDetail("「ChatLogout」json data : " + string(jsonData))
+    util.LogDetail("[ChatLogout」json data : " + string(jsonData))
     if err != nil {
-        util.Log("error", "「ChatLogout」 request json data decrypt error: %s", err)
+        util.Log("error", "[ChatLogout] request json data decrypt error: %s", err)
         return nil, err
     }
 
@@ -78,10 +78,10 @@ func RepeatLogin() []byte {
     repeatLogin := []byte(`{"module":"chat","method":"kickoff","message":"当前账号已在其他地方登录，如果不是本人操作，请及时修改密码"}`)
     //repeatLogin := []byte(`{"module":"chat","method:"kickoff","message":"This account logined in another place."}`)
 
-    util.LogDetail("「RepeatLogin」json data : " + string(repeatLogin))
+    util.LogDetail("[RepeatLogin」json data : " + string(repeatLogin))
     message, err := aesEncrypt(repeatLogin, util.Token)
     if err != nil {
-        util.Log("error", "「RepeatLogin」 json data AES encrypt error: %s", err)
+        util.Log("error", "[RepeatLogin] json data AES encrypt error: %s", err)
         return nil
     }
 
@@ -92,10 +92,10 @@ func RepeatLogin() []byte {
 func BlockLogin() []byte {
     blockLogin := []byte(`{"module":"chat","method":"blockLogin","message":"Online users exceed system limits."}`)
 
-    util.LogDetail("「BlockLogin」json data : " + string(blockLogin))
+    util.LogDetail("[BlockLogin」json data : " + string(blockLogin))
     message, err := aesEncrypt(blockLogin, util.Token)
     if err != nil {
-        util.Log("error", "「BlockLogin」 json data AES encrypt error: %s", err)
+        util.Log("error", "[BlockLogin] json data AES encrypt error: %s", err)
         return nil
     }
 
@@ -108,7 +108,7 @@ func TestLogin() []byte {
 
     message, err := aesEncrypt(loginData, util.Token)
     if err != nil {
-        util.Log("error", "「TestLogin」 json data AES encrypt error: %s", err)
+        util.Log("error", "[TestLogin] json data AES encrypt error: %s", err)
         return nil
     }
 
@@ -122,26 +122,26 @@ func TransitData(clientData []byte, serverName string) (map[int]map[string]inter
         return nil, util.Errorf("%s", "TransitData not found xxb server name")
     }
 
-    util.LogDetail("「TransitData」Server : " + serverName)
+    util.LogDetail("[TransitData」Server : " + serverName)
     //交换token
     message, err := SwapToken(clientData, util.Token, ranzhiServer.RanzhiToken)
     if err != nil {
-        util.Log("error", "「TransitData」Transit data swap token error: %s", err)
+        util.Log("error", "[TransitData」Transit data swap token error: %s", err)
         return nil, err
     }
 
     // xxb to xxd message
     r2xMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, message)
     if err != nil {
-        util.Log("error", "「TransitData」 hyperttp request info error: %s", err)
+        util.Log("error", "[TransitData] hyperttp request info error: %s", err)
         return nil, err
     }
 
     //解密数据
     jsonData, err := aesDecrypt(r2xMessage, ranzhiServer.RanzhiToken)
-    util.LogDetail("「TransitData」request json data : " + string(jsonData))
+    util.LogDetail("[TransitData」request json data : " + string(jsonData))
     if err != nil {
-        util.Log("error", "「TransitData」 request json data decrypt error: %s", err)
+        util.Log("error", "[TransitData] request json data decrypt error: %s", err)
         return nil, err
     }
 
@@ -158,24 +158,24 @@ func UserGetlist(serverName string, userID int64, lang string) ([]byte, error) {
     // 固定的json格式
     request := []byte(`{"module":"chat","method":"userGetList", "lang":"` + lang + `", "params":[""],"userID":` + util.Int642String(userID) + `}`)
 
-    util.LogDetail("「UserGetlist」json data : " + string(request))
+    util.LogDetail("[UserGetlist」json data : " + string(request))
     message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
     if err != nil {
-        util.Log("error", "「UserGetlist」json data AES encrypt error: %s", err)
+        util.Log("error", "[UserGetlist」json data AES encrypt error: %s", err)
         return nil, err
     }
 
     // 到http服务器请求user get list数据
     retMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, message)
     if err != nil {
-        util.Log("error", "「UserGetlist」 hyperttp request info error: %s", err)
+        util.Log("error", "[UserGetlist] hyperttp request info error: %s", err)
         return nil, err
     }
 
     //由于http服务器和客户端的token不一致，所以需要进行交换
     retData, err := SwapToken(retMessage, ranzhiServer.RanzhiToken, util.Token)
     if err != nil {
-        util.Log("error", "「UserGetlist」request data swap token error: %s", err)
+        util.Log("error", "[UserGetlist」request data swap token error: %s", err)
         return nil, err
     }
 
@@ -189,10 +189,10 @@ func UserFileSessionID(serverName string, userID int64, lang string) ([]byte, er
 
     //将sessionID 存入公共空间
     util.CreateUid(serverName, userID, sessionID)
-    util.LogDetail("「UserFileSessionID」json data : " + string(sessionData))
+    util.LogDetail("[UserFileSessionID」json data : " + string(sessionData))
     sessionData, err := aesEncrypt(sessionData, util.Token)
     if err != nil {
-        util.Log("error", "「UserFileSessionID」 Session data AES encrypt error: %s", err)
+        util.Log("error", "[UserFileSessionID] Session data AES encrypt error: %s", err)
         return nil, err
     }
 
@@ -202,7 +202,7 @@ func UserFileSessionID(serverName string, userID int64, lang string) ([]byte, er
 func ReportAndGetNotify(server string, lang string) (map[int64][]byte, error) {
     ranzhiServer, ok := RanzhiServer(server)
     if !ok {
-        return nil, util.Errorf("「CheckUserChange」cannot found xxb server name %s", server)
+        return nil, util.Errorf("[CheckUserChange」cannot found xxb server name %s", server)
     }
     //get offline data and sendfail message id from SQLite.
     offline, _  := util.DBSelectOffline(server)
@@ -223,7 +223,7 @@ func ReportAndGetNotify(server string, lang string) (map[int64][]byte, error) {
     //send message to xxb and get notify data
     retMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, ApiUnparse(trunk, ranzhiServer.RanzhiToken))
     if err != nil {
-        util.Log("error", "「ReportAndGetNotify」 hyperttp request info error: %s", err)
+        util.Log("error", "[ReportAndGetNotify] hyperttp request info error: %s", err)
         return nil, err
     }
 
@@ -256,29 +256,29 @@ func ReportAndGetNotify(server string, lang string) (map[int64][]byte, error) {
 func CheckUserChange(serverName string, lang string) ([]byte, error) {
     ranzhiServer, ok := RanzhiServer(serverName)
     if !ok {
-        return nil, util.Errorf("「CheckUserChange」cannot found xxb server name %s", serverName)
+        return nil, util.Errorf("[CheckUserChange」cannot found xxb server name %s", serverName)
     }
 
     // 固定的json格式
     request := []byte(`{"module":"chat","method":"checkUserChange","lang":"`+ lang +`","params":[""]}`)
 
-    util.LogDetail("「CheckUserChange」json data : " + string(request))
+    util.LogDetail("[CheckUserChange」json data : " + string(request))
     message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
     if err != nil {
-        util.Log("error", "「CheckUserChange」json data AES encrypt error: %s", err)
+        util.Log("error", "[CheckUserChange」json data AES encrypt error: %s", err)
         return nil, err
     }
 
     // 到http服务器请求user get list数据
     retMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, message)
     if err != nil {
-        util.Log("error", "「CheckUserChange」 hyperttp request info error: %s", err)
+        util.Log("error", "[CheckUserChange] hyperttp request info error: %s", err)
         return nil, err
     }
 
     decodeData, _ := ApiParse(retMessage, ranzhiServer.RanzhiToken)
     if decodeData.Result() != "success" {
-        util.Log("error", "「CheckUserChange」 request info status: %s", decodeData.Result())
+        util.Log("error", "[CheckUserChange] request info status: %s", decodeData.Result())
         return nil, err
     }
 
@@ -294,7 +294,7 @@ func RetErrorMsg(errCode, errMsg string) ([]byte, error) {
     errApi := `{"module":"chat","method":"error","code":` + errCode + `,"message":"` + errMsg + `"}`
     message, err := aesEncrypt([]byte(errApi), util.Token)
     if err != nil {
-        util.Log("error", "「RetErrorMsg」 json data AES encrypt error: %s", err)
+        util.Log("error", "[RetErrorMsg] json data AES encrypt error: %s", err)
         return nil, err
     }
 
