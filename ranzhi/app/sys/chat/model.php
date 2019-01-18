@@ -606,14 +606,14 @@ class chatModel extends model
         /* If quit a chat, only send broadcast to the admins or the created user of chat. */
         if($type == 'quitChat')
         {
-            $chat->members = array();
-            if($chat->admins) $chat->members = explode(',', trim($chat->admins, ','));
-            if(!$chat->members)
+            $adminUsers = array();
+            if($chat->admins) $adminUsers = explode(',', trim($chat->admins, ','));
+            if(!$adminUsers)
             {
                 $user = $this->loadModel('user')->getByAccount($chat->createdBy);
-                if($user) $chat->members = array($user->id);
+                if($user) $adminUsers = array($user->id);
             }
-            $users       = $this->getUserList($status = 'online', $chat->members);
+            $users       = $this->getUserList($status = 'online', $adminUsers);
             $onlineUsers = array_keys($users);
         }
 
