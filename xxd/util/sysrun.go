@@ -41,8 +41,6 @@ func init() {
         DebugCli = 2
     }
 
-    println(DebugCli)
-
     DBConn = InitDB()
 
     // xxd 启动时根据时间生成token
