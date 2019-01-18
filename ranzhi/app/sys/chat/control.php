@@ -67,7 +67,9 @@ class chat extends control
                 $messages = $this->chat->getOfflineMessagesOutput($user->id);
                 $notifies = $this->chat->getOfflineNotifyOutput($user->id);
 
-                $this->output = array($this->output, $userList, $chatList, $messages, $notifies);
+                $this->output = array($this->output, $userList, $chatList);
+                if(!empty($messages->data)) $this->output[] = $messages;
+                if(!empty($notifies->data)) $this->output[] = $notifies;
             }
         }
         else
@@ -278,7 +280,7 @@ class chat extends control
         {
             $chat = $this->chat->create($gid, $name, $type, $members, $subjectID, $public, $userID);
         }
-        $users = $this->chat->getUserList($status = 'online', array_values($chat->members));
+        $users = $this->chat->getUserList($status = 'online', $chat->members);
 
         if(dao::isError())
         {
@@ -337,7 +339,7 @@ class chat extends control
         }
 
         $chat  = $this->chat->setAdmin($gid, $admins, $isAdmin);
-        $users = $this->chat->getUserList($status = 'online', array_values($chat->members));
+        $users = $this->chat->getUserList($status = 'online', $chat->members);
 
         if(dao::isError())
         {
@@ -392,7 +394,7 @@ class chat extends control
         $this->chat->joinChat($gid, $userID, $join);
 
         $chat  = $this->chat->getByGID($gid, true);
-        $users = $this->chat->getUserList($status = 'online', array_values($chat->members));
+        $users = $this->chat->getUserList($status = 'online', $chat->members);
         $users = array_keys($users);
         $users[] = $userID;
 
@@ -454,7 +456,7 @@ class chat extends control
 
         $chat->name = $name;
         $chat  = $this->chat->update($chat, $userID);
-        $users = $this->chat->getUserList($status = 'online', array_values($chat->members));
+        $users = $this->chat->getUserList($status = 'online', $chat->members);
 
         if(dao::isError())
         {
@@ -504,7 +506,7 @@ class chat extends control
 
         $chat->dismissDate = helper::now();
         $chat  = $this->chat->update($chat, $userID);
-        $users = $this->chat->getUserList($status = 'online', array_values($chat->members));
+        $users = $this->chat->getUserList($status = 'online', $chat->members);
 
         if(dao::isError())
         {
@@ -555,7 +557,7 @@ class chat extends control
 
         $chat->committers = $committers;
         $chat  = $this->chat->update($chat, $userID);
-        $users = $this->chat->getUserList($status = 'online', array_values($chat->members));
+        $users = $this->chat->getUserList($status = 'online', $chat->members);
 
         if(dao::isError())
         {
@@ -601,7 +603,7 @@ class chat extends control
 
         $chat->public = $public ? 1 : 0;
         $chat  = $this->chat->update($chat, $userID);
-        $users = $this->chat->getUserList($status = 'online', array_values($chat->members));
+        $users = $this->chat->getUserList($status = 'online', $chat->members);
 
         if(dao::isError())
         {
@@ -798,7 +800,7 @@ class chat extends control
         foreach($members as $member) $this->chat->joinChat($gid, $member, $join);
 
         $chat->members = $this->chat->getMemberListByGID($gid);
-        $users = $this->chat->getUserList($status = 'online', array_values($chat->members));
+        $users = $this->chat->getUserList($status = 'online', $chat->members);
 
         if(dao::isError())
         {
@@ -928,7 +930,7 @@ class chat extends control
 
         $onlineUsers  = array($userID);
         $offlineUsers = array();
-        $users = $this->chat->getUserList($status = '', array_values($chat->members));
+        $users = $this->chat->getUserList($status = '', $chat->members);
         foreach($users as $id => $user)
         {
             if($id == $userID) continue;
@@ -1116,7 +1118,7 @@ class chat extends control
         }
 
         $user      = $this->chat->getUserByUserID($userID);
-        $users     = $this->chat->getUserList($status = 'online', array_values($chat->members));
+        $users     = $this->chat->getUserList($status = 'online', $chat->members);
         $extension = $this->loadModel('file', 'sys')->getExtension($fileName);
 
         $file = new stdclass();
