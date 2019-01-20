@@ -4,7 +4,11 @@ import {getDefaultApp, getAppExt} from './exts';
 import OpenedApp from './opened-app';
 import Lang from '../core/lang';
 import {
-    setExtensionDisabled, openInstallExtensionDialog, uninstallExtension, saveExtensionData,
+    setExtensionDisabled,
+    openInstallExtensionDialog,
+    uninstallExtension,
+    saveExtensionData,
+    reloadDevExtension,
 } from './manager';
 import Modal from '../components/modal';
 import Messager from '../components/messager';
@@ -526,6 +530,18 @@ export const createOpenedAppContextMenu = (theOpenedApp, refreshUI) => {
             label: Lang.string('ext.app.openDevTools'),
             click: () => {
                 theOpenedApp.webview.openDevTools();
+            }
+        });
+    }
+    if (appExt.isDev) {
+        if (items.length && items[items.length - 1].type !== 'separator') {
+            items.push({type: 'separator'});
+        }
+        items.push({
+            label: Lang.string('ext.extensions.reload'),
+            click: () => {
+                reloadDevExtension(appExt);
+                Messager.show(Lang.string('ext.extensions.reloadFinish'), {type: 'success'});
             }
         });
     }
