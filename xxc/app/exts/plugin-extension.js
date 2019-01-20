@@ -21,8 +21,8 @@ export default class PluginExtension extends Extension {
             throw new Error(`Cannot create a plugin extension from the type '${this.type}'.`);
         }
 
-        if (!pkg.main && !(pkg.buildIn && pkg.buildIn.module)) {
-            this.pkg.main = 'index.js';
+        if (!this._pkg.main && !(this._pkg.buildIn && this._pkg.buildIn.module)) {
+            this._pkg.main = 'index.js';
             this.addError('main', 'The main attribute must be set when the extension type is plugin, set to "index.js" temporarily.');
         }
     }
