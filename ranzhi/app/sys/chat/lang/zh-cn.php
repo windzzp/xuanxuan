@@ -41,6 +41,8 @@ $lang->chat->defaultKey       = '请勿使用默认<strong>密钥</strong>。';
 $lang->chat->debugTips        = '喧喧已经可以使用。<br>使用管理员账号%s并访问此页面，可以查看更多debug信息。';
 $lang->chat->noLogFile        = '没有日志文件。';
 $lang->chat->noFopen          = '未启用fopen函数，请按以下路径自行查看日志文件：%s。';
+$lang->chat->noUserList       = '没有设置消息发送用户列表';
+$lang->chat->noSender         = '没有设置发送方信息';
 
 $lang->chat->xxdServerTip   = 'XXD服务器地址为完整的协议+地址+端口，示例：http://192.168.1.35 或 http://www.backend.com ，不能使用127.0.0.1。';
 $lang->chat->xxdServerEmpty = 'XXD服务器地址为空。';

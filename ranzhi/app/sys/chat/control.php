@@ -1352,29 +1352,50 @@ class chat extends control
      * @access public
      * @return void
      */
-    public function getChatGroupPairs()
+    public function getChatGroups()
     {
+        $response = array();
+        $response['result'] = 'success';
+
         $groupPairs = $this->chat->getChatGroupPairs();
+        if(dao::isError())
+        {
+            $response['result']  = 'fail';
+            $response['message'] = dao::getError();
+        }
+        else
+        {
+            $response['data'] = $groupPairs;
+        }
 
-        $this->view->groupPairs = $groupPairs;
-
-        $this->display();
+        die(json_encode($response));
     }
 
     /**
-     * Get one chat group users.
+     * Get all user pairs or users of one chat group.
      *
-     * @param  int    $groupID
+     * @param  string $groupID
      * @access public
      * @return void
      */
-    public function getChatGroupUsers($groupID)
+    public function getChatUsers($groupID = 0)
     {
-        $groupUsers = $this->chat->getChatGroupUsers($groupID);
+        $response = array();
+        $response['result'] = 'success';
 
-        $this->view->groupUsers = $groupUsers;
+        $userPairs = $this->chat->getChatUserPairs($groupID);
 
-        $this->display();
+        if(dao::isError())
+        {
+            $response['result']  = 'fail';
+            $response['message'] = dao::getError();
+        }
+        else
+        {
+            $response['data'] = $userPairs;
+        }
+
+        die(json_encode($response));
     }
 
     /**
@@ -1450,14 +1471,14 @@ class chat extends control
         if(empty($_POST['userList']))
         {
             $response['result']  = false;
-            $response['message'] = $this->lang->chat->error->noUserList;
+            $response['message'] = $this->lang->chat->noUserList;
             die(json_encode($response));
         }
 
         if(empty($_POST['sender']))
         {
             $response['result']  = false;
-            $response['message'] = $this->lang->chat->error->noSender;
+            $response['message'] = $this->lang->chat->noSender;
             die(json_encode($response));
         }
 
