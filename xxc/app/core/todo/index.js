@@ -46,3 +46,8 @@ export const createTodoFromMessage = message => {
     todo.name = todoName;
     return todo;
 };
+
+export default {
+    createTodo,
+    createTodoFromMessage
+};

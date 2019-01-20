@@ -137,13 +137,13 @@ export class Events extends EventEmitter {
      * @memberof Events
      * @return {void}
      */
-    emit(names, ...args) {
-        super.emit(names, ...args);
+    emit(name, ...args) {
+        super.emit(name, ...args);
         if (DEBUG) {
             if (this.isMainProcess) {
-                console.log('\n>> EMIT EVENT', names);
+                console.log('\n>> EMIT EVENT', name);
             } else {
-                console.collapse('EMIT EVENT', 'orangeBg', names, 'orangePale');
+                console.collapse('EMIT EVENT', 'orangeBg', name, 'orangePale');
                 args.forEach((arg, argIdx) => {
                     console.log(`arg: ${argIdx}`, arg);
                 });

@@ -69,7 +69,7 @@ export default class Extension {
         //  */
         // this._config = new ExtensionConfig(this);
 
-        const localData = this.getConfig('_data') || {} ;
+        const localData = this.getConfig('_data') || {};
         delete localData.remoteLoaded;
         delete localData.loadRemoteFailed;
         delete localData.serverData;
