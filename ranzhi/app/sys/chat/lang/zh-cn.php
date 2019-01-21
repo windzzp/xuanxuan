@@ -68,8 +68,8 @@ $lang->chat->xxd->sslcrt         = '证书内容';
 $lang->chat->xxd->sslkey         = '证书私钥';
 $lang->chat->xxd->max            = '最大';
 
-$lang->chat->httpsOptions[1] = '启用';
-$lang->chat->httpsOptions[0] = '不启用';
+$lang->chat->httpsOptions['on']  = '启用';
+$lang->chat->httpsOptions['off'] = '不启用';
 
 $lang->chat->placeholder = new stdclass();
 $lang->chat->placeholder->xxd = new stdclass();

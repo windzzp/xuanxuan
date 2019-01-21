@@ -26,7 +26,7 @@ class setting extends control
             if($this->post->key == str_repeat(8, 32)) $errors['key'] = $this->lang->chat->defaultKey;
             if(!is_numeric($setting->chatPort) or (int)$setting->chatPort <= 0 or (int)$setting->chatPort > 65535) $errors['chatPort'] = $this->lang->chat->xxdPortError;
             if(!is_numeric($setting->commonPort) or (int)$setting->commonPort <= 0 or (int)$setting->commonPort > 65535) $errors['commonPort'] = $this->lang->chat->xxdPortError;
-            if($setting->isHttps)
+            if($setting->isHttps == 'on')
             {
                 if(empty($setting->sslcrt)) $errors['sslcrt'] = $this->lang->chat->errorSSLCrt;
                 if(empty($setting->sslkey)) $errors['sslkey'] = $this->lang->chat->errorSSLKey;
@@ -57,7 +57,7 @@ class setting extends control
         $this->view->backend = $backend;
         $this->view->os      = $os . '_' . php_uname('m');
         $this->view->domain  = $this->loadModel('chat')->getServer($backend);
-        $this->view->isHttps = isset($this->config->xuanxuan->isHttps) ? $this->config->xuanxuan->isHttps : 0;
+        $this->view->isHttps = isset($this->config->xuanxuan->isHttps) ? $this->config->xuanxuan->isHttps : 'off';
         $this->display();
     }
 }
