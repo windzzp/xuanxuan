@@ -31,7 +31,7 @@ export default class TextMap {
      * @return {string} 文本
      */
     format(name, ...args) {
-        const str = this.string(name, name);
+        const str = this.string(name);
         if (args && args.length) {
             try {
                 return formatString(str, ...args);
