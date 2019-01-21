@@ -46,14 +46,17 @@ const configPath = "config/xxd.conf"
 
 var Config = ConfigIni{SiteType: "singleSite", RanzhiServer: make(map[string]RanzhiServer)}
 var DebugCli int64 = 0
+var IsTest bool = false
 
 func init() {
     dir, _ := os.Getwd()
     data, err := goconfig.LoadConfigFile(dir + "/" + configPath)
-
+    isTest := flag.Bool("test", false, "server test model")
     debugv := flag.Bool("v", false, "Debug level 1")
     debugvv := flag.Bool("vv", false, "Debug level 2")
     flag.Parse()
+
+    IsTest = *isTest
     if *debugv == true {
         DebugCli = 1
     }
