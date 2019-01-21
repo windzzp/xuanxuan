@@ -19,7 +19,17 @@ export const loadLangData = (langName) => {
  * 获取系统平台所使用的默认语言名称
  * @return {String} 系统默认语言名称
  */
-export const getPlatformLangName = () => (remote.app.getLocale() || navigator.language).toLowerCase();
+export const getPlatformLangName = () => {
+    let localLang = remote.app.getLocale();
+    if (localLang) {
+        if (localLang === 'zh') {
+            localLang = 'zh-cn';
+        } else if (localLang.startsWith('en-')) {
+            localLang = 'en';
+        }
+    }
+    return (localLang || navigator.language).toLowerCase();
+};
 
 /**
  * 处理语言变更事件

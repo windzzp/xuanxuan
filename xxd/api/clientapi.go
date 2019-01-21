@@ -32,9 +32,9 @@ func ChatLogin(clientData ParseData) (map[int]map[string]interface{}, error) {
 
     //解密数据
     jsonData, err := aesDecrypt(retMessage, ranzhiServer.RanzhiToken)
-    util.LogDetail("[ChatLogin」request json data : " + string(jsonData))
+    util.LogDetail("[ChatLogin] request json data : " + string(jsonData))
     if err != nil {
-        util.Log("error", "[ChatLogin」request json data decrypt error: %s", err)
+        util.Log("error", "[ChatLogin] request json data decrypt error: %s", err)
         return nil, err
     }
     return ProcessResponse(jsonData)
@@ -63,7 +63,7 @@ func ChatLogout(serverName string, userID int64, lang string) (map[int]map[strin
 
     //解密数据
     jsonData, err := aesDecrypt(r2xMessage, ranzhiServer.RanzhiToken)
-    util.LogDetail("[ChatLogout」json data : " + string(jsonData))
+    util.LogDetail("[ChatLogout] json data : " + string(jsonData))
     if err != nil {
         util.Log("error", "[ChatLogout] request json data decrypt error: %s", err)
         return nil, err
@@ -78,7 +78,7 @@ func RepeatLogin() []byte {
     repeatLogin := []byte(`{"module":"chat","method":"kickoff","message":"当前账号已在其他地方登录，如果不是本人操作，请及时修改密码"}`)
     //repeatLogin := []byte(`{"module":"chat","method:"kickoff","message":"This account logined in another place."}`)
 
-    util.LogDetail("[RepeatLogin」json data : " + string(repeatLogin))
+    util.LogDetail("[RepeatLogin] json data : " + string(repeatLogin))
     message, err := aesEncrypt(repeatLogin, util.Token)
     if err != nil {
         util.Log("error", "[RepeatLogin] json data AES encrypt error: %s", err)
@@ -92,7 +92,7 @@ func RepeatLogin() []byte {
 func BlockLogin() []byte {
     blockLogin := []byte(`{"module":"chat","method":"blockLogin","message":"Online users exceed system limits."}`)
 
-    util.LogDetail("[BlockLogin」json data : " + string(blockLogin))
+    util.LogDetail("[BlockLogin] json data : " + string(blockLogin))
     message, err := aesEncrypt(blockLogin, util.Token)
     if err != nil {
         util.Log("error", "[BlockLogin] json data AES encrypt error: %s", err)
@@ -122,11 +122,11 @@ func TransitData(clientData []byte, serverName string) (map[int]map[string]inter
         return nil, util.Errorf("%s", "TransitData not found xxb server name")
     }
 
-    util.LogDetail("[TransitData」Server : " + serverName)
+    util.LogDetail("[TransitData] Server : " + serverName)
     //交换token
     message, err := SwapToken(clientData, util.Token, ranzhiServer.RanzhiToken)
     if err != nil {
-        util.Log("error", "[TransitData」Transit data swap token error: %s", err)
+        util.Log("error", "[TransitData] Transit data swap token error: %s", err)
         return nil, err
     }
 
@@ -139,7 +139,7 @@ func TransitData(clientData []byte, serverName string) (map[int]map[string]inter
 
     //解密数据
     jsonData, err := aesDecrypt(r2xMessage, ranzhiServer.RanzhiToken)
-    util.LogDetail("[TransitData」request json data : " + string(jsonData))
+    util.LogDetail("[TransitData] request json data : " + string(jsonData))
     if err != nil {
         util.Log("error", "[TransitData] request json data decrypt error: %s", err)
         return nil, err
@@ -158,10 +158,10 @@ func UserGetlist(serverName string, userID int64, lang string) ([]byte, error) {
     // 固定的json格式
     request := []byte(`{"module":"chat","method":"userGetList", "lang":"` + lang + `", "params":[""],"userID":` + util.Int642String(userID) + `}`)
 
-    util.LogDetail("[UserGetlist」json data : " + string(request))
+    util.LogDetail("[UserGetlist] json data : " + string(request))
     message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
     if err != nil {
-        util.Log("error", "[UserGetlist」json data AES encrypt error: %s", err)
+        util.Log("error", "[UserGetlist] json data AES encrypt error: %s", err)
         return nil, err
     }
 
@@ -175,7 +175,7 @@ func UserGetlist(serverName string, userID int64, lang string) ([]byte, error) {
     //由于http服务器和客户端的token不一致，所以需要进行交换
     retData, err := SwapToken(retMessage, ranzhiServer.RanzhiToken, util.Token)
     if err != nil {
-        util.Log("error", "[UserGetlist」request data swap token error: %s", err)
+        util.Log("error", "[UserGetlist] request data swap token error: %s", err)
         return nil, err
     }
 
@@ -189,7 +189,7 @@ func UserFileSessionID(serverName string, userID int64, lang string) ([]byte, er
 
     //将sessionID 存入公共空间
     util.CreateUid(serverName, userID, sessionID)
-    util.LogDetail("[UserFileSessionID」json data : " + string(sessionData))
+    util.LogDetail("[UserFileSessionID] json data : " + string(sessionData))
     sessionData, err := aesEncrypt(sessionData, util.Token)
     if err != nil {
         util.Log("error", "[UserFileSessionID] Session data AES encrypt error: %s", err)
@@ -202,7 +202,7 @@ func UserFileSessionID(serverName string, userID int64, lang string) ([]byte, er
 func ReportAndGetNotify(server string, lang string) (map[int64][]byte, error) {
     ranzhiServer, ok := RanzhiServer(server)
     if !ok {
-        return nil, util.Errorf("[CheckUserChange」cannot found xxb server name %s", server)
+        return nil, util.Errorf("[CheckUserChange] cannot found xxb server name %s", server)
     }
     //get offline data and sendfail message id from SQLite.
     offline, _  := util.DBSelectOffline(server)
@@ -256,16 +256,16 @@ func ReportAndGetNotify(server string, lang string) (map[int64][]byte, error) {
 func CheckUserChange(serverName string, lang string) ([]byte, error) {
     ranzhiServer, ok := RanzhiServer(serverName)
     if !ok {
-        return nil, util.Errorf("[CheckUserChange」cannot found xxb server name %s", serverName)
+        return nil, util.Errorf("[CheckUserChange] cannot found xxb server name %s", serverName)
     }
 
     // 固定的json格式
     request := []byte(`{"module":"chat","method":"checkUserChange","lang":"`+ lang +`","params":[""]}`)
 
-    util.LogDetail("[CheckUserChange」json data : " + string(request))
+    util.LogDetail("[CheckUserChange] json data : " + string(request))
     message, err := aesEncrypt(request, ranzhiServer.RanzhiToken)
     if err != nil {
-        util.Log("error", "[CheckUserChange」json data AES encrypt error: %s", err)
+        util.Log("error", "[CheckUserChange] json data AES encrypt error: %s", err)
         return nil, err
     }
 
