@@ -42,9 +42,9 @@ func init() {
         Printf("Server test model is %t \n", IsTest)
     }
 
-    Printf("[Info] XXD %s %s is running \n", Version, Build)
-    Printf("[Info] XXD runs the directory %s \n", dir)
-    Printf("[Info] System: %s-%s \n", runtime.GOOS, runtime.GOARCH)
+    Printf("[I] XXD %s %s is running \n", Version, Build)
+    Printf("[I] XXD runs the directory %s \n", dir)
+    Printf("[I] System: %s-%s \n", runtime.GOOS, runtime.GOARCH)
     Printf("---------------------------------------- \n")
 
     Log("info", "XXD %s %s is running", Version, Build)
