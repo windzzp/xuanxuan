@@ -39,9 +39,9 @@ class xuanxuan extends router
         parent::__construct($appName, $appRoot);
 
         $this->setViewType();
-        $this->setInput();
         $this->setClientLang();
         $this->setXuanDebug();
+        $this->setInput();
     }
 
     /**
@@ -53,38 +53,6 @@ class xuanxuan extends router
     public function setViewType()
     {
         $this->viewType = RUN_MODE == 'xuanxuan' ? 'json' : 'html';
-    }
-
-    /**
-     * Set input params.
-     *
-     * @access public
-     * @return void
-     */
-    public function setInput()
-    {
-        if(RUN_MODE == 'xuanxuan')
-        {
-            $this->initAES();
-
-            $input = file_get_contents("php://input");
-            $input = $this->decrypt($input);
-
-            $this->input['rid']     = !empty($input->rid)    ? $input->rid    : '';
-            $this->input['version'] = !empty($input->v)      ? $input->v      : '';
-            $this->input['userID']  = !empty($input->userID) ? $input->userID : '';
-            $this->input['client']  = !empty($input->client) ? $input->client : '';
-            $this->input['module']  = !empty($input->module) ? $input->module : '';
-            $this->input['method']  = !empty($input->method) ? $input->method : '';
-            $this->input['lang']    = !empty($input->lang)   ? $input->lang   : '';
-            $this->input['params']  = !empty($input->params) ? $input->params : array();
-        }
-        else
-        {
-            $this->input['module'] = 'chat';
-            $this->input['method'] = 'debug';
-            $this->input['params'] = array();
-        }
     }
 
     /**
@@ -114,12 +82,40 @@ class xuanxuan extends router
      */
     public function setXuanDebug()
     {
-        $row   = $this->dbh->query('SELECT `value` FROM ' . TABLE_CONFIG . " WHERE `owner`='system' AND `module`='common' AND `section`='xuanxuan' AND `key`='debug'")->fetch();
-        $debug = empty($row) ? false : ($row->value == 1);
+        $row = $this->dbh->query('SELECT `value` FROM ' . TABLE_CONFIG . " WHERE `owner`='system' AND `module`='common' AND `section`='xuanxuan' AND `key`='debug'")->fetch();
+        $this->xuanDebug = empty($row) ? false : ($row->value == 1);
+    }
 
-        $this->config->debug = $debug;
+    /**
+     * Set input params.
+     *
+     * @access public
+     * @return void
+     */
+    public function setInput()
+    {
+        if(RUN_MODE == 'xuanxuan')
+        {
+            $this->initAES();
 
-        parent::setDebug();
+            $input = file_get_contents("php://input");
+            $input = $this->decrypt($input);
+
+            $this->input['rid']     = !empty($input->rid)    ? $input->rid    : '';
+            $this->input['version'] = !empty($input->v)      ? $input->v      : '';
+            $this->input['userID']  = !empty($input->userID) ? $input->userID : '';
+            $this->input['client']  = !empty($input->client) ? $input->client : '';
+            $this->input['module']  = !empty($input->module) ? $input->module : '';
+            $this->input['method']  = !empty($input->method) ? $input->method : '';
+            $this->input['lang']    = !empty($input->lang)   ? $input->lang   : 'zh-cn';
+            $this->input['params']  = !empty($input->params) ? $input->params : array();
+        }
+        else
+        {
+            $this->input['module'] = 'chat';
+            $this->input['method'] = 'debug';
+            $this->input['params'] = array();
+        }
     }
 
     /**
@@ -136,7 +132,7 @@ class xuanxuan extends router
 
         $this->aes = $this->loadClass('phpaes');
         $this->aes->init($key, $iv);
-        if($this->config->debug)
+        if(!empty($this->xuanDebug))
         {
             $this->log("engine: " . $this->aes->getEngine());
         }
@@ -357,7 +353,7 @@ class xuanxuan extends router
     public function decrypt($input = '')
     {
         $input = $this->aes->decrypt($input);
-        if($this->config->debug)
+        if(!empty($this->xuanDebug))
         {
             $this->log("decrypt: " . $input);
         }
@@ -394,7 +390,7 @@ class xuanxuan extends router
         }
 
         $output = helper::jsonEncode($output);
-        if($this->config->debug)
+        if(!empty($this->xuanDebug))
         {
             $this->log("encrypt: " . $output);
         }
