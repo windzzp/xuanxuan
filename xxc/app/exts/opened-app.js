@@ -226,4 +226,25 @@ export default class OpenedApp {
         }
         this._webview = webview;
     }
+
+    /**
+     * 打开应用
+     * @memberof OpenedApp
+     * @return {void}
+     */
+    open() {
+        this.updateOpenTime();
+        const {app} = this;
+        if (app.isCustomApp) {
+            const {customOpenHandler} = app;
+            if (customOpenHandler) {
+                customOpenHandler(app);
+            }
+        } else {
+            const appHashRoute = this.hashRoute;
+            if (window.location.hash !== appHashRoute) {
+                window.location.hash = appHashRoute;
+            }
+        }
+    }
 }
