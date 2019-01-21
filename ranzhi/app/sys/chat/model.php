@@ -1093,7 +1093,16 @@ class chatModel extends model
      */
     public function createNotify($target = '', $title = '', $subtitle = '', $content = '', $contentType = 'text', $url = '', $actions = array(), $sender = 0)
 	{
-		$users = $this->getUserList('', $target);
+	    if(strpos($target, '&') === false)
+        {
+            $cgid = '#notification';
+        }
+        else
+        {
+            $cgid   = $target;
+            $target = $this->dao->select('user')->from(TABLE_IM_CHATUSER)->where('cgid')->in($target)->fetchAll('user');
+        }
+        $users = $this->getUserList('', $target);
 
 		$info = array();
 		$info['title']    = $title;
@@ -1105,7 +1114,7 @@ class chatModel extends model
 
 		$notify = new stdClass();
 		$notify->gid		 = $this->createGID();
-		$notify->cgid		 = '#notification';
+		$notify->cgid		 = $cgid;
 		$notify->user		 = 0;
 		$notify->date		 = helper::now();
 		$notify->order		 = 0;

@@ -1491,7 +1491,7 @@ class chat extends control
         $actions     = empty($_POST['actions'])     ? array() : $this->post->actions;
         $sender      = empty($_POST['sender'])      ? 0       : $this->post->sender;
 
-        $result = $this->loadModel('chat')->createNotify($userList, $title, $subtitle, $content, $contentType, $url, $actions, $sender);
+        $result = $this->chat->createNotify($userList, $title, $subtitle, $content, $contentType, $url, $actions, $sender);
         if(!$result)
         {
             $response['result']  = false;
