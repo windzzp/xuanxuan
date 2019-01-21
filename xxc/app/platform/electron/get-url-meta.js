@@ -68,6 +68,11 @@ export class UrlMeta {
             if (controller) {
                 controller.abort();
             }
+        } else if (contentType.startsWith('audio')) {
+            this.contentType = 'audio';
+            if (controller) {
+                controller.abort();
+            }
         } else if (contentType.startsWith('text')) {
             this.contentType = 'page';
             return getTextFromResponse(response).then(documentSource => {
@@ -106,6 +111,15 @@ export class UrlMeta {
      */
     get isVideo() {
         return this.contentType === 'video';
+    }
+
+    /**
+     * 获取当前网址是否是音频
+     * @memberof GetUrlMeta
+     * @type {boolean}
+     */
+    get isAudio() {
+        return this.contentType === 'audio';
     }
 
     /**

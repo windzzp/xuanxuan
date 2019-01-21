@@ -493,21 +493,18 @@ class chatModel extends model
     }
 
     /**
-     * Get one chat group users.
+     * Get all user pairs or users of one chat group.
      *
-     * @param  int    $groupID
+     * @param  string $groupID
      * @access public
      * @return array
      */
-    public function getChatGroupUsers($groupID = 0)
+    public function getChatUserPairs($groupID = 0)
     {
-        $gid = $this->dao->findByID($groupID)->from(TABLE_IM_CHAT)->fetch('gid');
-
-        if(empty($gid)) return array();
-
+        $gid = $groupID ? $this->dao->findByID($groupID)->from(TABLE_IM_CHAT)->fetch('gid') : '';
         $userList = $this->dao->select('id, user')->from(TABLE_IM_CHATUSER)
-            ->where('cgid')->eq($gid)
-            ->andWhere('quit')->eq('0000-00-00 00:00:00')
+            ->where('quit')->eq('0000-00-00 00:00:00')
+            ->beginIF($gid)->andWhere('cgid')->eq($gid)->fi()
             ->fetchPairs('id', 'user');
         $userPais = $this->dao->select('id, realname')->from(TABLE_USER)->where('id')->in($userList)->fetchPairs();
 
@@ -594,6 +591,8 @@ class chatModel extends model
      */
     public function createBroadcast($type, $chat, $onlineUsers, $userID, $members = array())
     {
+        $adminUsers = array();
+
         $message = new stdclass();
         $message->gid         = $this->createGID();
         $message->cgid        = $chat->gid;
@@ -607,7 +606,6 @@ class chatModel extends model
         /* If quit a chat, only send broadcast to the admins or the created user of chat. */
         if($type == 'quitChat')
         {
-            $adminUsers = array();
             if($chat->admins) $adminUsers = explode(',', trim($chat->admins, ','));
             if(!$adminUsers)
             {
@@ -620,7 +618,7 @@ class chatModel extends model
 
         /* Save broadcast to im_message. */
         $messages     = $this->createMessage(array($message), $userID);
-        $offlineUsers = $this->getUserList($status = 'offline', $chat->members);
+        $offlineUsers = $this->getUserList($status = 'offline', $adminUsers);
         $this->saveOfflineMessages($messages, array_keys($offlineUsers));
 
         $output = new stdclass();

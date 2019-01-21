@@ -150,6 +150,11 @@ export const initLang = (extraData) => {
     return loadLanguage(langName);
 };
 
+langHelper.onLangChange = onLangChange;
+langHelper.isJustLangSwitched = isJustLangSwitched;
+langHelper.getAllLangList = getAllLangList;
+langHelper.getLangDisplayName = getLangDisplayName;
+
 if (DEBUG) {
     global.$lang = langHelper;
 }

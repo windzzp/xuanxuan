@@ -4,7 +4,7 @@ import {createExtension} from './extension';
 import {setOnInstalledExtensionChangeListener, getInstalledExtensions} from './extensions-db';
 import events from '../core/events';
 import {setServerOnChangeListener} from './server';
-import {onLangChange} from '../core/lang';
+import Lang, {onLangChange} from '../core/lang';
 
 /**
  * 事件名称表
@@ -249,10 +249,10 @@ export const initExtensions = () => {
     // 安装内置扩展
     getBuildIns().forEach((buildIn, idx) => {
         if (!buildIn.publisher) {
-            buildIn.publisher = Config.exts.buildInPublisher || Config.pkg.company;
+            buildIn.publisher = Config.exts.buildInPublisher || Config.pkg.companyShortName || Lang.string('app.companyShortName', Config.pkg.company);
         }
         if (!buildIn.author) {
-            buildIn.author = Config.exts.buildInAuthor || Config.pkg.company;
+            buildIn.author = Config.exts.buildInAuthor || Config.pkg.companyShortName || Lang.string('app.companyShortName', Config.pkg.company);
         }
         ['version', 'license', 'homepage', 'bugs', 'repository'].forEach(key => {
             buildIn[key] = PKG[key];

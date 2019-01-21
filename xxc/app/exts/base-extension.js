@@ -69,7 +69,7 @@ export default class Extension {
         //  */
         // this._config = new ExtensionConfig(this);
 
-        const localData = this.getConfig('_data') || {} ;
+        const localData = this.getConfig('_data') || {};
         delete localData.remoteLoaded;
         delete localData.loadRemoteFailed;
         delete localData.serverData;
@@ -789,7 +789,11 @@ export default class Extension {
                 this._module = this.buildIn.module;
             } else {
                 try {
-                    this._module = __non_webpack_require__(this.mainFile); // eslint-disable-line
+                    let _module = __non_webpack_require__(this.mainFile); // eslint-disable-line
+                    if (typeof _module === 'object' && _module.__esModule) {
+                        _module = _module.default;
+                    }
+                    this._module = _module;
                 } catch (err) {
                     if (DEBUG) {
                         console.collapse('Extension Attach', 'greenBg', this.name, 'redPale', 'load module error', 'red');

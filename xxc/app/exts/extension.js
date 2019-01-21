@@ -31,7 +31,7 @@ export const createExtension = (pkg, data = null, buildIn = false) => {
         data = null;
     }
 
-    switch (pkg.type) {
+    switch (pkg.type || (pkg.xext && pkg.xext.type)) {
     case TYPES.app:
         return new AppExtension(pkg, data);
     case TYPES.plugin:
