@@ -8,6 +8,7 @@ public function execute($fromVersion)
         case '1_1'   :
         case '1_2'   : $this->execSQL($this->getUpgradeFile('upgradexxb1.2.sql'));
         case '2_0_0' :
+        case '2_1_0' :
         default : $this->loadModel('setting')->updateVersion($this->config->version);
     }
 }
