@@ -105,7 +105,6 @@
         <td>
           <?php $debug = zget($config->xuanxuan, 'debug', 0);?>
           <?php echo $type == 'edit' ? html::radio('debug', $lang->chat->debugStatus, $debug) : zget($lang->chat->debugStatus, $debug);?>
-          <?php if($debug) echo html::a('/x.php', $lang->chat->viewDebug, "class='viewDebug'");?>
         </td>
         <td></td>
       </tr>
@@ -126,6 +125,7 @@
             <?php echo html::hidden('backend', $backend);?>
             <?php echo html::a(helper::createLink('setting', 'downloadXXD', "backend=$backend&type=package"), $lang->chat->downloadXXD, "class='btn btn-primary download download-package' target='hiddenwin'");?>
             <?php echo html::a(helper::createLink('setting', 'downloadXXD', "backend=$backend&type=config"), $lang->chat->downloadConfig, "class='btn btn-primary download' target='hiddenwin'");?>
+            <?php if($debug) echo html::a(helper::createLink('chat', 'debug'), $lang->chat->viewDebug, "class='btn btn-primary viewDebug' data-toggle='modal'");?>
             <?php echo html::a(helper::createLink('setting', 'xuanxuan', "backend=$backend&type=edit"), $lang->chat->changeSetting, "class='btn'");?>
           <?php endif;?>
         </td>
