@@ -114,9 +114,9 @@ export default class ChatShareList extends React.Component {
 
         if (search === '') {
             const shareList = {
-                contacts: {id: 'contacts', title: Lang.string('chat.share.contacts'), list: App.im.chats.getContactsChats()},
-                groups: {id: 'group', title: Lang.string('chat.share.groups'), list: App.im.chats.getGroups()},
-                recents: {id: 'recent', title: Lang.string('chat.share.chats'), list: App.im.chats.getRecents()},
+                contacts: {id: 'contacts', title: Lang.string('chat.share.contacts'), list: App.im.chats.getContactsChats().filter(chat => chat.isReadonly() !== true)},
+                groups: {id: 'group', title: Lang.string('chat.share.groups'), list: App.im.chats.getGroups().filter(chat => chat.isReadonly() !== true)},
+                recents: {id: 'recent', title: Lang.string('chat.share.chats'), list: App.im.chats.getRecents().filter(chat => chat.isReadonly() !== true)},
             };
             shareGroupList = [
                 <GroupList
@@ -147,7 +147,7 @@ export default class ChatShareList extends React.Component {
                 />
             ];
         } else {
-            const searchChats = App.im.chats.search(search);
+            const searchChats = App.im.chats.search(search).filter(chat => chat.isReadonly() !== true);
             shareGroupList = (
                 <GroupList
                     className="compact"
