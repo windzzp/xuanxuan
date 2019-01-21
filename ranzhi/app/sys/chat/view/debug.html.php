@@ -20,7 +20,7 @@
   </div>
 </div>
 <?php else:?>
-<?php include '../../common/view/header.html.php';?>
+<?php include '../../common/view/header.modal.html.php';?>
 <?php js::set('showLog', $config->xuanxuan->debug);?>
 <div class='panel'>
   <table class='table table-form table-noFixedHeader'>
@@ -42,10 +42,12 @@
       <td id='log'></td>
     </tr>
     <?php endif;?>
+    <?php if(!helper::isAjaxRequest()):?>
     <tr>
       <th></th>
       <td><?php commonModel::printLink('setting', 'xuanxuan', '', $lang->goback, "class='btn btn-primary'");?></td>
     </tr>
+    <?php endif;?>
   </table>
 </div>
 <?php endif;?>
