@@ -20,7 +20,7 @@ type ParseData map[string]interface{}
 // 对通讯的api进行解析
 func ApiParse(message, token []byte) (ParseData, error) {
     jsonData, err := aesDecrypt(message, token)
-    util.LogDetail("[ApiParse」json data : " + string(jsonData))
+    util.LogDetail("[ApiParse] json data : " + string(jsonData))
     if err != nil {
         util.Log("error", "[ApiParse] json data decrypt error:", err)
         return nil, err
@@ -42,7 +42,7 @@ func ApiUnparse(parseData ParseData, token []byte) []byte {
         util.Log("error", "[ApiUnparse] json marshal error:", err)
         return nil
     }
-    util.LogDetail("[ApiUnparse」json data : " + string(jsonData))
+    util.LogDetail("[ApiUnparse] json data : " + string(jsonData))
     message, err := aesEncrypt(jsonData, token)
     if err != nil {
         util.Log("error", "[ApiUnparse] json data encrypt error:", err)

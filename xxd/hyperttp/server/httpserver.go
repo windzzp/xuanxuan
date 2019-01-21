@@ -280,7 +280,7 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
     w.Header().Add("Access-Control-Allow-Credentials", "true")
 
     if r.Method != "POST" {
-        fmt.Fprintln(w, "[serverInfo」'POST' request only.")
+        fmt.Fprintln(w, "[serverInfo] 'POST' request only.")
         return
     }
 
@@ -288,7 +288,7 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
 
     ok, err := api.VerifyLogin([]byte(r.Form["data"][0]))
     if err != nil {
-        util.Log("error", "[serverInfo」Verify authentication credentials error: ", err)
+        util.Log("error", "[serverInfo] Verify authentication credentials error: ", err)
         w.WriteHeader(http.StatusInternalServerError)
         fmt.Fprintln(w, "Verify authentication credentials error: " + err.Error())
         return
@@ -302,7 +302,7 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
 
     chatPort, err := util.String2Int(util.Config.ChatPort)
     if err != nil {
-        util.Log("error", "[serverInfo」Convert chat port to number error: %s", err)
+        util.Log("error", "[serverInfo] Convert chat port to number error: %s", err)
         fmt.Fprintln(w, "Chat port \"" + util.Config.ChatPort + "\" is incorrect.")
         w.WriteHeader(http.StatusInternalServerError)
         return
