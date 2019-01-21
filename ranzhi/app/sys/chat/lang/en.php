@@ -40,8 +40,6 @@ $lang->chat->errorKey         = 'The key should be a 32 byte string including le
 $lang->chat->debugTips        = 'Xuanxuan is working.<br>%s with administrator to get more information.';
 $lang->chat->noLogFile        = 'No log file.';
 $lang->chat->noFopen          = 'Function fopen disabled. Find the following file to see log : %s.';
-$lang->chat->noUserList       = 'Not set receiver list.';
-$lang->chat->noSender         = 'Not set sender info.';
 $lang->chat->defaultKey       = 'Do not use default <strong>key</strong>.';
 
 $lang->chat->xxdServerTip   = 'XXD server address contains protocol and host and port，such as http://192.168.1.35 or http://www.backend.com, that can not be 127.0.0.1.';
@@ -85,8 +83,10 @@ $lang->chat->placeholder->xxd->sslcrt         = 'Copy the certificate content he
 $lang->chat->placeholder->xxd->sslkey         = 'Copy the certificate key here';
 
 $lang->chat->notify = new stdclass();
-$lang->chat->notify->noUserList = 'Not set user id list.';
-$lang->chat->notify->noSender   = 'Not set sender information.';
+$lang->chat->notify->setReceiver = 'Not set receiver type, it must be users or chat group.';
+$lang->chat->notify->setGroup    = 'Should set chat group.';
+$lang->chat->notify->setUserList = 'Should set user list.';
+$lang->chat->notify->setSender   = 'Should set sender info.';
 
 $lang->chat->osList['win_i386']      = 'Windows_i386';
 $lang->chat->osList['win_x86_64']    = 'Windows_x86_64';
