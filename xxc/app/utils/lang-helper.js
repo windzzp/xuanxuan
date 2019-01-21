@@ -1,4 +1,5 @@
 import TextMap from './text-map';
+import {formatString} from './string-helper';
 
 /**
  * 语言访问辅助类
@@ -56,7 +57,7 @@ export default class LangHelper extends TextMap {
             if (!Array.isArray(err.formats)) {
                 err.formats = [err.formats];
             }
-            message = this.format(message, ...err.formats);
+            message = formatString(message, ...err.formats);
         }
         if (DEBUG) {
             console.collapse('LANG.error', 'redBg', message, 'redPale');
