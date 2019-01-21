@@ -292,7 +292,7 @@ export const downloadFile = (url, beforeSend, onProgress) => (new Promise((resol
             reject(error);
         }
     };
-    xhr.onProgress = e => {
+    xhr.onprogress = e => {
         if (e.lengthComputable && onProgress) {
             onProgress((100 * e.loaded) / e.total);
         }

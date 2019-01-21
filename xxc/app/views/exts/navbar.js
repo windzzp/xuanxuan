@@ -73,7 +73,12 @@ export default class ExtsNavbarView extends PureComponent {
             this.forceUpdate();
         }));
         e.preventDefault();
-    }
+    };
+
+    handleRequestOpenApp = e => {
+        const app = Exts.all.getExt(e.currentTarget.attributes['data-name'].value);
+        Exts.ui.openApp(app);
+    };
 
     handleHashChange = () => {
         const isExtsView = window.location.hash.startsWith('#/exts/');
@@ -81,7 +86,7 @@ export default class ExtsNavbarView extends PureComponent {
             this.forceUpdate();
             this._lastIsExtsView = isExtsView;
         }
-    }
+    };
 
     /**
      * React 组件生命周期函数：Render

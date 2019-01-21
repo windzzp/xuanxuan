@@ -126,11 +126,7 @@ export const openApp = (name, pageName = null, params = null) => {
     } if (params !== null) {
         theOpenedApp.params = params;
     }
-    theOpenedApp.updateOpenTime();
-    const appHashRoute = theOpenedApp.hashRoute;
-    if (window.location.hash !== appHashRoute) {
-        window.location.hash = appHashRoute;
-    }
+    theOpenedApp.open();
     currentOpenedApp = theOpenedApp;
     if (DEBUG) {
         console.collapse('Extension Active App', 'greenBg', id, 'greenPale');

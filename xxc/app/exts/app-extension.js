@@ -9,7 +9,8 @@ import {isWebUrl} from '../utils/html-helper';
  */
 export const APP_TYPES = {
     insideView: 'insideView',
-    webView: 'webView'
+    webView: 'webView',
+    custom: 'custom'
 };
 
 /**
@@ -57,6 +58,17 @@ export default class AppExtension extends Extension {
      */
     get isWebview() {
         return this._appType === APP_TYPES.webView;
+    }
+
+    /**
+     * 获取应用类型是否为自定义应用
+     *
+     * @readonly
+     * @memberof AppExtension
+     * @type {boolean}
+     */
+    get isCustomApp() {
+        return this._appType === APP_TYPES.custom;
     }
 
     /**
@@ -226,6 +238,23 @@ export default class AppExtension extends Extension {
     get MainView() {
         const theModule = this.module;
         return theModule && theModule.MainView;
+    }
+
+    /**
+     * 获取应用打开操作
+     *
+     * @readonly
+     * @memberof AppExtension
+     */
+    get customOpenHandler() {
+        if (this.isCustomApp) {
+            const theModule = this.module;
+            return theModule && theModule.onRequestOpenApp;
+        }
+        if (DEBUG) {
+            console.warn('Try get customOpenHandler in witch is not custom app.', this);
+        }
+        return null;
     }
 
     /**
