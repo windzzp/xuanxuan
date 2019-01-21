@@ -75,10 +75,10 @@ func InitHttp() {
         https = "On"
     }
 
-    util.Println("[Info] Https enabled ", https)
-    util.Println("[Info] Listen IP: ", util.Config.Ip)
-    util.Println("[Info] Chat port: ", util.Config.ChatPort)
-    util.Println("[Info] Common port: ", util.Config.CommonPort)
+    util.Println("[I] Https enabled ", https)
+    util.Println("[I] Listen IP: ", util.Config.Ip)
+    util.Println("[I] Chat port: ", util.Config.ChatPort)
+    util.Println("[I] Common port: ", util.Config.CommonPort)
     util.Println("")
 
     util.Log("info", "Https enabled %s", https)

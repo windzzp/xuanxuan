@@ -10,7 +10,6 @@
 package util
 
 import (
-    "flag"
     "os"
     "runtime"
     "database/sql"
@@ -21,26 +20,12 @@ const Version = "v2.4.0"
 const Build = "BuildForXXD"
 
 var Run bool = true
-var IsTest bool = false
 var Token []byte
 var DBConn *sql.DB
 var Languages map[string]string
-var DebugCli int64 = 0
 
 func init() {
     dir, _ := os.Getwd()
-    isTest := flag.Bool("test", false, "server test model")
-    debugv := flag.Bool("v", false, "Debug level 1")
-    debugvv := flag.Bool("vv", false, "Debug level 2")
-    flag.Parse()
-    IsTest = *isTest
-    if *debugv == true {
-        DebugCli = 1
-    }
-    if *debugvv == true {
-        DebugCli = 2
-    }
-
     DBConn = InitDB()
 
     // xxd 启动时根据时间生成token
@@ -51,9 +36,9 @@ func init() {
         Printf("Server test model is %t \n", IsTest)
     }
 
-    Printf("[Info] XXD %s %s is running \n", Version, Build)
-    Printf("[Info] XXD runs the directory %s \n", dir)
-    Printf("[Info] System: %s-%s \n", runtime.GOOS, runtime.GOARCH)
+    Printf("[I] XXD %s %s is running \n", Version, Build)
+    Printf("[I] XXD runs the directory %s \n", dir)
+    Printf("[I] System: %s-%s \n", runtime.GOOS, runtime.GOARCH)
     Printf("---------------------------------------- \n")
 
     Log("info", "XXD %s %s is running", Version, Build)

@@ -1374,16 +1374,16 @@ class chat extends control
     /**
      * Get all user pairs or users of one chat group.
      *
-     * @param  string $groupID
+     * @param  string $gid
      * @access public
      * @return void
      */
-    public function getChatUsers($groupID = 0)
+    public function getChatUsers($gid = '')
     {
         $response = array();
         $response['result'] = 'success';
 
-        $userPairs = $this->chat->getChatUserPairs($groupID);
+        $userPairs = $this->chat->getChatUserPairs($gid);
 
         if(dao::isError())
         {
@@ -1468,30 +1468,49 @@ class chat extends control
         $response['result']  = true;
         $response['message'] = '';
 
-        if(empty($_POST['userList']))
+        $data = json_decode($this->post->data);
+
+        if($data->receiver != 'users' and $data->receiver != 'group')
         {
             $response['result']  = false;
-            $response['message'] = $this->lang->chat->noUserList;
+            $response['message'] = $this->lang->chat->notify->setReceiver;
             die(json_encode($response));
         }
 
-        if(empty($_POST['sender']))
+        if($data->receiver == 'users' and empty($data->userList))
         {
             $response['result']  = false;
-            $response['message'] = $this->lang->chat->noSender;
+            $response['message'] = $this->lang->chat->notify->setUserList;
             die(json_encode($response));
         }
 
-        $userList    = empty($_POST['userList'])    ? ''      : $this->post->userList;
-        $title       = empty($_POST['title'])       ? ''      : $this->post->title;
-        $subtitle    = empty($_POST['subtitle'])    ? ''      : $this->post->subtitle;
-        $content     = empty($_POST['content'])     ? ''      : $this->post->content;
-        $contentType = empty($_POST['contentType']) ? 'text'  : $this->post->contentType;
-        $url         = empty($_POST['url'])         ? ''      : $this->post->url;
-        $actions     = empty($_POST['actions'])     ? array() : $this->post->actions;
-        $sender      = empty($_POST['sender'])      ? 0       : $this->post->sender;
+        if($data->receiver == 'group' and empty($data->gid))
+        {
+            $response['result']  = false;
+            $response['message'] = $this->lang->chat->notify->setGroup;
+            die(json_encode($response));
+        }
 
-        $result = $this->loadModel('chat')->createNotify($userList, $title, $subtitle, $content, $contentType, $url, $actions, $sender);
+        if(empty($data->sender))
+        {
+            $response['result']  = false;
+            $response['message'] = $this->lang->chat->notify->noSender;
+            die(json_encode($response));
+        }
+
+        $userList    = empty($data->userList)    ? ''      : $data->userList;
+        $gid         = empty($data->gid)         ? ''      : $data->gid;
+        $title       = empty($data->title)       ? ''      : $data->title;
+        $subtitle    = empty($data->subtitle)    ? ''      : $data->subtitle;
+        $content     = empty($data->content)     ? ''      : $data->content;
+        $contentType = empty($data->contentType) ? 'text'  : $data->contentType;
+        $url         = empty($data->url)         ? ''      : $data->url;
+        $actions     = empty($data->actions)     ? array() : $data->actions;
+        $sender      = empty($data->sender)      ? 0       : $data->sender;
+
+        $target = $data->receiver == 'users' ? $userList : $gid;
+
+        $result = $this->chat->createNotify($target, $title, $subtitle, $content, $contentType, $url, $actions, $sender);
         if(!$result)
         {
             $response['result']  = false;

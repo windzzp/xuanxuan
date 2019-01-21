@@ -13,6 +13,7 @@ import (
     "github.com/Unknwon/goconfig"
     "strings"
     "os"
+    "flag"
 )
 
 type RanzhiServer struct {
@@ -44,10 +45,25 @@ type ConfigIni struct {
 const configPath = "config/xxd.conf"
 
 var Config = ConfigIni{SiteType: "singleSite", RanzhiServer: make(map[string]RanzhiServer)}
+var DebugCli int64 = 0
+var IsTest bool = false
 
 func init() {
     dir, _ := os.Getwd()
     data, err := goconfig.LoadConfigFile(dir + "/" + configPath)
+    isTest := flag.Bool("test", false, "server test model")
+    debugv := flag.Bool("v", false, "Debug level 1")
+    debugvv := flag.Bool("vv", false, "Debug level 2")
+    flag.Parse()
+
+    IsTest = *isTest
+    if *debugv == true {
+        DebugCli = 1
+    }
+    if *debugvv == true {
+        DebugCli = 2
+    }
+
     if err != nil {
         Config.Ip = "0.0.0.0"
         Config.ChatPort = "11444"
