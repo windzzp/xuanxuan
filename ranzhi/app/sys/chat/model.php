@@ -591,6 +591,8 @@ class chatModel extends model
      */
     public function createBroadcast($type, $chat, $onlineUsers, $userID, $members = array())
     {
+        $adminUsers = array();
+
         $message = new stdclass();
         $message->gid         = $this->createGID();
         $message->cgid        = $chat->gid;
@@ -604,7 +606,6 @@ class chatModel extends model
         /* If quit a chat, only send broadcast to the admins or the created user of chat. */
         if($type == 'quitChat')
         {
-            $adminUsers = array();
             if($chat->admins) $adminUsers = explode(',', trim($chat->admins, ','));
             if(!$adminUsers)
             {
@@ -617,7 +618,7 @@ class chatModel extends model
 
         /* Save broadcast to im_message. */
         $messages     = $this->createMessage(array($message), $userID);
-        $offlineUsers = $this->getUserList($status = 'offline', $chat->members);
+        $offlineUsers = $this->getUserList($status = 'offline', $adminUsers);
         $this->saveOfflineMessages($messages, array_keys($offlineUsers));
 
         $output = new stdclass();
