@@ -1,3 +1,4 @@
+import electron from 'electron';
 import fs from 'fs-extra';
 import sound from '../common/sound';
 import env from './env';
@@ -44,6 +45,7 @@ export const init = ({config, lang}) => {
 
 const platform = {
     type: 'electron',
+    electron,
     init,
     language,
     env,
