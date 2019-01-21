@@ -482,7 +482,7 @@ class chatModel extends model
      */
     public function getChatGroupPairs()
     {
-        $groups = $this->dao->select('id, name')->from(TABLE_IM_CHAT)
+        $groups = $this->dao->select('gid, name')->from(TABLE_IM_CHAT)
             ->where('type')->eq('group')
             ->andWhere('dismissDate')->eq('0000-00-00 00:00:00')
             ->fetchPairs();
@@ -495,13 +495,12 @@ class chatModel extends model
     /**
      * Get all user pairs or users of one chat group.
      *
-     * @param  string $groupID
+     * @param  string $gid
      * @access public
      * @return array
      */
-    public function getChatUserPairs($groupID = 0)
+    public function getChatUserPairs($gid = '')
     {
-        $gid = $groupID ? $this->dao->findByID($groupID)->from(TABLE_IM_CHAT)->fetch('gid') : '';
         $userList = $this->dao->select('id, user')->from(TABLE_IM_CHATUSER)
             ->where('quit')->eq('0000-00-00 00:00:00')
             ->beginIF($gid)->andWhere('cgid')->eq($gid)->fi()
@@ -1093,14 +1092,14 @@ class chatModel extends model
      */
     public function createNotify($target = '', $title = '', $subtitle = '', $content = '', $contentType = 'text', $url = '', $actions = array(), $sender = 0)
 	{
-	    if(strpos($target, '&') === false)
+	    if(is_array($target))
         {
             $cgid = '#notification';
         }
         else
         {
             $cgid   = $target;
-            $target = $this->dao->select('user')->from(TABLE_IM_CHATUSER)->where('cgid')->in($target)->fetchAll('user');
+            $target = $this->dao->select('user')->from(TABLE_IM_CHATUSER)->where('cgid')->eq($target)->fetchPairs('user');
         }
         $users = $this->getUserList('', $target);
 
