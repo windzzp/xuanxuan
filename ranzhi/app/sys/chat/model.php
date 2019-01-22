@@ -1041,7 +1041,6 @@ class chatModel extends model
             $data->url         = $messageData->url;
             $data->actions     = $messageData->actions;
             $data->sender      = $messageData->sender;
-            $data->users       = $messageData->target;
 
             $notify[] = $data;
         }
