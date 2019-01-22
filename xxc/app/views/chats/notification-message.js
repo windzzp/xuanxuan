@@ -73,7 +73,7 @@ export default class NotificationMessage extends Component {
      * @return {ReactNode|string|number|null|boolean} React 渲染内容
      */
     render() {
-        let {
+        const {
             message,
             className,
             contentConverter,
@@ -85,7 +85,7 @@ export default class NotificationMessage extends Component {
             notification, actions, title, subtitle
         } = message;
 
-        let actionsButtons = [];
+        const actionsButtons = [];
         if (notification.url) {
             actionsButtons.push(<Button btnClass="" key="primaryUrl" label={Lang.string('common.viewDetail')} icon="arrow-right-bold-circle" type="a" href={notification.url} className="text-primary" />);
         }
