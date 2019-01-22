@@ -1095,7 +1095,7 @@ class chatModel extends model
 	{
 	    if(is_array($target))
         {
-            $cgid = '#notification';
+            $cgid = 'notification';
         }
         else
         {
