@@ -1230,7 +1230,7 @@ class chatModel extends model
     {
         $data = new stdClass();
         $data->uploadFileSize = $setting->uploadFileSize;
-        $data->isHttps        = $setting->isHttps;
+        $data->https          = $setting->isHttps;
         $data->sslcrt         = $setting->sslcrt;
         $data->sslkey         = $setting->sslkey;
         $data->ip             = $setting->ip;
@@ -1240,6 +1240,7 @@ class chatModel extends model
         $data->key            = $this->config->xuanxuan->key;
         $data->os             = $setting->os;
         $data->version        = $this->config->xuanxuan->version;
+        $data->xxbLang        = $this->config->xuanxuan->xxbLang;
         $data->downloadType   = $type;
 
         $server = $this->getServer($backend);

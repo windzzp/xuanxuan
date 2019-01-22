@@ -68,9 +68,9 @@ func VerifyLogin(body []byte) (bool, error) {
 
     //解密数据
     jsonData, err := aesDecrypt(r2xMessage, ranzhiServer.RanzhiToken)
-    util.LogDetail("[VerifyLogin」request json data : " + string(jsonData))
+    util.LogDetail("[VerifyLogin] request json data : " + string(jsonData))
     if err != nil {
-        util.Log("error", "[VerifyLogin」request json data decrypt error:", err)
+        util.Log("error", "[VerifyLogin] request json data decrypt error:", err)
         return false, err
     }
 

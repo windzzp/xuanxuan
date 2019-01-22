@@ -68,8 +68,8 @@ $lang->chat->xxd->sslcrt         = 'SSL Crt';
 $lang->chat->xxd->sslkey         = 'SSL Key';
 $lang->chat->xxd->max            = 'Max';
 
-$lang->chat->httpsOptions[1] = 'Enable';
-$lang->chat->httpsOptions[0] = 'Disable';
+$lang->chat->httpsOptions['on']  = 'Enable';
+$lang->chat->httpsOptions['off'] = 'Disable';
 
 $lang->chat->placeholder = new stdclass();
 $lang->chat->placeholder->xxd = new stdclass();
