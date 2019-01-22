@@ -1029,19 +1029,19 @@ class chatModel extends model
         {
             $data = new stdClass();
             $messageData = json_decode($message->data);
-            $data->id           = $message->id;
-            $data->gid          = $message->gid;
-            $data->cgid         = $message->cgid;
-            $data->type         = $message->type;
-            $data->content      = $message->deleted ? '' : $message->content;
-            $data->date         = strtotime($message->date);
-            $data->contentType  = $message->contentType;
-            $data->title        = $messageData->title;
-            $data->subtitle     = $messageData->subtitle;
-            $data->url          = $messageData->url;
-            $data->actions      = $messageData->actions;
-            $data->sender       = $messageData->sender;
-            $data->users        = $messageData->target;
+            $data->id          = $message->id;
+            $data->gid         = $message->gid;
+            $data->cgid        = $message->cgid;
+            $data->type        = $message->type;
+            $data->content     = $message->deleted ? '' : $message->content;
+            $data->date        = strtotime($message->date);
+            $data->contentType = $message->contentType;
+            $data->title       = $messageData->title;
+            $data->subtitle    = $messageData->subtitle;
+            $data->url         = $messageData->url;
+            $data->actions     = $messageData->actions;
+            $data->sender      = $messageData->sender;
+            $data->users       = $messageData->target;
 
             $notify[] = $data;
         }
