@@ -6,14 +6,14 @@
 
 ### 更新日志
 
-+ 新增 消息撤销功能，现在用户可以在2分钟内撤销发出的消息；
-+ 新增 一对一聊天时对方输入状态显示功能；
-+ 新增 将应用访问的链接地址分享到聊天功能（在应用标签或导航栏图标上点击右键，然后执行分享操作）；
-+ 优化 了登录过程中的错误信息显示，现在可以查看内部详细错误信息；
-+ 优化 了链接卡片功能，支持播放网址所指向的音频文件；
+* 新增 消息撤销功能，现在用户可以在2分钟内撤销发出的消息；
+* 新增 一对一聊天时对方输入状态显示功能；
+* 新增 将应用访问的链接地址分享到聊天功能（在应用标签或导航栏图标上点击右键，然后执行分享操作）；
+* 优化 了登录过程中的错误信息显示，现在可以查看内部详细错误信息；
+* 优化 了链接卡片功能，支持播放网址所指向的音频文件；
 * 修复 了在非中文操作系统上获取默认语言失败导致程序无响应的问题；
 * 修复 了转发消息时在聊天选择面板上可见不可读聊天的问题；
-+ 开发相关：
+* 开发相关：
   * 客户端（XXC）：
     * 运行时配置 `ui.login.skipHTTPSecurityAlert` 默认值为 `true`，既默认不再在用户登录时显示非安全警告对话框；
     * 支持在讨论组中显示第三方应用发送的通知消息；
@@ -24,9 +24,14 @@
     * 应用扩展支持 `custom` 类型，由扩展决定用户点击应用图标时的操作；
     * 扩展全局共享对象 `Xext` 支持访问 `electron` 模块；
   * XXD：
+    * 新增 命令行选项 `-v` 或 `-vv` 来快速设置调试日志输出级别；
     * 优化 在命令中启动服务时的日志输出格式；
-    * 优化 了配置文件格式（[STORY #222](http://xuan.5upm.com/story-view-633.html)），新增 `debug` 配置项用于控制日志输出等级；
-    * 启动时会检查密匙（`token` 配置），如果是默认密匙会强制用户进行修改；
+    * 优化 配置文件格式（[STORY #222](http://xuan.5upm.com/story-view-633.html)），使其更简洁明了，新增 `debug` 配置项用于控制日志输出等级；
+    * 优化 启动失败时命令行窗口自动退出问题，现在需要使用快捷键 <kbd>Ctrl+C</kbd> 手动退出；
+    * 优化 配置文件格式，解决在 Windows 记事本上无法正确显示换行的问题；
+    * 启动时会检查密匙（`token` 配置），如果是默认密匙（32 个 8）会强制用户进行修改；
+    * 优化 命令行信息输出格式，增加对构建时间的显示；
+    * 调整 Linux编译包，兼容低的 Glibc2.12 版本;
   * 后端（XXB）：
     * 新增 `chat/getChatGroups` API 接口用于第三方应用获取系统中的讨论组列表数据；
     * 新增 `chat/getChatUsers` API 接口用于第三方应用获取系统中的聊天成员数据；
@@ -42,7 +47,6 @@
     * 移除 了 `xxd->xxc: chat/login` 数据包中的 `users` 字段；
     * 当 `chat/notify` 数据包中没有实际数据时不再推送给客户端；
 
-
 ### 下载地址
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.win.debug.setup.exe)；
@@ -52,7 +56,7 @@
 * XXD Server： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.linux.ia32.tar.gz)；
 * 服务器端：
   * XXB 2.4：[Windows 64位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxb.2.4.0.win64.exe)、[Windows 32位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxb.2.4.0.win32.exe)、[Linux 64位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxb.2.4.0.zbox_64.tar.gz)、[Linux 32位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxb.2.4.0.zbox_32.tar.gz)、[Linux rpm安装包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxb-2.4.0-1.noarch.rpm)、[Linux deb安装包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxb_2.4.0_1_all.deb)；
-  * 然之：[5.0.0 稳定版](https://www.ranzhi.org/download/5.0.stable-134.html)、[扩展包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.ranzhi.2.4.0.zip)。
+  * 然之：[5.1.0 稳定版](https://www.ranzhi.org/dynamic/5.1.stable-135.html)、[扩展包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.ranzhi.2.4.0.zip)。
 
 ## v 2.3.0
 

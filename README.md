@@ -11,7 +11,7 @@ http://xuan.im
 
 ## 最近更新
 
-🎉 2.3 本次更新增加多语言支持，新增消息批量分享、发送代码等功能，优化了图片浏览交互体验，并修复了一些 bug，欢迎大家更新体验。[查看更新详情→](https://github.com/easysoft/xuanxuan/releases/tag/v2.3.0)
+🎉 2.4 本次更新新增消息撤销、聊天输入状态显示以及应用分享等实用功能，修复了已知问题，对接口进行了大幅优化。[查看更新详情→](https://github.com/easysoft/xuanxuan/releases/tag/v2.4.0)
 
 ## 特色功能
 
