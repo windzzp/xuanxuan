@@ -7,6 +7,7 @@ import withReplaceView from '../with-replace-view';
 import Lang from '../../core/lang';
 import Icon from '../../components/icon';
 import {classes} from '../../utils/html-helper';
+import {getCurrentUser} from '../../core/profile';
 
 /**
  * ChatListItem 可替换组件形式
@@ -114,9 +115,9 @@ export default class ChatShareList extends React.Component {
 
         if (search === '') {
             const shareList = {
-                contacts: {id: 'contacts', title: Lang.string('chat.share.contacts'), list: App.im.chats.getContactsChats().filter(chat => chat.isReadonly() !== true)},
-                groups: {id: 'group', title: Lang.string('chat.share.groups'), list: App.im.chats.getGroups().filter(chat => chat.isReadonly() !== true)},
-                recents: {id: 'recent', title: Lang.string('chat.share.chats'), list: App.im.chats.getRecents().filter(chat => chat.isReadonly() !== true)},
+                contacts: {id: 'contacts', title: Lang.string('chat.share.contacts'), list: App.im.chats.getContactsChats().filter(chat => chat.isReadonly(getCurrentUser()) !== true)},
+                groups: {id: 'group', title: Lang.string('chat.share.groups'), list: App.im.chats.getGroups().filter(chat => chat.isReadonly(getCurrentUser()) !== true)},
+                recents: {id: 'recent', title: Lang.string('chat.share.chats'), list: App.im.chats.getRecents().filter(chat => chat.isReadonly(getCurrentUser()) !== true)},
             };
             shareGroupList = [
                 <GroupList
