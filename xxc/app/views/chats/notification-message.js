@@ -81,7 +81,9 @@ export default class NotificationMessage extends Component {
         } = this.props;
 
         const content = message.renderedTextContent(App.im.ui.renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : App.im.ui.linkMembersInText, contentConverter);
-        const {notification, actions, title, subtitle} = message;
+        const {
+            notification, actions, title, subtitle
+        } = message;
 
         let actionsButtons = [];
         if (notification.url) {
