@@ -120,7 +120,9 @@ const chatMessage = (msg, socket) => {
                 messages = Object.keys(messages).map(x => messages[x]);
             }
         }
-
+        if (messages && messages.length) {
+            messages = messages.filter(x => x.cgid !== '#notification');
+        }
         if (messages && messages.length) {
             handleReceiveChatMessages(messages);
             return true;
@@ -334,7 +336,7 @@ const chatNotify = (msg, socket) => {
         }
 
         if (messages && messages.length) {
-            messages.forEach(x => {x.type = 'notification';});
+            messages.filter(x => x.cgid === '#notification').forEach(x => {x.type = 'notification';});
             updateChatMessages(messages);
         }
         return true;
