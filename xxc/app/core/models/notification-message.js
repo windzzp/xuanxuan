@@ -36,6 +36,8 @@ export default class NotificationMessage extends ChatMessage {
                     system: true,
                     avatar: `$${Config.media['image.path']}ranzhi-icon.png`
                 };
+            } else if (sender.name && !sender.realname) {
+                sender.realname = sender.name;
             }
             this._sender = new Member(sender);
         }
