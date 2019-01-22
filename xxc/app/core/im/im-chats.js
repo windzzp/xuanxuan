@@ -519,7 +519,7 @@ export const initChats = (chatArr, eachCallback) => {
     if (chatArr && chatArr.length) {
         if (Config.ui['chat.littlexx']) {
             chatArr.push({
-                gid: 'littlexx',
+                gid: 'notification',
                 name: Lang.string('common.littlexx'),
                 type: 'robot',
                 lastActiveTime: new Date().getTime() - Math.floor(MAX_RECENT_TIME / 2),
