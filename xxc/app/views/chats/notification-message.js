@@ -5,6 +5,7 @@ import App from '../../core';
 import Button from '../../components/button';
 import Lang, {isJustLangSwitched} from '../../core/lang';
 import Config from '../../config';
+import {isNotEmptyString} from '../../utils/string-helper';
 
 /**
  * NotificationMessage 组件 ，显示通知消息界面
@@ -80,7 +81,7 @@ export default class NotificationMessage extends Component {
         } = this.props;
 
         const content = message.renderedTextContent(App.im.ui.renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : App.im.ui.linkMembersInText, contentConverter);
-        const {notification, actions} = message;
+        const {notification, actions, title, subtitle} = message;
 
         let actionsButtons = [];
         if (notification.url) {
@@ -97,7 +98,11 @@ export default class NotificationMessage extends Component {
                 {...other}
                 className={classes('app-message-notification layer rounded shadow-2', className)}
             >
-                <div className="markdown-content" dangerouslySetInnerHTML={{__html: content}} />
+                <div className="markdown-content">
+                    {isNotEmptyString(title) && <h4>{title}</h4>}
+                    {isNotEmptyString(subtitle) && <h5>{subtitle}</h5>}
+                    <div dangerouslySetInnerHTML={{__html: content}} />
+                </div>
                 {actionsButtons && actionsButtons.length ? <nav className="actions nav gray">{actionsButtons}</nav> : null}
             </div>
         );
