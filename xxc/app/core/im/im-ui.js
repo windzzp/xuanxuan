@@ -54,7 +54,8 @@ const EVENT = {
     activeChat: 'im.chats.activeChat',
     sendContentToChat: 'im.chats.sendContentToChat',
     suggestSendImage: 'im.chats.suggestSendImage',
-    sendboxFocus: 'im.chat.sendbox.focus'
+    sendboxFocus: 'im.chat.sendbox.focus',
+    showReeditHandle: 'im.message.showReedit',
 };
 
 /**
@@ -881,6 +882,9 @@ addContextMenuCreator('message.text', ({message}) => {
     return items;
 });
 
+
+export const onShowReeditHandle = (gid, listener) => events.on(`${EVENT.showReeditHandle}.${gid}`, listener); 
+
 // 添加撤回按钮
 addContextMenuCreator('message.text,message.image,message.file,message.url', context => {
     const items = [];
@@ -894,10 +898,13 @@ addContextMenuCreator('message.text,message.image,message.file,message.url', con
             label: Lang.string('chat.message.retract'),
             icon: 'undo-variant',
             click: () => {
-                const {isTextContent, content, cgid} = message;
+                const {isTextContent, content, cgid, gid} = message;
                 return deleteChatMessage(message).then(() => {
                     if (isTextContent && content) {
-                        return sendContentToChat(content, 'text', cgid);
+                        sendContentToChat(content, 'text', cgid);
+                        setTimeout(() => {
+                            events.emit(`${EVENT.showReeditHandle}.${gid}`);
+                        }, 200)
                     }
                     return Promise.resolve();
                 });
@@ -1035,6 +1042,7 @@ export default {
     createGroupChat,
     sendContentToChat,
     onSendContentToChat,
+    onShowReeditHandle,
     onRenderChatMessageContent,
     onSuggestSendImage,
     emitChatSendboxFocus,
