@@ -336,9 +336,20 @@ export const createAppWindow = () => {
     callRemote('createAppWindow');
 };
 
+/**
+ * 设置窗口标题
+ * @param {string} title 窗口标题
+ * @return {void}
+ */
 export const setWindowTitle = title => {
     browserWindow.setTitle(title);
 };
+
+/**
+ * 判断窗口是否处于黑暗模式
+ * @returns {boolean} 如果返回 `true` 则为黑暗模式，否则为不是黑暗模式
+ */
+export const isDarkMode = () => Remote.systemPreferences.isDarkMode();
 
 /**
  * 初始化
@@ -358,6 +369,11 @@ const init = (config) => {
 
     // 向主进程发送应用窗口界面准备就绪事件
     ipcSend(EVENT.app_ready, config, browserWindowName);
+
+    document.body.classList.toggle('os-dark-mode', isDarkMode());
+    Remote.systemPreferences.subscribeNotification('AppleInterfaceThemeChangedNotification', () => {
+        document.body.classList.toggle('os-dark-mode', isDarkMode());
+    });
 };
 
 

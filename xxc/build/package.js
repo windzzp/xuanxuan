@@ -250,6 +250,7 @@ const config = {
     stylePath: '',
     mediaPath: 'media/',
     copyOriginMedia: true,
+    darkModeSupport: true,
     buildVersion,
     artifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}.${arch}.${ext}',
     macArtifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}.${ext}',
@@ -394,6 +395,7 @@ const electronBuilder = {
     artifactName: config.artifactName,
     electronVersion: config.electronVersion,
     electronDownload: {mirror: 'https://npm.taobao.org/mirrors/electron/'},
+    darkModeSupport: config.darkModeSupport,
     extraResources: [{
         from: 'app/build-in/',
         to: 'build-in'
