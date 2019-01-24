@@ -274,6 +274,14 @@ class chat extends control
      */
     public function create($gid = '', $name = '', $type = 'group', $members = array(), $subjectID = 0, $public = false, $userID = 0)
     {
+        if($gid == 'notification' or $gid == 'littlexx')
+        {
+            $this->output->result = 'success';
+            $this->output->users  = array($userID);
+
+            die($this->app->encrypt($this->output));
+        }
+
         $chat = $this->chat->getByGID($gid, true);
 
         if(!$chat)
@@ -293,9 +301,11 @@ class chat extends control
             $this->output->users  = array_keys($users);
             $this->output->data   = $chat;
 
-            if($gid != 'notification') $broadcast = $this->chat->createBroadcast('createChat', $chat, array_keys($users), $userID);
-
-            if($broadcast) $this->output = array($this->output, $broadcast);
+            if($type == 'group')
+            {
+                $broadcast = $this->chat->createBroadcast('createChat', $chat, array_keys($users), $userID);
+                if($broadcast) $this->output = array($this->output, $broadcast);
+            }
         }
 
         die($this->app->encrypt($this->output));
