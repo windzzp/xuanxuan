@@ -136,7 +136,7 @@ class chat extends control
     {
         $user = (object)$user;
         $user->id = $userID;
-        if(isset($user->status)) 
+        if(isset($user->status))
         {
             $user->clientStatus = $user->status;
             unset($user->status);
@@ -714,11 +714,11 @@ class chat extends control
         {
             if($mute)
             {
-                $message = 'mute chat failed.';
+                $message = 'Mute chat failed.';
             }
             else
             {
-                $message = 'Mute chat failed.';
+                $message = 'Cancel mute chat failed.';
             }
 
             $this->output->result  = 'fail';
