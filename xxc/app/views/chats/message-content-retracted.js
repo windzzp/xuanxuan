@@ -5,6 +5,8 @@ import Lang from '../../core/lang';
 import App from '../../core';
 import _UserAvatar from '../common/user-avatar';
 import withReplaceView from '../with-replace-view';
+import {sendContentToChat} from '../../core/im/im-ui';
+import events from '../../core/events';
 
 const UserAvatar = withReplaceView(_UserAvatar);
 
@@ -52,6 +54,63 @@ export default class MessageContentRetracted extends Component {
         children: null,
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            displayReedit: 'hide'
+        };
+    }
+
+    /**
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof MessageContentRetracted
+     * @return {void}
+     */
+    componentDidMount() {
+        const {message} = this.props;
+        const {gid} = message;
+        const SHOW_TIME = 1000 * 60;
+        this.showReeditHandle = App.im.ui.onShowReeditHandle(gid, () => {
+            this.setState({displayReedit: 'show'});
+            this.showReeditTime = setTimeout(() => {
+                this.setState({displayReedit: 'hide'});
+            }, SHOW_TIME);
+        });
+    }
+
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof MessageContentRetracted
+     * @return {void}
+     */
+    componentWillUnmount() {
+        events.off(this.showReeditHandle);
+        clearTimeout(this.showReeditTime);
+    }
+
+    /**
+     * 处理点击重新编辑
+     * @private
+     * @return {void}
+     */
+    handleReedit() {
+        const {message} = this.props;
+        const {isTextContent, content, cgid} = message;
+        if (isTextContent && content) {
+            return sendContentToChat(content, 'text', cgid);
+        }
+    }
+
     /**
      * React 组件生命周期函数：Render
      * @private
@@ -67,13 +126,15 @@ export default class MessageContentRetracted extends Component {
             children,
             ...other
         } = this.props;
-
+        const {displayReedit} = this.state;
         const sender = message.getSender(App.members);
-
         return (
             <div className={classes('app-message-broadcast app-message-retracted has-padding-xs space-sm primary-pale flex-inline flex-middle row single muted', className)} {...other}>
                 <UserAvatar user={sender} size={20} />
                 <div className="content markdown-content">{Lang.format('chat.message.retracted', sender.displayName)}</div>
+                {
+                    displayReedit === 'show' ? (<a className="text-link" onClick={this.handleReedit.bind(this)}>重新编辑</a>) : ''
+                }
             </div>
         );
     }
