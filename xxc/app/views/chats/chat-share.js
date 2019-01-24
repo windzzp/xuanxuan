@@ -101,7 +101,7 @@ export default class ChatShare extends Component {
         const {choosed} = this.state;
         const chats = Object.keys(choosed).map((key) => choosed[key]);
         const messagerID = `messager-${timeSequence()}`;
-        
+
         App.im.server.shareMessage(message, chats, (progress, index, total, chat) => {
             if (chats.length > 1) {
                 const progressVal = Math.round(progress * 100);
@@ -141,7 +141,6 @@ export default class ChatShare extends Component {
     };
 
     itemCreator = chat => {
-        if (chat.gid === 'littlexx') return;
         return (
             <ChatListItem
                 data-gid={chat.gid}

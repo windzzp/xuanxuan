@@ -80,7 +80,6 @@ export default class ChatShareList extends React.Component {
      * @memberof MenuContactList
      */
     itemCreator = chat => {
-        if (chat.gid === 'littlexx') return;
         const {choosed} = this.props;
         return (
             <ChatListItem
