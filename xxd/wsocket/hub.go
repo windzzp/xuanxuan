@@ -89,10 +89,10 @@ func (h *Hub) run() {
                 }
 
                 select {
-                case client.send <- sendMsg.message:
-                default:
-                    close(client.send)
-                    delete(h.clients[client.serverName], client.userID)
+                    case client.send <- sendMsg.message:
+                    default:
+                        close(client.send)
+                        delete(h.clients[client.serverName], client.userID)
                 }
             }
 
@@ -102,10 +102,10 @@ func (h *Hub) run() {
 
                 client := h.clients[sendMsg.serverName][userID]
                 select {
-                case client.send <- sendMsg.message:
-                default:
-                    close(client.send)
-                    delete(h.clients[client.serverName], client.userID)
+                    case client.send <- sendMsg.message:
+                    default:
+                        close(client.send)
+                        delete(h.clients[client.serverName], client.userID)
                 }
             }
         } // run select

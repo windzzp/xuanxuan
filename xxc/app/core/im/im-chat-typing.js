@@ -15,7 +15,7 @@ const EVENT = {
  * 至少间隔多长时间向服务器更新状态，单位毫秒
  * @type {number}
  */
-const msgSendInterval = 3000;
+export const msgSendInterval = 3000;
 
 /**
  * 存储聊天输入框状态

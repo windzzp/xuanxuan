@@ -136,7 +136,7 @@ class chat extends control
     {
         $user = (object)$user;
         $user->id = $userID;
-        if(isset($user->status)) 
+        if(isset($user->status))
         {
             $user->clientStatus = $user->status;
             unset($user->status);
@@ -274,6 +274,14 @@ class chat extends control
      */
     public function create($gid = '', $name = '', $type = 'group', $members = array(), $subjectID = 0, $public = false, $userID = 0)
     {
+        if($gid == 'notification' or $gid == 'littlexx')
+        {
+            $this->output->result = 'success';
+            $this->output->users  = array($userID);
+
+            die($this->app->encrypt($this->output));
+        }
+
         $chat = $this->chat->getByGID($gid, true);
 
         if(!$chat)
@@ -293,9 +301,11 @@ class chat extends control
             $this->output->users  = array_keys($users);
             $this->output->data   = $chat;
 
-            $broadcast = $this->chat->createBroadcast('createChat', $chat, array_keys($users), $userID);
-
-            if($broadcast) $this->output = array($this->output, $broadcast);
+            if($type == 'group')
+            {
+                $broadcast = $this->chat->createBroadcast('createChat', $chat, array_keys($users), $userID);
+                if($broadcast) $this->output = array($this->output, $broadcast);
+            }
         }
 
         die($this->app->encrypt($this->output));
@@ -709,16 +719,16 @@ class chat extends control
      */
     public function mute($gid = '', $mute = true, $userID = 0)
     {
-        $chatList = $this->chat->muteChat($gid, $mute, $userID);
+        $this->chat->muteChat($gid, $mute, $userID);
         if(dao::isError())
         {
             if($mute)
             {
-                $message = 'mute chat failed.';
+                $message = 'Mute chat failed.';
             }
             else
             {
-                $message = 'Mute chat failed.';
+                $message = 'Unmute chat failed.';
             }
 
             $this->output->result  = 'fail';

@@ -250,6 +250,7 @@ const config = {
     stylePath: '',
     mediaPath: 'media/',
     copyOriginMedia: true,
+    darkModeSupport: true,
     buildVersion,
     artifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}.${arch}.${ext}',
     macArtifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}.${ext}',
@@ -446,7 +447,8 @@ const electronBuilder = {
     },
     mac: {
         icon: 'icon.icns',
-        artifactName: config.macArtifactName || config.artifactName
+        artifactName: config.macArtifactName || config.artifactName,
+        darkModeSupport: config.darkModeSupport
     },
     nsis: {
         oneClick: false,

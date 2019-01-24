@@ -573,7 +573,7 @@ addContextMenuCreator('chat.menu', context => {
 addContextMenuCreator('chat.toolbar.more', ({chat}) => {
     if (chat.isOne2One) return [];
     const menu = [];
-    if (profile.user.isVersionSupport('muteChat')) {
+    if (profile.user.isVersionSupport('muteChat') && !chat.isRobot) {
         menu.push({
             label: Lang.string(chat.mute ? 'chat.toolbar.cancelMute' : 'chat.toolbar.mute'),
             click: () => {
@@ -883,7 +883,7 @@ addContextMenuCreator('message.text', ({message}) => {
 });
 
 
-export const onShowReeditHandle = (gid, listener) => events.on(`${EVENT.showReeditHandle}.${gid}`, listener); 
+export const onShowReeditHandle = (gid, listener) => events.on(`${EVENT.showReeditHandle}.${gid}`, listener);
 
 // 添加撤回按钮
 addContextMenuCreator('message.text,message.image,message.file,message.url', context => {

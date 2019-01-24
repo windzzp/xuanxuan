@@ -194,6 +194,17 @@ export default class MenuSearchList extends Component {
         });
     };
 
+    // /**
+    //  * 处理点击搜索菜单事件
+    //  * @memberof MenuSearchList
+    //  * @private
+    //  * @return {void}
+    //  */
+    // handleClick = () => {
+    //     const {onRequestClearSearch} = this.props;
+    //     onRequestClearSearch();
+    // }
+
     /**
      * React 组件生命周期函数：Render
      * @private
@@ -237,6 +248,7 @@ export default class MenuSearchList extends Component {
             listViews.push(<ChatListItem
                 onMouseEnter={() => this.setState({select: chat})}
                 onContextMenu={this.handleItemContextMenu.bind(this, chat)}
+                // onClick={this.handleClick.bind(this)}
                 key={chat.gid}
                 data-gid={chat.gid}
                 filterType={filter}

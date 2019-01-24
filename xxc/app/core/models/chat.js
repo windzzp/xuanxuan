@@ -1022,7 +1022,6 @@ export default class Chat extends Entity {
                 }
                 return member;
             }
-            return this._theOtherOne;
         }
         return null;
     }

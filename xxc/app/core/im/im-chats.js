@@ -101,15 +101,18 @@ export const getChat = (gid) => {
     }
     let chat = chats[gid];
     if (!chat && gid.includes('&')) {
+        const currentUserID = profile.userId;
         const chatMembers = gid.split('&').map(x => Number.parseInt(x, 10));
-        chat = new Chat({
-            gid,
-            members: chatMembers,
-            createdBy: profile.user.account,
-            type: Chat.TYPES.one2one
-        });
-        chat.updateMembersSet(members);
-        updateChats(chat);
+        if (currentUserID && chatMembers.includes(currentUserID)) {
+            chat = new Chat({
+                gid,
+                members: chatMembers,
+                createdBy: profile.user.account,
+                type: Chat.TYPES.one2one
+            });
+            chat.updateMembersSet(members);
+            updateChats(chat);
+        }
     }
     return chat;
 };
@@ -124,6 +127,9 @@ export const createChatMessage = message => {
         return message;
     }
     if (message.type === 'notification' || message.type === 'notify') {
+        if (message.cgid === 'littlexx') {
+            message.cgid = 'notification';
+        }
         message = NotificationMessage.create(message);
     } else {
         message = ChatMessage.create(message);
@@ -275,7 +281,7 @@ export const getChatMessages = (chat, queryCondition, limit = CHATS_LIMIT_DEFAUL
     }
     const cgid = chat ? chat.gid : null;
     let collection = db.database.chatMessages.orderBy('id').and(x => {
-        return (!cgid || x.cgid === cgid) && (!queryCondition || queryCondition(x));
+        return (!cgid || x.cgid === cgid || (cgid === 'notification' && x.cgid === 'littlexx')) && (!queryCondition || queryCondition(x));
     });
     if (reverse) {
         collection = collection.reverse();
