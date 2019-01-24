@@ -883,7 +883,7 @@ addContextMenuCreator('message.text', ({message}) => {
 });
 
 
-export const onShowReeditHandle = (gid, listener) => events.on(`${EVENT.showReeditHandle}.${gid}`, listener); 
+export const onShowReeditHandle = (gid, listener) => events.on(`${EVENT.showReeditHandle}.${gid}`, listener);
 
 // 添加撤回按钮
 addContextMenuCreator('message.text,message.image,message.file,message.url', context => {

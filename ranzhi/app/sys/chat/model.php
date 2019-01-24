@@ -1319,13 +1319,6 @@ class chatModel extends model
     public function getServer($backend = 'xxb')
     {
         $server = commonModel::getSysURL();
-
-        if($backend == 'zentao')
-        {
-            $this->app->loadConfig('mail');
-            if(!empty($this->config->mail->domain)) $server = $this->config->mail->domain;
-        }
-
         if(!empty($this->config->xuanxuan->server)) $server = $this->config->xuanxuan->server;
 
         return $server;
