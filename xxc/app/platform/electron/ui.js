@@ -415,6 +415,7 @@ export default {
     createUserDataPath,
     copySelectText,
     selectAllText,
+    isDarkMode,
 
     get isWindowFocus() {
         return isWindowFocus();
