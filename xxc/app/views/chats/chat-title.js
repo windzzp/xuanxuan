@@ -10,7 +10,7 @@ import _StatusDot from '../common/status-dot';
 import MemberProfileDialog from '../common/member-profile-dialog';
 import Config from '../../config';
 import withReplaceView from '../with-replace-view';
-import {onChatTypingChange} from '../../core/im/im-chat-typing';
+import {onChatTypingChange, msgSendInterval} from '../../core/im/im-chat-typing';
 import events from '../../core/events';
 
 
@@ -19,7 +19,6 @@ import events from '../../core/events';
  * @type {Class<ChatAvatar>}
  * @private
  */
-
 const ChatAvatar = withReplaceView(_ChatAvatar);
 
 /**
@@ -101,7 +100,17 @@ export default class ChatTitle extends Component {
     componentDidMount() {
         const {chat} = this.props;
         if (chat.isOne2One) {
-            this.onChatTypingHandler = onChatTypingChange(chat.gid, (typing, typeUserID) => {
+            this.onChatTypingHandler = onChatTypingChange(chat.gid, (typing) => {
+                if (this.lastTypeTimer) {
+                    clearTimeout(this.lastTypeTimer);
+                    this.lastTypeTimer = null;
+                }
+                if (typing) {
+                    this.lastTypeTimer = setTimeout(() => {
+                        this.setState({typing: false});
+                        this.lastTypeTimer = null;
+                    }, msgSendInterval);
+                }
                 this.setState({typing});
             });
         }
@@ -144,6 +153,10 @@ export default class ChatTitle extends Component {
         }
         if (this.onChatTypingHandler) {
             events.off(this.onChatTypingHandler);
+        }
+        if (this.lastTypeTimer) {
+            clearTimeout(this.lastTypeTimer);
+            this.lastTypeTimer = null;
         }
     }
 
