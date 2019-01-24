@@ -395,7 +395,6 @@ const electronBuilder = {
     artifactName: config.artifactName,
     electronVersion: config.electronVersion,
     electronDownload: {mirror: 'https://npm.taobao.org/mirrors/electron/'},
-    darkModeSupport: config.darkModeSupport,
     extraResources: [{
         from: 'app/build-in/',
         to: 'build-in'
@@ -448,7 +447,8 @@ const electronBuilder = {
     },
     mac: {
         icon: 'icon.icns',
-        artifactName: config.macArtifactName || config.artifactName
+        artifactName: config.macArtifactName || config.artifactName,
+        darkModeSupport: config.darkModeSupport
     },
     nsis: {
         oneClick: false,
