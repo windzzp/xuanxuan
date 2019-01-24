@@ -101,15 +101,18 @@ export const getChat = (gid) => {
     }
     let chat = chats[gid];
     if (!chat && gid.includes('&')) {
+        const currentUserID = profile.userId;
         const chatMembers = gid.split('&').map(x => Number.parseInt(x, 10));
-        chat = new Chat({
-            gid,
-            members: chatMembers,
-            createdBy: profile.user.account,
-            type: Chat.TYPES.one2one
-        });
-        chat.updateMembersSet(members);
-        updateChats(chat);
+        if (currentUserID && chatMembers.includes(currentUserID)) {
+            chat = new Chat({
+                gid,
+                members: chatMembers,
+                createdBy: profile.user.account,
+                type: Chat.TYPES.one2one
+            });
+            chat.updateMembersSet(members);
+            updateChats(chat);
+        }
     }
     return chat;
 };
