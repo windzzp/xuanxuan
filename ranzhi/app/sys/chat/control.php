@@ -301,9 +301,11 @@ class chat extends control
             $this->output->users  = array_keys($users);
             $this->output->data   = $chat;
 
-            $broadcast = $this->chat->createBroadcast('createChat', $chat, array_keys($users), $userID);
-
-            if($broadcast) $this->output = array($this->output, $broadcast);
+            if($type == 'group')
+            {
+                $broadcast = $this->chat->createBroadcast('createChat', $chat, array_keys($users), $userID);
+                if($broadcast) $this->output = array($this->output, $broadcast);
+            }
         }
 
         die($this->app->encrypt($this->output));
