@@ -371,9 +371,12 @@ const init = (config) => {
     ipcSend(EVENT.app_ready, config, browserWindowName);
 
     document.body.classList.toggle('os-dark-mode', isDarkMode());
-    Remote.systemPreferences.subscribeNotification('AppleInterfaceThemeChangedNotification', () => {
-        document.body.classList.toggle('os-dark-mode', isDarkMode());
-    });
+    const {subscribeNotification} = Remote.systemPreferences;
+    if (subscribeNotification) {
+        subscribeNotification('AppleInterfaceThemeChangedNotification', () => {
+            document.body.classList.toggle('os-dark-mode', isDarkMode());
+        });
+    }
 };
 
 
