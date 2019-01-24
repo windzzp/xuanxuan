@@ -427,7 +427,7 @@ export default class MessageListItem extends Component {
         const {isNotification} = message;
 
         if (hideHeader === 0) {
-            hideHeader = !showDateDivider && lastMessage && lastMessage.senderId === message.senderId && lastMessage.type === message.type;
+            hideHeader = !showDateDivider && lastMessage && lastMessage.senderId === message.senderId && lastMessage.type === message.type && !lastMessage.isDeleted;
         }
 
         let headerView = null;
