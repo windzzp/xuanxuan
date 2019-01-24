@@ -219,12 +219,11 @@ func chatLogout(userID int64, client *Client) error {
     if err != nil {
         return err
     }
+    util.DelUid(client.serverName, util.Int642String(client.userID))
 
     for key, _ := range retMessages {
         X2cSend(client.serverName, retMessages[key]["users"].([]int64), retMessages[key]["message"].([]byte), client)
     }
-
-    util.DelUid(client.serverName, util.Int642String(client.userID))
     return nil
 }
 
