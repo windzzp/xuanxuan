@@ -157,17 +157,24 @@ class chatModel extends model
             $output->users  = !empty($userID) ? array($userID) : array();
             $output->data   = $users;
 
-            $this->app->loadLang('user', 'sys');
-            $roles = $this->lang->user->roleList;
-
-            $allDepts = $this->loadModel('tree')->getListByType('dept');
-            $depts = array();
-            foreach($allDepts as $id => $dept)
+            if(empty($idList))
             {
-                $depts[$id] = array('name' => $dept->name, 'order' => (int)$dept->order, 'parent' => (int)$dept->parent);
+                $this->app->loadLang('user', 'sys');
+                $roles = $this->lang->user->roleList;
+
+                $allDepts = $this->loadModel('tree')->getListByType('dept');
+                $depts = array();
+                foreach($allDepts as $id => $dept)
+                {
+                    $depts[$id] = array('name' => $dept->name, 'order' => (int)$dept->order, 'parent' => (int)$dept->parent);
+                }
+                $output->roles = $roles;
+                $output->depts = $depts;
             }
-            $output->roles = $roles;
-            $output->depts = $depts;
+            else
+            {
+                $output->partial = $idList;
+            }
         }
         return $output;
     }
@@ -1041,7 +1048,6 @@ class chatModel extends model
             $data->url         = $messageData->url;
             $data->actions     = $messageData->actions;
             $data->sender      = $messageData->sender;
-            $data->users       = $messageData->target;
 
             $notify[] = $data;
         }
@@ -1096,7 +1102,7 @@ class chatModel extends model
 	{
 	    if(is_array($target))
         {
-            $cgid = '#notification';
+            $cgid = 'notification';
         }
         else
         {

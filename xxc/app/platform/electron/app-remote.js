@@ -343,6 +343,8 @@ class AppRemote {
                 version: DEBUG ? '[debug]' : ''
             });
         }
+
+        this.isReady = true;
     }
 
     /**
@@ -862,6 +864,9 @@ class AppRemote {
      * @return {void}
      */
     confirmCreateAppWindow() {
+        if (!this.isReady) {
+            return;
+        }
         this.showAndFocusWindow();
         electron.dialog.showMessageBox(this.currentFocusWindow, {
             buttons: [Lang.string('common.confirm'), Lang.string('common.cancel')],

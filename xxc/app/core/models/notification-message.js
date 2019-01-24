@@ -36,6 +36,8 @@ export default class NotificationMessage extends ChatMessage {
                     system: true,
                     avatar: `$${Config.media['image.path']}ranzhi-icon.png`
                 };
+            } else if (sender.name && !sender.realname) {
+                sender.realname = sender.name;
             }
             this._sender = new Member(sender);
         }
@@ -120,6 +122,28 @@ export default class NotificationMessage extends ChatMessage {
     }
 
     /**
+     * 获取通知标题
+     *
+     * @type {string}
+     * @readonly
+     * @memberof NotificationMessage
+     */
+    get title() {
+        return this.notification.title;
+    }
+
+    /**
+     * 获取通知副标题
+     *
+     * @type {string}
+     * @readonly
+     * @memberof NotificationMessage
+     */
+    get subtitle() {
+        return this.notification.subtitle;
+    }
+
+    /**
      * 创建一个通知消息类实例
      *
      * @static
@@ -141,21 +165,9 @@ export default class NotificationMessage extends ChatMessage {
             data = JSON.parse(data);
         }
 
-        let {content} = data;
-
-        if (!content) {
-            content = `#### ${data.title}`;
-            if (isNotEmptyString(data.subtitle)) {
-                content += `\n##### ${data.subtitle}`;
-            }
-            if (isNotEmptyString(data.content)) {
-                content += `\n${data.content}`;
-            }
-        }
-
         return new NotificationMessage({
             cgid: data.cgid || 'littlexx',
-            content,
+            content: data.content,
             contentType: data.contentType,
             data,
             date: data.date,

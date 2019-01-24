@@ -336,7 +336,12 @@ const chatNotify = (msg, socket) => {
         }
 
         if (messages && messages.length) {
-            messages.filter(x => x.cgid === '#notification').forEach(x => {x.type = 'notification';});
+            messages.forEach(x => {
+                x.type = 'notification';
+                if (!x.cgid) {
+                    x.cgid = '#notification';
+                }
+            });
             updateChatMessages(messages);
         }
         return true;

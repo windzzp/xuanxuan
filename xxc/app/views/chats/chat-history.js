@@ -373,7 +373,7 @@ export default class ChatHistory extends Component {
         const {chat} = this.props;
         if (chat.id) {
             this.setState({loading: true, message: Lang.string('chats.history.fetchingMessages')});
-            const {gid} = {chat};
+            const {gid} = chat;
             App.im.server.fetchChatsHistory(gid);
         } else {
             this.setState({loading: false, message: Lang.string('chats.history.localChat'), messages: []});
