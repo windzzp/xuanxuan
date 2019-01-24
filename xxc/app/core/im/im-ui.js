@@ -572,7 +572,7 @@ addContextMenuCreator('chat.menu', context => {
 addContextMenuCreator('chat.toolbar.more', ({chat}) => {
     if (chat.isOne2One) return [];
     const menu = [];
-    if (profile.user.isVersionSupport('muteChat')) {
+    if (profile.user.isVersionSupport('muteChat') && !chat.isRobot) {
         menu.push({
             label: Lang.string(chat.mute ? 'chat.toolbar.cancelMute' : 'chat.toolbar.mute'),
             click: () => {
