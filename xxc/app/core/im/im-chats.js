@@ -124,6 +124,9 @@ export const createChatMessage = message => {
         return message;
     }
     if (message.type === 'notification' || message.type === 'notify') {
+        if (message.cgid === 'littlexx') {
+            message.cgid = 'notification';
+        }
         message = NotificationMessage.create(message);
     } else {
         message = ChatMessage.create(message);

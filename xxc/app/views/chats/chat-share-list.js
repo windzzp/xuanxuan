@@ -80,7 +80,6 @@ export default class ChatShareList extends React.Component {
      * @memberof MenuContactList
      */
     itemCreator = chat => {
-        if (chat.gid === 'littlexx') return;
         const {choosed} = this.props;
         return (
             <ChatListItem
@@ -108,18 +107,27 @@ export default class ChatShareList extends React.Component {
         return item.list && item.entityType !== 'Chat';
     };
 
+    /**
+     * React 组件生命周期函数：Render
+     * @private
+     * @see https://doc.react-china.org/docs/react-component.html#render
+     * @see https://doc.react-china.org/docs/rendering-elements.html
+     * @memberof ChatShareList
+     * @return {ReactNode|string|number|null|boolean} React 渲染内容
+     */
     render() {
         const groupType = 'dept';
         const {search} = this.props;
-        let shareGroupList = '';
+        const clickShowMoreFormatText = Lang.string('common.clickShowMoreFormat');
 
         if (search === '') {
+            const currentUser = getCurrentUser();
             const shareList = {
-                contacts: {id: 'contacts', title: Lang.string('chat.share.contacts'), list: App.im.chats.getContactsChats().filter(chat => chat.isReadonly(getCurrentUser()) !== true)},
-                groups: {id: 'group', title: Lang.string('chat.share.groups'), list: App.im.chats.getGroups().filter(chat => chat.isReadonly(getCurrentUser()) !== true)},
-                recents: {id: 'recent', title: Lang.string('chat.share.chats'), list: App.im.chats.getRecents().filter(chat => chat.isReadonly(getCurrentUser()) !== true)},
+                contacts: {id: 'contacts', title: Lang.string('chat.share.contacts'), list: App.im.chats.getContactsChats().filter(chat => chat.isReadonly(currentUser))},
+                groups: {id: 'group', title: Lang.string('chat.share.groups'), list: App.im.chats.getGroups().filter(chat => chat.isReadonly(currentUser))},
+                recents: {id: 'recent', title: Lang.string('chat.share.chats'), list: App.im.chats.getRecents().filter(chat => chat.isReadonly(currentUser))},
             };
-            shareGroupList = [
+            return [
                 <GroupList
                     key="contacts"
                     className="compact"
@@ -127,7 +135,7 @@ export default class ChatShareList extends React.Component {
                     defaultExpand={false}
                     itemCreator={this.itemCreator.bind(this)}
                     hideEmptyGroup={groupType !== 'category'}
-                    showMoreText={Lang.string('common.clickShowMoreFormat')}
+                    showMoreText={clickShowMoreFormatText}
                 />,
                 <GroupList
                     key="groups"
@@ -136,7 +144,7 @@ export default class ChatShareList extends React.Component {
                     defaultExpand={false}
                     itemCreator={this.itemCreator.bind(this)}
                     checkIsGroup={this.checkIsGroup}
-                    showMoreText={Lang.string('common.clickShowMoreFormat')}
+                    showMoreText={clickShowMoreFormatText}
                 />,
                 <GroupList
                     key="recents"
@@ -144,21 +152,19 @@ export default class ChatShareList extends React.Component {
                     group={shareList.recents}
                     itemCreator={this.itemCreator.bind(this)}
                     checkIsGroup={this.checkIsGroup}
-                    showMoreText={Lang.string('common.clickShowMoreFormat')}
+                    showMoreText={clickShowMoreFormatText}
                 />
             ];
-        } else {
-            const searchChats = App.im.chats.search(search).filter(chat => chat.isReadonly() !== true);
-            shareGroupList = (
-                <GroupList
-                    className="compact"
-                    group={{list: searchChats, root: true}}
-                    itemCreator={this.itemCreator.bind(this)}
-                    checkIsGroup={this.checkIsGroup}
-                    showMoreText={Lang.string('common.clickShowMoreFormat')}
-                />
-            );
         }
-        return shareGroupList;
+        const searchChats = App.im.chats.search(search).filter(chat => chat.isReadonly() !== true);
+        return (
+            <GroupList
+                className="compact"
+                group={{list: searchChats, root: true}}
+                itemCreator={this.itemCreator.bind(this)}
+                checkIsGroup={this.checkIsGroup}
+                showMoreText={clickShowMoreFormatText}
+            />
+        );
     }
 }

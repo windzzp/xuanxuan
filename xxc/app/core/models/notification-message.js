@@ -166,7 +166,7 @@ export default class NotificationMessage extends ChatMessage {
         }
 
         return new NotificationMessage({
-            cgid: data.cgid || 'littlexx',
+            cgid: data.cgid || 'notification',
             content: data.content,
             contentType: data.contentType,
             data,
