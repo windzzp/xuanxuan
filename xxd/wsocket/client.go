@@ -226,8 +226,7 @@ func chatLogout(userID int64, client *Client) error {
         X2cSend(client.serverName, retMessages[key]["users"].([]int64), retMessages[key]["message"].([]byte), client)
     }
 
-    close(client.send)
-    delete(client.hub.clients[client.serverName], client.userID)
+    client.hub.unregister <- client
     return nil
 }
 
