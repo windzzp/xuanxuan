@@ -293,7 +293,7 @@ class chat extends control
             $this->output->users  = array_keys($users);
             $this->output->data   = $chat;
 
-            $broadcast = $this->chat->createBroadcast('createChat', $chat, array_keys($users), $userID);
+            if($gid != 'notification') $broadcast = $this->chat->createBroadcast('createChat', $chat, array_keys($users), $userID);
 
             if($broadcast) $this->output = array($this->output, $broadcast);
         }
@@ -709,16 +709,16 @@ class chat extends control
      */
     public function mute($gid = '', $mute = true, $userID = 0)
     {
-        $chatList = $this->chat->muteChat($gid, $mute, $userID);
+        $this->chat->muteChat($gid, $mute, $userID);
         if(dao::isError())
         {
             if($mute)
             {
-                $message = 'mute chat failed.';
+                $message = 'Mute chat failed.';
             }
             else
             {
-                $message = 'Mute chat failed.';
+                $message = 'Unmute chat failed.';
             }
 
             $this->output->result  = 'fail';
