@@ -221,7 +221,7 @@ func chatLogout(userID int64, client *Client) error {
 
     util.DelUid(client.serverName, util.Int642String(client.userID))
 
-    for key, _ := range retMessages {
+    for key := 0; key < len(retMessages); key++ {
         X2cSend(client.serverName, retMessages[key]["users"].([]int64), retMessages[key]["message"].([]byte), client)
     }
 
@@ -248,7 +248,7 @@ func transitData(message []byte, userID int64, client *Client) error {
         return err
     }
 
-    for key, _ := range retMessages {
+    for key := 0; key < len(retMessages); key++ {
         X2cSend(client.serverName, retMessages[key]["users"].([]int64), retMessages[key]["message"].([]byte), client)
     }
     return nil

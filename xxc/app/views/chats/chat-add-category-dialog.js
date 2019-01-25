@@ -19,7 +19,7 @@ const showChatAddCategoryDialog = (chat, callback) => {
         id: modalId,
         title: Lang.string('chats.menu.group.add'),
         style: {width: 400},
-        content: <ChatAddCategory.ChatAddCategory ref={e => {chatAddCategory = e;}} chat={chat} />,
+        content: <ChatAddCategory ref={e => {chatAddCategory = e;}} chat={chat} />,
         onSubmit: () => {
             const {category} = chatAddCategory;
             const oldName = chat.category;

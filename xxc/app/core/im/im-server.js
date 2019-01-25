@@ -710,6 +710,10 @@ const sendImageAsBase64 = (imageFile, chat) => {
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
 export const sendImageMessage = async (imageFile, chat, onProgress) => {
+    if (imageFile.size === 0) {
+        Messager.show(Lang.format('error.UPLOAD_FILE_IS_TOO_EMPTY', formatBytes(imageFile.size)), {type: 'warning'});
+        return Promise.reject();
+    }
     if (imageFile.size < MAX_BASE64_IMAGE_SIZE) {
         return sendImageAsBase64(imageFile, chat);
     }
@@ -783,6 +787,8 @@ export const sendFileMessage = (file, chat) => {
             message.updateFileContent({send: false, error: error && Lang.error(error)});
             return sendChatMessage(message, chat);
         });
+    } else if (file.size === 0) {
+        Messager.show(Lang.format('error.UPLOAD_FILE_IS_TOO_EMPTY', formatBytes(file.size)), {type: 'warning'});
     } else {
         Messager.show(Lang.format('error.UPLOAD_FILE_IS_TOO_LARGE', formatBytes(file.size)), {type: 'warning'});
     }
