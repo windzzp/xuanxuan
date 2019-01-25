@@ -139,7 +139,7 @@ export default class AppSocket extends Socket {
     setHandler(pathname, func) {
         if (typeof pathname === 'object') {
             Object.keys(pathname).forEach(name => {
-            this.handlers[name.toLowerCase()] = pathname[name];
+                this.handlers[name.toLowerCase()] = pathname[name];
             });
         } else {
             this.handlers[pathname.toLowerCase()] = func;
@@ -165,16 +165,31 @@ export default class AppSocket extends Socket {
      * @return {void}
      */
     handleMessage(msg) {
-        if (this.isLogging && msg.pathname !== 'chat/login') {
-            if (!this.waitingMessageList) {
-                this.waitingMessageList = [];
+        // 处理登录时顺序不一致的问题
+        const {waitingMessages} = this;
+        if (waitingMessages) {
+            const pathName = msg.pathname;
+            if (pathName === 'chat/login' || pathName === 'chat/usergetlist') {
+                waitingMessages[pathName] = msg;
+            } else {
+                if (!waitingMessages.others) {
+                    waitingMessages.others = [];
+                }
+                waitingMessages.others.push(msg);
             }
-            this.waitingMessageList.push(msg);
             if (DEBUG) {
                 console.collapse('SOCKET WAITING Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale');
                 console.log('msg', msg);
                 console.log('socket', this);
                 console.groupEnd();
+            }
+            if (waitingMessages['chat/login'] && waitingMessages['chat/usergetlist']) {
+                this.waitingMessages = null;
+                this.handleMessage(waitingMessages['chat/login']);
+                this.handleMessage(waitingMessages['chat/usergetlist']);
+                if (waitingMessages.others) {
+                    waitingMessages.others.forEach(this.handleMessage.bind(this));
+                }
             }
             return;
         }
@@ -201,17 +216,6 @@ export default class AppSocket extends Socket {
             result = msg.isSuccess;
         }
         events.emit(EVENT.message, msg, result);
-    }
-
-    /**
-     * 处理登录成功之前等待处理的消息
-     * @return {void}
-     */
-    handleWaitingMessages() {
-        const {waitingMessageList} = this;
-        if (waitingMessageList && waitingMessageList.length) {
-            waitingMessageList.forEach(msg => this.handleMessage(msg));
-        }
     }
 
     /**
@@ -273,7 +277,7 @@ export default class AppSocket extends Socket {
      * @return {void}
      * @memberof AppSocket
      */
-    onData(data, flags) {
+    onData(data) {
         const msg = SocketMessage.fromJSON(data);
         if (!msg) {
             if (DEBUG) {
@@ -301,6 +305,7 @@ export default class AppSocket extends Socket {
      */
     login(user, options) {
         this.isLogging = true;
+        this.waitingMessages = {};
         return new Promise((resolve, reject) => {
             if (user) {
                 this.user = user;
@@ -318,7 +323,6 @@ export default class AppSocket extends Socket {
                         this.startPing();
                         this.syncUserSettings();
                         resolve(user);
-                        this.handleWaitingMessages();
                     } else {
                         reject(new Error('Login result is not success.'));
                     }

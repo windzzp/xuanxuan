@@ -81,8 +81,8 @@ func ProcessResponse(jsonData []byte) (map[int]map[string]interface{}, error) {
             return nil, err
         }
 
-        for key, value := range retData {
-            parseData := ParseData(value)
+        for key := 0; key < len(retData); key++ {
+            parseData := ParseData(retData[key])
             retMessage[key] = make(map[string]interface{})
             retMessage[key]["users"]   = parseData.SendUsers()
             retMessage[key]["message"] = ApiUnparse(parseData, util.Token)

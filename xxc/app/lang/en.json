@@ -112,7 +112,7 @@
     "chat.systemGroup.name": "System",
     "chat.tempChat.name": "Temporary Conversation",
     "chat.toolbar.cancelHide": "Cancel Hide",
-    "chat.toolbar.cancelMute": "Cancel Mute",
+    "chat.toolbar.cancelMute": "Unmute",
     "chat.toolbar.hide": "Hide",
     "chat.toolbar.mute": "Mute",
     "chat.toolbor.history": "History",

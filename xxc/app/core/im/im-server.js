@@ -8,7 +8,7 @@ import PKG from '../../package.json';
 import Chat from '../models/chat';
 import Messager from '../../components/messager';
 import {formatBytes} from '../../utils/string-helper';
-import {createPhpTimestramp} from '../../utils/date-helper';
+import {createPhpTimestramp, formatDate} from '../../utils/date-helper';
 import ChatMessage from '../models/chat-message';
 import Lang from '../lang';
 import {getImageInfo} from '../../utils/image';
@@ -624,7 +624,7 @@ export const sendChatMessage = async (messages, chat, isSystemMessage = false) =
                 const contentLines = ['```'];
                 contentLines.push(
                     `$$version       = '${PKG.version}${PKG.buildVersion ? (`.${PKG.buildVersion}`) : ''}${specialVersion}';`,
-                    `$$buildTime     = '${PKG.buildTime}';`,
+                    `$$buildTime     = '${PKG.buildTime ? formatDate(PKG.buildTime) : ''}';`,
                     `$$serverVersion = '${profile.user.serverVersion}';`,
                     `$$platform      = '${platform.type}';`,
                     `$$os            = '${platform.access('env.os')}';`

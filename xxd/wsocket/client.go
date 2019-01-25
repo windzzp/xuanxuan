@@ -171,10 +171,9 @@ func chatLogin(parseData api.ParseData, client *Client) error {
         return util.Errorf("%s", "chat login error")
     }
 
-    for key, _ := range retMessages {
+    for key := 0; key < len(retMessages); key++ {
         if key == 0 {
-            client.userID = retMessages[0]["userID"].(int64)
-
+            client.userID = retMessages[key]["userID"].(int64)
         }
         client.send <- retMessages[key]["message"].([]byte)
     }
@@ -220,11 +219,13 @@ func chatLogout(userID int64, client *Client) error {
         return err
     }
 
-    for key, _ := range retMessages {
+    util.DelUid(client.serverName, util.Int642String(client.userID))
+
+    for key := 0; key < len(retMessages); key++ {
         X2cSend(client.serverName, retMessages[key]["users"].([]int64), retMessages[key]["message"].([]byte), client)
     }
 
-    util.DelUid(client.serverName, util.Int642String(client.userID))
+    client.hub.unregister <- client
     return nil
 }
 
@@ -247,10 +248,9 @@ func transitData(message []byte, userID int64, client *Client) error {
         return err
     }
 
-    for key, _ := range retMessages {
+    for key := 0; key < len(retMessages); key++ {
         X2cSend(client.serverName, retMessages[key]["users"].([]int64), retMessages[key]["message"].([]byte), client)
     }
-
     return nil
 }
 
@@ -336,7 +336,6 @@ func (c *Client) writePump() {
                     return
                 }
             }
-
         case <-ticker.C:
             c.conn.SetWriteDeadline(time.Now().Add(writeWait))
             if err := c.conn.WriteMessage(websocket.PingMessage, []byte{}); err != nil {
