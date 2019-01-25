@@ -18,6 +18,7 @@ import lang from '../core/lang';
 import utils from '../utils';
 import app from '../core';
 import views from '../views/external';
+import config from '../config';
 
 /**
  * 所有第三方 node 模块
@@ -39,6 +40,7 @@ const nodeModules = {
     hotkeys,
     pinyin,
     uuid,
+    config,
     get jquery() {
         return __non_webpack_require__('jquery'); // eslint-disable-line
     }
