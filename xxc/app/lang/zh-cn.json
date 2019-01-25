@@ -271,6 +271,7 @@
     "error.TIMEOUT": "网络连接超时。",
     "error.UNSUPPORT_VERSION": "此服务器版本不受支持。",
     "error.UPLOAD_FILE_IS_TOO_LARGE": "文件上传失败，只支持发送小于 {0} 的文件",
+    "error.UPLOAD_FILE_IS_TOO_EMPTY": "文件上传失败，只支持发送大于 {0} 的文件",
     "error.USER_DATA_PATH_DENY": "暂时无法使用用户目录，请重试。",
     "error.USER_DENY_ATTACT_UPLOAD": "你没有权限上传文件到服务器，请联系管理员。",
     "error.USER_INFO_REQUIRED": "用户信息不可用。",

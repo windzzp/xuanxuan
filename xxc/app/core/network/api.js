@@ -58,7 +58,7 @@ export const checkUploadFileSize = (user, size) => {
         size = size.size;
     }
     const {uploadFileSize} = user;
-    return uploadFileSize && size <= uploadFileSize;
+    return uploadFileSize && size <= uploadFileSize && size !== 0;
 };
 
 /**
