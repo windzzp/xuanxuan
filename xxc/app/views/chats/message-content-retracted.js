@@ -6,7 +6,7 @@ import App from '../../core';
 import _UserAvatar from '../common/user-avatar';
 import withReplaceView from '../with-replace-view';
 import {sendContentToChat} from '../../core/im/im-ui';
-// import events from '../../core/events';
+import events from '../../core/events';
 
 const UserAvatar = withReplaceView(_UserAvatar);
 
@@ -54,12 +54,12 @@ export default class MessageContentRetracted extends Component {
         children: null,
     };
 
-    // constructor(props) {
-    //     super(props);
-    //     // this.state = {
-    //     //     displayReedit: 'hide'
-    //     // };
-    // }
+    constructor(props) {
+        super(props);
+        this.state = {
+            displayReedit: 'hide'
+        };
+    }
 
     /**
      * React 组件生命周期函数：`componentDidMount`
@@ -72,15 +72,15 @@ export default class MessageContentRetracted extends Component {
      * @return {void}
      */
     componentDidMount() {
-        // const {message} = this.props;
-        // const {gid} = message;
-        // const SHOW_TIME = 1000 * 60;
-        // this.showReeditHandle = App.im.ui.onShowReeditHandle(gid, () => {
-        //     this.setState({displayReedit: 'show'});
-        //     this.showReeditTime = setTimeout(() => {
-        //         this.setState({displayReedit: 'hide'});
-        //     }, SHOW_TIME);
-        // });
+        const {message} = this.props;
+        const {gid} = message;
+        const SHOW_TIME = 1000 * 60;
+        this.showReeditHandle = App.im.ui.onShowReeditHandle(gid, () => {
+            this.setState({displayReedit: 'show'});
+            this.showReeditTime = setTimeout(() => {
+                this.setState({displayReedit: 'hide'});
+            }, SHOW_TIME);
+        });
     }
 
     /**
@@ -94,8 +94,8 @@ export default class MessageContentRetracted extends Component {
      * @return {void}
      */
     componentWillUnmount() {
-        // events.off(this.showReeditHandle);
-        // clearTimeout(this.showReeditTime);
+        events.off(this.showReeditHandle);
+        clearTimeout(this.showReeditTime);
     }
 
     /**
@@ -126,12 +126,15 @@ export default class MessageContentRetracted extends Component {
             children,
             ...other
         } = this.props;
-        // const {displayReedit} = this.state;
+        const {displayReedit} = this.state;
         const sender = message.getSender(App.members);
         return (
             <div className={classes('app-message-broadcast app-message-retracted has-padding-xs space-sm primary-pale flex-inline flex-middle row single muted', className)} {...other}>
                 <UserAvatar user={sender} size={20} />
                 <div className="content markdown-content">{Lang.format('chat.message.retracted', sender.displayName)}</div>
+                {
+                    displayReedit === 'show' ? (<a className="text-link" onClick={this.handleReedit.bind(this)}>重新编辑</a>) : ''
+                }
             </div>
         );
     }
