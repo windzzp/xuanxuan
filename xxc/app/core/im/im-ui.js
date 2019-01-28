@@ -56,6 +56,7 @@ const EVENT = {
     suggestSendImage: 'im.chats.suggestSendImage',
     sendboxFocus: 'im.chat.sendbox.focus',
     showReeditHandle: 'im.message.showReedit',
+    updateChatView: 'im.chats.updateChatView',
 };
 
 /**
@@ -100,6 +101,23 @@ export const setActiveChat = (chat) => {
             events.emit(EVENT.activeChat, chat);
             ui.showMobileChatsMenu(false);
         }
+    }
+};
+
+/**
+ * 清除激活过的聊天
+ * @param {Chat} activeChats 聊天实例
+ * @return {void}
+ */
+export const deleteActiveChat = (activeChats) => {
+    const activeCgids = Object.keys(activeCaches);
+    if (activeChats.length > 0 && activeCgids.length > 0) {
+        for (let i = 0; i < activeChats.length; i++) {
+            for (let j = 0; j < activeCgids.length; j++) {
+                if (activeCaches[activeChats[i].cgid] !== 'undefined') delete activeCaches[activeChats[i].cgid];
+            }
+        }
+        events.emit(EVENT.updateChatView);
     }
 };
 
@@ -904,7 +922,7 @@ addContextMenuCreator('message.text,message.image,message.file,message.url', con
                         sendContentToChat(content, 'text', cgid);
                         setTimeout(() => {
                             events.emit(`${EVENT.showReeditHandle}.${gid}`);
-                        }, 200)
+                        }, 200);
                     }
                     return Promise.resolve();
                 });
@@ -1047,6 +1065,7 @@ export default {
     onSuggestSendImage,
     emitChatSendboxFocus,
     onChatSendboxFocus,
+    deleteActiveChat,
 
     get currentActiveChatId() {
         return activedChatId;

@@ -6,6 +6,7 @@ import _MessageListItem from './message-list-item'; // eslint-disable-line
 import App from '../../core';
 import platform from '../../platform';
 import withReplaceView from '../with-replace-view';
+import {setInfo, getInfo} from '../../core/models/timing';
 
 /**
  * MessageListItem 可替换组件形式
@@ -102,7 +103,12 @@ export default class MessageList extends Component {
      * @return {void}
      */
     componentDidMount() {
+        const {onScroll} = this.props;
         this.onChatActiveHandler = App.im.ui.onActiveChat(chat => {
+            const content = getInfo('scrollInfo', chat.gid);
+            if (content && content[0] && content[0].content !== 'undefined') {
+                if (onScroll && content[0].content.isAtBottom === false) onScroll(content[0].content, content[0].e);
+            }
             if (this.lastMessage && (this.waitNewMessage || this.isScrollBottom) && this.lastMessage.cgid === chat.gid) {
                 this.waitNewMessage = null;
                 this.scrollToBottom(500);
@@ -221,6 +227,17 @@ export default class MessageList extends Component {
             isAtTop: target.scrollTop === 0,
             isAtBottom: (target.scrollHeight - target.scrollTop) === target.clientHeight
         };
+
+        const {messages} = this.props;
+        if (messages) {
+            const {cgid} = messages[0];
+            setInfo('scrollInfo', {
+                cgid,
+                content: scrollInfo,
+                e,
+            });
+        }
+
         this.scrollInfo = scrollInfo;
         const {onScroll} = this.props;
         if (onScroll) {
