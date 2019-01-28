@@ -71,11 +71,11 @@ func cronReport(hub *Hub) {
             select {
             case <-reportTicker.C:
                 for language := range util.Languages {
-                    for server := range util.Config.RanzhiServer {
-                        messages, err := api.ReportAndGetNotify(server, language)
+                    for serverName := range util.Config.RanzhiServer {
+                        messages, err := api.ReportAndGetNotify(serverName, language)
                         if messages != nil && err == nil {
                             for userID, message := range messages {
-                                if client, ok := hub.clients[server][userID]; ok {
+                                if client, ok := hub.clients[serverName][userID]; ok {
                                     client.send <- message
                                 }
                             }
@@ -85,10 +85,10 @@ func cronReport(hub *Hub) {
 
             case <-changeTicker.C:
                 for language := range util.Languages {
-                    for server := range util.Config.RanzhiServer {
-                        getList, err := api.CheckUserChange(server, language)
+                    for serverName := range util.Config.RanzhiServer {
+                        getList, err := api.CheckUserChange(serverName, language)
                         if getList != nil && err == nil {
-                            for _, client := range hub.clients[server] {
+                            for _, client := range hub.clients[serverName] {
                                 client.send <- getList;
                             }
                         }
