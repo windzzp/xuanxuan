@@ -34,7 +34,7 @@ class myEntry extends entry
         }
         if(!empty($entry->login) && strpos($entry->login, 'http') !== 0)
         {
-            $_SERVER['SCRIPT_NAME'] = str_replace('xuanxuan.php', 'sys/xuanxuan.php', $_SERVER['SCRIPT_NAME']);
+            $_SERVER['SCRIPT_NAME'] = str_replace('x.php', 'sys/x.php', $_SERVER['SCRIPT_NAME']);
             $webRoot = getRanzhiWebRoot();
             $baseURL = commonModel::getSysURL();
 
