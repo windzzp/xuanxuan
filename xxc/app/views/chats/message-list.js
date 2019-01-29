@@ -106,7 +106,7 @@ export default class MessageList extends Component {
         const {onScroll} = this.props;
         this.onChatActiveHandler = App.im.ui.onActiveChat(chat => {
             const content = getInfo('scrollInfo', chat.gid);
-            if (content && content[0] && content[0].content !== 'undefined') {
+            if (content && content.length) {
                 if (onScroll && content[0].content.isAtBottom === false) onScroll(content[0].content, content[0].e);
             }
             if (this.lastMessage && (this.waitNewMessage || this.isScrollBottom) && this.lastMessage.cgid === chat.gid) {
@@ -229,7 +229,7 @@ export default class MessageList extends Component {
         };
 
         const {messages} = this.props;
-        if (messages) {
+        if (messages && messages.length) {
             const {cgid} = messages[0];
             setInfo('scrollInfo', {
                 cgid,

@@ -1,6 +1,7 @@
 import events from '../events';
 import {socket} from '../server';
 import profile, {getCurrentUser} from '../profile';
+import members from '../members';
 
 /**
  * 事件表
@@ -9,6 +10,18 @@ import profile, {getCurrentUser} from '../profile';
  */
 const EVENT = {
     chat_typing_change: 'chat.typing.change',
+};
+
+/**
+ * 用于方便获取用户信息的对象
+ * @type {Object}
+ * @private
+ */
+const app = {
+    members,
+    get user() {
+        return profile.user;
+    }
 };
 
 /**
@@ -74,7 +87,7 @@ export const sendChatTyping = (chat, typing) => {
  */
 export const updateChatSendboxStatus = (chat, hasContent) => {
     const user = getCurrentUser();
-    if (!user || !user.isVersionSupport('chatTyping')) {
+    if (!user || !user.isVersionSupport('chatTyping') || !chat.isOnline(app)) {
         return;
     }
 

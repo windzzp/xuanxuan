@@ -104,7 +104,7 @@ export default class ChatSendbox extends Component {
     componentDidMount() {
         // 将本地缓存对应聊天信息取出，添加到输入框内。
         const content = getInfo('content', this.props.chat.gid);
-        if (content) {
+        if (content && content.length) {
             content[0].content.forEach(message => {
                 switch (message.type) {
                 case 'image':
