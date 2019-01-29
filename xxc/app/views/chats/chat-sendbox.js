@@ -10,6 +10,8 @@ import _ChatSendboxToolbar from './chat-sendbox-toolbar';
 import MessagesPreivewDialog from './messages-preview-dialog';
 import withReplaceView from '../with-replace-view';
 import {updateChatSendboxStatus} from '../../core/im/im-chat-typing';
+import {setInfo, getInfo} from '../../core/models/timing';
+
 /**
  * DraftEditor 可替换组件形式
  * @type {Class<ChatSendboxToolbar>}
@@ -100,6 +102,20 @@ export default class ChatSendbox extends Component {
      * @return {void}
      */
     componentDidMount() {
+        // 将本地缓存对应聊天信息取出，添加到输入框内。
+        const content = getInfo('content', this.props.chat.gid);
+        if (content) {
+            content[0].content.forEach(message => {
+                switch (message.type) {
+                case 'image':
+                    this.editbox.appendImage(message.content);
+                    break;
+                default:
+                    this.editbox.appendContent(message.content);
+                }
+            });
+        }
+
         this.onSendContentToChatHandler = App.im.ui.onSendContentToChat(this.props.chat.gid, content => {
             if (content.clear) {
                 this.clearContent();
@@ -135,6 +151,18 @@ export default class ChatSendbox extends Component {
      * @return {void}
      */
     componentWillUnmount() {
+        const {chat} = this.props;
+        let content = '';
+        if (this.editbox) {
+            content = this.editbox.getContentList();
+        } else {
+            content = this.contentText;
+        }
+        setInfo('content', {
+            cgid: chat.gid,
+            content,
+        });
+
         App.events.off(this.onSendContentToChatHandler, this.onChatActiveHandler);
     }
 
@@ -302,6 +330,14 @@ export default class ChatSendbox extends Component {
         App.im.ui.emitChatSendboxFocus(chat, editbox.getContent());
     };
 
+    handleOnBlur = () => {
+        const {chat} = this.props;
+        setInfo('lastActiveDate', {
+            cgid: chat.gid,
+            content: new Date().getTime(),
+        });
+    }
+
     /**
      * React 组件生命周期函数：Render
      * @private
@@ -338,6 +374,7 @@ export default class ChatSendbox extends Component {
                 onChange={this.handleOnChange}
                 onReturnKeyDown={this.handleOnReturnKeyDown}
                 onFocus={this.handleOnFocus}
+                onBlur={this.handleOnBlur}
             />
             <ChatSendboxToolbar className="dock-bottom" chatGid={chat.gid} userConfigChangeTime={userConfig && userConfig.lastChangeTime} sendButtonDisabled={this.state.sendButtonDisabled} onSendButtonClick={this.handleSendButtonClick} onPreviewButtonClick={this.handlePreviewBtnClick} />
         </div>);

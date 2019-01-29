@@ -4,7 +4,7 @@ import {classes} from '../../utils/html-helper';
 import App from '../../core';
 import _ChatView from './chat-view';
 import withReplaceView from '../with-replace-view';
-
+import {updateChatView} from '../../core/models/timing';
 /**
  * ChatView 可替换组件形式
  * @type {Class<ChatView>}
@@ -58,6 +58,12 @@ export default class ChatsCache extends Component {
         filterType: false,
         activeChatId: null,
     };
+
+    componentDidMount() {
+        updateChatView(() => {
+            this.forceUpdate();
+        });
+    }
 
     /**
      * React 组件生命周期函数：`componentDidUpdate`

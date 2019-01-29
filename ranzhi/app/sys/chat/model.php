@@ -1183,7 +1183,7 @@ class chatModel extends model
         $allEntries = array();
         $time       = time();
 
-        $_SERVER['SCRIPT_NAME'] = str_replace('xuanxuan.php', 'sys/xuanxuan.php', $_SERVER['SCRIPT_NAME']);
+        $_SERVER['SCRIPT_NAME'] = str_replace('x.php', 'sys/x.php', $_SERVER['SCRIPT_NAME']);
         $this->config->webRoot  = getRanzhiWebRoot();
 
         $baseURL   = commonModel::getSysURL();

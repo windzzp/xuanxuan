@@ -171,7 +171,7 @@ class xuanxuan extends router
                 $data = new stdclass();
                 $data->module = 'chat';
                 $data->method = 'kickoff';
-                $data->data   = 'Illegal Requset.';
+                $data->data   = 'Illegal Request.';
                 die($this->encrypt($data));
             }
 
