@@ -52,7 +52,7 @@ export const onChatTypingChange = (cgid, listener) => {
  * 向服务器发送当前用户输入状态变更信息
  * @param {Chat} chat 当前聊天对象
  * @param {boolean} typing 如果为 `true` 表示用户正在输入，如果为 `false` 表示用户停止输入
- * @returns {Promise} 使用 Promise 异步返回处理结果
+ * @returns {void}
  */
 export const sendChatTyping = (chat, typing) => {
     const theOtherMembersID = chat.getOtherMembersID(profile.userId);
