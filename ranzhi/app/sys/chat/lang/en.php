@@ -47,6 +47,8 @@ $lang->chat->xxdServerEmpty = 'XXD server address is empty.';
 $lang->chat->xxdServerError = 'XXD server address can not be 127.0.0.1.';
 $lang->chat->xxdSchemeError = 'Server address should started with http:// or https://.';
 $lang->chat->xxdPortError   = 'Server address should contain valid port and the default is <strong>11443</strong>.';
+$lang->chat->errorSSLCrt    = 'SSL certificate cannot be empty';
+$lang->chat->errorSSLKey    = 'SSL key cannot be empty';
 
 $lang->chat->broadcast = new stdclass();
 $lang->chat->broadcast->createChat  = '@%s created the group **[%s](#/chats/groups/%s)**.';
