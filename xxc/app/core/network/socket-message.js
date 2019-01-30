@@ -1,6 +1,6 @@
-import UUID from 'uuid/v4';
 import Config from '../../config';
 import Lang from '../lang';
+import timeSequence from '../../utils/time-sequence';
 
 /**
  * Socket 服务消息类
@@ -63,8 +63,8 @@ export default class SocketMessage {
      * @return {String} 当前数据包消息请求 ID
      */
     createRequestID() {
-        if (this.rid) {
-            this.rid = UUID();
+        if (!this.rid) {
+            this.rid = timeSequence();
         }
         return this.rid;
     }
