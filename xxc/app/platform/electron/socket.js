@@ -1,4 +1,3 @@
-import WS from 'ws';
 import crypto from './crypto';
 import Status from '../../utils/status';
 
@@ -16,7 +15,7 @@ const STATUS = new Status({
 }, 4);
 
 /**
- * Socket 连接管理类（Electron）
+ * Socket 连接管理类（Browser）
  *
  * @export
  * @class Socket
@@ -37,7 +36,13 @@ export default class Socket {
      * @memberof Socket
      */
     constructor(url, options) {
+        /**
+         * Socket 连接状态
+         * @type {StatusKeeper}
+         * @private
+         */
         this._status = STATUS.create(STATUS.UNCONNECT);
+
         this._status.onChange = (newStatus, oldStatus) => {
             if (this.onStatusChange) {
                 this.onStatusChange(newStatus, oldStatus);
@@ -63,25 +68,19 @@ export default class Socket {
             connent: true,
             userToken: '',
             cipherIV: '',
-            encryptEnable: true,
+            encryptEnable: true
         }, options);
 
         this.options = options;
         this.url = url;
         this._status.change(STATUS.UNCONNECT);
 
-        if (this.onInit) {
-            this.onInit();
-        }
-
-        if (DEBUG) {
-            console.collapse('SOCKET Init', 'indigoBg', this.url, 'indigoPale', this.statusName, this.isConnected ? 'greenPale' : 'orangePale');
-            console.trace('socket', this);
-            console.groupEnd();
-        }
-
         if (options.connect && this.url) {
             this.connect();
+        }
+
+        if (this.onInit) {
+            this.onInit();
         }
     }
 
@@ -165,24 +164,24 @@ export default class Socket {
         this.close();
 
         this.status = STATUS.CONNECTING;
-        this.client = new WS(this.url, {
-            rejectUnauthorized: false,
-            headers: {version: this.options.version}
-        });
 
-        if (DEBUG) {
-            console.collapse('SOCKET Connect', 'indigoBg', this.url, 'indigoPale', this.statusName, this.isConnected ? 'greenPale' : 'orangePale');
-            console.log('socket', this);
-            console.groupEnd();
-        }
+        const client = new WebSocket(this.url);
+        client.binaryType = 'arraybuffer';
+        client.onopen = this.handleConnect.bind(this);
+        client.onmessage = e => {
+            this.handleData(e.data, {binary: true});
+        };
+        client.onclose = e => {
+            if (!this.isConnected) {
+                this.handleConnectFail(e);
+            }
+            this.handleClose(e.code, e.reason);
+        };
+        client.onerror = e => {
+            this.handleError(e);
+        };
 
-        this.client.on('open', this.handleConnect.bind(this));
-        this.client.on('message', this.handleData.bind(this));
-        this.client.on('close', this.handleClose.bind(this));
-        this.client.on('error', this.handleError.bind(this));
-        this.client.on('unexpected-response', this.handleError.bind(this));
-        this.client.on('pong', this.handlePong.bind(this));
-        this.client.on('ping', this.handlePing.bind(this));
+        this.client = client;
     }
 
     /**
@@ -196,36 +195,18 @@ export default class Socket {
     }
 
     /**
-     * 处理 ping 事件
-     * @param {string|Buffer} data ping 数据
+     * 处理连接失败事件
+     * @param {Event} e 连接失败事件对象
      * @memberof Socket
      * @return {void}
      * @protected
      */
-    handlePing(data) {
-        if (this.onPing) {
-            this.onPing(data);
+    handleConnectFail(e) {
+        if (this.onConnectFail) {
+            this.onConnectFail(e);
         }
-
-        if (this.options && this.options.onPing) {
-            this.options.onPing(this, data);
-        }
-    }
-
-    /**
-     * 处理 pong 事件
-     * @param {string|Buffer} data pong 数据
-     * @memberof Socket
-     * @return {void}
-     * @protected
-     */
-    handlePong(data) {
-        if (this.onPong) {
-            this.onPong(data);
-        }
-
-        if (this.options && this.options.onPong) {
-            this.options.onPong(this, data);
+        if (this.options && this.options.onConnectFail) {
+            this.options.onConnectFail(e);
         }
     }
 
@@ -239,12 +220,12 @@ export default class Socket {
         this.updateStatusFromClient();
 
         if (DEBUG) {
-            console.collapse('SOCKET Connected', 'indigoBg', this.url, 'indigoPale');
+            console.collapse('SOCKET Connected', 'greenBg', this.url, 'greenPale');
             console.log('socket', this);
             console.groupEnd();
         }
 
-        if (this.options.onConnect) {
+        if (this.options && this.options.onConnect) {
             this.options.onConnect(this);
         }
 
@@ -263,45 +244,24 @@ export default class Socket {
      * @return {void}
      */
     handleClose(code, reason) {
-        if (!this.isConnected) {
-            this.handleConnectFail({code, message: reason});
-        }
-
         const unexpected = !this._status.is(STATUS.CLOSING);
         this.updateStatusFromClient();
         this.client = null;
-        this.status = STATUS.CLOSED;
 
         if (DEBUG) {
-            console.collapse('SOCKET Closed', 'indigoBg', this.url, 'indigoPale');
+            console.collapse('SOCKET Closed', 'greenBg', this.url, 'greenPale');
             console.log('socket', this);
             console.log('code', code);
             console.log('reason', reason);
             console.groupEnd();
         }
 
-        if (this.onClose) {
-            this.onClose(code, reason, unexpected);
-        }
-
         if (this.options && this.options.onClose) {
             this.options.onClose(this, code, reason, unexpected);
         }
-    }
 
-    /**
-     * 处理连接失败事件
-     * @param {Event} e 连接失败事件对象
-     * @memberof Socket
-     * @return {void}
-     * @protected
-     */
-    handleConnectFail(e) {
-        if (this.onConnectFail) {
-            this.onConnectFail(e);
-        }
-        if (this.options && this.options.onConnectFail) {
-            this.options.onConnectFail(e);
+        if (this.onClose) {
+            this.onClose(code, reason, unexpected);
         }
     }
 
@@ -323,7 +283,7 @@ export default class Socket {
             console.groupEnd();
         }
 
-        if (this.options.onError) {
+        if (this.options && this.options.onError) {
             this.options.onError(this, error);
         }
 
@@ -343,16 +303,25 @@ export default class Socket {
      */
     handleData(rawdata, flags) {
         this.updateStatusFromClient();
+
         let data = null;
         if (flags && flags.binary) {
-            if (this.options.encryptEnable) {
+            if (this.options && this.options.encryptEnable) {
                 data = crypto.decrypt(rawdata, this.options.userToken, this.options.cipherIV);
             } else {
                 data = rawdata.toString();
             }
         }
 
-        if (this.options.onData) {
+        // if(DEBUG) {
+        //     console.collapse('SOCKET Data', 'greenBg', this.url, 'greenPale');
+        //     console.log('socket', this);
+        //     console.log('rawdata', rawdata);
+        //     console.log('data', {data});
+        //     console.groupEnd();
+        // }
+
+        if (this.options && this.options.onData) {
             this.options.onData(this, data, flags);
         }
 
@@ -371,10 +340,10 @@ export default class Socket {
      */
     send(rawdata, callback) {
         let data = null;
-        if (this.options.encryptEnable) {
+        if (this.options && this.options.encryptEnable) {
             data = crypto.encrypt(rawdata, this.options.userToken, this.options.cipherIV);
             // if (DEBUG) {
-            //     console.collapse('ENCRYPT Data', 'blueBg', `length: ${data.length}`, 'bluePale');
+            //     console.collapse('ENCRYPT data', 'blueBg', `length: ${data.length}`, 'bluePale');
             //     console.log('data', data);
             //     console.log('rawdata', rawdata);
             //     console.groupEnd();
@@ -382,8 +351,11 @@ export default class Socket {
         }
 
         this.client.send(data, {
-            binary: this.options.encryptEnable
-        }, callback);
+            binary: this.options && this.options.encryptEnable
+        });
+        if (callback) {
+            callback();
+        }
     }
 
     /**
@@ -403,7 +375,10 @@ export default class Socket {
      * @return {void}
      */
     removeAllListeners() {
-        this.client.removeAllListeners();
+        this.client.onclose = null;
+        this.client.onerror = null;
+        this.client.onmessage = null;
+        this.client.onopen = null;
     }
 
     /**
@@ -418,11 +393,7 @@ export default class Socket {
                 this.markClose();
             }
             this.removeAllListeners();
-            if (reason === true) {
-                this.client.terminate();
-            } else {
-                this.client.close(code || 1000);
-            }
+            this.client.close();
             this.handleClose(code, reason);
         }
     }
