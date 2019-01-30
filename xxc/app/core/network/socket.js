@@ -143,7 +143,11 @@ export default class AppSocket extends Socket {
                                 }
                             });
                         }
-                        console.collapse('Socket Send ⬆︎', 'indigoBg', msg.pathname, 'indigoPale', `${(endTime - startTime)} ms`, 'muted');
+                        const sendRequestTime = endTime - startTime;
+                        this.perfData.sendCount += 1;
+                        this.perfData.sendTotal += sendRequestTime;
+                        this.perfData.sendAverate = this.perfData.sendTotal / this.perfData.sendCount;
+                        console.collapse('Socket Send ⬆︎', 'indigoBg', msg.pathname, 'indigoPale', `${sendRequestTime} ms, averate ${this.perfData.sendAverate.toFixed(3)} ms`, 'muted');
                     } else {
                         console.collapse('Socket Send ⬆︎', 'indigoBg', msg.pathname, 'indigoPale');
                     }
@@ -220,7 +224,7 @@ export default class AppSocket extends Socket {
             }
             if (DEBUG) {
                 if (responseTime) {
-                    console.collapse('SOCKET WAITING Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale', `${responseTime} ms, average ${this.perfData.average} ms`, 'muted');
+                    console.collapse('SOCKET WAITING Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale', `${responseTime} ms, average ${this.perfData.average.toFixed(3)} ms`, 'muted');
                 } else {
                     console.collapse('SOCKET WAITING Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale');
                 }
@@ -240,7 +244,7 @@ export default class AppSocket extends Socket {
         }
         if (DEBUG) {
             if (responseTime) {
-                console.collapse('SOCKET Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale', `${responseTime} ms, average ${this.perfData.average} ms`, 'muted');
+                console.collapse('SOCKET Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale', `${responseTime} ms, average ${this.perfData.average.toFixed(3)} ms`, 'muted');
             } else {
                 console.collapse('SOCKET Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale');
             }
@@ -303,7 +307,9 @@ export default class AppSocket extends Socket {
         if (DEBUG) {
             this.perfData = {
                 count: 0,
-                total: 0
+                total: 0,
+                sendCount: 0,
+                sendTotal: 0,
             };
         }
     }
