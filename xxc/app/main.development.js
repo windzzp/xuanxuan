@@ -7,7 +7,8 @@ import {app as ElectronApp} from 'electron';
 import application from './platform/electron/app-remote';
 
 // 禁用自签发证书警告
-ElectronApp.commandLine.appendSwitch('ignore-certificate-errors');
+ElectronApp.commandLine.appendSwitch('ignore-certificate-errors', 'true');
+ElectronApp.commandLine.appendSwitch('ignore-urlfetcher-cert-requests', 'true');
 
 // 记录入口文件所在目录
 application.init(__dirname);
