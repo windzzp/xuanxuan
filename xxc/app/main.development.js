@@ -60,10 +60,10 @@ ElectronApp.on('window-all-closed', () => {
  */
 const installExtensions = async () => {
     if (process.env.SKIP_INSTALL_EXTENSIONS) {
-        console.log('>> 已跳过安装 Electron 调试扩展。');
+        console.log('>> Skip install electron extension for debug mode.');
         return;
     }
-    console.log('>> 正在安装 Electron 调试扩展...首次启动可能需要花费几分钟时间，如果长时间没有出现主界面窗口，请尝试退出此命令行任务，然后执行 "npm run start-hot-fast" 来代替 "npm run start-hot" 命令。');
+    console.log('>> Installing electron extensions...It may take a few minutes for the first boot. If the main window does not show for a long time, try to exit current task in comand line window and then execute "npm run start-hot-fast" instead of the "npm run start-hot" command.');
     if (process.env.NODE_ENV === 'development') {
         const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
         const extensions = [
