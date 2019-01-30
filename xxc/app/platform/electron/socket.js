@@ -307,7 +307,7 @@ export default class Socket {
         let data = null;
         if (flags && flags.binary) {
             if (this.options && this.options.encryptEnable) {
-                data = crypto.decrypt(rawdata, this.options.userToken, this.options.cipherIV);
+                data = crypto.decrypt(Buffer.from(rawdata), this.options.userToken, this.options.cipherIV);
             } else {
                 data = rawdata.toString();
             }
