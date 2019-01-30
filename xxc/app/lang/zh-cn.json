@@ -500,6 +500,7 @@
     "setting.chats.enableAnimate": "启用动画效果",
     "setting.chats.enableSearchInEmojionePicker": "表情面板启用搜索（重新载入后生效）",
     "setting.chats.listenClipboardImage": "监听剪切板图片并提示直接发送",
+    "setting.chats.sendTypingStatus": "一对一聊天时向对方发送我的输入状态",
     "setting.chats.sendHDEmoticon": "当消息只包含一个表情符时直接发送高清表情",
     "setting.chats.showMeOnMenu": "在联系人列表上显示我自己",
     "setting.chats.showMessageTip": "在消息发送框工具栏显示消息框小技巧按钮",

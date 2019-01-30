@@ -500,6 +500,7 @@
     "setting.chats.enableAnimate": "Enable animation",
     "setting.chats.enableSearchInEmojionePicker": "Enable emoji search bar (valid after restart)",
     "setting.chats.listenClipboardImage": "Listen to clipboard image and send reminders to send it directly.",
+    "setting.chats.sendTypingStatus": "Send my input status to the other party when chatting one-on-one",
     "setting.chats.sendHDEmoticon": "Send HD emoji if the message only has an emoji.",
     "setting.chats.showMeOnMenu": "Show me in the contact list",
     "setting.chats.showMessageTip": "Show tips for toolbars",
