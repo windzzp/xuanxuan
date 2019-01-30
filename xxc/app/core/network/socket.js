@@ -199,6 +199,10 @@ export default class AppSocket extends Socket {
                 delete this.requestTimes[msg.rid];
                 const currentTime = process.uptime ? process.uptime() * 1000 : new Date().getTime();
                 responseTime = currentTime - requestTime;
+
+                this.perfData.count += 1;
+                this.perfData.total += responseTime;
+                this.perfData.average = this.perfData.total / this.perfData.count;
             }
         }
 
@@ -216,7 +220,7 @@ export default class AppSocket extends Socket {
             }
             if (DEBUG) {
                 if (responseTime) {
-                    console.collapse('SOCKET WAITING Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale', `${responseTime} ms`, 'muted');
+                    console.collapse('SOCKET WAITING Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale', `${responseTime} ms, average ${this.perfData.average} ms`, 'muted');
                 } else {
                     console.collapse('SOCKET WAITING Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale');
                 }
@@ -236,7 +240,7 @@ export default class AppSocket extends Socket {
         }
         if (DEBUG) {
             if (responseTime) {
-                console.collapse('SOCKET Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale', `${responseTime} ms`, 'muted');
+                console.collapse('SOCKET Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale', `${responseTime} ms, average ${this.perfData.average} ms`, 'muted');
             } else {
                 console.collapse('SOCKET Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale');
             }
@@ -296,6 +300,12 @@ export default class AppSocket extends Socket {
      */
     onInit() {
         this.lastHandTime = 0;
+        if (DEBUG) {
+            this.perfData = {
+                count: 0,
+                total: 0
+            };
+        }
     }
 
     /**
