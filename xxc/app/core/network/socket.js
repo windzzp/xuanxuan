@@ -32,6 +32,25 @@ const EVENT = {
 };
 
 /**
+ * 根据消耗时间返回一个颜色值，用于表达所消耗时间的大小
+ * @param {number} time 消耗时间
+ * @return {string} 颜色值
+ * @private
+ */
+const getPerfTimeColor = time => {
+    if (time > 1000) {
+        return 'red';
+    }
+    if (time > 200) {
+        return 'orange';
+    }
+    if (time > 50) {
+        return 'muted';
+    }
+    return 'green';
+};
+
+/**
  * 监听消息回应
  * @param {string} moduleName 消息操作模块名称
  * @param {string} methodName 消息操作方法名称
@@ -147,7 +166,7 @@ export default class AppSocket extends Socket {
                         this.perfData.sendCount += 1;
                         this.perfData.sendTotal += sendRequestTime;
                         this.perfData.sendAverate = this.perfData.sendTotal / this.perfData.sendCount;
-                        console.collapse('Socket Send ⬆︎', 'indigoBg', msg.pathname, 'indigoPale', `${sendRequestTime} ms, averate ${this.perfData.sendAverate.toFixed(3)} ms`, 'muted');
+                        console.collapse('Socket Send ⬆︎', 'indigoBg', msg.pathname, 'indigoPale', `${sendRequestTime} ms, averate ${this.perfData.sendAverate.toFixed(3)} ms`, getPerfTimeColor(sendRequestTime));
                     } else {
                         console.collapse('Socket Send ⬆︎', 'indigoBg', msg.pathname, 'indigoPale');
                     }
@@ -224,7 +243,7 @@ export default class AppSocket extends Socket {
             }
             if (DEBUG) {
                 if (responseTime) {
-                    console.collapse('SOCKET WAITING Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale', `${responseTime} ms, average ${this.perfData.average.toFixed(3)} ms`, 'muted');
+                    console.collapse('SOCKET WAITING Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale', `${responseTime} ms, average ${this.perfData.average.toFixed(3)} ms`, getPerfTimeColor(responseTime));
                 } else {
                     console.collapse('SOCKET WAITING Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale');
                 }
@@ -244,7 +263,7 @@ export default class AppSocket extends Socket {
         }
         if (DEBUG) {
             if (responseTime) {
-                console.collapse('SOCKET Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale', `${responseTime} ms, average ${this.perfData.average.toFixed(3)} ms`, 'muted');
+                console.collapse('SOCKET Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale', `${responseTime} ms, average ${this.perfData.average.toFixed(3)} ms`, getPerfTimeColor(responseTime));
             } else {
                 console.collapse('SOCKET Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale');
             }
