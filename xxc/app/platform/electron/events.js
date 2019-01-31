@@ -33,7 +33,7 @@ class Events extends EventEmitter {
         this.eventsMap[name] = {listener, name: event};
         if (DEBUG) {
             if (this.isMainProcess) {
-                console.log('\n>> ON EVENT', event);
+                console.log('>> ON EVENT', event);
             } else {
                 console.collapse('ON EVENT', 'orangeBg', event, 'orangePale');
                 console.trace('event', this.eventsMap[name]);
@@ -60,7 +60,7 @@ class Events extends EventEmitter {
         this.eventsMap[name] = {listener: listenerBinder, name: event};
         if (DEBUG) {
             if (this.isMainProcess) {
-                console.log('\n>> ON ONCE EVENT', event);
+                console.log('>> ON ONCE EVENT', event);
             } else {
                 console.collapse('ON ONCE EVENT', 'orangeBg', event, 'orangePale');
                 console.trace('event', this.eventsMap[name]);
@@ -109,7 +109,7 @@ class Events extends EventEmitter {
         super.emit(names, ...args);
         if (DEBUG) {
             if (this.isMainProcess) {
-                console.log('\n>> EMIT EVENT', names);
+                console.log('>> EMIT EVENT', names);
             } else {
                 console.collapse('EMIT EVENT', 'orangeBg', names, 'orangePale');
                 args.forEach((arg, argIdx) => {
