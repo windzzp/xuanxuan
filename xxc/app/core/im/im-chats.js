@@ -4,7 +4,7 @@ import Chat from '../models/chat';
 import ChatMessage from '../models/chat-message';
 import NotificationMessage from '../models/notification-message';
 import profile from '../profile';
-import Events from '../events';
+import events from '../events';
 import members from '../members';
 import db from '../db';
 import StringHelper from '../../utils/string-helper';
@@ -179,7 +179,7 @@ export const saveChatMessages = (messages, chats) => {
         messages = [messages];
     }
 
-    Events.emit(EVENT.messages, messages);
+    events.emit(EVENT.messages, messages);
 
     if (chats) {
         updateChats(chats);
@@ -245,7 +245,7 @@ export const deleteLocalMessage = (message) => {
     }
     const chat = getChat(message.cgid);
     chat.removeMessage(message.gid);
-    Events.emitDataChange({chats: {[chat.gid]: chat}});
+    events.emitDataChange({chats: {[chat.gid]: chat}});
     return db.database.chatMessages.delete(message.gid);
 };
 
@@ -302,7 +302,7 @@ export const getChatMessages = (chat, queryCondition, limit = CHATS_LIMIT_DEFAUL
             const result = rawData ? chatMessages : chatMessages.map(createChatMessage);
             if (!skipAdd && cgid) {
                 chat.addMessages(result, profile.userId, true);
-                Events.emitDataChange({chats: {[cgid]: chat}});
+                events.emitDataChange({chats: {[cgid]: chat}});
             }
             return Promise.resolve(result);
         }
@@ -331,7 +331,7 @@ const fetchChatMessagesQueue = [];
  * @return {Symbol}
  */
 export const onFetchQueueFinish = (queueId, listener) => {
-    return Events.once(`${EVENT.fetchQueueFinish}${queueId}`, listener);
+    return events.once(`${EVENT.fetchQueueFinish}${queueId}`, listener);
 };
 
 /**
@@ -350,7 +350,7 @@ const processChatMessageQueue = () => {
             queueId, chat, queryCondition, limit, offset, reverse, skipAdd, rawData, returnCount,
         } = queueData;
         const handleChatMessageQueueResult = result => {
-            Events.emit(`${EVENT.fetchQueueFinish}${queueId}`, result);
+            events.emit(`${EVENT.fetchQueueFinish}${queueId}`, result);
             isGetChatMessagesQueueBusy = false;
             processChatMessageQueue();
         };
@@ -509,7 +509,7 @@ export const updateChats = (chatArr) => {
 
     if (newchats && Object.keys(newchats).length) {
         Object.assign(chats, newchats);
-        Events.emitDataChange({chats: newchats});
+        events.emitDataChange({chats: newchats});
     }
 };
 
@@ -550,7 +550,7 @@ export const initChats = (chatArr, eachCallback) => {
                 eachCallback(chat);
             }
         });
-        Events.emit(EVENT.init, chats);
+        events.emit(EVENT.init, chats);
     }
 };
 
@@ -1075,7 +1075,7 @@ export const removeChat = gid => {
     if (removedChat) {
         removedChat.delete = true;
         delete chats[gid];
-        Events.emitDataChange({chats: {[gid]: removedChat}});
+        events.emitDataChange({chats: {[gid]: removedChat}});
         return true;
     }
     return false;
@@ -1131,7 +1131,7 @@ export const updatePublicChats = (serverPublicChats) => {
             });
         }
     }
-    Events.emitDataChange({publicChats});
+    events.emitDataChange({publicChats});
 };
 
 /**
@@ -1140,7 +1140,7 @@ export const updatePublicChats = (serverPublicChats) => {
  * @return {Symbol}
  */
 export const onChatsInit = listener => {
-    return Events.on(EVENT.init, listener);
+    return events.on(EVENT.init, listener);
 };
 
 /**
@@ -1149,7 +1149,7 @@ export const onChatsInit = listener => {
  * @return {Symbol}
  */
 export const onChatMessages = listener => {
-    return Events.on(EVENT.messages, listener);
+    return events.on(EVENT.messages, listener);
 };
 
 // 监听用户资料变更事件，通常在用户登录之后
