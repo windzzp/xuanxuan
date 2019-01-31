@@ -906,6 +906,26 @@ export default class UserConfig {
     }
 
     /**
+     * 获取是否在一对一聊天时向对方发送输入状态
+     *
+     * @memberof UserConfig
+     * @type {boolean}
+     */
+    get sendTypingStatus() {
+        return this.get('ui.chat.sendTypingStatus', true);
+    }
+
+    /**
+     * 设置是否在一对一聊天时向对方发送输入状态
+     *
+     * @param {boolean} flag 在一对一聊天时向对方发送输入状态
+     * @memberof UserConfig
+     */
+    set sendTypingStatus(flag) {
+        return this.set('ui.chat.sendTypingStatus', flag);
+    }
+
+    /**
      * 设置讨论组分组折叠展开状态
      *
      * @param {string} listType 列表类型

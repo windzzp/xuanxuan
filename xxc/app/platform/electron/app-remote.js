@@ -76,7 +76,7 @@ class AppRemote {
                     try {
                         e.sender.send(callBackEventName, x);
                     } catch (err) {
-                        console.error('\n>> ERROR: Cannot send remote result to BrowserWindow.', err);
+                        console.error('>> ERROR: Cannot send remote result to BrowserWindow.', err);
                     }
                     return x;
                 }).catch(error => {
@@ -86,11 +86,11 @@ class AppRemote {
                 try {
                     e.sender.send(callBackEventName, result);
                 } catch (err) {
-                    console.error('\n>> ERROR: Cannot send remote result to BrowserWindow.', err);
+                    console.error('>> ERROR: Cannot send remote result to BrowserWindow.', err);
                 }
             }
             if (DEBUG) {
-                console.info('\n>> Accept remote call', `${callBackEventName}.${method}(`, args, ')');
+                console.info('>> Accept remote call', `${callBackEventName}.${method}(`, args, ')');
             }
         });
 
@@ -110,24 +110,24 @@ class AppRemote {
                 } catch (_) {
                     this.off(eventId);
                     if (SHOW_LOG) {
-                        console.error(`\n>> Remote event '${event}' has be force removed, because window is closed.`, e);
+                        console.error(`>> Remote event '${event}' has be force removed, because window is closed.`, e);
                     }
                 }
             });
             // this._eventsMap[eventId] = {remote: true, id: remoteOnEventId};
-            if (SHOW_LOG) console.log('\n>> REMOTE EVENT on', event, eventId);
+            if (SHOW_LOG) console.log('>> REMOTE EVENT on', event, eventId);
         });
 
         // 绑定渲染进程请求取消绑定主进程事件
         ipcMain.on(EVENT.remote_off, (e, eventId) => {
             events.off(eventId);
-            if (SHOW_LOG) console.log('\n>> REMOTE EVENT off', eventId);
+            if (SHOW_LOG) console.log('>> REMOTE EVENT off', eventId);
         });
 
         // 绑定渲染进程请求触发主进程事件
         ipcMain.on(EVENT.remote_emit, (e, eventId, ...args) => {
             events.emit(eventId, ...args);
-            if (SHOW_LOG) console.log('\n>> REMOTE EVENT emit', eventId);
+            if (SHOW_LOG) console.log('>> REMOTE EVENT emit', eventId);
         });
 
         // 绑定渲染进程通知准备就绪事件
@@ -135,8 +135,18 @@ class AppRemote {
             if (windowName) {
                 Object.assign(this.appConfig, config);
                 this.createTrayIcon(windowName);
+                // 设置关于窗口
+                if (typeof ElectronApp.setAboutPanelOptions === 'function') {
+                    ElectronApp.setAboutPanelOptions({
+                        applicationName: Lang.title,
+                        applicationVersion: this.appConfig.pkg.version,
+                        copyright: 'Copyright (C) 2017 cnezsoft.com',
+                        credits: `Licence: ${this.appConfig.pkg.license}`,
+                        version: DEBUG ? '[debug]' : ''
+                    });
+                }
             }
-            if (SHOW_LOG) console.log('\n>> App ready.');
+            if (SHOW_LOG) console.log('>> App ready.');
         });
 
         onLangChange(() => {
@@ -332,17 +342,6 @@ class AppRemote {
 
         // 创建应用窗口菜单
         this.createAppMenu();
-
-        // 设置关于窗口
-        if (typeof ElectronApp.setAboutPanelOptions === 'function') {
-            ElectronApp.setAboutPanelOptions({
-                applicationName: Lang.title,
-                applicationVersion: this.appConfig.pkg.version,
-                copyright: 'Copyright (C) 2017 cnezsoft.com',
-                credits: `Licence: ${this.appConfig.pkg.license}`,
-                version: DEBUG ? '[debug]' : ''
-            });
-        }
 
         this.isReady = true;
     }
@@ -650,7 +649,7 @@ class AppRemote {
                     buttons: ['Reload', 'Close']
                 };
                 if (DEBUG) {
-                    console.error(`\n>> ERROR: ${messageBoxOptions.message}`);
+                    console.error(`>> ERROR: ${messageBoxOptions.message}`);
                 }
                 dialog.showMessageBox(messageBoxOptions, (index) => {
                     if (index === 0) {

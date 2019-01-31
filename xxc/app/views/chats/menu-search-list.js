@@ -200,10 +200,13 @@ export default class MenuSearchList extends Component {
      * @private
      * @return {void}
      */
-    handleClick = () => {
+    handleItemClick = () => {
         const {onRequestClearSearch} = this.props;
-        onRequestClearSearch();
+        if (onRequestClearSearch) {
+            onRequestClearSearch();
+        }
     }
+
     /**
      * React 组件生命周期函数：Render
      * @private
@@ -247,7 +250,7 @@ export default class MenuSearchList extends Component {
             listViews.push(<ChatListItem
                 onMouseEnter={() => this.setState({select: chat})}
                 onContextMenu={this.handleItemContextMenu.bind(this, chat)}
-                onClick={this.handleClick.bind(this)}
+                onClick={this.handleItemClick}
                 key={chat.gid}
                 data-gid={chat.gid}
                 filterType={filter}

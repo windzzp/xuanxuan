@@ -268,6 +268,11 @@ export default class UserSetting extends Component {
                         name: 'ui.chat.listenClipboardImage',
                         caption: Lang.string('setting.chats.listenClipboardImage'),
                         hidden: isBrowser
+                    }, {
+                        type: 'boolean',
+                        name: 'ui.chat.sendTypingStatus',
+                        caption: Lang.string('setting.chats.sendTypingStatus'),
+                        hidden: isBrowser
                     }
                 ]
             }, {

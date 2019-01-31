@@ -1,6 +1,7 @@
 import events from '../events';
 import {socket} from '../server';
 import profile, {getCurrentUser} from '../profile';
+import members from '../members';
 
 /**
  * 事件表
@@ -12,6 +13,18 @@ const EVENT = {
 };
 
 /**
+ * 用于方便获取用户信息的对象
+ * @type {Object}
+ * @private
+ */
+const app = {
+    members,
+    get user() {
+        return profile.user;
+    }
+};
+
+/**
  * 至少间隔多长时间向服务器更新状态，单位毫秒
  * @type {number}
  */
@@ -20,9 +33,16 @@ export const msgSendInterval = 3000;
 /**
  * 存储聊天输入框状态
  * @type {Object}
+ * @private
  */
-const chatSendboxStatus = {};
-const userTypingStatus = {};
+const lastTypingTimes = {};
+
+/**
+ * 记录当前是否在发送状态数据包
+ * @type {boolean}
+ * @private
+ */
+let isSendingTyping = false;
 
 /**
  * 通知界面聊天输入状态变更
@@ -32,10 +52,7 @@ const userTypingStatus = {};
  * @return {void}
  */
 export const updateChatTyping = (cgid, typing, typeUserID) => {
-    if (userTypingStatus[typeUserID] !== typing) {
-        userTypingStatus[typeUserID] = typing;
-        events.emit(`${EVENT.chat_typing_change}.${cgid}`, typing, typeUserID);
-    }
+    events.emit(`${EVENT.chat_typing_change}.${cgid}`, typing, typeUserID);
 };
 
 /**
@@ -52,10 +69,11 @@ export const onChatTypingChange = (cgid, listener) => {
  * 向服务器发送当前用户输入状态变更信息
  * @param {Chat} chat 当前聊天对象
  * @param {boolean} typing 如果为 `true` 表示用户正在输入，如果为 `false` 表示用户停止输入
- * @returns {Promise} 使用 Promise 异步返回处理结果
+ * @returns {void}
  */
 export const sendChatTyping = (chat, typing) => {
     const theOtherMembersID = chat.getOtherMembersID(profile.userId);
+    isSendingTyping = true;
     return socket.send({
         method: 'typing',
         params: [
@@ -63,6 +81,9 @@ export const sendChatTyping = (chat, typing) => {
             chat.gid,
             typing
         ]
+    }).then(msg => {
+        isSendingTyping = false;
+        return Promise.resolve(msg);
     });
 };
 
@@ -73,49 +94,30 @@ export const sendChatTyping = (chat, typing) => {
  * @return {void}
  */
 export const updateChatSendboxStatus = (chat, hasContent) => {
+    // 如果聊天对方不在线，则不发送输入状态
+    if (!chat.isOnline(app)) {
+        return;
+    }
+
+    // 如果上一个输入状态还没发出去，则取消此次状态更新
+    if (isSendingTyping) {
+        return;
+    }
+
+    // 如果用户没有登录或者版本不支持或者用户禁用了这个功能，则不发送输入状态
     const user = getCurrentUser();
-    if (!user || !user.isVersionSupport('chatTyping')) {
+    if (!user || !user.isVersionSupport('chatTyping') || !user.config.sendTypingStatus) {
         return;
     }
 
-    const status = chatSendboxStatus[chat.gid] || {
-        typingTime: 0,
-    };
-
+    // 获取上次发送状态时的时间
+    const {gid} = chat;
+    const typingTime = lastTypingTimes[gid];
     const now = new Date();
-    const {typingTime} = status;
 
-    if (!typingTime && !hasContent) {
-        return;
+    // 如果还没更新过状态，或者上次更新状态是 3 秒之前
+    if ((!typingTime && hasContent) || (now - typingTime) >= msgSendInterval) {
+        sendChatTyping(chat, true);
+        lastTypingTimes[gid] = now;
     }
-
-    if (status.delayTimer) {
-        clearTimeout(status.delayTimer);
-        status.delayTimer = null;
-    }
-
-    if (hasContent) {
-        // 如果还没更新过状态，或者上次更新状态是3秒之前
-        if (!typingTime || (now - typingTime) > msgSendInterval) {
-            sendChatTyping(chat, true);
-            status.typingTime = now;
-        }
-        status.delayTimer = setTimeout(() => {
-            sendChatTyping(chat, false);
-            status.typingTime = 0;
-            status.delayTimer = null;
-        }, 1000);
-    } else if (typingTime) {
-        if ((now - typingTime) > msgSendInterval) {
-            sendChatTyping(chat, false);
-            status.typingTime = 0;
-        } else {
-            status.delayTimer = setTimeout(() => {
-                sendChatTyping(chat, false);
-                status.typingTime = 0;
-                status.delayTimer = null;
-            }, 1000);
-        }
-    }
-    chatSendboxStatus[chat.gid] = status;
 };
