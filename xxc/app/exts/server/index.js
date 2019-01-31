@@ -161,11 +161,11 @@ const processExtensions = async () => {
                     onChangeListener(newExt, 'add');
                 }
             } else {
-                theExt.setLoadRemoteResult(false, new Error('Cannot read package.json from ' + theExt.localPath));
+                theExt.setLoadRemoteResult(false, new Error(`Cannot read package.json from ${theExt.localPath}`));
             }
         } catch (error) {
             if (DEBUG) {
-                console.error('Process remote extension error', error);
+                console.warn('Process remote extension error', {error, extension: theExt});
             }
             theExt.setLoadRemoteResult(false, error);
         }
