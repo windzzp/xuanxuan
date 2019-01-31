@@ -4,7 +4,7 @@ $lang->chat->debug    = 'Debug';
 
 $lang->chat->version     = 'Version';
 $lang->chat->xxbLang     = 'Server Lang';
-$lang->chat->key         = 'Secret';
+$lang->chat->key         = 'Key';
 $lang->chat->systemGroup = 'System';
 $lang->chat->url         = 'URL';
 $lang->chat->createKey   = 'New';
@@ -78,7 +78,7 @@ $lang->chat->placeholder->xxd = new stdclass();
 $lang->chat->placeholder->xxd->ip             = 'Listen to the server IP address, Default 0.0.0.0';
 $lang->chat->placeholder->xxd->chatPort       = 'The port on which the chat client communicates';
 $lang->chat->placeholder->xxd->commonPort     = 'Generic port used for client login verification and for file upload and download';
-$lang->chat->placeholder->xxd->isHttps        = 'Enable https';
+$lang->chat->placeholder->xxd->isHttps        = 'Https';
 $lang->chat->placeholder->xxd->uploadFileSize = 'Upload file size';
 $lang->chat->placeholder->xxd->maxOnlineUser  = 'Maximum number of user online';
 $lang->chat->placeholder->xxd->sslcrt         = 'Copy the certificate content here';
