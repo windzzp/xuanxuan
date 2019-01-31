@@ -4,7 +4,7 @@ import {classes} from '../../utils/html-helper';
 import {formatBytes} from '../../utils/string-helper';
 import Lang from '../../core/lang';
 import App from '../../core';
-import {checkUploadFileSize} from '../../core/network/api';
+import {checkUploadFileSize} from '../../core/im/im-files';
 import Emojione from '../../components/emojione';
 
 /**

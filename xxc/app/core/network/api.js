@@ -47,21 +47,6 @@ export const requestServerInfo = user => {
 };
 
 /**
- * 检查上传的文件大小是否符合要求
- * @param {User} user 当前用户
- * @param {number} size 文件大小
- * @return {boolean} 如果为 `true` 则符合要求，否则不符合要求
- */
-export const checkUploadFileSize = (user, size) => {
-    if (typeof size === 'object') {
-        // eslint-disable-next-line prefer-destructuring
-        size = size.size;
-    }
-    const {uploadFileSize} = user;
-    return uploadFileSize && size <= uploadFileSize && size !== 0;
-};
-
-/**
  * 获取然之服务器信息
  * @param {User} user 当前用户
  * @returns {Promise} 使用 Promise 异步返回处理结果
