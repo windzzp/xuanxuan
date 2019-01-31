@@ -11,11 +11,17 @@ export default {
     mode: 'production',
 
     module: {
-        rules: [{
-            test: /\.jsx?$/,
-            loader: 'babel-loader',
-            exclude: /node_modules/
-        }],
+        rules: [
+            {
+                test: /\.tsx?$/,
+                loader: 'awesome-typescript-loader',
+                exclude: /node_modules/
+            }, {
+                test: /\.jsx?$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/
+            }
+        ],
         // noParse: [/BufferUtil/, /Validation/]
     },
 
@@ -29,7 +35,7 @@ export default {
 
     // https://webpack.github.io/docs/configuration.html#resolve
     resolve: {
-        extensions: ['.js', '.jsx', '.json'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
         mainFields: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
         alias: {
             Platform: 'platform/electron',
