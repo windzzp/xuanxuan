@@ -64,9 +64,8 @@ const checkLocalCache = ext => {
                 const md5Obj = fs.readJsonSync(Path.join(ext.localPath, 'md5.json'), {throws: false});
                 if (md5Obj && md5Obj.md5 === ext.md5) {
                     return resolve(true);
-                } else {
-                    fs.emptyDirSync(ext.localPath);
                 }
+                fs.emptyDirSync(ext.localPath);
             }
             return resolve(false);
         }).catch(() => (resolve(false)));
@@ -224,9 +223,10 @@ const runEntryVisitUrlTask = (newTask) => {
         }).then(url => {
             onFinishTask();
             task.resolve(url);
-        }).catch(err => {
+            return url;
+        }).catch((err) => {
             onFinishTask();
-            task.reject();
+            task.reject(err);
         });
     }
 };
