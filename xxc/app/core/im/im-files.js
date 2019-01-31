@@ -20,8 +20,11 @@ export const checkUploadFileSize = (size) => {
         // eslint-disable-next-line prefer-destructuring
         size = size.size;
     }
+    if (!size || size <= 0) {
+        return false;
+    }
     const {uploadFileSize} = profile.user;
-    return uploadFileSize && size <= uploadFileSize && size !== 0;
+    return profile.user.uploadFileSize && size <= uploadFileSize;
 };
 
 /**

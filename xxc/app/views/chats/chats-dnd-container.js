@@ -84,7 +84,7 @@ export default class ChatsDndContainer extends PureComponent {
             let hasEmptyFile = false;
             for (let i = 0; i < e.dataTransfer.files.length; ++i) {
                 const file = e.dataTransfer.files[i];
-                if (checkUploadFileSize(App.user, file.size)) {
+                if (checkUploadFileSize(file.size)) {
                     if (file.type.startsWith('image/')) {
                         App.im.ui.sendContentToChat(file, 'image');
                     } else {
@@ -92,12 +92,12 @@ export default class ChatsDndContainer extends PureComponent {
                     }
                 } else {
                     hasError = true;
-                    if (file.size === 0) hasEmptyFile = true;
+                    if (file.size <= 0) hasEmptyFile = true;
                 }
             }
             if (hasError) {
                 if (hasEmptyFile) {
-                    App.ui.showMessger(Lang.error({code: 'UPLOAD_FILE_IS_TOO_EMPTY', formats: formatBytes(0)}), {type: 'warning'});
+                    App.ui.showMessger(Lang.error('UPLOAD_FILE_IS_ZEOR_SIZE'), {type: 'warning'});
                 } else {
                     App.ui.showMessger(Lang.error({code: 'UPLOAD_FILE_IS_TOO_LARGE', formats: formatBytes(App.user.uploadFileSize)}), {type: 'warning'});
                 }
