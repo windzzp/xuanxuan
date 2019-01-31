@@ -135,6 +135,16 @@ class AppRemote {
             if (windowName) {
                 Object.assign(this.appConfig, config);
                 this.createTrayIcon(windowName);
+                // 设置关于窗口
+                if (typeof ElectronApp.setAboutPanelOptions === 'function') {
+                    ElectronApp.setAboutPanelOptions({
+                        applicationName: Lang.title,
+                        applicationVersion: this.appConfig.pkg.version,
+                        copyright: 'Copyright (C) 2017 cnezsoft.com',
+                        credits: `Licence: ${this.appConfig.pkg.license}`,
+                        version: DEBUG ? '[debug]' : ''
+                    });
+                }
             }
             if (SHOW_LOG) console.log('\n>> App ready.');
         });
@@ -332,17 +342,6 @@ class AppRemote {
 
         // 创建应用窗口菜单
         this.createAppMenu();
-
-        // 设置关于窗口
-        if (typeof ElectronApp.setAboutPanelOptions === 'function') {
-            ElectronApp.setAboutPanelOptions({
-                applicationName: Lang.title,
-                applicationVersion: this.appConfig.pkg.version,
-                copyright: 'Copyright (C) 2017 cnezsoft.com',
-                credits: `Licence: ${this.appConfig.pkg.license}`,
-                version: DEBUG ? '[debug]' : ''
-            });
-        }
 
         this.isReady = true;
     }
