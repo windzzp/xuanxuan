@@ -1296,12 +1296,26 @@ export default class Chat extends Entity {
     }
 
     /**
-     * 获取是否是第一次从数据库加载消息
+     * 获取是否是第一次从数据库加载消息，之前没有从数据库加载过数据
      * @memberof Chat
      * @type {boolean}
      */
     get isFirstLoaded() {
-        return this.loadingOffset !== undefined;
+        return this.loadingOffset === undefined;
+    }
+
+    /**
+     * 清除该聊天对应的缓存
+     * @return {void}
+     */
+    deleteCache() {
+        delete this._pinyin;
+        delete this.loadingOffset;
+        if (this.noticeCount) {
+            this._messages = this._messages.filter(x => x.unread);
+        } else {
+            this._messages = [];
+        }
     }
 
     /**

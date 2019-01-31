@@ -10,7 +10,7 @@ import _ChatSendboxToolbar from './chat-sendbox-toolbar';
 import MessagesPreivewDialog from './messages-preview-dialog';
 import withReplaceView from '../with-replace-view';
 import {updateChatSendboxStatus} from '../../core/im/im-chat-typing';
-import {setInfo, getInfo} from '../../core/models/timing';
+import {setChatCacheState, takeOutChatCacheState} from '../../core/im/im-ui';
 
 /**
  * DraftEditor 可替换组件形式
@@ -89,6 +89,7 @@ export default class ChatSendbox extends Component {
         this.state = {
             sendButtonDisabled: true,
         };
+        this.defaultState = takeOutChatCacheState(props.chat.gid, 'draft');
     }
 
     /**
@@ -102,21 +103,8 @@ export default class ChatSendbox extends Component {
      * @return {void}
      */
     componentDidMount() {
-        // 将本地缓存对应聊天信息取出，添加到输入框内。
-        const content = getInfo('content', this.props.chat.gid);
-        if (content && content.length) {
-            content[0].content.forEach(message => {
-                switch (message.type) {
-                case 'image':
-                    this.editbox.appendImage(message.content);
-                    break;
-                default:
-                    this.editbox.appendContent(message.content);
-                }
-            });
-        }
-
-        this.onSendContentToChatHandler = App.im.ui.onSendContentToChat(this.props.chat.gid, content => {
+        const {chat: thisChat} = this.props;
+        this.onSendContentToChatHandler = App.im.ui.onSendContentToChat(thisChat.gid, content => {
             if (content.clear) {
                 this.clearContent();
             }
@@ -133,7 +121,6 @@ export default class ChatSendbox extends Component {
         });
 
         this.onChatActiveHandler = App.im.ui.onActiveChat(chat => {
-            const {chat: thisChat} = this.props;
             if (chat.gid === thisChat.gid) {
                 this.focusEditor();
             }
@@ -152,16 +139,14 @@ export default class ChatSendbox extends Component {
      */
     componentWillUnmount() {
         const {chat} = this.props;
-        let content = '';
-        if (this.editbox) {
-            content = this.editbox.getContentList();
-        } else {
-            content = this.contentText;
+        const {editbox} = this;
+        const editorState = editbox.getEditorState();
+        if (editorState) {
+            const contentState = editorState.getCurrentContent();
+            if (contentState && contentState.hasText()) {
+                setChatCacheState(chat.gid, {draft: editorState});
+            }
         }
-        setInfo('content', {
-            cgid: chat.gid,
-            content,
-        });
 
         App.events.off(this.onSendContentToChatHandler, this.onChatActiveHandler);
     }
@@ -273,7 +258,8 @@ export default class ChatSendbox extends Component {
     handleOnReturnKeyDown = e => {
         const keyDecoration = getKeyDecoration(e);
         if (keyDecoration === App.profile.userConfig.sendMessageHotkey) {
-            if (!this.state.sendButtonDisabled) {
+            const {sendButtonDisabled} = this.state;
+            if (!sendButtonDisabled) {
                 setTimeout(() => {
                     this.handleSendButtonClick();
                 }, 10);
@@ -291,7 +277,7 @@ export default class ChatSendbox extends Component {
      * @private
      * @return {void}
      */
-    handlePreviewBtnClick = e => {
+    handlePreviewBtnClick = () => {
         const {sendButtonDisabled} = this.state;
         if (sendButtonDisabled) {
             return;
@@ -312,9 +298,11 @@ export default class ChatSendbox extends Component {
                 messages.push(App.im.server.createTextChatMessage(`![preview-image](${content.image.url || content.image.path})`, chat));
             }
         });
-        MessagesPreivewDialog.show(messages, {onHidden: () => {
-            this.focusEditor();
-        }});
+        MessagesPreivewDialog.show(messages, {
+            onHidden: () => {
+                this.focusEditor();
+            }
+        });
     };
 
     /**
@@ -324,19 +312,11 @@ export default class ChatSendbox extends Component {
      * @private
      * @return {void}
      */
-    handleOnFocus = e => {
+    handleOnFocus = () => {
         const {chat} = this.props;
         const {editbox} = this;
         App.im.ui.emitChatSendboxFocus(chat, editbox.getContent());
     };
-
-    handleOnBlur = () => {
-        const {chat} = this.props;
-        setInfo('lastActiveDate', {
-            cgid: chat.gid,
-            content: new Date().getTime(),
-        });
-    }
 
     /**
      * React 组件生命周期函数：Render
@@ -362,21 +342,24 @@ export default class ChatSendbox extends Component {
         }
         placeholder = placeholder || `${Lang.string('chat.sendbox.placeholder.sendMessage')}${App.profile.userConfig.sendMarkdown ? ' (Markdown)' : ''}`;
         const {userConfig} = App.profile;
+        const {sendButtonDisabled} = this.state;
 
-        return (<div
-            {...other}
-            className={classes('app-chat-sendbox', className)}
-        >
-            <DraftEditor
-                className="app-chat-drafteditor white dock-top has-padding scroll-y"
-                ref={e => {this.editbox = e;}}
-                placeholder={placeholder}
-                onChange={this.handleOnChange}
-                onReturnKeyDown={this.handleOnReturnKeyDown}
-                onFocus={this.handleOnFocus}
-                onBlur={this.handleOnBlur}
-            />
-            <ChatSendboxToolbar className="dock-bottom" chatGid={chat.gid} userConfigChangeTime={userConfig && userConfig.lastChangeTime} sendButtonDisabled={this.state.sendButtonDisabled} onSendButtonClick={this.handleSendButtonClick} onPreviewButtonClick={this.handlePreviewBtnClick} />
-        </div>);
+        return (
+            <div
+                {...other}
+                className={classes('app-chat-sendbox', className)}
+            >
+                <DraftEditor
+                    className="app-chat-drafteditor white dock-top has-padding scroll-y"
+                    defaultState={this.defaultState}
+                    ref={e => {this.editbox = e;}}
+                    placeholder={placeholder}
+                    onChange={this.handleOnChange}
+                    onReturnKeyDown={this.handleOnReturnKeyDown}
+                    onFocus={this.handleOnFocus}
+                />
+                <ChatSendboxToolbar className="dock-bottom" chatGid={chat.gid} userConfigChangeTime={userConfig && userConfig.lastChangeTime} sendButtonDisabled={sendButtonDisabled} onSendButtonClick={this.handleSendButtonClick} onPreviewButtonClick={this.handlePreviewBtnClick} />
+            </div>
+        );
     }
 }

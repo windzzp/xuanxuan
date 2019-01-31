@@ -16,7 +16,6 @@ import User, {isPasswordWithMD5Flag} from '../../core/profile/user';
 import platform from '../../platform';
 import events from '../../core/events';
 import Popover from '../../components/popover';
-import {timingStart} from '../../core/models/timing';
 
 // 从平台访问对象获取模块功能
 const {ui: platformUI} = platform.modules;
@@ -223,7 +222,6 @@ export default class LoginForm extends PureComponent {
             ldap,
         }).then((user) => {
             this.setState({logining: false});
-            timingStart();
             return user;
         }).catch(error => {
             if (DEBUG) {

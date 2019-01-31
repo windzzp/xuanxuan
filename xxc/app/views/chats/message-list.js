@@ -6,7 +6,6 @@ import _MessageListItem from './message-list-item'; // eslint-disable-line
 import App from '../../core';
 import platform from '../../platform';
 import withReplaceView from '../with-replace-view';
-import {setInfo, getInfo} from '../../core/models/timing';
 
 /**
  * MessageListItem 可替换组件形式
@@ -103,12 +102,7 @@ export default class MessageList extends Component {
      * @return {void}
      */
     componentDidMount() {
-        const {onScroll} = this.props;
         this.onChatActiveHandler = App.im.ui.onActiveChat(chat => {
-            const content = getInfo('scrollInfo', chat.gid);
-            if (content && content.length) {
-                if (onScroll && content[0].content.isAtBottom === false) onScroll(content[0].content, content[0].e);
-            }
             if (this.lastMessage && (this.waitNewMessage || this.isScrollBottom) && this.lastMessage.cgid === chat.gid) {
                 this.waitNewMessage = null;
                 this.scrollToBottom(500);
@@ -159,13 +153,22 @@ export default class MessageList extends Component {
     }
 
     /**
+     * 设置滚动位置
+     * @param {number} scrollTop 滚动条距离顶部的距离
+     * @return {void}
+     */
+    scrollTo(scrollTop) {
+        this.element.scrollTop = scrollTop;
+    }
+
+    /**
      * 将消息列表滚动到底部
      *
      * @memberof MessageList
      * @return {void}
      */
     scrollToBottom = () => {
-        this.element.scrollTop = this.element.scrollHeight - this.element.clientHeight;
+        this.scrollTo(this.element.scrollHeight - this.element.clientHeight);
     }
 
     /**
@@ -209,15 +212,15 @@ export default class MessageList extends Component {
      * @return {void}
      */
     handleScroll = e => {
+        const {target} = e;
+        if (!target.classList.contains('app-message-list')) {
+            return;
+        }
         if (isFirefox) {
             const {onScroll} = this.props;
             if (onScroll) {
                 onScroll({isAtTop: true}, e);
             }
-            return;
-        }
-        const {target} = e;
-        if (!target.classList.contains('app-message-list')) {
             return;
         }
         const scrollInfo = {
@@ -227,16 +230,6 @@ export default class MessageList extends Component {
             isAtTop: target.scrollTop === 0,
             isAtBottom: (target.scrollHeight - target.scrollTop) === target.clientHeight
         };
-
-        const {messages} = this.props;
-        if (messages && messages.length) {
-            const {cgid} = messages[0];
-            setInfo('scrollInfo', {
-                cgid,
-                content: scrollInfo,
-                e,
-            });
-        }
 
         this.scrollInfo = scrollInfo;
         const {onScroll} = this.props;

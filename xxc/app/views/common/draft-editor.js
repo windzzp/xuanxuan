@@ -150,6 +150,7 @@ export default class DraftEditor extends PureComponent {
         onReturnKeyDown: PropTypes.func,
         onPastedText: PropTypes.func,
         onPastedFiles: PropTypes.func,
+        defaultState: PropTypes.any,
     };
 
     /**
@@ -166,6 +167,7 @@ export default class DraftEditor extends PureComponent {
         onPastedText: null,
         onPastedFiles: null,
         handleKey: false,
+        defaultState: null,
     };
 
     /**
@@ -182,7 +184,7 @@ export default class DraftEditor extends PureComponent {
          * @see https://react.docschina.org/docs/state-and-lifecycle.html
          * @type {object}
          */
-        this.state = {editorState: EditorState.createEmpty(draftDecorator)};
+        this.state = {editorState: props.defaultState || EditorState.createEmpty(draftDecorator)};
 
         this.onChange = this.onChange.bind(this);
         this.handleKeyCommand = this.handleKeyCommand.bind(this);
@@ -207,6 +209,15 @@ export default class DraftEditor extends PureComponent {
             clearTimeout(this.lastFocusTimer);
             this.lastFocusTimer = null;
         }
+    }
+
+    /**
+     * 获取 DraftJS editorState 对象
+     * @return {Object} editorState 对象
+     */
+    getEditorState() {
+        const {editorState} = this.state;
+        return editorState;
     }
 
     /**
@@ -486,6 +497,7 @@ export default class DraftEditor extends PureComponent {
             onPastedFiles,
             onPastedText,
             handleKey,
+            defaultState,
             ...other
         } = this.props;
 
