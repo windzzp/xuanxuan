@@ -452,7 +452,8 @@ export default class MessageListItem extends Component {
             if (sender.temp) {
                 this.needGetSendInfo = sender.id;
             }
-            const avatarView = hideChatAvatar ? null : <UserAvatar size={avatarSize} className="state" user={sender} onContextMenu={this.handleUserContextMenu} onClick={isNotification ? null : MemberProfileDialog.show.bind(null, sender, null)} />;
+            const onClickSender = isNotification ? (sender.url ? App.ui.openUrl.bind(null, sender.url) : null) : MemberProfileDialog.show.bind(null, sender, null);
+            const avatarView = hideChatAvatar ? null : <UserAvatar size={avatarSize} shape={isNotification && sender.id.startsWith('ext-') ? 'rounded' : 'circle'} className={onClickSender ? 'state' : null} user={sender} onContextMenu={this.handleUserContextMenu} onClick={onClickSender} />;
             const senderName = (isSendByMe && Config.ui['chat.showMeAsMySenderName']) ? Lang.string('chat.message.senderMe') : sender.displayName;
             headerView = (
                 <div className="app-message-item-header">
@@ -462,7 +463,7 @@ export default class MessageListItem extends Component {
                             <a
                                 className="title rounded text-primary"
                                 onContextMenu={staticUI ? null : this.handleUserContextMenu}
-                                onClick={staticUI ? MemberProfileDialog.show.bind(null, sender, null) : this.handleSenderNameClick.bind(this, sender, message)}
+                                onClick={(staticUI || isNotification) ? onClickSender : this.handleSenderNameClick.bind(this, sender, message)}
                             >
                                 {senderName}
                             </a>

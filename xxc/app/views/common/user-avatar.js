@@ -45,6 +45,7 @@ export default class UserAvatar extends Component {
         user: PropTypes.object,
         className: PropTypes.string,
         showStatusDot: PropTypes.bool,
+        shape: PropTypes.string,
     };
 
     /**
@@ -58,6 +59,7 @@ export default class UserAvatar extends Component {
         className: null,
         showStatusDot: null,
         user: null,
+        shape: 'circle',
     };
 
     /**
@@ -85,6 +87,7 @@ export default class UserAvatar extends Component {
         const {
             user,
             className,
+            shape,
             showStatusDot,
             ...other
         } = this.props;
@@ -95,17 +98,20 @@ export default class UserAvatar extends Component {
         }
 
         if (!user) {
-            return <Avatar className={classes('circle user-avatar', className)} icon="account" {...other}>{statusDot}</Avatar>;
+            return <Avatar className={classes('user-avatar', shape, className)} icon="account" {...other}>{statusDot}</Avatar>;
         }
 
-        const avatarImageSrc = user.getAvatar(App.user && App.user.server);
-        if (avatarImageSrc) {
-            return <Avatar className={classes('circle user-avatar', className)} image={<Image src={avatarImageSrc}><Icon name="account muted" /></Image>} imageClassName="circle" {...other}>{statusDot}</Avatar>;
+        const avatar = user.getAvatar ? user.getAvatar(App.user && App.user.server) : user.avatar;
+        if (avatar) {
+            if (avatar.startsWith('icon-') || avatar.startsWith('mdi-')) {
+                return <Avatar skin={user.accentColor || {code: user.id, textColor: '#fff'}} className={classes('user-avatar', shape, className)} icon={avatar} {...other}>{statusDot}</Avatar>;
+            }
+            return <Avatar className={classes('user-avatar', shape, className)} image={<Image src={avatar}><Icon name="account muted" /></Image>} imageClassName="circle" {...other}>{statusDot}</Avatar>;
         }
         const name = user.realname || user.account;
         if (name && name.length) {
-            return <Avatar skin={{code: user.id || name, textColor: '#fff'}} className={classes('circle user-avatar', className)} label={name[0].toUpperCase()} {...other}>{statusDot}</Avatar>;
+            return <Avatar skin={user.accentColor || {code: user.id || name, textColor: '#fff'}} className={classes('user-avatar', shape, className)} label={name[0].toUpperCase()} {...other}>{statusDot}</Avatar>;
         }
-        return <Avatar skin={{code: user.id, textColor: '#fff'}} className={classes('circle user-avatar', className)} icon="account" {...other}>{statusDot}</Avatar>;
+        return <Avatar skin={user.accentColor || {code: user.id, textColor: '#fff'}} className={classes('user-avatar', shape, className)} icon="account" {...other}>{statusDot}</Avatar>;
     }
 }

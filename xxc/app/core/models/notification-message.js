@@ -34,12 +34,15 @@ export default class NotificationMessage extends ChatMessage {
                     id: 'ranzhi',
                     realname: '然之协同',
                     system: true,
-                    avatar: `$${Config.media['image.path']}ranzhi-icon.png`
+                    avatar: `${Config.media['image.path']}ranzhi-icon.png`
                 };
             } else if (sender.name && !sender.realname) {
                 sender.realname = sender.name;
             }
-            this._sender = new Member(sender);
+            if (!sender.displayName) {
+                sender.displayName = sender.realname || sender.name || sender.id;
+            }
+            this._sender = sender;
         }
         return this._sender;
     }

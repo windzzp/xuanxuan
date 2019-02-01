@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 import Path from 'path';
+import uuid from 'uuid';
 import {getDefaultApp, getAppExt} from './exts';
 import OpenedApp from './opened-app';
 import Lang from '../core/lang';
@@ -15,6 +16,7 @@ import Messager from '../components/messager';
 import ExtensionDetailDialog from '../views/exts/extension-detail-dialog';
 import ChatShareDialog from '../views/chats/chat-share-dialog';
 import platform from '../platform';
+import {updateChatMessages} from '../core/im/im-chats';
 
 // 从平台功能访问对象获取功能模块对象
 const {clipboard, ui: platformUI} = platform.modules;
@@ -588,6 +590,35 @@ export const initUI = () => {
     openedApps.push(defaultOpenedApp);
 };
 
+/**
+ * 发送扩展的本地通知到小喧喧
+ * @param {Extension} ext 扩展
+ * @param {Object|String} message 通知文本或通知对象
+ * @return {void}
+ */
+export const sendLocalNotification = (ext, message) => {
+    return updateChatMessages(Object.assign({
+        cgid: 'notification',
+        sender: {
+            realname: ext.displayName,
+            id: `ext-${ext.name}`,
+            avatar: ext.icon,
+            accentColor: ext.accentColor,
+            url: `!showExtensionDialog/${ext.name}`,
+        },
+        contentType: 'text',
+        date: new Date().getTime(),
+        gid: uuid.v4(),
+    }, typeof message !== 'object' ? {content: message} : message, {
+        type: 'notification',
+        data: {
+            ext: ext.name,
+            extVer: ext.version,
+        },
+        id: 0,
+        user: 0,
+    }));
+};
 export default {
     get openedApps() {
         return openedApps;
