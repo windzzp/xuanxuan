@@ -11,7 +11,7 @@ const exts = {
 };
 
 if (DEBUG) {
-    $.exts = exts;
+    global.$.exts = exts;
 }
 
 export default exts;
