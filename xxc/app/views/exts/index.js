@@ -311,7 +311,7 @@ export default class ExtsIndex extends Component {
             return null;
         }
 
-        const openedApps = Exts.ui.openedApps;
+        const {openedApps} = Exts.ui;
 
         let redirectView = null;
         if (match.url.startsWith(ROUTES.exts._)) {
