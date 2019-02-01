@@ -280,7 +280,7 @@ export const getChatMessages = (chat, queryCondition, limit = CHATS_LIMIT_DEFAUL
         return Promise.resolve([]);
     }
     const cgid = chat ? chat.gid : null;
-    let collection = db.database.chatMessages.orderBy('id').and(x => {
+    let collection = db.database.chatMessages.orderBy('date').and(x => {
         return (!cgid || x.cgid === cgid || (cgid === 'notification' && x.cgid === 'littlexx')) && (!queryCondition || queryCondition(x));
     });
     if (reverse) {
