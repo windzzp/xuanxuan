@@ -93,7 +93,7 @@ export default class Navbar extends Component {
          */
         this.state = {
             showUserMenu: false,
-            noticeBadge: 0,
+            newMessageCount: 0,
         };
     }
 
@@ -109,7 +109,7 @@ export default class Navbar extends Component {
      */
     componentDidMount() {
         this.noticeUpdateHandler = App.notice.onNoticeUpdate(notice => {
-            this.setState({noticeBadge: notice.notMuteCount});
+            this.setState({newMessageCount: notice.notMuteCount});
         });
 
         this.dataChangeEventHandler = App.events.onDataChange(data => {
@@ -208,7 +208,7 @@ export default class Navbar extends Component {
         const navbarWidth = Config.ui['navbar.width'];
         const {userConfig} = App.profile;
         const isAvatarOnTop = userConfig && userConfig.avatarPosition === 'top';
-        const {showUserMenu} = this.state;
+        const {showUserMenu, newMessageCount} = this.state;
         const {ExtsRuntime} = global;
 
         /**
@@ -240,6 +240,7 @@ export default class Navbar extends Component {
                         }
                     }
                 </Route>
+                {item.to === ROUTES.chats.recents.__ && newMessageCount && <div className="label label-sm dock-right dock-top circle red badge">{newMessageCount}</div> }
             </div>
         ));
 
