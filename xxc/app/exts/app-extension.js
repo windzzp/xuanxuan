@@ -375,6 +375,6 @@ export default class AppExtension extends Extension {
      * @memberof AppExtension
      */
     get muteNoticeOnActive() {
-        return this._pkg.muteNoticeOnActive;
+        return this._pkg.muteNoticeOnActive !== false;
     }
 }
