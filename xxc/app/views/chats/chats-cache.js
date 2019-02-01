@@ -4,8 +4,8 @@ import {classes} from '../../utils/html-helper';
 import App from '../../core';
 import _ChatView from './chat-view';
 import withReplaceView from '../with-replace-view';
-
-const AUTO_UPDATE_INTERVAL = 1000 * 60 * 30;
+import {DEFAULT_CACHE_LIFE_TIME} from '../../core/im/chat-cache-info.ts';
+import Config from '../../config';
 
 /**
  * ChatView 可替换组件形式
@@ -66,7 +66,7 @@ export default class ChatsCache extends Component {
             if (App.im.ui.isChatsCacheChanged()) {
                 this.forceUpdate();
             }
-        }, AUTO_UPDATE_INTERVAL);
+        }, Math.floor(Config.ui['chat.cacheLife'] || DEFAULT_CACHE_LIFE_TIME / 2));
     }
 
     /**
