@@ -114,6 +114,7 @@ export default class ExtsNavbarView extends PureComponent {
                         <a className={classes('block', {active: isCurrentApp, 'is-open': openedApp})} title={`【${app.displayName}】${app.description || ''}`} href={`#${ROUTES.exts.app.id(app.name)}`} onContextMenu={this.handleAppContextMenu} data-name={app.name}>
                             <Avatar size={Config.ui['navbar.width']} auto={menuIcon} className={classes('rounded flex-none', {'has-padding': !menuIcon.startsWith('mdi-')})} />
                         </a>
+                        {app.noticeCount > 0 && <div className="label label-sm dock-right dock-top circle red badge">{app.noticeCount}</div> }
                     </div>
                 )
             };

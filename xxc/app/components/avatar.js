@@ -43,7 +43,8 @@ export default class Avatar extends PureComponent {
         imageClassName: PropTypes.string,
         iconClassName: PropTypes.string,
         style: PropTypes.object,
-        children: PropTypes.any
+        children: PropTypes.any,
+        badge: PropTypes.any,
     }
 
     /**
@@ -67,6 +68,7 @@ export default class Avatar extends PureComponent {
         style: null,
         children: null,
         auto: null,
+        badge: null
     }
 
     /**
@@ -115,6 +117,7 @@ export default class Avatar extends PureComponent {
             children,
             style,
             iconSize,
+            badge,
             ...other
         } = this.props;
 
@@ -171,11 +174,21 @@ export default class Avatar extends PureComponent {
             }
         }
 
+        let badgeView = null;
+        if (badge) {
+            if (React.isValidElement(badge)) {
+                badgeView = badge;
+            } else {
+                badgeView = <div className="label label-sm dock-right dock-top circle red badge">{badge}</div>;
+            }
+        }
+
         return (
-            <div className={classes('avatar', className)} {...other} style={style}>
+            <div className={classes('avatar', className, {'with-badge': badgeView})} {...other} style={style}>
                 {imageView}
                 {iconView}
                 {labelView}
+                {badgeView}
                 {children}
             </div>
         );

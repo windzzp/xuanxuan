@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-unresolved
 import Path from 'path';
 import uuid from 'uuid';
-import {getDefaultApp, getAppExt} from './exts';
+import {getDefaultApp, getAppExt, getExt} from './exts';
 import OpenedApp from './opened-app';
 import Lang from '../core/lang';
 import {
@@ -597,7 +597,10 @@ export const initUI = () => {
  * @return {void}
  */
 export const sendLocalNotification = (ext, message) => {
-    return updateChatMessages(Object.assign({
+    if (typeof ext === 'string') {
+        ext = getExt(ext);
+    }
+    return ext && updateChatMessages(Object.assign({
         cgid: 'notification',
         sender: {
             realname: ext.displayName,
@@ -619,6 +622,24 @@ export const sendLocalNotification = (ext, message) => {
         user: 0,
     }));
 };
+
+/**
+ * 设置应用图标上的未读通知数目
+ * @param {Extension} ext 扩展
+ * @param {number} noticeCount 未读通知数目
+ * @return {void}
+ * @memberof AppExtension
+ */
+export const updateNoticeBadge = (ext, noticeCount) => {
+    if (typeof ext === 'string') {
+        ext = getAppExt(ext);
+    }
+    if (ext) {
+        ext.noticeCount = noticeCount;
+        saveExtensionData(ext);
+    }
+};
+
 export default {
     get openedApps() {
         return openedApps;
@@ -657,4 +678,6 @@ export default {
     showExtensionDetailDialog,
     createOpenedAppContextMenu,
     createNavbarAppContextMenu,
+    sendLocalNotification,
+    updateNoticeBadge,
 };

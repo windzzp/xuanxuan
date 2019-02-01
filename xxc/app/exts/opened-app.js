@@ -247,6 +247,9 @@ export default class OpenedApp {
                 window.location.hash = appHashRoute;
             }
         }
+        if (app.muteNoticeOnActive && app.noticeCount && window.location.hash.startsWith('#/exts/')) {
+            app.noticeCount = 0;
+        }
         app.callModuleMethod('onActiveApp', this);
     }
 
