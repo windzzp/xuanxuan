@@ -260,6 +260,7 @@ const config = {
     macZipArtifactName: '${name}.${version}${env.PKG_BETA}${env.PKG_DEBUG}.${os}.${ext}',
     buildZip: true,
     zipSubDir: true,
+    autoUpdater: null
 };
 let configDirPath = null;
 if (isCustomConfig) {
@@ -395,6 +396,7 @@ const electronBuilder = {
     artifactName: config.artifactName,
     electronVersion: config.electronVersion,
     electronDownload: {mirror: 'https://npm.taobao.org/mirrors/electron/'},
+    publish: config.autoUpdater && config.autoUpdater.publish,
     extraResources: [{
         from: 'app/build-in/',
         to: 'build-in'
@@ -451,6 +453,7 @@ const electronBuilder = {
         darkModeSupport: config.darkModeSupport
     },
     nsis: {
+        shortcutName: config.productName,
         oneClick: false,
         allowToChangeInstallationDirectory: true,
         artifactName: config.winArtifactName || config.artifactName,
@@ -507,7 +510,8 @@ const outputConfigFiles = () => {
             repository: config.repository,
             buildTime: new Date(),
             buildVersion: config.buildVersion,
-            configurations: config.configurations
+            configurations: config.configurations,
+            updater: config.autoUpdater
         }, config.pkg || null);
 
         // 输出应用 package.json 文件
