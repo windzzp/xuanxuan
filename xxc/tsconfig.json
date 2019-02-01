@@ -5,8 +5,7 @@
         "removeComments": false,
         "preserveConstEnums": true,
         "jsx": "react",
-        "sourceMap": true,
-        "declaration": true
+        "sourceMap": true
     },
     "include": [
         "app/**/*"
