@@ -140,9 +140,9 @@ class AppRemote {
                     ElectronApp.setAboutPanelOptions({
                         applicationName: Lang.title,
                         applicationVersion: this.appConfig.pkg.version,
-                        copyright: 'Copyright (C) 2017 cnezsoft.com',
+                        copyright: `Copyright (C) 2017 ${this.appConfig.pkg.company}`,
                         credits: `Licence: ${this.appConfig.pkg.license}`,
-                        version: DEBUG ? '[debug]' : ''
+                        version: `${this.appConfig.pkg.buildTime ? `build at ${new Date(this.appConfig.pkg.buildTime).toLocaleString()}` : ''}${DEBUG ? '[debug]' : ''}`
                     });
                 }
             }
