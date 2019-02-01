@@ -181,10 +181,7 @@ export const setChatCacheState = (cgid, newState) => {
 export const takeOutChatCacheState = (cgid, stateName) => {
     const cacheInfo = activeCaches[cgid];
     if (cacheInfo) {
-        const stateValue = cacheInfo.takeOutState(stateName);
-        console.log('takeOutChatCacheState', cgid, stateName, stateValue, cacheInfo);
-        return stateValue;
-        // return cacheInfo.takeOutState(stateName);
+        return cacheInfo.takeOutState(stateName);
     }
 };
 
