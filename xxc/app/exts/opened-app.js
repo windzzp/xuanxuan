@@ -36,6 +36,7 @@ export default class OpenedApp {
         const now = new Date().getTime();
         this._createTime = now;
         this._openTime = now;
+        app.callModuleMethod('onOpenApp', this);
     }
 
     /**
@@ -246,5 +247,16 @@ export default class OpenedApp {
                 window.location.hash = appHashRoute;
             }
         }
+        app.callModuleMethod('onActiveApp', this);
+    }
+
+    /**
+     * 关闭应用
+     * @memberof OpenedApp
+     * @return {void}
+     */
+    close() {
+        const {app} = this;
+        app.callModuleMethod('onCloseApp', this);
     }
 }

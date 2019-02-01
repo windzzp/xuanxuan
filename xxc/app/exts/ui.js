@@ -188,6 +188,7 @@ export const openNextApp = () => {
 export const closeApp = (id, openNext = true) => {
     const theOpenedAppIndex = getOpenedAppIndex(id);
     if (theOpenedAppIndex > -1) {
+        openedApps[theOpenedAppIndex].close();
         openedApps.splice(theOpenedAppIndex, 1);
         if (isCurrentOpenedApp(id)) {
             currentOpenedApp = null;
