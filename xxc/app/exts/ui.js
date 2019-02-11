@@ -129,6 +129,10 @@ export const openApp = (name, pageName = null, params = null) => {
         theOpenedApp.params = params;
     }
     theOpenedApp.open();
+    const theApp = theOpenedApp.app;
+    if (theApp.muteNoticeOnActive && theApp.hasNotice && window.location.hash.startsWith(theOpenedApp.baseRoutePath)) {
+        updateNoticeBadge(theApp, 0);
+    }
     currentOpenedApp = theOpenedApp;
     if (DEBUG) {
         console.collapse('Extension Active App', 'greenBg', id, 'greenPale');

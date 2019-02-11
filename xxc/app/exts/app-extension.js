@@ -377,4 +377,15 @@ export default class AppExtension extends Extension {
     get muteNoticeOnActive() {
         return this._pkg.muteNoticeOnActive !== false;
     }
+
+    /**
+     * 获取应用是否拥有未读通知
+     *
+     * @type {boolean}
+     * @readonly
+     * @memberof AppExtension
+     */
+    get hasNotice() {
+        return this.noticeCount && this.noticeCount > 0;
+    }
 }
