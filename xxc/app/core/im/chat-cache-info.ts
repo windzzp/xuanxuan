@@ -1,3 +1,4 @@
+// 界面上的聊天缓存默认寿命，30分钟，在没有激活的状态超过此时间会从界面上移除
 export const DEFAULT_CACHE_LIFE_TIME = 30 * 60 * 1000;
 
 /**
