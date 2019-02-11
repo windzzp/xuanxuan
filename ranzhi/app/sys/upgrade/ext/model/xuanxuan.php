@@ -90,10 +90,10 @@ public function changeMessageStatusTable()
     $gids = $this->dao->select('gid')->from(TABLE_IM_MESSAGESTATUS)->where('status')->ne('sent')->fetchPairs('gid');
     if(!empty($gids))
     {
-        $mids = $this->dao->select('id,gid')->from(TABLE_IM_MESSAGE)->where('gid')->in($gids)->fetchPairs('gid', 'id');
-        foreach($mids as $gid => $mid)
+        $messages = $this->dao->select('id,gid')->from(TABLE_IM_MESSAGE)->where('gid')->in($gids)->fetchPairs('gid', 'id');
+        foreach($messages as $gid => $message)
         {
-            $this->dao->update(TABLE_IM_MESSAGESTATUS)->set('mid')->eq($mid)->where('gid')->eq($gid)->exec();
+            $this->dao->update(TABLE_IM_MESSAGESTATUS)->set('message')->eq($message)->where('gid')->eq($gid)->exec();
         }
     }
     $this->dbh->exec('ALTER TABLE `' . TABLE_IM_MESSAGESTATUS . '` DROP `gid`;');
