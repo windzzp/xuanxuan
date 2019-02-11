@@ -122,7 +122,7 @@ export default class ChatListItem extends Component {
                 }
             } else if (chat.isSystem) {
                 if (chat.isRobot) {
-                    const robotSubName = Lang.string('common.littlexxSubname');
+                    const robotSubName = Lang.string('common.notificationSubname');
                     if (robotSubName !== name) {
                         subname = `(${robotSubName})`;
                     }
