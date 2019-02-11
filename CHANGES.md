@@ -1,6 +1,33 @@
 # 更新记录
 
+## v 2.4.1
+
+[2019-02-11]
+
+本次更新解决了已知的关键问题，推荐更新。
+
+### 更新日志
+
+* 优化了一对一聊天输入状态更新策略，提升了性能，尽可能减少与服务器的沟通成本；
+* 修复了 Windows 客户端发送消息频繁提示发送失败的问题（由于 `chat/typing` 阻塞了请求导致超时失败，此 bug 仅在使用 [`ws`](https://www.npmjs.com/package/ws) 依赖的情况下出现，最新版本已经移除了对 `ws` 模块的依赖）；
+* 修复了分享对话框中无法正常显示可转发的聊天问题。
+
+### 下载地址
+
+本次 2.4.1 更新只包括客户端部分，XXD 和 XXB 仍然是 2.4.0 版本。
+
+* Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.debug.win64.setup.exe)；
+* MacOS：[xuanxuan.2.4.1.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.mac.dmg)；
+* Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.linux.amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.linux.x86_64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.linux.i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.linux.i686.rpm)；
+* 浏览器端：[xuanxuan.2.4.1.browser.zip](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.browser.zip)；
+* XXD Server 2.4.0： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.linux.ia32.tar.gz)；
+* 服务器端：
+  * XXB 2.4：[Windows 64位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxb.2.4.0.win64.exe)、[Windows 32位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxb.2.4.0.win32.exe)、[Linux 64位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxb.2.4.0.zbox_64.tar.gz)、[Linux 32位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxb.2.4.0.zbox_32.tar.gz)、[Linux rpm安装包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxb-2.4.0-1.noarch.rpm)、[Linux deb安装包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxb_2.4.0_1_all.deb)；
+  * 然之：[5.1.0 稳定版](https://www.ranzhi.org/dynamic/5.1.stable-135.html)、[扩展包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.ranzhi.2.4.0.zip)。
+
 ## v 2.4.0
+
+[2019-01-24]
 
 本次更新新增消息撤销、聊天输入状态显示以及应用分享等实用功能，修复了已知问题，对 XXD 服务以及后端接口进行了大幅优化。
 
