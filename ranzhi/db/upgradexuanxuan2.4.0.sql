@@ -1,1 +1,1 @@
-ALTER TABLE `im_messagestatus` ADD `mid` INT(11)  UNSIGNED  NOT NULL  AFTER `user`;
+ALTER TABLE `im_messagestatus` ADD `message` INT(11)  UNSIGNED  NOT NULL  AFTER `user`;
