@@ -527,7 +527,6 @@ export const initChats = (chatArr, eachCallback) => {
         if (Config.system['notification.enable'] || Config.ui['chat.littlexx']) {
             chatArr.push({
                 gid: 'notification',
-                name: Lang.string('common.notification'),
                 type: 'robot',
                 lastActiveTime: new Date().getTime() - Math.floor(MAX_RECENT_TIME / 2),
                 members: [profile.user.id]

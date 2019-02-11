@@ -2,6 +2,7 @@ import Entity from './entity';
 import Status from '../../utils/status';
 import Lang from '../lang';
 import Pinyin from '../../utils/pinyin';
+import {isEmptyString} from '../../utils/string-helper';
 import ChatMessage from './chat-message';
 
 /**
@@ -346,7 +347,7 @@ export default class Chat extends Entity {
      * @type {string}
      */
     get name() {
-        return this.$get('name', `[Chat-${this.id}]`);
+        return this.$get('name');
     }
 
     /**
@@ -367,7 +368,11 @@ export default class Chat extends Entity {
      */
     getDisplayName(app, includeMemberCount = false) {
         const {name} = this;
+        const isEmptyName = name === '$DEFAULT' || isEmptyString(name);
         if (this.isRobot) {
+            if (this.gid === 'notification') {
+                return isEmptyName ? Lang.string('common.notification') : name;
+            }
             includeMemberCount = false;
         }
         if (this.isOne2One) {
@@ -376,11 +381,11 @@ export default class Chat extends Entity {
         }
         if (this.isSystem) {
             if (includeMemberCount) {
-                return Lang.format('chat.groupName.format', name || Lang.string('chat.systemGroup.name'), Lang.string('chat.all'));
+                return Lang.format('chat.groupName.format', isEmptyName ? Lang.string('chat.systemGroup.name') : name, Lang.string('chat.all'));
             }
-            return name || Lang.string('chat.systemGroup.name');
+            return isEmptyName ? Lang.string('chat.systemGroup.name') : name;
         }
-        if (name !== undefined && name !== '') {
+        if (!isEmptyName) {
             if (includeMemberCount) {
                 return Lang.format('chat.groupName.format', name, this.getMembersCount(app.members));
             }
