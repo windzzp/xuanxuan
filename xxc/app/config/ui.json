@@ -19,7 +19,6 @@
     "chat.cacheLife": 1800000,
     "member.showAvatar": true,
     "markdown.hintUrl": "https://markdown-zh.readthedocs.io/en/latest/",
-    "chat.littlexx": true,
     "chat.hideChatAvatar": false,
     "chat.hideStatusDot": false,
     "chat.mentionOthers": true,

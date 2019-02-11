@@ -75,6 +75,8 @@ export default class About extends PureComponent {
             showPoweredBy = pkg.name !== 'xuanxuan';
         }
 
+        const homepage = Lang.string('app.homepage', Config.pkg.homepage);
+
         return (
             <div
                 {...other}
@@ -83,7 +85,7 @@ export default class About extends PureComponent {
                 <section className="text-center">
                     <img src={`${Config.media['image.path']}logo.png`} alt="logo" />
                     <BuildInfo className="space-sm" />
-                    {Config.pkg.homepage ? <div className="space-xl"><a target="_blank" className="btn rounded text-primary strong" href={Config.pkg.homepage}><strong>{Config.pkg.homepage}</strong></a></div> : null}
+                    {homepage ? <div className="space-xl"><a target="_blank" className="btn rounded text-primary strong" href={homepage}><strong>{homepage}</strong></a></div> : null}
                     {Config.pkg.license ? <div><a target="_blank" className="btn rounded" href="https://github.com/easysoft/xuanxuan/blob/master/LICENSE">{`Open source license ${Config.pkg.license}`}</a></div> : null}
                     {Config.pkg.company ? <div><a target="_blank" className="btn rounded" href="http://cnezsoft.com/">{Lang.format('common.copyrightFormat', {year: new Date().getFullYear(), name: Config.pkg.company})}</a></div> : null}
                     {Config.ui.about ? <div>{Config.ui.about}</div> : null}

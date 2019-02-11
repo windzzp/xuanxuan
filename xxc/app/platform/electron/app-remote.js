@@ -276,7 +276,7 @@ class AppRemote {
                 submenu: [{
                     label: Lang.string('menu.website'),
                     click() {
-                        shell.openExternal(this.appConfig.pkg.homepage);
+                        shell.openExternal(Lang.string('app.homepage', this.appConfig.pkg.homepage));
                     }
                 }, {
                     label: Lang.string('menu.project'),
@@ -336,8 +336,10 @@ class AppRemote {
      * @return {void}
      */
     ready() {
+        // 打开一个应用窗口，如果没有则创建一个
         this.openOrCreateWindow();
 
+        // 创建程序坞图标右键菜单
         this.createDockMenu();
 
         // 创建应用窗口菜单

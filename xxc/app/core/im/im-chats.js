@@ -523,10 +523,10 @@ export const initChats = (chatArr, eachCallback) => {
     publicChats = null;
     chats = {};
     if (chatArr && chatArr.length) {
-        if (Config.ui['chat.littlexx']) {
+        // Config.ui['chat.littlexx'] 配置将在 3.0 中移除
+        if (Config.system['notification.enable'] || Config.ui['chat.littlexx']) {
             chatArr.push({
                 gid: 'notification',
-                name: Lang.string('common.littlexx'),
                 type: 'robot',
                 lastActiveTime: new Date().getTime() - Math.floor(MAX_RECENT_TIME / 2),
                 members: [profile.user.id]
