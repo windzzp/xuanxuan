@@ -276,7 +276,7 @@ class AppRemote {
                 submenu: [{
                     label: Lang.string('menu.website'),
                     click() {
-                        shell.openExternal(this.appConfig.pkg.homepage);
+                        shell.openExternal(Lang.string('app.homepage', this.appConfig.pkg.homepage));
                     }
                 }, {
                     label: Lang.string('menu.project'),
