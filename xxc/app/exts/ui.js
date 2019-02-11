@@ -592,6 +592,13 @@ export const createNavbarAppContextMenu = (appExt, refreshUI) => {
 export const initUI = () => {
     defaultOpenedApp = new OpenedApp(getDefaultApp());
     openedApps.push(defaultOpenedApp);
+    const {hash} = window.location;
+    if (hash.startsWith('#/exts/app/')) {
+        const openedAppName = hash.substr(11);
+        if (openedAppName) {
+            openAppById(openedAppName);
+        }
+    }
 };
 
 /**
