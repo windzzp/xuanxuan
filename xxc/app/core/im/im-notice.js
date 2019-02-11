@@ -2,7 +2,7 @@ import {saveChatMessages, onChatMessages, forEachChat} from './im-chats';
 import {isActiveChat, renderChatMessageContent, getcurrentActiveChat} from './im-ui';
 import DelayAction from '../../utils/delay-action';
 import {isMatchWindowCondition, updateNotice} from '../notice';
-import Lang from '../lang';
+import Lang, {onLangChange} from '../lang';
 import profile from '../profile';
 import members from '../members';
 import Config from '../../config';
@@ -140,7 +140,6 @@ const updateChatNoticeTask = new DelayAction(() => {
     if (
         total
         && notMuteCount > 0
-        && lastNoticeInfo.notMuteCount < notMuteCount
         && userConfig.flashTrayIcon
         && isMatchWindowCondition(userConfig.flashTrayIconCondition)
     ) {
@@ -163,6 +162,9 @@ export const updateChatNotice = () => {
 
 // 监听收到新消息事件，根据新收到的消息决定是否显示通知
 onChatMessages(updateChatNotice);
+
+// 监听语言变更事件，更新通知内容为对应语言的消息
+onLangChange(updateChatNotice);
 
 // 监听界面窗口激活事件
 if (platformUI.onWindowFocus) {

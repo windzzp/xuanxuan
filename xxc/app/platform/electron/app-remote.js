@@ -336,8 +336,10 @@ class AppRemote {
      * @return {void}
      */
     ready() {
+        // 打开一个应用窗口，如果没有则创建一个
         this.openOrCreateWindow();
 
+        // 创建程序坞图标右键菜单
         this.createDockMenu();
 
         // 创建应用窗口菜单
