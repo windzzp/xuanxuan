@@ -171,6 +171,28 @@ export const removeContextMenuCreator = creatorId => {
 };
 
 /**
+ * 菜单项名称支持多语言
+ * @param {Object[]} items 上下文菜单项列表
+ * @param {Function?} [callback] 回调函数
+ * @return {Object[]} 上下文菜单项列表
+ * @private
+ */
+export const formatContextMenuItems = (items, callback) => (
+    items.map(item => {
+        let {labels} = item;
+        const {label} = item;
+        if (typeof label === 'object') {
+            labels = label;
+        }
+        if (labels) {
+            item.label = labels[Lang.name] || labels.$default || label;
+            delete item.labels;
+        }
+        return callback ? callback(item) : item;
+    })
+);
+
+/**
  * 获取指定上下文名称对应的上下文菜单项列表
  * @param {sring} contextName 上下文名称
  * @param {Object} [context={}] 上下文参数对象
@@ -232,9 +254,7 @@ export const getMenuItemsForContext = (contextName, context = {}) => {
                 });
                 if (extItems.length) {
                     tryAddDividerItem(items);
-                    extItems.forEach(extItem => {
-                        items.push(ext.formatContextMenuItem(extItem));
-                    });
+                    items.push(...formatContextMenuItems(extItems, ext.formatContextMenuItem.bind(ext)));
                 }
             }
         });
@@ -317,7 +337,7 @@ export const showContextMenu = (contextName, context) => {
             delete options.stopPropagation;
             delete options.linkTarget;
         }
-        ContextMenu.show({x: event.clientX, y: event.clientY}, items, options, callback);
+        ContextMenu.show({x: event.clientX, y: event.clientY}, formatContextMenuItems(items), options, callback);
         return true;
     }
     return false;
