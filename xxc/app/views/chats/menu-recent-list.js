@@ -104,12 +104,14 @@ export default class MenuRecentList extends Component {
             return <ChatListItem onContextMenu={this.handleItemContextMenu} data-gid={chat.gid} key={chat.gid} filterType={filter} chat={chat} className={classes('item', {active: activeChatId === chat.gid})} />;
         });
         if (!hasActiveChatItem && activeChat) {
-            chatItemsView.splice(0, 0, <ChatListItem onContextMenu={this.handleItemContextMenu} data-gid={activeChat.gid} key={activeChat.gid} filterType={filter} chat={activeChat} className="item" />);
+            chatItemsView.splice(0, 0, <ChatListItem onContextMenu={this.handleItemContextMenu} data-gid={activeChat.gid} key={activeChat.gid} filterType={filter} chat={activeChat} className="item active" />);
         }
 
-        return (<div className={classes('app-chats-menu-list list scroll-y', className)} {...other}>
-            {chatItemsView}
-            {children}
-        </div>);
+        return (
+            <div className={classes('app-chats-menu-list list scroll-y', className)} {...other}>
+                {chatItemsView}
+                {children}
+            </div>
+        );
     }
 }
