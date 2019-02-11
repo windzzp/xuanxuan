@@ -37,6 +37,7 @@ import ChatSidebarProfile from './chat-sidebar-profile';
 import MessageList from './message-list';
 import ChatSidebar from './chat-sidebar';
 import MessagesPreviewDialog from './messages-preview-dialog';
+import ChatShareDialog from './chat-share-dialog';
 
 export default {
     ChatAvatar,
@@ -78,4 +79,5 @@ export default {
     MessageList,
     ChatSidebar,
     MessagesPreviewDialog,
+    ChatShareDialog,
 };

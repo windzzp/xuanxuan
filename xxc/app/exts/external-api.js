@@ -19,6 +19,7 @@ import utils from '../utils';
 import app from '../core';
 import views from '../views/external';
 import config from '../config';
+import exts from './index';
 
 /**
  * 所有第三方 node 模块
@@ -58,4 +59,5 @@ export default {
     app,
     views,
     nodeModules,
+    exts,
 };

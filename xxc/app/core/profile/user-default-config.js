@@ -26,6 +26,7 @@
  * @property {string} [ui.chat.groups.category.default=''] 讨论组默认分组名称
  * @property {Object<string, any>} [ui.chat.groups.categories={}] 讨论组列表分组配置
  * @property {boolean} [ui.chat.listenClipboardImage=false] 是否监听剪切板上的图片并提示直接发送
+ * @property {boolean} [ui.chat.sendTypingStatus=true] 是否在一对一聊天时向对方发送输入状态
  * @property {boolean} [ui.notify.enableSound=true] 是否启用声音通知
  * @property {string} [ui.notify.playSoundCondition='onWindowHide'] 播放声音通知的时机，"onWindowHide" 或 "onWindowBlur"
  * @property {boolean} [ui.notify.muteOnUserIsBusy=true] 是否在用户忙碌时禁用通知
@@ -74,6 +75,7 @@ export default {
     'ui.chat.groups.category.default': '',
     'ui.chat.groups.categories': {},
     'ui.chat.listenClipboardImage': false,
+    'ui.chat.sendTypingStatus': true,
     'ui.notify.enableSound': true,
     'ui.notify.playSoundCondition': 'onWindowHide', // or "onWindowBlur", "
     'ui.notify.muteOnUserIsBusy': true,

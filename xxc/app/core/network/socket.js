@@ -32,6 +32,25 @@ const EVENT = {
 };
 
 /**
+ * 根据消耗时间返回一个颜色值，用于表达所消耗时间的大小
+ * @param {number} time 消耗时间
+ * @return {string} 颜色值
+ * @private
+ */
+const getPerfTimeColor = time => {
+    if (time > 1000) {
+        return 'red';
+    }
+    if (time > 200) {
+        return 'orange';
+    }
+    if (time > 50) {
+        return 'muted';
+    }
+    return 'green';
+};
+
+/**
  * 监听消息回应
  * @param {string} moduleName 消息操作模块名称
  * @param {string} methodName 消息操作方法名称
@@ -102,6 +121,13 @@ export default class AppSocket extends Socket {
          * @private
          */
         this.pingTask = null;
+
+        /**
+         * 记录请求时间
+         * @type {Object}
+         * @private
+         */
+        this.requestTimes = DEBUG ? {} : null;
     }
 
     /**
@@ -117,9 +143,33 @@ export default class AppSocket extends Socket {
             if (!msg.userID && msg.pathname !== 'chat/login') {
                 msg.userID = this.user.id;
             }
+            const startTime = DEBUG ? (process.uptime ? process.uptime() * 1000 : new Date().getTime()) : null;
+            const rid = DEBUG ? msg.createRequestID() : null;
             super.send(msg.json, () => {
                 if (DEBUG) {
-                    console.collapse('Socket Send ⬆︎', 'indigoBg', msg.pathname, 'indigoPale');
+                    msg.startSendTime = startTime;
+                    if (startTime) {
+                        const endTime = process.uptime ? process.uptime() * 1000 : new Date().getTime();
+                        msg.endSendTime = endTime;
+                        this.requestTimes[rid] = endTime;
+
+                        // 清理之前的请求时间
+                        const requestTimes = Object.keys(this.requestTimes);
+                        if (requestTimes.length > 50) {
+                            requestTimes.forEach(theRid => {
+                                if ((endTime - requestTimes[theRid]) > 20000) {
+                                    delete this.requestTimes[theRid];
+                                }
+                            });
+                        }
+                        const sendRequestTime = endTime - startTime;
+                        this.perfData.sendCount += 1;
+                        this.perfData.sendTotal += sendRequestTime;
+                        this.perfData.sendAverate = this.perfData.sendTotal / this.perfData.sendCount;
+                        console.collapse('Socket Send ⬆︎', 'indigoBg', msg.pathname, 'indigoPale', `${sendRequestTime} ms, averate ${this.perfData.sendAverate.toFixed(3)} ms`, getPerfTimeColor(sendRequestTime));
+                    } else {
+                        console.collapse('Socket Send ⬆︎', 'indigoBg', msg.pathname, 'indigoPale');
+                    }
                     console.log('msg', msg);
                     console.groupEnd();
                 }
@@ -165,6 +215,20 @@ export default class AppSocket extends Socket {
      * @return {void}
      */
     handleMessage(msg) {
+        let responseTime = null;
+        if (DEBUG && msg.rid) {
+            const requestTime = this.requestTimes[msg.rid];
+            if (requestTime) {
+                delete this.requestTimes[msg.rid];
+                const currentTime = process.uptime ? process.uptime() * 1000 : new Date().getTime();
+                responseTime = currentTime - requestTime;
+
+                this.perfData.count += 1;
+                this.perfData.total += responseTime;
+                this.perfData.average = this.perfData.total / this.perfData.count;
+            }
+        }
+
         // 处理登录时顺序不一致的问题
         const {waitingMessages} = this;
         if (waitingMessages) {
@@ -178,7 +242,11 @@ export default class AppSocket extends Socket {
                 waitingMessages.others.push(msg);
             }
             if (DEBUG) {
-                console.collapse('SOCKET WAITING Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale');
+                if (responseTime) {
+                    console.collapse('SOCKET WAITING Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale', `${responseTime} ms, average ${this.perfData.average.toFixed(3)} ms`, getPerfTimeColor(responseTime));
+                } else {
+                    console.collapse('SOCKET WAITING Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale');
+                }
                 console.log('msg', msg);
                 console.log('socket', this);
                 console.groupEnd();
@@ -194,7 +262,11 @@ export default class AppSocket extends Socket {
             return;
         }
         if (DEBUG) {
-            console.collapse('SOCKET Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale');
+            if (responseTime) {
+                console.collapse('SOCKET Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale', `${responseTime} ms, average ${this.perfData.average.toFixed(3)} ms`, getPerfTimeColor(responseTime));
+            } else {
+                console.collapse('SOCKET Data ⬇︎', 'purpleBg', msg.pathname, 'purplePale', msg.isSuccess ? 'OK' : 'FAILED', msg.isSuccess ? 'greenPale' : 'dangerPale');
+            }
             console.log('msg', msg);
             console.log('socket', this);
             console.groupEnd();
@@ -251,6 +323,14 @@ export default class AppSocket extends Socket {
      */
     onInit() {
         this.lastHandTime = 0;
+        if (DEBUG) {
+            this.perfData = {
+                count: 0,
+                total: 0,
+                sendCount: 0,
+                sendTotal: 0,
+            };
+        }
     }
 
     /**

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {rem} from '../../utils/html-helper';
 import SearchControl from '../../components/search-control';
-import PropTypes from 'prop-types';
 import Lang from '../../core/lang';
 import App from '../../core';
 import ChatShareList from './chat-share-list';

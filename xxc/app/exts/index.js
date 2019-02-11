@@ -3,9 +3,15 @@ import ui from './ui';
 import manager from './manager';
 import themes from './themes';
 
-export default {
+const exts = {
     all,
     ui,
     manager,
     themes,
 };
+
+if (DEBUG) {
+    global.$.exts = exts;
+}
+
+export default exts;

@@ -29,7 +29,8 @@ export default class AppAvatar extends PureComponent {
         avatar: PropTypes.any,
         label: PropTypes.any,
         className: PropTypes.string,
-        children: PropTypes.any
+        children: PropTypes.any,
+        badge: PropTypes.any,
     }
 
     /**
@@ -44,6 +45,7 @@ export default class AppAvatar extends PureComponent {
         label: null,
         className: null,
         children: null,
+        badge: null,
     }
 
     /**
@@ -60,6 +62,7 @@ export default class AppAvatar extends PureComponent {
             label,
             className,
             children,
+            badge,
             ...other
         } = this.props;
 
@@ -67,9 +70,9 @@ export default class AppAvatar extends PureComponent {
         if (React.isValidElement(avatar)) {
             avatarView = avatar;
         } else if (typeof avatar === 'object') {
-            avatarView = <Avatar {...avatar} />;
+            avatarView = <Avatar {...avatar} badge={badge} />;
         } else {
-            avatarView = <Avatar auto={avatar} />;
+            avatarView = <Avatar auto={avatar} badge={badge} />;
         }
 
         let labelView = null;

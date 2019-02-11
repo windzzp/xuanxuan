@@ -4,7 +4,9 @@ import {classes} from '../../utils/html-helper';
 import App from '../../core';
 import _ChatView from './chat-view';
 import withReplaceView from '../with-replace-view';
-import {updateChatView} from '../../core/models/timing';
+import {DEFAULT_CACHE_LIFE_TIME} from '../../core/im/chat-cache-info.ts';
+import Config from '../../config';
+
 /**
  * ChatView 可替换组件形式
  * @type {Class<ChatView>}
@@ -60,9 +62,11 @@ export default class ChatsCache extends Component {
     };
 
     componentDidMount() {
-        updateChatView(() => {
-            this.forceUpdate();
-        });
+        this.updateTimer = setInterval(() => {
+            if (App.im.ui.isChatsCacheChanged()) {
+                this.forceUpdate();
+            }
+        }, Math.floor(Config.ui['chat.cacheLife'] || DEFAULT_CACHE_LIFE_TIME / 2));
     }
 
     /**
@@ -81,6 +85,20 @@ export default class ChatsCache extends Component {
         if (this.activeChatId !== activeChatId) {
             App.im.ui.setActiveChat(activeChatId);
         }
+    }
+
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof ChatsCache
+     * @return {void}
+     */
+    componentWillUnmount() {
+        clearInterval(this.updateTimer);
     }
 
     /**

@@ -1,7 +1,7 @@
 {
   "name": "xuanxuan",
   "productName": "喧喧",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "企业即时通讯平台",
   "scripts": {
     "hot-server": "cross-env NODE_ENV=development node --max_old_space_size=2096 -r babel-register ./tools/server.js",
@@ -68,6 +68,7 @@
   "devDependencies": {
     "archiver": "^3.0.0",
     "asar": "^0.14.3",
+    "awesome-typescript-loader": "^5.2.1",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.6",
     "babel-loader": "^7.1.5",
@@ -126,6 +127,7 @@
     "minimist": "^1.2.0",
     "opn": "^5.4.0",
     "style-loader": "^0.21.0",
+    "typescript": "^3.2.4",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "url-loader": "^1.0.1",
     "webpack": "^4.16.1",

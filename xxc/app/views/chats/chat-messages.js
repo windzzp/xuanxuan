@@ -6,6 +6,7 @@ import _MessageList from './message-list';
 import Spinner from '../../components/spinner';
 import Lang, {isJustLangSwitched} from '../../core/lang';
 import withReplaceView from '../with-replace-view';
+import {setChatCacheState, takeOutChatCacheState} from '../../core/im/im-ui';
 
 /**
  * MessageList 可替换组件形式
@@ -100,7 +101,7 @@ export default class ChatMessages extends Component {
      * @memberof ChatMessages
      */
     shouldComponentUpdate(nextProps, nextState) {
-        return isJustLangSwitched() || nextState.loading !== this.state.loading || this.props.className !== nextProps.className || this.props.chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.updateId;
+        return isJustLangSwitched() || nextState.loading !== this.state.loading || this.props.className !== nextProps.className || this.props.chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId;
     }
 
     /**
@@ -115,7 +116,8 @@ export default class ChatMessages extends Component {
      * @return {void}
      */
     componentDidUpdate() {
-        if (!this.props.chat.isFirstLoaded) {
+        const {chat} = this.props;
+        if (chat && chat.isFirstLoaded) {
             this.loadChatMessages();
         }
     }
@@ -134,6 +136,11 @@ export default class ChatMessages extends Component {
         if (this.loadChatMessagesTask) {
             clearTimeout(this.loadChatMessagesTask);
         }
+        const {scrollInfo} = this.messageList;
+        if (scrollInfo && !scrollInfo.isAtBottom) {
+            const {chat} = this.props;
+            setChatCacheState(chat.gid, {scrollPos: scrollInfo.scrollTop});
+        }
     }
 
     /**
@@ -146,11 +153,14 @@ export default class ChatMessages extends Component {
      */
     loadChatMessages(delay = 0) {
         const {chat} = this.props;
+        const listScrollTop = takeOutChatCacheState(chat.gid, 'scrollPos');
         if (!chat.isLoadingOver && !this.loadChatMessagesTask) {
             this.loadChatMessagesTask = setTimeout(() => {
                 this.setState({loading: true}, () => {
                     App.im.chats.loadChatMessages(chat)
-                        .then(() => this.setState({loading: false}))
+                        .then(() => this.setState({loading: false}, listScrollTop !== undefined ? () => {
+                            this.messageList.scrollTo(listScrollTop);
+                        } : null))
                         .catch(() => this.setState({loading: false}));
                     this.loadChatMessagesTask = null;
                 });
@@ -205,7 +215,7 @@ export default class ChatMessages extends Component {
             className={classes('app-chat-messages white', className)}
             {...other}
         >
-            <MessageList header={headerView} font={font} className="dock scroll-y user-selectable" messages={chat.messages} onScroll={chat.isLoadingOver ? null : this.handleScroll} />
+            <MessageList ref={e => {this.messageList = e;}} header={headerView} font={font} className="dock scroll-y user-selectable" messages={chat.messages} onScroll={chat.isLoadingOver ? null : this.handleScroll} />
         </div>);
     }
 }

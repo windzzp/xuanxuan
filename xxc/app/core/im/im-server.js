@@ -711,7 +711,7 @@ const sendImageAsBase64 = (imageFile, chat) => {
  */
 export const sendImageMessage = async (imageFile, chat, onProgress) => {
     if (imageFile.size === 0) {
-        Messager.show(Lang.format('error.UPLOAD_FILE_IS_TOO_EMPTY', formatBytes(imageFile.size)), {type: 'warning'});
+        Messager.show(Lang.error('UPLOAD_FILE_IS_ZEOR_SIZE'), {type: 'warning'});
         return Promise.reject();
     }
     if (imageFile.size < MAX_BASE64_IMAGE_SIZE) {
@@ -788,7 +788,7 @@ export const sendFileMessage = (file, chat) => {
             return sendChatMessage(message, chat);
         });
     } else if (file.size === 0) {
-        Messager.show(Lang.format('error.UPLOAD_FILE_IS_TOO_EMPTY', formatBytes(file.size)), {type: 'warning'});
+        Messager.show(Lang.error('UPLOAD_FILE_IS_ZEOR_SIZE'), {type: 'warning'});
     } else {
         Messager.show(Lang.format('error.UPLOAD_FILE_IS_TOO_LARGE', formatBytes(file.size)), {type: 'warning'});
     }

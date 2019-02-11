@@ -115,18 +115,16 @@ export const isWebUrl = url => {
  * @return {string}
  * @function
  */
-export const linkify = (text) => {
-    return (text || '').replace(
-        /([^\S]|^)(((https?:\/\/)|(www\.))(\S+))/gi,
-        (match, space, url) => {
-            let hyperlink = url;
-            if (!hyperlink.match('^https?://')) {
-                hyperlink = `http://${hyperlink}`;
-            }
-            return `${space}<a href="${hyperlink}">${url}</a>`;
+export const linkify = (text) => (text || '').replace(
+    /([^\S]|^)(((https?:\/\/)|(www\.))([-A-Za-z0-9\u4e00-\u9fa5+&@#/%=~_|?.]+))/gi,
+    (match, space, url) => {
+        let hyperlink = url;
+        if (!hyperlink.match('^https?://')) {
+            hyperlink = `http://${hyperlink}`;
         }
-    );
-};
+        return `${space}<a href="${hyperlink}">${url}</a>`;
+    }
+);
 
 export default {
     classes,

@@ -443,7 +443,7 @@ export default class Color {
     /**
      * 以 HSL 格式设置颜色 Hue 通道值
      * @memberof Color
-     * @param {number} r Hue 通道值
+     * @param {number} hue Hue 通道值
      */
     set H(hue) {
         const {hsl} = this;
@@ -463,7 +463,7 @@ export default class Color {
     /**
      * 以 HSL 格式设置颜色 Saturate 通道值
      * @memberof Color
-     * @param {number} r Saturate 通道值
+     * @param {number} s Saturate 通道值
      */
     set S(s) {
         const {hsl} = this;
@@ -483,7 +483,7 @@ export default class Color {
     /**
      * 以 HSL 格式设置颜色 Lightness 通道值
      * @memberof Color
-     * @param {number} r Lightness 通道值
+     * @param {number} l Lightness 通道值
      */
     set L(l) {
         const {hsl} = this;

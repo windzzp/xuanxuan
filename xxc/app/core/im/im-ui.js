@@ -1,6 +1,6 @@
 import events from '../events';
 import profile from '../profile';
-import chats from './im-chats';
+import chats, {getChat} from './im-chats';
 import Lang from '../lang';
 import Server, {deleteChatMessage} from './im-server';
 import members from '../members';
@@ -30,6 +30,7 @@ import ui from '../ui';
 import {registerCommand, executeCommandLine} from '../commander';
 import Config from '../../config';
 import platform from '../../platform';
+import ChatCacheInfo from './chat-cache-info.ts';
 
 /**
  * 当前激活的聊天实例 ID
@@ -56,7 +57,6 @@ const EVENT = {
     suggestSendImage: 'im.chats.suggestSendImage',
     sendboxFocus: 'im.chat.sendbox.focus',
     showReeditHandle: 'im.message.showReedit',
-    updateChatView: 'im.chats.updateChatView',
 };
 
 /**
@@ -91,33 +91,27 @@ export const setActiveChat = (chat) => {
         chat = chats.get(chat);
     }
     if (chat) {
-        activeCaches[chat.gid] = true;
+        const cacheInfo = activeCaches[chat.gid];
+        if (!cacheInfo) {
+            activeCaches[chat.gid] = new ChatCacheInfo(chat.gid);
+        } else {
+            cacheInfo.active();
+        }
         if (chat.noticeCount) {
             chat.muteNotice();
             chats.saveChatMessages(chat.messages, chat);
         }
         if (!activedChatId || chat.gid !== activedChatId) {
+            if (activedChatId) {
+                const oldActiveChatCacheInfo = activeCaches[activedChatId];
+                if (oldActiveChatCacheInfo) {
+                    oldActiveChatCacheInfo.active();
+                }
+            }
             activedChatId = chat.gid;
             events.emit(EVENT.activeChat, chat);
             ui.showMobileChatsMenu(false);
         }
-    }
-};
-
-/**
- * 清除激活过的聊天
- * @param {Chat} activeChats 聊天实例
- * @return {void}
- */
-export const deleteActiveChat = (activeChats) => {
-    const activeCgids = Object.keys(activeCaches);
-    if (activeChats.length > 0 && activeCgids.length > 0) {
-        for (let i = 0; i < activeChats.length; i++) {
-            for (let j = 0; j < activeCgids.length; j++) {
-                if (activeCaches[activeChats[i].cgid] !== 'undefined') delete activeCaches[activeChats[i].cgid];
-            }
-        }
-        events.emit(EVENT.updateChatView);
     }
 };
 
@@ -145,6 +139,90 @@ export const isActiveChat = chatGid => activedChatId === chatGid;
  * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
  */
 export const onActiveChat = listener => events.on(EVENT.activeChat, listener);
+
+/**
+ * 检查聊天缓存是否变更
+ * @returns {boolean} 如果返回 `true` 则为有聊天缓存变更，否则为没有聊天缓存变更
+ */
+export const isChatsCacheChanged = () => {
+    const now = new Date().getTime();
+    return Object.keys(activeCaches).some(cgid => {
+        if (cgid === activedChatId) {
+            return false;
+        }
+        const cacheInfo = activeCaches[cgid];
+        if (DEBUG && cacheInfo.isExpired(now, Config.ui['chat.cacheLife'])) {
+            console.log('check cache', cacheInfo.gid, cacheInfo);
+        }
+        return cacheInfo.isExpired(now, Config.ui['chat.cacheLife']);
+    });
+};
+
+/**
+ * 保存聊天缓存在界面上的状态，以便于回复界面
+ * @param {string} cgid 聊天 gid
+ * @param {{draft?: any, scrollPos?: number}} newState 新的状态
+ * @return {void}
+ */
+export const setChatCacheState = (cgid, newState) => {
+    const cacheInfo = activeCaches[cgid];
+    if (cacheInfo) {
+        console.log('setChatCacheState', cgid, newState, cacheInfo);
+        cacheInfo.keepState(newState);
+    }
+};
+
+/**
+ * 取出聊天缓存在界面上保存的状态
+ * @param {string} cgid 聊天 gid
+ * @param {string} stateName 状态名称，可以为 `'draft'` 或 `'scrollPos'`
+ * @return {any}
+ */
+export const takeOutChatCacheState = (cgid, stateName) => {
+    const cacheInfo = activeCaches[cgid];
+    if (cacheInfo) {
+        return cacheInfo.takeOutState(stateName);
+    }
+};
+
+/**
+ * 尝试激活聊天并获取缓存中的聊天消息 GID 列表
+ * @param {?string} activeChatId 要激活的聊天 ID
+ * @return {string[]} 聊天消息 GID 列表
+ */
+export const getActivedCacheChatsGID = (activeChatId) => {
+    if (activeChatId && getChat(activeChatId)) {
+        const cacheInfo = activeCaches[activeChatId];
+        if (!cacheInfo) {
+            activeCaches[activeChatId] = new ChatCacheInfo(activeChatId);
+        } else {
+            cacheInfo.active();
+        }
+    }
+    const now = new Date().getTime();
+    return Object.keys(activeCaches).filter(cgid => {
+        if (cgid !== activedChatId) {
+            const cacheInfo = activeCaches[cgid];
+            if (cacheInfo.isCleaned) {
+                return false;
+            }
+            if (cacheInfo.isExpired(now, Config.ui['chat.cacheLife'])) {
+                const chat = getChat(cacheInfo.cgid);
+                if (chat) {
+                    chat.deleteCache();
+                }
+                cacheInfo.clean();
+                if (DEBUG) {
+                    console.collapse('Chat cache cleaned', 'tealBg', chat.getDisplayName({members, user: profile.user}), 'tealPale');
+                    console.log('cache', cacheInfo);
+                    console.groupEnd();
+                }
+                return false;
+            }
+        }
+        return true;
+    });
+};
 
 /**
  * 向聊天发送框添加内容
@@ -177,18 +255,6 @@ registerCommand('sendContentToChat', (context, content) => {
  * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
  */
 export const onSendContentToChat = (cgid, listener) => events.on(`${EVENT.sendContentToChat}.${cgid}`, listener);
-
-/**
- * 激活聊天并获取缓存中的聊天消息 GID 列表
- * @param {?string} activeChatId 要激活的聊天 ID
- * @return {string[]} 聊天消息 GID 列表
- */
-export const getActivedCacheChatsGID = (activeChatId) => {
-    if (activeChatId) {
-        activeCaches[activeChatId] = true;
-    }
-    return Object.keys(activeCaches);
-};
 
 // 添加聊天工具栏右键菜单生成器
 addContextMenuCreator('chat.toolbar', context => {
@@ -916,7 +982,9 @@ addContextMenuCreator('message.text,message.image,message.file,message.url', con
             label: Lang.string('chat.message.retract'),
             icon: 'undo-variant',
             click: () => {
-                const {isTextContent, content, cgid, gid} = message;
+                const {
+                    isTextContent, content, cgid, gid
+                } = message;
                 return deleteChatMessage(message).then(() => {
                     if (isTextContent && content) {
                         sendContentToChat(content, 'text', cgid);
@@ -1065,7 +1133,9 @@ export default {
     onSuggestSendImage,
     emitChatSendboxFocus,
     onChatSendboxFocus,
-    deleteActiveChat,
+    isChatsCacheChanged,
+    setChatCacheState,
+    takeOutChatCacheState,
 
     get currentActiveChatId() {
         return activedChatId;

@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "noImplicitAny": true,
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "jsx": "react",
+        "sourceMap": true
+    },
+    "include": [
+        "app/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.custom.ts"
+    ]
+}

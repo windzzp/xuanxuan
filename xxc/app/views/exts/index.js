@@ -311,14 +311,14 @@ export default class ExtsIndex extends Component {
             return null;
         }
 
-        const openedApps = Exts.ui.openedApps;
+        const {openedApps} = Exts.ui;
 
         let redirectView = null;
         if (match.url.startsWith(ROUTES.exts._)) {
-            const openedAppName = match.params.id;
-            if (openedAppName) {
-                if (!Exts.ui.openAppById(match.params.id, match.params.params)) {
-                    this.appNotFound = match.params.id;
+            const openedAppId = match.params.id;
+            if (openedAppId) {
+                if (!Exts.ui.isCurrentOpenedApp(openedAppId) && !Exts.ui.openAppById(openedAppId, match.params.params)) {
+                    this.appNotFound = openedAppId;
                     const defaultAppName = Exts.ui && Exts.ui.defaultApp ? Exts.ui.defaultApp.name : 'home';
                     redirectView = <Redirect to={ROUTES.exts.app.id(defaultAppName)} />;
                 }

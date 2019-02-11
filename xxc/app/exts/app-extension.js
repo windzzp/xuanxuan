@@ -345,4 +345,36 @@ export default class AppExtension extends Extension {
             this._data.pinnedOnMenu = flag;
         }
     }
+
+    /**
+     * 获取应用图标上的未读通知数目
+     *
+     * @readonly
+     * @memberof Extension
+     */
+    get noticeCount() {
+        return this._data.noticeCount || 0;
+    }
+
+    /**
+     * 设置应用图标上的未读通知数目
+     *
+     * @readonly
+     * @param {boolean} count 应用图标上的未读通知数目
+     * @memberof Extension
+     */
+    set noticeCount(count) {
+        this._data.noticeCount = count;
+    }
+
+    /**
+     * 是否自动清空未读通知数目当应用被激活时
+     *
+     * @type {boolean}
+     * @readonly
+     * @memberof AppExtension
+     */
+    get muteNoticeOnActive() {
+        return this._pkg.muteNoticeOnActive !== false;
+    }
 }
