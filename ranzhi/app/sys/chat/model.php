@@ -38,6 +38,17 @@ class chatModel extends model
     }
 
     /**
+     * Delete the contents of talbe messagestatus by status.
+     * @param string $status
+     * @return bool
+     */
+    public function deleteMessageStatus($status = 'sent')
+    {
+        $this->dao->delete()->from(TABLE_IM_MESSAGESTATUS)->where('status')->eq($status)->exec();
+        return !dao::isError();
+    }
+    
+    /**
      * Get signed time.
      *
      * @param  string $account
@@ -437,7 +448,7 @@ class chatModel extends model
     public function getOfflineMessages($userID = 0)
     {
         $messages = $this->dao->select('t2.*')->from(TABLE_IM_MESSAGESTATUS)->alias('t1')
-            ->leftJoin(TABLE_IM_MESSAGE)->alias('t2')->on('t2.gid = t1.gid')
+            ->leftJoin(TABLE_IM_MESSAGE)->alias('t2')->on('t2.id = t1.mid')
             ->where('t1.user')->eq($userID)
             ->andWhere('t1.status')->eq('waiting')
             ->andWhere('t2.type')->ne('notify')
@@ -861,7 +872,7 @@ class chatModel extends model
 
                 $data = new stdClass();
                 $data->user   = $message->user;
-                $data->gid    = $message->gid;
+                $data->mid    = $message->id;
                 $data->status = 'sent';
                 $this->dao->insert(TABLE_IM_MESSAGESTATUS)->data($data)->exec();
             }
@@ -918,7 +929,7 @@ class chatModel extends model
             {
                 $data = new stdClass();
                 $data->user   = $user;
-                $data->gid    = $message->gid;
+                $data->mid    = $message->id;
                 $data->status = 'waiting';
                 $this->dao->replace(TABLE_IM_MESSAGESTATUS)->data($data)->exec();
             }
@@ -934,7 +945,7 @@ class chatModel extends model
     public function getOfflineNotify($userID)
     {
         $messages = $this->dao->select('t2.*')->from(TABLE_IM_MESSAGESTATUS)->alias('t1')
-                ->leftjoin(TABLE_IM_MESSAGE)->alias('t2')->on("t2.gid = t1.gid")
+                ->leftjoin(TABLE_IM_MESSAGE)->alias('t2')->on("t2.id = t1.mid")
                 ->where('t1.user')->eq($userID)
                 ->andWhere('t1.status')->eq('waiting')
                 ->andWhere('t2.type')->eq('notify')
@@ -942,10 +953,10 @@ class chatModel extends model
 
         if(empty($messages)) return array();
         $notify = $this->formatNotify($messages);
-        $gids   = array();
-        foreach($notify as $message) $gids[] = $message->gid;
+        $mids   = array();
+        foreach($notify as $message) $mids[] = $message->mid;
 
-        $this->dao->update(TABLE_IM_MESSAGESTATUS)->set('status')->eq('sent')->where('gid')->in($gids)->andWhere('user')->eq($userID)->exec();
+        $this->dao->update(TABLE_IM_MESSAGESTATUS)->set('status')->eq('sent')->where('mid')->in($mids)->andWhere('user')->eq($userID)->exec();
         return $notify;
     }
 
@@ -989,34 +1000,34 @@ class chatModel extends model
         $onlineUsers = array_keys($onlineUsers);
 
         $messages = $this->dao->select('t2.*')->from(TABLE_IM_MESSAGESTATUS)->alias('t1')
-                ->leftJoin(TABLE_IM_MESSAGE)->alias('t2')->on('t2.gid = t1.gid')
+                ->leftJoin(TABLE_IM_MESSAGE)->alias('t2')->on('t2.id = t1.mid')
                 ->where('t1.status')->eq('waiting')
                 ->andWhere('t2.type')->eq('notify')
                 ->andWhere('t1.user')->in($onlineUsers)
-                ->groupBy('t1.gid')
+                ->groupBy('t1.mid')
                 ->fetchAll();
         if(empty($messages)) return array();
 
         $notify = $this->formatNotify($messages);
         $data = array();
-        $gids = array();
+        $mids = array();
         foreach($notify as $message)
         {
             foreach($onlineUsers as $userID)
             {
                 if((empty($message->user) && empty($message->users)) || in_array($userID, $message->users))
                 {
-                    $gids[$userID][] = $message->gid;
+                    $mids[$userID][] = $message->mid;
                     $data[$userID][] = $message;
                 }
             }
         }
 
-        foreach($gids as $userID => $gid)
+        foreach($mids as $userID => $mid)
         {
             $this->dao->update(TABLE_IM_MESSAGESTATUS)
                 ->set('status')->eq('sent')
-                ->where('gid')->in($gid)
+                ->where('mid')->in($mid)
                 ->andWhere('user')->eq($userID)
                 ->exec();
         }
@@ -1132,12 +1143,12 @@ class chatModel extends model
 		$notify->data		 = json_encode($info);
 
 		$this->dao->insert(TABLE_IM_MESSAGE)->data($notify)->exec();
-
+		$mid = $this->dao->lastInsertID();
 		foreach($info['target'] as $user)
 		{
             $data = new stdClass();
             $data->user   = $user;
-            $data->gid    = $notify->gid;
+            $data->mid    = $mid;
             $data->status = 'waiting';
             $this->dao->insert(TABLE_IM_MESSAGESTATUS)->data($data)->exec();
 		}

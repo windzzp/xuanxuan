@@ -35,6 +35,8 @@ public function upgradeXuanxuan($fromVersion)
         case '2.2.0' : $this->execSQL($this->getUpgradeFile('xuanxuan2.2.0'));
             $this->processXuanxuanKey();
         case '2.3.0' : $this->execSQL($this->getUpgradeFile('xuanxuan2.3.0'));
+        case '2.4.0' : $this->execSQL($this->getUpgradeFile('xuanxuan2.4.0'));
+            $this->changeMessageStatusTable();
         default : $this->loadModel('setting')->setItem('system.sys.xuanxuan.global.version', $this->config->xuanxuan->version);
     }
 }
@@ -80,6 +82,21 @@ public function processMessageStatus()
         }
     }
 
+    return !dao::isError();
+}
+
+public function changeMessageStatusTable()
+{
+    $gids = $this->dao->select('gid')->from(TABLE_IM_MESSAGESTATUS)->where('status')->ne('sent')->fetchPairs('gid');
+    if(!empty($gids))
+    {
+        $mids = $this->dao->select('id,gid')->from(TABLE_IM_MESSAGE)->where('gid')->in($gids)->fetchPairs('gid', 'id');
+        foreach($mids as $gid => $mid)
+        {
+            $this->dao->update(TABLE_IM_MESSAGESTATUS)->set('mid')->eq($mid)->where('gid')->eq($gid)->exec();
+        }
+    }
+    $this->dbh->exec('ALTER TABLE `' . TABLE_IM_MESSAGESTATUS . '` DROP `gid`;');
     return !dao::isError();
 }
 
