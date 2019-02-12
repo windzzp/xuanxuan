@@ -175,7 +175,18 @@ export default class UserMenu extends Component {
     handleSwitchBtnClick = () => {
         showLanguageSwitchDialog();
         this.requestClose();
-    }
+    };
+
+    /**
+     * 处理检查更新请求
+     * @memberof UserMenu
+     * @private
+     * @return {void}
+     */
+    handleCheckUpdateItemClick = () => {
+        platform.call('autoUpdater.checkUpdate', App.profile.user);
+        this.requestClose();
+    };
 
     /**
      * React 组件生命周期函数：Render
@@ -222,6 +233,7 @@ export default class UserMenu extends Component {
                 <a className="item" onClick={this.handleSettingItemClick}><div className="title">{Lang.string('usermenu.setting')}</div></a>
                 <a className="item" onClick={this.handleSwitchBtnClick}><div className="title">{Lang.string('common.switchLanguage')}</div></a>
                 <a className="item" onClick={this.handleAboutItemClick}><div className="title">{Lang.string('usermenu.about')}</div></a>
+                {platform.has('autoUpdater.checkUpdate') ? <a className="item" onClick={this.handleCheckUpdateItemClick}><div className="title">{Lang.string('common.checkUpdate')}</div></a> : null}
                 <div className="divider" />
                 <a className="item" onClick={this.handleLogoutClick}><div className="title">{Lang.string('usermenu.logout')}</div></a>
                 {App.ui.canQuit && <a className="item" onClick={this.handleExitClick}><div className="title">{Lang.string('usermenu.exit')}</div></a>}
