@@ -97,6 +97,7 @@ public function changeMessageStatusTable()
         }
     }
     $this->dbh->exec('ALTER TABLE `' . TABLE_IM_MESSAGESTATUS . '` DROP `gid`;');
+    $this->dao->delete()->from(TABLE_IM_MESSAGESTATUS)->where('status')->eq('sent')->exec();
     return !dao::isError();
 }
 
