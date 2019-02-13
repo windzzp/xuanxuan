@@ -65,11 +65,11 @@ CREATE TABLE IF NOT EXISTS `im_chatuser` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- DROP TABLE IF EXISTS `im_messagestatus`;
-CREATE TABLE IF NOT EXISTS `im_messagestatus` (
+CREATE TABLE IF NOT EXISTS `im_messsagestatus` (
   `user` mediumint(8) NOT NULL DEFAULT 0,
-  `gid` char(40) NOT NULL DEFAULT '',
+  `message` int(11) unsigned NOT NULL,
   `status` enum('waiting','sent','readed','deleted') NOT NULL DEFAULT 'waiting',
-  UNIQUE KEY `user` (`user`,`gid`)
+  UNIQUE KEY `user` (`user`,`message`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 ALTER TABLE `sys_entry` ADD `sso` enum('0', '1') NOT NULL DEFAULT '0';
