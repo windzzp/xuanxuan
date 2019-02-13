@@ -396,7 +396,6 @@ const electronBuilder = {
     artifactName: config.artifactName,
     electronVersion: config.electronVersion,
     electronDownload: {mirror: 'https://npm.taobao.org/mirrors/electron/'},
-    publish: config.autoUpdater && config.autoUpdater.publish,
     extraResources: [{
         from: 'app/build-in/',
         to: 'build-in'
@@ -510,6 +509,7 @@ const outputConfigFiles = () => {
             repository: config.repository,
             buildTime: new Date(),
             buildVersion: config.buildVersion,
+            buildTypes: {beta: isBeta, debug: isDebug},
             configurations: config.configurations,
             updater: config.autoUpdater
         }, config.pkg || null);

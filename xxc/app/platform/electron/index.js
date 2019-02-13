@@ -18,6 +18,7 @@ import clipboard from './clipboard';
 import webview from './webview';
 import buildIn, {buildInPath} from './build-in';
 import language, {initLanguage} from './language';
+import autoUpdater from './auto-updater';
 
 if (process.type !== 'renderer') {
     throw new Error('platform/electron/index.js must run in renderer process.');
@@ -66,6 +67,7 @@ const platform = {
     clipboard,
     webview,
     buildIn,
+    autoUpdater,
 };
 
 export default platform;

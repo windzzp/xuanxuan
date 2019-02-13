@@ -173,12 +173,21 @@ export default class OpenedApp {
     }
 
     /**
+     * 获取基础路由地址（首页地址）
+     * @memberof OpenedApp
+     * @type {string}
+     */
+    get baseRoutePath() {
+        return `/exts/app/${this.id}`;
+    }
+
+    /**
      * 获取路由地址
      * @memberof OpenedApp
      * @type {string}
      */
     get routePath() {
-        let route = `/exts/app/${this.id}`;
+        let route = this.baseRoutePath;
         if (this.params) {
             const params = Object.keys(this.params).map(x => `${x}=${encodeURIComponent(this.params[x])}`).join('&');
             route += `/${params}`;
@@ -246,9 +255,6 @@ export default class OpenedApp {
             if (window.location.hash !== appHashRoute) {
                 window.location.hash = appHashRoute;
             }
-        }
-        if (app.muteNoticeOnActive && app.noticeCount && window.location.hash.startsWith('#/exts/')) {
-            app.noticeCount = 0;
         }
         app.callModuleMethod('onActiveApp', this);
     }

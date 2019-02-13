@@ -70,6 +70,7 @@
     "import/no-named-as-default-member": "warn",
     "import/extensions": "off",
     "import/no-cycle": "warn",
+    "import/prefer-default-export": "off",
     "react/jsx-wrap-multilines": "warn",
     "react/jsx-closing-tag-location": "warn",
     "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],

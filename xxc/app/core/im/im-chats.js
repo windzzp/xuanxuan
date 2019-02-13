@@ -13,6 +13,7 @@ import TaskQueue from '../../utils/task-queue';
 import timeSequence from '../../utils/time-sequence';
 import Lang from '../lang';
 import Server from '../server';
+import {updateChatTyping} from './im-chat-typing';
 
 /**
  * 从运行时配置读取默认每次加载聊天记录条目的数目
@@ -226,6 +227,14 @@ export const updateChatMessages = (messages, muted = false, skipOld = false) => 
                 chat.muteNotice();
             }
             updatedChats[cgid] = chat;
+
+            // 当一对一聊天收到消息且对方在线时立即视为对方输入状态终止
+            if (chat.isOne2One) {
+                const theOtherOne = chat.getTheOtherOne(app);
+                if (theOtherOne && theOtherOne.isOnline) {
+                    updateChatTyping(chat.gid, false, theOtherOne.id);
+                }
+            }
         }
     });
 

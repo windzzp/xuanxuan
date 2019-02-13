@@ -1099,8 +1099,10 @@ export default class Extension {
         menuItem.label = `${menuItem.label || menuItem.url}`;
         if (menuItem.label[0] === '!') {
             menuItem.label = menuItem.label.substr(1);
-        } else {
+        } else if (!menuItem.noLabelPrefix) {
             menuItem.label = `${this.displayName}: ${menuItem.label}`;
+        } else {
+            delete menuItem.noLabelPrefix;
         }
         if (!menuItem.icon) {
             menuItem.icon = this.icon;
