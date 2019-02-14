@@ -9,13 +9,6 @@ import platform from '../../platform';
 const Socket = platform.access('Socket');
 
 /**
- * Ping 消息发送间隔，单位毫秒
- * @type {number}
- * @private
- */
-const PING_INTERVAL = DEBUG ? (1000 * 60) : (1000 * 60 * 2);
-
-/**
  * 等待消息回应判定为超时的事件，单位毫秒
  * @type {number}
  * @private
@@ -104,23 +97,10 @@ export default class AppSocket extends Socket {
         this.user = null;
 
         /**
-         * Ping 消息发送间隔，单位毫秒
-         * @type {number}
-         */
-        this.pingInterval = PING_INTERVAL;
-
-        /**
          * Socket 消息接收处理函数
          * @type {Object<string, Function>}
          */
         this.handlers = {};
-
-        /**
-         * ping 循环任务 ID
-         * @type {number}
-         * @private
-         */
-        this.pingTask = null;
 
         /**
          * 记录请求时间
@@ -343,7 +323,6 @@ export default class AppSocket extends Socket {
      * @memberof AppSocket
      */
     onClose(code, reason, unexpected) {
-        this.stopPing();
         if (this.user && this.user.isOnline) {
             this.user[unexpected ? 'markDisconnect' : 'markUnverified']();
         }
@@ -400,7 +379,6 @@ export default class AppSocket extends Socket {
                 listenMessage('chat', 'login', 'login').then((result) => {
                     this.isLogging = false;
                     if (result) {
-                        this.startPing();
                         this.syncUserSettings();
                         resolve(user);
                     } else {
@@ -538,80 +516,5 @@ export default class AppSocket extends Socket {
         return this.changeUser({
             password: this.user.isVersionSupport('changePwdWithMD5') ? md5(password) : md5(`${md5(password)}${this.user.account}`)
         });
-    }
-
-    /**
-     * 向服务器发送 ping 消息
-     *
-     * @returns {Promise} 使用 Promise 异步返回处理结果
-     * @memberof AppSocket
-     */
-    ping() {
-        const now = new Date().getTime();
-        if ((now - this.lastHandTime) > PING_INTERVAL * 2) {
-            this.user.markDisconnect();
-            this.close(null, 'ping_timeout');
-        } else if (!this.handlePing && !this.handlePong && !this.user.isVersionSupport('socketPing')) {
-            return this.send('ping');
-        }
-    }
-
-    /**
-     * 停止自动向服务器发送 ping 消息
-     *
-     * @memberof AppSocket
-     * @return {void}
-     */
-    stopPing() {
-        if (this.pingTask) {
-            clearInterval(this.pingTask);
-            this.pingTask = null;
-        }
-    }
-
-    /**
-     * 处理从服务器接收到的 ping 消息
-     *
-     * @memberof AppSocket
-     * @return {void}
-     * @private
-     */
-    onPing() {
-        const now = new Date().getTime();
-        if (DEBUG) {
-            console.color('SOCKET Ping ⬇︎', 'purpleBg', 'OK', 'greenPale', `${(now - this.lastHandTime) / 1000} seconds`, 'muted');
-        }
-        this.lastHandTime = new Date().getTime();
-    }
-
-    /**
-     * 处理从服务器接收到的 pong 消息
-     *
-     * @memberof AppSocket
-     * @return {void}
-     * @private
-     */
-    onPong() {
-        this.onPing();
-    }
-
-    /**
-     * 开始自动向服务器发送 ping 消息
-     *
-     * @memberof AppSocket
-     * @return {void}
-     */
-    startPing() {
-        this.stopPing();
-        if (this.isConnected) {
-            this.pingTask = setInterval(() => {
-                const now = new Date().getTime();
-                if (now - this.lastHandTime > this.pingInterval) {
-                    this.ping();
-                }
-            }, this.pingInterval / 2);
-        } else if (DEBUG) {
-            console.error('Start ping fail, because the socket connection is not opened.');
-        }
     }
 }
