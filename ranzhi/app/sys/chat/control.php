@@ -1529,17 +1529,4 @@ class chat extends control
 
         die(json_encode($response));
     }
-    
-    public function deleteMessageStatus()
-    {
-        $this->chat->deleteMessageStatus($status = 'sent');
-        if(dao::isError()) 
-        {
-            $this->send(array('result' => 'fail', 'message' => dao::getError()));
-        }
-        else
-        {
-            $this->send(array('result' => 'success'));
-        }
-    }
 }

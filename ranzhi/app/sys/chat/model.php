@@ -36,17 +36,6 @@ class chatModel extends model
         }
         return !dao::isError();
     }
-
-    /**
-     * Delete the contents of talbe messagestatus by status.
-     * @param string $status
-     * @return bool
-     */
-    public function deleteMessageStatus($status = 'sent')
-    {
-        $this->dao->delete()->from(TABLE_IM_MESSAGESTATUS)->where('status')->eq($status)->exec();
-        return !dao::isError();
-    }
     
     /**
      * Get signed time.
@@ -456,8 +445,7 @@ class chatModel extends model
             ->fetchAll();
         if(empty($messages)) return array();
 
-        $this->dao->update(TABLE_IM_MESSAGESTATUS)
-            ->set('status')->eq('sent')
+        $this->dao->delete()->from(TABLE_IM_MESSAGESTATUS)
             ->where('user')->eq($userID)
             ->andWhere('status')->eq('waiting')
             ->exec();
@@ -869,12 +857,6 @@ class chatModel extends model
 
                 $this->dao->insert(TABLE_IM_MESSAGE)->data($message)->exec();
                 $idList[] = $this->dao->lastInsertID();
-
-                $data = new stdClass();
-                $data->user    = $message->user;
-                $data->message = $message->id;
-                $data->status  = 'sent';
-                $this->dao->insert(TABLE_IM_MESSAGESTATUS)->data($data)->exec();
             }
             $chatList[$message->cgid] = $message->cgid;
         }
@@ -923,16 +905,9 @@ class chatModel extends model
      */
     public function saveOfflineMessages($messages = array(), $users = array())
     {
-        foreach($users as $user)
+        foreach($messages as $message)
         {
-            foreach($messages as $message)
-            {
-                $data = new stdClass();
-                $data->user    = $user;
-                $data->message = $message->id;
-                $data->status  = 'waiting';
-                $this->dao->replace(TABLE_IM_MESSAGESTATUS)->data($data)->exec();
-            }
+            $this->batchCreateMessageStatus($users, $message->id, 'waiting');
         }
         return !dao::isError();
     }
@@ -956,7 +931,7 @@ class chatModel extends model
         $messages = array();
         foreach($notify as $message) $messages[] = $message->message;
 
-        $this->dao->update(TABLE_IM_MESSAGESTATUS)->set('status')->eq('sent')->where('message')->in($messages)->andWhere('user')->eq($userID)->exec();
+        $this->dao->delete()->from(TABLE_IM_MESSAGESTATUS)->where('message')->in($messages)->andWhere('user')->eq($userID)->exec();
         return $notify;
     }
 
@@ -1025,8 +1000,7 @@ class chatModel extends model
 
         foreach($messages as $userID => $message)
         {
-            $this->dao->update(TABLE_IM_MESSAGESTATUS)
-                ->set('status')->eq('sent')
+            $this->dao->delete()->from(TABLE_IM_MESSAGESTATUS)
                 ->where('message')->in($message)
                 ->andWhere('user')->eq($userID)
                 ->exec();
@@ -1144,17 +1118,23 @@ class chatModel extends model
 
 		$this->dao->insert(TABLE_IM_MESSAGE)->data($notify)->exec();
 		$message = $this->dao->lastInsertID();
-		foreach($info['target'] as $user)
-		{
-            $data = new stdClass();
-            $data->user    = $user;
-            $data->message = $message;
-            $data->status  = 'waiting';
-            $this->dao->insert(TABLE_IM_MESSAGESTATUS)->data($data)->exec();
-		}
+		$this->batchCreateMessageStatus($info['target'], $message, 'waiting');
         return !dao::isError();
     }
 
+    public function batchCreateMessageStatus($users, $message, $status = 'waiting')
+    {
+        if(empty($users) || empty($message)) return false;
+        
+        $sql = "REPLACE INTO `" . TABLE_IM_MESSAGESTATUS . "` (`user`, `message`, `status`) VALUES ";
+        foreach($users as $user)
+        {
+            $sql .= "('{$user}', '{$message}', '{$status}'),";
+        }
+        $sql .= rtrim($sql, ',') . ";";
+        return $this->dbh->query($sql);
+    }
+    
 	/**
 	 * Create gid.
 	 * @access public
