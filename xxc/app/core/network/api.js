@@ -38,6 +38,7 @@ export const requestServerInfo = user => {
             user.socketUrl = data.socketUrl;
             user.uploadFileSize = data.uploadFileSize;
             user.ranzhiUrl = data.ranzhiUrl;
+            user.clientUpdate = data.clientUpdate;
             return Promise.resolve(user);
         }
         const error = new Error('Empty serverInfo data');
