@@ -79,3 +79,6 @@ docs/*/*-convert.md
 docs/**/*.md
 docs/**/*.md
 docs/
+
+# Editor config
+*.code-workspace
