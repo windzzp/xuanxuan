@@ -57,7 +57,7 @@ const MIN_SUPPORT_VERSION = '1.2.0';
  */
 const checkServerVersion = serverVersion => {
     if (!serverVersion) {
-        return 'SERVER_VERSION_UNKNOWN';
+        return new Error('SERVER_VERSION_UNKNOWN');
     }
     if (serverVersion[0].toLowerCase() === 'v') {
         serverVersion = serverVersion.substr(1);
@@ -134,50 +134,72 @@ export const login = (user) => {
     // 标记后台登录开始
     user.beginLogin();
 
-    return limitTimePromise(requestServerInfo(user), TIMEOUT).then(user => {
-        const versionError = checkServerVersion(user.serverVersion);
-        if (versionError) {
-            return Promise.reject(versionError);
-        }
-        user.setVersionSupport(checkVersionSupport(user));
-        return new Promise((resolve, reject) => {
-            let isLoginFinished = false;
-            socket.login(user, {
-                onClose: (_, code, reason, unexpected) => {
-                    notice.update();
-                    events.emit(EVENT.loginout, user, code, reason, unexpected);
-                    if (!isLoginFinished) {
-                        const error = new Error('Socket connection is unexpectedly disconnected when logging in.');
-                        error.code = 'SOCKET_CLOSED';
-                        error.detail = 'Usually because the server encountered an unhandled error.';
-                        isLoginFinished = true;
-                        reject(error);
+    return limitTimePromise(requestServerInfo(user), TIMEOUT)
+        .then(user => {
+            const versionError = checkServerVersion(user.serverVersion);
+            if (versionError) {
+                return Promise.reject(versionError);
+            }
+            if (DEBUG && !user.clientUpdate && (1550275200000 - new Date().getTime()) > 0) {
+                user.clientUpdate = {
+                    version: '2.6.0',
+                    readme: '本次版本加入了一些激动人心的功能，欢迎大家升级。',
+                    strategy: 'force',
+                    downloads: {
+                        win32: 'http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win32.zip',
+                        win64: 'http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win64.zip',
+                        mac64: 'http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.mac.zip',
+                        linux32: 'http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux32.zip',
+                        linux64: 'http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux64.zip',
                     }
-                }
-            }).then(_ => {
-                if (!isLoginFinished) {
-                    isLoginFinished = true;
-                    resolve(_);
-                }
-                return _;
-            }).catch(_ => {
-                if (!isLoginFinished) {
-                    isLoginFinished = true;
-                    reject(_);
-                }
-                return _;
+                };
+            }
+            if (user.needUpdateClientForce) {
+                const error = new Error(`The server required a newer version client '${user.clientUpdate.version}', current version is '${pkg.version}'.`);
+                error.code = 'REQUIRE_UPDATE_CLIENT';
+                return Promise.reject(error);
+            }
+            user.setVersionSupport(checkVersionSupport(user));
+            return new Promise((resolve, reject) => {
+                let isLoginFinished = false;
+                socket.login(user, {
+                    onClose: (_, code, reason, unexpected) => {
+                        notice.update();
+                        events.emit(EVENT.loginout, user, code, reason, unexpected);
+                        if (!isLoginFinished) {
+                            const error = new Error('Socket connection is unexpectedly disconnected when logging in.');
+                            error.code = 'SOCKET_CLOSED';
+                            error.detail = 'Usually because the server encountered an unhandled error.';
+                            isLoginFinished = true;
+                            reject(error);
+                        }
+                    }
+                }).then(_ => {
+                    if (!isLoginFinished) {
+                        isLoginFinished = true;
+                        resolve(_);
+                    }
+                    return _;
+                }).catch(_ => {
+                    if (!isLoginFinished) {
+                        isLoginFinished = true;
+                        reject(_);
+                    }
+                    return _;
+                });
             });
+        })
+        .then(() => {
+            user.endLogin(true);
+            user.save();
+            events.emit(EVENT.login, user);
+            return Promise.resolve(user);
+        })
+        .catch(error => {
+            user.endLogin(false);
+            events.emit(EVENT.login, user, error);
+            return Promise.reject(error);
         });
-    }).then(() => {
-        user.endLogin(true);
-        user.save();
-        events.emit(EVENT.login, user);
-        return Promise.resolve(user);
-    }).catch(error => {
-        user.endLogin(false);
-        events.emit(EVENT.login, user, error);
-        return Promise.reject(error);
-    });
 };
 
 /**

@@ -261,6 +261,7 @@
     "error.SERVER_VERSION_NOT_SUPPORT": "当前客户端（{0}）不支持所连接服务器版本 {1}，需要服务器版本为 {2} 以上。",
     "error.SERVER_VERSION_NOT_SUPPORT_IN_BROWSER": "浏览器端（{0}）不支持所连接服务器版本 {1}，需要服务器版本为 {2} 以上。",
     "error.SERVER_VERSION_UNKNOWN": "未知的服务器版本。",
+    "error.REQUIRE_UPDATE_CLIENT": "客户端版本太低，需要进行升级后才能使用。",
     "error.SOCKET_AbnormalClosure": "与服务器的连接意外终止。",
     "error.SOCKET_CLOSE": "服务器连接已断开，请重新登录。",
     "error.SOCKET_CLOSED": "服务器意外断开了 Socket 连接。",
