@@ -16,6 +16,8 @@ import User, {isPasswordWithMD5Flag} from '../../core/profile/user';
 import platform from '../../platform';
 import events from '../../core/events';
 import Popover from '../../components/popover';
+import {showUpdateGuideDialog} from '../common/update-guide-dialog';
+import {getUpdaterStatus} from '../../core/updater';
 
 // 从平台访问对象获取模块功能
 const {ui: platformUI} = platform.modules;
@@ -196,6 +198,10 @@ export default class LoginForm extends PureComponent {
      */
     componentWillUnmount() {
         events.off(this.onLangChangeHandler);
+        if (this.showUpdateDialogTask) {
+            clearTimeout(this.showUpdateDialogTask);
+            this.showUpdateDialogTask = null;
+        }
     }
 
     /**
@@ -205,6 +211,10 @@ export default class LoginForm extends PureComponent {
      * @memberof LoginForm
      */
     login() {
+        if (this.showUpdateDialogTask) {
+            clearTimeout(this.showUpdateDialogTask);
+            this.showUpdateDialogTask = null;
+        }
         const {
             account,
             password,
@@ -222,6 +232,10 @@ export default class LoginForm extends PureComponent {
             ldap,
         }).then((user) => {
             this.setState({logining: false});
+            const {needUpdateOptional} = getUpdaterStatus();
+            if (needUpdateOptional) {
+                this.showUpdateDialogTask = setTimeout(showUpdateGuideDialog, 5000);
+            }
             return user;
         }).catch(error => {
             if (DEBUG) {
@@ -239,6 +253,9 @@ export default class LoginForm extends PureComponent {
                 messageDetail += `\n-------------------\nStack: ${error.stack}`;
             }
             this.setState({message, messageDetail, logining: false});
+            if (error && error.code === 'REQUIRE_UPDATE_CLIENT') {
+                showUpdateGuideDialog();
+            }
         });
     }
 

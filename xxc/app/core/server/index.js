@@ -11,6 +11,7 @@ import notice from '../notice';
 import events from '../events';
 import limitTimePromise from '../../utils/limit-time-promise';
 import platform from '../../platform';
+import {checkClientUpdateInfo} from '../updater';
 
 /**
  * 判定服务器请求超时时间，单位毫秒
@@ -143,7 +144,7 @@ export const login = (user) => {
             if (DEBUG && !user.clientUpdate && (1550275200000 - new Date().getTime()) > 0) {
                 user.clientUpdate = {
                     version: '2.6.0',
-                    readme: '本次版本加入了一些激动人心的功能，欢迎大家升级。',
+                    readme: '本次版本加入了一些激动人心的功能，欢迎大家升级。\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n',
                     strategy: 'force',
                     downloads: {
                         win32: 'http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win32.zip',
@@ -154,7 +155,8 @@ export const login = (user) => {
                     }
                 };
             }
-            if (user.needUpdateClientForce) {
+            const updateInfo = checkClientUpdateInfo(user);
+            if (updateInfo.needUpdateForce) {
                 const error = new Error(`The server required a newer version client '${user.clientUpdate.version}', current version is '${pkg.version}'.`);
                 error.code = 'REQUIRE_UPDATE_CLIENT';
                 return Promise.reject(error);

@@ -82,7 +82,7 @@ const isLinux = !isOSX && !isWindowsOS;
  */
 export default {
     arch: process.arch,
-    os: isOSX ? 'mac' : isWindowsOS ? 'windows' : OS_PLATFORM,
+    os: isOSX ? 'mac' : isWindowsOS ? 'win' : 'linux',
     isWindowsOS,
     isOSX,
     isLinux,

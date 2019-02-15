@@ -621,6 +621,9 @@ export default class FileData extends Entity {
      * @type {string}
      */
     get url() {
+        if (this._url === undefined) {
+            this._url = this.$get('url');
+        }
         return this._url;
     }
 
