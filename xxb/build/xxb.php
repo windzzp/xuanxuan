@@ -15,7 +15,7 @@ foreach($matches[0] as $match)
 file_put_contents(dirname(__DIR__) . '/xxb/db/xxb.sql', $sql);
 
 $str = <<<EOT
-$("#entryForm #visible").parent().parent().remove();
+$("#entryForm #visible").parent().parent().addClass('hidden');
 $(".entry-version, .entry-files").show();
 $("#platformxuanxuan").selected().parent().parent().parent().hide();
 EOT;
