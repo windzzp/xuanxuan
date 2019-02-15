@@ -9,6 +9,7 @@ import (
 	"io"
 	"runtime"
 	"os/exec"
+	"time"
 )
 
 var commands = map[string]string{
@@ -24,6 +25,8 @@ func main() {
 	flag.Parse()
 
 	if *src != "" && *app != ""{
+		time.Sleep(time.Second * 2)
+
 		if runtime.GOOS == "darwin" {
 			os.RemoveAll(*app)
 		}
