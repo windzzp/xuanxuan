@@ -67,7 +67,7 @@ export const copyUpdater = (platformID) => {
     if (process.env.HOT) {
         updaterFile = path.resolve(env.appRoot, '../updater/bin', updaterFileName);
     } else {
-        updaterFile = path.join(env.appPath, updaterFileName);
+        updaterFile = path.join(env.appPath, 'bin', updaterFileName);
     }
     const updaterDestPath = path.join(env.tmpPath, updaterFileName);
     return fse.copy(updaterFile, updaterDestPath, {overwrite: true}).then(() => Promise.resolve(updaterDestPath));
