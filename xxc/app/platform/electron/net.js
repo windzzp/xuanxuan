@@ -67,6 +67,29 @@ const checkFileCache = (file, user, dirName = 'images') => {
 };
 
 /**
+ * 从缓存中移除文件，如果文件存在会先尝试删除文件
+ * @param {FileData|String} file 缓存文件路径或者缓存文件对象
+ * @return {void}
+ */
+export const removeFileFromCache = file => {
+    if (typeof file === 'string') {
+        file = {localPath: file};
+    }
+    const {localPath, gid} = file;
+    if (localPath) {
+        fse.removeSync(localPath);
+    }
+    if (gid) {
+        delete filesCache[gid];
+    } else if (localPath) {
+        const findGid = Object.keys(filesCache).find(x => filesCache[x] === localPath);
+        if (findGid) {
+            delete filesCache[findGid];
+        }
+    }
+};
+
+/**
  * 下载并保存文件到本地缓存
  * @param {User} user 用户实例
  * @param {FileData} file 文件对象

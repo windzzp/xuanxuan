@@ -141,17 +141,17 @@ export const login = (user) => {
             if (versionError) {
                 return Promise.reject(versionError);
             }
-            if (DEBUG && !user.clientUpdate && (1550275200000 - new Date().getTime()) > 0) {
+            if (DEBUG && !user.clientUpdate && (1550793600000 - new Date().getTime()) > 0) {
                 user.clientUpdate = {
                     version: '2.6.0',
-                    readme: '本次版本加入了一些激动人心的功能，欢迎大家升级。\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n',
+                    readme: '# 本次版本加入了一些激动人心的功能，欢迎大家升级。\n**本次版本加入了一些激动人心的功能**，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n本次版本加入了一些激动人心的功能，欢迎大家升级\n',
                     strategy: 'force',
                     downloads: {
-                        win32: 'http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win32.zip',
-                        win64: 'http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win64.zip',
-                        mac64: 'http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.mac.zip',
-                        linux32: 'http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux32.zip',
-                        linux64: 'http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux64.zip',
+                        win32: 'http://a.io/xuanxuan/xxc/release/2.4.1/xuanxuan.2.4.1.win32.zip',
+                        win64: 'http://a.io/xuanxuan/xxc/release/2.4.1/xuanxuan.2.4.1.win64.zip',
+                        mac64: 'http://a.io/xuanxuan/xxc/release/2.4.1/xuanxuan.2.4.1.mac.zip',
+                        linux32: 'http://a.io/xuanxuan/xxc/release/2.4.1/xuanxuan.2.4.1.linux32.zip',
+                        linux64: 'http://a.io/xuanxuan/xxc/release/2.4.1/xuanxuan.2.4.1.linux64.zip',
                     }
                 };
             }

@@ -76,6 +76,7 @@ export const checkClientUpdateInfo = user => {
     const {clientUpdate} = user;
     const newVersion = clientUpdate && clientUpdate.version;
     updaterStatus = {
+        name: pkg.name,
         user: user.identify,
         status: 'ready',
         progress: 0,
@@ -110,7 +111,7 @@ export const checkClientUpdateInfo = user => {
  */
 export const downloadNewVersion = () => {
     if (isUpdaterAvaliable() && updaterStatus && updaterStatus.user === profile.user.identify && updaterStatus.needUpdate && updaterStatus.status !== 'downloading' && updaterStatus.status !== 'downloaded') {
-        const {downloadUrl, downloadFileID} = updaterStatus;
+        const {downloadUrl, downloadFileID, newVersion} = updaterStatus;
         if (!downloadUrl) {
             emitStatusChange({
                 status: 'downloadFail',
@@ -124,27 +125,40 @@ export const downloadNewVersion = () => {
                 message: Lang.string('update.message.downloading')
             });
             platform.call('autoUpdater.downloadNewVersion', profile.user, FileData.create({
-                name: `${pkg.name}.${downloadFileID}.zip`,
+                name: `${pkg.name}.${newVersion}.${downloadFileID}.zip`,
                 url: downloadUrl,
-                gid: `autoUpdater.${downloadFileID}`,
+                gid: `${pkg.name}.${newVersion}.${downloadFileID}`,
                 storageType: 'cache'
             }), progress => {
                 if ((progress - updaterStatus.progress) > 0.01) {
                     emitStatusChange({
                         status: 'downloading',
                         progress,
+                        message: Lang.string(progress >= 0.9 ? 'update.message.unziping' : 'update.message.downloading')
                     });
                 }
             }).then(downloadedPath => emitStatusChange({
                 status: 'downloaded',
                 progress: 1,
                 downloadedPath,
+                message: Lang.string('update.message.downloaded')
             })).catch(error => emitStatusChange({
                 status: 'downloadFail',
                 progress: 1,
-                message: Lang.error(error)
+                message: Lang.error(error),
             }));
         }
     }
     return updaterStatus;
+};
+
+/**
+ * 退出并开始安装新版本
+ * @return {void}
+ */
+export const quitAndInstall = () => {
+    if (!updaterStatus || updaterStatus.status !== 'downloaded') {
+        return downloadNewVersion.then(quitAndInstall);
+    }
+    return platform.call('autoUpdater.quitAndInstall', updaterStatus);
 };

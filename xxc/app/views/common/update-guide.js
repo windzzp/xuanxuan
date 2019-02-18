@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import Lang from '../../core/lang';
 import {
-    getUpdaterStatus, onUpdaterStatusChanged, isUpdaterAvaliable, downloadNewVersion
+    getUpdaterStatus, onUpdaterStatusChanged, isUpdaterAvaliable, downloadNewVersion, quitAndInstall
 } from '../../core/updater';
 import events from '../../core/events';
 import EmojioneIcon from '../../components/emojione-icon';
@@ -159,7 +159,7 @@ export default class UpdateGuide extends Component {
                 if (status === 'ready') {
                     buttonView = <button type="button" className="btn primary btn-wide" onClick={downloadNewVersion}>立即升级</button>;
                 } else if (status === 'downloaded') {
-                    buttonView = <button type="button" className="btn primary btn-wide" onClick={onRequestClose}>完成升级并重启</button>;
+                    buttonView = <button type="button" className="btn primary btn-wide" onClick={quitAndInstall}>完成升级并重启</button>;
                 } else if (status === 'downloadFail') {
                     buttonView = <button type="button" className="btn primary btn-wide" onClick={downloadNewVersion}>重新尝试升级</button>;
                 }

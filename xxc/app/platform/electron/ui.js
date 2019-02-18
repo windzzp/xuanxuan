@@ -147,7 +147,7 @@ export const showAndFocusWindow = () => {
 };
 
 /**
- * 请求立即退出应用程序
+ * 请求立即退出当前应用程序窗口
  * @return {void}
  */
 export const quitIM = () => {
