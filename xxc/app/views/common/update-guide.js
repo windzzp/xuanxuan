@@ -7,7 +7,7 @@ import {
     getUpdaterStatus, onUpdaterStatusChanged, isUpdaterAvaliable, downloadNewVersion
 } from '../../core/updater';
 import events from '../../core/events';
-import Emojione from '../../components/emojione';
+import EmojioneIcon from '../../components/emojione-icon';
 import Markdown from '../../utils/markdown';
 
 /**
@@ -171,7 +171,7 @@ export default class UpdateGuide extends PureComponent {
                 }
                 mainView = (
                     <div>
-                        <div className="text-center space" dangerouslySetInnerHTML={{__html: Emojione.toImage(':smiley_cat:')}} />
+                        <EmojioneIcon name=":smiley_cat:" className="text-center space" />
                         <h3>客户端需要升级才能继续登录到 {serverUrl}。</h3>
                         <p>最新版本为 {newVersion}，当前版本为 {currentVersion}。</p>
                         {updateProgressView}
@@ -183,7 +183,7 @@ export default class UpdateGuide extends PureComponent {
                 // 客户端升级模块不可用时，提示联系管理员进行升级
                 mainView = (
                     <div>
-                        <div className="text-center space" dangerouslySetInnerHTML={{__html: Emojione.toImage(':crying_cat_face:')}} />
+                        <EmojioneIcon name=":crying_cat_face:" className="text-center space" />
                         <h3>客户端需要升级才能继续登录到 {serverUrl}。</h3>
                         <p>最新版本为 {newVersion}，当前版本为 {currentVersion}。</p>
                         {updateReadmeView}
@@ -198,7 +198,7 @@ export default class UpdateGuide extends PureComponent {
             // 如果不需要升级
             mainView = (
                 <div>
-                    <div className="text-center space" dangerouslySetInnerHTML={{__html: Emojione.toImage(':thumbsup:')}} />
+                    <EmojioneIcon name=":thumbsup:" className="text-center space" />
                     <h3>你正在使用最新版本。</h3>
                     <div className="text-center has-padding-v">
                         <button type="button" className="btn primary btn-wide" onClick={onRequestClose}>{Lang.string('common.close')}</button>

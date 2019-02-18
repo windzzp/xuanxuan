@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../../utils/html-helper';
+import {rem, classes} from '../../utils/html-helper';
 import Lang from '../../core/lang';
 import App from '../../core';
-import Emojione from '../../components/emojione';
 import Spinner from '../../components/spinner';
 import _FileList from '../common/file-list';
 import withReplaceView from '../with-replace-view';
+import EmojioneIcon from '../../components/emojione-icon';
+
 
 /**
  * FileList 可替换组件形式
@@ -20,34 +21,33 @@ const FileList = withReplaceView(_FileList);
  * @return {ReactNode|string|number|null|boolean} React 渲染内容
  * @private
  */
-const renderLoading = () => {
-    return (<div className="dock center-content" style={{top: HTML.rem(50)}}>
+const renderLoading = () => (
+    <div className="dock center-content" style={{top: rem(50)}}>
         <Spinner label={Lang.string('chat.sidebar.tab.files.loading')} />
-    </div>);
-};
+    </div>
+);
 
 /**
  * 渲染文件列表为空的提示界面
  * @return {ReactNode|string|number|null|boolean} React 渲染内容
  * @private
  */
-const renderEmptyFileList = () => {
-    return (<div className="dock center-content" style={{top: HTML.rem(50)}}>
+const renderEmptyFileList = () => (
+    <div className="dock center-content" style={{top: rem(50)}}>
         <div>
-            <div className="text-center" dangerouslySetInnerHTML={{__html: Emojione.toImage(':blowfish:')}} />
+            <EmojioneIcon name=":blowfish:" className="text-center" />
             <div className="text-gray small">{Lang.string('chat.sidebar.tab.files.noFilesHere')}</div>
         </div>
-    </div>);
-};
+    </div>
+);
 
 /**
  * 渲染文件列表
  * @param {FileData[]} files 文件列表
  * @private
+ * @return {ReactNode|string|number|null|boolean} React 渲染内容
  */
-const renderFileList = files => {
-    return <FileList listItemProps={{smallIcon: true, showSender: true}} className="white rounded" files={files} />;
-};
+const renderFileList = files => <FileList listItemProps={{smallIcon: true, showSender: true}} className="white rounded" files={files} />;
 
 /**
  * ChatSidebarFiles 组件 ，显示聊天侧边栏上的文件列表
@@ -134,12 +134,10 @@ export default class ChatSidebarFiles extends Component {
      * @return {void}
      */
     loadFiles() {
-        const chat = this.props.chat;
-        return App.im.chats.getChatFiles(chat).then(files => {
-            return this.setState({files, loading: false});
-        }).catch(() => {
-            return this.setState({files: [], loading: false});
-        });
+        const {chat} = this.props;
+        return App.im.chats.getChatFiles(chat)
+            .then(files => this.setState({files, loading: false}))
+            .catch(() => this.setState({files: [], loading: false}));
     }
 
     /**
@@ -151,7 +149,7 @@ export default class ChatSidebarFiles extends Component {
      * @return {ReactNode|string|number|null|boolean} React 渲染内容
      */
     render() {
-        let {
+        const {
             chat,
             className,
             children,
@@ -160,14 +158,16 @@ export default class ChatSidebarFiles extends Component {
 
         const {files, loading} = this.state;
 
-        return (<div
-            {...other}
-            className={HTML.classes('app-chat-sidebar-files has-padding', className)}
-        >
-            {
-                loading ? renderLoading() : files.length ? renderFileList(files) : renderEmptyFileList()
-            }
-            {children}
-        </div>);
+        return (
+            <div
+                {...other}
+                className={classes('app-chat-sidebar-files has-padding', className)}
+            >
+                {
+                    loading ? renderLoading() : files.length ? renderFileList(files) : renderEmptyFileList()
+                }
+                {children}
+            </div>
+        );
     }
 }
