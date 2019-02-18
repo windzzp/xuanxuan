@@ -33,6 +33,7 @@ func main() {
 
 		if err := CopyDir(*src, *app); err != nil {
 			fmt.Println(err.Error())
+            os.Exit(0)
 		}
 	}
 
