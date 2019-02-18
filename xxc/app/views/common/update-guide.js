@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import Lang from '../../core/lang';
@@ -14,12 +14,12 @@ import Markdown from '../../utils/markdown';
  * UpdateGuide 组件 ，显示应用关于界面
  * @class UpdateGuide
  * @see https://react.docschina.org/docs/components-and-props.html
- * @extends {PureComponent}
+ * @extends {Component}
  * @example
  * import UpdateGuide from './update-guide';
  * <UpdateGuide />
  */
-export default class UpdateGuide extends PureComponent {
+export default class UpdateGuide extends Component {
     /**
      * React 组件属性类型检查
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
@@ -116,7 +116,6 @@ export default class UpdateGuide extends PureComponent {
         } = this.props;
 
         const {updaterStatus} = this.state;
-        console.log('updaterStatus', updaterStatus);
         const {
             needUpdate, serverUrl, currentVersion, newVersion,
             updateInfo,
@@ -151,13 +150,8 @@ export default class UpdateGuide extends PureComponent {
                     );
                 } else if (status === 'downloadFail') {
                     updateProgressView = (
-                        <div className="progress has-padding-v space divider">
-                            {progress > 0 && (
-                                <div className="box rounded danger-pale relative space-xs">
-                                    <div className="rounded bar danger dock dock-left" style={{width: `${progress * 100}%`, transition: 'all .4s'}} />
-                                </div>
-                            )}
-                            <div className="title">{progress > 0 && <strong>{Math.floor(progress * 100)}% </strong>}<span className="text-danger small">{message}</span></div>
+                        <div className="box danger-pale rounded text-danger space">
+                            {message}
                         </div>
                     );
                 }

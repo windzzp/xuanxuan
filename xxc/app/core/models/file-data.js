@@ -546,6 +546,26 @@ export default class FileData extends Entity {
     }
 
     /**
+     * 获取存储类型
+     * @type {string}
+     * @readonly
+     * @memberof FileData
+     */
+    get storageType() {
+        return this.$get('storageType');
+    }
+
+    /**
+     * 设置存储类型
+     * @type {string}
+     * @param {string} storageType 存储类型
+     * @memberof FileData
+     */
+    set storageType(storageType) {
+        this.$set('storageType', storageType);
+    }
+
+    /**
      * 获取是否已经发送到服务器
      * @memberof FileData
      * @readonly

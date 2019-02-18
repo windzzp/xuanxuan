@@ -124,8 +124,10 @@ export const downloadNewVersion = () => {
                 message: Lang.string('update.message.downloading')
             });
             platform.call('autoUpdater.downloadNewVersion', profile.user, FileData.create({
+                name: `${pkg.name}.${downloadFileID}.zip`,
                 url: downloadUrl,
                 gid: `autoUpdater.${downloadFileID}`,
+                storageType: 'cache'
             }), progress => {
                 if ((progress - updaterStatus.progress) > 0.01) {
                     emitStatusChange({

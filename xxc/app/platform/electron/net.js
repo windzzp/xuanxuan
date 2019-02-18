@@ -32,9 +32,7 @@ const filesCache = {};
  * @return {string} 创建文件缓存路径
  * @private
  */
-const createCachePath = (file, user, dirName = 'images') => {
-    return createUserDataPath(user, file.storageName, dirName);
-};
+const createCachePath = (file, user, dirName = null) => createUserDataPath(user, file.storageName, dirName || (file.storageType ? `${file.storageType}s` : 'images'));
 
 /**
  * 检查文件是否已经缓存
@@ -75,37 +73,35 @@ const checkFileCache = (file, user, dirName = 'images') => {
  * @param {function(progresss: number)} onProgress 下载进度变更事件回调函数
  * @returns {Promise} 使用 Promise 异步返回处理文件下载结果
  */
-export const downloadFile = (user, file, onProgress) => {
-    return checkFileCache(file, user).then(cachePath => {
-        const url = file.url || file.makeUrl(user);
-        const fileSavePath = file.path || createCachePath(file, user);
-        if (cachePath) {
-            if (DEBUG) {
-                console.collapse('HTTP DOWNLOAD', 'blueBg', url, 'bluePale', 'Cached', 'greenPale');
-                console.log('file', file);
-                console.groupEnd();
-            }
-            if (fileSavePath !== cachePath) {
-                return fse.copy(cachePath, fileSavePath).then(() => {
-                    return Promise.resolve(file);
-                });
-            }
-            return Promise.resolve(file);
+export const downloadFile = (user, file, onProgress) => checkFileCache(file, user).then(cachePath => {
+    const url = file.url || file.makeUrl(user);
+    const fileSavePath = file.path || createCachePath(file, user);
+    if (cachePath) {
+        if (DEBUG) {
+            console.collapse('HTTP DOWNLOAD', 'blueBg', url, 'bluePale', 'Cached', 'greenPale');
+            console.log('file', file);
+            console.groupEnd();
         }
+        if (fileSavePath !== cachePath) {
+            return fse.copy(cachePath, fileSavePath).then(() => {
+                return Promise.resolve(file);
+            });
+        }
+        return Promise.resolve(file);
+    }
 
-        fse.ensureDirSync(Path.dirname(fileSavePath));
-        return downloadFileWithRequest(url, fileSavePath, onProgress).then(() => {
-            if (DEBUG) {
-                console.collapse('HTTP DOWNLOAD', 'blueBg', url, 'bluePale', 'OK', 'greenPale');
-                console.log('file', file);
-                console.groupEnd();
-            }
-            file.localPath = fileSavePath;
-            filesCache[file.gid] = file.localPath;
-            return Promise.resolve(file);
-        });
+    fse.ensureDirSync(Path.dirname(fileSavePath));
+    return downloadFileWithRequest(url, fileSavePath, onProgress).then(() => {
+        if (DEBUG) {
+            console.collapse('HTTP DOWNLOAD', 'blueBg', url, 'bluePale', 'OK', 'greenPale');
+            console.log('file', file);
+            console.groupEnd();
+        }
+        file.localPath = fileSavePath;
+        filesCache[file.gid] = file.localPath;
+        return Promise.resolve(file);
     });
-};
+});
 
 /**
  * 上传文件
@@ -172,8 +168,8 @@ export const uploadFile = (user, file, onProgress, copyCache = false) => {
     });
 };
 
-network.uploadFile = uploadFile;
-network.downloadFile = downloadFile;
-network.checkFileCache = checkFileCache;
-
-export default network;
+export default Object.assign({}, network, {
+    uploadFile,
+    downloadFile,
+    checkFileCache
+});
