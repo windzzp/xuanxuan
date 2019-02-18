@@ -3,6 +3,7 @@ import {showChatShareDialog} from './chats/chat-share-dialog';
 import {registerCommand} from '../core/commander';
 import {getChat} from '../core/im/im-chats';
 import {getCurrentActiveChatGID} from '../core/im/im-ui';
+import {showUpdateGuideDialog} from './common/update-guide-dialog';
 
 export default () => {
     registerCommand('showChatSendCodeDialog', (context, chat) => {
@@ -20,4 +21,6 @@ export default () => {
         const {message} = context;
         showChatShareDialog(message);
     });
+
+    registerCommand('showUpdateGuideDialog', () => showUpdateGuideDialog());
 };

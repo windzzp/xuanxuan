@@ -1,5 +1,4 @@
 // eslint-disable-next-line import/no-unresolved
-import compareVersions from 'compare-versions';
 import Md5 from 'md5';
 import Member from '../models/member';
 import UserConfig from './user-config';
@@ -576,43 +575,6 @@ export default class User extends Member {
      */
     set clientUpdate(clientUpdate) {
         this._clientUpdate = clientUpdate;
-    }
-
-    /**
-     * 是否需要升级客户端
-     *
-     * @readonly
-     * @memberof User
-     * @type {string}
-     */
-    get needUpdateClient() {
-        const {clientUpdate} = this;
-        if (clientUpdate && compareVersions(Config.pkg.version, clientUpdate.version) < 0) {
-            return clientUpdate.strategy;
-        }
-        return false;
-    }
-
-    /**
-     * 是否需要强制升级
-     *
-     * @readonly
-     * @memberof User
-     * @type {boolean}
-     */
-    get needUpdateClientForce() {
-        return this.needUpdateClient === 'force';
-    }
-
-    /**
-     * 是否需要可选升级
-     *
-     * @readonly
-     * @memberof User
-     * @type {boolean}
-     */
-    get needUpdateClientOptional() {
-        return !this.needUpdateClientForce;
     }
 
     /**
