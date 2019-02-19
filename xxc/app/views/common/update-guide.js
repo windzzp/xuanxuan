@@ -157,17 +157,17 @@ export default class UpdateGuide extends Component {
                 }
                 let buttonView = null;
                 if (status === 'ready') {
-                    buttonView = <button type="button" className="btn primary btn-wide" onClick={downloadNewVersion}>立即升级</button>;
+                    buttonView = <button type="button" className="btn primary btn-wide" onClick={downloadNewVersion}>{Lang.string('update.updateNow')}</button>;
                 } else if (status === 'downloaded') {
-                    buttonView = <button type="button" className="btn primary btn-wide" onClick={quitAndInstall}>完成升级并重启</button>;
+                    buttonView = <button type="button" className="btn primary btn-wide" onClick={quitAndInstall}>{Lang.string('update.restartToCompleteUpdate')}</button>;
                 } else if (status === 'downloadFail') {
-                    buttonView = <button type="button" className="btn primary btn-wide" onClick={downloadNewVersion}>重新尝试升级</button>;
+                    buttonView = <button type="button" className="btn primary btn-wide" onClick={downloadNewVersion}>{Lang.string('update.retryUpdate')}</button>;
                 }
                 mainView = (
                     <div>
                         <EmojioneIcon name=":smiley_cat:" className="text-center space" />
-                        <h3>客户端需要升级才能继续登录到 {serverUrl}。</h3>
-                        <p>最新版本为 {newVersion}，当前版本为 {currentVersion}。</p>
+                        <h3>{Lang.format('update.clientRequiredUpdateToLoginServer', serverUrl)}</h3>
+                        <p>{Lang.format('update.versionsFormat', newVersion, currentVersion)}</p>
                         {updateProgressView}
                         {updateReadmeView}
                         {buttonView && <div className="text-center has-padding-v">{buttonView}</div>}
@@ -178,10 +178,10 @@ export default class UpdateGuide extends Component {
                 mainView = (
                     <div>
                         <EmojioneIcon name=":crying_cat_face:" className="text-center space" />
-                        <h3>客户端需要升级才能继续登录到 {serverUrl}。</h3>
-                        <p>最新版本为 {newVersion}，当前版本为 {currentVersion}。</p>
+                        <h3>{Lang.format('update.clientRequiredUpdateToLoginServer', serverUrl)}</h3>
+                        <p>{Lang.format('update.versionsFormat', newVersion, currentVersion)}</p>
                         {updateReadmeView}
-                        <p>请联系管理员进行升级操作。</p>
+                        <p>{Lang.string('update.contactAdminToUpdate')}</p>
                         <div className="text-center has-padding-v">
                             <button type="button" className="btn primary btn-wide" onClick={onRequestClose}>{Lang.string('common.close')}</button>
                         </div>
@@ -193,7 +193,7 @@ export default class UpdateGuide extends Component {
             mainView = (
                 <div>
                     <EmojioneIcon name=":thumbsup:" className="text-center space" />
-                    <h3>你正在使用最新版本。</h3>
+                    <h3>{Lang.string('update.message.alreadyNew')}</h3>
                     <div className="text-center has-padding-v">
                         <button type="button" className="btn primary btn-wide" onClick={onRequestClose}>{Lang.string('common.close')}</button>
                     </div>
