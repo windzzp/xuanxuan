@@ -30,6 +30,8 @@ type retCInfo struct {
     UploadFileSize int64 `json:"uploadFileSize"`
 
     ChatPort  int  `json:"chatPort"`
+
+	clientUpdate string  `json:"clientUpdate"`
 }
 
 // route
@@ -286,7 +288,7 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
 
     r.ParseForm()
 
-    ok, err := api.VerifyLogin([]byte(r.Form["data"][0]))
+    ok, clientUpdate, err := api.VerifyLogin([]byte(r.Form["data"][0]))
     if err != nil {
         util.Log("error", "[serverInfo] Verify authentication credentials error: ", err)
         w.WriteHeader(http.StatusInternalServerError)
@@ -312,7 +314,8 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
         Version:        util.Version,
         Token:          string(util.Token),
         UploadFileSize: util.Config.UploadFileSize,
-        ChatPort:       chatPort}
+        ChatPort:       chatPort,
+		clientUpdate:	clientUpdate}
 
     jsonData, err := json.Marshal(info)
     if err != nil {
