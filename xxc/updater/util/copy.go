@@ -1,3 +1,6 @@
+/**
+	golang copy directory recursively copyright by	https://github.com/otiai10/copy
+ */
 package util
 
 import (
