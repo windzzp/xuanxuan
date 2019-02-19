@@ -49,21 +49,21 @@ func StartXXD() error {
 }
 
 // 喧喧客户端第一次登录认证
-func VerifyLogin(body []byte) (bool, error) {
+func VerifyLogin(body []byte) (bool, string, error) {
     parseData := make(ParseData)
     if err := json.Unmarshal(body, &parseData); err != nil {
         util.Log("error", "[VerifyLogin] json data unmarshal error:", err)
-        return false, err
+        return false, "", err
     }
 
     ranzhiServer, ok := RanzhiServer(parseData.ServerName())
     if !ok {
-        return false, util.Errorf("[VerifyLogin] backend server [%s] cannot found. ", parseData.ServerName())
+        return false, "", util.Errorf("[VerifyLogin] backend server [%s] cannot found. ", parseData.ServerName())
     }
 
     r2xMessage, err := hyperttp.RequestInfo(ranzhiServer.RanzhiAddr, ApiUnparse(parseData, ranzhiServer.RanzhiToken))
     if err != nil {
-        return false, err
+        return false, "", err
     }
 
     //解密数据
@@ -71,20 +71,20 @@ func VerifyLogin(body []byte) (bool, error) {
     util.LogDetail("[VerifyLogin] request json data : " + string(jsonData))
     if err != nil {
         util.Log("error", "[VerifyLogin] request json data decrypt error:", err)
-        return false, err
+        return false, "", err
     }
 
     retMessage, err := ProcessResponse(jsonData)
     if err != nil {
-        return false, err
+        return false, "", err
     }
 
     parseData, err = ApiParse(retMessage[0]["message"].([]byte), util.Token)
     if err != nil {
-        return false, err
+        return false, "", err
     }
 
-    return parseData.Result() == "success", nil
+    return parseData.Result() == "success", (parseData["data"].(interface{})).(string), nil
 }
 
 // 喧喧客户端上传文件时，与然之服务器进行数据交互
