@@ -43,6 +43,7 @@ xxc/app/dist
 xxc/app/web-dist
 xxc/app/manifest.json
 xxc/app/media-build
+xxc/app/bin
 
 # User custom files
 *.custom.*
@@ -63,7 +64,7 @@ xxd/certificate
 xxd/log
 
 # test files
-xxc/test
+# xxc/test
 
 # documentation
 xxc/docs

@@ -5,7 +5,7 @@ import {formatBytes} from '../../utils/string-helper';
 import Lang from '../../core/lang';
 import App from '../../core';
 import {checkUploadFileSize} from '../../core/im/im-files';
-import Emojione from '../../components/emojione';
+import EmojioneIcon from '../../components/emojione-icon';
 
 /**
  * ChatsDndContainer 组件 ，显示聊天拖放功能交互容器
@@ -119,18 +119,20 @@ export default class ChatsDndContainer extends PureComponent {
             ...other
         } = this.props;
 
-        return (<div
-            className={classes('app-chats-dnd-container drag-n-drop-message center-content', className)}
-            {...other}
-            onDragEnter={this.handleDndEnter}
-            onDrop={this.handleDndDrop}
-            onDragLeave={this.handleDndLeave}
-        >
-            <div className="text-center">
-                <div className="dnd-over" dangerouslySetInnerHTML={{__html: Emojione.toImage(':hatching_chick:')}} />
-                <div className="dnd-hover" dangerouslySetInnerHTML={{__html: Emojione.toImage(':hatched_chick:')}} />
-                <h1>{Lang.string('chats.drapNDropFileMessage')}</h1>
+        return (
+            <div
+                className={classes('app-chats-dnd-container drag-n-drop-message center-content', className)}
+                {...other}
+                onDragEnter={this.handleDndEnter}
+                onDrop={this.handleDndDrop}
+                onDragLeave={this.handleDndLeave}
+            >
+                <div className="text-center">
+                    <EmojioneIcon className="dnd-over" name=":hatching_chick:" />
+                    <EmojioneIcon className="dnd-hover" name=":hatched_chick:" />
+                    <h1>{Lang.string('chats.drapNDropFileMessage')}</h1>
+                </div>
             </div>
-        </div>);
+        );
     }
 }

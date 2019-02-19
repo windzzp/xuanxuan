@@ -402,6 +402,9 @@ const electronBuilder = {
     }, {
         from: 'app/lang/',
         to: 'lang'
+    }, {
+        from: 'app/bin/',
+        to: 'bin'
     }],
     dmg: {
         contents: [{
@@ -637,6 +640,19 @@ const buildApp = (isBrowser = false) => {
     });
 };
 
+// 复制升级文件
+const copyUpaterBin = (osType, arch) => {
+    const updaterFiles = {
+        'mac-x64': 'updater.mac',
+        'linux-x64': 'updater.linux64',
+        'linux-x32': 'updater.linux32',
+        'win-x64': 'updater.win64.exe',
+        'win-x32': 'updater.win32.exe',
+    };
+    const binPath = path.resolve(__dirname, '../app/bin/');
+    return fse.emptyDir(binPath).then(() => copyFiles(`./updater/bin/${updaterFiles[`${osType}-${arch}`]}`, binPath));
+};
+
 // 制作安装包
 const createPackage = (osType, arch, debug = isDebug) => {
     return new Promise((resolve, reject) => {
@@ -753,6 +769,9 @@ const build = async (callback) => {
                     console.log(`    ${chalk.red(chalk.bold('𐄂'))} 不支持制作此平台安装包： ${platform}-${arch}\n`);
                     continue;
                 }
+
+                // eslint-disable-next-line no-await-in-loop
+                await copyUpaterBin(platform, arch);
 
                 printEstimateInfo(`package-${platform}-${arch}`);
 

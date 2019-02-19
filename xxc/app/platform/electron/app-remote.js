@@ -1,6 +1,7 @@
 import electron, {
     BrowserWindow, app as ElectronApp, Tray, Menu, nativeImage, globalShortcut, ipcMain, dialog, shell
 } from 'electron';
+import {execFile, exec} from 'child_process';
 import EVENT from './remote-events';
 import events from './events';
 import Lang, {onLangChange} from './lang-remote';
@@ -747,13 +748,13 @@ class AppRemote {
         }
     }
 
-    // /**
-    //  * 关闭所有窗口
-    //  * @return {void}
-    //  */
-    // closeAllWindows() {
-    //     Object.keys(this.windows).forEach(winName => this.closeWindow(winName));
-    // }
+    /**
+     * 关闭所有窗口
+     * @return {void}
+     */
+    closeAllWindows() {
+        Object.keys(this.windows).forEach(winName => this.closeWindow(winName));
+    }
 
     /**
      * 获取当前激活的窗口
@@ -886,13 +887,25 @@ class AppRemote {
      *
      * @memberof AppRemote
      * @return {void}
+     * @param {{type: string}} 推出前执行的任务
      */
     // eslint-disable-next-line class-methods-use-this
-    quit() {
+    quit(task) {
+        this.closeAllWindows();
         if (SHOW_LOG) console.log('>> quit');
         try {
             globalShortcut.unregisterAll();
         } catch (_) {} // eslint-disable-line
+        if (task) {
+            if (SHOW_LOG) console.log('>> quit.task', task);
+            if (task.type === 'execFile') {
+                exec(task.command, (error, stdout, stderr) => {
+                    console.log('error >> ', error);
+                    console.log('stdout >> ', stdout);
+                    console.log('stderr >> ', stderr);
+                });
+            }
+        }
         ElectronApp.quit();
     }
 

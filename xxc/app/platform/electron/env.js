@@ -67,6 +67,21 @@ const isWindowsOS = OS_PLATFORM === 'win32' || OS_PLATFORM === 'win64';
 const isLinux = !isOSX && !isWindowsOS;
 
 /**
+ * 获取 Electron 程序目录
+ * @return {string} Electron 程序目录
+ */
+export const getElectronRootPath = () => {
+    if (process.env.HOT) {
+        return path.resolve(Remote.getGlobal('entryPath'), isOSX ? '../app_root.app' : '../app_root');
+    }
+    const exePath = Remote.app.getPath('exe');
+    if (isOSX) {
+        return path.resolve(exePath, '../../../');
+    }
+    return path.resolve(exePath, '../');
+};
+
+/**
  * 当前操作系统运行环境信息
  * @type {Object}
  * @property {string} os 操作系统类型，包括 MacOS(`'osx'`)，Windows(`'windows'`) 或 Linux(`'linux'`)
@@ -91,6 +106,9 @@ export default {
     tmpPath,
     get appPath() {
         return path.resolve(Remote.app.getAppPath(), '..');
+    },
+    get rootPath() {
+        return getElectronRootPath;
     },
     appRoot: Remote.getGlobal('entryPath'),
     windowName,

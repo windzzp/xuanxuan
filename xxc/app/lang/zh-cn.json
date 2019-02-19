@@ -6,6 +6,7 @@
     "update.message.newVersionAvaliable": "有新版本可用。",
     "update.message.downloading": "正在下载...",
     "update.message.downloaded": "下载完成，需要重启完成升级。",
+    "update.message.unziping": "正在处理安装包...",
     "update.message.downloadUrlNotAvaliable": "下载地址不可用。",
 
     "chat.all": "所有",

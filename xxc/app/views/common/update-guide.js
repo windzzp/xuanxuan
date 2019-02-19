@@ -1,25 +1,25 @@
 /* eslint-disable react/no-danger */
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import Lang from '../../core/lang';
 import {
-    getUpdaterStatus, onUpdaterStatusChanged, isUpdaterAvaliable, downloadNewVersion
+    getUpdaterStatus, onUpdaterStatusChanged, isUpdaterAvaliable, downloadNewVersion, quitAndInstall
 } from '../../core/updater';
 import events from '../../core/events';
-import Emojione from '../../components/emojione';
+import EmojioneIcon from '../../components/emojione-icon';
 import Markdown from '../../utils/markdown';
 
 /**
  * UpdateGuide 组件 ，显示应用关于界面
  * @class UpdateGuide
  * @see https://react.docschina.org/docs/components-and-props.html
- * @extends {PureComponent}
+ * @extends {Component}
  * @example
  * import UpdateGuide from './update-guide';
  * <UpdateGuide />
  */
-export default class UpdateGuide extends PureComponent {
+export default class UpdateGuide extends Component {
     /**
      * React 组件属性类型检查
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
@@ -116,7 +116,6 @@ export default class UpdateGuide extends PureComponent {
         } = this.props;
 
         const {updaterStatus} = this.state;
-        console.log('updaterStatus', updaterStatus);
         const {
             needUpdate, serverUrl, currentVersion, newVersion,
             updateInfo,
@@ -151,13 +150,8 @@ export default class UpdateGuide extends PureComponent {
                     );
                 } else if (status === 'downloadFail') {
                     updateProgressView = (
-                        <div className="progress has-padding-v space divider">
-                            {progress > 0 && (
-                                <div className="box rounded danger-pale relative space-xs">
-                                    <div className="rounded bar danger dock dock-left" style={{width: `${progress * 100}%`, transition: 'all .4s'}} />
-                                </div>
-                            )}
-                            <div className="title">{progress > 0 && <strong>{Math.floor(progress * 100)}% </strong>}<span className="text-danger small">{message}</span></div>
+                        <div className="box danger-pale rounded text-danger space">
+                            {message}
                         </div>
                     );
                 }
@@ -165,13 +159,13 @@ export default class UpdateGuide extends PureComponent {
                 if (status === 'ready') {
                     buttonView = <button type="button" className="btn primary btn-wide" onClick={downloadNewVersion}>立即升级</button>;
                 } else if (status === 'downloaded') {
-                    buttonView = <button type="button" className="btn primary btn-wide" onClick={onRequestClose}>完成升级并重启</button>;
+                    buttonView = <button type="button" className="btn primary btn-wide" onClick={quitAndInstall}>完成升级并重启</button>;
                 } else if (status === 'downloadFail') {
                     buttonView = <button type="button" className="btn primary btn-wide" onClick={downloadNewVersion}>重新尝试升级</button>;
                 }
                 mainView = (
                     <div>
-                        <div className="text-center space" dangerouslySetInnerHTML={{__html: Emojione.toImage(':smiley_cat:')}} />
+                        <EmojioneIcon name=":smiley_cat:" className="text-center space" />
                         <h3>客户端需要升级才能继续登录到 {serverUrl}。</h3>
                         <p>最新版本为 {newVersion}，当前版本为 {currentVersion}。</p>
                         {updateProgressView}
@@ -183,7 +177,7 @@ export default class UpdateGuide extends PureComponent {
                 // 客户端升级模块不可用时，提示联系管理员进行升级
                 mainView = (
                     <div>
-                        <div className="text-center space" dangerouslySetInnerHTML={{__html: Emojione.toImage(':crying_cat_face:')}} />
+                        <EmojioneIcon name=":crying_cat_face:" className="text-center space" />
                         <h3>客户端需要升级才能继续登录到 {serverUrl}。</h3>
                         <p>最新版本为 {newVersion}，当前版本为 {currentVersion}。</p>
                         {updateReadmeView}
@@ -198,7 +192,7 @@ export default class UpdateGuide extends PureComponent {
             // 如果不需要升级
             mainView = (
                 <div>
-                    <div className="text-center space" dangerouslySetInnerHTML={{__html: Emojione.toImage(':thumbsup:')}} />
+                    <EmojioneIcon name=":thumbsup:" className="text-center space" />
                     <h3>你正在使用最新版本。</h3>
                     <div className="text-center has-padding-v">
                         <button type="button" className="btn primary btn-wide" onClick={onRequestClose}>{Lang.string('common.close')}</button>

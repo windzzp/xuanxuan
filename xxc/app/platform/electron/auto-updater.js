@@ -2,8 +2,9 @@ import extractZip from 'extract-zip';
 import uuid from 'uuid';
 import fse from 'fs-extra';
 import path from 'path';
-import {downloadFile} from './net';
-import env from './env';
+import {downloadFile, removeFileFromCache} from './net';
+import env, {getElectronRootPath} from './env';
+import {callRemote} from './remote';
 
 /**
  * 从服务器下载更新版本
@@ -18,31 +19,88 @@ export const downloadNewVersion = (user, file, onProgress) => {
             onProgress(progress * 0.9 / 100);
         }
     }).then(file => new Promise((resolve, reject) => {
-        const tmpPath = path.join(env.tmpPath, uuid());
+        const tmpPath = path.join(env.tmpPath, file.gid || uuid());
         const {localPath} = file;
         if (onProgress) {
             onProgress(0.9);
         }
-        extractZip(localPath, {dir: tmpPath}, err => {
-            if (err) {
-                err.code = 'UPDATER_UNZIP_ERROR';
-                reject(err);
-            } else {
-                fse.removeSync(localPath);
-                resolve(tmpPath);
-            }
+        process.noAsar = true; // see https://github.com/electron/electron/issues/9304
+        fse.emptyDir(tmpPath).then(() => {
             if (onProgress) {
-                onProgress(1);
+                onProgress(0.95);
             }
-        });
+            return extractZip(localPath, {dir: tmpPath}, err => {
+                process.noAsar = false;
+                if (err) {
+                    err.code = 'UPDATER_UNZIP_ERROR';
+                    reject(err);
+                } else {
+                    removeFileFromCache(file);
+                    resolve(tmpPath);
+                }
+                if (onProgress) {
+                    onProgress(1);
+                }
+            });
+        }).catch(reject);
     }));
 };
 
-export const quitAndInstall = () => {
+/**
+ * 拷贝升级程序
+ * @param {String} platformID 平台识别字符串
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const copyUpdater = (platformID) => {
+    const updaterFiles = {
+        mac64: 'updater.mac',
+        linux64: 'updater.linux64',
+        linux32: 'updater.linux32',
+        win64: 'updater.win64.exe',
+        win32: 'updater.win32.exe',
+    };
+    const updaterFileName = updaterFiles[platformID];
+    if (!updaterFileName) {
+        return Promise.reject(new Error('Cannot find updater program.'));
+    }
+    let updaterFile = null;
+    if (process.env.HOT) {
+        updaterFile = path.resolve(env.appRoot, '../updater/bin', updaterFileName);
+    } else {
+        updaterFile = path.join(env.appPath, 'bin', updaterFileName);
+    }
+    const updaterDestPath = path.join(env.tmpPath, updaterFileName);
+    return fse.copy(updaterFile, updaterDestPath, {overwrite: true}).then(() => Promise.resolve(updaterDestPath));
+};
 
+/**
+ * 退出并安装升级
+ * @param {{downloadFileID: string, downloadedPath: string}} updaterStatus 升级状态对象
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
+export const quitAndInstall = (updaterStatus) => {
+    const {downloadFileID, downloadedPath, name} = updaterStatus;
+    return copyUpdater(downloadFileID).then(updaterFile => {
+        const srcPath = path.join(downloadedPath, env.isOSX ? `${name}.app` : name);
+        const appPath = getElectronRootPath();
+        const runPath = env.isOSX ? appPath : env.isWindowsOS ? path.join(appPath, `${name}.exe`) : path.join(appPath, name);
+        // 立即关闭所有应用窗口并退出程序
+        const args = [`-src="${srcPath}"`, `-app="${appPath}"`, `-run="${runPath}"`];
+        const quitTask = {
+            type: 'execFile',
+            file: updaterFile,
+            args,
+            command: `"${updaterFile}" ${args.join(' ')}`
+        };
+        if (DEBUG) {
+            localStorage.setItem('test.app.quit.task', JSON.stringify(quitTask));
+        }
+        return callRemote('quit', quitTask);
+    });
 };
 
 export default {
     quitAndInstall,
     downloadNewVersion,
+    copyUpdater,
 };

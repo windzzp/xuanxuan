@@ -3,12 +3,13 @@ import PropTypes from 'prop-types'; // eslint-disable-line
 import {classes} from '../../utils/html-helper';
 import App from '../../core';
 import Lang, {isJustLangSwitched} from '../../core/lang';
-import Emojione from '../../components/emojione';
 import ImageViewer from '../../components/image-viewer';
 import ImageHolder from '../../components/image-holder';
 import FileData from '../../core/models/file-data';
 import {showContextMenu} from '../../core/context-menu';
 import platform from '../../platform';
+import EmojioneIcon from '../../components/emojione-icon';
+import Emojione from '../../components/emojione';
 
 /**
  * 当前是否为浏览器平台
@@ -93,7 +94,8 @@ export default class MessageContentImage extends Component {
     componentDidMount() {
         const {message} = this.props;
         const image = message.imageContent;
-        if (!this.state.url && image.id && image.send === true) {
+        const {url} = this.state;
+        if (!url && image.id && image.send === true) {
             this.downloadImage(image);
         }
     }
@@ -222,24 +224,28 @@ export default class MessageContentImage extends Component {
         let image = message.imageContent;
 
         if (image.type === 'emoji') {
-            return (<div
-                {...other}
-                onContextMenu={this.handleEmojiContextMenu}
-                className={classes(' emojione-hd', className)}
-                dangerouslySetInnerHTML={{__html: Emojione.toImage(image.content)}}
-            />);
+            return (
+                <EmojioneIcon
+                    {...other}
+                    className={classes(' emojione-hd', className)}
+                    onContextMenu={this.handleEmojiContextMenu}
+                    name={image.content}
+                />
+            );
         }
         if (image.type === 'base64') {
             this.imageUrl = image.content;
             this.imageType = image.type;
-            return (<img
-                onContextMenu={this.handleImageContextMenu}
-                data-fail={Lang.string('file.downloadFailed')}
-                onError={e => e.target.classList.add('broken')}
-                onDoubleClick={this.handleImageDoubleClick}
-                src={image.content}
-                alt={image.type}
-            />);
+            return (
+                <img
+                    onContextMenu={this.handleImageContextMenu}
+                    data-fail={Lang.string('file.downloadFailed')}
+                    onError={e => e.target.classList.add('broken')}
+                    onDoubleClick={this.handleImageDoubleClick}
+                    src={image.content}
+                    alt={image.type}
+                />
+            );
         }
         const holderProps = {
             width: image.width,
