@@ -64,7 +64,7 @@ xxd/certificate
 xxd/log
 
 # test files
-xxc/test
+# xxc/test
 
 # documentation
 xxc/docs
