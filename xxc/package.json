@@ -34,7 +34,8 @@
     "hot-server-browser": "npm run hot-server -- --target=browser",
     "check-lang": "node --max_old_space_size=2096 -r babel-register ./tools/check-lang.js",
     "docs": "./node_modules/.bin/esdoc",
-    "eslint": "eslint ./app"
+    "eslint": "eslint ./app",
+    "test": "node --max_old_space_size=2096 -r babel-register ./test/index.js"
   },
   "build": {
     "extends": "./build/electron-builder.json"
