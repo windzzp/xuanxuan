@@ -50,6 +50,9 @@ let startConnectTime = null;
 // 上一个用户登录的时间
 let lastUserConnectTime = null;
 
+// 用户登录顺序 ID
+let connectID = 1;
+
 /**
  * 初始化测试程序参数
  * @return {void}
@@ -87,8 +90,10 @@ const initConfig = () => {
         timeForLogin3: config.timeForLogin3,
         reconnect: config.reconnect,
         verbose: config.verbose,
-        socketPort: config.socketPort
+        socketPort: config.socketPort,
+        loginType: config.timeForLogin1 ? 1 : config.timeForLogin2 ? 2 : 3
     }), 'Config');
+    log.info('Login type is', config.loginType);
 };
 
 /**
@@ -112,7 +117,7 @@ const initWaitUsers = () => {
         waitUsers.sort((x, y) => (x.timeForLogin1 - y.timeForLogin1));
     }
 
-    log.info(`Waiting users count: ${waitUsers.length}.`);
+    log.info('Waiting users count:', waitUsers.length);
 
     return waitUsers;
 };
@@ -123,9 +128,11 @@ const initWaitUsers = () => {
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
 const connectUser = (user) => {
+    user.connectID = connectID++;
     const server = new Server(user, config);
     servers[user.account] = server;
     lastUserConnectTime = new Date().getTime();
+    log.info(`User #${user.connectID}`, `**<${user.account}>**`, 'connect at', (lastUserConnectTime - startConnectTime) / 1000, 's');
     return server.connect();
 };
 
@@ -181,7 +188,7 @@ const start = () => {
         trySendMessage();
     }, 100);
 
-    log.info(`Start test, start connect timestramp: ${startConnectTime}.`);
+    log.info('Test started.');
 };
 
 start();

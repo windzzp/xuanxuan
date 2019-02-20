@@ -34,6 +34,19 @@ const STATUS = {
     CLOSING: 2, // 连接正在关闭的过程中。
     CLOSED: 3, // 连接已经关闭，或者连接无法建立。
     VERFIED: 4, // 连接已经打开且用户已经登录成功
+    0: 'CONNECTING',
+    1: 'OPEN',
+    2: 'CLOSING',
+    3: 'CLOSED',
+    4: 'VERFIED'
+};
+
+const STATUS_COLORS = {
+    CONNECTING: 'blue',
+    OPEN: 'cyan',
+    CLOSING: 'magenta',
+    CLOSED: 'red',
+    VERFIED: 'green',
 };
 
 export default class Server {
@@ -72,7 +85,8 @@ export default class Server {
             if (this.onStatusChange) {
                 this.onStatusChange(status);
             }
-            log.info(`Server<${this.user.account}>`, `Status changed to ${this.statusName}, old status is ${oldStatusName}.`);
+            const {statusName} = this;
+            log.info('Server', `**<${this.user.account}>**`, 'Socket status changed:', `c:${STATUS_COLORS[statusName]}|**${statusName}**`, '←', `c:${STATUS_COLORS[oldStatusName]}|**${oldStatusName}**`);
         }
     }
 
@@ -81,7 +95,7 @@ export default class Server {
      * @type {string}
      */
     get statusName() {
-        return Object.keys(STATUS).find(x => STATUS[x] === this._status);
+        return STATUS[this._status];
     }
 
     /**
@@ -135,17 +149,17 @@ export default class Server {
      * @returns {Promise} 使用 Promise 异步返回处理结果
      */
     connect() {
-        log.info(`Server<${this.user.account}>`, 'Sockect connect begin.');
+        log.info('Server', `**<${this.user.account}>**`, 'Socket connect begin.');
         return this.getServerInfo().then((serverInfo) => {
             // log.info(() => console.log(serverInfo), `Server<${this.user.account}> Server Info`);
-            log.info(`Server<${this.user.account}> Server info recevied, the token is ${serverInfo.token}.`);
+            log.info('Server', `**<${this.user.account}>**`, 'Server info recevied, then token is', `**${serverInfo.token}**`);
             return new Promise((resolve, reject) => {
                 const {config} = this;
                 const {socketUrl, pkg} = config;
                 const {token} = serverInfo;
                 this.token = token;
                 const onConnect = () => {
-                    log.info(`Server<${this.user.account}> Server socket ${socketUrl} connected.`);
+                    log.info('Server', `**<${this.user.account}>**`, 'Server socket', `__${socketUrl}__`, 'connected.');
                     this.status = STATUS.OPEN;
                     resolve();
                 };
@@ -180,7 +194,7 @@ export default class Server {
     login() {
         const {postData, user} = this;
         const {account} = user;
-        log.info(`Server<${this.user.account}>`, 'Sockect login begin.');
+        log.info('Server', `**<${this.user.account}>**`, 'Socket login begin.');
         return this.sendAndListen(postData).then(message => {
             delete this.postData;
             if (message && message.result === 'success' && message.data.account === account) {
@@ -199,7 +213,7 @@ export default class Server {
      */
     handleSocketMessage = (message) => {
         // log.info(() => console.log(message), `Server<${this.user.account}> socket recevied message`);
-        log.info(`Server<${this.user.account}> socket recevied message ${message.module}/${message.method} #${message.rid || null}`);
+        log.info('Server', `**<${this.user.account}>**`, 'Socket', `c:blue|**⬇︎ ${message.module}/${message.method}**`, 'rid', message.rid);
         const {rid} = message;
         const messageCallback = this.messageCallbacks[rid];
         if (messageCallback) {
@@ -219,7 +233,7 @@ export default class Server {
      */
     handSocketClose = (code, reason) => {
         this.status = STATUS.CLOSED;
-        log.warn(`Server<${this.user.account}>`, `Socket closed with code ${code}, the reason is ${reason}.`);
+        log.warn('Server', `**<${this.user.account}>**`, 'Socket closed with code', `c:red|**${code}**`, 'reason is', reason);
     }
 
     /**
@@ -238,7 +252,7 @@ export default class Server {
     sendMessage(message, callback) {
         this.socket.send(message, callback);
         // log.info(() => console.log(message), `Server<${this.user.account}> socket send`);
-        log.info(`Server<${this.user.account}> socket send message ${message.module}/${message.method} #${message.rid || null}`);
+        log.info('Server', `**<${this.user.account}>**`, 'Socket', `c:cyan|**⬆︎ ${message.module}/${message.method}**`, 'rid', message.rid);
     }
 
     /**
