@@ -1,3 +1,5 @@
+import {URL} from 'url';
+
 export default class User {
     constructor(account, password, activeLevel = 0.5) {
         this.account = account;
@@ -136,5 +138,5 @@ export default class User {
     static next(config, activeLevel = 0.5) {
         const {account, password} = config;
         return new User(account.replace('$', config.accountID++), password, activeLevel);
-    };
+    }
 }

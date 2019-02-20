@@ -1,38 +1,6 @@
 import WS from 'ws';
 import crypto from '../app/platform/electron/crypto';
 
-/**
- * 监听消息回应
- * @param {string} moduleName 消息操作模块名称
- * @param {string} methodName 消息操作方法名称
- * @param {number} [timeout=LISTEN_TIMEOUT]
- * @param {string} rid 请求 ID
- * @return {Promise}
- * @private
- */
-const listenMessage = (moduleName, methodName, rid, timeout = LISTEN_TIMEOUT) => {
-    return new Promise((resolve, reject) => {
-        let listenHandler = null;
-        const listenTimer = setTimeout(() => {
-            if (listenHandler) {
-                events.off(listenHandler);
-            }
-            reject();
-        }, timeout);
-        listenHandler = events.on(EVENT.message, (msg, result) => {
-            if (msg.module === moduleName && msg.method === methodName && (!msg.rid || msg.rid === rid)) {
-                if (listenTimer) {
-                    clearTimeout(listenTimer);
-                }
-                if (listenHandler) {
-                    events.off(listenHandler);
-                }
-                resolve(result);
-            }
-        });
-    });
-};
-
 export default class Socket {
     constructor(url, options) {
         this.options = Object.assign({
@@ -64,6 +32,7 @@ export default class Socket {
     // 处理接收到数据
     handleData(rawdata, flags) {
         const data = JSON.parse(crypto.decrypt(rawdata, this.options.userToken, this.options.cipherIV));
+        console.log('>> handleData', data);
         if (data) {
             if (Array.isArray(data)) {
                 data.forEach(item => this.handleMessage(item));
@@ -80,12 +49,18 @@ export default class Socket {
         }
     }
 
+    // 处理 Socket 错误信息
     handleError(error) {
-        console.log('error', error);
+        if (this.onError) {
+            this.onError(error);
+        }
     }
 
+    // 处理 Socket 关闭信息
     handleClose(code) {
-        console.log('socket断开连接', code);
+        if (this.onClose) {
+            this.onClose(code);
+        }
     }
 
     // 通过 Socket 连接向服务器发送数据
@@ -97,6 +72,7 @@ export default class Socket {
         }, callback);
     }
 
+    // 关闭 Socket 连接
     close() {
         this.client.close();
     }
