@@ -11,15 +11,18 @@ program
     .version(pkg.version)
     .alias('npm run test2 --')
     .option('-s, --server <server>', '测试服务器地址')
+    .option('-t, --time <time>', '测试持续时间，单位秒', 30 * 60)
     .option('-a, --account <account>', '测试账号，例如 `--acount=test$`', 'test$')
     .option('-p, --password <password>', '测试账号密码', '123456')
-    .option('-r, --range <range>', '登录的用户账号范围 `1,100`', '1,2')
-    .option('-l1, --login1 <login1>', '设置登录场景1的最晚登录时间，默认 10 分钟（单位秒），例如 `--login1=600`')
-    .option('-l2, --login2 <login2>', '设置登录场景2的瞬时登录可用时间，默认 10 秒中（单位秒），例如 `--login2=10`')
-    .option('-l3, --login3 <login3>', '设置登录场景3每次登录时间间隔，默认 10 秒中（单位秒），例如 `--login3=10`')
+    .option('-r, --range <range>', '登录的用户账号范围，例如 `1,100` 表示 account1 到 account100', '1,2')
+    .option('-L, --login1 <login1>', '设置登录场景1的最晚登录时间，默认 10 分钟（单位秒），例如 `--login1=600`')
+    .option('-O, --login2 <login2>', '设置登录场景2的瞬时登录可用时间，默认 10 秒中（单位秒），例如 `--login2=10`')
+    .option('-G, --login3 <login3>', '设置登录场景3每次登录时间间隔，默认 10 秒中（单位秒），例如 `--login3=10`')
     .option('-R, --reconnect', '是否断线重连', false)
     .option('-P, --port <port>', 'Socket 连接端口', 11444)
     .option('-v, --verbose', '是否输出额外的信息', false)
+    .option('-l, --log <log>', '日志输出等级', 2)
+    .option('-T, --logTypes <logTypes>', '日志报告文件类型', 'log,json,md,html')
     .parse(process.argv);
 
 // 测试配置

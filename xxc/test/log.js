@@ -102,9 +102,9 @@ const colorArg = arg => {
 export const logInfo = (...args) => {
     if (typeof args[0] === 'function') {
         const name = args[1];
-        console.info(`${chalk.cyan('● Info ')}`, chalk.gray(logTimeStr()), `─────────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
+        console.info(`${chalk.cyan('● Info ')}`, chalk.gray(logTimeStr()), `───────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
         args[0]();
-        console.info(`└─────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
+        console.info(`└───────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
     } else {
         console.info(chalk.cyan('● Info '), chalk.gray(logTimeStr()), ...args.map(colorArg));
     }
@@ -113,22 +113,22 @@ export const logInfo = (...args) => {
 export const logWarn = (...args) => {
     if (typeof args[0] === 'function') {
         const name = args[1];
-        console.warn(`${chalk.yellow('● Warn ')}`, chalk.gray(logTimeStr()), `─────────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
+        console.warn(`${chalk.yellow('● Warn ')}`, chalk.yellow(logTimeStr()), `───────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
         args[0]();
-        console.warn(`└─────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
+        console.warn(`└───────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
     } else {
-        console.warn(chalk.yellow('● Warn '), chalk.gray(logTimeStr()), ...args.map(colorArg));
+        console.warn(chalk.yellow('● Warn '), chalk.yellow(logTimeStr()), ...args.map(colorArg));
     }
 };
 
 export const logError = (...args) => {
     if (typeof args[0] === 'function') {
         const name = args[1];
-        console.error(`${chalk.red('● Error')}`, chalk.gray(logTimeStr()), `─────────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
+        console.error(`${chalk.red('● Error')}`, chalk.red(logTimeStr()), `───────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
         args[0]();
-        console.error(`└─────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
+        console.error(`└───────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
     } else {
-        console.error(chalk.red('● Error'), chalk.gray(logTimeStr()), ...args.map(colorArg));
+        console.error(chalk.red('● Error'), chalk.red(logTimeStr()), ...args.map(colorArg));
     }
 };
 

@@ -124,19 +124,18 @@ export default class Server {
                 body: `data=${JSON.stringify(this.postData)}`
             }, (error, response, body) => {
                 if (error) {
-                    log.error('Get server info error', error);
                     reject(error);
                     return;
                 }
                 if (!body) {
-                    log.error('Get server info error, server not return content.');
+                    // log.error('Get server info error, server not return content.');
                     reject(new Error('Get server info error, server not return content.'));
                     return;
                 }
                 if (response.statusCode === 200) {
                     resolve(body);
                 } else {
-                    log.error('Get server info error, status code is not 200.');
+                    // log.error('Get server info error, status code is not 200.');
                     reject(new Error('Get server info error, status code is not 200.'));
                 }
             });
