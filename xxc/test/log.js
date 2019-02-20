@@ -113,7 +113,7 @@ export const logInfo = (...args) => {
 export const logWarn = (...args) => {
     if (typeof args[0] === 'function') {
         const name = args[1];
-        console.warn(`${chalk.cyan('● Warn ')}`, chalk.gray(logTimeStr()), `─────────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
+        console.warn(`${chalk.yellow('● Warn ')}`, chalk.gray(logTimeStr()), `─────────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
         args[0]();
         console.warn(`└─────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
     } else {
@@ -124,7 +124,7 @@ export const logWarn = (...args) => {
 export const logError = (...args) => {
     if (typeof args[0] === 'function') {
         const name = args[1];
-        console.error(`${chalk.cyan('● Error')}`, chalk.gray(logTimeStr()), `─────────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
+        console.error(`${chalk.red('● Error')}`, chalk.gray(logTimeStr()), `─────────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
         args[0]();
         console.error(`└─────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
     } else {

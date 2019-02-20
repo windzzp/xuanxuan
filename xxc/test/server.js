@@ -111,7 +111,6 @@ export default class Server {
             method: 'login',
             module: 'chat',
             params: ['', account, password, 'online'],
-            rid: 'login',
             v: pkg.version
         };
         return new Promise((resolve, reject) => {
@@ -183,7 +182,6 @@ export default class Server {
             return this.login();
         }).catch(error => {
             log.error(() => console.error(error), `Server<${this.user.account}> socket connect error`);
-            return Promise.reject(error);
         });
     }
 
@@ -262,7 +260,7 @@ export default class Server {
      * @returns {Promise} 使用 Promise 异步返回处理结果
      */
     sendAndListen(message, callback) {
-        if (!message.rid === undefined) {
+        if (message.rid === undefined) {
             message.rid = ridSeed++;
         }
         return new Promise((resolve, reject) => {

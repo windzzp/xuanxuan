@@ -69,16 +69,17 @@ const initConfig = () => {
     socketUrl.pathname = '/ws';
     socketUrl.port = socketPort;
 
+    if (!config.timeForLogin1 && !config.timeForLogin2 && !config.timeForLogin3) {
+        config.timeForLogin3 = 10;
+    }
+
     Object.assign(config, {
         accountID: config.range[0],
         serverInfoUrl: `${server.origin}/serverInfo`,
         serverName: server.username ? server.username : (server.pathname ? server.pathname.substr(1) : ''),
-        socketUrl: socketUrl.toString()
+        socketUrl: socketUrl.toString(),
+        loginType: config.timeForLogin1 ? 1 : config.timeForLogin2 ? 2 : 3
     });
-
-    if (!config.timeForLogin1 && !config.timeForLogin2 && !config.timeForLogin3) {
-        config.timeForLogin3 = 10;
-    }
 
     log.info(() => console.log({
         server: config.server.toString(),
@@ -91,7 +92,7 @@ const initConfig = () => {
         reconnect: config.reconnect,
         verbose: config.verbose,
         socketPort: config.socketPort,
-        loginType: config.timeForLogin1 ? 1 : config.timeForLogin2 ? 2 : 3
+        loginType: config.loginType
     }), 'Config');
     log.info('Login type is', config.loginType);
 };
@@ -151,14 +152,17 @@ const tryConnectUser = () => {
                 waitUsers.splice(0, 1);
             }
         } else if (timeForLogin2) {
-            const user = waitUsers.pop();
+            const user = waitUsers.shift();
             connectUser(user);
         } else {
             const now = new Date().getTime();
             if ((now - lastUserConnectTime) >= timeForLogin3) {
-                const user = waitUsers.pop();
+                const user = waitUsers.shift();
                 connectUser(user);
             }
+        }
+        if (!waitUsers.length) {
+            log.info('c:green|All users connected to server.');
         }
     }
     return false;
