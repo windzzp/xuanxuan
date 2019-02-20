@@ -1,5 +1,6 @@
 import request from 'request';
 import Socket from './socket';
+import log from './log';
 
 /**
  * 等待消息回应判定为超时的事件，单位毫秒
@@ -59,17 +60,19 @@ export default class Server {
 
     /**
      * 获取 Socket 连接状态
+     * @param {number} status 连接状态代码
      */
     set status(status) {
         if (typeof status === 'string') {
             status = STATUS[status.toUpperCase()];
         }
         if (this._status !== status) {
+            const oldStatusName = this.statusName;
             this._status = status;
             if (this.onStatusChange) {
                 this.onStatusChange(status);
             }
-            console.log(`User<${this.user.account}> Socket 连接状态变更 ${this.statusName}`);
+            log.info(`Server<${this.user.account}>`, `Status changed to ${this.statusName}, old status is ${oldStatusName}.`);
         }
     }
 
@@ -89,43 +92,38 @@ export default class Server {
         const {config, user} = this;
         const {serverInfoUrl, pkg} = config;
         const {account, password} = user;
-        this.postData = JSON.stringify({
+        this.postData = {
             lang: 'zh-cn',
             method: 'login',
             module: 'chat',
             params: ['', account, password, 'online'],
             rid: 'login',
             v: pkg.version
-        });
+        };
         return new Promise((resolve, reject) => {
-            console.log('>> serverinfo.request', {
-                url: serverInfoUrl,
-                method: 'POST',
-                json: true,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                body: `data=${this.postData}`
-            });
             request({
                 url: serverInfoUrl,
                 method: 'POST',
                 json: true,
+                rejectUnauthorized: false,
+                requestCert: true,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                body: `data=${this.postData}`
+                body: `data=${JSON.stringify(this.postData)}`
             }, (error, response, body) => {
                 if (error) {
-                    console.log('Get server info error', error);
+                    log.error('Get server info error', error);
                     reject(error);
                     return;
                 }
                 if (!body) {
-                    console.log('Get server info error, server not return content.');
+                    log.error('Get server info error, server not return content.');
                     reject(new Error('Get server info error, server not return content.'));
                     return;
                 }
                 if (response.statusCode === 200) {
                     resolve(body);
                 } else {
-                    console.log('Get server info error, status code is not 200.');
+                    log.error('Get server info error, status code is not 200.');
                     reject(new Error('Get server info error, status code is not 200.'));
                 }
             });
@@ -137,14 +135,17 @@ export default class Server {
      * @returns {Promise} 使用 Promise 异步返回处理结果
      */
     connect() {
+        log.info(`Server<${this.user.account}>`, 'Sockect connect begin.');
         return this.getServerInfo().then((serverInfo) => {
-            console.log('serverInfo', serverInfo);
+            // log.info(() => console.log(serverInfo), `Server<${this.user.account}> Server Info`);
+            log.info(`Server<${this.user.account}> Server info recevied, the token is ${serverInfo.token}.`);
             return new Promise((resolve, reject) => {
                 const {config} = this;
-                const {socketUrl} = config;
+                const {socketUrl, pkg} = config;
                 const {token} = serverInfo;
                 this.token = token;
                 const onConnect = () => {
+                    log.info(`Server<${this.user.account}> Server socket ${socketUrl} connected.`);
                     this.status = STATUS.OPEN;
                     resolve();
                 };
@@ -152,8 +153,10 @@ export default class Server {
                     this.socket = new Socket(socketUrl, {
                         token,
                         onConnect,
+                        version: pkg.version,
                         onMessage: this.handleMessage
                     });
+                    // log.info(`Server<${this.user.account}> Server socket created with token ${token}.`);
                 } catch (error) {
                     reject(error);
                 }
@@ -164,6 +167,9 @@ export default class Server {
             socket.onClose = this.handSocketClose;
             socket.onError = this.handSocketError;
             return this.login();
+        }).catch(error => {
+            log.error(() => console.error(error), `Server<${this.user.account}> socket connect error`);
+            return Promise.reject(error);
         });
     }
 
@@ -174,12 +180,13 @@ export default class Server {
     login() {
         const {postData, user} = this;
         const {account} = user;
-        delete this.postData;
+        log.info(`Server<${this.user.account}>`, 'Sockect login begin.');
         return this.sendAndListen(postData).then(message => {
+            delete this.postData;
             if (message && message.result === 'success' && message.data.account === account) {
                 this.serverUser = message.data;
                 this.status = STATUS.VERFIED;
-                return Promise.resove(this.serverUser);
+                return Promise.resolve(this.serverUser);
             }
             return Promise.reject(new Error('User login failed.'));
         });
@@ -190,8 +197,9 @@ export default class Server {
      * @param {Object} message Socket 数据包对象
      * @return {void}
      */
-    handleSocketMessage(message) {
-        console.log('Socket.recevied', message);
+    handleSocketMessage = (message) => {
+        // log.info(() => console.log(message), `Server<${this.user.account}> socket recevied message`);
+        log.info(`Server<${this.user.account}> socket recevied message ${message.module}/${message.method} #${message.rid || null}`);
         const {rid} = message;
         const messageCallback = this.messageCallbacks[rid];
         if (messageCallback) {
@@ -209,8 +217,9 @@ export default class Server {
      * 处理 Socket 连接断开事件
      * @return {void}
      */
-    handSocketClose() {
+    handSocketClose = (code, reason) => {
         this.status = STATUS.CLOSED;
+        log.warn(`Server<${this.user.account}>`, `Socket closed with code ${code}, the reason is ${reason}.`);
     }
 
     /**
@@ -218,8 +227,8 @@ export default class Server {
      * @param {Error} error 错误对象
      * @return {void}
      */
-    handleSocketError(error) {
-        console.log('发生错误', error);
+    handleSocketError = (error) => {
+        log.error(() => console.error(error), `Server<${this.user.account}> socket error`);
     }
 
     /**
@@ -228,7 +237,8 @@ export default class Server {
      */
     sendMessage(message, callback) {
         this.socket.send(message, callback);
-        console.log('Socket.send', message);
+        // log.info(() => console.log(message), `Server<${this.user.account}> socket send`);
+        log.info(`Server<${this.user.account}> socket send message ${message.module}/${message.method} #${message.rid || null}`);
     }
 
     /**
@@ -241,7 +251,6 @@ export default class Server {
         if (!message.rid === undefined) {
             message.rid = ridSeed++;
         }
-        console.log('Socket.sendAndListen', message);
         return new Promise((resolve, reject) => {
             this.sendMessage(message, callback);
             const {rid} = message;

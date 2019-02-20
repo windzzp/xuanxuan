@@ -4,26 +4,16 @@ import {URL} from 'url';
 import pkg from '../app/package.json';
 import User from './user';
 import Server from './server';
+import log from './log';
 
-/**
- * 1. `--server, -s`： 测试服务器地址；
- * 2. `--account, -a`： 测试账号 `--acount=test$`；
- * 3. `--password, -p`：测试账号密码
- * 4. `--range, -r`：登录的用户账号范围 `1,100`
- * 6. `--one2one, -o`：是否测试大量一对一聊天；
- * 7. `--group, -g`：是否测试全体成员讨论组聊天；
- * 8. `--login1, -l1`：设置登录场景1的最晚登录时间，默认 10 分钟（单位秒），例如 `--login1=600`
- * 9. `--login2, -l2`：设置登录场景2的瞬时登录可用时间，默认 10 秒中（单位秒），例如 `--login2=10`
- * 10. `--login3, -l3`：设置登录场景3每次登录时间间隔，默认 10 秒中（单位秒），例如 `--login3=10`
- * 11. `--reconnect, -R`：调用的用户是否立即重新登录，还是放弃
- */
+// 处理命令行参数
 program
     .version(pkg.version)
     .alias('npm run test2 --')
     .option('-s, --server <server>', '测试服务器地址')
-    .option('-a, --account <account>', '测试账号，例如 `--acount=test$`')
-    .option('-p, --password <password>', '测试账号密码')
-    .option('-r, --range <range>', '登录的用户账号范围 `1,100`')
+    .option('-a, --account <account>', '测试账号，例如 `--acount=test$`', 'test$')
+    .option('-p, --password <password>', '测试账号密码', '123456')
+    .option('-r, --range <range>', '登录的用户账号范围 `1,100`', '1,2')
     .option('-l1, --login1 <login1>', '设置登录场景1的最晚登录时间，默认 10 分钟（单位秒），例如 `--login1=600`')
     .option('-l2, --login2 <login2>', '设置登录场景2的瞬时登录可用时间，默认 10 秒中（单位秒），例如 `--login2=10`')
     .option('-l3, --login3 <login3>', '设置登录场景3每次登录时间间隔，默认 10 秒中（单位秒），例如 `--login3=10`')
@@ -32,16 +22,17 @@ program
     .option('-v, --verbose', '是否输出额外的信息', false)
     .parse(process.argv);
 
+// 测试配置
 const config = {
     pkg,
     serverUrl: program.server,
     server: new URL(program.server),
     account: program.account,
     password: Md5(program.password),
-    range: program.range.split(',').map(x => Number.parseInt(x)),
-    timeForLogin1: program.login1 * 1000,
-    timeForLogin2: program.login2 * 1000,
-    timeForLogin3: program.login3 * 1000,
+    range: program.range.split(',').map(x => Number.parseInt(x, 10)),
+    timeForLogin1: program.login1 ? program.login1 * 1000 : null,
+    timeForLogin2: program.login2 ? program.login2 * 1000 : null,
+    timeForLogin3: program.login3 ? program.login3 * 1000 : null,
     reconnect: program.reconnect,
     verbose: program.verbose,
     socketPort: program.port
@@ -61,9 +52,14 @@ let lastUserConnectTime = null;
 
 /**
  * 初始化测试程序参数
+ * @return {void}
  */
 const initConfig = () => {
     const {server, serverUrl, socketPort} = config;
+
+    if (!server.port) {
+        server.port = 11443;
+    }
 
     const socketUrl = new URL(serverUrl);
     socketUrl.protocol = socketUrl.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -77,7 +73,22 @@ const initConfig = () => {
         socketUrl: socketUrl.toString()
     });
 
-    console.log('config', config);
+    if (!config.timeForLogin1 && !config.timeForLogin2 && !config.timeForLogin3) {
+        config.timeForLogin3 = 10;
+    }
+
+    log.info(() => console.log({
+        server: config.server.toString(),
+        account: config.account,
+        password: program.password,
+        range: config.range,
+        timeForLogin1: config.timeForLogin1,
+        timeForLogin2: config.timeForLogin2,
+        timeForLogin3: config.timeForLogin3,
+        reconnect: config.reconnect,
+        verbose: config.verbose,
+        socketPort: config.socketPort
+    }), 'Config');
 };
 
 /**
@@ -89,7 +100,7 @@ const initWaitUsers = () => {
     const rangeStart = range[0] || 1;
     const rangeEnd = range[1] || 10;
     const {timeForLogin1} = config;
-    for (let i = rangeStart; i < rangeEnd; ++i) {
+    for (let i = rangeStart; i <= rangeEnd; ++i) {
         const user = new User(account.replace('$', i), password);
         // 如果是登录场景2
         if (timeForLogin1) {
@@ -101,9 +112,16 @@ const initWaitUsers = () => {
         waitUsers.sort((x, y) => (x.timeForLogin1 - y.timeForLogin1));
     }
 
+    log.info(`Waiting users count: ${waitUsers.length}.`);
+
     return waitUsers;
 };
 
+/**
+ * 执行登录连接操作
+ * @param {User} user 要执行登录连接操作的用户
+ * @returns {Promise} 使用 Promise 异步返回处理结果
+ */
 const connectUser = (user) => {
     const server = new Server(user, config);
     servers[user.account] = server;
@@ -112,7 +130,7 @@ const connectUser = (user) => {
 };
 
 /**
- * 尝试从等待登录的用户队列中进行连接
+ * 尝试从等待登录的用户队列中选取一个用户进行连接
  * @return {boolean} 如果为 true，表示登录了用户，如果为 false 表示队列中没有用户登录
  */
 const tryConnectUser = () => {
@@ -162,6 +180,8 @@ const start = () => {
         }
         trySendMessage();
     }, 100);
+
+    log.info(`Start test, start connect timestramp: ${startConnectTime}.`);
 };
 
 start();

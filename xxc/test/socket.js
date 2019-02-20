@@ -1,5 +1,6 @@
 import WS from 'ws';
 import crypto from '../app/platform/electron/crypto';
+import log from './log';
 
 export default class Socket {
     constructor(url, options) {
@@ -13,7 +14,10 @@ export default class Socket {
     }
 
     connect() {
-        const client = new WS(this.url);
+        const client = new WS(this.url, {
+            rejectUnauthorized: false,
+            headers: {version: this.options.version}
+        });
 
         client.on('open', this.handleConnect.bind(this));
         client.on('message', this.handleData.bind(this));
@@ -25,14 +29,12 @@ export default class Socket {
 
     // 开始连接
     handleConnect() {
-        console.log('socket开始连接');
         if (this.options && this.options.onConnect) this.options.onConnect(this);
     }
 
     // 处理接收到数据
     handleData(rawdata, flags) {
         const data = JSON.parse(crypto.decrypt(rawdata, this.options.userToken, this.options.cipherIV));
-        console.log('>> handleData', data);
         if (data) {
             if (Array.isArray(data)) {
                 data.forEach(item => this.handleMessage(item));
@@ -57,9 +59,9 @@ export default class Socket {
     }
 
     // 处理 Socket 关闭信息
-    handleClose(code) {
+    handleClose(code, reason) {
         if (this.onClose) {
-            this.onClose(code);
+            this.onClose(code, reason);
         }
     }
 
