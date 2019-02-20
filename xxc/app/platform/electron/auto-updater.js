@@ -121,7 +121,9 @@ const cleanLastUpdaterFiles = async () => {
             await fse.remove(updaterFile);
         }
         if (downloadedPath) {
+            process.noAsar = true;
             await fse.remove(downloadedPath);
+            process.noAsar = false;
         }
         removeStoreItem(UPDATER_INSTALL_DATA);
     }
