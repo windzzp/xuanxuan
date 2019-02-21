@@ -10,12 +10,6 @@ import (
 	"updater/util"
 )
 
-var commands = map[string]string{
-	"windows": "start",
-	"darwin":  "open",
-	"linux":   "xdg-open",
-}
-
 func main() {
 	src  := flag.String("src", "", "Source directory path.")
 	app  := flag.String("app", "", "Destination directory path")
@@ -43,11 +37,15 @@ func main() {
 }
 
 func Open(uri string) error {
-	run, ok := commands[runtime.GOOS]
-	if !ok {
-		return fmt.Errorf("don't know how to open things on %s platform", runtime.GOOS)
+	switch runtime.GOOS {
+	case "windows":
+		cmd := exec.Command("rundll32.exe", "url.dll,FileProtocolHandler", uri)
+		return cmd.Start()
+	case "darwin":
+		cmd := exec.Command("open", uri)
+		return cmd.Start()
+	default:
+		cmd := exec.Command("base", "-c", "xdg-open" + uri)
+		return cmd.Start()
 	}
-
-	cmd := exec.Command(run, uri)
-	return cmd.Start()
 }
