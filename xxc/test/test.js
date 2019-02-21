@@ -25,7 +25,8 @@ program
     .option('-o, --one2one', '是否测试大量一对一发送消息')
     .option('-g, --groups <groups>', '是否测试讨论组发送消息')
     .option('-A, --activeLevel <activeLevel>', '测试用户活跃程度')
-    .option('-T, --logTypes <logTypes>', '日志报告文件类型', 'log,json,md,html')
+    // .option('-T, --logTypes <logTypes>', '日志报告文件类型', 'log,json,md,html')
+    .option('-T, --testTime <testTime>', '测试脚本执行的时间，单位秒', 30000)
     .parse(process.argv);
 
 // 测试配置
