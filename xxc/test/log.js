@@ -104,7 +104,7 @@ export const logInfo = (...args) => {
         const name = args[1];
         console.info(`${chalk.cyan('● Info ')}`, chalk.gray(logTimeStr()), `───────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
         args[0]();
-        console.info(`└───────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
+        console.info(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
     } else {
         console.info(chalk.cyan('● Info '), chalk.gray(logTimeStr()), ...args.map(colorArg));
     }
@@ -115,7 +115,7 @@ export const logWarn = (...args) => {
         const name = args[1];
         console.warn(`${chalk.yellow('● Warn ')}`, chalk.yellow(logTimeStr()), `───────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
         args[0]();
-        console.warn(`└───────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
+        console.warn(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
     } else {
         console.warn(chalk.yellow('● Warn '), chalk.yellow(logTimeStr()), ...args.map(colorArg));
     }

@@ -1,4 +1,5 @@
 import request from 'request';
+import uuid  from 'uuid';
 import Socket from './socket';
 import log from './log';
 
@@ -7,7 +8,7 @@ import log from './log';
  * @type {number}
  * @private
  */
-const LISTEN_TIMEOUT = 1000 * 15;
+const LISTEN_TIMEOUT = 1000 * 30;
 
 /**
  * 生成 Socket 数据包 rid 值，每次应该递增之后使用
@@ -68,7 +69,38 @@ export default class Server {
      * @type {boolean}
      */
     get isOnline() {
-        return this._status === 4;
+        return this._status === STATUS.VERFIED;
+    }
+
+    /**
+     * 判断用户是否正在登录
+     *
+     * @readonly
+     * @memberof Server
+     */
+    get isConnecting() {
+        return this._status === STATUS.CONNECTING;
+    }
+
+    /**
+     * Socket 是否已经断开
+     *
+     * @readonly
+     * @memberof Server
+     */
+    get isClosed() {
+        return this._status === STATUS.CLOSED;
+    }
+
+    /**
+     * 获取当前登录的用户 ID
+     *
+     * @readonly
+     * @memberof Server
+     */
+    get userID() {
+        const {serverUser} = this;
+        return serverUser && serverUser.id;
     }
 
     /**
@@ -84,6 +116,9 @@ export default class Server {
             this._status = status;
             if (this.onStatusChange) {
                 this.onStatusChange(status);
+            }
+            if (status === STATUS.CLOSED && this.onSocketClosed) {
+                this.onSocketClosed();
             }
             const {statusName} = this;
             log.info('Server', `**<${this.user.account}>**`, 'Socket status changed:', `c:${STATUS_COLORS[statusName]}|**${statusName}**`, '←', `c:${STATUS_COLORS[oldStatusName]}|**${oldStatusName}**`);
@@ -147,7 +182,11 @@ export default class Server {
      * @returns {Promise} 使用 Promise 异步返回处理结果
      */
     connect() {
-        log.info('Server', `**<${this.user.account}>**`, 'Socket connect begin.');
+        if (this.isClosed) {
+            log.info('Server', `**<${this.user.account}>**`, 'Socket', 'c:yellow|**reconnect**', 'begin.');
+        } else {
+            log.info('Server', `**<${this.user.account}>**`, 'Socket connect begin.');
+        }
         return this.getServerInfo().then((serverInfo) => {
             // log.info(() => console.log(serverInfo), `Server<${this.user.account}> Server Info`);
             log.info('Server', `**<${this.user.account}>**`, 'Server info recevied, then token is', `**${serverInfo.token}**`);
@@ -251,6 +290,12 @@ export default class Server {
      * @return {void}
      */
     sendMessage(message, callback) {
+        message = Object.assign({
+            userID: this.userID,
+            v: this.config.pkg.version,
+            lang: 'zh-cn',
+            module: 'chat',
+        }, message);
         this.socket.send(message, callback);
         // log.info(() => console.log(message), `Server<${this.user.account}> socket send`);
         log.info('Server', `**<${this.user.account}>**`, 'Socket', `c:cyan|**⬆︎ ${message.module}/${message.method}**`, 'rid', message.rid);
@@ -272,7 +317,7 @@ export default class Server {
             const rejectTimer = setTimeout(() => {
                 if (this.messageCallbacks[rid]) {
                     delete this.messageCallbacks[rid];
-                    reject();
+                    reject(new Error(`Timeout, rid: ${rid}, more than ${LISTEN_TIMEOUT}ms not recevied server response.`));
                 }
             }, LISTEN_TIMEOUT);
             this.messageCallbacks[rid] = {
@@ -289,19 +334,14 @@ export default class Server {
      */
 
     createUsers = (amount, prifix, password, startID = 1) => {
-        const {config} = this;
-        this.socket.send({
-            module: 'chat',
+        this.sendMessage({
             method: 'createUser',
             params: [
                 amount,
                 prifix,
                 password,
                 startID
-            ],
-            userID: this.serverUser.id,
-            v: config.pkg.version,
-            lang: 'zh-cn'
+            ]
         });
     };
 
@@ -310,14 +350,39 @@ export default class Server {
      * @param {number} amount 创建群组数
      */
     createGroups = (amount) => {
-        const {config} = this;
-        this.socket.send({
-            module: 'chat',
+        this.sendMessage({
             method: 'createGroup',
             params: [amount],
-            userID: this.serverUser.id,
-            v: config.pkg.version,
-            lang: 'zh-cn'
         });
     };
+
+    /**
+     * ·发送聊天消息
+     *
+     * @param {*} message
+     * @memberof Server
+     */
+    sendChatMessage(chatMessage) {
+        chatMessage = Object.assign({
+            user: this.userID,
+            type: 'normal',
+            gid: uuid.v4(),
+            contentType: 'plain',
+        }, chatMessage);
+        if (chatMessage.content === undefined) {
+            chatMessage.content = 'This is a test message.';
+        }
+        if (!chatMessage.cgid) {
+            return Promise.reject(new Error('The cgid must provide to send a chat message.'));
+        }
+        log.info('Server', `**<${this.user.account}>**`, 'Send message to', `**${chatMessage.cgid}**`, `_${chatMessage.content}_`);
+        // log.info(() => console.log(chatMessage), 'ChatMessage');
+        return this.sendAndListen({
+            method: 'message',
+            params: [[chatMessage]],
+            userID: this.userID,
+        }).catch(error => {
+            log.error(() => console.error(error), `Send chat message ${chatMessage.gid}@${chatMessage.cgid} error`);
+        });
+    }
 }
