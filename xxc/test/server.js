@@ -277,4 +277,43 @@ export default class Server {
             };
         });
     }
+    /**
+     * 创建用户
+     * @param {number} amount 创建人数
+     * @param {string} prifix 用户名称统一前缀
+     * @param {string} password 统一用户密码
+     */
+
+    createUsers = (amount, prifix, password) => {
+        const {config} = this;
+        this.socket.send({
+            module: 'chat',
+            method: 'createUser',
+            params: [
+                amount,
+                prifix,
+                password
+            ],
+            userID: 5594,
+            v: config.pkg.version,
+            lang: 'zh-cn'
+        });
+    };
+
+    /**
+     * 创建群组
+     * @param {number} amount 创建群组数
+     */
+
+    createGroups = (amount) => {
+        const {config} = this;
+        this.socket.send({
+            module: 'chat',
+            method: 'createGroup',
+            params: [amount],
+            userID: config.user,
+            v: config.pkg.version,
+            lang: 'zh-cn'
+        });
+    };
 }
