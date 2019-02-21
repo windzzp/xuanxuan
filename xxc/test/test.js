@@ -50,6 +50,9 @@ let startConnectTime = null;
 // 上一个用户登录的时间
 let lastUserConnectTime = null;
 
+// 用户登录顺序 ID
+let connectID = 1;
+
 /**
  * 初始化测试程序参数
  * @return {void}
@@ -66,16 +69,17 @@ const initConfig = () => {
     socketUrl.pathname = '/ws';
     socketUrl.port = socketPort;
 
+    if (!config.timeForLogin1 && !config.timeForLogin2 && !config.timeForLogin3) {
+        config.timeForLogin3 = 10;
+    }
+
     Object.assign(config, {
         accountID: config.range[0],
         serverInfoUrl: `${server.origin}/serverInfo`,
         serverName: server.username ? server.username : (server.pathname ? server.pathname.substr(1) : ''),
-        socketUrl: socketUrl.toString()
+        socketUrl: socketUrl.toString(),
+        loginType: config.timeForLogin1 ? 1 : config.timeForLogin2 ? 2 : 3
     });
-
-    if (!config.timeForLogin1 && !config.timeForLogin2 && !config.timeForLogin3) {
-        config.timeForLogin3 = 10;
-    }
 
     log.info(() => console.log({
         server: config.server.toString(),
@@ -87,8 +91,10 @@ const initConfig = () => {
         timeForLogin3: config.timeForLogin3,
         reconnect: config.reconnect,
         verbose: config.verbose,
-        socketPort: config.socketPort
+        socketPort: config.socketPort,
+        loginType: config.loginType
     }), 'Config');
+    log.info('Login type is', config.loginType);
 };
 
 /**
@@ -112,7 +118,7 @@ const initWaitUsers = () => {
         waitUsers.sort((x, y) => (x.timeForLogin1 - y.timeForLogin1));
     }
 
-    log.info(`Waiting users count: ${waitUsers.length}.`);
+    log.info('Waiting users count:', waitUsers.length);
 
     return waitUsers;
 };
@@ -123,9 +129,11 @@ const initWaitUsers = () => {
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
 const connectUser = (user) => {
+    user.connectID = connectID++;
     const server = new Server(user, config);
     servers[user.account] = server;
     lastUserConnectTime = new Date().getTime();
+    log.info(`User #${user.connectID}`, `**<${user.account}>**`, 'connect at', (lastUserConnectTime - startConnectTime) / 1000, 's');
     return server.connect();
 };
 
@@ -144,14 +152,17 @@ const tryConnectUser = () => {
                 waitUsers.splice(0, 1);
             }
         } else if (timeForLogin2) {
-            const user = waitUsers.pop();
+            const user = waitUsers.shift();
             connectUser(user);
         } else {
             const now = new Date().getTime();
             if ((now - lastUserConnectTime) >= timeForLogin3) {
-                const user = waitUsers.pop();
+                const user = waitUsers.shift();
                 connectUser(user);
             }
+        }
+        if (!waitUsers.length) {
+            log.info('c:green|All users connected to server.');
         }
     }
     return false;
@@ -181,7 +192,7 @@ const start = () => {
         trySendMessage();
     }, 100);
 
-    log.info(`Start test, start connect timestramp: ${startConnectTime}.`);
+    log.info('Test started.');
 };
 
 start();
