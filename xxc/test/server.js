@@ -13,7 +13,7 @@ const LISTEN_TIMEOUT = 1000 * 15;
  * 生成 Socket 数据包 rid 值，每次应该递增之后使用
  * @type {number}
  */
-let ridSeed = 0;
+let ridSeed = 1;
 
 /**
  * 事件名称表
@@ -68,7 +68,7 @@ export default class Server {
      * @type {boolean}
      */
     get isOnline() {
-        return this._status === 1;
+        return this._status === 4;
     }
 
     /**
@@ -209,8 +209,12 @@ export default class Server {
      * @return {void}
      */
     handleSocketMessage = (message) => {
-        // log.info(() => console.log(message), `Server<${this.user.account}> socket recevied message`);
-        log.info('Server', `**<${this.user.account}>**`, 'Socket', `c:blue|**⬇︎ ${message.module}/${message.method}**`, 'rid', message.rid);
+        if (!message.module || !message.method) {
+            log.warn(() => console.log(message), `Server<${this.user.account}> socket recevied wrong data`);
+        } else {
+            // log.info(() => console.log(message), `Server<${this.user.account}> socket recevied message`);
+            // log.info('Server', `**<${this.user.account}>**`, 'Socket', `c:blue|**⬇︎ ${message.module}/${message.method}**`, 'rid', message.rid);
+        }
         const {rid} = message;
         const messageCallback = this.messageCallbacks[rid];
         if (messageCallback) {
@@ -284,7 +288,7 @@ export default class Server {
      * @param {string} password 统一用户密码
      */
 
-    createUsers = (amount, prifix, password) => {
+    createUsers = (amount, prifix, password, startID = 1) => {
         const {config} = this;
         this.socket.send({
             module: 'chat',
@@ -292,9 +296,10 @@ export default class Server {
             params: [
                 amount,
                 prifix,
-                password
+                password,
+                startID
             ],
-            userID: 5594,
+            userID: this.serverUser.id,
             v: config.pkg.version,
             lang: 'zh-cn'
         });
@@ -304,14 +309,13 @@ export default class Server {
      * 创建群组
      * @param {number} amount 创建群组数
      */
-
     createGroups = (amount) => {
         const {config} = this;
         this.socket.send({
             module: 'chat',
             method: 'createGroup',
             params: [amount],
-            userID: config.user,
+            userID: this.serverUser.id,
             v: config.pkg.version,
             lang: 'zh-cn'
         });

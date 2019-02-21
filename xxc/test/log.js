@@ -126,7 +126,7 @@ export const logError = (...args) => {
         const name = args[1];
         console.error(`${chalk.red('● Error')}`, chalk.red(logTimeStr()), `───────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
         args[0]();
-        console.error(`└───────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
+        console.error(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
     } else {
         console.error(chalk.red('● Error'), chalk.red(logTimeStr()), ...args.map(colorArg));
     }

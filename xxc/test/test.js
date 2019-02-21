@@ -56,6 +56,9 @@ let lastUserConnectTime = null;
 // 用户登录顺序 ID
 let connectID = 1;
 
+// 当前是否有用户正在登录中
+let isUserConnecting = false;
+
 /**
  * 初始化测试程序参数
  * @return {void}
@@ -132,12 +135,15 @@ const initWaitUsers = () => {
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
 const connectUser = (user) => {
+    isUserConnecting = true;
     user.connectID = connectID++;
     const server = new Server(user, config);
     servers[user.account] = server;
     lastUserConnectTime = new Date().getTime();
     log.info(`User #${user.connectID}`, `**<${user.account}>**`, 'connect at', (lastUserConnectTime - startConnectTime) / 1000, 's');
-    return server.connect();
+    return server.connect().then(() => {
+        isUserConnecting = false;
+    });
 };
 
 /**
@@ -189,7 +195,7 @@ const start = () => {
     startConnectTime = new Date().getTime();
 
     setInterval(() => {
-        if (tryConnectUser()) {
+        if (!isUserConnecting && tryConnectUser()) {
             return;
         }
         trySendMessage();
