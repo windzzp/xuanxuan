@@ -376,7 +376,8 @@ export default class AppSocket extends Socket {
                 return Promise.reject(new Error('User is not defined.'));
             }
             const onConnect = () => {
-                listenMessage('chat', 'login', 'login').then((result) => {
+                const loginRid = `login_${user.account}`;
+                listenMessage('chat', 'login', loginRid).then((result) => {
                     this.isLogging = false;
                     if (result) {
                         this.syncUserSettings();
@@ -395,7 +396,7 @@ export default class AppSocket extends Socket {
                         user.passwordForServer,
                         'online'
                     ],
-                    rid: 'login'
+                    rid: loginRid
                 });
             };
             this.init(user.socketUrl, Object.assign({

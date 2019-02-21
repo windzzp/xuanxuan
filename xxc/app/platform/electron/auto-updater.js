@@ -5,6 +5,14 @@ import path from 'path';
 import {downloadFile, removeFileFromCache} from './net';
 import env, {getElectronRootPath} from './env';
 import {callRemote} from './remote';
+import {getStoreItem, setStoreItem, removeStoreItem} from '../../utils/store';
+
+/**
+ * 自动更新数据对象在本地存储中的键名
+ * @type {string}
+ * @private
+ */
+const UPDATER_INSTALL_DATA = 'UPDATER_INSTALL_DATA';
 
 /**
  * 从服务器下载更新版本
@@ -92,12 +100,37 @@ export const quitAndInstall = (updaterStatus) => {
             args,
             command: `"${updaterFile}" ${args.join(' ')}`
         };
+        setStoreItem(UPDATER_INSTALL_DATA, Object.assign(updaterStatus, {updaterFile, quitTask}));
+
         if (DEBUG) {
             localStorage.setItem('test.app.quit.task', JSON.stringify(quitTask));
         }
         return callRemote('quit', quitTask);
     });
 };
+
+/**
+ * 删除上次自动更新时产生的文件
+ * @return {void}
+ */
+const cleanLastUpdaterFiles = async () => {
+    const updaterData = getStoreItem(UPDATER_INSTALL_DATA);
+    if (updaterData) {
+        const {updaterFile, downloadedPath} = updaterData;
+        if (updaterFile) {
+            await fse.remove(updaterFile);
+        }
+        if (downloadedPath) {
+            process.noAsar = true;
+            await fse.remove(downloadedPath);
+            process.noAsar = false;
+        }
+        removeStoreItem(UPDATER_INSTALL_DATA);
+    }
+};
+
+// 删除上次自动更新时产生的文件
+cleanLastUpdaterFiles();
 
 export default {
     quitAndInstall,

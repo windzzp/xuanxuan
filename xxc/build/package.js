@@ -443,7 +443,6 @@ const electronBuilder = {
     linux: {
         target: [
             'deb',
-            'rpm',
             'tar.gz'
         ],
         icon: 'icons',

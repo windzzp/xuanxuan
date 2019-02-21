@@ -198,7 +198,7 @@ export const showConfirm = (content, props, callback) => {
  * @param {string} defaultValue 默认值
  * @param {?Object} props DisplayLayer 组件属性
  * @param {?Function} callback 操作完成时的回调函数
- * @return {DisplayLayer}
+ * @return {Promise}
  * @function
  */
 export const showPrompt = (title, defaultValue, props, callback) => {
