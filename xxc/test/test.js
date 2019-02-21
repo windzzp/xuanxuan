@@ -341,6 +341,55 @@ const tryReportUserStatus = () => {
 };
 
 /**
+ * 获取概要统计信息
+ */
+const getStatistic = () => {
+    const statistic = {
+        loginType: config.loginType, // 登录场景
+        loginUserCount: 0, // 登录用户数目
+        onlineUserCount: 0, // 在线用户数目
+        totalLoginTimes: 0, // 所有用户登录完成耗时（平均登录耗时，最小，最大）
+        closeTimes: 0, // 断线次数
+        reconnectTimes: 0, // 重连次数
+        requestTime: {
+            average: 0,
+            min: 0,
+            max: 0,
+            total: 0,
+            totalTimes: 0,
+            successTimes: 0,
+        }, // 请求耗时（最低值，平均值，最高值）
+        responseTime: {
+            average: 0,
+            min: 0,
+            max: 0,
+            total: 0,
+            totalTimes: 0,
+            successTimes: 0,
+        }, // 响应耗时（最低值，平均值，最高值）
+        sendMessageTime: {
+            average: 0,
+            min: 0,
+            max: 0,
+            total: 0,
+            totalTimes: 0,
+            successTimes: 0,
+        } // 发送聊天消息数目（成功数目、失败数目）
+    };
+    Object.keys(servers).forEach(account => {
+        const server = servers[account];
+        statistic.loginUserCount++;
+        if (server.isOnline) {
+            statistic.onlineUserCount++;
+        }
+        statistic.totalLoginTimes += server.totalLoginTimes;
+        statistic.closeTimes += server.closeTimes;
+        statistic.reconnectTimes += server.reconnectTimes;
+    });
+    return statistic;
+};
+
+/**
  * 开始进行测试
  * @return {void}
  */
