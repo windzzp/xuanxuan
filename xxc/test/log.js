@@ -1,4 +1,15 @@
 import chalk from 'chalk';
+import log4js from 'log4js';
+
+log4js.configure({
+    appenders: {
+        test: {type: 'file', filename: './test/logs/test.log'}
+    },
+    categories: {
+        default: {appenders: ['test'], level: 'all'}
+    }
+});
+const testLog = log4js.getLogger('test');
 
 const logTimeStr = () => {
     const now = new Date();
@@ -103,10 +114,13 @@ export const logInfo = (...args) => {
     if (typeof args[0] === 'function') {
         const name = args[1];
         console.info(`${chalk.cyan('● Info ')}`, chalk.gray(logTimeStr()), `───────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
+        testLog.info(`${chalk.cyan('● Info ')}`, chalk.gray(logTimeStr()), `───────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
         args[0]();
         console.info(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
+        testLog.info(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
     } else {
         console.info(chalk.cyan('● Info '), chalk.gray(logTimeStr()), ...args.map(colorArg));
+        testLog.info(chalk.cyan('● Info '), chalk.gray(logTimeStr()), ...args.map(colorArg));
     }
 };
 
@@ -114,10 +128,13 @@ export const logWarn = (...args) => {
     if (typeof args[0] === 'function') {
         const name = args[1];
         console.warn(`${chalk.yellow('● Warn ')}`, chalk.yellow(logTimeStr()), `───────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
+        testLog.warn(`${chalk.yellow('● Warn ')}`, chalk.yellow(logTimeStr()), `───────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
         args[0]();
         console.warn(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
+        testLog.warn(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
     } else {
         console.warn(chalk.yellow('● Warn '), chalk.yellow(logTimeStr()), ...args.map(colorArg));
+        testLog.warn(chalk.yellow('● Warn '), chalk.yellow(logTimeStr()), ...args.map(colorArg));
     }
 };
 
@@ -125,10 +142,13 @@ export const logError = (...args) => {
     if (typeof args[0] === 'function') {
         const name = args[1];
         console.error(`${chalk.red('● Error')}`, chalk.red(logTimeStr()), `───────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
+        testLog.error(`${chalk.red('● Error')}`, chalk.red(logTimeStr()), `───────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
         args[0]();
         console.error(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
+        testLog.error(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
     } else {
         console.error(chalk.red('● Error'), chalk.red(logTimeStr()), ...args.map(colorArg));
+        testLog.error(chalk.red('● Error'), chalk.red(logTimeStr()), ...args.map(colorArg));
     }
 };
 

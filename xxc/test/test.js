@@ -1,6 +1,7 @@
 import program from 'commander';
 import Md5 from 'md5';
 import {URL} from 'url';
+import {makeReport} from './report';
 import pkg from '../app/package.json';
 import User from './user';
 import Server from './server';
@@ -11,7 +12,7 @@ program
     .version(pkg.version)
     .alias('npm run test2 --')
     .option('-s, --server <server>', '测试服务器地址')
-    .option('-t, --time <time>', '测试持续时间，单位秒', 30 * 60)
+    // .option('-t, --time <time>', '测试持续时间，单位秒', 30 * 60)
     .option('-a, --account <account>', '测试账号，例如 `--acount=test$`', 'test$')
     .option('-p, --password <password>', '测试账号密码', '123456')
     .option('-r, --range <range>', '登录的用户账号范围，例如 `1,100` 表示 account1 到 account100', '1,2')
@@ -26,7 +27,7 @@ program
     .option('-g, --groups <groups>', '是否测试讨论组发送消息')
     .option('-A, --activeLevel <activeLevel>', '测试用户活跃程度')
     // .option('-T, --logTypes <logTypes>', '日志报告文件类型', 'log,json,md,html')
-    .option('-T, --testTime <testTime>', '测试脚本执行的时间，单位秒', 30000)
+    .option('-T, --testTime <testTime>', '测试脚本执行的时间，单位秒', 120000)
     .parse(process.argv);
 
 // 测试配置
@@ -46,6 +47,7 @@ const config = {
     one2one: program.one2one,
     groups: program.groups ? program.groups.split(',') : null,
     activeLevel: program.activeLevel,
+    testTime: program.testTime,
 };
 
 // 等待登录的用户队列
@@ -117,6 +119,9 @@ const initConfig = () => {
         loginType: config.timeForLogin1 ? 1 : config.timeForLogin2 ? 2 : 3
     });
 
+    // 生成config 报表
+    makeReport(config, 'config');
+
     log.info(() => console.log({
         server: config.server.toString(),
         account: config.account,
@@ -128,7 +133,8 @@ const initConfig = () => {
         reconnect: config.reconnect,
         verbose: config.verbose,
         socketPort: config.socketPort,
-        loginType: config.loginType
+        loginType: config.loginType,
+        testTime: config.testTime
     }), 'Config');
     log.info('Login type is', config.loginType);
 };
@@ -354,7 +360,7 @@ const getStatistic = () => {
         reconnectTimes: 0, // 重连次数
         requestTime: {
             average: 0,
-            min: 0,
+            min: 99999999,
             max: 0,
             total: 0,
             totalTimes: 0,
@@ -362,7 +368,7 @@ const getStatistic = () => {
         }, // 请求耗时（最低值，平均值，最高值）
         responseTime: {
             average: 0,
-            min: 0,
+            min: 9999999,
             max: 0,
             total: 0,
             totalTimes: 0,
@@ -370,7 +376,7 @@ const getStatistic = () => {
         }, // 响应耗时（最低值，平均值，最高值）
         sendMessageTime: {
             average: 0,
-            min: 0,
+            min: 99999999,
             max: 0,
             total: 0,
             totalTimes: 0,
@@ -386,8 +392,58 @@ const getStatistic = () => {
         statistic.totalLoginTimes += server.totalLoginTimes;
         statistic.closeTimes += server.closeTimes;
         statistic.reconnectTimes += server.reconnectTimes;
+        handleTime(statistic, server.requestTime, 'requestTime');
+        handleTime(statistic, server.responseTime, 'responseTime');
+        handleTime(statistic, server.sendMessageTime, 'sendMessageTime');
     });
+    statistic.requestTime.average = statistic.requestTime.total / statistic.requestTime.successTimes;
+    statistic.responseTime.average = statistic.responseTime.total / statistic.responseTime.successTimes;
+    statistic.sendMessageTime.average = statistic.sendMessageTime.total / statistic.sendMessageTime.successTimes;
+
     return statistic;
+};
+
+// 将信息汇总
+const handleTime = (statistic, obj, type) => {
+    Object.keys(obj).forEach(dataType => {
+        switch (dataType) {
+        case 'min':
+            statistic[type][dataType] = Math.min(statistic[type][dataType], obj[dataType]);
+            break;
+        case 'max':
+            statistic[type][dataType] = Math.max(statistic[type][dataType], obj[dataType]);
+            break;
+        case 'total':
+            statistic[type][dataType] += obj[dataType];
+            break;
+        case 'totalTimes':
+            statistic[type][dataType] += obj[dataType];
+            break;
+        case 'successTimes':
+            statistic[type][dataType] += obj[dataType];
+            break;
+        }
+    });
+};
+
+/**
+ * 获取用户统计信息
+ * @return {object}
+ */
+const getUsersInfo = () => {
+    const usersInfo = {};
+    Object.keys(servers).forEach(account => {
+        const server = servers[account];
+        usersInfo[account] = {};
+        usersInfo[account].lastLoginTime = server.lastLoginTime; // 登录时间
+        usersInfo[account].loginTimes = server.loginTimes; // 登录耗时
+        usersInfo[account].closeTimes = server.closeTimes; // 断线次数
+        usersInfo[account].reconnectTimes = server.reconnectTimes; // 重连次数
+        usersInfo[account].requestTime = server.requestTime; // 请求耗时
+        usersInfo[account].responseTime = server.responseTime; // 响应耗时
+        usersInfo[account].sendMessageTime = server.sendMessageTime; // 发送聊天消息数目
+    });
+    return usersInfo;
 };
 
 /**
@@ -400,7 +456,7 @@ const start = () => {
 
     startConnectTime = process.uptime() * 1000;
 
-    setInterval(() => {
+    let timer = setInterval(() => {
         if (tryReportUserStatus()) {
             return;
         }
@@ -410,6 +466,18 @@ const start = () => {
         trySendMessage();
     }, 100);
 
+    if (config.testTime) {
+        let clearTimer = setTimeout(() => {
+            const statistic = getStatistic();
+            const usersInfo = getUsersInfo();
+            clearInterval(timer);
+            clearTimeout(clearTimer);
+            clearTimer = null;
+            makeReport(statistic, 'statistic');
+            makeReport(usersInfo, 'usersInfo');
+            log.info('Test time out.');
+        }, config.testTime);
+    }
     log.info('Test started.');
 };
 

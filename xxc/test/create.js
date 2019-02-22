@@ -14,7 +14,7 @@ import pkg from '../app/package.json';
  */
 program
     .version(pkg.version)
-    .alias('npm run test2 --')
+    .alias('npm run create --')
     .option('-s, --server <server>', '测试服务器地址')
     .option('-a, --account <account>', '测试账号前缀，例如 `--acount=test`', 'test')
     .option('-p, --password <password>', '测试账号密码', '123456')
