@@ -34,31 +34,3 @@ $lang->xxbversion->system['linux32rpm']  = 'linux32位rpm包';
 $lang->xxbversion->system['linux32zbox'] = 'linux32位一键安装包';
 $lang->xxbversion->system['source']      = '源码包';
 $lang->xxbversion->system['ranzhi']      = '然之扩展包';
-
-$lang->xxbversion->downloadGroup['xxc'] = array('win64exe', 'win64zip', 'win32exe', 'win32zip', 'win64debug', 'macOS', 'linux64zip', 'linux64deb', 'linux64rpm', 'linux32zip', 'linux32deb', 'linux32rpm', 'browser');
-$lang->xxbversion->downloadGroup['xxd'] = array('win64zip', 'win32zip', 'macOS', 'linux64zip', 'linux32zip');
-$lang->xxbversion->downloadGroup['xxb'] = array('source', 'win64wamp', 'win32wamp', 'linux64zbox', 'linux32zbox', 'linux64rpm', 'linux64deb', 'ranzhi');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
