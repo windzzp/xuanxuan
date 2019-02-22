@@ -1,5 +1,4 @@
 import program from 'commander';
-import Md5 from 'md5';
 import {URL} from 'url';
 import User from './user';
 import Server from './server';
@@ -17,8 +16,8 @@ program
     .version(pkg.version)
     .alias('npm run test2 --')
     .option('-s, --server <server>', '测试服务器地址')
-    .option('-a, --account <account>', '测试账号前缀，例如 `--acount=test$`')
-    .option('-p, --password <password>', '测试账号密码')
+    .option('-a, --account <account>', '测试账号前缀，例如 `--acount=test`', 'test')
+    .option('-p, --password <password>', '测试账号密码', '123456')
     .option('-u, --user <user>', '：创建测试账号的数量 `100`')
     .option('-g, --group <group>', '：创建测试群的数量 `10`')
     .option('-P, --port <port>', 'Socket 连接端口', 11444)
@@ -30,7 +29,7 @@ const config = {
     serverUrl: program.server,
     server: new URL(program.server),
     account: program.account,
-    password: Md5(program.password),
+    password: program.password,
     user: program.user,
     group: program.group,
     verbose: program.verbose,
@@ -61,11 +60,13 @@ const initConfig = () => {
 
 const create = () => {
     initConfig();
-    const user = new User('test0', 'e10adc3949ba59abbe56e057f20f883e');
+    const user = new User('admin', 'e10adc3949ba59abbe56e057f20f883e');
     const server = new Server(user, config);
-    server.connect().then(function (){
+    server.connect().then(() => {
         const {user, account, password} = config;
-        if (user && account && password) server.createUsers(Number(user), account, password);
+        if (user && account && password) {
+            server.createUsers(Number.parseInt(user, 10), account, password);
+        }
         // if (config.group) server.createGroups(config.group);
     });
 };

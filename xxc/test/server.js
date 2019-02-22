@@ -1,4 +1,5 @@
 import request from 'request';
+import uuid from 'uuid';
 import Socket from './socket';
 import log from './log';
 
@@ -7,13 +8,13 @@ import log from './log';
  * @type {number}
  * @private
  */
-const LISTEN_TIMEOUT = 1000 * 15;
+const LISTEN_TIMEOUT = 1000 * 30;
 
 /**
  * 生成 Socket 数据包 rid 值，每次应该递增之后使用
  * @type {number}
  */
-let ridSeed = 0;
+let ridSeed = 1;
 
 /**
  * 事件名称表
@@ -61,6 +62,78 @@ export default class Server {
          * @private
          */
         this.messageCallbacks = {};
+
+        /**
+         * 用户断线的次数
+         * @type {number}
+         */
+        this.closeTimes = 0;
+
+        /**
+         * 用户重连的次数
+         * @type {number}
+         */
+        this.reconnectTimes = 0;
+
+        /**
+         * 请求耗时统计
+         * @type {{average: number, min: number, max: number, total: number, totalTimes: number, successTimes: number}}
+         */
+        this.requestTime = {
+            average: 0,
+            min: 0,
+            max: 0,
+            total: 0,
+            totalTimes: 0,
+            successTimes: 0,
+        };
+
+        /**
+         * 响应耗时统计
+         * @type {{average: number, min: number, max: number, total: number, totalTimes: number, successTimes: number, timeoutTimes: number}}
+         */
+        this.responseTime = {
+            average: 0,
+            min: 0,
+            max: 0,
+            total: 0,
+            totalTimes: 0,
+            successTimes: 0,
+            timeoutTimes: 0
+        };
+
+        /**
+         * 发送数据包数目
+         * @type {{average: number, min: number, max: number, total: number, totalTimes: number, successTimes: number, timeoutTimes: number}}
+         */
+        this.sendMessageTimes = {
+            average: 0,
+            min: 0,
+            max: 0,
+            total: 0,
+            totalTimes: 0,
+            successTimes: 0,
+            timeoutTimes: 0
+        };
+
+        /**
+         * 发送聊天消息数目
+         * @type {{success: number, failure: number}}
+         */
+        this.sendChatMessageTimes = {
+            success: 0,
+            failure: 0,
+        };
+
+        /**
+         * 每次登录的耗时
+         * @type {number[]}
+         */
+        this.loginTimes = [];
+    }
+
+    get totalLoginTimes() {
+        this.loginTimes 求和；
     }
 
     /**
@@ -68,7 +141,38 @@ export default class Server {
      * @type {boolean}
      */
     get isOnline() {
-        return this._status === 1;
+        return this._status === STATUS.VERFIED;
+    }
+
+    /**
+     * 判断用户是否正在登录
+     *
+     * @readonly
+     * @memberof Server
+     */
+    get isConnecting() {
+        return this._status === STATUS.CONNECTING;
+    }
+
+    /**
+     * Socket 是否已经断开
+     *
+     * @readonly
+     * @memberof Server
+     */
+    get isClosed() {
+        return this._status === STATUS.CLOSED;
+    }
+
+    /**
+     * 获取当前登录的用户 ID
+     *
+     * @readonly
+     * @memberof Server
+     */
+    get userID() {
+        const {serverUser} = this;
+        return serverUser && serverUser.id;
     }
 
     /**
@@ -84,6 +188,11 @@ export default class Server {
             this._status = status;
             if (this.onStatusChange) {
                 this.onStatusChange(status);
+            }
+            if (status === STATUS.CLOSED && this.onSocketClosed) {
+                this.closeTimes++;
+                this.lastCloseTime = new Date().getTime();
+                this.onSocketClosed();
             }
             const {statusName} = this;
             log.info('Server', `**<${this.user.account}>**`, 'Socket status changed:', `c:${STATUS_COLORS[statusName]}|**${statusName}**`, '←', `c:${STATUS_COLORS[oldStatusName]}|**${oldStatusName}**`);
@@ -147,7 +256,12 @@ export default class Server {
      * @returns {Promise} 使用 Promise 异步返回处理结果
      */
     connect() {
-        log.info('Server', `**<${this.user.account}>**`, 'Socket connect begin.');
+        if (this.isClosed) {
+            log.info('Server', `**<${this.user.account}>**`, 'Socket', 'c:yellow|**reconnect**', 'begin.');
+        } else {
+            log.info('Server', `**<${this.user.account}>**`, 'Socket connect begin.');
+        }
+        this.startLoginTime = new Date().getTime();
         return this.getServerInfo().then((serverInfo) => {
             // log.info(() => console.log(serverInfo), `Server<${this.user.account}> Server Info`);
             log.info('Server', `**<${this.user.account}>**`, 'Server info recevied, then token is', `**${serverInfo.token}**`);
@@ -197,6 +311,11 @@ export default class Server {
             if (message && message.result === 'success' && message.data.account === account) {
                 this.serverUser = message.data;
                 this.status = STATUS.VERFIED;
+                if (this.lastLoginTime) {
+                    this.reconnectTimes++;
+                }
+                this.lastLoginTime = new Date().getTime();
+                this.loginTimes.push(this.lastLoginTime - this.startLoginTime);
                 return Promise.resolve(this.serverUser);
             }
             return Promise.reject(new Error('User login failed.'));
@@ -209,8 +328,12 @@ export default class Server {
      * @return {void}
      */
     handleSocketMessage = (message) => {
-        // log.info(() => console.log(message), `Server<${this.user.account}> socket recevied message`);
-        log.info('Server', `**<${this.user.account}>**`, 'Socket', `c:blue|**⬇︎ ${message.module}/${message.method}**`, 'rid', message.rid);
+        if (!message.module || !message.method) {
+            log.warn(() => console.log(message), `Server<${this.user.account}> socket recevied wrong data`);
+        } else {
+            // log.info(() => console.log(message), `Server<${this.user.account}> socket recevied message`);
+            // log.info('Server', `**<${this.user.account}>**`, 'Socket', `c:blue|**⬇︎ ${message.module}/${message.method}**`, 'rid', message.rid);
+        }
         const {rid} = message;
         const messageCallback = this.messageCallbacks[rid];
         if (messageCallback) {
@@ -247,7 +370,27 @@ export default class Server {
      * @return {void}
      */
     sendMessage(message, callback) {
-        this.socket.send(message, callback);
+        message = Object.assign({
+            userID: this.userID,
+            v: this.config.pkg.version,
+            lang: 'zh-cn',
+            module: 'chat',
+        }, message);
+
+        this.requestTime.totalTimes++;
+        const startTime = process.uptime() * 1000;
+        this.socket.send(message, () => {
+            message.sendTime = process.uptime() * 1000;
+            const time = (message.sendTime - startTime);
+            this.requestTime.successTimes++;
+            this.requestTime.total += time;
+            this.requestTime.min = Math.min(this.requestTime.min, time);
+            this.requestTime.max = Math.max(this.requestTime.max, time);
+            this.requestTime.average = this.requestTime.total / this.requestTime.successTimes;
+            if (callback) {
+                callback();
+            }
+        });
         // log.info(() => console.log(message), `Server<${this.user.account}> socket send`);
         log.info('Server', `**<${this.user.account}>**`, 'Socket', `c:cyan|**⬆︎ ${message.module}/${message.method}**`, 'rid', message.rid);
     }
@@ -264,17 +407,30 @@ export default class Server {
         }
         return new Promise((resolve, reject) => {
             this.sendMessage(message, callback);
+            this.responseTime.totalTimes++;
             const {rid} = message;
             const rejectTimer = setTimeout(() => {
                 if (this.messageCallbacks[rid]) {
                     delete this.messageCallbacks[rid];
-                    reject();
+                    this.responseTime.timeoutTimes++;
+                    const error = new Error(`Timeout, rid: ${rid}, more than ${LISTEN_TIMEOUT}ms not recevied server response.`);
+                    error.code = 'TIMEOUT';
+                    reject(error);
                 }
             }, LISTEN_TIMEOUT);
             this.messageCallbacks[rid] = {
                 callback: resolve,
                 rejectTimer
             };
+        }).then((message) => {
+            const now = process.uptime() * 1000;
+            const responseTime = now - message.sendTime;
+            this.responseTime.total += responseTime;
+            this.responseTime.successTimes++;
+            this.responseTime.average = this.responseTime.total / this.responseTime.successTimes;
+            this.responseTime.min = Math.min(this.responseTime.min, responseTime);
+            this.responseTime.max = Math.max(this.responseTime.max, responseTime);
+            return Promise.resolve(message);
         });
     }
     /**
@@ -284,19 +440,15 @@ export default class Server {
      * @param {string} password 统一用户密码
      */
 
-    createUsers = (amount, prifix, password) => {
-        const {config} = this;
-        this.socket.send({
-            module: 'chat',
+    createUsers = (amount, prifix, password, startID = 1) => {
+        this.sendMessage({
             method: 'createUser',
             params: [
                 amount,
                 prifix,
-                password
-            ],
-            userID: 5594,
-            v: config.pkg.version,
-            lang: 'zh-cn'
+                password,
+                startID
+            ]
         });
     };
 
@@ -304,16 +456,53 @@ export default class Server {
      * 创建群组
      * @param {number} amount 创建群组数
      */
-
     createGroups = (amount) => {
-        const {config} = this;
-        this.socket.send({
-            module: 'chat',
+        this.sendMessage({
             method: 'createGroup',
             params: [amount],
-            userID: config.user,
-            v: config.pkg.version,
-            lang: 'zh-cn'
         });
     };
+
+    /**
+     * ·发送聊天消息
+     *
+     * @param {*} message
+     * @memberof Server
+     */
+    sendChatMessage(chatMessage) {
+        chatMessage = Object.assign({
+            user: this.userID,
+            type: 'normal',
+            gid: uuid.v4(),
+            contentType: 'plain',
+        }, chatMessage);
+        if (chatMessage.content === undefined) {
+            chatMessage.content = 'This is a test message.';
+        }
+        if (!chatMessage.cgid) {
+            return Promise.reject(new Error('The cgid must provide to send a chat message.'));
+        }
+        log.info('Server', `**<${this.user.account}>**`, 'Send message to', `**${chatMessage.cgid}**`, `_${chatMessage.content}_`);
+        // log.info(() => console.log(chatMessage), 'ChatMessage');
+        const startSendTime = process.uptime() * 1000;
+        this.sendMessageTimes.totalTimes++;
+        return this.sendAndListen({
+            method: 'message',
+            params: [[chatMessage]],
+            userID: this.userID,
+        }).then(() => {
+            const now = process.uptime() * 1000;
+            const sendMessageTimes = now - startSendTime;
+            this.sendMessageTimes.total += sendMessageTimes;
+            this.sendMessageTimes.successTimes++;
+            this.sendMessageTimes.average = this.sendMessageTimes.total / this.sendMessageTimes.successTimes;
+            this.sendMessageTimes.min = Math.min(this.sendMessageTimes.min, sendMessageTimes);
+            this.sendMessageTimes.max = Math.max(this.sendMessageTimes.max, sendMessageTimes);
+        }).catch(error => {
+            if (error && error.code === 'TIMEOUT') {
+                this.sendMessageTimes.timeoutTimes++;
+            }
+            log.error(() => console.error(error), `Send chat message ${chatMessage.gid}@${chatMessage.cgid} error`);
+        });
+    }
 }

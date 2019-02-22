@@ -22,7 +22,11 @@ program
     .option('-P, --port <port>', 'Socket 连接端口', 11444)
     .option('-v, --verbose', '是否输出额外的信息', false)
     .option('-l, --log <log>', '日志输出等级', 2)
-    .option('-T, --logTypes <logTypes>', '日志报告文件类型', 'log,json,md,html')
+    .option('-o, --one2one', '是否测试大量一对一发送消息')
+    .option('-g, --groups <groups>', '是否测试讨论组发送消息')
+    .option('-A, --activeLevel <activeLevel>', '测试用户活跃程度')
+    // .option('-T, --logTypes <logTypes>', '日志报告文件类型', 'log,json,md,html')
+    .option('-T, --testTime <testTime>', '测试脚本执行的时间，单位秒', 30000)
     .parse(process.argv);
 
 // 测试配置
@@ -38,7 +42,10 @@ const config = {
     timeForLogin3: program.login3 ? program.login3 * 1000 : null,
     reconnect: program.reconnect,
     verbose: program.verbose,
-    socketPort: program.port
+    socketPort: program.port,
+    one2one: program.one2one,
+    groups: program.groups ? program.groups.split(',') : null,
+    activeLevel: program.activeLevel,
 };
 
 // 等待登录的用户队列
@@ -55,6 +62,32 @@ let lastUserConnectTime = null;
 
 // 用户登录顺序 ID
 let connectID = 1;
+
+// 当前是否有用户正在登录中
+let isUserConnecting = false;
+
+// 上次报告用户状态时间
+let lastReportUserTime = 0;
+
+// 每隔多长时间报告用户状态
+const reportUserTimeInterval = 10 * 1000;
+
+// 上次尝试发送一对一消息的时间
+let lastTrySendOne2OneMessage = 0;
+
+// 每隔多长时间尝试发送一对一消息
+const trySendOne2OneMessageInterval = 1000;
+
+// 上次尝试发送讨论组消息的时间
+let lastTrySendGroupMessage = 0;
+
+// 每隔多长时间尝试发送讨论组消息
+const trySendGroupMessageInterval = 1000;
+
+// 获取指定范围内的整数
+const randomInt = (min, max) => {
+    return Math.round(Math.random() * (max - min)) + min;
+};
 
 /**
  * 初始化测试程序参数
@@ -105,12 +138,14 @@ const initConfig = () => {
  * @return {number} 返回用户登录登录队列内用户数目
  */
 const initWaitUsers = () => {
-    const {account, range, password} = config;
+    const {
+        account, range, password, activeLevel
+    } = config;
     const rangeStart = range[0] || 1;
     const rangeEnd = range[1] || 10;
     const {timeForLogin1} = config;
     for (let i = rangeStart; i <= rangeEnd; ++i) {
-        const user = new User(account.replace('$', i), password);
+        const user = new User(account.replace('$', i), password, activeLevel);
         // 如果是登录场景2
         if (timeForLogin1) {
             user.timeForLogin1 = Math.random() * timeForLogin1;
@@ -132,12 +167,23 @@ const initWaitUsers = () => {
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
 const connectUser = (user) => {
+    isUserConnecting = true;
     user.connectID = connectID++;
-    const server = new Server(user, config);
-    servers[user.account] = server;
-    lastUserConnectTime = new Date().getTime();
+    let server = servers[user.account];
+    if (!server) {
+        server = new Server(user, config);
+        servers[user.account] = server;
+        if (config.reconnect) {
+            server.onSocketClosed = () => {
+                waitUsers.push(user);
+            };
+        }
+    }
+    lastUserConnectTime = process.uptime() * 1000;
     log.info(`User #${user.connectID}`, `**<${user.account}>**`, 'connect at', (lastUserConnectTime - startConnectTime) / 1000, 's');
-    return server.connect();
+    return server.connect().then(() => {
+        isUserConnecting = false;
+    });
 };
 
 /**
@@ -149,7 +195,7 @@ const tryConnectUser = () => {
         const {timeForLogin1, timeForLogin2, timeForLogin3} = config;
         if (timeForLogin1) {
             const user = waitUsers[0];
-            const now = new Date().getTime();
+            const now = process.uptime() * 1000;
             if ((now - startConnectTime) >= user.timeForLogin1) {
                 connectUser(user);
                 waitUsers.splice(0, 1);
@@ -158,7 +204,7 @@ const tryConnectUser = () => {
             const user = waitUsers.shift();
             connectUser(user);
         } else {
-            const now = new Date().getTime();
+            const now = process.uptime() * 1000;
             if ((now - lastUserConnectTime) >= timeForLogin3) {
                 const user = waitUsers.shift();
                 connectUser(user);
@@ -172,10 +218,176 @@ const tryConnectUser = () => {
 };
 
 /**
+ * 获取测试服务
+ * @param {function} filter 过滤函数
+ */
+const getServers = (filter) => {
+    const filterServers = Object.keys(servers).map(x => servers[x]);
+    return filter ? filterServers.filter(filter) : filterServers;
+};
+
+/**
+ * 随机获取指定数目的在线用户
+ * @param {number} number 获取在线用户的数目
+ */
+const getOnlineServers = (number) => {
+    const onlineServers = getServers(x => x.isOnline);
+    if (!number || number >= onlineServers.length) {
+        return onlineServers;
+    }
+    const matchServers = [];
+    for (let i = 0; i < number; ++i) {
+        const selectIndex = randomInt(0, onlineServers.length - 1);
+        const selectServer = onlineServers[selectIndex];
+        onlineServers.splice(selectIndex, 1);
+        matchServers.push(selectServer);
+    }
+    return matchServers;
+};
+
+/**
+ * 尝试发送一对一消息
+ * @returns {boolean} 如果返回 `true` 则为是，否则为不是
+ */
+const trySendOne2OneMessage = () => {
+    const {one2one} = config;
+    if (one2one) {
+        const now = process.uptime() * 1000;
+        if (!lastTrySendOne2OneMessage || (now - lastTrySendOne2OneMessage) > trySendOne2OneMessageInterval) {
+            lastTrySendOne2OneMessage = now;
+            const twoServers = getOnlineServers(2);
+            if (twoServers.length > 1) {
+                if (Math.random() > twoServers[0].user.activeLevel) {
+                    const cgid = twoServers.map(x => x.userID).sort().join('&');
+                    twoServers[0].sendChatMessage({
+                        cgid,
+                        contentType: 'text',
+                        content: `This is a one2one message between **${twoServers[0].user.account}** and **${twoServers[1].user.account}**.`
+                    });
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+};
+
+/**
+ * 尝试发送消息到系统聊天
+ * @returns {boolean} 如果返回 `true` 则为是，否则为不是
+ */
+const trySendGroupMessage = () => {
+    const {groups} = config;
+    if (groups && groups.length) {
+        const now = process.uptime() * 1000;
+        if (!lastTrySendGroupMessage || (now - lastTrySendGroupMessage) > trySendGroupMessageInterval) {
+            lastTrySendGroupMessage = now;
+            const onlineServer = getOnlineServers(1);
+            if (onlineServer.length) {
+                if (Math.random() > onlineServer[0].user.activeLevel) {
+                    const groupGid = groups[randomInt(0, groups.length - 1)];
+                    onlineServer[0].sendChatMessage({
+                        cgid: groupGid,
+                        contentType: 'text',
+                        content: `This is a test message send to group#${groupGid} from ${onlineServer[0].user.account}.`
+                    });
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+};
+
+/**
  * 尝试选取一个用户来发送一条消息
  * @return {boolean} 如果为 true，表示发送了消息，如果为 false 没有发送消息
  */
 const trySendMessage = () => {
+    if (trySendOne2OneMessage()) {
+        return true;
+    }
+    if (trySendGroupMessage()) {
+        return true;
+    }
+    return false;
+};
+
+/**
+ * 尝试报告用户状态
+ * @returns {boolean} 如果返回 `true` 则为是，否则为不是
+ */
+const tryReportUserStatus = () => {
+    const now = process.uptime() * 1000;
+    if (!lastReportUserTime || (now - lastReportUserTime) > reportUserTimeInterval) {
+        lastReportUserTime = now;
+        let onlineCount = 0;
+        let offlineCount = 0;
+        let connectingCount = 0;
+        Object.keys(servers).forEach(account => {
+            const server = servers[account];
+            if (server.isOnline) {
+                onlineCount++;
+            } else if (server.isConnecting) {
+                connectingCount++;
+            } else {
+                offlineCount++;
+            }
+        });
+        const waitCount = waitUsers.length;
+        log.info('Status', onlineCount ? `**c:green|Online: ${onlineCount}**` : '_Online: 0_', offlineCount ? `**c:red|Offline: ${offlineCount}**` : '_Offline: 0_', connectingCount ? `**c:yellow|Connecting: ${connectingCount}**` : '_Connecting: 0_', waitCount ? `**c:blue|Wait: ${waitCount}**` : '_Wait: 0_');
+        return true;
+    }
+    return false;
+};
+
+/**
+ * 获取概要统计信息
+ */
+const getStatistic = () => {
+    const statistic = {
+        loginType: config.loginType, // 登录场景
+        loginUserCount: 0, // 登录用户数目
+        onlineUserCount: 0, // 在线用户数目
+        totalLoginTimes: 0, // 所有用户登录完成耗时（平均登录耗时，最小，最大）
+        closeTimes: 0, // 断线次数
+        reconnectTimes: 0, // 重连次数
+        requestTime: {
+            average: 0,
+            min: 0,
+            max: 0,
+            total: 0,
+            totalTimes: 0,
+            successTimes: 0,
+        }, // 请求耗时（最低值，平均值，最高值）
+        responseTime: {
+            average: 0,
+            min: 0,
+            max: 0,
+            total: 0,
+            totalTimes: 0,
+            successTimes: 0,
+        }, // 响应耗时（最低值，平均值，最高值）
+        sendMessageTime: {
+            average: 0,
+            min: 0,
+            max: 0,
+            total: 0,
+            totalTimes: 0,
+            successTimes: 0,
+        } // 发送聊天消息数目（成功数目、失败数目）
+    };
+    Object.keys(servers).forEach(account => {
+        const server = servers[account];
+        statistic.loginUserCount++;
+        if (server.isOnline) {
+            statistic.onlineUserCount++;
+        }
+        statistic.totalLoginTimes += server.totalLoginTimes;
+        statistic.closeTimes += server.closeTimes;
+        statistic.reconnectTimes += server.reconnectTimes;
+    });
+    return statistic;
 };
 
 /**
@@ -186,10 +398,13 @@ const start = () => {
     initConfig();
     initWaitUsers();
 
-    startConnectTime = new Date().getTime();
+    startConnectTime = process.uptime() * 1000;
 
     setInterval(() => {
-        if (tryConnectUser()) {
+        if (tryReportUserStatus()) {
+            return;
+        }
+        if (!isUserConnecting && tryConnectUser()) {
             return;
         }
         trySendMessage();

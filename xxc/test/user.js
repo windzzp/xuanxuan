@@ -4,6 +4,9 @@ export default class User {
     constructor(account, password, activeLevel = 0.5) {
         this.account = account;
         this.password = password;
+        if (activeLevel === 'random') {
+            activeLevel = Math.random();
+        }
         this.activeLevel = activeLevel;
     }
 
