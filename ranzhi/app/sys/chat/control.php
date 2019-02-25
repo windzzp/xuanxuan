@@ -1466,6 +1466,62 @@ class chat extends control
         $this->send(array('result' => 'success', 'logs' => $log));
     }
 
+    public function getXXCUpdate()
+    {
+        $jsonData = file_get_contents('http://chanzhi-xx.phpee.cn/index.php?m=xxbversion&f=index');
+        
+        $this->view->title    = $this->lang->chat->checkUpdate;
+        $this->view->versions = json_decode($jsonData, false);
+        $this->display();
+    }
+
+    public function xxcVersion()
+    {
+        $this->lang->menuGroups->setting = 'system';
+        $this->lang->setting->menu       = $this->lang->system->menu;
+        $this->lang->setting->menuOrder  = $this->lang->system->menuOrder;
+
+        $this->view->title    = $this->lang->chat->version;
+        $this->view->versions = $this->chat->getVersions();
+        $this->display();
+    }
+    
+    public function createXXCVersion()
+    {
+        if($_POST)
+        {
+            $this->chat->createXXCVersion();
+            if(dao::isError()) $this->send(array('result' => 'fail', 'message' => dao::getError()));
+            $this->send(array('result' => 'success', 'message' => $this->lang->saveSuccess, 'locate' => inlink('xxcVersion')));
+        }
+        
+        $this->view->title = $this->lang->create;
+        $this->display();
+    }
+    
+    public function editXXCVersion($versionID = 0)
+    {
+        if($_POST)
+        {
+            $this->chat->editXXCVersion($versionID);
+            if(dao::isError()) $this->send(array('result' => 'fail', 'message' => dao::getError()));
+            $this->send(array('result' => 'success', 'message' => $this->lang->saveSuccess, 'locate' => inlink('xxcVersion')));
+        }
+        
+        $version = $this->dao->select('*')->from(TABLE_IM_XXCVERSION)->where('id')->eq($versionID)->fetch();
+        $version->downloads  = json_decode($version->downloads, true);
+        $this->view->title   = $this->lang->edit;
+        $this->view->version = $version;
+        $this->display();
+    }
+    
+    public function deleteXXCVersion($versionID = 0)
+    {
+        $this->dao->delete()->from(TABLE_IM_XXCVERSION)->where('id')->eq($versionID)->exec();
+        if(dao::isError()) $this->send(array('result' => 'fail', 'message' => dao::getError()));
+        $this->send(array('result' => 'success', 'message' => $this->lang->deleteSuccess, 'locate' => inlink('xxcVersion')));
+    }
+    
     /**
      * Message notification api.
      *

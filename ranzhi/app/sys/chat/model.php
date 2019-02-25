@@ -290,6 +290,33 @@ class chatModel extends model
         return $messages;
     }
 
+    public function getVersions()
+    {
+        return $this->dao->select('*')->from(TABLE_IM_XXCVERSION)->orderBy('id_desc')->fetchAll();
+    }
+
+    public function createXXCVersion()
+    {
+        $version = fixer::input('post')
+            ->add('createdBy', $this->app->user->account)
+            ->add('createdDate', helper::now())
+            ->get();
+        $version->downloads = json_encode($version->downloads);
+        $this->dao->insert(TABLE_IM_XXCVERSION)->autoCheck()->data($version)->exec();
+        return !dao::isError();
+    }
+    
+    public function editXXCVersion($versionID)
+    {
+        $version = fixer::input('post')
+            ->add('editedBy', $this->app->user->account)
+            ->add('editedDate', helper::now())
+            ->get();
+        $version->downloads = json_encode($version->downloads);
+        $this->dao->update(TABLE_IM_XXCVERSION)->autoCheck()->data($version)->where('id')->eq($versionID)->exec();
+        return !dao::isError();
+    }
+    
     /**
      * Foramt chats.
      *

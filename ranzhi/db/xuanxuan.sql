@@ -72,6 +72,20 @@ CREATE TABLE IF NOT EXISTS `im_messsagestatus` (
   UNIQUE KEY `user` (`user`,`message`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `im_xxcversion` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `version` char(10) NOT NULL DEFAULT '',
+  `desc` varchar(100) NOT NULL DEFAULT '',
+  `readme` text NOT NULL,
+  `strategy` varchar(10) NOT NULL DEFAULT '',
+  `downloads` text NOT NULL,
+  `createdDate` datetime NOT NULL,
+  `createdBy` varchar(30) NOT NULL DEFAULT '',
+  `editedDate` datetime NOT NULL,
+  `editedBy` varchar(30) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 ALTER TABLE `sys_entry` ADD `sso` enum('0', '1') NOT NULL DEFAULT '0';
 ALTER TABLE `sys_file` CHANGE `pathname` `pathname` char(100) NOT NULL;
 ALTER TABLE `sys_user` ADD `clientStatus` enum('online', 'away', 'busy', 'offline') NOT NULL DEFAULT 'offline';
