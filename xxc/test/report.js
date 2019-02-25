@@ -35,7 +35,7 @@ export const makeReport = (content, source) => {
     tableHtml += getTableHtml(content);
     tableHtml += '</tbody></table>';
 
-    let title = `<h3>统计：${lang[source]}，${formatDate()}</h3>`;
+    let title = `<h3>统计：${lang[source]}，${formatDate(new Date(), 'yy-MM-dd hh:mm:ss')}</h3>`;
     let html = `<!DOCTYPE html>
                     <html>
                     <head>
@@ -51,7 +51,7 @@ export const makeReport = (content, source) => {
                     </head>
                     <body>${title}${tableHtml}</body>
                 </html>`;
-    fs.writeFile(`test/logs/${source}.html`, html, (error) => {
+    fs.writeFile(`test/logs/${source + formatDate(new Date(), 'yyMMddhhmmss')}.html`, html, (error) => {
         if (error) {
             return console.error(error);
         }

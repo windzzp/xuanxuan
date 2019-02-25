@@ -22,12 +22,12 @@ program
     .option('-R, --reconnect', '是否断线重连', false)
     .option('-P, --port <port>', 'Socket 连接端口', 11444)
     .option('-v, --verbose', '是否输出额外的信息', false)
-    .option('-l, --log <log>', '日志输出等级', 2)
+    // .option('-l, --log <log>', '日志输出等级', 2)
     .option('-o, --one2one', '是否测试大量一对一发送消息')
     .option('-g, --groups <groups>', '是否测试讨论组发送消息')
     .option('-A, --activeLevel <activeLevel>', '测试用户活跃程度')
     // .option('-T, --logTypes <logTypes>', '日志报告文件类型', 'log,json,md,html')
-    .option('-T, --testTime <testTime>', '测试脚本执行的时间，单位秒', 120000)
+    .option('-T, --testTime <testTime>', '测试脚本执行的时间，单位秒', 120)
     .parse(process.argv);
 
 // 测试配置
@@ -47,7 +47,7 @@ const config = {
     one2one: program.one2one,
     groups: program.groups ? program.groups.split(',') : null,
     activeLevel: program.activeLevel,
-    testTime: program.testTime,
+    testTime: program.testTime * 1000,
 };
 
 // 等待登录的用户队列
@@ -152,7 +152,6 @@ const initWaitUsers = () => {
     const {timeForLogin1} = config;
     for (let i = rangeStart; i <= rangeEnd; ++i) {
         const user = new User(account.replace('$', i), password, activeLevel);
-        // 如果是登录场景2
         if (timeForLogin1) {
             user.timeForLogin1 = Math.random() * timeForLogin1;
         }

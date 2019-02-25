@@ -462,6 +462,7 @@ export default class Server {
                 startID
             ]
         });
+        console.log('创建成功');
     };
 
     /**
