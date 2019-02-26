@@ -4,7 +4,7 @@ class setting extends control
     public function getXXCUpdate()
     {
         $this->loadModel('chat');
-        $jsonData = file_get_contents('http://chanzhi-xx.phpee.cn/index.php?m=xxbversion&f=index');
+        $jsonData = file_get_contents('http://chanzhi-xx.phpee.cn/index.php?m=xxbversion&f=api');
 
         $this->view->title    = $this->lang->chat->checkUpdate;
         $this->view->versions = json_decode($jsonData, false);

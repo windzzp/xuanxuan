@@ -83,8 +83,7 @@ func VerifyLogin(body []byte) (bool, string, error) {
     if err != nil {
         return false, "", err
     }
-	//(parseData["data"].(interface{})).(string)
-    return parseData.Result() == "success", "", nil
+    return parseData.Result() == "success", parseData["data"].(string), nil
 }
 
 // 喧喧客户端上传文件时，与然之服务器进行数据交互

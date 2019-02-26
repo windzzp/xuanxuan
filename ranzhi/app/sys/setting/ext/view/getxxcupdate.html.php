@@ -12,7 +12,7 @@
 ?>
 <?php include '../../../common/view/header.modal.html.php';?>
 <div class="panel-group" id="accordionPanels" aria-multiselectable="true">
-  <?php foreach($versions as $version):?>
+  <?php if($versions) foreach($versions as $version):?>
   <div class="panel panel-default">
     <div class="panel-heading" id="headingOne">
       <h4 class="panel-title">
@@ -25,12 +25,12 @@
           <div class="panel-heading"><?php echo $lang->chat->xxcVersion;?> <?php echo $version->xxcVersion;?></div>
           <table class="table table-form">
             <tr>
-              <th><?php echo $lang->chat->xxcReadme;?>：</th>
+              <th class="w-100px"><?php echo $lang->chat->xxcReadme;?>：</th>
               <td><?php echo $version->xxcDesc;?></td>
             </tr>
-            <?php foreach($version->xxcDownload as $system => $link):?>
+            <?php if($version->xxcDownload) foreach($version->xxcDownload as $system => $link):?>
             <tr>
-              <th class="w-100px"><?php echo $system;?>：</th>
+              <th><?php echo $system;?>：</th>
               <td><?php echo $link;?></td>
             </tr>
             <?php endforeach;?>
@@ -40,12 +40,12 @@
           <div class="panel-heading"><?php echo $lang->chat->xxdVersion;?> <?php echo $version->xxdVersion;?></div>
           <table class="table table-form">
             <tr>
-              <th><?php echo $lang->chat->xxcReadme;?>：</th>
+              <th class="w-100px"><?php echo $lang->chat->xxcReadme;?>：</th>
               <td><?php echo $version->xxdDesc;?></td>
             </tr>
-              <?php foreach($version->xxdDownload as $system => $link):?>
+              <?php if($version->xxdDownload) foreach($version->xxdDownload as $system => $link):?>
               <tr>
-                <th class="w-100px"><?php echo $system;?>：</th>
+                <th><?php echo $system;?>：</th>
                 <td><?php echo $link;?></td>
               </tr>
               <?php endforeach;?>
@@ -55,12 +55,12 @@
           <div class="panel-heading"><?php echo $lang->chat->xxbVersion;?> <?php echo $version->xxbVersion;?></div>
           <table class="table table-form">
             <tr>
-              <th><?php echo $lang->chat->xxcReadme;?>：</th>
+              <th class="w-100px"><?php echo $lang->chat->xxcReadme;?>：</th>
               <td><?php echo $version->xxbDesc;?></td>
             </tr>
-              <?php foreach($version->xxbDownload as $system => $link):?>
+              <?php if($version->xxbDownload) foreach($version->xxbDownload as $system => $link):?>
               <tr>
-                <th class="w-100px"><?php echo $system;?>：</th>
+                <th><?php echo $system;?>：</th>
                 <td><?php echo $link;?></td>
               </tr>
               <?php endforeach;?>

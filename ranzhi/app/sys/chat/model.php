@@ -290,6 +290,24 @@ class chatModel extends model
         return $messages;
     }
 
+    public function getUpdate($version)
+    {
+        $lastForce = $this->dao->select('*')->from(TABLE_IM_XXCVERSION)->where('strategy')->eq('force')->orderBy('id_desc')->fetch();
+        if($lastForce && version_compare($version, $lastForce->version) == -1)
+        {
+            return $lastForce;
+        }
+        else
+        {
+            $last = $this->dao->select('*')->from(TABLE_IM_XXCVERSION)->where('strategy')->eq('force')->orderBy('id_desc')->fetch();
+            if($last && version_compare($version, $last->version) == -1)
+            {
+                return $lastForce;
+            }
+        }
+        return false;
+    }
+    
     public function getVersions()
     {
         return $this->dao->select('*')->from(TABLE_IM_XXCVERSION)->orderBy('id_desc')->fetchAll();

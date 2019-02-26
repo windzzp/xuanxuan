@@ -288,7 +288,7 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
 
     r.ParseForm()
 
-    ok, clientUpdate, err := api.VerifyLogin([]byte(r.Form["data"][0]))
+    ok, message, err := api.VerifyLogin([]byte(r.Form["data"][0]))
     if err != nil {
         util.Log("error", "[serverInfo] Verify authentication credentials error: ", err)
         w.WriteHeader(http.StatusInternalServerError)
@@ -298,7 +298,7 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
 
     if !ok {
         w.WriteHeader(http.StatusUnauthorized)
-        fmt.Fprintln(w, "Authorize to backend server error.")
+        fmt.Fprintln(w, message)
         return
     }
 
@@ -315,7 +315,7 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
         Token:          string(util.Token),
         UploadFileSize: util.Config.UploadFileSize,
         ChatPort:       chatPort,
-		clientUpdate:	clientUpdate}
+		clientUpdate:	message}
 
     jsonData, err := json.Marshal(info)
     if err != nil {

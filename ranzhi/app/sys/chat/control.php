@@ -71,6 +71,14 @@ class chat extends control
                 if(!empty($messages->data)) $this->output[] = $messages;
                 if(!empty($notifies->data)) $this->output[] = $notifies;
             }
+            else
+            {
+                $update = $this->chat->getUpdate($version);
+                if($update !== false)
+                {
+                    $this->output->data = $update;
+                }
+            }
         }
         else
         {
