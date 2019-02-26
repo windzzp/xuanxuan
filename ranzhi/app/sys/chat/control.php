@@ -1465,7 +1465,7 @@ class chat extends control
 
         $this->send(array('result' => 'success', 'logs' => $log));
     }
-
+    
     /**
      * Message notification api.
      *

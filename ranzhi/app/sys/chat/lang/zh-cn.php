@@ -11,6 +11,18 @@ $lang->chat->createKey   = '重新生成密钥';
 $lang->chat->connector   = '、';
 $lang->chat->viewDebug   = '查看调试信息';
 $lang->chat->log         = '日志';
+$lang->chat->id          = 'ID';
+$lang->chat->checkUpdate = '检查更新';
+$lang->chat->xxcVersion  = 'XXC版本';
+$lang->chat->xxdVersion  = 'XXD版本';
+$lang->chat->xxbVersion  = 'XXB版本';
+$lang->chat->xxcDesc     = '升级描述';
+$lang->chat->xxcReadme   = '更新日志';
+$lang->chat->strategy    = '升级策略';
+$lang->chat->download    = '下载地址';
+
+$lang->chat->strategies['force']    = '强制';
+$lang->chat->strategies['optional'] = '可选';
 
 $lang->chat->debugStatus[1] = '启用';
 $lang->chat->debugStatus[0] = '不启用';
