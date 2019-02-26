@@ -1,6 +1,5 @@
 import WS from 'ws';
 import crypto from '../app/platform/electron/crypto';
-import log from './log';
 
 export default class Socket {
     constructor(url, options) {

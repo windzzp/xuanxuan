@@ -81,7 +81,7 @@ export default class Server {
          */
         this.requestTime = {
             average: 0,
-            min: 0,
+            min: 99999999,
             max: 0,
             total: 0,
             totalTimes: 0,
@@ -94,26 +94,26 @@ export default class Server {
          */
         this.responseTime = {
             average: 0,
-            min: 0,
+            min: 99999999,
             max: 0,
             total: 0,
             totalTimes: 0,
             successTimes: 0,
-            timeoutTimes: 0
+            // timeoutTimes: 0
         };
 
         /**
          * 发送数据包数目
          * @type {{average: number, min: number, max: number, total: number, totalTimes: number, successTimes: number, timeoutTimes: number}}
          */
-        this.sendMessageTimes = {
+        this.sendMessageTime = {
             average: 0,
-            min: 0,
+            min: 99999999,
             max: 0,
             total: 0,
             totalTimes: 0,
             successTimes: 0,
-            timeoutTimes: 0
+            // timeoutTimes: 0
         };
 
         /**
@@ -130,10 +130,22 @@ export default class Server {
          * @type {number[]}
          */
         this.loginTimes = [];
+
+        /**
+         * 发送数据开始时间
+         * @type {object{}}
+         */
+        this.sendTime = {};
     }
 
+    /**
+     * 获取登录总时间
+     * @type {boolean}
+     */
     get totalLoginTimes() {
-        this.loginTimes 求和；
+        return this.loginTimes.reduce((a, b) => {
+            return a + b;
+        }, 0);
     }
 
     /**
@@ -380,8 +392,8 @@ export default class Server {
         this.requestTime.totalTimes++;
         const startTime = process.uptime() * 1000;
         this.socket.send(message, () => {
-            message.sendTime = process.uptime() * 1000;
-            const time = (message.sendTime - startTime);
+            this.sendTime[message.rid] = process.uptime() * 1000;
+            const time = (this.sendTime[message.rid] - startTime);
             this.requestTime.successTimes++;
             this.requestTime.total += time;
             this.requestTime.min = Math.min(this.requestTime.min, time);
@@ -424,7 +436,7 @@ export default class Server {
             };
         }).then((message) => {
             const now = process.uptime() * 1000;
-            const responseTime = now - message.sendTime;
+            const responseTime = now - this.sendTime[message.rid];
             this.responseTime.total += responseTime;
             this.responseTime.successTimes++;
             this.responseTime.average = this.responseTime.total / this.responseTime.successTimes;
@@ -450,6 +462,7 @@ export default class Server {
                 startID
             ]
         });
+        console.log('创建成功');
     };
 
     /**
@@ -485,22 +498,22 @@ export default class Server {
         log.info('Server', `**<${this.user.account}>**`, 'Send message to', `**${chatMessage.cgid}**`, `_${chatMessage.content}_`);
         // log.info(() => console.log(chatMessage), 'ChatMessage');
         const startSendTime = process.uptime() * 1000;
-        this.sendMessageTimes.totalTimes++;
+        this.sendMessageTime.totalTimes++;
         return this.sendAndListen({
             method: 'message',
             params: [[chatMessage]],
             userID: this.userID,
         }).then(() => {
             const now = process.uptime() * 1000;
-            const sendMessageTimes = now - startSendTime;
-            this.sendMessageTimes.total += sendMessageTimes;
-            this.sendMessageTimes.successTimes++;
-            this.sendMessageTimes.average = this.sendMessageTimes.total / this.sendMessageTimes.successTimes;
-            this.sendMessageTimes.min = Math.min(this.sendMessageTimes.min, sendMessageTimes);
-            this.sendMessageTimes.max = Math.max(this.sendMessageTimes.max, sendMessageTimes);
+            const sendMessageTime = now - startSendTime;
+            this.sendMessageTime.total += sendMessageTime;
+            this.sendMessageTime.successTimes++;
+            this.sendMessageTime.average = this.sendMessageTime.total / this.sendMessageTime.successTimes;
+            this.sendMessageTime.min = Math.min(this.sendMessageTime.min, sendMessageTime);
+            this.sendMessageTime.max = Math.max(this.sendMessageTime.max, sendMessageTime);
         }).catch(error => {
             if (error && error.code === 'TIMEOUT') {
-                this.sendMessageTimes.timeoutTimes++;
+                this.sendMessageTime.timeoutTimes++;
             }
             log.error(() => console.error(error), `Send chat message ${chatMessage.gid}@${chatMessage.cgid} error`);
         });
