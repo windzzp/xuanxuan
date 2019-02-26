@@ -10,15 +10,13 @@
  * @link        http://www.ranzhico.com
  */
 ?>
-<?php include '../../common/view/header.html.php';?>
-<div class="panel">
-  <div class="panel-heading">
-    <strong><?php echo $lang->chat->version;?></strong>
-    <div class="panel-actions pull-right">
-      <a href="<?php echo helper::createLink('chat', 'getXXCUpdate');?>" class="btn btn-primary" data-toggle='modal'><?php echo $lang->chat->checkUpdate?></a>
-      <a href="<?php echo helper::createLink('chat', 'createXXCVersion');?>" class="btn btn-primary"><?php echo $lang->add;?></a>
-    </div>
-  </div>
+<?php include '../../../common/view/header.html.php';?>
+<style>.page-content.with-menu{margin: 41px 0 0 0!important;}</style>
+<div id='menuActions'>
+  <a href="<?php echo helper::createLink('sys.setting', 'getXXCUpdate');?>" class="btn btn-primary" data-toggle='modal'><?php echo $lang->chat->checkUpdate?></a>
+  <a href="<?php echo helper::createLink('sys.setting', 'createXXCVersion');?>" class="btn btn-primary" data-toggle='modal'><?php echo $lang->add;?></a>
+</div>
+<div class='panel'>
   <table class='table table-hover table-border'>
     <thead>
     <tr class="text-center">
@@ -38,8 +36,8 @@
       <td><?php echo $lang->chat->strategies[$version->strategy]?></td>
       <td>
         <?php
-        commonModel::printLink('sys.chat', 'editXXCVersion', "id={$version->id}", $lang->edit);
-        commonModel::printLink('sys.chat', 'deleteXXCVersion', "id={$version->id}", $lang->delete, "class='deleter'");
+        commonModel::printLink('sys.setting', 'editXXCVersion', "id={$version->id}", $lang->edit, "data-toggle='modal'");
+        commonModel::printLink('sys.setting', 'deleteXXCVersion', "id={$version->id}", $lang->delete, "class='deleter'");
         ?>
       </td>
     </tr>
@@ -47,4 +45,4 @@
     </tbody>
   </table>
 </div>
-<?php include '../../common/view/footer.html.php';?>
+<?php include '../../../common/view/footer.html.php';?>

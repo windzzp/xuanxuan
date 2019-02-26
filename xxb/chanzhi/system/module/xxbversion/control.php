@@ -25,7 +25,7 @@ class xxbversion extends control
         echo json_encode($versions);
     }
     
-    public function browser($recPerPage = 10, $pageID = 1)
+    public function browse($recTotal = 0, $recPerPage = 10, $pageID = 1)
     {
         $this->app->loadClass('pager', $static = true);
         $pager = new pager($recTotal = 0, $recPerPage, $pageID);

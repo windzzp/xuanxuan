@@ -10,7 +10,7 @@
  * @link        http://www.ranzhi.org
  */
 ?>
-<?php include '../../common/view/header.modal.html.php';?>
+<?php include '../../../common/view/header.modal.html.php';?>
 <div class="panel-group" id="accordionPanels" aria-multiselectable="true">
   <?php foreach($versions as $version):?>
   <div class="panel panel-default">
