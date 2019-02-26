@@ -29,7 +29,7 @@ export default class ChatCacheInfo {
      * @type {{draft?: any, scrollPos?: number}}
      * @memberof ChatCacheInfo
      */
-    private _state: {draft?: any, scrollPos?: number};
+    private _state: {draft?: any, scrollPos?: number, loadingLimit?: number};
 
     /**
      * 获取聊天在界面上上次激活的时间
@@ -95,7 +95,7 @@ export default class ChatCacheInfo {
      * @param {{draft?: any, scrollPos?: number}} newState 新的状态
      * @return {void}
      */
-    keepState(newState: {draft?: any, scrollPos?: number}): void {
+    keepState(newState: {draft?: any, scrollPos?: number, loadingLimit?: number}): void {
         if (!this._state) {
             this._state = {};
         }
@@ -119,6 +119,10 @@ export default class ChatCacheInfo {
                 case 'scrollPos':
                     stateValue = state.scrollPos;
                     delete state.scrollPos;
+                    break;
+                case 'loadingLimit':
+                    stateValue = state.loadingLimit;
+                    delete state.loadingLimit;
                     break;
                 default:
                     break;

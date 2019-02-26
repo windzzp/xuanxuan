@@ -166,6 +166,17 @@ export default class ChatMessages extends Component {
                 });
             }, delay);
         }
+
+        const loadingLimit = takeOutChatCacheState(chat.gid, 'loadingLimit');
+        if (loadingLimit && chat.loadingOffset === undefined) {
+            App.im.chats.getChatMessages(chat, null, loadingLimit, 0, true, false)
+                .then(() => {
+                    chat.loadingOffset = loadingLimit - 20;
+                    return '';
+                }).catch((err) => {
+                    console.log(err);
+                });
+        }
     }
 
     /**
@@ -178,6 +189,11 @@ export default class ChatMessages extends Component {
     handleScroll = scrollInfo => {
         if (scrollInfo.isAtTop) {
             this.loadChatMessages();
+        }
+
+        const {chat} = this.props;
+        if (chat && chat.loadingOffset !== true) {
+            setChatCacheState(chat.gid, {loadingLimit: chat.loadingOffset});
         }
     }
 
@@ -198,7 +214,7 @@ export default class ChatMessages extends Component {
 
         const font = App.profile.userConfig.chatFontSize;
         this.lastChatUpdateId = chat.updateId;
-
+        
         let headerView = null;
         if (this.state.loading) {
             headerView = <Spinner className="has-padding" />;
