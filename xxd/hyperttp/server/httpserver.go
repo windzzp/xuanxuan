@@ -20,19 +20,6 @@ import (
     "math/rand"
 )
 
-type retCInfo struct {
-    // server version
-    Version string `json:"version"`
-
-    // encrypt key
-    Token string `json:"token"`
-
-    UploadFileSize int64 `json:"uploadFileSize"`
-
-    ChatPort  int  `json:"chatPort"`
-
-	clientUpdate string  `json:"clientUpdate"`
-}
 
 // route
 const (
@@ -310,12 +297,12 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    info := retCInfo{
-        Version:        util.Version,
-        Token:          string(util.Token),
-        UploadFileSize: util.Config.UploadFileSize,
-        ChatPort:       chatPort,
-		clientUpdate:	message}
+	info := make(map[string]interface{})
+	info["version"] = util.Version
+	info["token"] = string(util.Token)
+	info["uploadFileSize"] =util.Config.UploadFileSize
+	info["chatPort"] = chatPort
+	info["clientUpdate"] = message
 
     jsonData, err := json.Marshal(info)
     if err != nil {
