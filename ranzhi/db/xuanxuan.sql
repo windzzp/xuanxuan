@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `im_chatuser` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- DROP TABLE IF EXISTS `im_messagestatus`;
-CREATE TABLE IF NOT EXISTS `im_messsagestatus` (
+CREATE TABLE IF NOT EXISTS `im_messagestatus` (
   `user` mediumint(8) NOT NULL DEFAULT 0,
   `message` int(11) unsigned NOT NULL,
   `status` enum('waiting','sent','readed','deleted') NOT NULL DEFAULT 'waiting',
