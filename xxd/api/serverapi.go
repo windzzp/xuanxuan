@@ -86,7 +86,7 @@ func VerifyLogin(body []byte) (bool, map[string]interface{}, error) {
 
 	update := make(map[string]interface{})
 
-	switch parseData["data"].(type) {
+	switch parseData["update"].(type) {
 		case map[string]interface{}:
 			update = parseData["update"].(map[string]interface{})
 	}
