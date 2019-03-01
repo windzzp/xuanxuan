@@ -1,2 +1,2 @@
 <?php
-$config->version = '2.4.0';
+$config->version = '2.5.0';
