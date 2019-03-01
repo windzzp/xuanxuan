@@ -1170,14 +1170,15 @@ class chatModel extends model
     public function batchCreateMessageStatus($users, $message, $status = 'waiting')
     {
         if(empty($users) || empty($message)) return false;
-        
-        $sql = "REPLACE INTO `" . TABLE_IM_MESSAGESTATUS . "` (`user`, `message`, `status`) VALUES ";
         foreach($users as $user)
         {
-            $sql .= "('{$user}', '{$message}', '{$status}'),";
+            $data = new stdClass();
+            $data->user    = $user;
+            $data->message = $message;
+            $data->status  = $status;
+            $this->dao->replace(TABLE_IM_MESSAGESTATUS)->data($data)->exec();
         }
-        $sql .= rtrim($sql, ',') . ";";
-        return $this->dbh->query($sql);
+        return !dao::isError(); 
     }
     
 	/**
