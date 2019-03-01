@@ -84,7 +84,12 @@ func VerifyLogin(body []byte) (bool, map[string]interface{}, error) {
         return false, nil, err
     }
 
-	update := parseData["update"].(map[string]interface{})
+	update := make(map[string]interface{})
+
+	switch parseData["data"].(type) {
+		case map[string]interface{}:
+			update = parseData["update"].(map[string]interface{})
+	}
 
     return parseData.Result() == "success", update, nil
 }
