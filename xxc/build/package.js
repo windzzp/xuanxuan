@@ -451,7 +451,10 @@ const electronBuilder = {
     mac: {
         icon: 'icon.icns',
         artifactName: config.macArtifactName || config.artifactName,
-        darkModeSupport: config.darkModeSupport
+        darkModeSupport: config.darkModeSupport,
+        target: [
+            'dmg'
+        ]
     },
     nsis: {
         shortcutName: config.productName,
@@ -671,7 +674,7 @@ const createPackage = (osType, arch, debug = isDebug) => {
             stdio: verbose ? 'inherit' : 'ignore'
         })
             .on('close', async code => {
-                if (config.buildZip && osType !== 'mac') {
+                if (config.buildZip) {
                     const zipDir = path.join(packagesPath, osType === 'mac' ? 'mac' : (arch.includes('32') ? `${osType}-ia32-unpacked` : `${osType}-unpacked`)); // eslint-disable-line
                     const zipFileName = getArtifactName(osType, arch, 'zip', `${osType}Zip`);
                     const zipFile = path.join(packagesPath, zipFileName);
