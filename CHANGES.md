@@ -1,12 +1,50 @@
 # 更新记录
 
+## v 2.5.0
+
+[2019-03-01]
+
+本次更新新增客户端自动升级功能，优化了客户端界面交互性能并修复了已知问题，欢迎更新。
+
+### 更新明细
+
+* 新增 客户端自动升级功能，可以在后端设置所使用的客户端版本，并在用户登录前提供升级引导（目前仅支持 Windows 和 Mac 版本），在 Linux 客户端会提示手动进行升级；
+* 优化 聊天菜单搜索功能，现在点击一个搜索结果（视为搜索操作完成）后会自动情况搜索框内容；
+* 优化 了聊天界面缓存策略，提升了界面交互性能；
+* 修复 了发送空文件（大小为 `0B`）时没有提示错误的问题，实际是不支持发送空文件，新增了错误提示。
+* 修复 了有时无法正确识别消息中的链接的问题；
+* 修复 了有时聊天菜单上没有显示高亮条目的问题；
+* 修复 了有时会自动掉线的问题（错误代码 `time_out`）；
+* 修复 了讨论组无法通过右键菜单添加到分组的问题；
+* 开发相关：
+  * 客户端：
+    * 增加了对 TypeScript 的支持；
+    * 扩展可以通过调用 `Xext.exts.ui.sendLocalNotification(ext, message)` 来向通知中心（小喧喧）发送本地通知消息；
+    * 扩展应用可以通过调用 `Xext.exts.ui.updateNoticeBadge(badge)` 来设置应用图标右上角的徽标内容；
+    * 运行时配置 `ui.chat.littlexx` 重命名为 `system.noticication.enbale`；
+    * 新增测试脚本用于测试客户端交互和接口性能（测试脚本在 `xuan/xxc/test` 目录下）；
+    * 通过扩展添加的上下文菜单项对象上的 `label` 属性支持使用一个对象代替字符串来指定各个界面语言上的显示文本；
+  * XXB：
+    * 优化了 `im_messagestatus` 表结构，提升存储性能；
+
+### 下载地址
+
+* Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.debug.win64.setup.exe)；
+* MacOS：[xuanxuan.2.5.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.mac.dmg)；
+* Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.x86_64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.i686.rpm)；
+* 浏览器端：[xuanxuan.2.5.0.browser.zip](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.browser.zip)；
+* XXD Server 2.5.0： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxd.2.5.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxd.2.5.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxd.2.5.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxd.2.5.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxd.2.5.0.linux.ia32.tar.gz)；
+* 服务器端：
+  * XXB 2.4：[Windows 64位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxb.2.5.0.win64.exe)、[Windows 32位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxb.2.5.0.win32.exe)、[Linux 64位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxb.2.5.0.zbox_64.tar.gz)、[Linux 32位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxb.2.5.0.zbox_32.tar.gz)、[Linux rpm安装包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxb-2.5.0-1.noarch.rpm)、[Linux deb安装包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxb_2.5.0_1_all.deb)；
+  * 然之：[5.1.0 稳定版](https://www.ranzhi.org/dynamic/5.1.stable-135.html)、[扩展包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.ranzhi.2.5.0.zip)。
+
 ## v 2.4.1
 
 [2019-02-11]
 
 本次更新解决了已知的关键问题，推荐更新。
 
-### 更新日志
+### 更新明细
 
 * 优化了一对一聊天输入状态更新策略，提升了性能，尽可能减少与服务器的沟通成本；
 * 修复了 Windows 客户端发送消息频繁提示发送失败的问题（由于 `chat/typing` 阻塞了请求导致超时失败，此 bug 仅在使用 [`ws`](https://www.npmjs.com/package/ws) 依赖的情况下出现，最新版本已经移除了对 `ws` 模块的依赖）；
@@ -31,7 +69,7 @@
 
 本次更新新增消息撤销、聊天输入状态显示以及应用分享等实用功能，修复了已知问题，对 XXD 服务以及后端接口进行了大幅优化。
 
-### 更新日志
+### 更新明细
 
 * 新增 消息撤销功能，现在用户可以在2分钟内撤销发出的消息；
 * 新增 一对一聊天时对方输入状态显示功能；
@@ -91,7 +129,7 @@
 
 本次更新增加多语言支持，新增消息批量分享、发送代码等功能，优化了图片浏览交互体验，并修复了一些 bug，欢迎大家更新体验。
 
-### 更新日志
+### 更新明细
 
 * 新增 对界面多语言的支持，现在可以将界面语言切换为简体中文、繁体中文或英文；
 * 新增 分享消息到其他讨论组或联系人聊天功能，支持同时分享到多个聊天；
@@ -162,7 +200,7 @@
 
 ![pin-app-on-navbar.png](https://raw.githubusercontent.com/easysoft/xuanxuan/master/docs/imgs/pin-app-on-navbar.png)
 
-### 更新日志
+### 更新明细
 
 * 新增 打开多个喧喧应用窗口功能（现在不允许启动多个程序实例），在每个窗口中可以登录一个新的账号，解决了启动多个程序实例导致第一个程序之外的程序无法使用数据库（[electron/electron issue #10792](https://github.com/electron/electron/issues/10792)）；
 * 新增 将扩展应用启动图标固定到导航上的功能；
