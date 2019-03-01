@@ -275,7 +275,7 @@ export default class Server {
         }
         this.startLoginTime = new Date().getTime();
         return this.getServerInfo().then((serverInfo) => {
-            // log.info(() => console.log(serverInfo), `Server<${this.user.account}> Server Info`);
+            // log.info(x => x.log(serverInfo), `Server<${this.user.account}> Server Info`);
             log.info('Server', `**<${this.user.account}>**`, 'Server info recevied, then token is', `**${serverInfo.token}**`);
             return new Promise((resolve, reject) => {
                 const {config} = this;
@@ -343,7 +343,7 @@ export default class Server {
         if (!message.module || !message.method) {
             log.warn(() => console.log(message), `Server<${this.user.account}> socket recevied wrong data`);
         } else {
-            // log.info(() => console.log(message), `Server<${this.user.account}> socket recevied message`);
+            // log.info(x => x.log(message), `Server<${this.user.account}> socket recevied message`);
             // log.info('Server', `**<${this.user.account}>**`, 'Socket', `c:blue|**⬇︎ ${message.module}/${message.method}**`, 'rid', message.rid);
         }
         const {rid} = message;
@@ -403,7 +403,7 @@ export default class Server {
                 callback();
             }
         });
-        // log.info(() => console.log(message), `Server<${this.user.account}> socket send`);
+        // log.info(x => x.log(message), `Server<${this.user.account}> socket send`);
         log.info('Server', `**<${this.user.account}>**`, 'Socket', `c:cyan|**⬆︎ ${message.module}/${message.method}**`, 'rid', message.rid);
     }
 
@@ -496,7 +496,7 @@ export default class Server {
             return Promise.reject(new Error('The cgid must provide to send a chat message.'));
         }
         log.info('Server', `**<${this.user.account}>**`, 'Send message to', `**${chatMessage.cgid}**`, `_${chatMessage.content}_`);
-        // log.info(() => console.log(chatMessage), 'ChatMessage');
+        // log.info(x => x.log(chatMessage), 'ChatMessage');
         const startSendTime = process.uptime() * 1000;
         this.sendMessageTime.totalTimes++;
         return this.sendAndListen({

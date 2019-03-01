@@ -25,7 +25,7 @@ program
     // .option('-l, --log <log>', '日志输出等级', 2)
     .option('-o, --one2one', '是否测试大量一对一发送消息')
     .option('-g, --groups <groups>', '是否测试讨论组发送消息')
-    .option('-A, --activeLevel <activeLevel>', '测试用户活跃程度')
+    .option('-A, --activeLevel <activeLevel>', '测试用户活跃程度', 0.8)
     // .option('-T, --logTypes <logTypes>', '日志报告文件类型', 'log,json,md,html')
     .option('-T, --testTime <testTime>', '测试脚本执行的时间，单位秒', 120)
     .parse(process.argv);
@@ -122,7 +122,7 @@ const initConfig = () => {
     // 生成config 报表
     makeReport(config, 'config');
 
-    log.info(() => console.log({
+    log.info(x => x.log({
         server: config.server.toString(),
         account: config.account,
         password: program.password,
