@@ -130,7 +130,7 @@ export const openApp = (name, pageName = null, params = null) => {
     }
     theOpenedApp.open();
     const theApp = theOpenedApp.app;
-    if (theApp.muteNoticeOnActive && theApp.hasNotice && window.location.hash.startsWith(theOpenedApp.baseRoutePath)) {
+    if (theApp.muteNoticeOnActive && theApp.hasNotice && window.location.hash.startsWith(`#${theOpenedApp.baseRoutePath}`)) {
         updateNoticeBadge(theApp, 0);
     }
     currentOpenedApp = theOpenedApp;
