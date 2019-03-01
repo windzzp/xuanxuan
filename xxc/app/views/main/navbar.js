@@ -226,6 +226,8 @@ export default class Navbar extends Component {
             },
         ];
 
+        const dotView = <div className="label label-sm dock-right dock-top circle red badge">{newMessageCount}</div>;
+
         const navbarItemsView = navbarItems.map(item => (
             <div className="nav-item hint--right" data-hint={item.label} key={item.to}>
                 <Route path={item.to}>
@@ -240,7 +242,7 @@ export default class Navbar extends Component {
                         }
                     }
                 </Route>
-                {item.to === ROUTES.chats.recents.__ && newMessageCount > 0 && <div className="label label-sm dock-right dock-top circle red badge">{newMessageCount}</div> }
+                {(item.to === ROUTES.chats.recents.__ && newMessageCount > 0) ? dotView : null}
             </div>
         ));
 
