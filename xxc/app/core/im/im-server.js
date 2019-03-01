@@ -623,14 +623,14 @@ export const sendChatMessage = async (messages, chat, isSystemMessage = false) =
                 const specialVersion = specialVersionName ? ` for ${specialVersionName}` : '';
                 const contentLines = ['```'];
                 contentLines.push(
-                    `$$version       = '${PKG.version}${PKG.buildVersion ? (`.${PKG.buildVersion}`) : ''}${specialVersion}';`,
-                    `$$buildTime     = '${PKG.buildTime ? formatDate(PKG.buildTime) : ''}';`,
-                    `$$serverVersion = '${profile.user.serverVersion}';`,
-                    `$$platform      = '${platform.type}';`,
-                    `$$os            = '${platform.access('env.os')}';`
+                    `version       = '${PKG.version}${PKG.buildVersion ? (`.${PKG.buildVersion}`) : ''}${specialVersion}';`,
+                    `buildTime     = '${PKG.buildTime ? formatDate(PKG.buildTime) : ''}';`,
+                    `serverVersion = '${profile.user.serverVersion}';`,
+                    `platform      = '${platform.type}';`,
+                    `os            = '${platform.access('env.os')}';`
                 );
                 if (platform.has('env.arch')) {
-                    contentLines.push(`$$arch          = '${platform.access('env.arch')}';`);
+                    contentLines.push(`arch          = '${platform.access('env.arch')}';`);
                 }
                 contentLines.push('```');
                 message.content = contentLines.join('\n');
