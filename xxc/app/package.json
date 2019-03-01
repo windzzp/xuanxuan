@@ -21,12 +21,5 @@
     },
     "dependencies": {
         "jquery": "^3.3.1"
-    },
-    "buildTime": "2019-02-18T09:38:51.755Z",
-    "buildVersion": "beta.201902181738",
-    "buildTypes": {
-        "beta": true,
-        "debug": true
-    },
-    "updater": null
+    }
 }
