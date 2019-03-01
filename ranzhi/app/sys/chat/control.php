@@ -79,7 +79,7 @@ class chat extends control
                 {
                     $data = $update;
                 }
-                $this->output->data = $data;
+                $this->output->update = $data;
             }
         }
         else
