@@ -85,7 +85,7 @@ export const checkClientUpdateInfo = user => {
         serverUrl: user.serverUrl
     };
     let needUpdate = false;
-    if (clientUpdate && compareVersions(currentVersion, newVersion) < 0) {
+    if (newVersion && compareVersions(currentVersion, newVersion) < 0) {
         needUpdate = clientUpdate.strategy || 'optional';
     }
     const needUpdateForce = needUpdate === 'force';

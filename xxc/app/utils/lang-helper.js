@@ -52,6 +52,8 @@ export default class LangHelper extends TextMap {
         let message = '';
         if (err.code) {
             message += this.string(`error.${err.code}`, `[Code: ${err.code}]`);
+        } else if (err.message) {
+            message = this.string(`error.${err.message}`, err.message);
         }
         if (err.formats) {
             if (!Array.isArray(err.formats)) {
