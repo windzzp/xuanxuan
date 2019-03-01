@@ -575,6 +575,7 @@
     "update.restartToCompleteUpdate": "完成升级并重启",
     "update.retryUpdate": "重新尝试升级",
     "update.updateNow": "立即升级",
+    "update.versionDetails": "版本 {0} 详情",
     "update.versionsFormat": "最新版本为 {0}，当前版本为 {1}。",
 
     "user.changePassword.btn.confirm": "更改密码",

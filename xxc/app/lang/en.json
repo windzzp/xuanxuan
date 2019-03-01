@@ -573,8 +573,9 @@
     "update.message.newVersionAvaliable": "A new version is available.",
     "update.message.unziping": "Unziping...",
     "update.restartToCompleteUpdate": "Finish update and restart.",
-    "update.retryUpdate": "Retry update.",
-    "update.updateNow": "Update now.",
+    "update.retryUpdate": "Retry Update",
+    "update.updateNow": "Update Now",
+    "update.versionDetails": "Version {0} Details",
     "update.versionsFormat": "Latest version: {0}. Your version: {1}.",
 
     "user.changePassword.btn.confirm": "Change Password",

@@ -130,7 +130,7 @@ export default class UpdateGuide extends Component {
             const updateReadme = updateInfo.readme && Markdown(updateInfo.readme);
             const updateReadmeView = updateReadme ? (
                 <details className="space-sm">
-                    <summary className="strong space-sm text-primary state">版本 {newVersion} 详情</summary>
+                    <summary className="strong space-sm text-primary state">{Lang.format('update.versionDetails', newVersion)}</summary>
                     <div style={{maxHeight: 400}} className="has-padding-sm primary-pale markdown-content scroll-y" dangerouslySetInnerHTML={{__html: updateReadme}} />
                 </details>
             ) : null;
