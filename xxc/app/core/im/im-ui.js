@@ -159,7 +159,7 @@ export const isChatsCacheChanged = () => {
 };
 
 /**
- * 保存聊天缓存在界面上的状态，以便于回复界面
+ * 保存聊天缓存在界面上的状态，以便于恢复界面
  * @param {string} cgid 聊天 gid
  * @param {{draft?: any, scrollPos?: number}} newState 新的状态
  * @return {void}
@@ -167,7 +167,6 @@ export const isChatsCacheChanged = () => {
 export const setChatCacheState = (cgid, newState) => {
     const cacheInfo = activeCaches[cgid];
     if (cacheInfo) {
-        console.log('setChatCacheState', cgid, newState, cacheInfo);
         cacheInfo.keepState(newState);
     }
 };
