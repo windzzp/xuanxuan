@@ -74,10 +74,12 @@ class chat extends control
             else
             {
                 $update = $this->chat->getUpdate($version);
+                $data   = array();
                 if($update !== false)
                 {
-                    $this->output->data = $update;
+                    $data = $update;
                 }
+                $this->output->data = $data;
             }
         }
         else
