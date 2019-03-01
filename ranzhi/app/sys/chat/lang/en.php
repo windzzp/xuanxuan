@@ -11,6 +11,18 @@ $lang->chat->createKey   = 'New';
 $lang->chat->connector   = ', ';
 $lang->chat->viewDebug   = 'View Debug';
 $lang->chat->log         = 'Log';
+$lang->chat->id          = 'ID';
+$lang->chat->checkUpdate = 'Check update';
+$lang->chat->xxcVersion  = 'XXC Version';
+$lang->chat->xxdVersion  = 'XXD Version';
+$lang->chat->xxbVersion  = 'XXB Version';
+$lang->chat->xxcDesc     = 'Upgrade description';
+$lang->chat->xxcReadme   = 'Update log';
+$lang->chat->strategy    = 'Upgrade strategy';
+$lang->chat->download    = 'Download';
+
+$lang->chat->strategies['force']    = 'Force';
+$lang->chat->strategies['optional'] = 'Optional';
 
 $lang->chat->debugStatus[1] = 'On';
 $lang->chat->debugStatus[0] = 'Off';
