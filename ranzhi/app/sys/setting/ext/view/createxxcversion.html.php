@@ -40,7 +40,7 @@
         <?php foreach($lang->chat->osList as $system => $desc):?>
         <div class="form-group">
           <div class="input-group">
-            <span class="input-group-addon w-130px"><?php echo $system?>：</span>
+            <span class="input-group-addon w-130px"><?php echo $lang->chat->osList[$system]?>：</span>
             <?php echo html::input("downloads[{$system}]", '', "class='form-control'")?>
           </div>
         </div>
