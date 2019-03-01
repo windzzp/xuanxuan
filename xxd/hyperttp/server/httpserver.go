@@ -18,7 +18,6 @@ import (
     "xxd/api"
     "xxd/util"
     "math/rand"
-	"reflect"
 )
 
 
@@ -300,9 +299,6 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
 
 	clientUpdate := make(map[string]interface{})
 	if message != nil {
-		util.Println("------>>>--------->>>--------->>>--------->>>--------->>>--------->>>---")
-		util.Println(reflect.TypeOf(message["downloads"]))
-		util.Println("------>>>--------->>>--------->>>--------->>>--------->>>--------->>>---")
 		download  := make(map[string]interface{})
 		downloads := make(map[string]interface{})
 		json.Unmarshal([]byte(message["downloads"].(string)), &downloads)
