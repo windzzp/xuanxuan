@@ -20,12 +20,12 @@
 初始化系统用户程序参数：
 1. `--server, -s`： 测试服务器地址，例：`-s http://127.0.0.1:11443`
 2. `--admin, -A`：创建用户使用的管理员账号，例：`-A admin`
-3. `--adminPassword, -AP`：创建用户使用的管理员密码，例：`-AP 123456`
+3. `--adminpassword, -M`：创建用户使用的管理员密码，例：`-M 123456`
 2. `--account, -a`： 测试账号统一前缀，默认`test`，例：`-a test` 会以test1 test2 存入数据库 
 3. `--password, -p`：测试账号统一密码，例：`-p 123456`
 4. `--user -u`：创建测试账号数量，例：`-u 500`
 5. `--port -P`：Socket 连接端口，默认`11444`，例：`-P 11444`
-例：npm run create -- -s http://127.0.0.1:11443 -A admin -AP 123456 -a test -p 123456 -u 110 -P 11444
+例：npm run create -- -s http://127.0.0.1:11443 -A admin -M 123456 -a test -p 123456 -u 110 -P 11444
 
 
 测试脚本程序参数：
