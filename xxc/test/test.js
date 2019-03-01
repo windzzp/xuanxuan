@@ -185,7 +185,7 @@ const connectUser = (user) => {
         }
     }
     lastUserConnectTime = process.uptime() * 1000;
-    log.info(`User #${user.connectID}`, `**<${user.account}>**`, 'connect at', (lastUserConnectTime - startConnectTime) / 1000, 's');
+    log.info(`User #${user.connectID}`, `**<${user.account}>**`, 'connect at', (lastUserConnectTime - startConnectTime) / 1000, 'th second');
     return server.connect().then(() => {
         isUserConnecting = false;
     });

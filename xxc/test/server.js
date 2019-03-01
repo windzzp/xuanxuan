@@ -276,7 +276,7 @@ export default class Server {
         this.startLoginTime = new Date().getTime();
         return this.getServerInfo().then((serverInfo) => {
             // log.info(x => x.log(serverInfo), `Server<${this.user.account}> Server Info`);
-            log.info('Server', `**<${this.user.account}>**`, 'Server info recevied, then token is', `**${serverInfo.token}**`);
+            log.info('Server', `**<${this.user.account}>**`, 'Server info recevied, the token is', `**${serverInfo.token}**`);
             return new Promise((resolve, reject) => {
                 const {config} = this;
                 const {socketUrl, pkg} = config;

@@ -37,20 +37,20 @@ export const makeReport = (content, source) => {
 
     let title = `<h3>统计：${lang[source]}，${formatDate(new Date(), 'yy-MM-dd hh:mm:ss')}</h3>`;
     let html = `<!DOCTYPE html>
-                    <html>
-                    <head>
-                    <meta charset="utf-8" />
-                    <title>${source}</title>
-                    <style>
-                        .table {width: 100%;border-spacing: 0;border-collapse: collapse;text-indent:8px;}
-                        .table-bordered{border: 1px solid #ddd;}
-                        .table td{line-height:30px;border: 1px solid #ddd;padding:0;border-top:0;border-left:0;min-width:150px;}
-                        .table .table tr:last-child td{border-bottom:0;}
-                        .table tr td:last-child{border-right:0;}
-                    </style>
-                    </head>
-                    <body>${title}${tableHtml}</body>
-                </html>`;
+        <html>
+        <head>
+        <meta charset="utf-8" />
+        <title>${source}</title>
+        <style>
+            .table {width: 100%;border-spacing: 0;border-collapse: collapse;text-indent:8px;}
+            .table-bordered{border: 1px solid #ddd;}
+            .table td{line-height:30px;border: 1px solid #ddd;padding:0;border-top:0;border-left:0;min-width:150px;}
+            .table .table tr:last-child td{border-bottom:0;}
+            .table tr td:last-child{border-right:0;}
+        </style>
+        </head>
+        <body>${title}${tableHtml}</body>
+    </html>`;
     fs.writeFile(`test/logs/${source + formatDate(new Date(), 'yyMMddhhmmss')}.html`, html, (error) => {
         if (error) {
             return console.error(error);
