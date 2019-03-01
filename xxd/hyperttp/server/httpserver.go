@@ -18,6 +18,7 @@ import (
     "xxd/api"
     "xxd/util"
     "math/rand"
+	"reflect"
 )
 
 
@@ -297,12 +298,31 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
         return
     }
 
+	clientUpdate := make(map[string]interface{})
+	if message != nil {
+		util.Println("------>>>--------->>>--------->>>--------->>>--------->>>--------->>>---")
+		util.Println(reflect.TypeOf(message["downloads"]))
+		util.Println("------>>>--------->>>--------->>>--------->>>--------->>>--------->>>---")
+		download  := make(map[string]interface{})
+		downloads := make(map[string]interface{})
+		json.Unmarshal([]byte(message["downloads"].(string)), &downloads)
+		download["win32"]   = downloads["win_i386"]
+		download["win64"]   = downloads["win_x86_64"]
+		download["linux32"] = downloads["linux_i386"]
+		download["linux64"] = downloads["linux_x86_64"]
+		download["mac64"]   = downloads["darwin_x86_64"]
+		clientUpdate["version"]   = message["version"]
+		clientUpdate["readme"]    = message["readme"]
+		clientUpdate["strategy"]  = message["strategy"]
+		clientUpdate["downloads"] = download
+	}
+
 	info := make(map[string]interface{})
 	info["version"] = util.Version
 	info["token"] = string(util.Token)
 	info["uploadFileSize"] =util.Config.UploadFileSize
 	info["chatPort"] = chatPort
-	info["clientUpdate"] = message
+	info["clientUpdate"] = clientUpdate
 
     jsonData, err := json.Marshal(info)
     if err != nil {
