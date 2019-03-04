@@ -302,7 +302,7 @@ class chatModel extends model
             $last = $this->dao->select('*')->from(TABLE_IM_XXCVERSION)->where('strategy')->eq('force')->orderBy('id_desc')->fetch();
             if($last && version_compare($version, $last->version) == -1)
             {
-                return $lastForce;
+                return $last;
             }
         }
         return false;
