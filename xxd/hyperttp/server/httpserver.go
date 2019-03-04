@@ -299,10 +299,8 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
 
 	clientUpdate := make(map[string]interface{})
 	if len(message) > 0 {
-		util.Println("message : ", message)
 		download  := make(map[string]interface{})
 		downloads := make(map[string]interface{})
-		util.Println("downloads:", message["downloads"])
 		json.Unmarshal([]byte(message["downloads"].(string)), &downloads)
 		download["win32"]   = downloads["win_i386"]
 		download["win64"]   = downloads["win_x86_64"]
