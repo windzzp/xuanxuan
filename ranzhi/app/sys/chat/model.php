@@ -292,14 +292,14 @@ class chatModel extends model
 
     public function getUpdate($version)
     {
-        $lastForce = $this->dao->select('*')->from(TABLE_IM_XXCVERSION)->where('strategy')->eq('force')->orderBy('id_desc')->fetch();
+        $lastForce = $this->dao->select('*')->from(TABLE_IM_XXCVERSION)->where('strategy')->eq('force')->orderBy('id_desc')->limit(1)->fetch();
         if($lastForce && version_compare($version, $lastForce->version) == -1)
         {
             return $lastForce;
         }
         else
         {
-            $last = $this->dao->select('*')->from(TABLE_IM_XXCVERSION)->where('strategy')->eq('force')->orderBy('id_desc')->fetch();
+            $last = $this->dao->select('*')->from(TABLE_IM_XXCVERSION)->where('strategy')->eq('optional')->orderBy('id_desc')->limit(1)->fetch();
             if($last && version_compare($version, $last->version) == -1)
             {
                 return $last;
