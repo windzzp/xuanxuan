@@ -130,7 +130,9 @@ const cleanLastUpdaterFiles = async () => {
 };
 
 // 删除上次自动更新时产生的文件
-cleanLastUpdaterFiles();
+if (!DEBUG) {
+    cleanLastUpdaterFiles();
+}
 
 export default {
     quitAndInstall,
