@@ -20,8 +20,8 @@ const EVENT = {
  * @private
  */
 const chatLogin = (msg, socket) => {
+    const {user} = socket;
     if (msg.isSuccess) {
-        const {user} = socket;
         if (user.isLogging || msg.data.id === user.id) {
             user.$set(msg.data);
             return true;
@@ -34,6 +34,8 @@ const chatLogin = (msg, socket) => {
         } else {
             members.update(msg.data);
         }
+    } else if ((user.isLogging || msg.data.id === user.id) && msg.message) {
+        user.loginError = new Error(msg.message);
     }
     return false;
 };

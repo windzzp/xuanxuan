@@ -383,10 +383,11 @@ export default class AppSocket extends Socket {
                         this.syncUserSettings();
                         resolve(user);
                     } else {
-                        reject(new Error('Login result is not success.'));
+                        reject(user.loginError || new Error('Login result is not success.'));
                     }
                     return result;
                 }).catch(reject);
+                user.loginError = null;
                 this.send({
                     module: 'chat',
                     method: 'login',

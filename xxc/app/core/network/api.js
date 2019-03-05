@@ -32,6 +32,11 @@ export const requestServerInfo = user => {
         body: `data=${postData}`
     }).then(data => {
         if (data) {
+            if (data.message && data.result !== 'success') {
+                const error = new Error(data.message);
+                error.code = 'WRONG_DATA';
+                return Promise.reject(error);
+            }
             user.socketPort = data.chatPort;
             user.token = data.token;
             user.serverVersion = data.version;
