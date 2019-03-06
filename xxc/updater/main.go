@@ -11,29 +11,41 @@ import (
 )
 
 func main() {
+    fmt.Println("UPDATER READY")
+
 	src := flag.String("src", "", "Source directory path.")
 	app := flag.String("app", "", "Destination directory path")
 	run := flag.String("run", "", "Open the application?")
 	flag.Parse()
-	fmt.Println("READY")
-	if *src != "" && *app != ""{
+	util.Log().Println("Params", "src=", *src, "app=", *app, "run=", *run)
+	fmt.Println("Params", "src=", *src, "app=", *app, "run=", *run)
+
+	if *src != "" && *app != "" {
 		time.Sleep(time.Second * 10)
 
 		if runtime.GOOS == "darwin" {
+			util.Log().Println("Begin to remove old package in mac", *app)
 			os.RemoveAll(*app)
+			util.Log().Println("Removed old package", *app)
 		}
 
+		util.Log().Println("Begin to copy files")
 		if err := util.Copy(*src, *app); err != nil {
 			fmt.Println(err)
+			util.Log().Println("err:", err)
             os.Exit(0)
 		}
+		util.Log().Println("Files copied.")
 	}
 
 	if *run != "" {
+		util.Log().Println("Ready to run", *run)
 		Open(*run)
+		util.Log().Println("Runned", *run)
 	}
 
 	fmt.Println("Finished.")
+	util.Log().Println("Finished.")
 }
 
 func Open(uri string) error {
