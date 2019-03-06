@@ -1,7 +1,7 @@
 import electron, {
     BrowserWindow, app as ElectronApp, Tray, Menu, nativeImage, globalShortcut, ipcMain, dialog, shell
 } from 'electron';
-import {execFile, exec} from 'child_process';
+import {execFile, spawn, exec} from 'child_process';
 import EVENT from './remote-events';
 import events from './events';
 import Lang, {onLangChange} from './lang-remote';
@@ -922,17 +922,17 @@ class AppRemote {
             globalShortcut.unregisterAll();
         } catch (_) {} // eslint-disable-line
         if (task && task.type === 'execFile') {
-            const childProcess = exec(task.command, (error, stdout, stderr) => {
-                console.log('error >> ', error);
-                console.log('stdout >> ', stdout);
-                console.log('stderr >> ', stderr);
+            const childProcess = spawn(task.file, task.args, {
+                detached: true,
+                windowsVerbatimArguments: true,
+                windowsHide: !DEBUG,
+                stdio: 'ignore'
             });
-            childProcess.stdout.on('data', data => {
-                if (data && data.includes('READY')) {
-                    this.closeAllWindows();
-                    ElectronApp.quit();
-                }
-            });
+            setTimeout(() => {
+                childProcess.unref();
+                this.closeAllWindows();
+                ElectronApp.quit();
+            }, 2000);
             if (SHOW_LOG) console.log('>> quit.task', task);
         } else {
             this.closeAllWindows();

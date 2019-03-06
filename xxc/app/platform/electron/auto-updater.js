@@ -94,17 +94,30 @@ export const copyUpdater = (platformID) => {
 export const quitAndInstall = (updaterStatus) => {
     const {downloadFileID, downloadedPath, name} = updaterStatus;
     return copyUpdater(downloadFileID).then(updaterFile => {
-        const srcPath = path.join(downloadedPath, env.isOSX ? `${name}.app` : name);
-        const appPath = getElectronRootPath();
+        let srcPath = path.join(downloadedPath, env.isOSX ? `${name}.app` : name);
+        let appPath = getElectronRootPath();
         const runPath = env.isOSX ? appPath : env.isWindowsOS ? path.join(appPath, `${name}.exe`) : path.join(appPath, name);
+        // const logPath = `${updaterFile}.log`;
         // 立即关闭所有应用窗口并退出程序
-        const args = [`-src="${srcPath}"`, `-app="${appPath}"`, `-run="${runPath}"`];
+        const args = [
+            `-src="${srcPath}"`,
+            `-app="${appPath}"`,
+            `-run="${runPath}"`,
+            // `-log="${logPath}"`,
+        ];
         const quitTask = {
             type: 'execFile',
             file: updaterFile,
             args,
             command: `"${updaterFile}" ${args.join(' ')}`
         };
+        if (env.isWindowsOS) {
+            const batFile = `${updaterFile}.bat`;
+            fse.outputFileSync(batFile, `start "" ${quitTask.command}`);
+            quitTask.command = batFile;
+            quitTask.file = 'cmd.exe';
+            quitTask.args = ['/c', batFile];
+        }
         setStoreItem(UPDATER_INSTALL_DATA, Object.assign(updaterStatus, {updaterFile, quitTask}));
 
         if (DEBUG) {
