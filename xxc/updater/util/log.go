@@ -6,14 +6,17 @@ import (
 	"io"
 	"time"
 	"fmt"
+	"runtime"
 )
 
 var logHandle *log.Logger
 
 func init() {
 	dir, _ := os.Getwd()
-
-	logFile, err := os.OpenFile(dir + "/updater_" + time.Now().Format("20060102") + ".log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if runtime.GOOS != "windows" {
+		dir = "/tmp"
+	}
+	logFile, err := os.OpenFile(dir + "/updater_" + time.Now().Format("20060102") + ".log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, os.ModePerm)
 	if err != nil {
 		log.Fatalln("打开日志文件失败：", err)
 	}

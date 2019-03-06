@@ -11,9 +11,9 @@ import (
 )
 
 func main() {
-	src  := flag.String("src", "", "Source directory path.")
-	app  := flag.String("app", "", "Destination directory path")
-	run  := flag.String("run", "", "Open the application?")
+	src := flag.String("src", "", "Source directory path.")
+	app := flag.String("app", "", "Destination directory path")
+	run := flag.String("run", "", "Open the application?")
 	flag.Parse()
 	fmt.Println("READY")
 	if *src != "" && *app != ""{
