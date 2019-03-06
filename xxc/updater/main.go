@@ -15,7 +15,7 @@ func main() {
 	app  := flag.String("app", "", "Destination directory path")
 	run  := flag.String("run", "", "Open the application?")
 	flag.Parse()
-
+	fmt.Println("READY")
 	if *src != "" && *app != ""{
 		time.Sleep(time.Second * 10)
 
