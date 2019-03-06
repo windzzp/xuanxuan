@@ -17,7 +17,7 @@ func main() {
 	flag.Parse()
 
 	if *src != "" && *app != ""{
-		time.Sleep(time.Second * 2)
+		time.Sleep(time.Second * 20)
 
 		if runtime.GOOS == "darwin" {
 			os.RemoveAll(*app)
