@@ -652,7 +652,13 @@ const copyUpaterBin = (osType, arch) => {
         'win-x32': 'updater.win32.exe',
     };
     const binPath = path.resolve(__dirname, '../app/bin/');
-    return fse.emptyDir(binPath).then(() => copyFiles(`./updater/bin/${updaterFiles[`${osType}-${arch}`]}`, binPath));
+    return fse.emptyDir(binPath).then(async () => {
+        if (osType === 'win') {
+            await copyFiles(`./updater/bin/${updaterFiles[`${osType}-${arch}`]}.manifest`, binPath);
+        }
+        await copyFiles(`./updater/bin/${updaterFiles[`${osType}-${arch}`]}`, binPath);
+        return Promise.resolve();
+    });
 };
 
 // 制作安装包
