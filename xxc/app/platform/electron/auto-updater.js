@@ -78,7 +78,13 @@ export const copyUpdater = (platformID) => {
         updaterFile = path.join(env.appPath, 'bin', updaterFileName);
     }
     const updaterDestPath = path.join(env.tmpPath, updaterFileName);
-    return fse.copy(updaterFile, updaterDestPath, {overwrite: true}).then(() => Promise.resolve(updaterDestPath));
+
+    return fse.copy(updaterFile, updaterDestPath, {overwrite: true}).then(() => {
+        if (env.isWindowsOS) {
+            return fse.copy(`${updaterFile}.manifest`, updaterDestPath, {overwrite: true});
+        }
+        return Promise.resolve();
+    }).then(() => Promise.resolve(updaterDestPath));
 };
 
 /**
