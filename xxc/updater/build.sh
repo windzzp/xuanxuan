@@ -7,4 +7,3 @@ CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o ./bin/updater.win64.exe main
 CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -o ./bin/updater.win32.exe main.go
 
 echo "build end "
-
