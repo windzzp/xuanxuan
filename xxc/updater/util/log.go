@@ -11,7 +11,7 @@ import (
 var logHandle *log.Logger
 
 func init() {
-	logFile, err := os.OpenFile("updater_" + time.Now().Format("20060102") + ".log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	logFile, err := os.OpenFile("updater_" + time.Now().Format("20060102") + ".log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatalln("打开日志文件失败：", err)
 	}

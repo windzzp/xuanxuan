@@ -16,6 +16,7 @@ func Copy(src, dest string) error {
 	Log().Println("src:", src)
 	Log().Println("app:", dest)
 	if err != nil {
+		Log().Println("err:", err)
 		return err
 	}
 	return copy(src, dest, info)
@@ -45,16 +46,19 @@ func fcopy(src, dest string, info os.FileInfo) error {
 
 	f, err := os.Create(dest)
 	if err != nil {
+		Log().Println("err:", err)
 		return err
 	}
 	defer f.Close()
 
 	if err = os.Chmod(f.Name(), info.Mode()); err != nil {
+		Log().Println("err:", err)
 		return err
 	}
 
 	s, err := os.Open(src)
 	if err != nil {
+		Log().Println("err:", err)
 		return err
 	}
 	defer s.Close()
@@ -74,6 +78,7 @@ func dcopy(srcdir, destdir string, info os.FileInfo) error {
 
 	contents, err := ioutil.ReadDir(srcdir)
 	if err != nil {
+		Log().Println("err:", err)
 		return err
 	}
 
@@ -81,7 +86,7 @@ func dcopy(srcdir, destdir string, info os.FileInfo) error {
 		cs, cd := filepath.Join(srcdir, content.Name()), filepath.Join(destdir, content.Name())
 		Log().Println("Copy ", srcdir + "/" + content.Name(), " -> " + destdir + "/" + content.Name())
 		if err := copy(cs, cd, content); err != nil {
-			// If any error, exit immediately
+			Log().Println("err:", err)
 			return err
 		}
 	}
@@ -93,6 +98,7 @@ func dcopy(srcdir, destdir string, info os.FileInfo) error {
 func lcopy(src, dest string, info os.FileInfo) error {
 	src, err := os.Readlink(src)
 	if err != nil {
+		Log().Println("err:", err)
 		return err
 	}
 	return os.Symlink(src, dest)
