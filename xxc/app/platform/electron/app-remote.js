@@ -918,7 +918,7 @@ class AppRemote {
     quit(task) {
         this.hideAllWindows();
         if (SHOW_LOG) console.log('>> quit');
-        try { 
+        try {
             globalShortcut.unregisterAll();
         } catch (_) {} // eslint-disable-line
         if (task && task.type === 'execFile') {
