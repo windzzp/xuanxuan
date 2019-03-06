@@ -931,7 +931,7 @@ class AppRemote {
             setTimeout(() => {
                 this.closeAllWindows();
                 ElectronApp.quit();
-            }, 2000);
+            }, 3000);
         } else {
             this.closeAllWindows();
             ElectronApp.quit();
