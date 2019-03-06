@@ -922,16 +922,18 @@ class AppRemote {
             globalShortcut.unregisterAll();
         } catch (_) {} // eslint-disable-line
         if (task && task.type === 'execFile') {
-            exec(task.command, (error, stdout, stderr) => {
+            const childProcess = exec(task.command, (error, stdout, stderr) => {
                 console.log('error >> ', error);
                 console.log('stdout >> ', stdout);
                 console.log('stderr >> ', stderr);
             });
+            childProcess.stdout.on('data', data => {
+                if (data && data.includes('READY')) {
+                    this.closeAllWindows();
+                    ElectronApp.quit();
+                }
+            });
             if (SHOW_LOG) console.log('>> quit.task', task);
-            setTimeout(() => {
-                this.closeAllWindows();
-                ElectronApp.quit();
-            }, 3000);
         } else {
             this.closeAllWindows();
             ElectronApp.quit();
