@@ -11,20 +11,19 @@ import (
 )
 
 func main() {
-    fmt.Println("UPDATER READY")
-
+    // fmt.Println("UPDATER READY")
 	src := flag.String("src", "", "Source directory path.")
 	app := flag.String("app", "", "Destination directory path")
 	run := flag.String("run", "", "Open the application?")
 	flag.Parse()
 	util.Log().Println("Params", "src=", *src, "app=", *app, "run=", *run)
-	fmt.Println("Params", "src=", *src, "app=", *app, "run=", *run)
+	// fmt.Println("Params", "src=", *src, "app=", *app, "run=", *run)
 
 	if *src != "" && *app != "" {
 		time.Sleep(time.Second * 10)
 
 		if runtime.GOOS == "darwin" {
-			util.Log().Println("Begin to remove old package in mac", *app)
+			// util.Log().Println("Begin to remove old package in mac", *app)
 			os.RemoveAll(*app)
 			util.Log().Println("Removed old package", *app)
 		}
