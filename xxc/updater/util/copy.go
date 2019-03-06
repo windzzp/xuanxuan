@@ -13,8 +13,8 @@ import (
 // Copy copies src to dest, doesn't matter if src is a directory or a file
 func Copy(src, dest string) error {
 	info, err := os.Lstat(src)
-	Log.Println("src:", src)
-	Log.Println("app:", dest)
+	Log().Println("src:", src)
+	Log().Println("app:", dest)
 	if err != nil {
 		return err
 	}
@@ -79,7 +79,7 @@ func dcopy(srcdir, destdir string, info os.FileInfo) error {
 
 	for _, content := range contents {
 		cs, cd := filepath.Join(srcdir, content.Name()), filepath.Join(destdir, content.Name())
-		Log.Println("Copy ", srcdir + "/" + content.Name(), " -> " + destdir + "/" + content.Name())
+		Log().Println("Copy ", srcdir + "/" + content.Name(), " -> " + destdir + "/" + content.Name())
 		if err := copy(cs, cd, content); err != nil {
 			// If any error, exit immediately
 			return err
