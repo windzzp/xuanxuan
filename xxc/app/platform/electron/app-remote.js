@@ -730,6 +730,23 @@ class AppRemote {
     }
 
     /**
+     * 隐藏指定名称的窗口
+     *
+     * @param {String} winName 窗口名称
+     * @memberof AppRemote
+     * @returns {boolean} 如果返回 `true` 则为已隐藏，否则没有隐藏，可能是找不到窗口
+     */
+    hideWindow(winName) {
+        // 获取已保存的窗口对象
+        const win = this.windows[winName];
+        if (win) {
+            win.hide();
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 尝试退出，如果所有窗口都被关闭
      *
      * @memberof AppRemote
@@ -754,6 +771,14 @@ class AppRemote {
      */
     closeAllWindows() {
         Object.keys(this.windows).forEach(winName => this.closeWindow(winName));
+    }
+
+    /**
+     * 隐藏所有窗口
+     * @return {void}
+     */
+    hideAllWindows() {
+        Object.keys(this.windows).forEach(winName => this.hideWindow(winName));
     }
 
     /**
@@ -891,22 +916,26 @@ class AppRemote {
      */
     // eslint-disable-next-line class-methods-use-this
     quit(task) {
-        this.closeAllWindows();
+        this.hideAllWindows();
         if (SHOW_LOG) console.log('>> quit');
-        try {
+        try { 
             globalShortcut.unregisterAll();
         } catch (_) {} // eslint-disable-line
-        if (task) {
+        if (task && task.type === 'execFile') {
+            exec(task.command, (error, stdout, stderr) => {
+                console.log('error >> ', error);
+                console.log('stdout >> ', stdout);
+                console.log('stderr >> ', stderr);
+            });
             if (SHOW_LOG) console.log('>> quit.task', task);
-            if (task.type === 'execFile') {
-                exec(task.command, (error, stdout, stderr) => {
-                    console.log('error >> ', error);
-                    console.log('stdout >> ', stdout);
-                    console.log('stderr >> ', stderr);
-                });
-            }
+            setTimeout(() => {
+                this.closeAllWindows();
+                ElectronApp.quit();
+            }, 2000);
+        } else {
+            this.closeAllWindows();
+            ElectronApp.quit();
         }
-        ElectronApp.quit();
     }
 
     /**
