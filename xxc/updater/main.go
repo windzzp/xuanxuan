@@ -19,7 +19,7 @@ func main() {
 	util.Log().Println("Params", "src=", *src, "app=", *app, "run=", *run)
 
 	if *src != "" && *app != "" {
-		time.Sleep(time.Second * 10)
+		time.Sleep(time.Second * 5)
 		util.Log().Println("OS：", runtime.GOOS)
 		if runtime.GOOS == "darwin" {
 			err := os.RemoveAll(*app)
