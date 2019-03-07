@@ -17,14 +17,15 @@ func main() {
 	run := flag.String("run", "", "Open the application?")
 	flag.Parse()
 	util.Log().Println("Params", "src=", *src, "app=", *app, "run=", *run)
-	// fmt.Println("Params", "src=", *src, "app=", *app, "run=", *run)
 
 	if *src != "" && *app != "" {
 		time.Sleep(time.Second * 10)
-
+		util.Log().Println("OS：", runtime.GOOS)
 		if runtime.GOOS == "darwin" {
-			// util.Log().Println("Begin to remove old package in mac", *app)
-			os.RemoveAll(*app)
+			err := os.RemoveAll(*app)
+			if err != nil{
+				util.Log().Println("Remove old package err:", err)
+			}
 			util.Log().Println("Removed old package", *app)
 		}
 

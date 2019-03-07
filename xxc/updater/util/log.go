@@ -20,7 +20,7 @@ func init() {
 	if err != nil {
 		log.Fatalln("打开日志文件失败：", err)
 	}
-	logHandle = log.New(io.MultiWriter(os.Stderr, logFile), "", log.Ldate|log.Ltime)
+	logHandle = log.New(io.MultiWriter(os.Stderr, logFile), "", log.Ldate|log.Ltime|log.Lshortfile)
 }
 
 func Log() *log.Logger {

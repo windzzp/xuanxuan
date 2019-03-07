@@ -13,6 +13,7 @@ import (
 // Copy copies src to dest, doesn't matter if src is a directory or a file
 func Copy(src, dest string) error {
 	info, err := os.Lstat(src)
+	Log().Println("srcInfo:", info)
 	Log().Println("src:", src)
 	Log().Println("app:", dest)
 	if err != nil {
@@ -27,11 +28,14 @@ func Copy(src, dest string) error {
 // "info" MUST be given here, NOT nil.
 func copy(src, dest string, info os.FileInfo) error {
 	if info.Mode()&os.ModeSymlink != 0 {
+		Log().Println("copyType:lcopy")
 		return lcopy(src, dest, info)
 	}
 	if info.IsDir() {
+		Log().Println("copyType:dcopy")
 		return dcopy(src, dest, info)
 	}
+	Log().Println("copyType:fcopy")
 	return fcopy(src, dest, info)
 }
 
