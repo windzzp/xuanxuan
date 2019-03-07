@@ -1,7 +1,7 @@
 import electron, {
     BrowserWindow, app as ElectronApp, Tray, Menu, nativeImage, globalShortcut, ipcMain, dialog, shell
 } from 'electron';
-import {execFile, spawn, exec} from 'child_process';
+import {spawn} from 'child_process';
 import EVENT from './remote-events';
 import events from './events';
 import Lang, {onLangChange} from './lang-remote';
@@ -922,17 +922,36 @@ class AppRemote {
             globalShortcut.unregisterAll();
         } catch (_) {} // eslint-disable-line
         if (task && task.type === 'execFile') {
-            const childProcess = spawn(task.file, task.args, {
-                detached: true,
-                windowsVerbatimArguments: true,
-                windowsHide: !DEBUG,
-                stdio: 'ignore'
-            });
-            setTimeout(() => {
-                childProcess.unref();
-                this.closeAllWindows();
-                ElectronApp.quit();
-            }, 2000);
+            const {args, isWindowsOS} = task;
+            if (isWindowsOS) {
+                const childProcess = spawn(task.file, args, {
+                    cwd: task.cwd,
+                    argv0: task.file,
+                    detached: true,
+                    windowsVerbatimArguments: true,
+                    windowsHide: !DEBUG,
+                    stdio: 'ignore'
+                });
+                setTimeout(() => {
+                    childProcess.unref();
+                    this.closeAllWindows();
+                    ElectronApp.quit();
+                }, 2000);
+            } else {
+                const childProcess = spawn(task.command, {
+                    shell: true,
+                    cwd: task.cwd,
+                    argv0: task.file,
+                    detached: true,
+                    windowsHide: !DEBUG,
+                    stdio: 'ignore'
+                });
+                setTimeout(() => {
+                    childProcess.unref();
+                    this.closeAllWindows();
+                    ElectronApp.quit();
+                }, 2000);
+            }
             if (SHOW_LOG) console.log('>> quit.task', task);
         } else {
             this.closeAllWindows();

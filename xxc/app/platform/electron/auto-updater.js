@@ -106,10 +106,12 @@ export const quitAndInstall = (updaterStatus) => {
             // `-log="${logPath}"`,
         ];
         const quitTask = {
+            cwd: path.dirname(updaterFile),
             type: 'execFile',
             file: updaterFile,
             args,
-            command: `"${updaterFile}" ${args.join(' ')}`
+            command: `"${updaterFile}" ${args.join(' ')}`,
+            isWindowsOS: env.isWindowsOS
         };
         if (env.isWindowsOS) {
             const batFile = `${updaterFile}.bat`;
