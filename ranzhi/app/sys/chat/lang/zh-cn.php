@@ -23,7 +23,7 @@ $lang->chat->xxcReadme   = '更新日志';
 $lang->chat->strategy    = '升级策略';
 $lang->chat->download    = '下载地址';
 $lang->chat->notVersion  = '%s格式不正确，例如：2.5 或者 2.5.0';
-
+$lang->chat->notempty    = '不能为空.';
 
 $lang->chat->strategies['force']    = '强制';
 $lang->chat->strategies['optional'] = '可选';
