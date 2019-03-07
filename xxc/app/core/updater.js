@@ -78,6 +78,7 @@ export const getUpdaterStatus = () => Object.assign({}, updaterStatus);
 export const checkClientUpdateInfo = user => {
     const currentVersion = pkg.version;
     const {clientUpdate} = user;
+    const updaterAvaliable = isUpdaterAvaliable();
     let newVersion = clientUpdate && clientUpdate.version;
     if (newVersion) {
         newVersion = newVersion.toLowerCase();
@@ -106,8 +107,8 @@ export const checkClientUpdateInfo = user => {
     const needUpdateForce = needUpdate === 'force';
     const needUpdateOptional = needUpdate && !needUpdateForce;
 
-    const downloadFileID = `${platform.env.os}${platform.env.arch.includes('64') ? '64' : '32'}`;
-    const downloadUrl = clientUpdate && clientUpdate.downloads && clientUpdate.downloads[downloadFileID];
+    const downloadFileID = updaterAvaliable ? `${platform.env.os}${platform.env.arch.includes('64') ? '64' : '32'}` : null;
+    const downloadUrl = updaterAvaliable && clientUpdate && clientUpdate.downloads && clientUpdate.downloads[downloadFileID];
 
     return Object.assign(updaterStatus, {
         needUpdate,

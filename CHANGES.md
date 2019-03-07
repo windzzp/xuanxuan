@@ -2,7 +2,7 @@
 
 ## v 2.5.0
 
-[2019-03-01]
+[2019-03-07]
 
 本次更新新增客户端自动升级功能，优化了客户端界面交互性能并修复了已知问题，欢迎更新。
 
@@ -31,7 +31,7 @@
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.debug.win64.setup.exe)；
 * MacOS：[xuanxuan.2.5.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.mac.dmg)；
-* Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.x86_64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.i686.rpm)；
+* Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.amd64.deb)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.i386.deb)；
 * 浏览器端：[xuanxuan.2.5.0.browser.zip](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.browser.zip)；
 * XXD Server 2.5.0： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxd.2.5.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxd.2.5.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxd.2.5.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxd.2.5.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxd.2.5.0.linux.ia32.tar.gz)；
 * 服务器端：
