@@ -256,7 +256,7 @@
     "error.LOGIN_FAILED": "暫時無法登錄到服務器。",
     "error.NET_OFFLINE": "互聯網連接已斷開。",
     "error.RANZHI_SERVER_NOTSET": "沒有找到然之服務器設置。",
-    "error.REQUIRE_UPDATE_CLIENT": "客户端版本太低，需要进行升级后才能登入系统。",
+    "error.REQUIRE_UPDATE_CLIENT": "客戶端版本太低，需要進行升級後才能登入系統。",
     "error.SERVER_DISABLED_UPLOAD": "文件上傳失敗，因為服務器禁止了文件上傳功能",
     "error.SERVER_IS_BUSY": "服務器正忙，請稍後重試。",
     "error.SERVER_VERSION_NOT_SUPPORT": "當前客戶端（{0}）不支持所連接服務器版本 {1}，需要服務器版本為 {2} 以上。",

@@ -256,7 +256,7 @@
     "error.LOGIN_FAILED": "暂时无法登录到服务器。",
     "error.NET_OFFLINE": "互联网连接已断开。",
     "error.RANZHI_SERVER_NOTSET": "没有找到然之服务器设置。",
-    "error.REQUIRE_UPDATE_CLIENT": "客戶端版本太低，需要進行升級後才能登入系統。",
+    "error.REQUIRE_UPDATE_CLIENT": "客户端版本太低，需要进行升级后才能登入系统。",
     "error.SERVER_DISABLED_UPLOAD": "文件上传失败，因为服务器禁止了文件上传功能",
     "error.SERVER_IS_BUSY": "服务器正忙，请稍后重试。",
     "error.SERVER_VERSION_NOT_SUPPORT": "当前客户端（{0}）不支持所连接服务器版本 {1}，需要服务器版本为 {2} 以上。",
