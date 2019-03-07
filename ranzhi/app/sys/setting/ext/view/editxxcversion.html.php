@@ -16,7 +16,10 @@
     <tbody>
     <tr>
       <th class='w-120px'><?php echo $lang->chat->xxcVersion?></th>
-      <td class="w-p70"><?php echo html::input('version', $version->version, "class='form-control'")?></td>
+      <td class="w-p70">
+        <div class='required required-wrapper'></div>
+        <?php echo html::input('version', $version->version, "class='form-control'")?>
+      </td>
       <td></td>
     </tr>
     <tr>
@@ -41,7 +44,8 @@
         <div class="form-group">
           <div class="input-group">
             <span class="input-group-addon w-130px"><?php echo $lang->chat->osList[$system]?>：</span>
-            <?php echo html::input("downloads[{$system}]", zget($version->downloads, $system, ''), "class='form-control'")?>
+            <div class='required required-wrapper'></div>
+            <?php echo html::input("downloads[{$system}]", zget($version->downloads, $system, ''), "id='{$system}' class='form-control'")?>
           </div>
         </div>
         <?php endforeach;?>
