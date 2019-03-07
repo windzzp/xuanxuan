@@ -27,11 +27,14 @@ func Copy(src, dest string) error {
 // "info" MUST be given here, NOT nil.
 func copy(src, dest string, info os.FileInfo) error {
 	if info.Mode()&os.ModeSymlink != 0 {
+		Log().Println("copyType:lcopy")
 		return lcopy(src, dest, info)
 	}
 	if info.IsDir() {
+		Log().Println("copyType:dcopy")
 		return dcopy(src, dest, info)
 	}
+	Log().Println("copyType:fcopy")
 	return fcopy(src, dest, info)
 }
 
