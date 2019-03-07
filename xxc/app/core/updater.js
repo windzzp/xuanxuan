@@ -74,7 +74,17 @@ export const getUpdaterStatus = () => Object.assign({}, updaterStatus);
 export const checkClientUpdateInfo = user => {
     const currentVersion = pkg.version;
     const {clientUpdate} = user;
-    const newVersion = clientUpdate && clientUpdate.version;
+    let newVersion = clientUpdate && clientUpdate.version;
+    if (newVersion) {
+        newVersion = newVersion.toLowerCase();
+        if (newVersion.startsWith('v')) {
+            newVersion = newVersion.substr(1);
+        }
+        newVersion = newVersion.trim();
+        if (!/^(\d+\.)?(\d+\.)?(\*|\d+)$/.test(newVersion)) {
+            newVersion = false;
+        }
+    }
     updaterStatus = {
         name: pkg.name,
         user: user.identify,
