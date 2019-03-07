@@ -82,7 +82,8 @@ export const checkClientUpdateInfo = user => {
         progress: 0,
         currentVersion,
         newVersion,
-        serverUrl: user.serverUrl
+        serverUrl: user.serverUrl,
+        skipped: newVersion === user.config.skippedVersion
     };
     let needUpdate = false;
     if (newVersion && compareVersions(currentVersion, newVersion) < 0) {
@@ -150,6 +151,32 @@ export const downloadNewVersion = () => {
         }
     }
     return updaterStatus;
+};
+
+/**
+ * 忽略当前提示的版本
+ * @param {User} user 当前登录的用户对象
+ * @returns {boolean} 如果返回 `true` 则为操作成功，否则为操作失败
+ */
+export const skipNewVersion = user => {
+    if (updaterStatus && updaterStatus.needUpdateOptional) {
+        user.config.skippedVersion = updaterStatus.newVersion;
+        return true;
+    }
+    return false;
+};
+
+/**
+ * 清除忽略当前版本提示
+ * @param {User} user 当前登录的用户对象
+ * @returns {boolean} 如果返回 `true` 则为操作成功，否则为操作失败
+ */
+export const notifyMeNextTime = user => {
+    if (updaterStatus && updaterStatus.needUpdateOptional) {
+        user.config.skippedVersion = null;
+        return true;
+    }
+    return false;
 };
 
 /**

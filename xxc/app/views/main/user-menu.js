@@ -14,6 +14,8 @@ import UserChangePasswordDialog from '../common/user-change-password-dialog';
 import platform from '../../platform';
 import {showLanguageSwitchDialog} from '../common/language-switch-dialog';
 import withReplaceView from '../with-replace-view';
+import {getUpdaterStatus} from '../../core/updater';
+import {showUpdateGuideDialog} from '../common/update-guide-dialog';
 
 /**
  * StatusDot 可替换组件形式
@@ -208,6 +210,7 @@ export default class UserMenu extends Component {
         const userStatus = user && user.status;
         const userStatusName = userStatus && User.STATUS.getName(userStatus);
         const isSupportChangePassword = !user.ldap;
+        const updaterStatus = getUpdaterStatus();
 
         return (
             <ClickOutsideWrapper
@@ -233,7 +236,7 @@ export default class UserMenu extends Component {
                 <a className="item" onClick={this.handleSettingItemClick}><div className="title">{Lang.string('usermenu.setting')}</div></a>
                 <a className="item" onClick={this.handleSwitchBtnClick}><div className="title">{Lang.string('common.switchLanguage')}</div></a>
                 <a className="item" onClick={this.handleAboutItemClick}><div className="title">{Lang.string('usermenu.about')}</div></a>
-                {platform.has('autoUpdater.checkUpdate') ? <a className="item" onClick={this.handleCheckUpdateItemClick}><div className="title">{Lang.string('common.checkUpdate')}</div></a> : null}
+                {updaterStatus.needUpdate ? <a className="item" onClick={() => showUpdateGuideDialog()}><div className="title">{Lang.string('update.foundNewVersion')}</div></a> : null}
                 <div className="divider" />
                 <a className="item" onClick={this.handleLogoutClick}><div className="title">{Lang.string('usermenu.logout')}</div></a>
                 {App.ui.canQuit && <a className="item" onClick={this.handleExitClick}><div className="title">{Lang.string('usermenu.exit')}</div></a>}

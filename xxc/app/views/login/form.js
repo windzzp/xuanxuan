@@ -232,8 +232,8 @@ export default class LoginForm extends PureComponent {
             ldap,
         }).then((user) => {
             this.setState({logining: false});
-            const {needUpdateOptional} = getUpdaterStatus();
-            if (needUpdateOptional) {
+            const {needUpdateOptional, skipped} = getUpdaterStatus();
+            if (needUpdateOptional && !skipped) {
                 this.showUpdateDialogTask = setTimeout(showUpdateGuideDialog, 5000);
             }
             return user;

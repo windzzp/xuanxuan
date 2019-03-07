@@ -959,4 +959,24 @@ export default class UserConfig {
         const {chatGroupStates} = this;
         return !!(chatGroupStates && chatGroupStates[`${listType}.${groupType}.${id}`]);
     }
+
+    /**
+     * 获取忽略的版本信息
+     *
+     * @readonly
+     * @memberof UserConfig
+     */
+    get skippedVersion() {
+        return this.get('local.skippedVersion');
+    }
+
+    /**
+     * 设置忽略的版本信息
+     *
+     * @param {string} version 要忽略的版本
+     * @memberof UserConfig
+     */
+    set skippedVersion(version) {
+        return this.set('local.skippedVersion', version);
+    }
 }

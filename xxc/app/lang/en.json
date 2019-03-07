@@ -575,6 +575,9 @@
     "update.restartToCompleteUpdate": "Finish update and restart.",
     "update.retryUpdate": "Retry Update",
     "update.updateNow": "Update Now",
+    "update.foundNewVersion": "Found new version",
+    "update.skipThisVersion": "Skip this version",
+    "update.notifyMeNextTime": "Remind me next time",
     "update.versionDetails": "Version {0} Details",
     "update.versionsFormat": "Latest version: {0}. Your version: {1}.",
 

@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import Lang from '../../core/lang';
 import {
-    getUpdaterStatus, onUpdaterStatusChanged, isUpdaterAvaliable, downloadNewVersion, quitAndInstall
+    getUpdaterStatus, onUpdaterStatusChanged, isUpdaterAvaliable, downloadNewVersion, quitAndInstall, skipNewVersion, notifyMeNextTime
 } from '../../core/updater';
 import events from '../../core/events';
 import EmojioneIcon from '../../components/emojione-icon';
 import Markdown from '../../utils/markdown';
+import App from '../../core';
 
 /**
  * UpdateGuide 组件 ，显示应用关于界面
@@ -101,6 +102,34 @@ export default class UpdateGuide extends Component {
     }
 
     /**
+     * 处理点击提醒我下次升级按钮事件
+     *
+     * @memberof UpdateGuide
+     * @return {void}
+     */
+    notifyMeNextTime = () => {
+        notifyMeNextTime(App.user);
+        const {onRequestClose} = this.props;
+        if (onRequestClose) {
+            onRequestClose();
+        }
+    }
+
+    /**
+     * 处理点击忽略当前版本按钮事件
+     *
+     * @memberof UpdateGuide
+     * @return {void}
+     */
+    skipNewVersion = () => {
+        skipNewVersion(App.user);
+        const {onRequestClose} = this.props;
+        if (onRequestClose) {
+            onRequestClose();
+        }
+    }
+
+    /**
      * React 组件生命周期函数：Render
      * @private
      * @see https://doc.react-china.org/docs/react-component.html#render
@@ -117,11 +146,15 @@ export default class UpdateGuide extends Component {
 
         const {updaterStatus} = this.state;
         const {
-            needUpdate, serverUrl, currentVersion, newVersion,
+            needUpdate,
+            serverUrl,
+            currentVersion,
+            newVersion,
             updateInfo,
             progress,
             message,
             status,
+            needUpdateForce,
         } = updaterStatus;
 
         let mainView = null;
@@ -157,7 +190,14 @@ export default class UpdateGuide extends Component {
                 }
                 let buttonView = null;
                 if (status === 'ready') {
-                    buttonView = <button type="button" className="btn primary btn-wide" onClick={downloadNewVersion}>{Lang.string('update.updateNow')}</button>;
+                    buttonView = <button key="updateNow" type="button" className="btn primary btn-wide" onClick={downloadNewVersion}>{Lang.string('update.updateNow')}</button>;
+                    if (!needUpdateForce) {
+                        buttonView = [
+                            buttonView,
+                            <button key="notifyMeLater" type="button" className="btn text-primary btn-wide" onClick={this.notifyMeNextTime}>{Lang.string('update.notifyMeNextTime')}</button>,
+                            <button key="skipThisVersion" type="button" className="btn text-danger btn-wide" onClick={this.skipNewVersion}>{Lang.string('update.skipThisVersion')}</button>,
+                        ];
+                    }
                 } else if (status === 'downloaded') {
                     buttonView = <button type="button" className="btn primary btn-wide" onClick={quitAndInstall}>{Lang.string('update.restartToCompleteUpdate')}</button>;
                 } else if (status === 'downloadFail') {
@@ -165,12 +205,11 @@ export default class UpdateGuide extends Component {
                 }
                 mainView = (
                     <div>
-                        <EmojioneIcon name=":smiley_cat:" className="text-center space" />
-                        <h3>{Lang.format('update.clientRequiredUpdateToLoginServer', serverUrl)}</h3>
+                        <h3>{needUpdateForce ? Lang.format('update.clientRequiredUpdateToLoginServer', serverUrl) : Lang.string('update.message.newVersionAvaliable')}</h3>
                         <p>{Lang.format('update.versionsFormat', newVersion, currentVersion)}</p>
                         {updateProgressView}
                         {updateReadmeView}
-                        {buttonView && <div className="text-center has-padding-v">{buttonView}</div>}
+                        {buttonView && <div className="text-center has-padding-v toolbar">{buttonView}</div>}
                     </div>
                 );
             } else {

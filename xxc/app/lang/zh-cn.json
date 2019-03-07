@@ -575,6 +575,9 @@
     "update.restartToCompleteUpdate": "完成升级并重启",
     "update.retryUpdate": "重新尝试升级",
     "update.updateNow": "立即升级",
+    "update.foundNewVersion": "发现新版本",
+    "update.skipThisVersion": "忽略这个版本",
+    "update.notifyMeNextTime": "下次提醒我",
     "update.versionDetails": "版本 {0} 详情",
     "update.versionsFormat": "最新版本为 {0}，当前版本为 {1}。",
 
