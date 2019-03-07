@@ -36,7 +36,7 @@ class chatModel extends model
         }
         return !dao::isError();
     }
-    
+
     /**
      * Get signed time.
      *
@@ -307,7 +307,7 @@ class chatModel extends model
         }
         return false;
     }
-    
+
     public function getVersions()
     {
         return $this->dao->select('*')->from(TABLE_IM_XXCVERSION)->orderBy('id_desc')->fetchAll();
@@ -323,7 +323,7 @@ class chatModel extends model
         $this->dao->insert(TABLE_IM_XXCVERSION)->autoCheck()->data($version)->exec();
         return !dao::isError();
     }
-    
+
     public function editXXCVersion($versionID)
     {
         $version = fixer::input('post')
@@ -334,7 +334,7 @@ class chatModel extends model
         $this->dao->update(TABLE_IM_XXCVERSION)->autoCheck()->data($version)->where('id')->eq($versionID)->exec();
         return !dao::isError();
     }
-    
+
     /**
      * Foramt chats.
      *
@@ -974,7 +974,7 @@ class chatModel extends model
         if(empty($messages)) return array();
         $notify   = $this->formatNotify($messages);
         $messages = array();
-        foreach($notify as $message) $messages[] = $message->message;
+        foreach($notify as $message) $messages[] = $message->id;
 
         $this->dao->delete()->from(TABLE_IM_MESSAGESTATUS)->where('message')->in($messages)->andWhere('user')->eq($userID)->exec();
         return $notify;
@@ -1037,7 +1037,7 @@ class chatModel extends model
             {
                 if((empty($message->user) && empty($message->users)) || in_array($userID, $message->users))
                 {
-                    $messages[$userID][] = $message->message;
+                    $messages[$userID][] = $message->id;
                     $data[$userID][]     = $message;
                 }
             }
@@ -1178,9 +1178,9 @@ class chatModel extends model
             $data->status  = $status;
             $this->dao->replace(TABLE_IM_MESSAGESTATUS)->data($data)->exec();
         }
-        return !dao::isError(); 
+        return !dao::isError();
     }
-    
+
 	/**
 	 * Create gid.
 	 * @access public
