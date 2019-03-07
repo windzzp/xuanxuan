@@ -16,7 +16,7 @@ func Copy(src, dest string) error {
 	Log().Println("srcInfo:", info)
 	Log().Println("src:", src)
 	Log().Println("app:", dest)
-	if err != nil {
+	if err != nil && os.IsNotExist(err) {
 		Log().Println("err:", err)
 		return err
 	}

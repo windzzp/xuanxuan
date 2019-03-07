@@ -43,7 +43,6 @@ func main() {
 		Open(*run)
 		util.Log().Println("Runned", *run)
 	}
-
 	fmt.Println("Finished.")
 	util.Log().Println("Finished.")
 }
