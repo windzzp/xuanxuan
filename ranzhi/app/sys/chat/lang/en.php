@@ -22,7 +22,7 @@ $lang->chat->xxcDesc     = 'Upgrade description';
 $lang->chat->xxcReadme   = 'Update log';
 $lang->chat->strategy    = 'Upgrade strategy';
 $lang->chat->download    = 'Download';
-$lang->chat->notVersion  = '%s format error, should use number and “.” composition.';
+$lang->chat->notVersion  = 'The %s format is incorrect and must consist of digits and dots, such as "2.5.0" or "2.5"';
 
 $lang->chat->strategies['force']    = 'Force';
 $lang->chat->strategies['optional'] = 'Optional';
