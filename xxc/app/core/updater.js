@@ -36,7 +36,7 @@ let isPlatformUpdaterAvaliable = null;
  */
 export const isUpdaterAvaliable = () => {
     if (isPlatformUpdaterAvaliable === null) {
-        isPlatformUpdaterAvaliable = platform.has('autoUpdater.quitAndInstall') && platform.has('autoUpdater.downloadNewVersion');
+        isPlatformUpdaterAvaliable = !platform.env.isLinux && platform.has('autoUpdater.quitAndInstall') && platform.has('autoUpdater.downloadNewVersion');
     }
     return isPlatformUpdaterAvaliable;
 };
