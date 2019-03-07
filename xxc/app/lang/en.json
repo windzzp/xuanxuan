@@ -578,6 +578,7 @@
     "update.foundNewVersion": "Found new version",
     "update.skipThisVersion": "Skip this version",
     "update.notifyMeNextTime": "Remind me next time",
+    "update.closeAndDownloadInBackground": "Close and download in background",
     "update.versionDetails": "Version {0} Details",
     "update.versionsFormat": "Latest version: {0}. Your version: {1}.",
 

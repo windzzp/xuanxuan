@@ -5,6 +5,7 @@ import pkg from '../package.json';
 import Lang from './lang';
 import profile from './profile';
 import FileData from './models/file-data';
+import {executeCommandLine} from './commander';
 
 /**
  * 事件名称表
@@ -58,6 +59,9 @@ const emitStatusChange = (changes) => {
         Object.assign(updaterStatus, changes);
     }
     events.emit(EVENT.status_change, updaterStatus);
+    if (updaterStatus.status === 'downloaded') {
+        executeCommandLine('showUpdateGuideDialog');
+    }
 };
 
 /**

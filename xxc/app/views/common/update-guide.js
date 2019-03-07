@@ -202,6 +202,8 @@ export default class UpdateGuide extends Component {
                     buttonView = <button type="button" className="btn primary btn-wide" onClick={quitAndInstall}>{Lang.string('update.restartToCompleteUpdate')}</button>;
                 } else if (status === 'downloadFail') {
                     buttonView = <button type="button" className="btn primary btn-wide" onClick={downloadNewVersion}>{Lang.string('update.retryUpdate')}</button>;
+                } else if (status === 'downloading' && !needUpdateForce) {
+                    buttonView = <button type="button" className="btn primary btn-wide" onClick={onRequestClose}>{Lang.string('update.closeAndDownloadInBackground')}</button>;
                 }
                 mainView = (
                     <div>

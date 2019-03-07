@@ -578,6 +578,7 @@
     "update.foundNewVersion": "發現新版本",
     "update.skipThisVersion": "忽略這個版本",
     "update.notifyMeNextTime": "下次提醒我",
+    "update.closeAndDownloadInBackground": "關閉並在後台下載",
     "update.versionDetails": "版本 {0} 詳情",
     "update.versionsFormat": "最新版本為{0}，當前版本為{1}。",
 
