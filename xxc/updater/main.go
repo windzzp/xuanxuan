@@ -11,12 +11,11 @@ import (
 )
 
 func main() {
-    // fmt.Println("UPDATER READY")
 	src := flag.String("src", "", "Source directory path.")
 	app := flag.String("app", "", "Destination directory path")
 	run := flag.String("run", "", "Open the application?")
 	flag.Parse()
-	util.Log().Println("Params", "src=", *src, "app=", *app, "run=", *run)
+	fmt.Println("Please wait...")
 
 	if *src != "" && *app != "" {
 		time.Sleep(time.Second * 5)
