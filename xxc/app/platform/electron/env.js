@@ -72,7 +72,7 @@ const isLinux = !isOSX && !isWindowsOS;
  */
 export const getElectronRootPath = () => {
     if (process.env.HOT) {
-        return path.resolve(Remote.getGlobal('entryPath'), isOSX ? '../app_root.app' : '../app_root');
+        return path.resolve(Remote.getGlobal('entryPath'), isOSX ? '../xuanxuan.custom.app' : '../xuanxuan.custom');
     }
     const exePath = Remote.app.getPath('exe');
     if (isOSX) {
