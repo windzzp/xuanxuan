@@ -319,8 +319,10 @@ class chatModel extends model
             ->add('createdBy', $this->app->user->account)
             ->add('createdDate', helper::now())
             ->get();
+        if(!preg_match("/^[0-9.]*$/", $version->version)) dao::$errors['version'][] = sprintf($this->lang->chat->notVersion, $this->lang->chat->version);
+        if(dao::isError()) return false;
         $version->downloads = json_encode($version->downloads);
-        $this->dao->insert(TABLE_IM_XXCVERSION)->autoCheck()->data($version)->exec();
+        $this->dao->insert(TABLE_IM_XXCVERSION)->autoCheck()->batchCheck('version', 'notempty')->data($version)->exec();
         return !dao::isError();
     }
 
@@ -330,8 +332,10 @@ class chatModel extends model
             ->add('editedBy', $this->app->user->account)
             ->add('editedDate', helper::now())
             ->get();
+        if(!preg_match("/^[0-9.]*$/", $version->version)) dao::$errors['version'][] = sprintf($this->lang->chat->notVersion, $this->lang->chat->version);
+        if(dao::isError()) return false;
         $version->downloads = json_encode($version->downloads);
-        $this->dao->update(TABLE_IM_XXCVERSION)->autoCheck()->data($version)->where('id')->eq($versionID)->exec();
+        $this->dao->update(TABLE_IM_XXCVERSION)->autoCheck()->batchCheck('version', 'notempty')->data($version)->where('id')->eq($versionID)->exec();
         return !dao::isError();
     }
 

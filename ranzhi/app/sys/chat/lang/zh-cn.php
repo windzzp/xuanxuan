@@ -1,4 +1,6 @@
 <?php
+$lang->xxcversion->version = '版本';
+
 $lang->chat->settings = '喧喧设置';
 $lang->chat->debug    = '调试功能';
 
@@ -20,6 +22,8 @@ $lang->chat->xxcDesc     = '升级描述';
 $lang->chat->xxcReadme   = '更新日志';
 $lang->chat->strategy    = '升级策略';
 $lang->chat->download    = '下载地址';
+$lang->chat->notVersion  = '%s格式不正确，应该为数字加"."组成';
+
 
 $lang->chat->strategies['force']    = '强制';
 $lang->chat->strategies['optional'] = '可选';

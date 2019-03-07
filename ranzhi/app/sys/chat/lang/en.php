@@ -1,4 +1,6 @@
 <?php
+$lang->xxcversion->version = 'Version';
+
 $lang->chat->settings = 'Xuanxuan Settings';
 $lang->chat->debug    = 'Debug';
 
@@ -20,6 +22,7 @@ $lang->chat->xxcDesc     = 'Upgrade description';
 $lang->chat->xxcReadme   = 'Update log';
 $lang->chat->strategy    = 'Upgrade strategy';
 $lang->chat->download    = 'Download';
+$lang->chat->notVersion  = '%s format error, should use number and “.” composition.';
 
 $lang->chat->strategies['force']    = 'Force';
 $lang->chat->strategies['optional'] = 'Optional';

@@ -31,7 +31,7 @@
     </tr>
     <tr>
       <th><?php echo $lang->chat->strategy?></th>
-      <td><?php echo html::radio('strategy', $lang->chat->strategies, '')?></td>
+      <td><?php echo html::radio('strategy', $lang->chat->strategies, 0)?></td>
       <td></td>
     </tr>
     <tr>
