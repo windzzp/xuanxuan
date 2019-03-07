@@ -1037,7 +1037,7 @@ class chatModel extends model
             {
                 if((empty($message->user) && empty($message->users)) || in_array($userID, $message->users))
                 {
-                    $messages[$userID][] = $message->message;
+                    $messages[$userID][] = $message->id;
                     $data[$userID][]     = $message;
                 }
             }
