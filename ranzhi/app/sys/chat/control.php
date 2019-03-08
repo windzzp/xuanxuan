@@ -78,6 +78,11 @@ class chat extends control
                 if($update !== false)
                 {
                     $data = $update;
+                    if(version_compare($version, '2.4.0') === -1)
+                    {
+                        $this->output->result = 'fail';
+                        $this->output->data   = $this->lang->chat->errorXXCLow;
+                    }
                 }
                 $this->output->update = $data;
             }
