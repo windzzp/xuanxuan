@@ -10,7 +10,7 @@ import {isNotEmptyString} from '../../utils/string-helper';
  * @class ChatSendCode
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import ChatSendCode from './chat-send-code';
  * <ChatSendCode />
  */
