@@ -22,7 +22,7 @@ const ChatListItem = withReplaceView(_ChatListItem);
  * @class ChatShare
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import ChatShare from './chat-share';
  * <ChatShare />
  */

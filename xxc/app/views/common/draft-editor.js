@@ -122,7 +122,7 @@ const draftDecorator = new CompositeDecorator([{
  * @class DraftEditor
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {Component}
- * @example @lang jsx
+ * @example
  * import DraftEditor from './draft-editor';
  * <DraftEditor />
  */

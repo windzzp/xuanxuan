@@ -5,7 +5,7 @@ import Emojione from './emojione';
 /**
  * EmojioneIcon 组件 ，显示Emojione表情图标
  * @see https://react.docschina.org/docs/components-and-props.html
- * @example @lang jsx
+ * @example
  * import EmojioneIcon from './emojione-icon';
  * <EmojioneIcon />
  * @return {ReactNode|string|number|null|boolean} React 渲染内容
