@@ -199,7 +199,7 @@ export const onExtensionChange = listener => events.on(EVENT.onChange, listener)
 
 /**
  * 遍历已安装的扩展
- * @param {function(Extension)} callback 遍历回调函数
+ * @param {function(extension: Extension)} callback 遍历回调函数
  * @param {boolean} [includeDisabled=false] 是否包含已禁用的扩展
  * @return {void}
  */
