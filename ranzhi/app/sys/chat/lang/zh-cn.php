@@ -1,6 +1,4 @@
 <?php
-$lang->xxcversion->version = '版本';
-
 $lang->chat->settings = '喧喧设置';
 $lang->chat->debug    = '调试功能';
 
@@ -65,6 +63,7 @@ $lang->chat->xxdSchemeError = '服务器地址应该以<strong>http://</strong>�
 $lang->chat->xxdPortError   = '服务器地址应该包含有效的端口号，默认为<strong>11443</strong>。';
 $lang->chat->errorSSLCrt    = 'SSL证书内容不能为空';
 $lang->chat->errorSSLKey    = 'SSL证书私钥不能为空';
+$lang->chat->errorXXCLow    = '客户端版本太低,请在喧喧官网下载最新版。';
 
 $lang->chat->broadcast = new stdclass();
 $lang->chat->broadcast->createChat  = '@%s 创建了讨论组 **[%s](#/chats/groups/%s)**。';

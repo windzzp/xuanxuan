@@ -1,6 +1,4 @@
 <?php
-$lang->xxcversion->version = 'Version';
-
 $lang->chat->settings = 'Xuanxuan Settings';
 $lang->chat->debug    = 'Debug';
 
@@ -65,6 +63,7 @@ $lang->chat->xxdSchemeError = 'Server address should started with http:// or htt
 $lang->chat->xxdPortError   = 'Server address should contain valid port and the default is <strong>11443</strong>.';
 $lang->chat->errorSSLCrt    = 'SSL certificate cannot be empty';
 $lang->chat->errorSSLKey    = 'SSL key cannot be empty';
+$lang->chat->errorXXCLow    = 'The client version is too low, please download the latest version on https://xuan.im';
 
 $lang->chat->broadcast = new stdclass();
 $lang->chat->broadcast->createChat  = '@%s created the group **[%s](#/chats/groups/%s)**.';

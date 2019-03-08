@@ -32,7 +32,7 @@
     <tr class="text-center">
       <td><?php echo $version->id?></td>
       <td><?php echo $version->version?></td>
-      <td class="text-left"><?php echo $version->readme?></td>
+      <td class="text-left"><?php echo $version->desc?></td>
       <td><?php echo $lang->chat->strategies[$version->strategy]?></td>
       <td>
         <?php
