@@ -1,6 +1,4 @@
 <?php
-$lang->xxcversion->version = 'Version';
-
 $lang->chat->settings = 'Xuanxuan Settings';
 $lang->chat->debug    = 'Debug';
 
