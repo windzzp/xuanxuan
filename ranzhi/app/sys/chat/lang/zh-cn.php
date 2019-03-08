@@ -1,6 +1,4 @@
 <?php
-$lang->xxcversion->version = '版本';
-
 $lang->chat->settings = '喧喧设置';
 $lang->chat->debug    = '调试功能';
 
