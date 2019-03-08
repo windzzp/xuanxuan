@@ -25,7 +25,7 @@
 3. `--password, -p`：测试账号统一密码，例：`-p 123456`
 4. `--user -u`：创建测试账号数量，例：`-u 500`
 5. `--port -P`：Socket 连接端口，默认`11444`，例：`-P 11444`
-例：npm run create -- -s http://127.0.0.1:11443 -A admin -M 123456 -a test -p 123456 -u 110 -P 11444
+例：npm run create -- -s http://127.0.0.1:11443 -A admin -M 123456 -a xxtest -p 123456 -u 110 -P 11444
 
 
 测试脚本程序参数：
