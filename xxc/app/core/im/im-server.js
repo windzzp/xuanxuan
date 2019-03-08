@@ -621,13 +621,14 @@ export const sendChatMessage = async (messages, chat, isSystemMessage = false) =
             if (command.action === 'version') {
                 const specialVersionName = getSpecialVersionName();
                 const specialVersion = specialVersionName ? ` for ${specialVersionName}` : '';
-                const contentLines = ['```'];
+                const contentLines = ['```js:$$version'];
                 contentLines.push(
-                    `version       = '${PKG.version}${PKG.buildVersion ? (`.${PKG.buildVersion}`) : ''}${specialVersion}';`,
-                    `buildTime     = '${PKG.buildTime ? formatDate(PKG.buildTime) : ''}';`,
+                    `version       = '${PKG.name} ${PKG.version}${PKG.buildVersion ? (`.${PKG.buildVersion}`) : ''}${specialVersion}';`,
                     `serverVersion = '${profile.user.serverVersion}';`,
-                    `platform      = '${platform.type}';`,
-                    `os            = '${platform.access('env.os')}';`
+                    `buildTime     = '${PKG.buildTime ? formatDate(PKG.buildTime) : ''}';`,
+                    `lang          = '${Lang.name}';`,
+                    `platform      = '${platform.displayName}';`,
+                    `os            = '${platform.access('env.os')}';`,
                 );
                 if (platform.has('env.arch')) {
                     contentLines.push(`arch          = '${platform.access('env.arch')}';`);
