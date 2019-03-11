@@ -7,4 +7,3 @@ $lang->upgrade->fromVersions['2_1_0'] = '2.1.0';
 $lang->upgrade->fromVersions['2_2_0'] = '2.2.0';
 $lang->upgrade->fromVersions['2_3_0'] = '2.3.0';
 $lang->upgrade->fromVersions['2_4_0'] = '2.4.0';
-$lang->upgrade->fromVersions['2_4_1'] = '2.4.1';
