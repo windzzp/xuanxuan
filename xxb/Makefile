@@ -29,8 +29,6 @@ xxb:
 	cp -r ./zdoo/www/js xxb/www/
 	cp -r ./zdoo/www/sys xxb/www/
 	cp -r ./zdoo/www/theme xxb/www/
-	cp -r ./zdoo/app/oa/attend xxb/app/oa/
-	cp -r ./zdoo/app/oa/holiday xxb/app/oa/
 	cp -r ./zdoo/app/sys/install xxb/app/sys/
 	cp -r ./zdoo/app/sys/common xxb/app/sys/
 	cp -r ./zdoo/app/sys/index xxb/app/sys/
