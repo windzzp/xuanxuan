@@ -387,7 +387,7 @@ class AppRemote {
         this.removeTrayIcon(windowName);
 
         // 创建一个通知栏图标
-        const tray = new Tray(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-16.png`);
+        const tray = new Tray(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon.png`);
 
         // 设置通知栏图标右键菜单功能
         const trayContextMenu = Menu.buildFromTemplate([
@@ -442,7 +442,7 @@ class AppRemote {
          * @private
          */
         this._trayIcons = [
-            nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-16.png`),
+            nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon.png`),
             nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-transparent.png`)
         ];
     }
