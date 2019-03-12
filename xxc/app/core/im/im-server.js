@@ -489,7 +489,7 @@ export const sendTextMessage = (message, chat, isMarkdown = null) => {
  * App分享和聊天转发消息到其他聊天
  * @param {Message} message 要转发的信息
  * @param {Chat|Array<Chat>} chats 要转发到哪些聊天
- * @param {function(number)} onProgress 发送进度变更回调函数
+ * @param {function} onProgress 发送进度变更回调函数
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
 export const shareMessage = async (message, chats, onProgress) => {
@@ -511,7 +511,7 @@ export const shareMessage = async (message, chats, onProgress) => {
  * 聊天中转发已有的消息到其他聊天
  * @param {ChatMessage} originMessage 要转发的原始消息
  * @param {Chat|Array<Chat>} chats 要转发到那些聊天
- * @param {function(number)} onProgress 发送进度变更回调函数
+ * @param {function} onProgress 发送进度变更回调函数
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
 export const forwardMessage = async (originMessage, chats, onProgress) => {

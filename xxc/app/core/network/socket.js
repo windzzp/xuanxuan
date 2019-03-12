@@ -273,7 +273,7 @@ export default class AppSocket extends Socket {
     /**
      * 通过 Socket 发送消息并监听服务器对此消息的回应
      * @param {Object<string, any>|SocketMessage} msg 要发送的 SocketMessage 实例或者用于创建 SocketMessage 实例的属性对象
-     * @param {function(any)} check 用于检查服务器返回结果的函数
+     * @param {function} check 用于检查服务器返回结果的函数
      * @returns {Promise} 使用 Promise 异步返回处理结果
      * @memberof AppSocket
      */

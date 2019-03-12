@@ -50,7 +50,7 @@ let requestChangeLangHandler = null;
 
 /**
  * 设置请求变更语言处理函数
- * @param {function(string)} handler 处理函数
+ * @param {function(name: string)} handler 处理函数
  * @return {void}
  */
 export const setRequestChangeLangHandler = (handler) => {
