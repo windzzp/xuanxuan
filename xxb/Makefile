@@ -46,10 +46,10 @@ xxb:
 	cp -r ./zdoo/app/sys/misc xxb/app/sys/
 	cp -r ./zdoo/app/sys/package xxb/app/sys/
 	cp -r ./zdoo/app/sys/sso xxb/app/sys/
-	cp -r ./backend/* xxb/
 	cp -r ./VERSION xxb/
 	cp ./zdoo/www/index.php xxb/www/
 	cp -r ../ranzhi/* xxb/
+	cp -r ./backend/* xxb/
 	cp -r ./doc xxb/
 	php build/xxb.php
 	cat xxb/db/xuanxuan.sql >> xxb/db/xxb.sql
