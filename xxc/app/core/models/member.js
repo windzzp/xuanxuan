@@ -416,9 +416,9 @@ export default class Member extends Entity {
      * @readonly
      */
     get displayName() {
-        let name = this.$get('realname', `[${this.account}]`);
+        let name = this.$get('realname');
         if (!name) {
-            name = `User-${this.id}`;
+            name = `User-${this.account}`;
         }
         return name;
     }
