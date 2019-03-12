@@ -168,6 +168,15 @@ func (pd ParseData) Version() string {
     return ret.(string)
 }
 
+func (pd ParseData) Device() string {
+	ret, ok := pd["d"]
+	if !ok {
+		return "desktop"
+	}
+
+	return ret.(string)
+}
+
 //用户列表
 func (pd ParseData) SendUsers() []int64 {
     // 判断users是否存在
