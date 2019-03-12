@@ -11,7 +11,7 @@ public function execute($fromVersion)
         case '2_1_0' :
         case '2_2_0' :
         case '2_3_0' :
-        case '2_4_0'   : $this->execSQL($this->getUpgradeFile('xxb2.4.0'));
+        case '2_4_0' : $this->execSQL($this->getUpgradeFile('xxb2.4.0'));
         default : $this->loadModel('setting')->updateVersion($this->config->version);
     }
 }
