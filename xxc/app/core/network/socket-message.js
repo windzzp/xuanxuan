@@ -54,6 +54,7 @@ export default class SocketMessage {
         Object.assign(this, {
             module: 'chat',
             v: Config.pkg.version,
+            d: 'desktop',
             lang: Lang.name
         }, data);
     }
