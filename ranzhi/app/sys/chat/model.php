@@ -1073,7 +1073,7 @@ class chatModel extends model
     }
 
     /**
-     * Foramt messages for notify.
+     * Format messages for notify.
      * @param object $messages
      * @access public
      * @return array
