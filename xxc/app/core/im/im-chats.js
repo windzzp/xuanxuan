@@ -461,7 +461,7 @@ export const searchChatMessages = (chat, searchKeys = '', minDate = 0, returnCou
                 if (msg.contentType !== 'file') {
                     return false;
                 }
-            } else if (msg.contentType === 'text' || msg.content.length < 200) {
+            } else if (msg.contentType === 'text' || (msg.content && msg.content.length < 200)) {
                 if (!msg.content || !msg.content.toLowerCase().includes(key)) {
                     return false;
                 }
