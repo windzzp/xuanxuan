@@ -67,13 +67,15 @@ export default class ChatMessages extends Component {
     constructor(props) {
         super(props);
 
+        const {chat} = props;
+
         /**
          * React 组件状态对象
          * @see https://react.docschina.org/docs/state-and-lifecycle.html
          * @type {object}
          */
         this.state = {
-            loading: !props.chat.isLoadingOver
+            loading: !chat.isLoadingOver
         };
     }
 
@@ -101,7 +103,9 @@ export default class ChatMessages extends Component {
      * @memberof ChatMessages
      */
     shouldComponentUpdate(nextProps, nextState) {
-        return isJustLangSwitched() || nextState.loading !== this.state.loading || this.props.className !== nextProps.className || this.props.chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId;
+        const {chat, className} = this.props;
+        const {loading} = this.state;
+        return isJustLangSwitched() || nextState.loading !== loading || className !== nextProps.className || chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId;
     }
 
     /**
@@ -174,7 +178,9 @@ export default class ChatMessages extends Component {
                     chat.loadingOffset = loadingLimit - 20;
                     return '';
                 }).catch((err) => {
-                    console.log(err);
+                    if (DEBUG) {
+                        console.log(err);
+                    }
                 });
         }
     }
@@ -214,9 +220,10 @@ export default class ChatMessages extends Component {
 
         const font = App.profile.userConfig.chatFontSize;
         this.lastChatUpdateId = chat.updateId;
-        
+        const {loading} = this.state;
+
         let headerView = null;
-        if (this.state.loading) {
+        if (loading) {
             headerView = <Spinner className="has-padding" />;
         } else if (chat.messages && chat.isLoadingOver) {
             const noMoreMessageText = Lang.string('chat.noMoreMessage');
@@ -227,11 +234,16 @@ export default class ChatMessages extends Component {
             headerView = <a className="has-padding small muted text-center block space-sm" onClick={this.loadChatMessages.bind(this, 0)}>― {Lang.string('chat.loadMoreMessage')} ―</a>;
         }
 
-        return (<div
-            className={classes('app-chat-messages white', className)}
-            {...other}
-        >
-            <MessageList ref={e => {this.messageList = e;}} header={headerView} font={font} className="dock scroll-y user-selectable" messages={chat.messages} onScroll={chat.isLoadingOver ? null : this.handleScroll} />
-        </div>);
+        const inverse = chat.isNotification;
+        const {messages} = chat;
+
+        return (
+            <div
+                className={classes('app-chat-messages white', className)}
+                {...other}
+            >
+                <MessageList stayBottom={!inverse} inverse={inverse} ref={e => {this.messageList = e;}} header={headerView} font={font} className="dock scroll-y user-selectable" messages={inverse ? messages.reverse() : messages} onScroll={chat.isLoadingOver ? null : this.handleScroll} />
+            </div>
+        );
     }
 }
