@@ -325,7 +325,7 @@ const chatGetpubliclist = (msg, socket) => {
  * @private
  */
 const chatNotify = (msg, socket) => {
-    if (Config.ui['chat.littlexx'] && msg.isSuccess) {
+    if ((Config.system['notification.enable'] || Config.ui['chat.littlexx']) && msg.isSuccess) {
         let messages = msg.data;
         if (!Array.isArray(messages)) {
             if (messages.cgid) {
