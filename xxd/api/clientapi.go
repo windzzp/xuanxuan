@@ -241,6 +241,7 @@ func ReportAndGetNotify(server string, lang string) (map[int64][]byte, error) {
                     userNotify := make(map[string]interface{})
                     userNotify["module"] = "chat"
                     userNotify["method"] = "notify"
+                    userNotify["result"] = "success"
                     userNotify["data"]   = messages
                     uid, _ := util.String2Int64(userID)
                     messageList[uid] = ApiUnparse(userNotify, util.Token)
