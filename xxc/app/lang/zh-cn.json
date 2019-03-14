@@ -186,7 +186,7 @@
     "common.checkUpdate": "检查更新",
     "common.clickShowMoreFormat": "还有 {0} 项…",
     "common.close": "关闭",
-    "common.comfirmQuiteIM": "是否立即关闭窗口并退出？",
+    "common.comfirmQuitIM": "是否立即关闭窗口并退出？",
     "common.confirm": "确定",
     "common.confirmCreateAppWindow": "是否要创建一个新的窗口？（在新窗口中可以登录到另一个账号）",
     "common.continue": "继续",
