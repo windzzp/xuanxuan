@@ -255,8 +255,16 @@ export default class DraftEditor extends PureComponent {
             const {editorState} = this.state;
             const selection = editorState.getSelection();
             const contentState = editorState.getCurrentContent();
-            const ncs = Modifier.insertText(contentState, selection, content);
-            const newEditorState = EditorState.push(editorState, ncs, 'insert-fragment');
+            let newContentState = null;
+            // 判断是否有选中，有则替换，无则插入
+            const selectionEnd = selection.getEndOffset();
+            const selectionStart = selection.getStartOffset();
+            if (selectionEnd === selectionStart) {
+                newContentState = Modifier.insertText(contentState, selection, content);
+            } else {
+                newContentState = Modifier.replaceText(contentState, selection, content);
+            }
+            const newEditorState = EditorState.push(editorState, newContentState, 'insert-fragment');
             this.onChange(newEditorState, callback);
         }
     }
