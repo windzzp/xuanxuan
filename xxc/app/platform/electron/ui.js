@@ -12,6 +12,8 @@ import shortcut from './shortcut';
 import env from './env';
 import getUrlMeta from './get-url-meta';
 
+const IS_MAC_OSX = process.platform === 'darwin';
+
 /**
  * 当前窗口名称
  * @type {string}
@@ -114,7 +116,11 @@ export const showWindow = () => {
  * @return {void}
  */
 export const hideWindow = () => {
-    browserWindow.minimize();
+    if (IS_MAC_OSX) {
+        browserWindow.hide();
+    } else {
+        browserWindow.minimize();
+    }
 };
 
 /**

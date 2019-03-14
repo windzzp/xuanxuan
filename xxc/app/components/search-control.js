@@ -123,7 +123,7 @@ export default class SearchControl extends PureComponent {
      * @return {string}
      */
     getValue() {
-        return this.state.value;
+        return this.state.value.trim();
     }
 
     /**
@@ -195,7 +195,7 @@ export default class SearchControl extends PureComponent {
      * @return {void}
      */
     handleOnInputChange = value => {
-        value = typeof value === 'string' ? value.trim() : '';
+        value = typeof value === 'string' ? value : '';
         this.setValue(value);
     }
 

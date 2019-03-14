@@ -489,7 +489,7 @@ export const sendTextMessage = (message, chat, isMarkdown = null) => {
  * App分享和聊天转发消息到其他聊天
  * @param {Message} message 要转发的信息
  * @param {Chat|Array<Chat>} chats 要转发到哪些聊天
- * @param {function(number)} onProgress 发送进度变更回调函数
+ * @param {function} onProgress 发送进度变更回调函数
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
 export const shareMessage = async (message, chats, onProgress) => {
@@ -511,7 +511,7 @@ export const shareMessage = async (message, chats, onProgress) => {
  * 聊天中转发已有的消息到其他聊天
  * @param {ChatMessage} originMessage 要转发的原始消息
  * @param {Chat|Array<Chat>} chats 要转发到那些聊天
- * @param {function(number)} onProgress 发送进度变更回调函数
+ * @param {function} onProgress 发送进度变更回调函数
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
 export const forwardMessage = async (originMessage, chats, onProgress) => {
@@ -621,13 +621,14 @@ export const sendChatMessage = async (messages, chat, isSystemMessage = false) =
             if (command.action === 'version') {
                 const specialVersionName = getSpecialVersionName();
                 const specialVersion = specialVersionName ? ` for ${specialVersionName}` : '';
-                const contentLines = ['```'];
+                const contentLines = ['```js:$$version'];
                 contentLines.push(
-                    `version       = '${PKG.version}${PKG.buildVersion ? (`.${PKG.buildVersion}`) : ''}${specialVersion}';`,
-                    `buildTime     = '${PKG.buildTime ? formatDate(PKG.buildTime) : ''}';`,
+                    `version       = '${PKG.name} ${PKG.version}${PKG.buildVersion ? (`.${PKG.buildVersion}`) : ''}${specialVersion}';`,
                     `serverVersion = '${profile.user.serverVersion}';`,
-                    `platform      = '${platform.type}';`,
-                    `os            = '${platform.access('env.os')}';`
+                    `buildTime     = '${PKG.buildTime ? formatDate(PKG.buildTime) : ''}';`,
+                    `lang          = '${Lang.name}';`,
+                    `platform      = '${platform.displayName}';`,
+                    `os            = '${platform.access('env.os')}';`,
                 );
                 if (platform.has('env.arch')) {
                     contentLines.push(`arch          = '${platform.access('env.arch')}';`);

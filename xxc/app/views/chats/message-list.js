@@ -68,6 +68,7 @@ export default class MessageList extends Component {
         header: PropTypes.any,
         onScroll: PropTypes.func,
         sleepUrlCard: PropTypes.bool,
+        inverse: PropTypes.bool,
     };
 
     /**
@@ -89,6 +90,7 @@ export default class MessageList extends Component {
         header: null,
         onScroll: null,
         sleepUrlCard: null,
+        inverse: false
     };
 
     /**
@@ -269,6 +271,7 @@ export default class MessageList extends Component {
             header,
             onScroll,
             sleepUrlCard,
+            inverse,
             ...other
         } = this.props;
 
@@ -278,7 +281,7 @@ export default class MessageList extends Component {
             messages.forEach(message => {
                 const messageListItem = listItemCreator ? listItemCreator(message, lastMessage) : <MessageListItem id={`message-${message.gid}`} staticUI={staticUI} font={font} showDateDivider={showDateDivider} lastMessage={lastMessage} key={message.gid} message={message} {...listItemProps} sleepUrlCard={sleepUrlCard} />;
                 lastMessage = message;
-                if (isFirefox) {
+                if (isFirefox || inverse) {
                     messagesView.push(messageListItem);
                 } else {
                     messagesView.unshift(messageListItem);
@@ -303,7 +306,7 @@ export default class MessageList extends Component {
         return (
             <div
                 {...other}
-                className={classes('app-message-list flex column-reverse', className, {'app-message-list-static': staticUI})}
+                className={classes('app-message-list flex', className, {'app-message-list-static': staticUI, 'column-reverse': !inverse, 'column single': inverse})}
                 onScroll={this.handleScroll}
                 ref={e => {this.element = e;}}
             >

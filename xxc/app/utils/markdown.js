@@ -135,7 +135,7 @@ Marked.setOptions({
     sanitizer: Config.ui['chat.markdown.html'] ? sanitizer : null, // A function to sanitize the HTML passed into markdownString.
     headerIds: false,
     smartLists: true,  // If true, use smarter list behavior than those found in markdown.pl.
-    smartypants: true, // If true, use "smart" typographic punctuation for things like quotes and dashes.
+    smartypants: false, // If true, use "smart" typographic punctuation for things like quotes and dashes.
 });
 
 /**

@@ -9,7 +9,7 @@ import emojione from 'emojione';
 import DraftJs from 'draft-js';
 import compareVersions from 'compare-versions';
 import hotkeys from 'hotkeys-js';
-import pinyin from 'pinyin';
+import pinyin from 'tiny-pinyin';
 import uuid from 'uuid';
 import HTMLParser from 'htmlparser';
 import platform from '../platform';

@@ -41,6 +41,17 @@ class PlatformModule {
     }
 
     /**
+     * 获取平台显示名称
+     *
+     * @readonly
+     * @memberof PlatformModule
+     */
+    get displayName() {
+        const {$module} = this;
+        return $module && ($module.displayName || $module.type);
+    }
+
+    /**
      * 获取平台环境变量对象
      * @type {Map<String, any>}
      *

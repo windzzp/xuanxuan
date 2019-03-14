@@ -27,6 +27,13 @@ let appWindowIndex = 0;
 const IS_MAC_OSX = process.platform === 'darwin';
 
 /**
+ * 是否是 Windows 系统
+ * @type {boolean}
+ * @private
+ */
+const IS_WINDOWS_OS = process.platform === 'win32';
+
+/**
  * 是否显示调试日志信息
  * @type {boolean}
  * @private
@@ -135,6 +142,15 @@ class AppRemote {
         ipcMain.on(EVENT.app_ready, (e, config, windowName) => {
             if (windowName) {
                 Object.assign(this.appConfig, config);
+
+                // BUG #72 http://xuan.5upm.com/bug-view-72.html
+                // Electron Issue #10864 https://github.com/electron/electron/issues/10864
+                if (IS_WINDOWS_OS && ElectronApp.setAppUserModelId) {
+                    const userModelId = `com.cnezsoft.${this.appConfig.name || 'xuanxuan'}`;
+                    ElectronApp.setAppUserModelId(userModelId);
+                    if (SHOW_LOG) console.log(`>> Set AppUserModelId to ${userModelId}.`);
+                }
+
                 this.createTrayIcon(windowName);
                 // 设置关于窗口
                 if (typeof ElectronApp.setAboutPanelOptions === 'function') {
@@ -387,7 +403,7 @@ class AppRemote {
         this.removeTrayIcon(windowName);
 
         // 创建一个通知栏图标
-        const tray = new Tray(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-16.png`);
+        const tray = new Tray(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon.png`);
 
         // 设置通知栏图标右键菜单功能
         const trayContextMenu = Menu.buildFromTemplate([
@@ -442,7 +458,7 @@ class AppRemote {
          * @private
          */
         this._trayIcons = [
-            nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-16.png`),
+            nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon.png`),
             nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-transparent.png`)
         ];
     }
@@ -487,7 +503,7 @@ class AppRemote {
                     buttons: [Lang.string('common.exitIM'), Lang.string('common.cancel')],
                     defaultId: 0,
                     type: 'question',
-                    message: Lang.string('common.comfirmQuiteIM')
+                    message: Lang.string('common.comfirmQuitIM')
                 }, response => {
                     if (response === 0) {
                         setTimeout(() => {
@@ -588,7 +604,7 @@ class AppRemote {
             if (options.onClosed) {
                 options.onClosed(name);
             }
-            this.tryQuiteOnAllWindowsClose();
+            this.tryQuitOnAllWindowsClose();
         });
 
         browserWindow.webContents.on('did-finish-load', () => {
@@ -752,14 +768,14 @@ class AppRemote {
      * @memberof AppRemote
      * @return {void}
      */
-    tryQuiteOnAllWindowsClose() {
+    tryQuitOnAllWindowsClose() {
         let hasWindowOpen = false;
         Object.keys(this.windows).forEach(windowName => {
             if (!hasWindowOpen && this.windows[windowName] && !this.markClose[windowName]) {
                 hasWindowOpen = true;
             }
         });
-        if (SHOW_LOG) console.log('>> tryQuiteOnAllWindowsClose', hasWindowOpen);
+        if (SHOW_LOG) console.log('>> tryQuitOnAllWindowsClose', hasWindowOpen);
         if (!hasWindowOpen) {
             this.quit();
         }

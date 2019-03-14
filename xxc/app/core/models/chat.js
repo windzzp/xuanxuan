@@ -277,6 +277,17 @@ export default class Chat extends Entity {
     }
 
     /**
+     * 是否为通知中心聊天
+     *
+     * @type {boolean}
+     * @readonly
+     * @memberof Chat
+     */
+    get isNotification() {
+        return this.isRobot && this.gid === 'notification';
+    }
+
+    /**
      * 设置聊天类型
      * @param {string} type 聊天类型
      * @memberof Chat

@@ -29,8 +29,6 @@ xxb:
 	cp -r ./zdoo/www/js xxb/www/
 	cp -r ./zdoo/www/sys xxb/www/
 	cp -r ./zdoo/www/theme xxb/www/
-	cp -r ./zdoo/app/oa/attend xxb/app/oa/
-	cp -r ./zdoo/app/oa/holiday xxb/app/oa/
 	cp -r ./zdoo/app/sys/install xxb/app/sys/
 	cp -r ./zdoo/app/sys/common xxb/app/sys/
 	cp -r ./zdoo/app/sys/index xxb/app/sys/
@@ -48,10 +46,10 @@ xxb:
 	cp -r ./zdoo/app/sys/misc xxb/app/sys/
 	cp -r ./zdoo/app/sys/package xxb/app/sys/
 	cp -r ./zdoo/app/sys/sso xxb/app/sys/
-	cp -r ./backend/* xxb/
 	cp -r ./VERSION xxb/
 	cp ./zdoo/www/index.php xxb/www/
 	cp -r ../ranzhi/* xxb/
+	cp -r ./backend/* xxb/
 	cp -r ./doc xxb/
 	php build/xxb.php
 	cat xxb/db/xuanxuan.sql >> xxb/db/xxb.sql

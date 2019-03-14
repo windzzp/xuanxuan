@@ -46,6 +46,7 @@ export const init = ({config, lang}) => {
 
 const platform = {
     type: 'electron',
+    displayName: `electron ${process.versions.electron}`,
     electron,
     init,
     language,

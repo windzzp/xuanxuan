@@ -25,6 +25,7 @@ export const requestServerInfo = user => {
             ''
         ],
         v: Config.pkg.version,
+        d: Config.system.device || 'desktop',
         lang: Lang.name,
     });
     return platformNetwork.postJSON(user.webServerInfoUrl, {
