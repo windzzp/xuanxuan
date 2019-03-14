@@ -27,6 +27,13 @@ let appWindowIndex = 0;
 const IS_MAC_OSX = process.platform === 'darwin';
 
 /**
+ * 是否是 Windows 系统
+ * @type {boolean}
+ * @private
+ */
+const IS_WINDOWS_OS = process.platform === 'win32';
+
+/**
  * 是否显示调试日志信息
  * @type {boolean}
  * @private
@@ -135,6 +142,13 @@ class AppRemote {
         ipcMain.on(EVENT.app_ready, (e, config, windowName) => {
             if (windowName) {
                 Object.assign(this.appConfig, config);
+
+                // BUG #72 http://xuan.5upm.com/bug-view-72.html
+                // Electron Issue #10864 https://github.com/electron/electron/issues/10864
+                if (IS_WINDOWS_OS && ElectronApp.setAppUserModelId) {
+                    ElectronApp.setAppUserModelId(`com.cnezsoft.${this.appConfig.name || 'xuanxuan'}.desktop`);
+                }
+
                 this.createTrayIcon(windowName);
                 // 设置关于窗口
                 if (typeof ElectronApp.setAboutPanelOptions === 'function') {
