@@ -1315,8 +1315,6 @@ class chatModel extends model
         $url    = sprintf($this->config->chat->xxdDownloadUrl, $backend);
         $result = commonModel::http($url, $data);
 
-        $this->loadModel('setting')->setItem('system.common.xxserver.installed', 1);
-
         if($type == 'config')
         {
             $this->sendDownHeader('xxd.conf', 'conf', $result, strlen($result));
