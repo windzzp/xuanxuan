@@ -710,7 +710,7 @@ const buildBrowser = async (destRoot) => {
 
     // 创建 zip
     const zipFile = path.resolve(destRoot, '../', `${config.name}.${config.version}.${isBeta ? 'beta.' : ''}${isDebug ? 'debug.' : ''}browser.zip`);
-    await createZipFromDir(zipFile, destRoot, false);
+    await createZipFromDir(zipFile, destRoot, config.zipSubDir ? `${config.name}-browser` : false);
     console.log(`    ${chalk.green(chalk.bold('✓'))} 创建压缩包 ${chalk.underline(zipFile)}`);
 };
 
