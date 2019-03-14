@@ -501,7 +501,7 @@ class AppRemote {
                     buttons: [Lang.string('common.exitIM'), Lang.string('common.cancel')],
                     defaultId: 0,
                     type: 'question',
-                    message: Lang.string('common.comfirmQuiteIM')
+                    message: Lang.string('common.comfirmQuitIM')
                 }, response => {
                     if (response === 0) {
                         setTimeout(() => {
@@ -602,7 +602,7 @@ class AppRemote {
             if (options.onClosed) {
                 options.onClosed(name);
             }
-            this.tryQuiteOnAllWindowsClose();
+            this.tryQuitOnAllWindowsClose();
         });
 
         browserWindow.webContents.on('did-finish-load', () => {
@@ -766,14 +766,14 @@ class AppRemote {
      * @memberof AppRemote
      * @return {void}
      */
-    tryQuiteOnAllWindowsClose() {
+    tryQuitOnAllWindowsClose() {
         let hasWindowOpen = false;
         Object.keys(this.windows).forEach(windowName => {
             if (!hasWindowOpen && this.windows[windowName] && !this.markClose[windowName]) {
                 hasWindowOpen = true;
             }
         });
-        if (SHOW_LOG) console.log('>> tryQuiteOnAllWindowsClose', hasWindowOpen);
+        if (SHOW_LOG) console.log('>> tryQuitOnAllWindowsClose', hasWindowOpen);
         if (!hasWindowOpen) {
             this.quit();
         }
