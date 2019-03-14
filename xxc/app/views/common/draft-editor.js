@@ -21,24 +21,23 @@ import Lang from '../../core/lang';
  * @return {ReactNode|string|number|null|boolean} React 渲染内容
  * @private
  */
-const AtomicComponent = props => {
-    const key = props.block.getEntityAt(0);
+// eslint-disable-next-line react/prop-types
+const AtomicComponent = ({block, contentState}) => {
+    const key = block.getEntityAt(0);
     if (!key) {
         return null;
     }
-    const entity = Entity.get(key);
+    const entity = contentState.getEntity(key);
     const type = entity.getType();
     if (type === 'image') {
         const data = entity.getData();
-        return (<img
-            className="draft-editor-image"
-            src={data.src}
-            alt={data.alt || ''}
-        />);
-    } else if (type === 'emoji') {
-        const emoji = entity.getData().emoji;
-        const emojionePngPath = Emojione.imagePathPNG + emoji.unicode + '.png' + Emojione.cacheBustParam;
-        return <span><img className="emojione" style={{maxWidth: 20, maxHeight: 20}} contentEditable="false" data-offset-key={props.offsetKey} src={emojionePngPath} alt={Emojione.shortnameToUnicode(emoji.shortname)} title={emoji.name} />&nbsp;</span>;
+        return (
+            <img
+                className="draft-editor-image"
+                src={data.src}
+                alt={data.alt || ''}
+            />
+        );
     }
     return null;
 };
@@ -55,6 +54,7 @@ const findWithRegex = (regex, contentBlock, callback) => {
     const text = contentBlock.getText();
     let matchArr;
     let start;
+    // eslint-disable-next-line no-cond-assign
     while ((matchArr = regex.exec(text)) !== null) {
         start = matchArr.index;
         callback(start, start + matchArr[0].length);
@@ -66,7 +66,7 @@ const findWithRegex = (regex, contentBlock, callback) => {
  * @type {string}
  * @private
  */
-const langAtAll = Lang.string('chat.message.atAll');
+let langAtAll = null;
 
 /**
  * DraftJS CompositeDecorator 对象
@@ -77,43 +77,60 @@ const draftDecorator = new CompositeDecorator([{
     strategy: (contentBlock, callback, contentState) => {
         findWithRegex(Emojione.regUnicode, contentBlock, callback);
     },
-    component: (props) => {
-        const unicode = props.decoratedText.trim();
+    // eslint-disable-next-line react/prop-types
+    component: ({decoratedText, offsetKey, children}) => {
+        const unicode = decoratedText.trim();
         const map = Emojione.mapUnicodeCharactersToShort();
         const emoji = Emojione.emojioneList[map[unicode]];
         if (emoji) {
-            const emojionePngPath = Emojione.imagePathPNG + emoji.uc_base + '.' + Emojione.imageType;
-            const backgroundImage = 'url(' + emojionePngPath + ') no-repeat left top';
-            return <span title={unicode} data-offset-key={props.offsetKey} style={{width: 16, height: 16, display: 'inline-block', overflow: 'hidden', whiteSpace: 'nowrap', background: backgroundImage, backgroundSize: 'contain', textAlign: 'right', verticalAlign: 'bottom', position: 'relative', top: -2, fontSize: '16px', color: 'transparent'}}>{props.children}</span>;
+            const emojionePngPath = `${Emojione.imagePathPNG + emoji.uc_base}.${Emojione.imageType}`;
+            const backgroundImage = `url(${emojionePngPath}) no-repeat left top`;
+            const spanStyle = {
+                width: 16,
+                height: 16,
+                display: 'inline-block',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                background: backgroundImage,
+                backgroundSize: 'contain',
+                textAlign: 'right',
+                verticalAlign: 'bottom',
+                position: 'relative',
+                top: -2,
+                fontSize: '16px',
+                color: 'transparent'
+            };
+            return (<span title={unicode} data-offset-key={offsetKey} style={spanStyle}>{children}</span>);
         }
-        return <span data-offset-key={props.offsetKey}>{props.children}</span>;
+        return (<span data-offset-key={offsetKey}>{children}</span>);
     }
 }, {
     strategy: (contentBlock, callback, contentState) => {
-        findWithRegex(/@[\u4e00-\u9fa5_\w]+[，。,\.\/\s:@\n]/g, contentBlock, callback);
+        findWithRegex(/@[\u4e00-\u9fa5_\w]+[，。,./\s:@\n]/g, contentBlock, callback);
     },
-    component: (props) => {
-        const guess = props.decoratedText.substr(1).trim().replace(/[，。,\.\/\s:@\n]/g, '');
+    // eslint-disable-next-line react/prop-types
+    component: ({decoratedText, offsetKey, children}) => {
+        const guess = decoratedText.substr(1).trim().replace(/[，。,./\s:@\n]/g, '');
         if (guess) {
+            if (!langAtAll) {
+                langAtAll = Lang.string('chat.message.atAll');
+            }
             if (guess === 'all' || guess === langAtAll) {
-                return <span title={langAtAll} className="at-all text-primary" data-offset-key={props.offsetKey}>{props.children}</span>;
-            } else {
-                const member = App.members.guess(guess);
-                if (member && member.id) {
-                    return <a className="app-link text-primary" href={'@Member/' + member.id} title={'@' + member.displayName} data-offset-key={props.offsetKey}>{props.children}</a>;
-                }
+                return <span title={langAtAll} className="at-all text-primary" data-offset-key={offsetKey}>{children}</span>;
+            }
+            const member = App.members.guess(guess);
+            if (member && member.id) {
+                return (<a className="app-link text-primary" href={`@Member/${member.id}`} title={`@${member.displayName}`} data-offset-key={offsetKey}>{children}</a>);
             }
         }
-        return <span data-offset-key={props.offsetKey}>{props.children}</span>;
+        return children;
     }
 }, {
     strategy: (contentBlock, callback, contentState) => {
         findWithRegex(/(https?):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g, contentBlock, callback);
     },
-    component: (props) => {
-        const url = props.decoratedText;
-        return <a className="text-primary" data-offset-key={props.offsetKey} href={url}>{props.children}</a>;
-    }
+    // eslint-disable-next-line react/prop-types
+    component: ({decoratedText, offsetKey, children}) => (<a className="text-primary" data-offset-key={offsetKey} href={decoratedText}>{children}</a>)
 }]);
 
 
@@ -184,7 +201,9 @@ export default class DraftEditor extends PureComponent {
          * @see https://react.docschina.org/docs/state-and-lifecycle.html
          * @type {object}
          */
-        this.state = {editorState: props.defaultState || EditorState.createEmpty(draftDecorator)};
+        this.state = {
+            editorState: props.defaultState || EditorState.createEmpty(draftDecorator),
+        };
 
         this.onChange = this.onChange.bind(this);
         this.handleKeyCommand = this.handleKeyCommand.bind(this);
@@ -195,16 +214,34 @@ export default class DraftEditor extends PureComponent {
     }
 
     /**
-     * React 组件生命周期函数：`componentDidMount`
-     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
-    求的地方。在该方法里设置状态将会触发重渲。
+     * React 组件生命周期函数：`componentDidCatch`
+     * 在组件被渲染时发生错误时调用。
      *
-     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @see https://zh-hans.reactjs.org/docs/react-component.html#componentdidcatch
+     * @param {Error} error 错误对象
+     * @param {String} info 错误信息
      * @private
      * @memberof DraftEditor
      * @return {void}
      */
-    componentDidMount() {
+    componentDidCatch(error, info) {
+        this.forceUpdate();
+        if (DEBUG) {
+            console.warn('DraftEditor throwed a error', error, info);
+        }
+    }
+
+    /**
+     * React 组件生命周期函数：`componentWillUnmount`
+     * 在组件被卸载和销毁之前立刻调用。可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理
+    任何在componentDidMount环节创建的DOM元素。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentwillunmount
+     * @private
+     * @memberof DraftEditor
+     * @return {void}
+     */
+    componentWillUnmount() {
         if (this.lastFocusTimer) {
             clearTimeout(this.lastFocusTimer);
             this.lastFocusTimer = null;
@@ -490,6 +527,46 @@ export default class DraftEditor extends PureComponent {
         return result;
     }
 
+    getSelectedBlocks = () => {
+        const {editorState} = this.state;
+        const selectionState = editorState.getSelection();
+        const contentState = editorState.getCurrentContent();
+
+        const startKey = selectionState.getStartKey();
+        const endKey = selectionState.getEndKey();
+        const isSameBlock = startKey === endKey;
+        const startingBlock = contentState.getBlockForKey(startKey);
+        const selectedBlocks = [startingBlock];
+
+        if (!isSameBlock) {
+            let blockKey = startKey;
+
+            while (blockKey !== endKey) {
+                const nextBlock = contentState.getBlockAfter(blockKey);
+                selectedBlocks.push(nextBlock);
+                blockKey = nextBlock.getKey();
+            }
+        }
+
+        return selectedBlocks;
+    };
+
+    handleCompositionStart = () => {
+        if (this.getSelectedBlocks().length > 1) {
+            const {editorState} = this.state;
+            // if multi blocks in selection, remove selection range when composition start
+            const nextEditorState = EditorState.push(
+                editorState,
+                Modifier.removeRange(editorState.getCurrentContent(), editorState.getSelection(), 'backward'),
+                'remove-range'
+            );
+
+            this.setState({
+                editorState: nextEditorState
+            });
+        }
+    };
+
     /**
      * React 组件生命周期函数：Render
      * @private
@@ -509,18 +586,22 @@ export default class DraftEditor extends PureComponent {
             ...other
         } = this.props;
 
-        return (<div {...other} onClick={() => {this.focus(0);}}>
-            <Editor
-                ref={e => {this.editor = e;}}
-                placeholder={placeholder}
-                editorState={this.state.editorState}
-                onChange={this.onChange}
-                handleKeyCommand={this.handleKeyCommand}
-                handleReturn={this.handleReturn}
-                blockRendererFn={this.blockRendererFn}
-                handlePastedText={this.handlePastedText}
-                handlePastedFiles={this.handlePastedFiles}
-            />
-        </div>);
+        const {editorState} = this.state;
+
+        return (
+            <div {...other} onCompositionStart={this.handleCompositionStart} onClick={() => {this.focus(0);}}>
+                <Editor
+                    ref={e => {this.editor = e;}}
+                    placeholder={placeholder}
+                    editorState={editorState}
+                    onChange={this.onChange}
+                    handleKeyCommand={this.handleKeyCommand}
+                    handleReturn={this.handleReturn}
+                    blockRendererFn={this.blockRendererFn}
+                    handlePastedText={this.handlePastedText}
+                    handlePastedFiles={this.handlePastedFiles}
+                />
+            </div>
+        );
     }
 }
