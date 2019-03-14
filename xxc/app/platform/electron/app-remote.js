@@ -146,7 +146,9 @@ class AppRemote {
                 // BUG #72 http://xuan.5upm.com/bug-view-72.html
                 // Electron Issue #10864 https://github.com/electron/electron/issues/10864
                 if (IS_WINDOWS_OS && ElectronApp.setAppUserModelId) {
-                    ElectronApp.setAppUserModelId(`com.cnezsoft.${this.appConfig.name || 'xuanxuan'}.desktop`);
+                    const userModelId = `com.cnezsoft.${this.appConfig.name || 'xuanxuan'}`;
+                    ElectronApp.setAppUserModelId(userModelId);
+                    if (SHOW_LOG) console.log(`>> Set AppUserModelId to ${userModelId}.`);
                 }
 
                 this.createTrayIcon(windowName);
