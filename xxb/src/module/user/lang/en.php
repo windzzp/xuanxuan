@@ -84,7 +84,6 @@ $lang->user->reply       = 'My Reply';
 $lang->user->message     = 'My Message';
 
 $lang->user->inputAccount   = 'Please enter an account';
-$lang->user->inputColleague = "Please enter a colleauge name";
 $lang->user->inputPassword  = 'Please enter password';
 $lang->user->searchUser     = 'Search';
 
@@ -97,13 +96,6 @@ $lang->user->actionFail    = 'Failed.';
 $lang->user->uploadSuccess = 'Uploaded.';
 $lang->user->actionError   = 'Error, there are records created by this user.';
 $lang->user->retainAccount = 'You cannot set <strong>%s</strong> as an account.';
-
-$lang->user->reviewProcess['attend']   = 'Attend';
-$lang->user->reviewProcess['leave']    = 'Leave';
-$lang->user->reviewProcess['makeup']   = 'Makeup';
-$lang->user->reviewProcess['overtime'] = 'Overtime';
-$lang->user->reviewProcess['lieu']     = 'Lieu';
-$lang->user->reviewProcess['refund']   = 'Refund';
 
 $lang->user->forbidUser = 'Manage users';
 $lang->user->operate    = 'Operate';
@@ -123,21 +115,6 @@ $lang->user->notice->password = 'Numbers and letters, at least 6 characters.';
 
 $lang->user->login  = new stdclass();
 $lang->user->login->common  = "Login";
-$lang->user->login->welcome = 'Welcome';
-$lang->user->login->why     = 'Login to enjoy more features.';
-
-$lang->user->control = new stdclass();
-$lang->user->control->common      = 'Dashboard';
-$lang->user->control->welcome     = 'Welcome, <strong>%s</strong>';
-$lang->user->control->lblPassword = "Leave it blank and nothing will be changed.";
-
-$lang->user->control->menus[10] = '<i class="icon-large icon-user"></i> Profile <i class="icon-chevron-right"></i>|user|profile';
-$lang->user->control->menus[20] = '<i class="icon-large icon-edit"></i> Edit <i class="icon-chevron-right"></i>|user|edit';
-//$lang->user->control->menus[28] = '<i class="icon-large icon-comments-alt"></i> Messages <i class="icon-chevron-right"></i>|user|message';
-$lang->user->control->menus[30] = '<i class="icon-large icon-share"></i> Threads <i class="icon-chevron-right"></i>|user|thread';
-$lang->user->control->menus[40] = '<i class="icon-large icon-mail-reply-all"></i> Replies <i class="icon-chevron-right"></i>|user|reply';
-
-$lang->user->colleagueMenu = 'Colleague';
 
 $lang->dept = new stdclass();  
 $lang->dept->common     = 'Department';
@@ -149,7 +126,7 @@ $lang->dept->children   = 'Child';
 $lang->dept->desc       = 'Description';
 $lang->dept->keywords   = 'Tags';
 $lang->dept->moderators = 'Dept Manager';
-  
+
 $lang->user->roleList['']           = ''; 
 $lang->user->roleList['dev']        = 'Developer';
 $lang->user->roleList['pm']         = 'Project Manager';
@@ -167,28 +144,3 @@ $lang->user->roleList['servicemgr'] = 'Service Manager';
 $lang->user->roleList['supportmgr'] = 'Support Manager';
 $lang->user->roleList['top']        = 'Senior Manager';
 $lang->user->roleList['others']     = 'Others';
-
-$lang->user->mailContent = <<<EOT
-<html>
-<head>
-<style type='text/css'>
-body{margin:0; padding:0;}
-div{padding-left:30px;}
-</style>
-</head>
-<body>
-<div style='padding-top:20px;height:60px;background:#fafafa;border-bottom:1px solid #ddd;font-size:18px;font-weight:bold'> 密码修改 </div>
-<div style='margin-top:20px;'>
-<p>Hello, %s <br />
-Please click the link to change your password: <br />
-<a href='%s' target='_blank'>%s</a>
-</p>
-<p>Reset Key: %s</p>
-</div>
-<div style='height:20px;border-bottom:1px solid #ddd;'></div>
-<div style='margin:20px 0 0 0 ;'>
-System message. Please do not reply.
-</div>
-</body>
-</html>
-EOT;

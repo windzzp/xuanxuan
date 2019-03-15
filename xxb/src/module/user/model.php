@@ -98,28 +98,11 @@ class userModel extends model
     }
 
     /**
-     * Print use select.
-     * 
-     * @param  int    $name 
-     * @param  string $selectedItems 
-     * @param  string $attrib 
-     * @param  string $params 
-     * @param  int    $dept 
-     * @access public
-     * @return void
-     */
-    public function printSelect($name, $selectedItems = '', $attrib = '', $params = '', $dept = 0)
-    {
-        $options = $this->getPairs($params, $dept);
-        return html::select($name, $options, $selectedItems, $attrib);
-    }
-
-    /**
      * Get the basic info of some user.
      * 
      * @param mixed $users 
      * @access public
-     * @return void
+     * @return object
      */
     public function getBasicInfo($users)
     {
@@ -203,7 +186,7 @@ class userModel extends model
      * Get role list.
      * 
      * @access public
-     * @return void
+     * @return array
      */
     public function getRoleList()
     {
@@ -229,7 +212,7 @@ class userModel extends model
      * Create a user.
      * 
      * @access public
-     * @return void
+     * @return bool
      */
     public function create()
     {
@@ -254,6 +237,7 @@ class userModel extends model
             ->exec();
 
         $this->loadModel('action')->create('user', $this->dao->lastInsertID(), 'created');
+        return !dao::isError();
     }
 
     /**
@@ -261,7 +245,7 @@ class userModel extends model
      * 
      * @param  string $account 
      * @access public
-     * @return void
+     * @return object | bool
      */
     public function update($account, $from)
     {
@@ -336,7 +320,7 @@ class userModel extends model
      *          
      * @param  string $account 
      * @access public          
-     * @return void
+     * @return bool | mixed
      */     
     public function updatePassword($account)
     { 
@@ -357,7 +341,7 @@ class userModel extends model
      * @param  string    $account 
      * @param  string    $password 
      * @access public
-     * @return bool
+     * @return object
      */
     public function login($account, $password)
     {
@@ -458,7 +442,7 @@ class userModel extends model
      * Identify user by cookie.
      * 
      * @access public
-     * @return void
+     * @return bool | mixed
      */
     public function identifyByCookie()
     {
@@ -516,8 +500,7 @@ class userModel extends model
     /**
      * Keep the user in login state.
      * 
-     * @param  string    $account 
-     * @param  string    $password 
+     * @param  object $user 
      * @access public
      * @return void
      */
@@ -569,7 +552,7 @@ class userModel extends model
      *
      * @param  string $account
      * @access public
-     * @return void
+     * @return bool
      */
     public function forbid($account)
     {
@@ -619,7 +602,7 @@ class userModel extends model
      * @param  string    $password 
      * @param  string    $account 
      * @access public
-     * @return void
+     * @return string
      */
     public function createPassword($password, $account)
     {
@@ -632,7 +615,7 @@ class userModel extends model
      * @param  string    $password 
      * @param  object    $user 
      * @access public
-     * @return void
+     * @return bool
      */
     public function compareHashPassword($password, $user)
     {
@@ -655,7 +638,7 @@ class userModel extends model
      * Upload avatar.
      * 
      * @access public
-     * @return void
+     * @return array
      */
     public function uploadAvatar()
     {
