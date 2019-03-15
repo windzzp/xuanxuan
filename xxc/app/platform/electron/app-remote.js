@@ -341,6 +341,16 @@ class AppRemote {
                     click: () => {
                         this.createAppWindow();
                     }
+                },
+                {
+                    role: 'window',
+                    label: Lang.string('menu.window'),
+                    submenu: [
+                        {
+                            role: 'close',
+                            label: Lang.string('menu.close')
+                        }
+                    ]
                 }
             ]);
             ElectronApp.dock.setMenu(dockMenu);
