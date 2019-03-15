@@ -133,6 +133,12 @@ body {
 .app-message-item-time-label.as-dot:hover {
   color: #f1f1f1;
 }
+.sharing .app-message-content.content-type-text > .app-message-content-text {
+  outline: rgba(255,255,255,.1) 0.2rem solid;
+  border-color: transparent;
+  background-color: rgba(255,255,255,.1);
+  outline-offset: -0.05rem;
+}
 
 .app-chat-sendbox-toolbar {
   background-color: #2d2d2d;
@@ -202,4 +208,11 @@ body {
 .sharing .app-message-actions + .app-message-content {
   outline: #444 4px solid;
   background-color: #444;
+}
+
+.progress > .box.primary-pale {
+  background: rgba(255,255,255,.1)!important;
+}
+.progress .box > .bar.primary {
+  background: #8c9eff!important;
 }
