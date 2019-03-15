@@ -218,7 +218,6 @@ export default class UpdateGuide extends Component {
                 // 客户端升级模块不可用时，提示联系管理员进行升级
                 mainView = (
                     <div>
-                        <EmojioneIcon name=":crying_cat_face:" className="text-center space" />
                         <h3>{Lang.format('update.clientRequiredUpdateToLoginServer', serverUrl)}</h3>
                         <p>{Lang.format('update.versionsFormat', newVersion, currentVersion)}</p>
                         {updateReadmeView}
