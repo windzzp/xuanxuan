@@ -462,13 +462,24 @@ class AppRemote {
             iconCounter: 0
         };
 
+        let trayIconImg = null;
+        if (IS_MAC_OSX) {
+            const macTrayIconImg = nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-iconTemplate.png`);
+            if (!macTrayIconImg.isEmpty()) {
+                trayIconImg = macTrayIconImg;
+            }
+        }
+        if (!trayIconImg) {
+            trayIconImg = nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon.png`);
+        }
+
         /**
          * 通知栏图标图片缓存
          * @type {string[]}
          * @private
          */
         this._trayIcons = [
-            nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon.png`),
+            trayIconImg,
             nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-transparent.png`)
         ];
     }
