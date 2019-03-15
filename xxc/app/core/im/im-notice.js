@@ -1,5 +1,7 @@
 import {saveChatMessages, onChatMessages, forEachChat} from './im-chats';
-import {isActiveChat, renderChatMessageContent, getcurrentActiveChat} from './im-ui';
+import {
+    isActiveChat, renderChatMessageContent, getcurrentActiveChat, onActiveChat
+} from './im-ui';
 import DelayAction from '../../utils/delay-action';
 import {isMatchWindowCondition, updateNotice} from '../notice';
 import Lang, {onLangChange} from '../lang';
@@ -165,6 +167,9 @@ onChatMessages(updateChatNotice);
 
 // 监听语言变更事件，更新通知内容为对应语言的消息
 onLangChange(updateChatNotice);
+
+// 监听聊天激活事件
+onActiveChat(updateChatNotice);
 
 // 监听界面窗口激活事件
 if (platformUI.onWindowFocus) {
