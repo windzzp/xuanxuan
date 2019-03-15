@@ -500,10 +500,10 @@ class AppRemote {
             const now = new Date().getTime();
             if (this.lastRequestCloseTime && (now - this.lastRequestCloseTime) < 1000) {
                 electron.dialog.showMessageBox(appWindow, {
-                    buttons: [Lang.string('common.exitIM'), Lang.string('common.cancel')],
+                    buttons: [Lang.string('common.exitIM', '立即退出'), Lang.string('common.cancel', '取消')],
                     defaultId: 0,
                     type: 'question',
-                    message: Lang.string('common.comfirmQuitIM')
+                    message: Lang.string('common.comfirmQuitIM', '确定要退出吗？')
                 }, response => {
                     if (response === 0) {
                         setTimeout(() => {
