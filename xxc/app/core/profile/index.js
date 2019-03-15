@@ -61,7 +61,9 @@ export const setCurrentUser = newUser => {
         console.groupEnd();
     }
     if (!oldUser || oldUser.identify !== user.identify) {
-        notice.update();
+        notice.update({
+            userInfo: `${user.displayName} [${Lang.string(`member.status.${user.statusName}`)}]`
+        });
         events.emit(EVENT.swap, user);
     }
     return user;
@@ -131,6 +133,14 @@ export const isUserVertified = () => user && user.isVertified;
  * @returns {boolean}  如果为 `true` 则用户在线，否则为不在线
  */
 export const isUserOnline = () => user && user.isOnline;
+
+onUserStatusChange(() => {
+    if (user) {
+        notice.update({
+            userInfo: `${user.displayName} [${Lang.string(`member.status.${user.statusName}`)}]`
+        });
+    }
+});
 
 export default {
     EVENT,

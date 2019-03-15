@@ -32,11 +32,13 @@ export const setBadgeLabel = (label) => {
  * 更新通知栏图标
  * @param {string} title 通知栏图标上的工具提示文本（鼠标悬停时显示）
  * @param {boolean} [flash=false] 是否闪烁通知栏图标
+ * @param {string} [noticeTitle=''] 通知栏图标上的文本（仅适合 Mac）
  * @return {void}
  */
-export const updateTrayIcon = (title, flash = false) => {
+export const updateTrayIcon = (title, flash = false, noticeTitle = '') => {
     ui.setTrayTooltip(title);
     ui.flashTrayIcon(flash);
+    ui.setTrayTitle(noticeTitle);
 };
 
 export default {

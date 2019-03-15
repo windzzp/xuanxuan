@@ -874,6 +874,20 @@ class AppRemote {
     }
 
     /**
+     * 设置显示在状态栏中托盘图标旁边的标题 (支持ANSI色彩)
+     * @param {string} title 托盘图标标题
+     * @param {string} [windowName='main'] 窗口名称
+     * @memberof AppRemote
+     * @return {void}
+     */
+    trayIconTitle(title = '', windowName = 'main') {
+        const trayData = this._traysData && this._traysData[windowName];
+        if (trayData && trayData.tray.setTitle) {
+            trayData.tray.setTitle(title || '\r');
+        }
+    }
+
+    /**
      * 闪烁通知栏图标
      *
      * @param {boolean} [flash=true] 如果设置为 `true` 则闪烁图标；如果设置为 `false` 则取消闪烁图标
