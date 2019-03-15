@@ -1043,7 +1043,6 @@ class chatModel extends model
                 ->where('t1.status')->eq('waiting')
                 ->andWhere('t2.type')->eq('notify')
                 ->andWhere('t1.user')->in($onlineUsers)
-                ->groupBy('t1.message')
                 ->fetchAll();
         if(empty($messages)) return array();
 
