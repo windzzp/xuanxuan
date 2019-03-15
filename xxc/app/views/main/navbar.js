@@ -229,7 +229,7 @@ export default class Navbar extends Component {
         const dotView = <div className="label label-sm dock-right dock-top circle red badge">{newMessageCount}</div>;
 
         const navbarItemsView = navbarItems.map(item => (
-            <div className="nav-item hint--right" data-hint={item.label} key={item.to}>
+            <div className="nav-item hint--right" data-hint={item.label} key={item.to} onClick={this.handleMainNavItemClick}>
                 <Route path={item.to}>
                     {
                         ({match, location}) => {
