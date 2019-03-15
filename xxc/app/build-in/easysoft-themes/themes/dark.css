@@ -216,3 +216,11 @@ body {
 .progress .box > .bar.primary {
   background: #8c9eff!important;
 }
+
+.status-dot {
+  border-color: transparent!important;
+}
+.status-dot.status-unverified,
+.status-dot.status-disconnect {
+  background-color: rgba(255,255,255,.25)!important;
+}
