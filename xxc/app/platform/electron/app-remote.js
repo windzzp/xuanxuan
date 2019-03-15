@@ -462,13 +462,24 @@ class AppRemote {
             iconCounter: 0
         };
 
+        let trayIconImg = null;
+        if (IS_MAC_OSX) {
+            const macTrayIconImg = nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-iconTemplate.png`);
+            if (!macTrayIconImg.isEmpty()) {
+                trayIconImg = macTrayIconImg;
+            }
+        }
+        if (!trayIconImg) {
+            trayIconImg = nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon.png`);
+        }
+
         /**
          * 通知栏图标图片缓存
          * @type {string[]}
          * @private
          */
         this._trayIcons = [
-            nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon.png`),
+            trayIconImg,
             nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-transparent.png`)
         ];
     }
@@ -510,10 +521,10 @@ class AppRemote {
             const now = new Date().getTime();
             if (this.lastRequestCloseTime && (now - this.lastRequestCloseTime) < 1000) {
                 electron.dialog.showMessageBox(appWindow, {
-                    buttons: [Lang.string('common.exitIM'), Lang.string('common.cancel')],
+                    buttons: [Lang.string('common.exitIM', '立即退出'), Lang.string('common.cancel', '取消')],
                     defaultId: 0,
                     type: 'question',
-                    message: Lang.string('common.comfirmQuitIM')
+                    message: Lang.string('common.comfirmQuitIM', '确定要退出吗？')
                 }, response => {
                     if (response === 0) {
                         setTimeout(() => {

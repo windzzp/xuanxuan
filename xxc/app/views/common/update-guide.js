@@ -218,13 +218,12 @@ export default class UpdateGuide extends Component {
                 // 客户端升级模块不可用时，提示联系管理员进行升级
                 mainView = (
                     <div>
-                        <EmojioneIcon name=":crying_cat_face:" className="text-center space" />
-                        <h3>{Lang.format('update.clientRequiredUpdateToLoginServer', serverUrl)}</h3>
+                        <h3>{needUpdateForce ? Lang.format('update.clientRequiredUpdateToLoginServer', serverUrl) : Lang.string('update.message.newVersionAvaliable')}</h3>
                         <p>{Lang.format('update.versionsFormat', newVersion, currentVersion)}</p>
                         {updateReadmeView}
                         <p>{Lang.string('update.contactAdminToUpdate')}</p>
                         <div className="text-center has-padding-v">
-                            <button type="button" className="btn primary btn-wide" onClick={onRequestClose}>{Lang.string('common.close')}</button>
+                            <button type="button" className="btn primary btn-wide" onClick={needUpdateForce ? onRequestClose : this.skipNewVersion}>{Lang.string('common.close')}</button>
                         </div>
                     </div>
                 );

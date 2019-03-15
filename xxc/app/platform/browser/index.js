@@ -8,6 +8,7 @@ import ui from './ui';
 import dialog from './dialog';
 import notify from './notify';
 import net from './net';
+import language from './language';
 
 /**
  * 浏览器平台上所有可用的模块
@@ -24,4 +25,5 @@ export default {
     sound,
     net,
     dialog,
+    language,
 };

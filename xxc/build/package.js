@@ -704,7 +704,7 @@ const buildBrowser = async (destRoot) => {
     const copyPKG = () => copyFiles('./app/package.json', destRoot);
     const copyManifest = () => copyFiles('./app/manifest.json', destRoot);
     const copyIcons = () => copyFiles('./resources/**/*', `${destRoot}/resources`);
-    const copyLang = () => copyFiles('./app/lang/**/*', destRoot);
+    const copyLang = () => copyFiles('./app/lang/**/*', `${destRoot}/lang`);
 
     await Promise.all([copyDist(), copyMedia(), copyAssets(), copyIndexHTML(), copyPKG(), copyManifest(), copyIcons(), copyLang()]);
 
