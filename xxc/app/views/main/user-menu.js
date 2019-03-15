@@ -180,13 +180,13 @@ export default class UserMenu extends Component {
     };
 
     /**
-     * 处理检查更新请求
+     * 处理点击更新按钮事件
      * @memberof UserMenu
      * @private
      * @return {void}
      */
-    handleCheckUpdateItemClick = () => {
-        platform.call('autoUpdater.checkUpdate', App.profile.user);
+    handleUpdaterBtnClick = () => {
+        showUpdateGuideDialog();
         this.requestClose();
     };
 
@@ -236,7 +236,7 @@ export default class UserMenu extends Component {
                 <a className="item" onClick={this.handleSettingItemClick}><div className="title">{Lang.string('usermenu.setting')}</div></a>
                 <a className="item" onClick={this.handleSwitchBtnClick}><div className="title">{Lang.string('common.switchLanguage')}</div></a>
                 <a className="item" onClick={this.handleAboutItemClick}><div className="title">{Lang.string('usermenu.about')}</div></a>
-                {updaterStatus.needUpdate ? <a className="item" onClick={() => showUpdateGuideDialog()}><div className="title">{Lang.string('update.foundNewVersion')}</div></a> : null}
+                {updaterStatus.needUpdate ? <a className="item" onClick={this.handleUpdaterBtnClick}><div className="title">{Lang.string('update.foundNewVersion')}</div></a> : null}
                 <div className="divider" />
                 <a className="item" onClick={this.handleLogoutClick}><div className="title">{Lang.string('usermenu.logout')}</div></a>
                 {App.ui.canQuit && <a className="item" onClick={this.handleExitClick}><div className="title">{Lang.string('usermenu.exit')}</div></a>}
