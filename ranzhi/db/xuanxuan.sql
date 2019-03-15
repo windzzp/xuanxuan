@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS `im_messagestatus` (
   UNIQUE KEY `user` (`user`,`message`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+-- DROP TABLE IF EXISTS `im_xxcversion`;
 CREATE TABLE IF NOT EXISTS `im_xxcversion` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `version` char(10) NOT NULL DEFAULT '',
