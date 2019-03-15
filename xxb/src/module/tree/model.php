@@ -218,7 +218,7 @@ class treeModel extends model
      * 
      * @param  string $account 
      * @access public
-     * @return void
+     * @return object
      */
     public function getDeptManagedByMe($account)
     {
@@ -265,7 +265,7 @@ class treeModel extends model
      * @param  bool   $removeRoot 
      * @param  int    $root 
      * @access public
-     * @return string
+     * @return array
      */
     public function getOptionMenu($type = 'article', $startCategory = 0, $removeRoot = false, $root = 0)
     {
@@ -420,7 +420,7 @@ class treeModel extends model
      * @param  string $type 
      * @param  int    $startCategory 
      * @access public
-     * @return void
+     * @return object
      */
     public function buildMenuQuery($rootID, $type, $startCategory)
     {
@@ -546,7 +546,6 @@ class treeModel extends model
      */
     public function update($categoryID)
     {
-        $oldCategory = $this->getByID($categoryID);
         $category = fixer::input('post')
             ->stripTags('desc', $this->config->allowedTags)
             ->join('moderators', ',')
@@ -614,7 +613,8 @@ class treeModel extends model
      * Manage children of one category.
      * 
      * @param  string $type 
-     * @param  string $children 
+     * @param  int    $parent 
+     * @param  object $children 
      * @param  int    $root 
      * @access public
      * @return bool 

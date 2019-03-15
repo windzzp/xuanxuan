@@ -24,7 +24,7 @@ class actionModel extends model
      * @param  int    $objectID
      * @param  string $actionType
      * @param  string $comment
-     * @param  mix    $extra        the extra info of this action, like customer, contact, order etc.  according to different modules and actions, can set different extra.
+     * @param  string $extra        the extra info of this action, like customer, contact, order etc.  according to different modules and actions, can set different extra.
      * @param  string $actor
      * @param  int    $customer
      * @param  int    $contact
@@ -99,7 +99,7 @@ class actionModel extends model
      *
      * @param  int    $actionID
      * @access public
-     * @return object
+     * @return object | bool
      */
     public function getById($actionID)
     {
@@ -136,7 +136,7 @@ class actionModel extends model
             $this->config->objectTables[$objectType]             = TABLE_CATEGORY;
             $this->config->action->objectNameFields[$objectType] = 'name';
             $this->config->action->objectAppNames[$objectType]   = 'sys';
-            $this->lang->action->objectTypes[$objectType]        = isset($this->lang->$categoryType->common) ? $this->lang->$categoryType->common : $this->lang->tree->common;
+            $this->lang->action->objectTypes[$objectType]        = isset($this->lang->{$categoryType}->common) ? $this->lang->{$categoryType}->common : $this->lang->tree->common;
         }
 
         /* Group trashes by objectType, and get there name field. */

@@ -14,9 +14,10 @@ class ssoModel extends model
     /**
      * Identify user.
      * 
-     * @param  string $entry 
-     * @access public
-     * @return bool | object 
+     * @param $code
+     * @param $account
+     * @param $authcode
+     * @return bool
      */
     public function identify($code, $account, $authcode)
     {
@@ -37,7 +38,7 @@ class ssoModel extends model
     /**
      * Check ip if is allowed.
      * 
-     * @param  string $entry 
+     * @param  string $code 
      * @access public
      * @return bool 
      */
