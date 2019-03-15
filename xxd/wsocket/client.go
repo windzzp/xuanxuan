@@ -68,6 +68,10 @@ type SendMsg struct {
 
 //解析数据.
 func dataProcessing(message []byte, client *Client) error {
+	if message == nil {
+		return  nil
+	}
+
     parseData, err := api.ApiParse(message, util.Token)
 	parseData["client"] = client.conn.RemoteAddr()
     if err != nil {

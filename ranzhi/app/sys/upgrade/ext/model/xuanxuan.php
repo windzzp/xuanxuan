@@ -42,19 +42,6 @@ public function upgradeXuanxuan($fromVersion)
 }
 
 /**
- * Process key of xuanxuan.
- *
- * @access public
- * @return bool
- */
-public function processXuanxuanKey()
-{
-    $this->loadModel('setting')->setItem('system.sys.common.xuanxuan.key', $this->config->xuanxuan->key);
-    $this->setting->deleteItems('owner=system&app=sys&module=xuanxuan&key=key');
-    return !dao::isError();
-}
-
-/**
  * Process message status.
  *
  * @access public
@@ -85,21 +72,16 @@ public function processMessageStatus()
     return !dao::isError();
 }
 
-public function changeMessageStatusTable()
+/**
+ * Process key of xuanxuan.
+ *
+ * @access public
+ * @return bool
+ */
+public function processXuanxuanKey()
 {
-    $gids = $this->dao->select('gid')->from(TABLE_IM_MESSAGESTATUS)->where('status')->ne('sent')->fetchPairs('gid');
-    if(!empty($gids))
-    {
-        $messages = $this->dao->select('id,gid')->from(TABLE_IM_MESSAGE)->where('gid')->in($gids)->fetchPairs('gid', 'id');
-        foreach($messages as $gid => $message)
-        {
-            $this->dao->update(TABLE_IM_MESSAGESTATUS)->set('message')->eq($message)->where('gid')->eq($gid)->exec();
-        }
-    }
-    $this->dbh->exec('ALTER TABLE `' . TABLE_IM_MESSAGESTATUS . '` DROP INDEX `user`;');
-    $this->dbh->exec('ALTER TABLE `' . TABLE_IM_MESSAGESTATUS . '` DROP `gid`;');
-    $this->dbh->exec('ALTER TABLE `' . TABLE_IM_MESSAGESTATUS . '` ADD UNIQUE INDEX `user` (`user`, `message`);');
-    $this->dao->delete()->from(TABLE_IM_MESSAGESTATUS)->where('status')->eq('sent')->exec();
+    $this->loadModel('setting')->setItem('system.sys.common.xuanxuan.key', $this->config->xuanxuan->key);
+    $this->setting->deleteItems('owner=system&app=sys&module=xuanxuan&key=key');
     return !dao::isError();
 }
 
@@ -152,5 +134,27 @@ public function installSSOEntry()
 
     $this->dao->update(TABLE_FILE)->set('objectID')->eq($entryID)->where('id')->eq($fileID)->exec();
 
+    return !dao::isError();
+}
+
+/**
+ * Fix the history and Change messagestatus table.
+ * @return bool
+ */
+public function changeMessageStatusTable()
+{
+    $gids = $this->dao->select('gid')->from(TABLE_IM_MESSAGESTATUS)->where('status')->ne('sent')->fetchPairs('gid');
+    if(!empty($gids))
+    {
+        $messages = $this->dao->select('id,gid')->from(TABLE_IM_MESSAGE)->where('gid')->in($gids)->fetchPairs('gid', 'id');
+        foreach($messages as $gid => $message)
+        {
+            $this->dao->update(TABLE_IM_MESSAGESTATUS)->set('message')->eq($message)->where('gid')->eq($gid)->exec();
+        }
+    }
+    $this->dbh->exec('ALTER TABLE `' . TABLE_IM_MESSAGESTATUS . '` DROP INDEX `user`;');
+    $this->dbh->exec('ALTER TABLE `' . TABLE_IM_MESSAGESTATUS . '` DROP `gid`;');
+    $this->dbh->exec('ALTER TABLE `' . TABLE_IM_MESSAGESTATUS . '` ADD UNIQUE INDEX `user` (`user`, `message`);');
+    $this->dao->delete()->from(TABLE_IM_MESSAGESTATUS)->where('status')->eq('sent')->exec();
     return !dao::isError();
 }
