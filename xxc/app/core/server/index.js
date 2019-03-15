@@ -142,7 +142,7 @@ export const login = (user) => {
                 return Promise.reject(versionError);
             }
             const updateInfo = checkClientUpdateInfo(user);
-            if (!updateInfo.skipped && updateInfo.needUpdateForce) {
+            if (updateInfo.needUpdateForce) {
                 const error = new Error(`The server required a newer version client '${user.clientUpdate.version}', current version is '${pkg.version}'.`);
                 error.code = 'REQUIRE_UPDATE_CLIENT';
                 return Promise.reject(error);
