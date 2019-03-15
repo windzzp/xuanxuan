@@ -415,24 +415,6 @@ class AppRemote {
         // 创建一个通知栏图标
         const tray = new Tray(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon.png`);
 
-        // 设置通知栏图标右键菜单功能
-        const trayContextMenu = Menu.buildFromTemplate([
-            {
-                label: Lang.string('common.open'),
-                click: () => {
-                    this.showAndFocusWindow();
-                }
-            }, {
-                label: Lang.string('common.exit'),
-                click: () => {
-                    const browserWindow = this.windows[windowName];
-                    if (browserWindow) {
-                        browserWindow.webContents.send(EVENT.remote_app_quit, 'quit');
-                    }
-                }
-            }
-        ]);
-
         // 设置通知栏图标鼠标提示
         tray.setToolTip(Lang.string('app.title'));
 
@@ -443,6 +425,23 @@ class AppRemote {
 
         // 绑定通知栏图标右键点击事件
         tray.on('right-click', () => {
+            // 设置通知栏图标右键菜单功能
+            const trayContextMenu = Menu.buildFromTemplate([
+                {
+                    label: Lang.string('common.open'),
+                    click: () => {
+                        this.showAndFocusWindow();
+                    }
+                }, {
+                    label: Lang.string('common.exit'),
+                    click: () => {
+                        const browserWindow = this.windows[windowName];
+                        if (browserWindow) {
+                            browserWindow.webContents.send(EVENT.remote_app_quit, 'quit');
+                        }
+                    }
+                }
+            ]);
             tray.popUpContextMenu(trayContextMenu);
         });
 
@@ -870,6 +869,20 @@ class AppRemote {
         const trayData = this._traysData && this._traysData[windowName];
         if (trayData) {
             trayData.tray.setToolTip(tooltip || Lang.string('app.title'));
+        }
+    }
+
+    /**
+     * 设置显示在状态栏中托盘图标旁边的标题 (支持ANSI色彩)
+     * @param {string} title 托盘图标标题
+     * @param {string} [windowName='main'] 窗口名称
+     * @memberof AppRemote
+     * @return {void}
+     */
+    trayIconTitle(title = '', windowName = 'main') {
+        const trayData = this._traysData && this._traysData[windowName];
+        if (trayData && trayData.tray.setTitle) {
+            trayData.tray.setTitle(title);
         }
     }
 

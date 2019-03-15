@@ -9,8 +9,8 @@ import App from '../../core';
 import withReplaceView from '../with-replace-view';
 import pkg from '../../package.json';
 import AboutDialog from '../common/about-dialog';
-import {getLangDisplayName} from '../../core/lang';
 import Icon from '../../components/icon';
+import {onLangChange, getLangDisplayName} from '../../core/lang';
 
 /**
  * LoginForm 可替换组件形式
@@ -46,6 +46,19 @@ export default class LoginIndex extends PureComponent {
     static replaceViewPath = 'login/LoginIndex';
 
     /**
+     * React 组件属性类型检查
+     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
+     * @static
+     * @memberof LoginIndex
+     * @type {Object}
+     */
+    static propTypes = {
+        className: PropTypes.string,
+        userStatus: PropTypes.any,
+        children: PropTypes.any,
+    };
+
+    /**
      * React 组件默认属性
      * @see https://react.docschina.org/docs/react-component.html#defaultprops
      * @type {object}
@@ -59,17 +72,20 @@ export default class LoginIndex extends PureComponent {
     };
 
     /**
-     * React 组件属性类型检查
-     * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
-     * @static
-     * @memberof LoginIndex
-     * @type {Object}
+     * React 组件生命周期函数：`componentDidMount`
+     * 在组件被装配后立即调用。初始化使得DOM节点应该进行到这里。若你需要从远端加载数据，这是一个适合实现网络请
+    求的地方。在该方法里设置状态将会触发重渲。
+     *
+     * @see https://doc.react-china.org/docs/react-component.html#componentDidMount
+     * @private
+     * @memberof Index
+     * @return {void}
      */
-    static propTypes = {
-        className: PropTypes.string,
-        userStatus: PropTypes.any,
-        children: PropTypes.any,
-    };
+    componentDidMount() {
+        this.onLangChangeHandler = onLangChange(() => {
+            this.forceUpdate();
+        });
+    }
 
     /**
      * React 组件生命周期函数：Render

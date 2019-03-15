@@ -52,16 +52,22 @@ export const updateNotice = info => {
         notify.playSound(info.sound);
     }
 
+    const noticeCountLabel = info.notMuteCount ? `${info.notMuteCount > 99 ? '99+' : info.notMuteCount}` : '';
+
     if (notify.setBadgeLabel) {
-        notify.setBadgeLabel(info.notMuteCount || '');
+        notify.setBadgeLabel(noticeCountLabel);
     }
 
     if (notify.updateTrayIcon) {
+        let trayTitlePrefix = Lang.string('app.title');
+        if (info.userInfo) {
+            trayTitlePrefix = `${trayTitlePrefix} - ${info.userInfo}`;
+        }
         if (info.tray) {
-            const trayLabel = info.tray.label ? `${Lang.string('app.title')} - ${info.tray.label}` : Lang.string('app.title');
-            notify.updateTrayIcon(trayLabel, info.tray.flash);
+            const trayLabel = info.tray.label ? `${trayTitlePrefix} - ${info.tray.label}` : trayTitlePrefix;
+            notify.updateTrayIcon(trayLabel, info.tray.flash, noticeCountLabel);
         } else {
-            notify.updateTrayIcon(Lang.string('app.title'));
+            notify.updateTrayIcon(trayTitlePrefix);
         }
     }
 

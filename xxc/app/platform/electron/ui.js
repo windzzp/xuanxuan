@@ -95,6 +95,15 @@ export const setTrayTooltip = tooltip => {
 };
 
 /**
+ * 设置显示在状态栏中托盘图标旁边的标题 (支持ANSI色彩)
+ * @param {string} title 标题文本
+ * @return {void}
+ */
+export const setTrayTitle = title => {
+    return callRemote('trayIconTitle', title, browserWindowName);
+};
+
+/**
  * 设置是否闪烁通知栏图标
  * @param {boolean} [flash=true] 是否闪烁通知栏图标
  * @return {void}
@@ -402,6 +411,7 @@ export default {
     setShowInTaskbar,
     onWindowMinimize,
     setTrayTooltip,
+    setTrayTitle,
     flashTrayIcon,
     onRequestQuit,
     onRequestOpenUrl,

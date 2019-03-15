@@ -149,7 +149,14 @@ const updateChatNoticeTask = new DelayAction(() => {
     }
 
     lastNoticeInfo = {
-        total, chats: total, message, sound, tray, notMuteCount, muteCount,
+        total,
+        chats: total,
+        message,
+        sound,
+        tray,
+        notMuteCount,
+        muteCount,
+        userInfo: `${profile.user.displayName} [${Lang.string(`member.status.${profile.user.statusName}`)}]`
     };
     updateNotice(lastNoticeInfo);
 }, 200);
