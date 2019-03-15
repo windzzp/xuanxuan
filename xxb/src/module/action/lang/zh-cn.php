@@ -39,25 +39,25 @@ $lang->action->original = '原始格式';
 
 /* 用来描述操作历史记录。*/
 $lang->action->desc = new stdclass();
-$lang->action->desc->common                = '$date, <strong>$action</strong> by <strong>$actor</strong>。' . "\n";
-$lang->action->desc->extra                 = '$date, <strong>$action</strong> as <strong>$extra</strong> by <strong>$actor</strong>。' . "\n";
-$lang->action->desc->opened                = '$date, 由 <strong>$actor</strong> 创建。' . "\n";
-$lang->action->desc->created               = '$date, 由 <strong>$actor</strong> 创建。' . "\n";
-$lang->action->desc->edited                = '$date, 由 <strong>$actor</strong> 编辑。' . "\n";
-$lang->action->desc->deleted               = '$date, 由 <strong>$actor</strong> 删除。' . "\n";
-$lang->action->desc->deletedfile           = '$date, 由 <strong>$actor</strong> 删除了附件：<strong><i>$extra</i></strong>。' . "\n";
-$lang->action->desc->editfile              = '$date, 由 <strong>$actor</strong> 编辑了附件：<strong><i>$extra</i></strong>。' . "\n";
-$lang->action->desc->commented             = '$date, 由 <strong>$actor</strong> 添加备注。' . "\n";
-$lang->action->desc->activated             = '$date, 由 <strong>$actor</strong> 激活。' . "\n";
-$lang->action->desc->canceled              = '$date, 由 <strong>$actor</strong> 取消。' . "\n";
-$lang->action->desc->finished              = '$date, 由 <strong>$actor</strong> 完成。' . "\n";
-$lang->action->desc->diff1                 = '修改了 <strong><i>%s</i></strong>，旧值为 "%s"，新值为 "%s"。<br />' . "\n";
-$lang->action->desc->diff2                 = '修改了 <strong><i>%s</i></strong>，区别为：' . "\n" . "<blockquote>%s</blockquote>" . "\n<div class='hidden'>%s</div>";
-$lang->action->desc->diff3                 = "将文件名 %s 改为 %s 。\n";
-$lang->action->desc->hidden                = '$date, 由 <strong>$actor</strong> 隐藏。' . "\n";
-$lang->action->desc->undeleted             = '$date, 由 <strong>$actor</strong> 还原。' . "\n";
-$lang->action->desc->ignored               = '$date, 由 <strong>$actor</strong> 忽略。' . "\n";
-$lang->action->desc->imported              = '$date, 由 <strong>$actor</strong> 导入。' . "\n";
+$lang->action->desc->common      = '$date, <strong>$action</strong> by <strong>$actor</strong>。' . "\n";
+$lang->action->desc->extra       = '$date, <strong>$action</strong> as <strong>$extra</strong> by <strong>$actor</strong>。' . "\n";
+$lang->action->desc->opened      = '$date, 由 <strong>$actor</strong> 创建。' . "\n";
+$lang->action->desc->created     = '$date, 由 <strong>$actor</strong> 创建。' . "\n";
+$lang->action->desc->edited      = '$date, 由 <strong>$actor</strong> 编辑。' . "\n";
+$lang->action->desc->deleted     = '$date, 由 <strong>$actor</strong> 删除。' . "\n";
+$lang->action->desc->deletedfile = '$date, 由 <strong>$actor</strong> 删除了附件：<strong><i>$extra</i></strong>。' . "\n";
+$lang->action->desc->editfile    = '$date, 由 <strong>$actor</strong> 编辑了附件：<strong><i>$extra</i></strong>。' . "\n";
+$lang->action->desc->commented   = '$date, 由 <strong>$actor</strong> 添加备注。' . "\n";
+$lang->action->desc->activated   = '$date, 由 <strong>$actor</strong> 激活。' . "\n";
+$lang->action->desc->canceled    = '$date, 由 <strong>$actor</strong> 取消。' . "\n";
+$lang->action->desc->finished    = '$date, 由 <strong>$actor</strong> 完成。' . "\n";
+$lang->action->desc->diff1       = '修改了 <strong><i>%s</i></strong>，旧值为 "%s"，新值为 "%s"。<br />' . "\n";
+$lang->action->desc->diff2       = '修改了 <strong><i>%s</i></strong>，区别为：' . "\n" . "<blockquote>%s</blockquote>" . "\n<div class='hidden'>%s</div>";
+$lang->action->desc->diff3       = "将文件名 %s 改为 %s 。\n";
+$lang->action->desc->hidden      = '$date, 由 <strong>$actor</strong> 隐藏。' . "\n";
+$lang->action->desc->undeleted   = '$date, 由 <strong>$actor</strong> 还原。' . "\n";
+$lang->action->desc->ignored     = '$date, 由 <strong>$actor</strong> 忽略。' . "\n";
+$lang->action->desc->imported    = '$date, 由 <strong>$actor</strong> 导入。' . "\n";
 
 /* 用来显示动态信息。*/
 $lang->action->label = new stdclass();
@@ -85,9 +85,9 @@ $lang->action->search = new stdclass();
 $lang->action->search->label = (array)$lang->action->label;
 
 /* 用来生成相应对象的链接。*/
-$lang->action->label->space     = ' ';
-$lang->action->label->user      = '用户';
+$lang->action->label->space = ' ';
+$lang->action->label->user  = '用户';
 
 $lang->action->objectTypes['user'] = '用户';
 
-$lang->action->noticeTitle  = "%s <a href='%s' data-appid='%s'>%s</a>";
+$lang->action->noticeTitle = "%s <a href='%s' data-appid='%s'>%s</a>";
