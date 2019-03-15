@@ -883,7 +883,7 @@ class AppRemote {
     trayIconTitle(title = '', windowName = 'main') {
         const trayData = this._traysData && this._traysData[windowName];
         if (trayData && trayData.tray.setTitle) {
-            trayData.tray.setTitle(title || '\r');
+            trayData.tray.setTitle(title);
         }
     }
 

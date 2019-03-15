@@ -52,8 +52,10 @@ export const updateNotice = info => {
         notify.playSound(info.sound);
     }
 
+    const noticeCountLabel = info.notMuteCount ? `${info.notMuteCount > 99 ? '99+' : info.notMuteCount}` : '';
+
     if (notify.setBadgeLabel) {
-        notify.setBadgeLabel(info.notMuteCount || '');
+        notify.setBadgeLabel(noticeCountLabel);
     }
 
     if (notify.updateTrayIcon) {
@@ -63,7 +65,7 @@ export const updateNotice = info => {
         }
         if (info.tray) {
             const trayLabel = info.tray.label ? `${trayTitlePrefix} - ${info.tray.label}` : trayTitlePrefix;
-            notify.updateTrayIcon(trayLabel, info.tray.flash, info.notMuteCount || '');
+            notify.updateTrayIcon(trayLabel, info.tray.flash, noticeCountLabel);
         } else {
             notify.updateTrayIcon(trayTitlePrefix);
         }
