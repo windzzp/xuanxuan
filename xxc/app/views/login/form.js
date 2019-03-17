@@ -243,13 +243,13 @@ export default class LoginForm extends PureComponent {
             }
             const message = error ? Lang.error(error) : null;
             let messageDetail = null;
-            if (error !== message || error.message !== message) {
+            if (error && (error !== message || error.message !== message)) {
                 messageDetail = (typeof error === 'object' && error.message) ? error.message : error;
             }
-            if (error.detail) {
+            if (error && error.detail) {
                 messageDetail += `\n-------------------\n${error.detail}`;
             }
-            if (error.stack) {
+            if (error && error.stack) {
                 messageDetail += `\n-------------------\nStack: ${error.stack}`;
             }
             this.setState({message, messageDetail, logining: false});
