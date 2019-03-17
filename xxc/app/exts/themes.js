@@ -82,7 +82,7 @@ export const applyTheme = theme => {
             appendLinkElement.remove();
         }
     } else {
-        const {styleFile} = theme;
+        let {styleFile} = theme;
         if (!styleFile) {
             applyTheme('');
             return 'THEME_HAS_NO_CSS_FILE';
@@ -90,6 +90,9 @@ export const applyTheme = theme => {
         if (theme.isAppend) {
             if (themeLinkElement.href !== theDefaultThemeStyle) {
                 themeLinkElement.href = theDefaultThemeStyle;
+            }
+            if (DEBUG) {
+                styleFile = `${styleFile}?t=${new Date().getTime()}`;
             }
             let appendLinkElement = document.getElementById('appendTheme');
             if (!appendLinkElement) {
