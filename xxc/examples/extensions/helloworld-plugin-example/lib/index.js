@@ -10,7 +10,7 @@ let timerTask = null;
 
 module.exports = {
     onAttach: (ext) => {
-        console.log('>> 扩展【helloworld-plugin-example】：扩展加载完成，刚刚加载等扩展名称是：' + ext.displayName);
+        console.log('>> 扩展【helloworld-plugin-example】：扩展加载完成，刚刚加载等扩展名称是：', ext.displayName);
     },
 
     onReady: (ext) => {
@@ -27,13 +27,13 @@ module.exports = {
     onUserLogin: (user, error) => {
         // 当用户登录时在此处可以进行相关操作，下面以显示当前登录等结果和用户名为例
         if (user && !error) { // 表示登录成功
-            console.log('>> 扩展【helloworld-plugin-example】：用户登录成功了，用户名称是：' + user.displayName);
+            console.log('>> 扩展【helloworld-plugin-example】：用户登录成功了，用户名称是：', user.displayName);
         }
     },
 
     onUserLogout: (user) => {
         if (user) {
-            console.log('>> 扩展【helloworld-plugin-example】：用户退出登录了，用户名称是：' + user.displayName);
+            console.log('>> 扩展【helloworld-plugin-example】：用户退出登录了，用户名称是：', user.displayName);
         }
     },
 
