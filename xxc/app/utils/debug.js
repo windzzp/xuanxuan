@@ -15,24 +15,6 @@ if (typeof DEBUG === 'undefined') {
 }
 
 if (DEBUG) {
-    // 移除 react router 的警告信息
-    console._error = console.error;
-    console.error = (errMessage, ...args) => {
-        if (typeof errMessage === 'string' && (errMessage.indexOf('Warning: Hash history cannot PUSH the same path;') === 0 || errMessage.startsWith('Warning: Failed prop type: Prop paneStyle passed to SplitPane. Has invalid keys userSelect') || errMessage.startsWith('Warning: Failed prop type: Prop style passed'))) {
-            return;
-        }
-        return console._error(errMessage, ...args);
-    };
-
-    // 移除 react router 的警告信息
-    console._warn = console.warn;
-    console.warn = (errMessage, ...args) => {
-        if (typeof errMessage === 'string' && errMessage.startsWith('iterable.length has been deprecated, use iterable.size or iterable.count')) {
-            return;
-        }
-        return console._warn(errMessage, ...args);
-    };
-
     // 美化浏览器端环境日志输出
     if (isBrowserEnv) {
         const STYLE = {
