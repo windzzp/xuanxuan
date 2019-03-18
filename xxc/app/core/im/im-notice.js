@@ -148,6 +148,8 @@ const updateChatNoticeTask = new DelayAction(() => {
         tray.flash = true;
     }
 
+    const {user} = profile;
+
     lastNoticeInfo = {
         total,
         chats: total,
@@ -156,7 +158,7 @@ const updateChatNoticeTask = new DelayAction(() => {
         tray,
         notMuteCount,
         muteCount,
-        userInfo: `${profile.user.displayName} [${Lang.string(`member.status.${profile.user.statusName}`)}]`
+        userInfo: user && `${user.displayName} [${Lang.string(`member.status.${user.statusName}`)}]`
     };
     updateNotice(lastNoticeInfo);
 }, 200);
