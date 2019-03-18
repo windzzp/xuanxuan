@@ -90,16 +90,16 @@ const saveAndAttach = (extension, override = true, tryHotAttach = true) => {
     } : null);
 };
 
-/**
- * 安装扩展
- * @param {Extension} extension 要加载的扩展
- * @param {boolean} [override=true] 是否覆盖数据库中已有的扩展
- * @returns {Promise} 使用 Promise 异步返回处理结果
- * @private
- */
-const saveExtension = (extension, override = true) => {
-    return saveAndAttach(extension, override, false);
-};
+// /**
+//  * 安装扩展
+//  * @param {Extension} extension 要加载的扩展
+//  * @param {boolean} [override=true] 是否覆盖数据库中已有的扩展
+//  * @returns {Promise} 使用 Promise 异步返回处理结果
+//  * @private
+//  */
+// const saveExtension = (extension, override = true) => {
+//     return saveAndAttach(extension, override, false);
+// };
 
 /**
  * 重新加载正在开发的扩展
@@ -162,19 +162,19 @@ const installFromDir = (dir, deleteDir = false, devMode = false) => {
             if (dbExt.version && extension.version && compareVersions(dbExt.version, extension.version) < 0) {
                 return Modal.confirm(Lang.format('ext.updateInstall.format', dbExt.displayName, dbExt.version, extension.version)).then(confirmed => {
                     if (confirmed) {
-                        return saveExtension(extension);
+                        return saveAndAttach(extension, true, false);
                     }
                     return Promise.reject();
                 });
             }
             return Modal.confirm(Lang.format('ext.overrideInstall.format', dbExt.displayName, dbExt.version || '*', extension.displayName, extension.version || '*')).then(confirmed => {
                 if (confirmed) {
-                    return saveExtension(extension);
+                    return saveAndAttach(extension, true, false);
                 }
                 return Promise.reject();
             });
         }
-        return saveExtension(extension, false);
+        return saveAndAttach(extension, false, false);
     }).then(() => {
         if (!devMode) {
             return fse.emptyDir(extension.localPath).then(() => {
@@ -182,21 +182,10 @@ const installFromDir = (dir, deleteDir = false, devMode = false) => {
             });
         }
         return Promise.resolve(extension);
-    }).then(() => {
+    }).then(() => saveAndAttach(extension, true, true)).finally(() => {
         if (deleteDir) {
-            return fse.remove(dir).then(() => {
-                return Promise.resolve(extension);
-            });
+            return fse.remove(dir);
         }
-        saveExtension(extension, true);
-        return Promise.resolve(extension);
-    }).catch(error => {
-        if (deleteDir) {
-            return fse.remove(dir).then(() => {
-                return Promise.reject(error);
-            });
-        }
-        return Promise.reject(error);
     });
 };
 
@@ -241,6 +230,7 @@ export const openInstallExtensionDialog = (callback, devMode = false) => {
                     if (callback) {
                         callback(extension);
                     }
+                    return extension;
                 }).catch(error => {
                     if (callback) {
                         callback(false, error);
@@ -251,20 +241,17 @@ export const openInstallExtensionDialog = (callback, devMode = false) => {
                     if (callback) {
                         callback(extension);
                     }
+                    return extension;
                 }).catch(error => {
                     if (callback) {
                         callback(false, error);
                     }
                 });
-            } else {
-                if (callback) {
-                    callback(false, 'EXT_NOT_EXT_SOURCE');
-                }
+            } else if (callback) {
+                callback(false, 'EXT_NOT_EXT_SOURCE');
             }
-        } else {
-            if (callback) {
-                callback(false);
-            }
+        } else if (callback) {
+            callback(false);
         }
     });
 };

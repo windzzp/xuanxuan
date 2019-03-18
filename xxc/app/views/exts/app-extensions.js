@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../../utils/html-helper';
+import {classes} from '../../utils/html-helper';
 import Lang from '../../core/lang';
 import SearchControl from '../../components/search-control';
 import Icon from '../../components/icon';
@@ -77,7 +77,6 @@ export default class AppExtensions extends Component {
          */
         this.state = {
             search: '',
-            showInstalled: true,
             type: (app.params && app.params.type) ? app.params.type : ''
         };
     }
@@ -120,7 +119,8 @@ export default class AppExtensions extends Component {
      * @return {void}
      */
     handleNavItemClick(extType) {
-        this.props.app.params = {type: extType.type};
+        const {app} = this.props;
+        app.params = {type: extType.type};
         this.setState({type: extType.type});
     }
 
@@ -233,53 +233,59 @@ export default class AppExtensions extends Component {
             {type: 'theme', label: Lang.string('ext.extensions.themes')},
         ];
 
-        return (<div className={HTML.classes('app-ext-extensions dock column single', className)}>
-            <header className="app-ext-extensions-header app-ext-common-header has-padding heading divider flex-none">
-                <nav className="nav">
+        return (
+            <div className={classes('app-ext-extensions dock column single', className)}>
+                <header className="app-ext-extensions-header app-ext-common-header has-padding heading divider flex-none">
+                    <nav className="nav">
+                        {
+                            extensionTypes.map(extType => <a key={extType.type} onClick={this.handleNavItemClick.bind(this, extType)} className={extType.type === type ? 'active' : ''}>{extType.label}</a>)
+                        }
+                    </nav>
+                    <div className="search-box">
+                        <SearchControl onSearchChange={this.handleSearchChange} />
+                    </div>
+                    <nav className="toolbar">
+                        <div className="nav-item has-padding-sm hint--left" data-hint={Lang.string('ext.extensions.installLocalExtTip')}>
+                            <Button onClick={this.handleInstallBtnClick} className="rounded outline green hover-solid" icon="package-variant" label={Lang.string('ext.extensions.installLocalExtension')} />
+                        </div>
+                        <div className="nav-item has-padding-sm hint--left" data-hint={Lang.string('ext.extensions.moreActions')}>
+                            <Button onClick={this.handleMenuBtnClick} className="rounded outline primary hover-solid" icon="menu" />
+                        </div>
+                    </nav>
+                </header>
+                {
+                    needRestartExts && needRestartExts.length ? (
+                        <div className="warning-pale text-warning flex-none center-content">
+                            <div className="heading">
+                                <Icon name="information" />
+                                <div className="title">{Lang.format('ext.extensions.needRestartTip.format', needRestartExts.length)}</div>
+                                <Button onClick={this.handleRestartBtnClick} className="outline warning hover-solid rounded" label={Lang.string('ext.extensions.restart')} icon="restart" />
+                            </div>
+                        </div>
+                    ) : null
+                }
+                <div className="app-exts-list list has-padding multi-lines with-avatar flex-auto scroll-y content-start">
+                    <div className="heading">
+                        <div className="title">{Lang.string(search ? 'ext.extensions.searchResult' : 'ext.extensions.installed')}{type ? ` - ${Lang.string(`ext.type.${type}`)}` : ''} ({extensions.length})</div>
+                    </div>
                     {
-                        extensionTypes.map(extType => {
-                            return <a key={extType.type} onClick={this.handleNavItemClick.bind(this, extType)} className={extType.type === type ? 'active' : ''}>{extType.label}</a>;
+                        extensions.map(ext => {
+                            const onContextMenu = this.handleSettingBtnClick.bind(this, ext);
+                            return (
+                                <ExtensionListItem
+                                    showType={!type}
+                                    key={ext.name}
+                                    onContextMenu={onContextMenu}
+                                    onSettingBtnClick={onContextMenu}
+                                    onClick={this.handleExtensionItemClick.bind(this, ext)}
+                                    className="item flex-middle"
+                                    extension={ext}
+                                />
+                            );
                         })
                     }
-                </nav>
-                <div className="search-box">
-                    <SearchControl onSearchChange={this.handleSearchChange} />
                 </div>
-                <nav className="toolbar">
-                    <div className="nav-item has-padding-sm hint--left" data-hint={Lang.string('ext.extensions.installLocalExtTip')}>
-                        <Button onClick={this.handleInstallBtnClick} className="rounded outline green hover-solid" icon="package-variant" label={Lang.string('ext.extensions.installLocalExtension')} />
-                    </div>
-                    <div className="nav-item has-padding-sm hint--left" data-hint={Lang.string('ext.extensions.moreActions')}>
-                        <Button onClick={this.handleMenuBtnClick} className="rounded outline primary hover-solid" icon="menu" />
-                    </div>
-                </nav>
-            </header>
-            {
-                needRestartExts && needRestartExts.length ? <div className="warning-pale text-warning flex-none center-content"><div className="heading">
-                    <Icon name="information" />
-                    <div className="title">{Lang.format('ext.extensions.needRestartTip.format', needRestartExts.length)}</div>
-                    <Button onClick={this.handleRestartBtnClick} className="outline warning hover-solid rounded" label={Lang.string('ext.extensions.restart')} icon="restart" />
-                </div></div> : null
-            }
-            <div className="app-exts-list list has-padding multi-lines with-avatar flex-auto scroll-y content-start">
-                <div className="heading">
-                    <div className="title">{Lang.string(search ? 'ext.extensions.searchResult' : 'ext.extensions.installed')}{type ? ` - ${Lang.string('ext.type.' + type)}` : ''} ({extensions.length})</div>
-                </div>
-                {
-                    extensions.map(ext => {
-                        const onContextMenu = this.handleSettingBtnClick.bind(this, ext);
-                        return (<ExtensionListItem
-                            showType={!type}
-                            key={ext.name}
-                            onContextMenu={onContextMenu}
-                            onSettingBtnClick={onContextMenu}
-                            onClick={this.handleExtensionItemClick.bind(this, ext)}
-                            className="item flex-middle"
-                            extension={ext}
-                        />);
-                    })
-                }
             </div>
-        </div>);
+        );
     }
 }

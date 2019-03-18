@@ -4,6 +4,7 @@ import server, {socket} from '../../core/server';
 import {createExtension} from '../extension';
 import timeSequence from '../../utils/time-sequence';
 import platform from '../../platform';
+import Lang from '../../core/lang';
 
 // 从平台功能访问对象获取功能模块对象
 const {fs, net, ui: platformUI} = platform.modules;
@@ -110,9 +111,7 @@ const downloadRemoteExtension = ext => {
  * @param {Extension} ext 服务器扩展
  * @returns {Promise} 使用 Promise 异步返回处理结果
  */
-const loadRemoteExtension = ext => {
-    return fs.readJson(Path.join(ext.localPath, 'package.json'), {throws: false});
-};
+const loadRemoteExtension = ext => fs.readJson(Path.join(ext.localPath, 'package.json'), {throws: false});
 
 /**
  * 处理服务器推送的远程扩展
@@ -160,13 +159,10 @@ const processExtensions = async () => {
                     onChangeListener(newExt, 'add');
                 }
             } else {
-                theExt.setLoadRemoteResult(false, new Error(`Cannot read package.json from ${theExt.localPath}`));
+                theExt.setLoadRemoteResult(false, `${Lang.string('ext.extension.pkgHasError')}${theExt.localPath}`);
             }
         } catch (error) {
-            if (DEBUG) {
-                console.warn('Process remote extension error', {error, extension: theExt});
-            }
-            theExt.setLoadRemoteResult(false, error);
+            theExt.setLoadRemoteResult(false, `${Lang.error(error)}(${theExt.download})`);
         }
 
         if (!theExt.delete && onChangeListener) {

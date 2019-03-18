@@ -151,6 +151,20 @@ export default class Extension {
     }
 
     /**
+     * 获取错误信息
+     *
+     * @param {string} [name='_'] 错误名称
+     * @return {string} 错误描述文本
+     * @memberof Extension
+     */
+    getError(name = '_') {
+        if (this.hasError) {
+            return this.errors.filter(x => x.name === name).map(x => x.error).join('\n');
+        }
+        return null;
+    }
+
+    /**
      * 获取扩展名称的拼音字符串
      * @memberof Extension
      * @type {string}
@@ -473,7 +487,7 @@ export default class Extension {
         this._data.loadRemoteFailed = !result;
         this._data.remoteLoaded = !!result;
         if (error) {
-            this.addError(error);
+            this.addError('download', error);
         }
     }
 
