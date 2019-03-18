@@ -804,7 +804,7 @@ export const renderChatMessageContent = (messageContent, {renderMarkdown = false
         if (renderMarkdown) {
             messageContent = Markdown(messageContent);
         } else {
-            messageContent = linkify(escape(messageContent));
+            messageContent = linkify(escape(messageContent).replace(/<br>/g, '\n'));
         }
         messageContent = Emojione.toImage(messageContent);
         if (onRenderChatMessageContentListener) {
