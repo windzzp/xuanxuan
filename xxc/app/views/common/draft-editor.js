@@ -4,7 +4,6 @@ import {
     Editor,
     EditorState,
     RichUtils,
-    Entity,
     AtomicBlockUtils,
     convertToRaw,
     CompositeDecorator,
@@ -84,7 +83,7 @@ const draftDecorator = new CompositeDecorator([{
         const emoji = Emojione.emojioneList[map[unicode]];
         if (emoji) {
             const emojionePngPath = `${Emojione.imagePathPNG + emoji.uc_base}.${Emojione.imageType}`;
-            const backgroundImage = `url(${emojionePngPath}) no-repeat left top`;
+            const backgroundImage = `url(${emojionePngPath}) left top / contain no-repeat`;
             const spanStyle = {
                 width: 16,
                 height: 16,
@@ -92,7 +91,6 @@ const draftDecorator = new CompositeDecorator([{
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 background: backgroundImage,
-                backgroundSize: 'contain',
                 textAlign: 'right',
                 verticalAlign: 'bottom',
                 position: 'relative',
