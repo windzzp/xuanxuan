@@ -130,10 +130,10 @@ export default class ExtensionListItem extends Component {
                         {extension.description}
                     </div>
                     <div className="small row flex-middle">
+                        {isDev ? <span><small className="label primary circle">{Lang.string('ext.extensions.developing')}</small> &nbsp;</span> : null}
                         {disabled ? <span><span className="label circle dark">{Lang.string('ext.disabled')}</span>&nbsp; </span> : null}
                         {!disabled && !avaliable ? <span><span className="label circle dark">{Lang.string('ext.unavailable')}</span>&nbsp; </span> : null}
                         {extension.needRestart && <span className="hint--top relative" style={{zIndex: 10}} data-hint={Lang.string('ext.extension.needRestartTip')}><small className="label circle warning">{Lang.string('ext.extension.needRestart')}</small> &nbsp;</span>}
-                        {isDev ? <span><small className="label primary circle">{Lang.string('ext.extensions.developing')}</small> &nbsp;</span> : null}
                         {typeLabelView}
                         <span className="text-gray">{extension.author ? `@${extension.authorName}` : ''}</span>
                     </div>
