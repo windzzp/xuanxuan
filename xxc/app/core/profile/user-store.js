@@ -39,13 +39,29 @@ export const getUserFromStore = (identify) => {
         }
         return user;
     }
+    return null;
+};
+
+/**
+ * 从本地存储中获取最近一次使用的用户
+ * @param {Set<string>|Array<string>} excludes 要排除的用户清单
+ * @return {Object} 返回找到的用户对象
+ */
+export const getLastUserFromStore = (excludes) => {
     const users = getAllUsersFromStore();
     if (!users) {
         return null;
     }
+    if (Array.isArray(excludes)) {
+        excludes = new Set(excludes);
+    }
+    const hasExcludes = excludes instanceof Set;
     let maxTime = 0;
     let maxTimeIndentify = null;
     Object.keys(users).forEach(identify => {
+        if (hasExcludes && excludes.has(identify)) {
+            return;
+        }
         const time = users[identify];
         if (time > maxTime) {
             maxTime = time;
@@ -61,7 +77,21 @@ export const getUserFromStore = (identify) => {
  */
 export const getUserListFromStore = () => {
     const users = getAllUsersFromStore();
-    return Object.keys(users).map(getUserFromStore).sort((x, y) => y.lastLoginTime - x.lastLoginTime);
+    const list = [];
+    let hasDeletedUser = false;
+    Object.keys(users).forEach(identify => {
+        const user = getUserFromStore(identify);
+        if (user) {
+            list.push(user);
+        } else {
+            delete users[identify];
+            hasDeletedUser = true;
+        }
+    });
+    if (hasDeletedUser) {
+        Store.set(KEY_USER_LIST, users);
+    }
+    return list;
 };
 
 /**
@@ -114,4 +144,5 @@ export default {
     userList: getUserListFromStore,
     saveUser: saveUserToStore,
     removeUser: removeUserFromStore,
+    getLastUser: getLastUserFromStore,
 };

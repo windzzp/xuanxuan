@@ -3,7 +3,7 @@ import events from '../events';
 import User from './user';
 import Lang from '../lang';
 import notice from '../notice';
-import {getUserFromStore} from './user-store';
+import {getUserFromStore, getLastUserFromStore} from './user-store';
 
 /**
  * 事件表
@@ -99,9 +99,10 @@ export const onUserConfigRequestUpload = listener => (events.on(User.EVENT.confi
 
 /**
  * 获取上次保存的用户数据
- * @return {Object}
+ * @param {Set<string>|Array<string>} excludes 要排除的用户清单
+ * @return {Object} 返回找到的用户对象
  */
-export const getLastSavedUser = () => getUserFromStore();
+export const getLastSavedUser = getLastUserFromStore;
 
 /**
  * 判定给定的用户或成员是否是当前登录用户
