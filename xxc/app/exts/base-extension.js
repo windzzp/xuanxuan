@@ -824,10 +824,13 @@ export default class Extension {
             }
 
             this._loadTime = new Date().getTime() - start;
+            if (this._loadTime > 100) {
+                this.addError('main', `It takes more than 100ms(${this._loadTime}) to load the module.`);
+            }
             this._loaded = true;
 
             if (DEBUG) {
-                console.collapse('Extension Attach', 'greenBg', this.name, 'greenPale', `spend time: ${this._loadTime}ms`, 'orange');
+                console.collapse('Extension Attach', 'greenBg', this.name, 'greenPale', `spend time: ${this._loadTime}ms`, this._loadTime > 100 ? 'red' : 'green');
                 console.trace('extension', this);
                 console.log('module', this._module);
                 console.groupEnd();
