@@ -722,6 +722,18 @@ export default class Extension {
     }
 
     /**
+     * 获取扩展配置数据存储键名称
+     *
+     * @readonly
+     * @memberof Extension
+     * @type {string}
+     * @private
+     */
+    get configStoreName() {
+        return `EXTENSION::${this.name}::config`;
+    }
+
+    /**
      * 获取扩展配置项值
      *
      * @param {?string} key 配置名称
@@ -730,7 +742,7 @@ export default class Extension {
      */
     getConfig(key) {
         if (!this._config) {
-            this._config = Store.get(`EXTENSION::${this.name}::config`, {});
+            this._config = Store.get(this.configStoreName, {});
         }
         return key === undefined ? this._config : this._config[key];
     }
@@ -751,7 +763,16 @@ export default class Extension {
             config[key] = value;
         }
         this._config = config;
-        Store.set(`EXTENSION::${this.name}::config`, this._config);
+        Store.set(this.configStoreName, this._config);
+    }
+
+    /**
+     * 删除扩展配置数据
+     * @memberof Extension
+     * @returns {void}
+     */
+    deleteConfig() {
+        Store.remove(this.configStoreName);
     }
 
     /**
@@ -910,6 +931,9 @@ export default class Extension {
         }
         this._module = null;
         this._loaded = false;
+
+        this.deleteConfig();
+
         if (DEBUG) {
             console.collapse('Extension Detach', 'greenBg', this.name, 'greenPale');
             console.trace('extension', this);
