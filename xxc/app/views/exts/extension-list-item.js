@@ -130,7 +130,7 @@ export default class ExtensionListItem extends Component {
                         {extension.description}
                     </div>
                     <div className="small row flex-middle">
-                        {isDev ? <span><small className="label primary circle">{Lang.string('ext.extensions.developing')}</small> &nbsp;</span> : null}
+                        {isDev ? <span><small className="label info circle">{Lang.string('ext.extensions.developing')}</small> &nbsp;</span> : null}
                         {disabled ? <span><span className="label circle dark">{Lang.string('ext.disabled')}</span>&nbsp; </span> : null}
                         {!disabled && !avaliable ? <span><span className="label circle dark">{Lang.string('ext.unavailable')}</span>&nbsp; </span> : null}
                         {extension.needRestart && <span className="hint--top relative" style={{zIndex: 10}} data-hint={Lang.string('ext.extension.needRestartTip')}><small className="label circle warning">{Lang.string('ext.extension.needRestart')}</small> &nbsp;</span>}
@@ -139,7 +139,7 @@ export default class ExtensionListItem extends Component {
                     </div>
                     {isDev && (
                         <div className="has-padding small infos user-selectable">
-                            <ul className="no-margin">
+                            <ul className="no-margin" style={{wordBreak: 'break-all'}}>
                                 <li><strong>{Lang.string('ext.extension.loadPath')}</strong>: <span className="code">{extension.localPath}</span></li>
                                 <li><strong>{Lang.string('ext.extension.installTime')}</strong>: <span className="code">{formatDate(extension.installTime, 'yyyy-MM-dd hh:mm:ss')}</span> &nbsp; <strong>{Lang.string('ext.extension.updateTime')}</strong>: <span className="code">{formatDate(extension.updateTime, 'yyyy-MM-dd hh:mm:ss')}</span></li>
                                 {extension.loadTime ? <li><strong>{Lang.string('ext.extension.loadTime')}</strong>: <span className={`code${extension.loadTime > 50 ? ' text-red' : ''}`}>{extension.loadTime}ms</span></li> : null}
