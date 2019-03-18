@@ -118,8 +118,8 @@ export const executeCommand = (command, ...params) => {
  * @return {Promise<any, Error>} 通过 Promise 返回命令执行结果 (Return result with Promise)
  */
 export const executeCommandLine = (commandLine, commandContext = null) => {
-    if (commandLine.includes('!')) {
-        return commandLine.split('!').forEach(cLine => {
+    if (commandLine.includes('|')) {
+        return commandLine.split('|').forEach(cLine => {
             if (cLine) {
                 executeCommandLine(cLine, commandContext);
             }

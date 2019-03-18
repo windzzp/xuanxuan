@@ -346,9 +346,10 @@ export const openUrl = (url, targetElement, event, context) => {
         emitAppLinkClick(targetElement, ...params);
         return true;
     }
-    if (url[0] === '!' || url.startsWith('xxc:')) {
+    const firstChar = url[0];
+    if (firstChar === '!' || firstChar === '|' || url.startsWith('xxc:')) {
         // eslint-disable-next-line no-nested-ternary
-        url = url.substr(url[0] === '!' ? 1 : (url.startsWith('xxc://') ? 6 : 4));
+        url = url.substr((firstChar === '!' || firstChar === '|') ? 1 : (url.startsWith('xxc://') ? 6 : 4));
         executeCommandLine(url, Object.assign({targetElement, event}, context));
         return true;
     }
