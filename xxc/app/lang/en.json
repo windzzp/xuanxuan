@@ -312,7 +312,7 @@
     "ext.extension.loadTime": "Load",
     "ext.extension.needRestart": "Restart",
     "ext.extension.needRestartTip": "Restart Xuanxuan after the extension is installed or changed.",
-    "ext.extension.pkgHasError": "Error in this extension (package.json)",
+    "ext.extension.pkgHasError": "Error in this extension:",
     "ext.extension.updateTime": "Update",
     "ext.extensions.all": "All",
     "ext.extensions.apps": "App",

@@ -312,7 +312,7 @@
     "ext.extension.loadTime": "模块加载耗时",
     "ext.extension.needRestart": "需要重启",
     "ext.extension.needRestartTip": "此扩展刚刚安装或者发生更改，需要重新启动程序后生效",
-    "ext.extension.pkgHasError": "此扩展配置文件（package.json）中包含有错误：",
+    "ext.extension.pkgHasError": "此扩展包含有错误：",
     "ext.extension.updateTime": "更新时间",
     "ext.extensions.all": "全部",
     "ext.extensions.apps": "应用",

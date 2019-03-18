@@ -115,9 +115,10 @@ export default class Extension {
      * 添加一个该扩展的错误信息
      * @param {string} name 错误名称
      * @param {string} error 错误信息
+     * @param {boolean} [single=false] 是否确保同名错误唯一
      * @return {void}
      */
-    addError(name, error) {
+    addError(name, error, single = false) {
         if (!error) {
             error = name;
             name = '_';
@@ -129,7 +130,13 @@ export default class Extension {
         if (DEBUG) {
             console.color(`Extension.${this.name}`, 'greenBg', name, 'greenPale', error, 'red');
         }
-        this._errors.push({name, error});
+        if (single) {
+            const index = this._errors.findIndex(x => x.name === name);
+            if (index > -1) {
+                this._errors.splice(index, 1);
+            }
+        }
+        this._errors.push({name, error, time: new Date().getTime()});
     }
 
     /**
@@ -816,6 +823,8 @@ export default class Extension {
                         console.groupEnd();
                     }
                     this._module = {};
+
+                    this.addError('loadModule()', `Some errors occurred while loading the module:\n${err.message}\n${err.stack}`, true);
                 }
             }
 
@@ -825,7 +834,7 @@ export default class Extension {
 
             this._loadTime = new Date().getTime() - start;
             if (this._loadTime > 100) {
-                this.addError('main', `It takes more than 100ms(${this._loadTime}) to load the module.`);
+                this.addError('loadModule()', `It takes more than 100ms(${this._loadTime}) to load the module.`, true);
             }
             this._loaded = true;
 
@@ -985,13 +994,14 @@ export default class Extension {
                 return extModule[methodName].apply(this, params);
             } catch (err) {
                 if (DEBUG) {
-                    console.collapse('Extension Attach', 'greenBg', this.name, 'redPale', `call module method '${methodName}' error`, 'red');
+                    console.collapse('Extension', 'greenBg', this.name, 'redPale', `call module method '${methodName}' error`, 'red');
                     console.log('methodName', methodName);
                     console.log('params', params);
-                    console.log('error', err);
+                    console.error('error', err);
                     console.log('extension', this);
                     console.groupEnd();
                 }
+                this.addError(`modlue.${methodName}()`, `Some errors occurred while call module method ".${methodName}(${params ? params.map(JSON.stringify).join(', ') : ''})":\n${err.message}\n${err.stack}`, true);
             }
         }
     }

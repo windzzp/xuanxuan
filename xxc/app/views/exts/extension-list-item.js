@@ -138,7 +138,7 @@ export default class ExtensionListItem extends Component {
                         <span className="text-gray">{extension.author ? `@${extension.authorName}` : ''}</span>
                     </div>
                     {isDev && (
-                        <div className="has-padding small infos">
+                        <div className="has-padding small infos user-selectable">
                             <ul className="no-margin">
                                 <li><strong>{Lang.string('ext.extension.loadPath')}</strong>: <span className="code">{extension.localPath}</span></li>
                                 <li><strong>{Lang.string('ext.extension.installTime')}</strong>: <span className="code">{formatDate(extension.installTime, 'yyyy-MM-dd hh:mm:ss')}</span> &nbsp; <strong>{Lang.string('ext.extension.updateTime')}</strong>: <span className="code">{formatDate(extension.updateTime, 'yyyy-MM-dd hh:mm:ss')}</span></li>
@@ -147,11 +147,11 @@ export default class ExtensionListItem extends Component {
                         </div>
                     )}
                     {(isDev && extension.hasError) && (
-                        <div className="has-padding small errors">
-                            <div>{Lang.string('ext.extension.pkgHasError')}</div>
-                            <ul className="no-margin">
+                        <div className="has-padding small errors user-selectable">
+                            <div className="text-danger">{Lang.string('ext.extension.pkgHasError')}</div>
+                            <ul className="no-margin" style={{whiteSpace: 'pre-wrap', wordBreak: 'break-all'}}>
                                 {
-                                    extension.errors.map(error => <li key={error.name}><strong className="code">{error.name}</strong>: {error.error}</li>)
+                                    extension.errors.map(error => <li key={error.name}><span className="muted">{formatDate(error.time, 'yyyy-MM-dd hh:mm:ss')}</span> <strong className="code">{error.name}</strong> : {error.error}</li>)
                                 }
                             </ul>
                         </div>
