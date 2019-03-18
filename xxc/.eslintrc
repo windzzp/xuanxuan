@@ -20,6 +20,7 @@
   "rules": {
     "arrow-parens": ["off"],
     "consistent-return": "off",
+    "newline-per-chained-call": "off",
     "comma-dangle": "off",
     "generator-star-spacing": "off",
     "import/no-extraneous-dependencies": "off",
