@@ -38,7 +38,8 @@ if (!gotTheLock) {
         ElectronApp.quit();
         process.exit(0);
     } catch (_) {} // eslint-disable-line
-} else {
+} else if (process.hrtime()[0] > 5) {
+    // hack alert: 上面的 if 是确保界面加载完成后再进行弹窗，防止用户心急点击打开好多次从而报错，但可能得想个别的办法
     // 监听请求打开第二个实例事件，提示用户创建一个新的聊天窗口
     ElectronApp.on('second-instance', (/* event, commandLine, workingDirectory */) => {
         application.confirmCreateAppWindow();
