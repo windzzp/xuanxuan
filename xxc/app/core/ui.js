@@ -923,6 +923,15 @@ onLangChange(() => {
     setTitle(Lang.string('app.title'));
 });
 
+// 检查是否为当前时间白天还是黑夜，用于开发动态主题
+const checkDayOrNight = () => {
+    const hours = new Date().getHours();
+    const isNight = hours >= 18 || hours <= 6;
+    document.body.classList.toggle('daytime-night', isNight);
+};
+checkDayOrNight();
+setInterval(checkDayOrNight, 1000 * 60 * 60);
+
 export default {
     entryParams,
     get canQuit() {

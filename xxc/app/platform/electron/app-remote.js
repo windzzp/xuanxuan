@@ -1,5 +1,5 @@
 import electron, {
-    BrowserWindow, app as ElectronApp, Tray, Menu, nativeImage, globalShortcut, ipcMain, dialog, shell
+    BrowserWindow, app as ElectronApp, Tray, Menu, nativeImage, globalShortcut, ipcMain, dialog, shell, systemPreferences
 } from 'electron';
 import {spawn} from 'child_process';
 import EVENT from './remote-events';
@@ -597,7 +597,7 @@ class AppRemote {
             autoHideMenuBar: !IS_MAC_OSX,
             backgroundColor: IS_MAC_OSX ? null : '#ffffff',
             show: DEBUG,
-            vibrancy: 'light',
+            vibrancy: systemPreferences.isDarkMode() ? 'dark' : 'light',
             webPreferences: {
                 webSecurity: false,
                 nodeIntegration: true,

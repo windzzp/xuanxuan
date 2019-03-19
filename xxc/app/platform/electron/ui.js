@@ -385,11 +385,14 @@ const init = (config) => {
     // 向主进程发送应用窗口界面准备就绪事件
     ipcSend(EVENT.app_ready, config, browserWindowName);
 
+    // 检查当前操作系统是否设置为暗黑模式，用于自动适配主题
     document.body.classList.toggle('os-dark-mode', isDarkMode());
     const {subscribeNotification} = Remote.systemPreferences;
     if (subscribeNotification) {
         subscribeNotification('AppleInterfaceThemeChangedNotification', () => {
-            document.body.classList.toggle('os-dark-mode', isDarkMode());
+            const isInDarkMode = isDarkMode();
+            document.body.classList.toggle('os-dark-mode', isInDarkMode);
+            browserWindow.setVibrancy(isInDarkMode ? 'dark' : 'light');
         });
     }
 };
