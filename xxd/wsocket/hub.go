@@ -11,6 +11,19 @@ package wsocket
 
 import "xxd/util"
 
+// safely close channel, prevents closing the channel twice
+// https://go101.org/article/channel-closing.html
+func safeClose(ch chan []byte) (justClosed bool) {
+    defer func() {
+        if recover() != nil {
+            util.Log("error", "Tried to close a closed chan")
+            justClosed = false
+        }
+    }()
+    close(ch)
+    return true
+}
+
 // hub maintains the set of active clients and broadcasts messages to the
 // clients.
 type Hub struct {
@@ -75,7 +88,7 @@ func (h *Hub) run() {
 
             // 收到失败的socket就进行注销
             if _, ok := h.clients[client.serverName][client.userID]; ok {
-                close(client.send)
+                safeClose(client.send)
                 delete(h.clients[client.serverName], client.userID)
                 util.DBInsertOffline(client.serverName, client.userID)
             }
