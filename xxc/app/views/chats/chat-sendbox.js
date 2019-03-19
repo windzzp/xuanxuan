@@ -111,7 +111,7 @@ export default class ChatSendbox extends Component {
             if (content && content.content) {
                 switch (content.type) {
                 case 'image':
-                    this.editbox.appendImage(content.content);
+                    this.appendImages(content.content);
                     break;
                 default:
                     this.editbox.appendContent(content.content);
@@ -158,7 +158,7 @@ export default class ChatSendbox extends Component {
      * @memberof ChatSendbox
      * @return {void}
      */
-    appendImages(images) {
+    async appendImages(images) {
         if (images instanceof FileList) {
             const files = images;
             images = [];
@@ -169,9 +169,16 @@ export default class ChatSendbox extends Component {
         if (!Array.isArray(images)) {
             images = [images];
         }
-        images.forEach(image => {
-            this.editbox.appendImage(image);
+        const appendImage = image => new Promise((resolve) => {
+            this.editbox.appendImage(image, resolve);
         });
+        for (const image of images) {
+            try {
+                // eslint-disable-next-line no-await-in-loop
+                await appendImage(image);
+            // eslint-disable-next-line no-empty
+            } catch (_) {}
+        }
         this.focusEditor();
     }
 
