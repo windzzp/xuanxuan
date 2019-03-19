@@ -82,7 +82,6 @@ export default class ChatTitle extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            copiedChatID: false,
             typing: false,
         };
     }
@@ -128,7 +127,6 @@ export default class ChatTitle extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         return (isJustLangSwitched()
             || nextState.typing !== this.state.typing
-            || nextState.copiedChatID !== this.state.copiedChatID
             || this.props.className !== nextProps.className
             || this.props.children !== nextProps.children
             || this.props.chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId
@@ -147,10 +145,6 @@ export default class ChatTitle extends Component {
      * @return {void}
      */
     componentWillUnmount() {
-        if (this.copiedHintTimer) {
-            clearTimeout(this.copiedHintTimer);
-            this.copiedHintTimer = null;
-        }
         if (this.onChatTypingHandler) {
             events.off(this.onChatTypingHandler);
         }
@@ -158,26 +152,6 @@ export default class ChatTitle extends Component {
             clearTimeout(this.lastTypeTimer);
             this.lastTypeTimer = null;
         }
-    }
-
-    /**
-     * 复制讨论组ID
-     * @param {string} gid 讨论组ID
-     * @return {void}
-    */
-    copyChatID = () => {
-        const {chat} = this.props;
-        const {gid} = chat;
-        Platform.call('clipboard.writeText', gid);
-        this.setState({copiedChatID: true}, () => {
-            if (this.copiedHintTimer) {
-                clearTimeout(this.copiedHintTimer);
-            }
-            this.copiedHintTimer = setTimeout(() => {
-                this.setState({copiedChatID: false});
-                this.copiedHintTimer = null;
-            }, 1000);
-        });
     }
 
     /**
@@ -195,7 +169,7 @@ export default class ChatTitle extends Component {
             children,
             ...other
         } = this.props;
-        const {copiedChatID, typing} = this.state;
+        const {typing} = this.state;
         const denyShowMemberProfile = Config.ui['chat.denyShowMemberProfile'];
         const chatName = chat.getDisplayName(App, true);
         const theOtherOne = chat.isOne2One ? chat.getTheOtherOne(App) : null;
@@ -217,11 +191,8 @@ export default class ChatTitle extends Component {
         const hideChatAvatar = Config.ui['chat.hideChatAvatar'];
         let chatAvatarView = null;
         if (!hideChatAvatar) {
-            if ((!denyShowMemberProfile && theOtherOne)) {
-                chatAvatarView = <ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} onClick={onTitleClick} />;
-            } else {
-                chatAvatarView = <div className={classes('hint--bottom-right', {'hint--success': copiedChatID})} data-hint={`${chat.gid.slice(0, 7)}...${Lang.string(copiedChatID ? 'common.copied' : 'chat.copyChatGID')}`} onClick={this.copyChatID}><ChatAvatar chat={chat} size={24} className={theOtherOne ? 'state' : ''} /></div>;
-            }
+            const avatarClickable = !denyShowMemberProfile && theOtherOne;
+            chatAvatarView = <ChatAvatar chat={chat} size={24} className={avatarClickable ? 'state' : ''} onClick={onTitleClick} />;
         }
 
         let typingView = null;
