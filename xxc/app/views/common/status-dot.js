@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {classes, rem} from '../../utils/html-helper';
 import {STATUS} from '../../core/models/member';
 import Lang from '../../core/lang';
-import App from '../../core';
+import {isUserOnline} from '../../core/profile';
 
 /**
  * 状态颜色表
@@ -86,7 +86,7 @@ export default class StatusDot extends PureComponent {
             ...other
         } = this.props;
 
-        if (App.profile.isUserOnline) {
+        if (isUserOnline()) {
             status = STATUS.getName(status);
         } else {
             status = 'disconnect';

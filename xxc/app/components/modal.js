@@ -1,6 +1,6 @@
 import React from 'react';
 import Display from './display';
-import HTML from '../utils/html-helper';
+import {classes} from '../utils/html-helper';
 import Icon from './icon';
 import timeSequence from '../utils/time-sequence';
 import Lang from '../core/lang';
@@ -55,7 +55,7 @@ export const showModal = (props = {}, callback = null) => {
         props.id = timeSequence();
     }
 
-    className = HTML.classes('modal layer rounded', className || '');
+    className = classes('modal layer rounded', className || '');
 
     if (actions === undefined) {
         actions = true;
@@ -119,21 +119,25 @@ export const showModal = (props = {}, callback = null) => {
             }
         };
 
-        footer = (<footer className="footer toolbar">
-            {
-                actions.map((action, actionIndex) => {
-                    return <button className={HTML.classes('btn', action.className, action.type ? `action-${action.type}` : null)} type="button" onClick={handleActionClick.bind(null, action)} key={action.id || actionIndex} title={action.label}>{action.label}</button>;
-                })
-            }
-        </footer>);
+        footer = (
+            <footer className="footer toolbar">
+                {
+                    actions.map((action, actionIndex) => {
+                        return <button className={classes('btn', action.className, action.type ? `action-${action.type}` : null)} type="button" onClick={handleActionClick.bind(null, action)} key={action.id || actionIndex} title={action.label}>{action.label}</button>;
+                    })
+                }
+            </footer>
+        );
     }
 
-    const header = (title || closeButton) ? (<header className={HTML.classes('heading', headingClassName)}>
+    const header = (title || closeButton) ? (<header className={classes('heading', headingClassName)}>
         <div className="title">{title}</div>
         {closeButton && <nav style={{overflow: 'visible'}} data-hint={Lang.string('common.close')} className="nav hint--bottom"><a className="close" onClick={() => (Display.remove(props.id))}><Icon name="close" /></a></nav>}
     </header>) : null;
 
-    props = Object.assign({}, props, {className, header, footer, closeButton, plugName: 'modal'});
+    props = Object.assign({}, props, {
+        className, header, footer, closeButton, plugName: 'modal'
+    });
     delete props.title;
     delete props.closeButton;
     delete props.actions;

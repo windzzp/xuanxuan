@@ -4,9 +4,9 @@ import Avatar from '../../components/avatar';
 import Icon from '../../components/icon';
 import Image from '../../components/image';
 import {classes} from '../../utils/html-helper';
-import App from '../../core';
 import _StatusDot from './status-dot';
 import withReplaceView from '../with-replace-view';
+import profile from '../../core/profile';
 
 /**
  * StatusDot 可替换组件形式
@@ -101,7 +101,8 @@ export default class UserAvatar extends Component {
             return <Avatar className={classes('user-avatar', shape, className)} icon="account" {...other}>{statusDot}</Avatar>;
         }
 
-        const avatar = user.getAvatar ? user.getAvatar(App.user && App.user.server) : user.avatar;
+        const {user: currentUser} = profile;
+        const avatar = user.getAvatar ? user.getAvatar(currentUser && currentUser.server) : user.avatar;
         if (avatar) {
             if (avatar.startsWith('icon-') || avatar.startsWith('mdi-')) {
                 return <Avatar skin={user.accentColor || {code: user.id, textColor: '#fff'}} className={classes('user-avatar', shape, className)} icon={avatar} {...other}>{statusDot}</Avatar>;
