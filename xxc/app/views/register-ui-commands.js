@@ -4,6 +4,7 @@ import {registerCommand} from '../core/commander';
 import {getChat} from '../core/im/im-chats';
 import {getCurrentActiveChatGID} from '../core/im/im-ui';
 import {showUpdateGuideDialog} from './common/update-guide-dialog';
+import {showMessager} from '../components/messager';
 
 export default () => {
     registerCommand('showChatSendCodeDialog', (context, chat) => {
@@ -23,4 +24,6 @@ export default () => {
     });
 
     registerCommand('showUpdateGuideDialog', () => showUpdateGuideDialog());
+
+    registerCommand('showMessager', (context, message) => showMessager(message, context.options));
 };

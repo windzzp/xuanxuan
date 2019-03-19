@@ -12,7 +12,7 @@ import _HomeIndex from './views/index';
 import {ready} from './core/runtime';
 import {triggerReady} from './core/ui';
 import withReplaceView from './views/with-replace-view';
-import registerDialogCommands from './views/register-dialogs-commands';
+import registerUICommands from './views/register-ui-commands';
 
 /**
  * HomeIndex 可替换组件形式
@@ -34,8 +34,8 @@ ready(() => {
             document.body.classList.remove('no-animation');
         }, 2000);
 
-        // 注册对话框命令
-        registerDialogCommands();
+        // 注册界面交互命令
+        registerUICommands();
 
         // 触发界面就绪事件
         triggerReady();
