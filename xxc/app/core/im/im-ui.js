@@ -4,7 +4,7 @@ import chats, {getChat} from './im-chats';
 import Lang from '../lang';
 import Server, {deleteChatMessage} from './im-server';
 import members from '../members';
-import StringHelper from '../../utils/string-helper';
+import StringHelper, {formatBytes} from '../../utils/string-helper';
 import DateHelper from '../../utils/date-helper';
 import Modal from '../../components/modal';
 import ContextMenu from '../../components/context-menu';
@@ -27,10 +27,13 @@ import {
     addContextMenuCreator, getMenuItemsForContext, tryAddDividerItem, tryRemoveLastDivider
 } from '../context-menu';
 import ui from '../ui';
-import {registerCommand, executeCommandLine} from '../commander';
+import {registerCommand, executeCommandLine, executeCommand} from '../commander';
 import Config from '../../config';
 import platform from '../../platform';
 import ChatCacheInfo from './chat-cache-info.ts';
+import {checkUploadFileSize} from './im-files';
+import {showConfirmSendFilesDialog} from '../../views/chats/confirm-send-files-dialog';
+
 
 /**
  * 当前激活的聊天实例 ID
@@ -239,6 +242,49 @@ export const sendContentToChat = (content, type = 'text', cgid = null, clear = f
         Server.sendFileMessage(content, chats.get(cgid));
     } else {
         return events.emit(`${EVENT.sendContentToChat}.${cgid}`, {content, type, clear});
+    }
+};
+
+/**
+ * 一次性向聊天发送多个文件
+ * @param {FileList|File[]} fileList 要发送的文件
+ * @param {string} [cgid=null] 聊天 gid
+ * @return {void}
+ */
+export const sendFilesToChat = (fileList, cgid = null) => {
+    if (!fileList || !fileList.length) {
+        return;
+    }
+    let hasError = false;
+    let hasEmptyFile = false;
+    let isAllImageFiles = true;
+    const files = [];
+    for (let i = 0; i < fileList.length; ++i) {
+        const file = fileList[i];
+        if (checkUploadFileSize(file.size)) {
+            files.push(file);
+            if (!file.type.startsWith('image/')) {
+                isAllImageFiles = false;
+            }
+        } else {
+            hasError = true;
+            if (file.size <= 0) hasEmptyFile = true;
+        }
+    }
+    console.log('files', files);
+    if (files.length) {
+        if (isAllImageFiles) {
+            sendContentToChat(files, 'image', cgid);
+        } else {
+            showConfirmSendFilesDialog(files).then(result => result && files.forEach(file => sendContentToChat(file, 'file', cgid))); // eslint-disable-line
+        }
+    }
+    if (hasError) {
+        if (hasEmptyFile) {
+            executeCommand('showMessager', Lang.error('UPLOAD_FILE_IS_ZEOR_SIZE'), {type: 'warning'});
+        } else {
+            executeCommand('showMessager', Lang.error({code: 'UPLOAD_FILE_IS_TOO_LARGE', formats: formatBytes(profile.user.uploadFileSize)}), {type: 'warning'});
+        }
     }
 };
 

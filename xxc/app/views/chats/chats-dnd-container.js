@@ -1,11 +1,10 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
-import {formatBytes} from '../../utils/string-helper';
 import Lang from '../../core/lang';
-import App from '../../core';
-import {checkUploadFileSize} from '../../core/im/im-files';
+import {sendFilesToChat} from '../../core/im/im-ui';
 import EmojioneIcon from '../../components/emojione-icon';
+import {showMessager} from '../../components/messager';
 
 /**
  * ChatsDndContainer 组件 ，显示聊天拖放功能交互容器
@@ -79,29 +78,8 @@ export default class ChatsDndContainer extends PureComponent {
      */
     handleDndDrop = e => {
         e.target.classList.remove('hover');
-        if (e.dataTransfer.files && e.dataTransfer.files.length) {
-            let hasError = false;
-            let hasEmptyFile = false;
-            for (let i = 0; i < e.dataTransfer.files.length; ++i) {
-                const file = e.dataTransfer.files[i];
-                if (checkUploadFileSize(file.size)) {
-                    if (file.type.startsWith('image/')) {
-                        App.im.ui.sendContentToChat(file, 'image');
-                    } else {
-                        App.im.ui.sendContentToChat(file, 'file');
-                    }
-                } else {
-                    hasError = true;
-                    if (file.size <= 0) hasEmptyFile = true;
-                }
-            }
-            if (hasError) {
-                if (hasEmptyFile) {
-                    App.ui.showMessger(Lang.error('UPLOAD_FILE_IS_ZEOR_SIZE'), {type: 'warning'});
-                } else {
-                    App.ui.showMessger(Lang.error({code: 'UPLOAD_FILE_IS_TOO_LARGE', formats: formatBytes(App.user.uploadFileSize)}), {type: 'warning'});
-                }
-            }
+        if (e.dataTransfer.files) {
+            sendFilesToChat(e.dataTransfer.files);
         }
     }
 
