@@ -1,13 +1,17 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../../utils/html-helper';
+import {classes} from '../../utils/html-helper';
 import Lang from '../../core/lang';
 import SearchControl from '../../components/search-control';
+import {showMessager} from '../../components/messager';
 import OpenedApp from '../../exts/opened-app';
-import App from '../../core';
 import Spinner from '../../components/spinner';
 import _FileList from '../common/file-list';
 import withReplaceView from '../with-replace-view';
+import {searchFiles} from '../../core/im/im-files';
+import profile from '../../core/profile';
+import events from '../../core/events';
+import {onUserLogin} from '../../core/server';
 
 /**
  * FileList 可替换组件形式
@@ -100,7 +104,7 @@ export default class AppFiles extends PureComponent {
      */
     componentDidMount() {
         this.loadFiles();
-        this.onUserLoginHandler = App.server.onUserLogin(() => {
+        this.onUserLoginHandler = onUserLogin(() => {
             this.loadFiles();
         });
     }
@@ -116,7 +120,7 @@ export default class AppFiles extends PureComponent {
      * @return {void}
      */
     componentWillUnmount() {
-        App.events.off(this.onUserLoginHandler);
+        events.off(this.onUserLoginHandler);
     }
 
     /**
@@ -149,8 +153,8 @@ export default class AppFiles extends PureComponent {
      * @return {void}
      */
     loadFiles(search = null, type = null) {
-        if (this.state.loading) {
-            // App.ui.showMessger(Lang.string('common.waiting'));
+        const {loading} = this.state;
+        if (loading) {
             return;
         }
         const state = {search: this.state.search, type: this.state.type};
@@ -161,18 +165,18 @@ export default class AppFiles extends PureComponent {
             state.type = type;
         }
         const searchId = `${this.state.search} :${this.state.type}`;
-        if (!App.profile.isUserVertified) {
+        if (!profile.isUserVertified) {
             return this.setState({files: [], loading: false});
         }
         if (this.searchId !== searchId) {
             state.loading = true;
             state.files = [];
             this.setState(state, () => {
-                App.im.files.search(state.search, state.type).then(files => {
-                    this.setState({files, loading: false});
+                searchFiles(state.search, state.type).then(files => {
+                    return this.setState({files, loading: false});
                 }).catch(error => {
                     if (error) {
-                        App.ui.showMessger(Lang.string(error), {type: 'danger'});
+                        showMessager(Lang.string(error), {type: 'danger'});
                         if (DEBUG) {
                             console.error('load files error', error);
                         }
@@ -196,12 +200,11 @@ export default class AppFiles extends PureComponent {
     render() {
         const {
             className,
-            app,
         } = this.props;
 
-        const {loading, type} = this.state;
-        const filesCount = this.state.files ? this.state.files.length : 0;
-        let showFiles = filesCount ? this.state.files : [];
+        const {loading, type, files} = this.state;
+        const filesCount = files ? files.length : 0;
+        let showFiles = filesCount ? files : [];
         if (showFiles.length > MAX_SHOW_FILES_COUNT) {
             showFiles = showFiles.slice(0, MAX_SHOW_FILES_COUNT);
         }
@@ -219,27 +222,31 @@ export default class AppFiles extends PureComponent {
             {type: 'other', label: Lang.string('ext.files.others')},
         ];
 
-        return (<div className={HTML.classes('app-ext-files dock single column', className)}>
-            <header className="app-ext-files-header app-ext-common-header has-padding heading divider flex-none">
-                <nav className="nav">
-                    {
-                        fileTypes.map(fileType => {
-                            return <a key={fileType.type} onClick={this.handleNavItemClick.bind(this, fileType)} className={fileType.type === type ? 'active' : ''}>{fileType.label}</a>;
-                        })
-                    }
-                </nav>
-                <div className="search-box flex-none">
-                    <SearchControl onSearchChange={this.handleSearchChange} changeDelay={1000} />
+        return (
+            <div className={classes('app-ext-files dock single column', className)}>
+                <header className="app-ext-files-header app-ext-common-header has-padding heading divider flex-none">
+                    <nav className="nav">
+                        {
+                            fileTypes.map(fileType => {
+                                return <a key={fileType.type} onClick={this.handleNavItemClick.bind(this, fileType)} className={fileType.type === type ? 'active' : ''}>{fileType.label}</a>;
+                            })
+                        }
+                    </nav>
+                    <div className="search-box flex-none">
+                        <SearchControl onSearchChange={this.handleSearchChange} changeDelay={1000} />
+                    </div>
+                </header>
+                <div className="flex-auto content-start scroll-y">
+                    {filesCount ? (
+                        <div className="heading gray">
+                            <div className="title strong muted small">{Lang.format('ext.files.findCount.format', filesCount)}</div>
+                        </div>
+                    ) : null}
+                    <FileList listItemProps={{showDate: true, showSender: true}} files={showFiles} className="app-ext-files-list multi-lines with-avatar" />
+                    {showFiles.length < filesCount && <div className="heading divider-top"><small className="title muted">{Lang.format('ext.files.findToMany.format', filesCount, showFiles.length, filesCount - showFiles.length)}</small></div>}
+                    {loading && <Spinner className="has-padding-lg" label={Lang.string('common.loading')} />}
                 </div>
-            </header>
-            <div className="flex-auto content-start scroll-y">
-                {filesCount ? <div className="heading gray">
-                    <div className="title strong muted small">{Lang.format('ext.files.findCount.format', filesCount)}</div>
-                </div> : null}
-                <FileList listItemProps={{showDate: true, showSender: true}} files={showFiles} className="app-ext-files-list multi-lines with-avatar" />
-                {showFiles.length < filesCount && <div className="heading divider-top"><small className="title muted">{Lang.format('ext.files.findToMany.format', filesCount, showFiles.length, filesCount - showFiles.length)}</small></div>}
-                {loading && <Spinner className="has-padding-lg" label={Lang.string('common.loading')} />}
             </div>
-        </div>);
+        );
     }
 }

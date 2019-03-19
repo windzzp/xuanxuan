@@ -6,8 +6,8 @@ import Button from '../../components/button';
 import Icon from '../../components/icon';
 import Lang from '../../core/lang';
 import Exts from '../../exts';
-import App from '../../core';
 import {formatDate} from '../../utils/date-helper';
+import {showMessager} from '../../components/messager';
 
 export default class ExtensionListItem extends Component {
     /**
@@ -58,7 +58,7 @@ export default class ExtensionListItem extends Component {
         e.stopPropagation();
         const {extension} = this.props;
         Exts.manager.reloadDevExtension(extension);
-        App.ui.showMessger(Lang.string('ext.extensions.reloadFinish'), {type: 'success'});
+        showMessager(Lang.string('ext.extensions.reloadFinish'), {type: 'success'});
     };
 
     /**

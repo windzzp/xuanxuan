@@ -935,7 +935,7 @@ export default {
     onAppLinkClick,
     emitAppLinkClick,
     quit,
-    showMessger: Messager.show,
+    showMessager: Messager.show,
     showContextMenu: ContextMenu.show,
     modal,
     reloadWindow,

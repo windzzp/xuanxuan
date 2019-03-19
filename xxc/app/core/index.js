@@ -8,6 +8,7 @@ import events from './events';
 import ui from './ui';
 import models from './models';
 import todo from './todo';
+import commander from './commander';
 
 const app = {
     profile,
@@ -20,6 +21,7 @@ const app = {
     ui,
     models,
     todo,
+    commander,
 
     get user() {
         return profile.user;

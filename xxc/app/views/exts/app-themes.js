@@ -1,14 +1,15 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../../utils/html-helper';
+import {classes} from '../../utils/html-helper';
 import Lang from '../../core/lang';
 import SearchControl from '../../components/search-control';
 import Icon from '../../components/icon';
 import Avatar from '../../components/avatar';
 import OpenedApp from '../../exts/opened-app';
 import Exts from '../../exts';
-import App from '../../core';
 import Skin from '../../utils/skin';
+import {showMessager} from '../../components/messager';
+import events from '../../core/events';
 
 /**
  * AppThemes 组件 ，显示应用“主题”界面
@@ -101,7 +102,7 @@ export default class AppThemes extends PureComponent {
      * @return {void}
      */
     componentWillUnmount() {
-        App.events.off(this.onExtChangeHandler);
+        events.off(this.onExtChangeHandler);
     }
 
     /**
@@ -125,7 +126,7 @@ export default class AppThemes extends PureComponent {
     handleThemeClick = theme => {
         const error = Exts.themes.setCurrentTheme(theme);
         if (error) {
-            App.ui.showMessger(Lang.error(error), {type: 'danger'});
+            showMessager(Lang.error(error), {type: 'danger'});
         }
         this.forceUpdate();
     }
@@ -149,8 +150,8 @@ export default class AppThemes extends PureComponent {
         const showDefaultTheme = !search || 'default'.includes(search) || Lang.string('ext.themes.default').includes(search);
 
         let themesCount = 1;
-        const themeViews = themeExts.map(themeExt => {
-            return (<div key={themeExt.name} className="app-themes-list list multi-lines with-avatar">
+        const themeViews = themeExts.map(themeExt => (
+            <div key={themeExt.name} className="app-themes-list list multi-lines with-avatar">
                 <div className="heading">
                     <Avatar style={{color: themeExt.accentColor}} auto={themeExt.icon} className="rounded no-margin avatar-sm" />
                     <div className="title"><span>{themeExt.displayName}</span> <small className="text-gray">{themeExt.author ? `@${themeExt.authorName}` : ''}</small></div>
@@ -159,46 +160,52 @@ export default class AppThemes extends PureComponent {
                     themeExt.themes.map(theme => {
                         themesCount += 1;
                         const isCurrentTheme = Exts.themes.isCurrentTheme(theme.id);
-                        const preview = theme.preview;
+                        const {preview} = theme;
                         const themeStyle = Object.assign(Skin.style(theme.color), {
                             backgroundImage: preview ? `url(${preview})` : null
                         });
-                        return (<a key={theme.id} className={HTML.classes('item rounded shadow-1', {active: isCurrentTheme})} style={themeStyle} onClick={this.handleThemeClick.bind(this, theme)}>
-                            <div className="content">
-                                <div className="title">{theme.displayName}{isCurrentTheme && <small className="label circle white text-black shadow-1">{Lang.string('ext.themes.current')}</small>}</div>
-                            </div>
-                            <Icon name="check active-icon icon-2x text-shadow-white" />
-                        </a>);
+                        return (
+                            <a key={theme.id} className={classes('item rounded shadow-1', {active: isCurrentTheme})} style={themeStyle} onClick={this.handleThemeClick.bind(this, theme)}>
+                                <div className="content">
+                                    <div className="title">{theme.displayName}{isCurrentTheme && <small className="label circle white text-black shadow-1">{Lang.string('ext.themes.current')}</small>}</div>
+                                </div>
+                                <Icon name="check active-icon icon-2x text-shadow-white" />
+                            </a>
+                        );
                     })
                 }
-            </div>);
-        });
+            </div>
+        ));
 
         const isCurrentDefault = Exts.themes.isCurrentTheme('default');
 
-        return (<div className={HTML.classes('app-ext-themes dock column single', className)}>
-            <header className="app-ext-themes-header app-ext-common-header has-padding heading flex-none divider">
-                <div className="title text-gray small">{Lang.format('ext.themes.count.format', themesCount)}</div>
-                <div className="search-box">
-                    <SearchControl onSearchChange={this.handleSearchChange} />
-                </div>
-                <nav className="toolbar" />
-            </header>
-            <div className="app-themes flex-auto scroll-y content-start has-padding">
-                {themeViews}
-                {showDefaultTheme && <div className="app-themes-list list">
-                    <div className="heading">
-                        <Avatar style={{color: app.app.accentColor}} auto={app.app.icon} className="rounded no-margin avatar-sm" />
-                        <div className="title">{Lang.string('ext.themes.inside')}</div>
+        return (
+            <div className={classes('app-ext-themes dock column single', className)}>
+                <header className="app-ext-themes-header app-ext-common-header has-padding heading flex-none divider">
+                    <div className="title text-gray small">{Lang.format('ext.themes.count.format', themesCount)}</div>
+                    <div className="search-box">
+                        <SearchControl onSearchChange={this.handleSearchChange} />
                     </div>
-                    <a className={HTML.classes('item rounded shadow-1', {active: isCurrentDefault})} style={Skin.style('#3f51b5')} onClick={this.handleThemeClick.bind(this, 'default')}>
-                        <div className="content">
-                            <div className="title">{Lang.string('ext.themes.default')} {isCurrentDefault && <small className="label circle white text-black shadow-1">{Lang.string('ext.themes.current')}</small>}</div>
+                    <nav className="toolbar" />
+                </header>
+                <div className="app-themes flex-auto scroll-y content-start has-padding">
+                    {themeViews}
+                    {showDefaultTheme && (
+                        <div className="app-themes-list list">
+                            <div className="heading">
+                                <Avatar style={{color: app.app.accentColor}} auto={app.app.icon} className="rounded no-margin avatar-sm" />
+                                <div className="title">{Lang.string('ext.themes.inside')}</div>
+                            </div>
+                            <a className={classes('item rounded shadow-1', {active: isCurrentDefault})} style={Skin.style('#3f51b5')} onClick={this.handleThemeClick.bind(this, 'default')}>
+                                <div className="content">
+                                    <div className="title">{Lang.string('ext.themes.default')} {isCurrentDefault && <small className="label circle white text-black shadow-1">{Lang.string('ext.themes.current')}</small>}</div>
+                                </div>
+                                <Icon name="check active-icon icon-2x text-shadow-white" />
+                            </a>
                         </div>
-                        <Icon name="check active-icon icon-2x text-shadow-white" />
-                    </a>
-                </div>}
+                    )}
+                </div>
             </div>
-        </div>);
+        );
     }
 }
