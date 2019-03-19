@@ -71,8 +71,8 @@ export const executeCommand = (command, ...params) => {
         }
 
         let searchOptions = null;
-        if (params && params.length && params[params.length - 1][0] === '?') {
-            searchOptions = getSearchParam(null, params[params.length - 1]);
+        if (params && params.length && typeof params[params.length - 1] === 'object') {
+            searchOptions = params[params.length - 1];
         }
         const commandContext = getCommandContext(searchOptions ? {options: searchOptions} : null);
         if (command.context) {
@@ -129,7 +129,7 @@ export const executeCommandLine = (commandLine, commandContext = null) => {
     const params = commandLine.split('/');
     return executeCommand(...params.map((p, idx) => {
         if (p[0] === '?' && idx === (params.length - 1)) {
-            return p;
+            return getSearchParam(null, p);
         }
         return decodeURIComponent(p);
     }));
