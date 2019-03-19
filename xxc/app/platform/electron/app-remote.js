@@ -669,7 +669,7 @@ class AppRemote {
         }
 
         if (options.debug && DEBUG) {
-            browserWindow.webContents.openDevTools({mode: 'bottom'});
+            browserWindow.webContents.openDevTools({mode: 'undocked'});
             browserWindow.webContents.on('context-menu', (e, props) => {
                 const {x, y} = props;
                 Menu.buildFromTemplate([{
