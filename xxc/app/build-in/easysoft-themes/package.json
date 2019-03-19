@@ -1,7 +1,7 @@
 {
     "name": "easysoft-themes",
     "displayName": "官方主题",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "提供了多款额外的主题外观。",
     "type": "theme",
     "icon": "mdi-lightbulb",
