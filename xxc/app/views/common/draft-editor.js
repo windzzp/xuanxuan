@@ -335,7 +335,7 @@ export default class DraftEditor extends PureComponent {
                 imageSrc = URL.createObjectURL(image);
             }
         } else if (!imageSrc.startsWith('http://') && !imageSrc.startsWith('https://')) {
-            imageSrc = `file://${imageSrc}`;
+            imageSrc = `file://${imageSrc}?t=${new Date().getTime()}`;
         }
         const contentStateWithEntity = contentState.createEntity(
             'image',
