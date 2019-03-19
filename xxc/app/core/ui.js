@@ -15,6 +15,7 @@ import {executeCommandLine, registerCommand, executeCommand} from './commander';
 import WebViewDialog from '../views/common/webview-dialog';
 import {addContextMenuCreator, showContextMenu} from './context-menu';
 import platform from '../platform';
+import FileData from './models/file-data';
 
 /**
  * 平台提供的剪切板功能访问对象
@@ -58,7 +59,7 @@ const EVENT = {
 };
 
 // 添加图片上下文菜单生成器
-addContextMenuCreator('image', ({url, dataType}) => {
+addContextMenuCreator('image', ({url, dataType, image}) => {
     const items = [{
         label: Lang.string('menu.image.view'),
         click: () => {
@@ -104,6 +105,19 @@ addContextMenuCreator('image', ({url, dataType}) => {
         items.push({
             label: Lang.string('menu.image.open'),
             click: () => {
+                if (url.startsWith('blob:')) {
+                    if (image && platform.has('net.downloadFile')) {
+                        return platform.call('net.downloadFile', profile.user, FileData.create(image)).then(file => {
+                            if (file && file.localPath) {
+                                platformUI.openFileItem(file.localPath);
+                            } else {
+                                Messager.show(`${Lang.string('file.cannotOpenTheFile')}: ${url}`);
+                            }
+                            return file;
+                        });
+                    }
+                    return Messager.show(`${Lang.string('file.cannotOpenTheFile')}: ${url}`);
+                }
                 if (url.startsWith('file://')) {
                     url = url.substr(7);
                 }

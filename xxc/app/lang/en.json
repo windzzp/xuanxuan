@@ -394,6 +394,7 @@
     "file.title.format": "File：{0}",
     "file.uploadFailed": "Failed!",
     "file.uploading": "Uploading…",
+    "file.cannotOpenTheFile": "Cannot open the file",
 
     "imageCutter.captureScreen": "Capture Screen",
     "imageCutter.hideCurrentWindowAndCaptureScreen": "Hide the window and capture the screen.",

@@ -83,9 +83,7 @@ export const showRemoteOpenDialog = (options, callback) => {
 export const saveAsImageFromUrl = (url, dataType) => new Promise((resolve, reject) => {
     const isBase64Image = url.startsWith('data:image/') || dataType === 'base64';
     const isBlob = url.startsWith('blob:');
-    if (isBlob) {
-        throw new Error('Cannot support save blob image in electron.');
-    } else if (!isBase64Image && url.startsWith('file://')) {
+    if (!isBase64Image && url.startsWith('file://')) {
         url = url.substr(7);
     }
     showSaveDialog({

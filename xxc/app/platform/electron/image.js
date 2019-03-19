@@ -1,6 +1,7 @@
 import {nativeImage, NativeImage} from 'electron';
 import fs from 'fs-extra';
 import Path from 'path';
+import {downloadFileWithRequest} from './net';
 
 /**
  * 将 Base64 字符串转换为 Buffer
@@ -45,6 +46,10 @@ export const saveImage = (image, filePath) => {
         name: Path.basename(filePath),
     };
     if (typeof image === 'string') {
+        if (image.startsWith('blob:')) {
+            file.blob = image;
+            return downloadFileWithRequest(image, filePath).then(() => Promise.resolve(file));
+        }
         file.base64 = image;
         image = base64ToBuffer(image);
         file.size = image.length;
@@ -53,9 +58,7 @@ export const saveImage = (image, filePath) => {
         file.size = image.length;
     }
     if (image instanceof Buffer) {
-        return fs.outputFile(filePath, image).then(() => {
-            return Promise.resolve(file);
-        });
+        return fs.outputFile(filePath, image).then(() => Promise.resolve(file));
     }
     return Promise.reject(new Error('Cannot convert image to a buffer.'));
 };

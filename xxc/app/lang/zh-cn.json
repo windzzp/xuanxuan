@@ -394,6 +394,7 @@
     "file.title.format": "文件：{0}",
     "file.uploadFailed": "上传失败",
     "file.uploading": "正在上传…",
+    "file.cannotOpenTheFile": "不支持打开此文件",
 
     "imageCutter.captureScreen": "截取屏幕",
     "imageCutter.hideCurrentWindowAndCaptureScreen": "隐藏当前窗口并截图",

@@ -172,12 +172,15 @@ export default class MessageContentImage extends Component {
      */
     handleImageContextMenu = event => {
         if (isBrowser) return;
+        const {message} = this.props;
+        const {url} = this.state;
         showContextMenu('image', {
             event,
-            url: this.state.url || this.imageUrl,
+            url: url || this.imageUrl,
             dataType: this.imageType,
-            file: this.props.message.attachFile,
-            message: this.props.message
+            image: message.imageContent,
+            file: message.attachFile,
+            message
         });
     };
 
