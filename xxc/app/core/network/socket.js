@@ -445,7 +445,7 @@ export default class AppSocket extends Socket {
         const uploadSettings = user.config.exportCloud(onlyChanges);
         user.config.newChanges = null;
         if (!uploadSettings) {
-            return Promise.reject();
+            return Promise.resolve();
         }
         if (!this.isConnected || !user.isOnline) {
             if (DEBUG) {
