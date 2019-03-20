@@ -279,33 +279,8 @@ class commonModel extends model
         $isMobile = $app->viewType === 'mhtml';
         $string   = !$isMobile ? "<ul class='nav navbar-nav'>\n" : '';
 
-        $menuOrder = isset($lang->{$app->appName}->menuOrder) ? $lang->{$app->appName}->menuOrder : array();  
-        $allMenus  = new stdclass(); 
-        if(!empty($menuOrder))
-        {
-            ksort($menuOrder);
-            foreach($lang->menu->{$app->appName} as $moduleName => $moduleMenu)
-            {
-                if(!in_array($moduleName, $menuOrder)) $menuOrder[] = $moduleName;
-            }
-
-            foreach($menuOrder as $name)
-            {
-                if(isset($lang->menu->{$app->appName}->$name)) $allMenus->$name = $lang->menu->{$app->appName}->$name;
-            }
-
-            foreach($lang->menu->{$app->appName} as $key => $value)
-            {
-                if(!isset($allMenus->$key)) $allMenus->$key = $value;
-            }
-        }
-        else
-        {
-            $allMenus = $lang->menu->{$app->appName};
-        }
-
         /* Print all main menus. */
-        foreach($allMenus as $moduleName => $moduleMenu)
+        foreach($lang->menu as $moduleName => $moduleMenu)
         {
             $class = $moduleName == $currentModule ? " class='active'" : '';
             list($label, $module, $method, $vars) = explode('|', $moduleMenu);
@@ -454,92 +429,6 @@ class commonModel extends model
         }
 
         $string .= !$isMobile ? "</ul></nav>\n" : '';
-        return $string;
-    }
-
-    /**
-     * Create menu of dashboard.
-     * 
-     * @static
-     * @access public
-     * @return string
-     */
-    public static function createDashboardMenu()
-    {
-        global $app, $lang;
-
-        $isMobile = $app->viewType === 'mhtml';
-        $string   = !$isMobile ? "<ul class='nav navbar-nav'>\n" : '';
-
-        $menuOrder = isset($lang->sys->dashboard->menuOrder) ? $lang->sys->dashboard->menuOrder : array();  
-        $allMenus  = new stdclass(); 
-        if(!empty($menuOrder))
-        {
-            ksort($menuOrder);
-            foreach($lang->menu->dashboard as $moduleName => $moduleMenu)
-            {
-                if(!in_array($moduleName, $menuOrder)) $menuOrder[] = $moduleName;
-            }
-
-            foreach($menuOrder as $name)
-            {
-                if(isset($lang->menu->dashboard->$name)) $allMenus->$name = $lang->menu->dashboard->$name;
-            }
-
-            foreach($lang->menu->dashboard as $key => $value)
-            {
-                if(!isset($allMenus->$key)) $allMenus->$key = $value;
-            }
-        }
-        else
-        {
-            $allMenus = $lang->menu->dashboard;
-        }
-
-        $currentMethod = $app->getMethodName();
-        $currentModule = $app->getModuleName();
-        foreach($allMenus as $moduleName => $moduleMenu)
-        {
-            list($label, $module, $method, $vars) = explode('|', $moduleMenu);
-
-            $class = '';
-            if($currentMethod == strtolower($method)) $class = "class='active'";
-            $hasPriv = commonModel::hasPriv($module, $method);
-
-            if($hasPriv)
-            {
-                $link = helper::createLink($module, $method, $vars);
-                if(!$isMobile)
-                {
-                    $string .= "<li $class><a class='app-btn open' data-id='dashboard' href='$link'>$label</a></li>\n";
-                }
-                else
-                {
-                    $string .= "<a $class href='$link'>$label</a>\n";
-                }
-            }
-        }
-
-        $string .= !$isMobile ? "</ul>\n" : '';
-        return $string;
-    }
-
-    /**
-     * Create menu for managers.
-     * 
-     * @access public
-     * @return string
-     */
-    public static function createManagerMenu()
-    {
-        global $app, $lang , $config;
-
-        $string  = '<ul class="nav navbar-nav navbar-right">';
-        $string .= sprintf('<li>%s</li>', html::a($config->webRoot, '<i class="icon-home icon-large"></i> ' . $lang->frontHome, "target='_blank' class='navbar-link'"));
-        $string .= sprintf('<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-large"></i> %s <b class="caret"></b></a>', $app->user->realname);
-        $string .= sprintf('<ul class="dropdown-menu"><li>%s</li><li>%s</li></ul>', html::a(helper::createLink('user', 'changePassword'), $lang->changePassword, "data-toggle='modal'"), html::a(helper::createLink('user','logout'), $lang->logout));
-        $string .= '</li></ul>';
-
         return $string;
     }
 
@@ -736,7 +625,7 @@ class commonModel extends model
         $activeName = $app->getViewType() == 'mhtml' ? 'ui-btn-active' : 'active';
 
         /* Print all main menus. */
-        foreach($lang->menu->{$app->appName} as $menuKey => $menu)
+        foreach($lang->menu as $menuKey => $menu)
         {
             $active = $menuKey == $mainMenu ? "class='$activeName'" : '';
             $link = explode('|', $menu);
@@ -1070,7 +959,6 @@ class commonModel extends model
         $checkByID['contract'] = ',receive,delivery,edit,delete,finish,cancel,';
         $checkByID['resume']   = ',edit,delete,';
         $checkByID['address']  = ',edit,delete,';
-        if($app->appName == 'crm') $checkByID['contact'] = ',edit,delete,';
 
         $funcName = 'check' . ucfirst($module) . 'Priv';
         if(method_exists('extcommonModel', $funcName)) $checkByID = extcommonModel::$funcName($checkByID);

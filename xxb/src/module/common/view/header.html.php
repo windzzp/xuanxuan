@@ -12,23 +12,20 @@
 ?>
 <?php if($extView = $this->getExtViewFile(__FILE__)){include $extView; return helper::cd();}?>
 <?php include 'header.lite.html.php';?>
-<style>body {padding-top: 58px}</style>
-<nav class='navbar navbar-main navbar-fixed-top' role='navigation' id='mainNavbar'>
-  <div class='navbar-header'>
-    <?php
-    if(isset($lang->app))
-    {
-        echo html::a($this->createLink($this->config->default->module), $lang->app->name, "class='navbar-brand'");
-    }
-    else
-    {
-        echo html::a($this->createLink('admin'), $lang->admin->common, "class='navbar-brand'");
-    }
-    ?>
+<style>body {padding-top: 58px;}</style>
+<nav class='navbar navbar-main navbar-fixed-top' id='mainNavbar'>
+  <div class='collapse navbar-collapse'>
+    <ul class='nav navbar-nav'>
+      <li><?php echo html::a($this->createLink('user', 'profile'), "<i class='icon-user'></i> " . $app->user->realname, "data-toggle='modal' data-id='profile'");?></li>
+    </ul>
+    <?php echo commonModel::createMainMenu($this->moduleName);?>
+    <ul class='nav navbar-nav navbar-right'>
+      <li><?php echo html::a($this->createLink('user', 'logout'), "<i class='icon icon-signout'></i> {$lang->logout}", 'target="_parent"')?></li>
+    </ul>
   </div>
-  <?php echo commonModel::createMainMenu($this->moduleName);?>
 </nav>
-<?php 
+<?php
 if(!isset($moduleMenu)) $moduleMenu = commonModel::createModuleMenu($this->moduleName);
 if($moduleMenu) echo "$moduleMenu\n<div class='row page-content with-menu'>\n"; else echo "<div class='row page-content'>";
 ?>
+

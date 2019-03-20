@@ -32,9 +32,9 @@ $lang->importIcon = "<i class='icon-download-alt'> </i>";
 $lang->exportIcon = "<i class='icon-upload-alt'> </i>";
 
 /* Lang items for ranzhi. */
-$lang->ranzhi    = '然之协同';
-$lang->agreement = "已阅读并同意<a href='http://zpl.pub/page/zplv12.html' target='_blank'>《Z PUBLIC LICENSE授权协议1.2》</a>。<span class='text-danger'>未经许可，不得去除、隐藏或遮掩然之系统的任何标志及链接。</span>";
-$lang->poweredBy = "<a href='http://www.ranzhi.org/?v=%s' target='_blank'>{$lang->ranzhi}%s</a>";
+$lang->ranzhi    = '喧喧';
+$lang->agreement = "已阅读并同意<a href='http://zpl.pub/page/zplv12.html' target='_blank'>《Z PUBLIC LICENSE授权协议1.2》</a>。<span class='text-danger'>未经许可，不得去除、隐藏或遮掩喧喧系统的任何标志及链接。</span>";
+$lang->poweredBy = "<a href='http://www.xuan.im/?v=%s' data-toggle='tooltip' title='{$this->config->buildDate}' target='_blank'>{$lang->ranzhi}%s</a>";
 $lang->ipLimited = "<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8' /></head><body>抱歉，管理员限制当前IP登录，请联系管理员解除限制。</body></html>";
 
 /* IE6 alert.  */
@@ -58,7 +58,7 @@ $lang->themes['clear']   = '清晰';
 
 /* Global lang items. */
 $lang->home           = '首页';
-$lang->welcome        = "%s协同管理系统";
+$lang->welcome        = "喧喧后台管理系统";
 $lang->aboutUs        = '关于我们';
 $lang->about          = '关于';
 $lang->logout         = '退出';
@@ -159,6 +159,10 @@ $lang->js->no                    = '否';
 
 /* The main menus. */
 $lang->menu = new stdclass();
+$lang->menu->user    = '组织|user|admin|';
+$lang->menu->group   = '权限|group|browse|';
+$lang->menu->entry   = '应用|entry|admin|';
+$lang->menu->setting = '设置|setting|xuanxuan|';
 
 $lang->index   = new stdclass();
 $lang->user    = new stdclass();
@@ -170,12 +174,6 @@ $lang->block   = new stdclass();
 $lang->action  = new stdclass();
 $lang->setting = new stdclass();
 
-$lang->menu->sys = new stdclass();
-$lang->menu->sys->user    = '组织|user|admin|';
-$lang->menu->sys->group   = '权限|group|browse|';
-$lang->menu->sys->entry   = '应用|entry|admin|';
-$lang->menu->sys->system  = '系统|mail|admin|';
-
 $lang->group   = new stdclass(); 
 
 /* Menu entry. */
@@ -183,7 +181,6 @@ $lang->entry       = new stdclass();
 $lang->entry->menu = new stdclass();
 $lang->entry->menu->admin    = array('link' => '应用列表|entry|admin|', 'alias' => 'edit, integration, style, zentaoAdmin');
 $lang->entry->menu->create   = '添加应用|entry|create|';
-$lang->entry->menu->webapp   = 'WEB应用|webapp|obtain|';
 $lang->entry->menu->category = '分组|entry|category|';
 
 /* Menu system. */
