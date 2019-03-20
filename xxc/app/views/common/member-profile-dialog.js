@@ -1,6 +1,5 @@
 import React from 'react';
 import Modal from '../../components/modal';
-import App from '../../core';
 import _MemberProfile from './member-profile';
 import withReplaceView from '../with-replace-view';
 
@@ -17,7 +16,7 @@ const MemberProfile = withReplaceView(_MemberProfile);
  * @param {function} callback 对话框显示完成时的回调函数
  * @return {void}
  */
-export const showProfileDialog = (memberId, callback) => {
+export const showMemberProfileDialog = (memberId, callback) => {
     if (typeof memberId === 'object') {
         memberId = memberId.id;
     }
@@ -32,5 +31,5 @@ export const showProfileDialog = (memberId, callback) => {
 };
 
 export default {
-    show: showProfileDialog,
+    show: showMemberProfileDialog,
 };

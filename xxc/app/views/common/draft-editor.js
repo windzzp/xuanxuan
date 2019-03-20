@@ -73,7 +73,7 @@ let langAtAll = null;
  * @private
  */
 const draftDecorator = new CompositeDecorator([{
-    strategy: (contentBlock, callback, contentState) => {
+    strategy: (contentBlock, callback/* , contentState */) => {
         findWithRegex(Emojione.regUnicode, contentBlock, callback);
     },
     // eslint-disable-next-line react/prop-types
@@ -103,7 +103,7 @@ const draftDecorator = new CompositeDecorator([{
         return (<span data-offset-key={offsetKey}>{children}</span>);
     }
 }, {
-    strategy: (contentBlock, callback, contentState) => {
+    strategy: (contentBlock, callback/* , contentState */) => {
         findWithRegex(/@[\u4e00-\u9fa5_\w]+[，。,./\s:@\n]/g, contentBlock, callback);
     },
     // eslint-disable-next-line react/prop-types
@@ -124,13 +124,32 @@ const draftDecorator = new CompositeDecorator([{
         return children;
     }
 }, {
-    strategy: (contentBlock, callback, contentState) => {
+    strategy: (contentBlock, callback/* , contentState */) => {
         findWithRegex(/(https?):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g, contentBlock, callback);
     },
     // eslint-disable-next-line react/prop-types
     component: ({decoratedText, offsetKey, children}) => (<a className="text-primary" data-offset-key={offsetKey} href={decoratedText}>{children}</a>)
 }]);
 
+/**
+ * DrafJS blockRendererFn 回调函数
+ * @param {Object} contentBlock 内容块对象
+ * @private
+ * @return {Object} 内容对象
+ */
+const blockRendererFn = (contentBlock) => {
+    const type = contentBlock.getType();
+    let result = null;
+
+    if (type === 'atomic') {
+        result = {
+            component: AtomicComponent,
+            editable: true,
+        };
+    }
+
+    return result;
+};
 
 /**
  * DraftEditor 组件 ，显示消息编辑器界面
@@ -206,7 +225,6 @@ export default class DraftEditor extends PureComponent {
         this.onChange = this.onChange.bind(this);
         this.handleKeyCommand = this.handleKeyCommand.bind(this);
         this.handleReturn = this.handleReturn.bind(this);
-        this.blockRendererFn = this.blockRendererFn.bind(this);
         this.handlePastedText = this.handlePastedText.bind(this);
         this.handlePastedFiles = this.handlePastedFiles.bind(this);
     }
@@ -504,27 +522,6 @@ export default class DraftEditor extends PureComponent {
         return 'handled';
     }
 
-    /**
-     * DrafJS blockRendererFn 回调函数
-     * @param {Object} contentBlock 内容块对象
-     * @memberof DraftEditor
-     * @private
-     * @return {Object} 内容对象
-     */
-    blockRendererFn(contentBlock) {
-        const type = contentBlock.getType();
-        let result = null;
-
-        if (type === 'atomic') {
-            result = {
-                component: AtomicComponent,
-                editable: true,
-            };
-        }
-
-        return result;
-    }
-
     getSelectedBlocks = () => {
         const {editorState} = this.state;
         const selectionState = editorState.getSelection();
@@ -595,7 +592,7 @@ export default class DraftEditor extends PureComponent {
                     onChange={this.onChange}
                     handleKeyCommand={this.handleKeyCommand}
                     handleReturn={this.handleReturn}
-                    blockRendererFn={this.blockRendererFn}
+                    blockRendererFn={blockRendererFn}
                     handlePastedText={this.handlePastedText}
                     handlePastedFiles={this.handlePastedFiles}
                 />

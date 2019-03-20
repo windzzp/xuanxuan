@@ -1,6 +1,5 @@
 import Config from '../config'; // eslint-disable-line
 import Server from './server';
-import MemberProfileDialog from '../views/common/member-profile-dialog';
 import Messager from '../components/messager';
 import ContextMenu from '../components/context-menu';
 import modal from '../components/modal';
@@ -12,7 +11,6 @@ import Notice from './notice';
 import ImageViewer from '../components/image-viewer';
 import Store from '../utils/store';
 import {executeCommandLine, registerCommand, executeCommand} from './commander';
-import WebViewDialog from '../views/common/webview-dialog';
 import {addContextMenuCreator, showContextMenu} from './context-menu';
 import platform from '../platform';
 import FileData from './models/file-data';
@@ -51,7 +49,6 @@ const platformUI = platform.access('ui');
  * @private
  */
 const EVENT = {
-    app_link: 'app.link',
     net_online: 'app.net.online',
     net_offline: 'app.net.offline',
     ready: 'app.ready',
@@ -82,21 +79,19 @@ addContextMenuCreator('image', ({url, dataType, image}) => {
                     url = url.substr(7);
                 }
                 return dialog.saveAsImageFromUrl(url, dataType).then(filename => {
-                    if (filename) {
-                        Messager.show(Lang.format('file.fileSavedAt.format', filename), {
-                            actions: platformUI.openFileItem ? [{
-                                label: Lang.string('file.open'),
-                                click: () => {
-                                    platformUI.openFileItem(filename);
-                                }
-                            }, {
-                                label: Lang.string('file.openFolder'),
-                                click: () => {
-                                    platformUI.showItemInFolder(filename);
-                                }
-                            }] : null
-                        });
-                    }
+                    return filename && executeCommand('showMessager', Lang.format('file.fileSavedAt.format', filename), {
+                        actions: platformUI.openFileItem ? [{
+                            label: Lang.string('file.open'),
+                            click: () => {
+                                platformUI.openFileItem(filename);
+                            }
+                        }, {
+                            label: Lang.string('file.openFolder'),
+                            click: () => {
+                                platformUI.showItemInFolder(filename);
+                            }
+                        }] : null
+                    });
                 });
             }
         });
@@ -134,43 +129,9 @@ addContextMenuCreator('member', ({member}) => {
     return [{
         label: Lang.string('member.profile.view'),
         click: () => {
-            MemberProfileDialog.show(member);
+            executeCommand('showMemberProfile', member);
         }
     }];
-});
-
-// 注册打开成员资料对话框命令
-registerCommand('showMemberProfile', (context, memberId) => {
-    const {options} = context;
-    memberId = memberId || options.memberId;
-    MemberProfileDialog.show(memberId);
-});
-
-/**
- * 绑定界面上链接点击事件
- * @param {string} type 链接目标类型
- * @param {function(target: string, element: Element)} listener 事件回调函数
- * @return {Symbol} 使用 `Symbol` 存储的事件 ID，用于取消事件
- */
-export const onAppLinkClick = (type, listener) => {
-    return events.on(`${EVENT.app_link}.${type}`, listener);
-};
-
-/**
- * 触发界面上链接点击事件
- * @param {Element} element 触发元素
- * @param {string} type 链接目标类型
- * @param {string} target  链接目标
- * @param  {...any} params 其他参数
- * @return {void}
- */
-export const emitAppLinkClick = (element, type, target, ...params) => {
-    return events.emit(`${EVENT.app_link}.${type}`, target, element, ...params);
-};
-
-// 处理点击成员名称链接事件（弹出个人资料对话框）
-onAppLinkClick('Member', target => {
-    MemberProfileDialog.show(target);
 });
 
 /**
@@ -265,7 +226,7 @@ export const openUrlInApp = (url, appName) => {
  */
 export const openUrlInDialog = (url, options, callback) => {
     options = Object.assign({url}, options);
-    WebViewDialog.show(url, options, callback);
+    executeCommand('openWebviewDialog', url, options, callback);
 };
 
 // 注册在对话框中打开链接命令
@@ -357,7 +318,10 @@ export const openUrl = (url, targetElement, event, context) => {
     }
     if (url[0] === '@') {
         const params = url.substr(1).split('/').map(decodeURIComponent);
-        emitAppLinkClick(targetElement, ...params);
+        // 处理点击成员名称链接事件（弹出个人资料对话框）
+        if (params[0] === 'Member') {
+            executeCommand('showMemberProfile', params[1]);
+        }
         return true;
     }
     const firstChar = url[0];
@@ -941,8 +905,6 @@ export default {
     showMobileChatsMenu,
     disableGlobalShortcut,
     enableGlobalShortcut,
-    onAppLinkClick,
-    emitAppLinkClick,
     quit,
     showMessager: Messager.show,
     showContextMenu: ContextMenu.show,
