@@ -3,6 +3,7 @@ import Config from '../../config';
 import Popover from '../../components/popover';
 import Icon from '../../components/icon';
 import profile from '../../core/profile';
+import Lang from '../../core/lang';
 
 /**
  * 显示聊天功能提示面板
@@ -18,7 +19,7 @@ export const showChatTipPopoer = (position, callback) => {
     const content = (
         <div>
             <div className="heading">
-                <div className="title strong">消息框小技巧</div>
+                <div className="title strong">{Lang.string('chat.tips.title')}</div>
                 <nav className="nav">
                     <a
                         className="text-gray small"
@@ -26,15 +27,16 @@ export const showChatTipPopoer = (position, callback) => {
                             profile.userConfig.showMessageTip = false;
                             onRequestClose();
                         }}
-                    ><Icon name="close" /> 关闭并不再提示</a>
+                    ><Icon name="close" /> {Lang.string('chat.tips.close')}
+                    </a>
                 </nav>
             </div>
             <div className="box">
                 <ul style={{paddingLeft: 20, marginBottom: 0}}>
-                    <li>拖拽图片和文件到消息框来发送；</li>
-                    <li>使用 Markdown 语法来发送富文本；</li>
-                    <li>你可以直接粘贴剪切板中的图片进行发送；</li>
-                    {Config.system.screenCaptureDisabled ? null : <li>从截图按钮右键菜单上使用截图高级功能。</li>}
+                    <li>{Lang.string('chat.tips.dragging')}</li>
+                    <li>{Lang.string('chat.tips.markdown')}</li>
+                    <li>{Lang.string('chat.tips.pasting')}</li>
+                    {Config.system.screenCaptureDisabled ? null : <li>{Lang.string('chat.tips.screenshots')}</li>}
                 </ul>
             </div>
         </div>
