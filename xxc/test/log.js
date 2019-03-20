@@ -1,9 +1,10 @@
 import chalk from 'chalk';
 import log4js from 'log4js';
+import {formatDate} from '../app/utils/date-helper';
 
 log4js.configure({
     appenders: {
-        test: {type: 'file', filename: './test/logs/test.log'}
+        test: {type: 'file', filename: `./test/logs/test${formatDate(new Date(), 'yyMMddhhmmss')}.log`}
     },
     categories: {
         default: {appenders: ['test'], level: 'all'}
@@ -32,6 +33,10 @@ const colorArg = arg => {
     }
     if (typeOfArg === 'string') {
         const strLength = arg.length;
+        if (strLength && arg.includes('||')) {
+            return arg.split('||').map(colorArg).join('');
+        }
+
         if (strLength > 4) {
             if (arg.startsWith('c:')) {
                 if (strLength > 10) {
@@ -123,6 +128,9 @@ const plainArg = arg => {
     }
     if (typeOfArg === 'string') {
         const strLength = arg.length;
+        if (strLength && arg.includes('||')) {
+            return arg.split('||').map(plainArg).join('');
+        }
         if (strLength > 4) {
             if (arg.startsWith('c:')) {
                 if (strLength > 10) {

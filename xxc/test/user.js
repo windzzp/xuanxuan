@@ -1,5 +1,9 @@
 import {URL} from 'url';
 
+/**
+ * 用于测试的用户
+ * @class
+ */
 export default class User {
     constructor(account, password, activeLevel = 0.5) {
         this.account = account;
@@ -99,6 +103,7 @@ export default class User {
      * 设置 Socket 服务器端口
      *
      * @memberof User
+     * @param {number} port 端口
      */
     set socketPort(port) {
         this._socketPort = port;
@@ -133,13 +138,5 @@ export default class User {
      */
     set socketUrl(url) {
         this._socketUrl = url;
-    }
-
-    /**
-     * 创建一个用于测试的用户
-     */
-    static next(config, activeLevel = 0.5) {
-        const {account, password} = config;
-        return new User(account.replace('$', config.accountID++), password, activeLevel);
     }
 }

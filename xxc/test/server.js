@@ -8,7 +8,7 @@ import log from './log';
  * @type {number}
  * @private
  */
-const LISTEN_TIMEOUT = 1000 * 30;
+export const LISTEN_TIMEOUT = 1000 * 60 * 1;
 
 /**
  * 生成 Socket 数据包 rid 值，每次应该递增之后使用
@@ -51,6 +51,11 @@ const STATUS_COLORS = {
 };
 
 export default class Server {
+    static info(server) {
+        const {statusName, user} = server;
+        return `c:${STATUS_COLORS[statusName]}|⦿||** ${user.account}**`;
+    }
+
     constructor(user, config) {
         this.user = user;
         this.config = config;
@@ -207,7 +212,7 @@ export default class Server {
                 this.onSocketClosed();
             }
             const {statusName} = this;
-            log.info('Server', `**<${this.user.account}>**`, 'Socket status changed:', `c:${STATUS_COLORS[statusName]}|**${statusName}**`, '←', `c:${STATUS_COLORS[oldStatusName]}|**${oldStatusName}**`);
+            log.info(this.logInfo(), 'Socket status changed:', `c:${STATUS_COLORS[statusName]}|**${statusName}**`, '←', `c:${STATUS_COLORS[oldStatusName]}|**${oldStatusName}**`);
         }
     }
 
@@ -269,21 +274,21 @@ export default class Server {
      */
     connect() {
         if (this.isClosed) {
-            log.info('Server', `**<${this.user.account}>**`, 'Socket', 'c:yellow|**reconnect**', 'begin.');
+            log.info(this.logInfo(), 'Socket', 'c:yellow|**reconnect**', 'begin.');
         } else {
-            log.info('Server', `**<${this.user.account}>**`, 'Socket connect begin.');
+            log.info(this.logInfo(), 'Socket connect begin.');
         }
         this.startLoginTime = new Date().getTime();
         return this.getServerInfo().then((serverInfo) => {
             // log.info(x => x.log(serverInfo), `Server<${this.user.account}> Server Info`);
-            log.info('Server', `**<${this.user.account}>**`, 'Server info recevied, the token is', `**${serverInfo.token}**`);
+            log.info(this.logInfo(), 'Server info recevied, the token is', `**${serverInfo.token}**`);
             return new Promise((resolve, reject) => {
                 const {config} = this;
                 const {socketUrl, pkg} = config;
                 const {token} = serverInfo;
                 this.token = token;
                 const onConnect = () => {
-                    log.info('Server', `**<${this.user.account}>**`, 'Server socket', `__${socketUrl}__`, 'connected.');
+                    log.info(this.logInfo(), 'Server socket', `__${socketUrl}__`, 'connected.');
                     this.status = STATUS.OPEN;
                     resolve();
                 };
@@ -317,7 +322,7 @@ export default class Server {
     login() {
         const {postData, user} = this;
         const {account} = user;
-        log.info('Server', `**<${this.user.account}>**`, 'Socket login begin.');
+        log.info(this.logInfo(), 'Socket login begin.');
         return this.sendAndListen(postData).then(message => {
             delete this.postData;
             if (message && message.result === 'success' && message.data.account === account) {
@@ -344,7 +349,7 @@ export default class Server {
             log.warn(() => console.log(message), `Server<${this.user.account}> socket recevied wrong data`);
         } else {
             // log.info(x => x.log(message), `Server<${this.user.account}> socket recevied message`);
-            // log.info('Server', `**<${this.user.account}>**`, 'Socket', `c:blue|**⬇︎ ${message.module}/${message.method}**`, 'rid', message.rid);
+            // log.info(this.logInfo(), 'Socket', `c:blue|**⬇︎ ${message.module}/${message.method}**`, 'rid', message.rid);
         }
         const {rid} = message;
         const messageCallback = this.messageCallbacks[rid];
@@ -365,7 +370,7 @@ export default class Server {
      */
     handSocketClose = (code, reason) => {
         this.status = STATUS.CLOSED;
-        log.warn('Server', `**<${this.user.account}>**`, 'Socket closed with code', `c:red|**${code}**`, 'reason is', reason);
+        log.warn(this.logInfo(), 'Socket closed with code', `c:red|**${code}**`, 'reason is', reason);
     }
 
     /**
@@ -404,7 +409,7 @@ export default class Server {
             }
         });
         // log.info(x => x.log(message), `Server<${this.user.account}> socket send`);
-        log.info('Server', `**<${this.user.account}>**`, 'Socket', `c:cyan|**⬆︎ ${message.module}/${message.method}**`, 'rid', message.rid);
+        log.info(this.logInfo(), 'Socket', `c:cyan|**⬆︎ ${message.module}/${message.method}**`, 'rid', message.rid);
     }
 
     /**
@@ -477,10 +482,11 @@ export default class Server {
     };
 
     /**
-     * ·发送聊天消息
+     * 发送聊天消息
      *
-     * @param {*} message
+     * @param {Object} chatMessage
      * @memberof Server
+     * @returns {Promise} 使用 Promise 异步返回处理结果
      */
     sendChatMessage(chatMessage) {
         chatMessage = Object.assign({
@@ -495,7 +501,7 @@ export default class Server {
         if (!chatMessage.cgid) {
             return Promise.reject(new Error('The cgid must provide to send a chat message.'));
         }
-        log.info('Server', `**<${this.user.account}>**`, 'Send message to', `**${chatMessage.cgid}**`, `_${chatMessage.content}_`);
+        log.info(this.logInfo(), 'Send message to', `**${chatMessage.cgid}**`, `_${chatMessage.content}_`);
         // log.info(x => x.log(chatMessage), 'ChatMessage');
         const startSendTime = process.uptime() * 1000;
         this.sendMessageTime.totalTimes++;
@@ -511,11 +517,16 @@ export default class Server {
             this.sendMessageTime.average = this.sendMessageTime.total / this.sendMessageTime.successTimes;
             this.sendMessageTime.min = Math.min(this.sendMessageTime.min, sendMessageTime);
             this.sendMessageTime.max = Math.max(this.sendMessageTime.max, sendMessageTime);
+            return Promise.resolve();
         }).catch(error => {
             if (error && error.code === 'TIMEOUT') {
                 this.sendMessageTime.timeoutTimes++;
             }
             log.error(() => console.error(error), `Send chat message ${chatMessage.gid}@${chatMessage.cgid} error`);
         });
+    }
+
+    logInfo() {
+        return Server.info(this);
     }
 }
