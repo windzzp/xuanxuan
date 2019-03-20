@@ -38,20 +38,21 @@ export const setCommandContext = (data) => {
  * 获取当前命令上下文参数
  * (Get current command context data)
  *
- * @param {?Object} [newContext=null] 新的上下文参数 (New command context)
+ * @param {Object[]} [newContexts=null] 新的上下文参数 (New command context)
  * @return {Object} 上下文参数对象
  */
-export const getCommandContext = (newContext) => Object.assign({}, context, newContext);
+export const getCommandContext = (...newContexts) => Object.assign({}, context, ...newContexts);
 
 /**
  * 执行命令
  * (Execute command)
  *
  * @param {string|Object} command 命令名称或命令对象 (Command name or command object)
+ * @param {Object} context 上下文参数对象 (Command context object)
  * @param {...string} params 命令参数 (Command params)
  * @return {Promise<any, Error>} 通过 Promise 返回命令执行结果 (Return result with Promise)
  */
-export const executeCommand = (command, ...params) => {
+export const executeCommandWithContext = (command, context, ...params) => {
     let commandName = null;
     if (typeof command !== 'object') {
         commandName = command;
@@ -74,7 +75,7 @@ export const executeCommand = (command, ...params) => {
         if (params && params.length && typeof params[params.length - 1] === 'object') {
             searchOptions = params[params.length - 1];
         }
-        const commandContext = getCommandContext(searchOptions ? {options: searchOptions} : null);
+        const commandContext = getCommandContext(searchOptions ? {options: searchOptions} : null, context);
         if (command.context) {
             const typeOfCommandContext = typeof command.context;
             if (typeOfCommandContext === 'function') {
@@ -110,6 +111,16 @@ export const executeCommand = (command, ...params) => {
 };
 
 /**
+ * 执行命令
+ * (Execute command)
+ *
+ * @param {string|Object} command 命令名称或命令对象 (Command name or command object)
+ * @param {...string} params 命令参数 (Command params)
+ * @return {Promise<any, Error>} 通过 Promise 返回命令执行结果 (Return result with Promise)
+ */
+export const executeCommand = (command, ...params) => executeCommandWithContext(command, null, ...params);
+
+/**
  * 根据命令文本字符串执行命令
  * (Execute command from command text string)
  *
@@ -119,20 +130,15 @@ export const executeCommand = (command, ...params) => {
  */
 export const executeCommandLine = (commandLine, commandContext = null) => {
     if (commandLine.includes('|')) {
-        return commandLine.split('|').forEach(cLine => {
-            if (cLine) {
-                executeCommandLine(cLine, commandContext);
-            }
-        });
+        return Promise.all(commandLine.split('|').map(cLine => executeCommandLine(cLine, commandContext)));
     }
-    setCommandContext(commandContext);
-    const params = commandLine.split('/');
-    return executeCommand(...params.map((p, idx) => {
+    const params = commandLine.split('/').map((p, idx) => {
         if (p[0] === '?' && idx === (params.length - 1)) {
             return getSearchParam(null, p);
         }
         return decodeURIComponent(p);
-    }));
+    });
+    return executeCommandWithContext(params.shift(), commandContext, params);
 };
 
 /**
