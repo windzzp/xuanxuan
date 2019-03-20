@@ -274,6 +274,12 @@ class AppRemote {
             {
                 label: Lang.string('menu.window'),
                 submenu: [{
+                    label: Lang.string('menu.createNewWindow'),
+                    accelerator: 'Command+N',
+                    click: () => {
+                        this.createAppWindow();
+                    }
+                }, {
                     label: Lang.string('menu.minimize'),
                     accelerator: 'Command+M',
                     selector: 'performMiniaturize:'
