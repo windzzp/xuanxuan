@@ -90,16 +90,18 @@ export default class UserListItem extends Component {
             ...other
         } = this.props;
 
-        return (<a
-            {...other}
-            className={HTML.classes('app-user-list-item item', className)}
-        >
-            <UserAvatar className={avatarClassName} size={avatarSize} user={user} />
-            <div className="content">
-                <div className="title">{user.displayName} <small className="muted">@{user.account}</small></div>
-                <div className="subtitle">{user.serverUrl}</div>
-            </div>
-            {children}
-        </a>);
+        return (
+            <a
+                {...other}
+                className={HTML.classes('app-user-list-item item', className)}
+            >
+                <UserAvatar className={avatarClassName} size={avatarSize} user={user} />
+                <div className="content">
+                    <div className="title">{user.displayName} <small className="muted">@{user.account}</small></div>
+                    <div className="subtitle">{user.serverUrl}</div>
+                </div>
+                {children}
+            </a>
+        );
     }
 }

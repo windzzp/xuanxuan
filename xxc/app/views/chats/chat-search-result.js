@@ -157,7 +157,12 @@ export default class ChatSearchResult extends Component {
      * @return {void}
      */
     loadMessages() {
-        const {searchKeys, searchFilterTime, searchCount, chat} = this.props;
+        const {
+            searchKeys,
+            searchFilterTime,
+            searchCount,
+            chat,
+        } = this.props;
         const searchId = this._createSearchId(this.props);
         if (searchId !== this.searchId && searchCount) {
             this.searchId = searchId;
@@ -236,19 +241,21 @@ export default class ChatSearchResult extends Component {
      * @private
      */
     listItemCreator(message, lastMessage) {
-        return (<MessageListItem
-            className={HTML.classes('state state-click-throuth', {active: this.state.selectedMessage && this.state.selectedMessage.gid === message.gid})}
-            staticUI
-            hideHeader={false}
-            showDateDivider={false}
-            lastMessage={lastMessage}
-            key={message.gid}
-            message={message}
-            avatarSize={20}
-            dateFormater="yyyy-M-d hh:mm"
-            textContentConverter={this.convertContent.bind(this)}
-            onClick={this.handleMessageItemClick.bind(this, message)}
-        />);
+        return (
+            <MessageListItem
+                className={HTML.classes('state state-click-throuth', {active: this.state.selectedMessage && this.state.selectedMessage.gid === message.gid})}
+                staticUI
+                hideHeader={false}
+                showDateDivider={false}
+                lastMessage={lastMessage}
+                key={message.gid}
+                message={message}
+                avatarSize={20}
+                dateFormater="yyyy-M-d hh:mm"
+                textContentConverter={this.convertContent.bind(this)}
+                onClick={this.handleMessageItemClick.bind(this, message)}
+            />
+        );
     }
 
     /**
@@ -272,39 +279,47 @@ export default class ChatSearchResult extends Component {
         } = this.props;
 
         if (!searchCount) {
-            return (<div
-                {...other}
-                className={HTML.classes('app-chat-search-result column single', className)}
-            />);
+            return (
+                <div
+                    {...other}
+                    className={HTML.classes('app-chat-search-result column single', className)}
+                />
+            );
         }
 
-        return (<div
-            {...other}
-            className={HTML.classes('app-chat-search-result column single', className)}
-            onClick={this.handleMessageItemClick.bind(this, null)}
-        >
-            <header className="heading flex-none gray">
-                <div className="title"><small>{Lang.format('chats.chat.search.result.format', chat.getDisplayName(App), (typeof this.state.realCount) !== 'number' ? searchCount : this.state.realCount)}</small></div>
-                {this.state.loading ? <Icon className="loading spin muted" /> : null}
-            </header>
-            <div className="flex-auto user-selectable scroll-y scroll-x fluid">
-                <MessageList
-                    className="app-message-list-simple"
-                    staticUI
-                    messages={this.state.messages}
-                    stayBottom={false}
-                    listItemCreator={this.listItemCreator.bind(this)}
-                />
+        return (
+            <div
+                {...other}
+                className={HTML.classes('app-chat-search-result column single', className)}
+                onClick={this.handleMessageItemClick.bind(this, null)}
+            >
+                <header className="heading flex-none gray">
+                    <div className="title"><small>{Lang.format('chats.chat.search.result.format', chat.getDisplayName(App), (typeof this.state.realCount) !== 'number' ? searchCount : this.state.realCount)}</small></div>
+                    {this.state.loading ? <Icon className="loading spin muted" /> : null}
+                </header>
+                <div className="flex-auto user-selectable scroll-y scroll-x fluid">
+                    <MessageList
+                        className="app-message-list-simple"
+                        staticUI
+                        messages={this.state.messages}
+                        stayBottom={false}
+                        listItemCreator={this.listItemCreator.bind(this)}
+                    />
+                </div>
+                {!this.state.selectedMessage && (
+                    <div className="flex-none heading info-pale">
+                        <Avatar icon="information-outline" />
+                        <div className="title"><small>{Lang.string('chats.history.search.result.selectTip')}</small></div>
+                    </div>
+                )}
+                {this.state.realCount > MANY_RESULT_COUNT && (
+                    <div className="flex-none heading info-pale">
+                        <Avatar icon="information-outline" />
+                        <div className="title"><small>{this.state.realCount > MAX_RESULT_COUNT ? Lang.format('chats.history.search.result.notShow.format', this.state.realCount - MAX_RESULT_COUNT) : ''}{Lang.string('chats.history.search.result.toMany')}</small></div>
+                    </div>
+                )}
+                {children}
             </div>
-            {!this.state.selectedMessage && <div className="flex-none heading info-pale">
-                <Avatar icon="information-outline" />
-                <div className="title"><small>{Lang.string('chats.history.search.result.selectTip')}</small></div>
-            </div>}
-            {this.state.realCount > MANY_RESULT_COUNT && <div className="flex-none heading info-pale">
-                <Avatar icon="information-outline" />
-                <div className="title"><small>{this.state.realCount > MAX_RESULT_COUNT ? Lang.format('chats.history.search.result.notShow.format', this.state.realCount - MAX_RESULT_COUNT) : ''}{Lang.string('chats.history.search.result.toMany')}</small></div>
-            </div>}
-            {children}
-        </div>);
+        );
     }
 }

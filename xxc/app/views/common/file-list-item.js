@@ -118,7 +118,7 @@ export default class FileListItem extends Component {
      * 让React知道当前状态或属性的改变是否不影响组件的输出。默认行为是在每一次状态的改变重渲，在大部分情况下你应该依赖于默认行为。
      *
      * @param {Object} nextProps 即将更新的属性值
-     * @param {Object} nextState 即将更新的状态值
+     * @param {Object} nextStates 即将更新的状态值
      * @returns {boolean} 如果返回 `true` 则继续渲染组件，否则为 `false` 而后的 `UNSAFE_componentWillUpdate()`，`render()`， 和 `componentDidUpdate()` 将不会被调用
      * @memberof FileListItem
      */

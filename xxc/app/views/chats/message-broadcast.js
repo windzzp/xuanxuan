@@ -94,13 +94,15 @@ export default class MessageBroadcast extends Component {
             content = prefix + content;
         }
 
-        return (<div className={classes('app-message-broadcast has-padding-xs space-sm primary-pale flex-inline flex-middle row single', className)} {...other}>
-            <Avatar className="avatar-sm flex-none" icon="bell-outline text-secondary" />
-            <div className="muted">{formatDate(message.date, 'hh:mm')} &nbsp;</div>
-            <div
-                className="content markdown-content"
-                dangerouslySetInnerHTML={{__html: contentConverter ? contentConverter(content) : content}}
-            />
-        </div>);
+        return (
+            <div className={classes('app-message-broadcast has-padding-xs space-sm primary-pale flex-inline flex-middle row single', className)} {...other}>
+                <Avatar className="avatar-sm flex-none" icon="bell-outline text-secondary" />
+                <div className="muted">{formatDate(message.date, 'hh:mm')} &nbsp;</div>
+                <div
+                    className="content markdown-content"
+                    dangerouslySetInnerHTML={{__html: contentConverter ? contentConverter(content) : content}}
+                />
+            </div>
+        );
     }
 }

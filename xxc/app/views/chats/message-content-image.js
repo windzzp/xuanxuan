@@ -147,6 +147,7 @@ export default class MessageContentImage extends Component {
      *
      * @param {FileData|Object} image 图片对象
      * @memberof MessageContentImage
+     * @return {void}
      */
     downloadImage(image) {
         if (this.state.download === null) {

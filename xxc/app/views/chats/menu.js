@@ -152,17 +152,19 @@ export default class Menu extends Component {
             ...other
         } = this.props;
 
-        return (<div className={classes('app-chats-menu primary-pale', className)} {...other}>
-            <MenuHeader
-                ref={e => {this.menuHeader = e;}}
-                filter={filter}
-                defaultSearch={this.defaultSearch}
-                onSearchChange={this.handleSearchChange}
-                onSearchFocus={this.handleSearchFocusChange}
-                className="dock-top"
-            />
-            <MenuList onRequestClearSearch={this.onRequestClearSearch} search={this.state.searchFocus ? this.state.search : ''} filter={filter} activeChatId={activeChatId} className="dock-bottom" />
-            {children}
-        </div>);
+        return (
+            <div className={classes('app-chats-menu primary-pale', className)} {...other}>
+                <MenuHeader
+                    ref={e => {this.menuHeader = e;}}
+                    filter={filter}
+                    defaultSearch={this.defaultSearch}
+                    onSearchChange={this.handleSearchChange}
+                    onSearchFocus={this.handleSearchFocusChange}
+                    className="dock-top"
+                />
+                <MenuList onRequestClearSearch={this.onRequestClearSearch} search={this.state.searchFocus ? this.state.search : ''} filter={filter} activeChatId={activeChatId} className="dock-bottom" />
+                {children}
+            </div>
+        );
     }
 }

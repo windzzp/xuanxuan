@@ -79,14 +79,15 @@ export default class ChatListItem extends Component {
      * @memberof ChatListItem
      */
     shouldComponentUpdate(nextProps) {
-        return (isJustLangSwitched() ||
-            this.props.className !== nextProps.className ||
-            this.props.children !== nextProps.children ||
-            this.props.chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId ||
-            (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId) ||
-            this.props.filterType !== nextProps.filterType ||
-            this.props.badge !== nextProps.badge ||
-            this.props.notUserLink !== nextProps.notUserLink
+        return (isJustLangSwitched()
+            || this.props.className !== nextProps.className
+            || this.props.children !== nextProps.children
+            || this.props.chat !== nextProps.chat
+            || this.lastChatUpdateId !== nextProps.chat.updateId
+            || (nextProps.chat.isOne2One && nextProps.chat.getTheOtherOne(App).updateId !== this.lastOtherOneUpdateId)
+            || this.props.filterType !== nextProps.filterType
+            || this.props.badge !== nextProps.badge
+            || this.props.notUserLink !== nextProps.notUserLink
         );
     }
 
@@ -146,8 +147,25 @@ export default class ChatListItem extends Component {
         }
 
         if (notUserLink) {
-            return (<a
-                href={notUserLink === 'disabled' ? null : `#${ROUTES.chats.chat.id(chat.gid, filterType)}`}
+            return (
+                <a
+                    href={notUserLink === 'disabled' ? null : `#${ROUTES.chats.chat.id(chat.gid, filterType)}`}
+                    className={classes('app-chat-item flex-middle', className)}
+                    {...other}
+                >
+                    <ChatAvatar chat={chat} avatarClassName="avatar-sm" avatarSize={24} grayOffline className="flex-none" />
+                    <div className="title text-ellipsis">
+                        {name}
+                        {subname && <small className="muted">&nbsp; {subname}</small>}
+                    </div>
+                    {badge && <div className="flex-none">{badge}</div>}
+                    {children}
+                </a>
+            );
+        }
+        return (
+            <Link
+                to={ROUTES.chats.chat.id(chat.gid, filterType)}
                 className={classes('app-chat-item flex-middle', className)}
                 {...other}
             >
@@ -158,20 +176,7 @@ export default class ChatListItem extends Component {
                 </div>
                 {badge && <div className="flex-none">{badge}</div>}
                 {children}
-            </a>);
-        }
-        return (<Link
-            to={ROUTES.chats.chat.id(chat.gid, filterType)}
-            className={classes('app-chat-item flex-middle', className)}
-            {...other}
-        >
-            <ChatAvatar chat={chat} avatarClassName="avatar-sm" avatarSize={24} grayOffline className="flex-none" />
-            <div className="title text-ellipsis">
-                {name}
-                {subname && <small className="muted">&nbsp; {subname}</small>}
-            </div>
-            {badge && <div className="flex-none">{badge}</div>}
-            {children}
-        </Link>);
+            </Link>
+        );
     }
 }

@@ -74,7 +74,6 @@ const buildInView = {
  * <ExtsIndex />
  */
 export default class ExtsIndex extends Component {
-
     /**
      * React 组件属性类型检查
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
@@ -327,66 +326,74 @@ export default class ExtsIndex extends Component {
             }
         }
 
-        return (<div className={classes('app-exts dock column single', /* 'app-exts-dark', */ `app-exts-current-${Exts.ui.currentOpenedApp.name}`, className, {hidden})}>
-            <nav
-                className={classes('app-exts-nav nav flex-none', {'app-exts-nav-compact': openedApps.length > 7, 'app-exts-nav-scrolled': this.state.navScrolled})}
-                onWheel={this.handleWheelEvent}
-                ref={e => {this.appsNav = e;}}
-            >
-                {
-                    openedApps.map(openedApp => {
-                        if (openedApp.app.pinnedOnMenu) {
-                            return null;
-                        }
-                        const isCurrentApp = Exts.ui.isCurrentOpenedApp(openedApp.id);
-                        const displayName = ifEmptyStringThen(this.state.pageTitles[openedApp.id], openedApp.app.displayName);
-                        return (<NavLink
-                            onContextMenu={this.handleOpenedAppContextMenu.bind(this, openedApp)}
-                            key={openedApp.id}
-                            to={openedApp.routePath}
-                            className={`ext-nav-item-${openedApp.appName}`}
-                            id={`ext-nav-item-${openedApp.name}`}
-                            title={openedApp.app.description ? `【${displayName}】 - ${openedApp.app.description}` : displayName}
-                        >
-                            <Avatar foreColor={isCurrentApp ? openedApp.app.appAccentColor : null} auto={openedApp.app.appIcon} className="rounded flex-none" />
-                            {this.state.loading[openedApp.id] && <Avatar icon="loading spin" className="circle loading-icon" />}
-                            <span className="text">{displayName}</span>
-                            {!openedApp.isFixed && <div title={Lang.string('common.close')} className="close rounded"><Icon data-id={openedApp.id} name="close" onClick={this.handleAppCloseBtnClick} /></div>}
-                        </NavLink>);
-                    })
-                }
-                <div className="app-exts-nav-arrows nav">
-                    <a className="app-exts-nav-arrow-left" onClick={this.handleNavArrowClick.bind(this, 'left')}><Icon name="menu-left icon-2x" /></a>
-                    <a className="app-exts-nav-arrow-right" onClick={this.handleNavArrowClick.bind(this, 'right')}><Icon name="menu-right icon-2x" /></a>
-                </div>
-            </nav>
-            <div className="app-exts-apps flex-auto">
-                {
-                    openedApps.map(openedApp => {
-                        let appView = null;
-                        if (openedApp.app.MainView) {
-                            appView = <openedApp.app.MainView app={openedApp} onLoadingChange={this.handleAppLoadingChange.bind(this, openedApp)} onPageTitleUpdated={this.handleAppPageTitleUpadted.bind(this, openedApp)} />;
-                        } else if (openedApp.app.buildIn && buildInView[openedApp.id]) {
-                            const TheAppView = buildInView[openedApp.id];
-                            appView = TheAppView && <TheAppView app={openedApp} onLoadingChange={this.handleAppLoadingChange.bind(this, openedApp)} onPageTitleUpdated={this.handleAppPageTitleUpadted.bind(this, openedApp)} />;
-                        } else {
-                            const directUrl = openedApp.directUrl;
-                            if (directUrl) {
-                                appView = <WebApp onLoadingChange={this.handleAppLoadingChange.bind(this, openedApp)} onPageTitleUpdated={this.handleAppPageTitleUpadted.bind(this, openedApp)} app={openedApp} />;
+        return (
+            <div className={classes('app-exts dock column single', /* 'app-exts-dark', */ `app-exts-current-${Exts.ui.currentOpenedApp.name}`, className, {hidden})}>
+                <nav
+                    className={classes('app-exts-nav nav flex-none', {'app-exts-nav-compact': openedApps.length > 7, 'app-exts-nav-scrolled': this.state.navScrolled})}
+                    onWheel={this.handleWheelEvent}
+                    ref={e => {this.appsNav = e;}}
+                >
+                    {
+                        openedApps.map(openedApp => {
+                            if (openedApp.app.pinnedOnMenu) {
+                                return null;
                             }
-                        }
-                        if (!appView) {
-                            appView = <div className="box">{Lang.string('exts.appNoView')}({openedApp.id})</div>;
-                        }
-                        return (<div
-                            key={openedApp.id}
-                            className={classes(`app-exts-app app-exts-app-${openedApp.id} dock scroll-y`, {'app-exts-app-pinned': openedApp.app.pinnedOnMenu, hidden: !Exts.ui.isCurrentOpenedApp(openedApp.id)})}
-                            style={{backgroundColor: openedApp.app.appBackColor}}
-                        >{appView}</div>);
-                    })
-                }
+                            const isCurrentApp = Exts.ui.isCurrentOpenedApp(openedApp.id);
+                            const displayName = ifEmptyStringThen(this.state.pageTitles[openedApp.id], openedApp.app.displayName);
+                            return (
+                                <NavLink
+                                    onContextMenu={this.handleOpenedAppContextMenu.bind(this, openedApp)}
+                                    key={openedApp.id}
+                                    to={openedApp.routePath}
+                                    className={`ext-nav-item-${openedApp.appName}`}
+                                    id={`ext-nav-item-${openedApp.name}`}
+                                    title={openedApp.app.description ? `【${displayName}】 - ${openedApp.app.description}` : displayName}
+                                >
+                                    <Avatar foreColor={isCurrentApp ? openedApp.app.appAccentColor : null} auto={openedApp.app.appIcon} className="rounded flex-none" />
+                                    {this.state.loading[openedApp.id] && <Avatar icon="loading spin" className="circle loading-icon" />}
+                                    <span className="text">{displayName}</span>
+                                    {!openedApp.isFixed && <div title={Lang.string('common.close')} className="close rounded"><Icon data-id={openedApp.id} name="close" onClick={this.handleAppCloseBtnClick} /></div>}
+                                </NavLink>
+                            );
+                        })
+                    }
+                    <div className="app-exts-nav-arrows nav">
+                        <a className="app-exts-nav-arrow-left" onClick={this.handleNavArrowClick.bind(this, 'left')}><Icon name="menu-left icon-2x" /></a>
+                        <a className="app-exts-nav-arrow-right" onClick={this.handleNavArrowClick.bind(this, 'right')}><Icon name="menu-right icon-2x" /></a>
+                    </div>
+                </nav>
+                <div className="app-exts-apps flex-auto">
+                    {
+                        openedApps.map(openedApp => {
+                            let appView = null;
+                            if (openedApp.app.MainView) {
+                                appView = <openedApp.app.MainView app={openedApp} onLoadingChange={this.handleAppLoadingChange.bind(this, openedApp)} onPageTitleUpdated={this.handleAppPageTitleUpadted.bind(this, openedApp)} />;
+                            } else if (openedApp.app.buildIn && buildInView[openedApp.id]) {
+                                const TheAppView = buildInView[openedApp.id];
+                                appView = TheAppView && <TheAppView app={openedApp} onLoadingChange={this.handleAppLoadingChange.bind(this, openedApp)} onPageTitleUpdated={this.handleAppPageTitleUpadted.bind(this, openedApp)} />;
+                            } else {
+                                const directUrl = openedApp.directUrl;
+                                if (directUrl) {
+                                    appView = <WebApp onLoadingChange={this.handleAppLoadingChange.bind(this, openedApp)} onPageTitleUpdated={this.handleAppPageTitleUpadted.bind(this, openedApp)} app={openedApp} />;
+                                }
+                            }
+                            if (!appView) {
+                                appView = <div className="box">{Lang.string('exts.appNoView')}({openedApp.id})</div>;
+                            }
+                            return (
+                                <div
+                                    key={openedApp.id}
+                                    className={classes(`app-exts-app app-exts-app-${openedApp.id} dock scroll-y`, {'app-exts-app-pinned': openedApp.app.pinnedOnMenu, hidden: !Exts.ui.isCurrentOpenedApp(openedApp.id)})}
+                                    style={{backgroundColor: openedApp.app.appBackColor}}
+                                >
+                                    {appView}
+                                </div>
+                            );
+                        })
+                    }
+                </div>
+                {redirectView}
             </div>
-            {redirectView}
-        </div>);
+        );
     }
 }

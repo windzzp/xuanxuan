@@ -185,12 +185,14 @@ export default class MemberList extends Component {
             listViews.push(<ListItem key="showMore" icon="chevron-double-down" className="flex-middle item muted" title={<span className="title small">{Lang.format('common.clickShowMoreFormat', notShowCount)}</span>} onClick={this.handleRequestMorePage} />);
         }
 
-        return (<div
-            {...other}
-            className={HTML.classes('app-member-list list', className)}
-        >
-            {heading}
-            {listViews}
-        </div>);
+        return (
+            <div
+                {...other}
+                className={HTML.classes('app-member-list list', className)}
+            >
+                {heading}
+                {listViews}
+            </div>
+        );
     }
 }

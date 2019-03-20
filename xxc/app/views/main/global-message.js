@@ -225,35 +225,41 @@ export default class GlobalMessage extends PureComponent {
         let contentView = null;
         if (disconnect) {
             if (connecting) {
-                contentView = (<div className="heading">
-                    <Avatar icon="loading spin" />
-                    <div className="title">{Lang.string('login.autoConnet.connecting')}</div>
-                    <nav className="nav">
-                        <a onClick={this.logout.bind(this)}>{Lang.string('login.autoConnet.logout')}</a>
-                    </nav>
-                </div>);
-            } else {
-                contentView = (<div className="heading">
-                    <Avatar icon={tick % 2 === 0 ? 'lan-disconnect' : 'lan-connect'} />
-                    <div className="title">
-                        {Lang.format(this.connectTimes ? 'login.autoConnet.faildAndWait' : 'login.autoConnet.wait', Math.max(0, tick))}
-                        {this.state.failMessage ? <span data-hint={this.state.failMessage} className="hint--bottom">{Lang.string('login.autoConnet.errorDetail')}</span> : null}
+                contentView = (
+                    <div className="heading">
+                        <Avatar icon="loading spin" />
+                        <div className="title">{Lang.string('login.autoConnet.connecting')}</div>
+                        <nav className="nav">
+                            <a onClick={this.logout.bind(this)}>{Lang.string('login.autoConnet.logout')}</a>
+                        </nav>
                     </div>
-                    <nav className="nav">
-                        <a onClick={this.reconnectNow.bind(this)}>{Lang.string('login.autoConnet.conectIM')}</a>
-                        <a onClick={this.logout.bind(this)}>{Lang.string('login.autoConnet.logout')}</a>
-                    </nav>
-                </div>);
+                );
+            } else {
+                contentView = (
+                    <div className="heading">
+                        <Avatar icon={tick % 2 === 0 ? 'lan-disconnect' : 'lan-connect'} />
+                        <div className="title">
+                            {Lang.format(this.connectTimes ? 'login.autoConnet.faildAndWait' : 'login.autoConnet.wait', Math.max(0, tick))}
+                            {this.state.failMessage ? <span data-hint={this.state.failMessage} className="hint--bottom">{Lang.string('login.autoConnet.errorDetail')}</span> : null}
+                        </div>
+                        <nav className="nav">
+                            <a onClick={this.reconnectNow.bind(this)}>{Lang.string('login.autoConnet.conectIM')}</a>
+                            <a onClick={this.logout.bind(this)}>{Lang.string('login.autoConnet.logout')}</a>
+                        </nav>
+                    </div>
+                );
             }
         }
 
-        return (<div
-            className={HTML.classes('app-global-message center-content', className, {
-                'app-user-disconnet yellow': disconnect,
-            })}
-            {...other}
-        >
-            {contentView}
-        </div>);
+        return (
+            <div
+                className={HTML.classes('app-global-message center-content', className, {
+                    'app-user-disconnet yellow': disconnect,
+                })}
+                {...other}
+            >
+                {contentView}
+            </div>
+        );
     }
 }
