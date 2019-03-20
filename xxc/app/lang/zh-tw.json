@@ -243,6 +243,7 @@
     "dialog.reloadWindowConfirm": "確定重新啟動？",
     "dialog.reloadWindowConfirmTip": "這將註銷當前登錄的用戶並需要重新登錄。",
 
+    "emoji.title": "表情",
     "emoji.category.activity": "活動",
     "emoji.category.flags": "旗幟",
     "emoji.category.food": "食物與飲料",

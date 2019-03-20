@@ -243,6 +243,7 @@
     "dialog.reloadWindowConfirm": "Do you want to restart it?",
     "dialog.reloadWindowConfirmTip": "This account will be logged out. Log in is required later.",
 
+    "emoji.title": "Emoji",
     "emoji.category.activity": "Activity",
     "emoji.category.flags": "Flag",
     "emoji.category.food": "Food",
