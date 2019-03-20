@@ -189,24 +189,28 @@ export default class ChatSidebarPeoples extends Component {
             }
         });
 
-        return (<div
-            {...other}
-            className={HTML.classes('app-chat-sidebar-peoples has-padding', className)}
-        >
+        return (
+            <div
+                {...other}
+                className={HTML.classes('app-chat-sidebar-peoples has-padding', className)}
+            >
 
-            <MemberList
-                onItemClick={handleMemberItemClick}
-                onItemContextMenu={this.handleItemContextMenu}
-                contentRender={this.handleItemRender}
-                className="white rounded compact"
-                members={members}
-                listItemProps={{avatarSize: 20}}
-                heading={<header className="heading divider">
-                    <div className="title small text-gray">{onlineCount}/{members.length}</div>
-                    <nav className="nav">{chat.canInvite(App.user) && <a onClick={this.handleInviteBtnClick}><Icon name="account-multiple-plus" /> &nbsp;{Lang.string('chat.invite')}</a>}</nav>
-                </header>}
-            />
-            {children}
-        </div>);
+                <MemberList
+                    onItemClick={handleMemberItemClick}
+                    onItemContextMenu={this.handleItemContextMenu}
+                    contentRender={this.handleItemRender}
+                    className="white rounded compact"
+                    members={members}
+                    listItemProps={{avatarSize: 20}}
+                    heading={(
+                        <header className="heading divider">
+                            <div className="title small text-gray">{onlineCount}/{members.length}</div>
+                            <nav className="nav">{chat.canInvite(App.user) && <a onClick={this.handleInviteBtnClick}><Icon name="account-multiple-plus" /> &nbsp;{Lang.string('chat.invite')}</a>}</nav>
+                        </header>
+                    )}
+                />
+                {children}
+            </div>
+        );
     }
 }

@@ -197,21 +197,21 @@ export default class MessageListItem extends Component {
      * @memberof MessageListItem
      */
     shouldComponentUpdate(nextProps, nextState) {
-        return (isJustLangSwitched() ||
-            this.state.sharing !== nextState.sharing ||
-            this.props.message !== nextProps.message || nextProps.message.updateId !== this.lastMessageUpdateId ||
-            this.props.lastMessage !== nextProps.lastMessage ||
-            this.props.showDateDivider !== nextProps.showDateDivider ||
-            this.props.hideHeader !== nextProps.hideHeader ||
-            this.props.ignoreStatus !== nextProps.ignoreStatus ||
-            this.props.font !== nextProps.font || (this.props.font && nextProps.font && this.lastFontSize !== nextProps.font.size) ||
-            this.props.className !== nextProps.className ||
-            this.props.dateFormater !== nextProps.dateFormater ||
-            this.props.textContentConverter !== nextProps.textContentConverter ||
-            this.props.avatarSize !== nextProps.avatarSize ||
-            this.props.children !== nextProps.children ||
-            (this.lastSenderUpdateId !== false && this.lastSenderUpdateId !== nextProps.message.getSender(App.members).updateId) ||
-            this.props.staticUI !== nextProps.staticUI);
+        return (isJustLangSwitched()
+            || this.state.sharing !== nextState.sharing
+            || this.props.message !== nextProps.message || nextProps.message.updateId !== this.lastMessageUpdateId
+            || this.props.lastMessage !== nextProps.lastMessage
+            || this.props.showDateDivider !== nextProps.showDateDivider
+            || this.props.hideHeader !== nextProps.hideHeader
+            || this.props.ignoreStatus !== nextProps.ignoreStatus
+            || this.props.font !== nextProps.font || (this.props.font && nextProps.font && this.lastFontSize !== nextProps.font.size)
+            || this.props.className !== nextProps.className
+            || this.props.dateFormater !== nextProps.dateFormater
+            || this.props.textContentConverter !== nextProps.textContentConverter
+            || this.props.avatarSize !== nextProps.avatarSize
+            || this.props.children !== nextProps.children
+            || (this.lastSenderUpdateId !== false && this.lastSenderUpdateId !== nextProps.message.getSender(App.members).updateId)
+            || this.props.staticUI !== nextProps.staticUI);
     }
 
     /**

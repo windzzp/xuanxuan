@@ -276,7 +276,12 @@ export default class ChatHistory extends Component {
                         this.setState(pager);
                         this.loadMessages();
                     }).catch(error => {
-                        this.setState({pager, loading: false, messages: [], message: error && Lang.error(error)});
+                        this.setState({
+                            pager,
+                            loading: false,
+                            messages: [],
+                            message: error && Lang.error(error),
+                        });
                         if (callback) {
                             callback(false);
                         }
@@ -307,7 +312,12 @@ export default class ChatHistory extends Component {
                 callback(messages);
             }
         }).catch(error => {
-            this.setState({pager, loading: false, messages: [], message: error && Lang.error(error)});
+            this.setState({
+                pager,
+                loading: false,
+                messages: [],
+                message: error && Lang.error(error),
+            });
             if (callback) {
                 callback(false);
             }
@@ -434,16 +444,18 @@ export default class ChatHistory extends Component {
         if (active) {
             this.activeMessageId = `app-chat-history-message_${message.gid}`;
         }
-        return (<MessageListItem
-            id={active ? this.activeMessageId : null}
-            className={HTML.classes({active})}
-            staticUI={true}
-            lastMessage={lastMessage}
-            key={message.gid}
-            message={message}
-            sleepUrlCard={true}
-            textContentConverter={this.convertContent}
-        />);
+        return (
+            <MessageListItem
+                id={active ? this.activeMessageId : null}
+                className={HTML.classes({active})}
+                staticUI={true}
+                lastMessage={lastMessage}
+                key={message.gid}
+                message={message}
+                sleepUrlCard={true}
+                textContentConverter={this.convertContent}
+            />
+        );
     }
 
     /**
@@ -466,25 +478,29 @@ export default class ChatHistory extends Component {
 
         const messages = this.state.messages;
 
-        return (<div
-            {...other}
-            className={HTML.classes('app-chat-history column single', className)}
-        >
-            <ChatTitle className="flex-none gray has-padding-h" chat={chat}>
-                {(messages && messages.length) ? <div className="small">{DateHelper.formatSpan(messages[0].date, messages[messages.length - 1].date, {full: Lang.string('time.format.full'), month: Lang.string('time.format.month'), day: Lang.string('time.format.day')})}</div> : null}
-                <nav className="toolbar flex flex-middle">
-                    <Pager {...this.state.pager} onPageChange={this.handleOnPageChange} />
-                    <div data-hint={Lang.string('chats.history.fetchFromServer')} className="hint--bottom-left"><button onClick={this.handleFecthBtnClick} type="button" disabled={this.state.loading || !chat.id || App.im.server.isFetchingHistory()} className="iconbutton btn rounded"><Icon name="cloud-download icon-2x" /></button></div>
-                </nav>
-            </ChatTitle>
-            {this.state.message && <div className="heading blue flex-none">
-                <Avatar icon={this.state.loading ? 'loading spin' : 'information'} />
-                <div className="title">{this.state.message}</div>
-            </div>}
-            <div className="flex-auto user-selectable scroll-y scroll-x fluid">
-                <MessageList stayBottom={!gotoMessage} staticUI messages={messages} listItemCreator={this.listItemCreator.bind(this)} />
+        return (
+            <div
+                {...other}
+                className={HTML.classes('app-chat-history column single', className)}
+            >
+                <ChatTitle className="flex-none gray has-padding-h" chat={chat}>
+                    {(messages && messages.length) ? <div className="small">{DateHelper.formatSpan(messages[0].date, messages[messages.length - 1].date, {full: Lang.string('time.format.full'), month: Lang.string('time.format.month'), day: Lang.string('time.format.day')})}</div> : null}
+                    <nav className="toolbar flex flex-middle">
+                        <Pager {...this.state.pager} onPageChange={this.handleOnPageChange} />
+                        <div data-hint={Lang.string('chats.history.fetchFromServer')} className="hint--bottom-left"><button onClick={this.handleFecthBtnClick} type="button" disabled={this.state.loading || !chat.id || App.im.server.isFetchingHistory()} className="iconbutton btn rounded"><Icon name="cloud-download icon-2x" /></button></div>
+                    </nav>
+                </ChatTitle>
+                {this.state.message && (
+                    <div className="heading blue flex-none">
+                        <Avatar icon={this.state.loading ? 'loading spin' : 'information'} />
+                        <div className="title">{this.state.message}</div>
+                    </div>
+                )}
+                <div className="flex-auto user-selectable scroll-y scroll-x fluid">
+                    <MessageList stayBottom={!gotoMessage} staticUI messages={messages} listItemCreator={this.listItemCreator.bind(this)} />
+                </div>
+                {children}
             </div>
-            {children}
-        </div>);
+        );
     }
 }

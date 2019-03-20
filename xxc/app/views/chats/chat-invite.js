@@ -198,23 +198,25 @@ export default class ChatInvite extends Component {
             }
         }, true);
 
-        return (<div
-            {...other}
-            className={HTML.classes('app-chat-invite single row outline space', className)}
-        >
-            <div className="cell column single flex-none gray" style={{width: HTML.rem(150)}}>
-                <div className="has-padding-sm flex-none darken">
-                    <SearchControl onSearchChange={this.handleSearchChange} />
+        return (
+            <div
+                {...other}
+                className={HTML.classes('app-chat-invite single row outline space', className)}
+            >
+                <div className="cell column single flex-none gray" style={{width: HTML.rem(150)}}>
+                    <div className="has-padding-sm flex-none darken">
+                        <SearchControl onSearchChange={this.handleSearchChange} />
+                    </div>
+                    <MemberList className="flex-auto scroll-y compact" members={items} onItemClick={this.handleMemberItemClick} eventBindObject={this} listItemProps={{avatarSize: 24}} />
                 </div>
-                <MemberList className="flex-auto scroll-y compact" members={items} onItemClick={this.handleMemberItemClick} eventBindObject={this} listItemProps={{avatarSize: 24}} />
-            </div>
-            <div className="cell column single flex-auto divider-left">
-                <div className="heading flex-none primary-pale">
-                    <div className="title text-accent flex-auto">{Lang.string('chat.invite.choosed')} ({choosedItems.length})</div>
-                    <div className="flex-none has-padding-h"><button type="button" disabled={!choosedItems.length} className="btn primary rounded btn-wide" onClick={this.handleInviteBtnClick}>{Lang.string('chat.invite')}</button></div>
+                <div className="cell column single flex-auto divider-left">
+                    <div className="heading flex-none primary-pale">
+                        <div className="title text-accent flex-auto">{Lang.string('chat.invite.choosed')} ({choosedItems.length})</div>
+                        <div className="flex-none has-padding-h"><button type="button" disabled={!choosedItems.length} className="btn primary rounded btn-wide" onClick={this.handleInviteBtnClick}>{Lang.string('chat.invite')}</button></div>
+                    </div>
+                    <MemberList className="flex-auto scroll-y compact" members={choosedItems} onItemClick={this.handleMemberItemClick} eventBindObject={this} listItemProps={{avatarSize: 24}} />
                 </div>
-                <MemberList className="flex-auto scroll-y compact" members={choosedItems} onItemClick={this.handleMemberItemClick} eventBindObject={this} listItemProps={{avatarSize: 24}} />
             </div>
-        </div>);
+        );
     }
 }

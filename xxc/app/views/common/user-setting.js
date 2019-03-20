@@ -197,10 +197,12 @@ export default class UserSetting extends Component {
             value = item.getConverter(value);
         }
         const controlId = `selectbox-${timeSequence()}`;
-        return (<div className={classes('control flex', item.className)} key={item.name}>
-            <label htmlFor={controlId} style={{flex: '1 1 0%'}}>{item.caption}</label>
-            <SelectBox selectProps={{id: controlId}} value={value} options={item.options} onChange={this.changeConfig.bind(this, item)} selectClassName="rounded" />
-        </div>);
+        return (
+            <div className={classes('control flex', item.className)} key={item.name}>
+                <label htmlFor={controlId} style={{flex: '1 1 0%'}}>{item.caption}</label>
+                <SelectBox selectProps={{id: controlId}} value={value} options={item.options} onChange={this.changeConfig.bind(this, item)} selectClassName="rounded" />
+            </div>
+        );
     }
 
     /**
@@ -216,9 +218,11 @@ export default class UserSetting extends Component {
             value = item.getConverter(value);
         }
         const checked = !!value;
-        return (<div className={classes('control', item.className)} key={item.name}>
-            <Checkbox checked={checked} label={item.caption} onChange={this.changeConfig.bind(this, item)} />
-        </div>);
+        return (
+            <div className={classes('control', item.className)} key={item.name}>
+                <Checkbox checked={checked} label={item.caption} onChange={this.changeConfig.bind(this, item)} />
+            </div>
+        );
     }
 
     /**
@@ -404,29 +408,33 @@ export default class UserSetting extends Component {
             }
         ];
 
-        return (<div
-            {...other}
-            className={classes('app-user-setting space', className)}
-        >
-            {
-                configs.map(section => {
-                    if (section.hidden) {
-                        return null;
-                    }
-                    return (<section key={section.name} className={`space app-setting-group-${section.name}`}>
-                        <header className="heading divider space-sm">
-                            <strong className="title text-gray">{section.title}</strong>
-                        </header>
-                        <div className="items">
-                            {
-                                section.items.map(item => {
-                                    return this.renderConfigItem(item);
-                                })
-                            }
-                        </div>
-                    </section>);
-                })
-            }
-        </div>);
+        return (
+            <div
+                {...other}
+                className={classes('app-user-setting space', className)}
+            >
+                {
+                    configs.map(section => {
+                        if (section.hidden) {
+                            return null;
+                        }
+                        return (
+                            <section key={section.name} className={`space app-setting-group-${section.name}`}>
+                                <header className="heading divider space-sm">
+                                    <strong className="title text-gray">{section.title}</strong>
+                                </header>
+                                <div className="items">
+                                    {
+                                        section.items.map(item => {
+                                            return this.renderConfigItem(item);
+                                        })
+                                    }
+                                </div>
+                            </section>
+                        );
+                    })
+                }
+            </div>
+        );
     }
 }

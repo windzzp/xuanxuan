@@ -26,7 +26,7 @@ export default class ChatCommittersSetting extends PureComponent {
      * @memberof ChatCommittersSetting
      */
     static replaceViewPath = 'chats/ChatCommittersSetting';
-    
+
     /**
      * React 组件属性类型检查
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html

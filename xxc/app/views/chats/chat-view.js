@@ -102,8 +102,8 @@ export default class ChatView extends Component {
         const {chatGid} = this.props;
         this.dataChangeHandler = App.events.onDataChange(data => {
             if (
-                (data.chats && data.chats[chatGid]) ||
-                (data.members)
+                (data.chats && data.chats[chatGid])
+                || (data.members)
             ) {
                 this.forceUpdate();
             }
@@ -161,19 +161,23 @@ export default class ChatView extends Component {
             } else {
                 blockTip = Lang.string('chat.committers.blockedTip');
             }
-            chatView = (<div className="column single dock">
-                <ChatHeader chat={chat} className="flex-none" />
-                <ChatMessages chat={chat} className="flex-auto relative" />
-                {isRobot ? null : <div className="flex-none gray text-gray heading"><Avatar icon="lock-outline" /><div className="title">{blockTip}</div></div>}
-            </div>);
-        } else {
-            chatView = (<SplitPane split="horizontal" primary="second" maxSize={500} minSize={80} defaultSize={Config.ui['chat.sendbox.height'] || 100} paneStyle={{userSelect: 'none'}}>
+            chatView = (
                 <div className="column single dock">
                     <ChatHeader chat={chat} className="flex-none" />
                     <ChatMessages chat={chat} className="flex-auto relative" />
+                    {isRobot ? null : <div className="flex-none gray text-gray heading"><Avatar icon="lock-outline" /><div className="title">{blockTip}</div></div>}
                 </div>
-                <ChatSendbox className="dock" chat={chat} />
-            </SplitPane>);
+            );
+        } else {
+            chatView = (
+                <SplitPane split="horizontal" primary="second" maxSize={500} minSize={80} defaultSize={Config.ui['chat.sendbox.height'] || 100} paneStyle={{userSelect: 'none'}}>
+                    <div className="column single dock">
+                        <ChatHeader chat={chat} className="flex-none" />
+                        <ChatMessages chat={chat} className="flex-auto relative" />
+                    </div>
+                    <ChatSendbox className="dock" chat={chat} />
+                </SplitPane>
+            );
         }
 
         return (
@@ -182,10 +186,12 @@ export default class ChatView extends Component {
                 className={classes('app-chat dock', className, {hidden, 'chat-readonly': isReadOnly})}
                 id={`chat-view-${chat.gid.replace('&', '_')}`}
             >
-                {isRobot ? chatView : <SplitPane className={hideSidebar ? 'soloPane1' : ''} split="vertical" primary="second" maxSize={360} minSize={150} defaultSize={200} paneStyle={{userSelect: 'none'}}>
-                    {chatView}
-                    <ChatSidebar chat={chat} />
-                </SplitPane>}
+                {isRobot ? chatView : (
+                    <SplitPane className={hideSidebar ? 'soloPane1' : ''} split="vertical" primary="second" maxSize={360} minSize={150} defaultSize={200} paneStyle={{userSelect: 'none'}}>
+                        {chatView}
+                        <ChatSidebar chat={chat} />
+                    </SplitPane>
+                )}
                 {children}
             </div>
         );

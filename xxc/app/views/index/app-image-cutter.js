@@ -37,11 +37,13 @@ export default class ImageCutterApp extends Component {
     render() {
         const sourceImageFile = decodeURIComponent(this.props.match.params.file);
 
-        return (<div className="affix">
-            <ImageCutter
-                onFinish={this.onFinishCutImage}
-                sourceImage={sourceImageFile}
-            />
-        </div>);
+        return (
+            <div className="affix">
+                <ImageCutter
+                    onFinish={this.onFinishCutImage}
+                    sourceImage={sourceImageFile}
+                />
+            </div>
+        );
     }
 }

@@ -163,16 +163,18 @@ export default class ChatsSuggestPanel extends PureComponent {
 
         let imageView = null;
         if (image) {
-            imageView = (<ImageHolder
-                source={image.viewUrl}
-                downloadFailMessage={Lang.string('file.downloadFailed')}
-                uploadFailMessage={Lang.string('file.uploadFailed')}
-            >
-                <div className="toolbar dock dock-bottom has-padding text-center">
-                    <Button icon="message-image" className="green rounded" label={Lang.string('chat.sendClipboardImage')} onClick={this.handleSendBtnClick} />&nbsp; &nbsp;
-                    <Button icon="close" className="blue rounded" label={Lang.string('common.close')} onClick={this.handleCloseBtnClick} />
-                </div>
-            </ImageHolder>);
+            imageView = (
+                <ImageHolder
+                    source={image.viewUrl}
+                    downloadFailMessage={Lang.string('file.downloadFailed')}
+                    uploadFailMessage={Lang.string('file.uploadFailed')}
+                >
+                    <div className="toolbar dock dock-bottom has-padding text-center">
+                        <Button icon="message-image" className="green rounded" label={Lang.string('chat.sendClipboardImage')} onClick={this.handleSendBtnClick} />&nbsp; &nbsp;
+                        <Button icon="close" className="blue rounded" label={Lang.string('common.close')} onClick={this.handleCloseBtnClick} />
+                    </div>
+                </ImageHolder>
+            );
         }
 
         return (<ClickOutsideWrapper onClickOutside={this.handleCloseBtnClick} className={classes('dock dock-right dock-bottom layer app-chats-suggest-panel rounded has-pading scale-from-bottom shadow-3', className, {in: show})}>{imageView}</ClickOutsideWrapper>);

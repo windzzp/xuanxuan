@@ -136,16 +136,18 @@ export class UserChangePassword extends Component {
             className,
             ...other
         } = this.props;
-        return (<div className={HTML.classes('app-user-change-pwd', className)} {...other}>
-            {this.state.message && <div className="box danger rounded space-sm">{this.state.message}</div>}
-            <InputControl inputType="password" className={this.state.message && (StringHelper.isEmpty(this.state.password1) || this.state.password1 !== this.state.password2) ? 'has-error' : ''} disabled={this.state.doing} onChange={this.handleInputChange.bind(this, 'password1')} value={this.state.password1} label={Lang.string('user.changePassword.newPassword')} />
-            <InputControl inputType="password" className={this.state.message && (StringHelper.isEmpty(this.state.password2) || this.state.password1 !== this.state.password2) ? 'has-error' : ''} disabled={this.state.doing} onChange={this.handleInputChange.bind(this, 'password2')} value={this.state.password2} label={Lang.string('user.changePassword.newPasswordRepeat')} />
-            <div className="has-padding-v">
-                <button disabled={this.state.doing} onClick={this.handleConfirmBtnClick} type="button" className="btn primary btn-wide">{Lang.string('user.changePassword.btn.confirm')}</button>
-                 &nbsp;
-                <button disabled={this.state.doing} onClick={this.handleCancelBtnClick} type="button" className="btn gray btn-wide">{Lang.string('common.cancel')}</button>
+        return (
+            <div className={HTML.classes('app-user-change-pwd', className)} {...other}>
+                {this.state.message && <div className="box danger rounded space-sm">{this.state.message}</div>}
+                <InputControl inputType="password" className={this.state.message && (StringHelper.isEmpty(this.state.password1) || this.state.password1 !== this.state.password2) ? 'has-error' : ''} disabled={this.state.doing} onChange={this.handleInputChange.bind(this, 'password1')} value={this.state.password1} label={Lang.string('user.changePassword.newPassword')} />
+                <InputControl inputType="password" className={this.state.message && (StringHelper.isEmpty(this.state.password2) || this.state.password1 !== this.state.password2) ? 'has-error' : ''} disabled={this.state.doing} onChange={this.handleInputChange.bind(this, 'password2')} value={this.state.password2} label={Lang.string('user.changePassword.newPasswordRepeat')} />
+                <div className="has-padding-v">
+                    <button disabled={this.state.doing} onClick={this.handleConfirmBtnClick} type="button" className="btn primary btn-wide">{Lang.string('user.changePassword.btn.confirm')}</button>
+                    &nbsp;
+                    <button disabled={this.state.doing} onClick={this.handleCancelBtnClick} type="button" className="btn gray btn-wide">{Lang.string('common.cancel')}</button>
+                </div>
             </div>
-        </div>);
+        );
     }
 }
 

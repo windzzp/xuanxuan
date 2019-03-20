@@ -237,19 +237,21 @@ export default class MenuGroupList extends Component {
             'drop-top': isDragging && dropTarget.order < dragging.order,
             'drop-bottom': isDragging && dropTarget.order > dragging.order,
         };
-        return (<header
-            onContextMenu={this.handleHeadingContextMenu.bind(this, group)}
-            onClick={groupList.props.toggleWithHeading ? groupList.handleHeadingClick : null}
-            className={classes('heading', dragClasses)}
-            draggable
-            onDragOver={this.handleDragOver.bind(this, group)}
-            onDrop={this.handleDrop.bind(this, group)}
-            onDragStart={this.handleDragStart.bind(this, group)}
-            onDragEnd={this.handleDragEnd.bind(this, group)}
-        >
-            {iconView}
-            <div className="title strong">{group.title || Lang.string('chats.menu.group.other')} ({group.list.length})</div>
-        </header>);
+        return (
+            <header
+                onContextMenu={this.handleHeadingContextMenu.bind(this, group)}
+                onClick={groupList.props.toggleWithHeading ? groupList.handleHeadingClick : null}
+                className={classes('heading', dragClasses)}
+                draggable
+                onDragOver={this.handleDragOver.bind(this, group)}
+                onDrop={this.handleDrop.bind(this, group)}
+                onDragStart={this.handleDragStart.bind(this, group)}
+                onDragEnd={this.handleDragEnd.bind(this, group)}
+            >
+                {iconView}
+                <div className="title strong">{group.title || Lang.string('chats.menu.group.other')} ({group.list.length})</div>
+            </header>
+        );
     };
 
     /**
@@ -303,20 +305,22 @@ export default class MenuGroupList extends Component {
         const chats = App.im.chats.getGroups(true, 'category');
         this.groupChats = chats;
 
-        return (<div className={classes('app-chats-menu-list app-chat-group-list list scroll-y', className)} {...other}>
-            {
-                GroupList.render(chats, {
-                    defaultExpand: this.defaultExpand,
-                    itemCreator: this.itemCreator,
-                    headingCreator: this.headingCreator,
-                    hideEmptyGroup: true,
-                    checkIsGroup: this.checkIsGroup,
-                    onExpandChange: this.onExpandChange,
-                    forceCollapse: !!this.state.dragging,
-                    showMoreText: Lang.string('common.clickShowMoreFormat'),
-                })
-            }
-            {children}
-        </div>);
+        return (
+            <div className={classes('app-chats-menu-list app-chat-group-list list scroll-y', className)} {...other}>
+                {
+                    GroupList.render(chats, {
+                        defaultExpand: this.defaultExpand,
+                        itemCreator: this.itemCreator,
+                        headingCreator: this.headingCreator,
+                        hideEmptyGroup: true,
+                        checkIsGroup: this.checkIsGroup,
+                        onExpandChange: this.onExpandChange,
+                        forceCollapse: !!this.state.dragging,
+                        showMoreText: Lang.string('common.clickShowMoreFormat'),
+                    })
+                }
+                {children}
+            </div>
+        );
     }
 }

@@ -134,12 +134,14 @@ export default class ChatSidebarProfile extends Component {
         const member = chat.getTheOtherOne(App);
         this.lastMemberUpdateId = member.updateId;
 
-        return (<div
-            {...other}
-            className={HTML.classes('app-chat-sidebar-profile has-padding', className)}
-        >
-            <MemberProfile compact hideChatBtn className="rounded white" memberId={member.id} />
-            {children}
-        </div>);
+        return (
+            <div
+                {...other}
+                className={HTML.classes('app-chat-sidebar-profile has-padding', className)}
+            >
+                <MemberProfile compact hideChatBtn className="rounded white" memberId={member.id} />
+                {children}
+            </div>
+        );
     }
 }

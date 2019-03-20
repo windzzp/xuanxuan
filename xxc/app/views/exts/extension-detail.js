@@ -95,7 +95,7 @@ export default class ExtensionDetail extends Component {
         });
 
         this.onExtChangeHandler = Exts.all.onExtensionChange(changedExtensions => {
-            if (changedExtensions.some(x=> x.name === this.props.extension.name)) {
+            if (changedExtensions.some(x => x.name === this.props.extension.name)) {
                 this.forceUpdate();
             }
         });
@@ -185,7 +185,7 @@ export default class ExtensionDetail extends Component {
             extension,
             className,
             onRequestClose,
-            ...other,
+            ...other
         } = this.props;
 
         const buttons = [];
@@ -254,20 +254,22 @@ export default class ExtensionDetail extends Component {
             attrViews.push(<span key="ext-license">{`${Lang.string('ext.license')}: ${extension.license}`}</span>);
         }
 
-        return (<div className={HTML.classes('app-ext-detail', className)} {...other}>
-            <header style={Skin.style({code: extension.accentColor || '#333', textTint: false})}>
-                <div className="app-ext-detail-header list-item with-avatar multi-lines relative">
-                    <Avatar className="rounded shadow-1 flex-none" auto={extension.icon} skin={{code: extension.accentColor}} />
-                    <div className="content">
-                        <div className="title space-sm">{titleViews}</div>
-                        <div className="space-sm attrs">{attrViews}</div>
-                        {extension.description ? <div className="space-sm">{extension.description}</div> : null}
-                        <div className="actions">{buttons}</div>
+        return (
+            <div className={HTML.classes('app-ext-detail', className)} {...other}>
+                <header style={Skin.style({code: extension.accentColor || '#333', textTint: false})}>
+                    <div className="app-ext-detail-header list-item with-avatar multi-lines relative">
+                        <Avatar className="rounded shadow-1 flex-none" auto={extension.icon} skin={{code: extension.accentColor}} />
+                        <div className="content">
+                            <div className="title space-sm">{titleViews}</div>
+                            <div className="space-sm attrs">{attrViews}</div>
+                            {extension.description ? <div className="space-sm">{extension.description}</div> : null}
+                            <div className="actions">{buttons}</div>
+                        </div>
+                        {loadingView}
                     </div>
-                    {loadingView}
-                </div>
-            </header>
-            {sectionView}
-        </div>);
+                </header>
+                {sectionView}
+            </div>
+        );
     }
 }

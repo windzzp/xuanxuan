@@ -280,20 +280,22 @@ export default class WebViewFrame extends Component {
         const webview = this.webview && this.webview.webview;
         const showNavButtons = !Config.ui['webview.frame.hiddenNavButtons'];
 
-        return (<div className={classes('webview-frame column', className)} {...other}>
-            <div className="heading flex-none shadow-2" style={{zIndex: 1031}}>
-                {Avatar.render(this.state.loading ? 'mdi-loading spin muted' : this.state.favicon)}
-                <div title={this.state.title} className="title text-ellipsis strong">{this.state.title}</div>
-                <nav className="nav" style={{marginRight: 40}}>
-                    {DEBUG ? <a onClick={this.handleDevBtnClick}>{Icon.render('auto-fix')}</a> : null}
-                    <a onClick={this.handleOpenBtnClick}>{Icon.render('open-in-new')}</a>
-                    {showNavButtons && <a className={webview && webview.canGoBack && webview.canGoBack() ? '' : 'disabled'} onClick={this.handleGoBackBtnClick}>{Icon.render('arrow-left')}</a>}
-                    {showNavButtons && <a className={webview && webview.canGoForward && webview.canGoForward() ? '' : 'disabled'} onClick={this.handleGoForwardBtnClick}>{Icon.render('arrow-right')}</a>}
-                    {this.state.loading ? <a onClick={this.handleStopBtnClick}>{Icon.render('close-circle-outline')}</a> : <a onClick={this.handleReloadBtnClick}>{Icon.render('reload')}</a>}
-                    {displayId ? <a onClick={this.handleMaximizeBtnClick}>{Icon.render(isMaximize ? 'window-restore' : 'window-maximize')}</a> : null}
-                </nav>
+        return (
+            <div className={classes('webview-frame column', className)} {...other}>
+                <div className="heading flex-none shadow-2" style={{zIndex: 1031}}>
+                    {Avatar.render(this.state.loading ? 'mdi-loading spin muted' : this.state.favicon)}
+                    <div title={this.state.title} className="title text-ellipsis strong">{this.state.title}</div>
+                    <nav className="nav" style={{marginRight: 40}}>
+                        {DEBUG ? <a onClick={this.handleDevBtnClick}>{Icon.render('auto-fix')}</a> : null}
+                        <a onClick={this.handleOpenBtnClick}>{Icon.render('open-in-new')}</a>
+                        {showNavButtons && <a className={webview && webview.canGoBack && webview.canGoBack() ? '' : 'disabled'} onClick={this.handleGoBackBtnClick}>{Icon.render('arrow-left')}</a>}
+                        {showNavButtons && <a className={webview && webview.canGoForward && webview.canGoForward() ? '' : 'disabled'} onClick={this.handleGoForwardBtnClick}>{Icon.render('arrow-right')}</a>}
+                        {this.state.loading ? <a onClick={this.handleStopBtnClick}>{Icon.render('close-circle-outline')}</a> : <a onClick={this.handleReloadBtnClick}>{Icon.render('reload')}</a>}
+                        {displayId ? <a onClick={this.handleMaximizeBtnClick}>{Icon.render(isMaximize ? 'window-restore' : 'window-maximize')}</a> : null}
+                    </nav>
+                </div>
+                <WebView modalId={displayId} ref={e => {this.webview = e;}} className="flex-auto relative" src={src} {...options} onLoadingChange={this.handleLoadingChange} onPageTitleUpdated={this.handlePageTitleChange} />
             </div>
-            <WebView modalId={displayId} ref={e => {this.webview = e;}} className="flex-auto relative" src={src} {...options} onLoadingChange={this.handleLoadingChange} onPageTitleUpdated={this.handlePageTitleChange} />
-        </div>);
+        );
     }
 }
