@@ -27,29 +27,29 @@ const timeToInt = time => {
 };
 
 /**
- * TodoEditer 组件 ，显示待办编辑界面
- * @class TodoEditer
+ * TodoEditor 组件 ，显示待办编辑界面
+ * @class TodoEditor
  * @see https://react.docschina.org/docs/components-and-props.html
  * @extends {PureComponent}
  * @example
- * import TodoEditer from './todo-editer';
- * <TodoEditer />
+ * import TodoEditor from './todo-editor';
+ * <TodoEditor />
  */
 export default class TodoEditor extends PureComponent {
     /**
-     * TodoEditer 对应的可替换类路径名称
+     * TodoEditor 对应的可替换类路径名称
      *
      * @type {String}
      * @static
-     * @memberof TodoEditer
+     * @memberof TodoEditor
      */
-    static replaceViewPath = 'todo/TodoEditer';
+    static replaceViewPath = 'todo/TodoEditor';
 
     /**
      * React 组件属性类型检查
      * @see https://react.docschina.org/docs/typechecking-with-proptypes.html
      * @static
-     * @memberof TodoEditer
+     * @memberof TodoEditor
      * @type {Object}
      */
     static propTypes = {
@@ -62,7 +62,7 @@ export default class TodoEditor extends PureComponent {
      * React 组件默认属性
      * @see https://react.docschina.org/docs/react-component.html#defaultprops
      * @type {object}
-     * @memberof TodoEditer
+     * @memberof TodoEditor
      * @static
      */
     static defaultProps = {
@@ -72,7 +72,7 @@ export default class TodoEditor extends PureComponent {
     };
 
     /**
-     * React 组件构造函数，创建一个 TodoEditer 组件实例，会在装配之前被调用。
+     * React 组件构造函数，创建一个 TodoEditor 组件实例，会在装配之前被调用。
      * @see https://react.docschina.org/docs/react-component.html#constructor
      * @param {Object?} props 组件属性对象
      * @constructor
@@ -101,7 +101,7 @@ export default class TodoEditor extends PureComponent {
      * 处理待办属性变更事件
      * @param {string} name 属性名称
      * @param {string} val 属性值
-     * @memberof TodoEditer
+     * @memberof TodoEditor
      * @private
      * @return {void}
      */
@@ -117,7 +117,7 @@ export default class TodoEditor extends PureComponent {
 
     /**
      * 检查待办属性
-     * @memberof TodoEditer
+     * @memberof TodoEditor
      * @private
      * @return {void}
      */
@@ -151,7 +151,7 @@ export default class TodoEditor extends PureComponent {
 
     /**
      * 处理提交代码按钮点击事件
-     * @memberof TodoEditer
+     * @memberof TodoEditor
      * @private
      * @return {void}
      */
@@ -181,7 +181,7 @@ export default class TodoEditor extends PureComponent {
      * @private
      * @see https://doc.react-china.org/docs/react-component.html#render
      * @see https://doc.react-china.org/docs/rendering-elements.html
-     * @memberof TodoEditer
+     * @memberof TodoEditor
      * @return {ReactNode|string|number|null|boolean} React 渲染内容
      */
     render() {

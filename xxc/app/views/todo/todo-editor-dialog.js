@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from '../../components/modal';
-import _TodoEditor from './todo-editer';
+import _TodoEditor from './todo-editor';
 import Lang from '../../core/lang';
 import withReplaceView from '../with-replace-view';
 
