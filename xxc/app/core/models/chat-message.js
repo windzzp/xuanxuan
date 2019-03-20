@@ -576,6 +576,19 @@ export default class ChatMessage extends Entity {
     }
 
     /**
+     * 获取消息内容是否是表情
+     * @memberof ChatMessage
+     * @type {boolean}
+     * @readonly
+     */
+    get isEmoji() {
+        if (this.imageContent) {
+            return this.imageContent.type === 'emoji';
+        }
+        return false;
+    }
+
+    /**
      * 获取消息内容是否是对象
      * @memberof ChatMessage
      * @type {boolean}
