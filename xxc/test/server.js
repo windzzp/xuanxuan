@@ -17,12 +17,12 @@ export const LISTEN_TIMEOUT = 1000 * 60 * 1;
 let ridSeed = 1;
 
 /**
- * 事件名称表
- * @type {Object}
- * @private
+ * 服务器上用户在线数据
  */
-const EVENT = {
-    messages: 'messages',
+export const serverOnlineInfo = {
+    online: 0,
+    total: 0,
+    updateTime: 0
 };
 
 /**
@@ -351,6 +351,16 @@ export default class Server {
             // log.info(x => x.log(message), `Server<${this.user.account}> socket recevied message`);
             // log.info(this.logInfo(), 'Socket', `c:blue|**⬇︎ ${message.module}/${message.method}**`, 'rid', message.rid);
         }
+
+        if (message.module === 'chat' && message.method === 'userGetList') {
+            const {data: allUsers} = message;
+            if (allUsers) {
+                serverOnlineInfo.updateTime = process.uptime() * 1000;
+                serverOnlineInfo.total = allUsers.length;
+                serverOnlineInfo.online = allUsers.filter(x => x.status !== 'offline').length;
+            }
+        }
+
         const {rid} = message;
         const messageCallback = this.messageCallbacks[rid];
         if (messageCallback) {
@@ -380,6 +390,17 @@ export default class Server {
      */
     handleSocketError = (error) => {
         log.error(() => console.error(error), `Server<${this.user.account}> socket error`);
+    }
+
+    /**
+     * 尝试获取用户列表
+     * @return {void}
+     */
+    fetchUserList() {
+        this.sendMessage({
+            method: 'userGetList',
+        });
+        log.info(this.logInfo(), 'Try fetch user list.');
     }
 
     /**
@@ -450,13 +471,13 @@ export default class Server {
             return Promise.resolve(message);
         });
     }
+
     /**
      * 创建用户
      * @param {number} amount 创建人数
      * @param {string} prifix 用户名称统一前缀
      * @param {string} password 统一用户密码
      */
-
     createUsers = (amount, prifix, password, startID = 1) => {
         this.sendMessage({
             method: 'createUser',

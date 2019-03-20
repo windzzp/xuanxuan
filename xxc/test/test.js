@@ -4,7 +4,7 @@ import {URL} from 'url';
 import {makeReport} from './report';
 import pkg from '../app/package.json';
 import User from './user';
-import Server, {LISTEN_TIMEOUT} from './server';
+import Server, {LISTEN_TIMEOUT, serverOnlineInfo} from './server';
 import log from './log';
 import {formatDate} from '../app/utils/date-helper';
 
@@ -192,7 +192,7 @@ const connectUser = (user) => {
         }
     }
     lastUserConnectTime = process.uptime() * 1000;
-    log.info(server.logInfo(), `connect at #${user.connectID} order and`, (lastUserConnectTime - startConnectTime) / 1000, 'th seconds.');
+    log.info(server.logInfo(), `Connect at #${user.connectID} order and`, (lastUserConnectTime - startConnectTime) / 1000, 'th seconds.');
     return server.connect().then(() => {
         isUserConnecting = false;
     });
@@ -347,7 +347,7 @@ const tryReportUserStatus = () => {
             }
         });
         const waitCount = waitUsers.length;
-        log.info('Status', onlineCount ? `**c:green|Online: ${onlineCount}**` : '_Online: 0_', offlineCount ? `**c:red|Offline: ${offlineCount}**` : '_Offline: 0_', connectingCount ? `**c:yellow|Connecting: ${connectingCount}**` : '_Connecting: 0_', waitCount ? `**c:blue|Wait: ${waitCount}**` : '_Wait: 0_');
+        log.info('Status', onlineCount ? `**c:green|Online: ${onlineCount}**` : '_Online: 0_', offlineCount ? `**c:red|Offline: ${offlineCount}**` : '_Offline: 0_', connectingCount ? `**c:yellow|Connecting: ${connectingCount}**` : '_Connecting: 0_', waitCount ? `**c:blue|Wait: ${waitCount}**` : '_Wait: 0_', '_/_', `**c:green|Server Online: ${serverOnlineInfo.online}/${serverOnlineInfo.total}**`);
         return true;
     }
     return false;
@@ -492,7 +492,15 @@ const start = () => {
         if (!isUserConnecting && tryConnectUser()) {
             return;
         }
-        trySendMessage();
+        if (trySendMessage()) {
+            return;
+        }
+        if ((loopTime - serverOnlineInfo.updateTime) > 60 * 1000 * 2) {
+            const server = getOnlineServers(1)[0];
+            if (server) {
+                server.fetchUserList();
+            }
+        }
     }, 100);
 
     log.info(`Test started at ${formatDate()}.`);
