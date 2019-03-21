@@ -38,6 +38,7 @@ class setting extends control
 
             if($errors) $this->send(array('result' => 'fail', 'message' => $errors));
 
+            $setting->set = 1;
             $result = $this->loadModel('setting')->setItems('system.sys.common.xuanxuan', $setting);
             if(!$result) $this->send(array('result' => 'fail', 'message' => dao::getError()));
 
