@@ -243,6 +243,7 @@
     "dialog.reloadWindowConfirm": "确定重新启动？",
     "dialog.reloadWindowConfirmTip": "这将注销当前登录的用户并需要重新登录。",
 
+    "emoji.title": "表情",
     "emoji.category.activity": "活动",
     "emoji.category.flags": "旗帜",
     "emoji.category.food": "食物与饮料",
@@ -282,6 +283,7 @@
     "error.UPDATER_UNZIP_ERROR": "读取更新包文件出错。",
     "error.UPLOAD_FILE_IS_TOO_LARGE": "文件上传失败，只支持发送小于 {0} 的文件",
     "error.UPLOAD_FILE_IS_ZEOR_SIZE": "文件上传失败，不支持上传空文件（文件大小为 0）",
+    "error.UPLOAD_FILE_IS_TYPE_ERROR": "文件上传失败，文件类型不正确",
     "error.USER_DATA_PATH_DENY": "暂时无法使用用户目录，请重试。",
     "error.USER_DENY_ATTACT_UPLOAD": "你没有权限上传文件到服务器，请联系管理员。",
     "error.USER_INFO_REQUIRED": "用户信息不可用。",

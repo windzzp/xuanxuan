@@ -1,9 +1,9 @@
 <?php
-$lang->system->menu = new stdClass();
-$lang->system->menu->xuanxuan   = '喧喧|setting|xuanxuan|';
-$lang->system->menu->xxbversion = '客户端版本|setting|xxcVersion|';
+$lang->setting->menu = new stdClass();
+$lang->setting->menu->xuanxuan   = '喧喧|setting|xuanxuan|';
+$lang->setting->menu->xxbversion = '客户端版本|setting|xxcVersion|';
 
-$lang->system->menuOrder[4] = 'xuanxuan,';
-$lang->system->menuOrder[5] = 'xxbversion,';
+$lang->setting->menuOrder[4] = 'xuanxuan,';
+$lang->setting->menuOrder[5] = 'xxbversion,';
 
 $lang->xuanxuan = new stdclass();

@@ -14,8 +14,8 @@ public function createTable($version)
  */
 public function setXuanxuan()
 {
-    $sql  = "REPLACE INTO `{$this->config->db->name}`.`{$this->config->db->prefix}sys_config` (`owner`, `app`, `module`, `section`, `key`, `value`) VALUES ('system', 'sys', 'xuanxuan', 'global', 'version', '{$this->config->xuanxuan->version}');";
-    $sql .= "REPLACE INTO `{$this->config->db->name}`.`{$this->config->db->prefix}sys_config` (`owner`, `app`, `module`, `section`, `key`, `value`) VALUES ('system', 'sys', 'common', 'xuanxuan', 'key', '" . md5(md5(time()) . rand()). "');";
+    $sql  = "REPLACE INTO `{$this->config->db->name}`.`{$this->config->db->prefix}config` (`owner`, `app`, `module`, `section`, `key`, `value`) VALUES ('system', 'sys', 'xuanxuan', 'global', 'version', '{$this->config->xuanxuan->version}');";
+    $sql .= "REPLACE INTO `{$this->config->db->name}`.`{$this->config->db->prefix}config` (`owner`, `app`, `module`, `section`, `key`, `value`) VALUES ('system', 'sys', 'common', 'xuanxuan', 'key', '" . md5(md5(time()) . rand()). "');";
     try
     {
         $this->dbh->query($sql);

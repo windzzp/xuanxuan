@@ -243,6 +243,7 @@
     "dialog.reloadWindowConfirm": "Do you want to restart it?",
     "dialog.reloadWindowConfirmTip": "This account will be logged out. Log in is required later.",
 
+    "emoji.title": "Emoji",
     "emoji.category.activity": "Activity",
     "emoji.category.flags": "Flag",
     "emoji.category.food": "Food",
@@ -282,6 +283,7 @@
     "error.UPDATER_UNZIP_ERROR": "An error occurred while reading the update package file.",
     "error.UPLOAD_FILE_IS_TOO_LARGE": "Failed to upload it. File <= {0} can be uploaded.",
     "error.UPLOAD_FILE_IS_ZEOR_SIZE": "Failed to upload it. File size is 0kb.",
+    "error.UPLOAD_FILE_IS_TYPE_ERROR": "Failed to upload it. File type is error.",
     "error.USER_DATA_PATH_DENY": "User data is not available. Try again.",
     "error.USER_DENY_ATTACT_UPLOAD": "You don't have the privilege to upload files. Contact your Admin.",
     "error.USER_INFO_REQUIRED": "User information is required.",

@@ -13,39 +13,12 @@ include "../../common/view/header.lite.html.php";
 js::import($jsRoot . 'jquery/ips.js');
 $isSuperAdmin = $this->app->user->admin == 'super';
 ?>
+<style>#home > .navbar{left:0!important;}.fullscreen{z-index: unset;}</style>
 <!-- Desktop -->
 <div id='desktop' class='fullscreen-mode'>
-  <div id='leftBar' class='dock-left unselectable'>
-    <button id='start' class='dock-bottom' type='button' title="<?php echo $app->user->realname;?>">
-      <div class='avatar avatar-md'><?php if(!empty($app->user->avatar)) echo html::image($app->user->avatar);?></div>
-    </button>
-    <ul id='startMenu' class='dropdown-menu fade'>
-      <li class='with-avatar'><?php echo html::a($this->createLink('user', 'profile'), "<div class='avatar avatar-md'>" . (empty($app->user->avatar) ? '' : html::image($app->user->avatar)) . "</div><strong>{$app->user->realname}</strong>", "data-toggle='modal' data-id='profile'");?></li>
-      <li class="divider"></li>
-      <li class='dropdown-submenu'><?php include '../../common/view/selectlang.html.php';?></li>
-      <li class='dropdown-submenu'><?php include '../../common/view/selecttheme.html.php';?></li>
-      <li><a href='<?php echo $this->createLink('misc', 'about');?>' data-id='about' data-toggle='modal' data-width='500'><i class='icon icon-info-sign'></i> <?php echo $lang->index->about?></a></li>
-      <li class="divider"></li>
-      <?php if($isSuperAdmin):?>
-      <li><?php echo html::a($this->createLink('entry', 'create'), "<i class='icon icon-plus'></i> {$lang->index->addEntry}", "data-id='superadmin' class='app-btn'"  )?></li>
-      <?php endif;?>
-      <li><a href='javascript:;' class='fullscreen-btn' data-id='allapps'><i class='icon icon-th-large'></i> <?php echo $lang->index->allEntries?></a></li>
-      <li class="divider"></li>
-      <li><?php echo html::a($this->createLink('user', 'logout'), "<i class='icon icon-signout'></i> {$lang->logout}")?></li>
-    </ul>
-    <div id='apps-menu'>
-      <ul class='bar-menu'></ul>
-      <button id='moreOptionBtn' data-toggle='tooltip' data-tip-class='s-menu-tooltip' data-placement='right' data-btn-type='menu' class='btn-more' data-original-title='...'><i class='icon icon-ellipsis-h'></i></button>
-      <ul id='moreOptionMenu' class='bar-menu dropdown-menu fade'>
-      </ul>
-    </div>
-  </div>
-  <div id='bottomBar' class='dock-bottom unselectable'>
+  <div id='bottomBar' class='dock-bottom unselectable' style="left:0;">
     <div id='taskbar'><ul class='bar-menu'></ul></div>
     <div id='bottomRightBar' class='dock-right'>
-      <ul class='bar-menu'>
-        <li><button id='showDesk' type='button' class='fullscreen-btn icon-desktop' data-id='home' data-toggle='tooltip' title='<?php echo $lang->index->showDesk; ?>'></button></li>
-      </ul>
       <div class='copyright'><?php printf($lang->poweredBy, $this->config->version, ' ' . $this->config->version)?></div>
     </div>
   </div>
@@ -55,16 +28,14 @@ $isSuperAdmin = $this->app->user->admin == 'super';
         <ul class='nav navbar-nav'>
           <li><?php echo html::a($this->createLink('user', 'profile'), "<i class='icon-user'></i> " . $app->user->realname, "data-toggle='modal' data-id='profile'");?></li>
         </ul>
-        <?php echo commonModel::createDashboardMenu();?>
+        <?php echo commonModel::createMainMenu();?>
         <ul class='nav navbar-nav navbar-right'>
-          <li><a class='navbar-brand' href='<?php $this->createLink('index', 'index') ?>'><?php echo isset($this->config->company->name) ? $this->config->company->name : '' . $lang->ranzhi ?></a></li>
-          <li><a href='javascript:;' class='refresh-all-panel'><i class='icon-repeat'></i></a></li>
-          <li><a data-toggle='modal' href='<?php echo $this->createLink("block", "admin"); ?>' title='<?php echo $lang->index->addBlock; ?>'><i class='icon-plus'></i></a></li>
+          <li><?php echo html::a($this->createLink('user', 'logout'), "<i class='icon icon-signout'></i> {$lang->logout}")?></li>
         </ul>
       </div>
     </nav>
     <div id='dashboardWrapper'>
-      <div class='panels-container dashboard' id='dashboard' data-confirm-remove-block='<?php echo $lang->block->confirmRemoveBlock;?>'>
+      <div class='panels-container dashboard' id='dashboard' data-confirm-remove-block='<?php  echo $lang->block->confirmRemoveBlock;?>'>
         <div class='row'>
           <?php
           $index = 0;
@@ -101,29 +72,6 @@ $isSuperAdmin = $this->app->user->admin == 'super';
       </div>
     </div>
   </div>
-  <div id='allapps' class='fullscreen unselectable'>
-    <header>
-      <ul class='nav' id='appSearchNav'>
-        <li><a href="javascript:;" class='app-search' data-key=''><i class='icon-th-large'></i> <span><?php echo $lang->index->allEntries?></span> &nbsp;<small class='muted entries-count'></small></a></li>
-        <li><a href="javascript:;" class='app-search' data-key=':menu'><i class=''></i> <span><?php echo $lang->index->showOnLeft?></span> &nbsp;<small class='muted search-count'></small></a></li>
-        <li><a href="javascript:;" class='app-search' data-key=':!menu'><i class=''></i> <span><?php echo $lang->index->notOnLeft?></span> &nbsp;<small class='muted search-count'></small></a></li>
-      </ul>
-      <div class='search-input'>
-        <i class='icon-search icon'></i>
-        <input id='search' type='text' class='form-control-pure form-control'>
-        <button id='cancelSearch' class='btn btn-pure btn-mini' type='button'><i class='icon-remove'></i></button>
-      </div>
-      <div class='actions'>
-        <?php if($isSuperAdmin):?>
-        <?php echo html::a($this->createLink('entry', 'create'), "<i class='icon-plus'></i> {$lang->index->addEntry}", "data-id='superadmin' class='app-btn btn btn-pure'")?>
-        <?php endif;?>
-      </div>
-    </header>
-    <div class='all-apps-list' id='allAppsList'>
-      <ul class='bar-menu'>
-      </ul>
-    </div>
-  </div>
   <div id='deskContainer'></div>
   <div id='modalContainer'></div>
 </div>
@@ -146,7 +94,7 @@ var entries = [
     sys       : true,
     icon      : 'icon-home',
     url       : '<?php echo $this->createLink('todo', 'calendar')?>',
-    order     : 0, 
+    order     : 0,
 },
 {
     id        : 'allapps',
@@ -177,16 +125,16 @@ var entries = [
 
 entries.push(
 {
-    id    : 'superadmin',
+    id    : 'dashboard',
     code  : 'superadmin',
-    name  : '<?php echo $lang->index->superAdmin;?>',
+    name  : '<?php echo $lang->index->dashboard;?>',
     open  : 'iframe',
-    desc  : '<?php echo $lang->index->superAdmin?>',
+    desc  : '<?php echo $lang->index->dashboard?>',
     menu  : '<?php echo $superadminMenu;?>',
     sys   : true,
-    icon  : 'icon-cog',
+    icon  : 'icon-home',
     url   : "<?php echo $this->createLink('admin')?>",
-    order : 9999997
+    order : 0
 });
 <?php endif;?>
 
@@ -197,7 +145,6 @@ foreach ($lang->index->ips as $key => $value)
     echo 'ipsLang["' . $key . '"] = "' . $value . '";';
 }
 ?>
-
 <?php echo $allEntries;?>
 </script>
 <?php include "../../common/view/footer.html.php"; ?>
