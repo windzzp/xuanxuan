@@ -23,7 +23,6 @@ program
     .option('-R, --reconnect', '是否断线重连', false)
     .option('-P, --port <port>', 'Socket 连接端口', 11444)
     .option('-v, --verbose', '是否输出额外的信息', false)
-    // .option('-l, --log <log>', '日志输出等级', 2)
     .option('-o, --one2one', '是否测试大量一对一发送消息')
     .option('-g, --groups <groups>', '是否测试讨论组发送消息')
     .option('-A, --activeLevel <activeLevel>', '测试用户活跃程度', 0.5)
@@ -31,6 +30,7 @@ program
     .option('-S, --summaryInterval <summaryInterval>', '单次汇总时间间隔，单位秒', 30)
     .option('-U, --autoSaveReportInterval <autoSaveReportInterval>', '自动保存报告时间间隔，单位秒', 60)
     .option('-T, --logTypes <logTypes>', '日志报告文件类型', 'log,json,md,html')
+    .option('-m, --multiLogin', '是否启用多用户同时登录')
     .parse(process.argv);
 
 // 测试配置
@@ -51,6 +51,7 @@ const config = {
     groups: program.groups ? program.groups.split(',') : false,
     activeLevel: typeof program.activeLevel === 'string' ? Number.parseFloat(program.activeLevel) : program.activeLevel,
     testTime: program.time * 1000,
+    multiLogin: program.multiLogin,
     reportName: program.reportName,
     autoSaveReportInterval: program.autoSaveReportInterval * 1000,
     summaryInterval: program.summaryInterval * 1000,
@@ -537,7 +538,7 @@ const start = () => {
                     clearInterval(loopTimer);
                     createStatisticReport();
                     log.info('**c:green|All test finished.**');
-                    console.log('Press Ctrl+C to exit');
+                    console.log('Press Ctrl+C to exit...');
                 }
                 return;
             }
@@ -547,7 +548,7 @@ const start = () => {
             }
         }
 
-        if (!isUserConnecting && tryConnectUser()) {
+        if ((!isUserConnecting || config.multiLogin) && tryConnectUser()) {
             return;
         }
         if (trySendMessage()) {
