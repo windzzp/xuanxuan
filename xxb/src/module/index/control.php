@@ -30,44 +30,6 @@ class index extends control
      */
     public function index()
     {
-        $allEntries = '';
-        $entries    = $this->loadModel('entry')->getEntries();
-
-        foreach($entries as $entry)
-        {
-            $sso     = $this->createLink('entry', 'visit', "entryID=$entry->id");
-            $logo    = !empty($entry->logo) ? $entry->logo : '';
-            $size    = !empty($entry->size) ? ($entry->size != 'max' ? $entry->size : "'$entry->size'") : "'max'";
-            $display = $entry->buildin ? 'fixed' : 'sizeable';
-            $menu    = $entry->visible ? 'all' : 'list';
-            
-            /* add web root if logo not start with /  */
-            if($logo != '' && substr($logo, 0, 1) != '/') $logo = $this->config->webRoot . $logo;
-            if($logo == '' && $entry->zentao) $logo = $this->config->webRoot . 'theme/default/images/ips/app-zentao.png';
-            
-            if(!isset($entry->control))  $entry->control = '';
-            if(!isset($entry->position)) $entry->position = '';
-            $allEntries .= "entries.push(
-            {
-                id:       '$entry->id',
-                code:     '$entry->code',
-                name:     '$entry->name',
-                url:      '$sso',
-                open:     '$entry->open', 
-                desc:     '$entry->name',
-                size:      $size,
-                icon:     '$logo',
-                control:  '$entry->control',
-                position: '$entry->position',
-                menu:     '$menu',
-                display:  '$display',
-                abbr:     '$entry->abbr',
-                order:    '$entry->order',
-                sys:      '$entry->buildin',
-                category: '$entry->category'
-            });\n";
-        }
-
         $blocks = $this->loadModel('block')->getBlockList();
 
         /* Init block when vist index first. */
