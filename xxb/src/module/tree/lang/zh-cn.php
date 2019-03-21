@@ -10,10 +10,9 @@
  * @link        http://www.ranzhi.org
  */
 $lang->tree->common        = "部门";
-$lang->tree->add           = "添加";
-$lang->tree->edit          = "编辑";
-$lang->tree->children      = "添加子类目";
-$lang->tree->delete        = "删除类目";
+$lang->tree->edit          = "编辑部门";
+$lang->tree->children      = "添加部门";
+$lang->tree->delete        = "删除部门";
 $lang->tree->browse        = "维护部门";
 $lang->tree->manage        = "维护类目";
 

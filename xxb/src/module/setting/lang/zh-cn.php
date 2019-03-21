@@ -14,7 +14,9 @@ $lang->setting->reset  = '恢复默认';
 $lang->setting->key    = '键';
 $lang->setting->value  = '值';
 
+$lang->setting->lang             = '角色';
 $lang->setting->xuanxuan         = '喧喧配置';
+$lang->setting->xxcversion       = '浏览客户端版本';
 $lang->setting->createxxcversion = '添加客户端版本';
 $lang->setting->editxxcversion   = '修改客户端版本';
 $lang->setting->deletexxcversion = '删除客户端版本';
