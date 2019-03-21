@@ -1,5 +1,5 @@
--- DROP TABLE IF EXISTS `im_chat`;
-CREATE TABLE IF NOT EXISTS `im_chat` (
+-- DROP TABLE IF EXISTS `xxb_im_chat`;
+CREATE TABLE IF NOT EXISTS `xxb_im_chat` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `gid` char(40) NOT NULL DEFAULT '',
   `name` varchar(60) NOT NULL DEFAULT '',
@@ -23,8 +23,8 @@ CREATE TABLE IF NOT EXISTS `im_chat` (
   KEY `editedBy` (`editedBy`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- DROP TABLE IF EXISTS `im_message`;
-CREATE TABLE IF NOT EXISTS `im_message` (
+-- DROP TABLE IF EXISTS `xxb_im_message`;
+CREATE TABLE IF NOT EXISTS `xxb_im_message` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `gid` char(40) NOT NULL DEFAULT '',
   `cgid` char(40) NOT NULL DEFAULT '',
@@ -43,8 +43,8 @@ CREATE TABLE IF NOT EXISTS `im_message` (
   KEY `mtype` (`type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- DROP TABLE IF EXISTS `im_chatuser`;
-CREATE TABLE IF NOT EXISTS `im_chatuser` (
+-- DROP TABLE IF EXISTS `xxb_im_chatuser`;
+CREATE TABLE IF NOT EXISTS `xxb_im_chatuser` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `cgid` char(40) NOT NULL DEFAULT '',
   `user` mediumint(8) NOT NULL DEFAULT 0,
@@ -64,15 +64,16 @@ CREATE TABLE IF NOT EXISTS `im_chatuser` (
   UNIQUE KEY `chatuser` (`cgid`, `user`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- DROP TABLE IF EXISTS `im_messagestatus`;
-CREATE TABLE IF NOT EXISTS `im_messagestatus` (
+-- DROP TABLE IF EXISTS `xxb_im_messagestatus`;
+CREATE TABLE IF NOT EXISTS `xxb_im_messagestatus` (
   `user` mediumint(8) NOT NULL DEFAULT 0,
   `message` int(11) unsigned NOT NULL,
   `status` enum('waiting','sent','readed','deleted') NOT NULL DEFAULT 'waiting',
   UNIQUE KEY `user` (`user`,`message`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `im_xxcversion` (
+-- DROP TABLE IF EXISTS `xxb_im_xxcversion`;
+CREATE TABLE IF NOT EXISTS `xxb_im_xxcversion` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `version` char(10) NOT NULL DEFAULT '',
   `desc` varchar(100) NOT NULL DEFAULT '',
