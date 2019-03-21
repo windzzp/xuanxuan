@@ -30,9 +30,19 @@ const getPlainTextOfChatMessage = (chatMessage, limitLength = 255, ignoreBreak =
         return `[${Lang.format('file.title.format', chatMessage.fileContent.name)}]`;
     }
     if (chatMessage.isImageContent) {
+        if (chatMessage.isEmoji) {
+            return `[${Lang.string('emoji.title')}]`;
+        }
         return `[${Lang.string('file.image.title')}]`;
     }
-    let plainText = chatMessage.renderedTextContent(renderChatMessageContent).replace(/<(?:.|\n)*?>/gm, '');
+    let plainText = '';
+    if (chatMessage.isObjectContent && chatMessage.objectContentType === 'url') {
+        plainText = chatMessage.objectContent.url;
+    } else {
+        plainText = chatMessage.renderedTextContent(renderChatMessageContent).replace(/<img class="emojione" alt="/gm, '');
+        plainText = plainText.replace(/" title=":[a-z\_]*:" src="media\/emojione\/png\/[0-9a-z]*.png"\/>/gm, '');
+        plainText = plainText.replace(/<(?:.|\n)*?>/gm, '');
+    }
     if (ignoreBreak) {
         plainText = plainText.trim().replace(/[\r\n]/g, ' ').replace(/\n[\s| | ]*\r/g, '\n');
     }

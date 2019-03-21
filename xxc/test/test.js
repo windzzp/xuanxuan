@@ -4,15 +4,16 @@ import {URL} from 'url';
 import {makeReport} from './report';
 import pkg from '../app/package.json';
 import User from './user';
-import Server from './server';
+import Server, {LISTEN_TIMEOUT, serverOnlineInfo} from './server';
 import log from './log';
+import {formatDate} from '../app/utils/date-helper';
 
 // 处理命令行参数
 program
     .version(pkg.version)
     .alias('npm run test2 --')
     .option('-s, --server <server>', '测试服务器地址')
-    // .option('-t, --time <time>', '测试持续时间，单位秒', 30 * 60)
+    .option('-t, --time <time>', '测试持续时间，单位秒', 30 * 60)
     .option('-a, --account <account>', '测试账号，例如 `--acount=test$`', 'test$')
     .option('-p, --password <password>', '测试账号密码', '123456')
     .option('-r, --range <range>', '登录的用户账号范围，例如 `1,100` 表示 account1 到 account100', '1,2')
@@ -26,8 +27,9 @@ program
     .option('-o, --one2one', '是否测试大量一对一发送消息')
     .option('-g, --groups <groups>', '是否测试讨论组发送消息')
     .option('-A, --activeLevel <activeLevel>', '测试用户活跃程度', 0.8)
+    .option('-n, --reportName <reportName>', '测试报告名称')
+    .option('-S, --summaryInterval <summaryInterval>', '单次汇总时间间隔，单位秒', 60)
     // .option('-T, --logTypes <logTypes>', '日志报告文件类型', 'log,json,md,html')
-    .option('-T, --testTime <testTime>', '测试脚本执行的时间，单位秒', 120)
     .parse(process.argv);
 
 // 测试配置
@@ -47,7 +49,9 @@ const config = {
     one2one: program.one2one,
     groups: program.groups ? program.groups.split(',') : null,
     activeLevel: program.activeLevel,
-    testTime: program.testTime * 1000,
+    testTime: program.time * 1000,
+    reportName: program.reportName,
+    summaryInterval: program.summaryInterval * 1000,
 };
 
 // 等待登录的用户队列
@@ -86,6 +90,12 @@ let lastTrySendGroupMessage = 0;
 // 每隔多长时间尝试发送讨论组消息
 const trySendGroupMessageInterval = 1000;
 
+// 当前循环的时间
+let loopTime = 0;
+
+// 测试时间是否消耗完
+let isTestTimeOut = false;
+
 // 获取指定范围内的整数
 const randomInt = (min, max) => {
     return Math.round(Math.random() * (max - min)) + min;
@@ -118,9 +128,6 @@ const initConfig = () => {
         socketUrl: socketUrl.toString(),
         loginType: config.timeForLogin1 ? 1 : config.timeForLogin2 ? 2 : 3
     });
-
-    // 生成config 报表
-    makeReport(config, 'config');
 
     log.info(x => x.log({
         server: config.server.toString(),
@@ -185,7 +192,7 @@ const connectUser = (user) => {
         }
     }
     lastUserConnectTime = process.uptime() * 1000;
-    log.info(`User #${user.connectID}`, `**<${user.account}>**`, 'connect at', (lastUserConnectTime - startConnectTime) / 1000, 'th second');
+    log.info(server.logInfo(), `Connect at #${user.connectID} order and`, (lastUserConnectTime - startConnectTime) / 1000, 'th seconds.');
     return server.connect().then(() => {
         isUserConnecting = false;
     });
@@ -340,7 +347,7 @@ const tryReportUserStatus = () => {
             }
         });
         const waitCount = waitUsers.length;
-        log.info('Status', onlineCount ? `**c:green|Online: ${onlineCount}**` : '_Online: 0_', offlineCount ? `**c:red|Offline: ${offlineCount}**` : '_Offline: 0_', connectingCount ? `**c:yellow|Connecting: ${connectingCount}**` : '_Connecting: 0_', waitCount ? `**c:blue|Wait: ${waitCount}**` : '_Wait: 0_');
+        log.info('Status', onlineCount ? `**c:green|Online: ${onlineCount}**` : '_Online: 0_', offlineCount ? `**c:red|Offline: ${offlineCount}**` : '_Offline: 0_', connectingCount ? `**c:yellow|Connecting: ${connectingCount}**` : '_Connecting: 0_', waitCount ? `**c:blue|Wait: ${waitCount}**` : '_Wait: 0_', '_/_', `**c:green|Server Online: ${serverOnlineInfo.online}/${serverOnlineInfo.total}**`);
         return true;
     }
     return false;
@@ -445,6 +452,10 @@ const getUsersInfo = () => {
     return usersInfo;
 };
 
+const createStatisticReport = () => {
+
+};
+
 /**
  * 开始进行测试
  * @return {void}
@@ -455,29 +466,44 @@ const start = () => {
 
     startConnectTime = process.uptime() * 1000;
 
-    let timer = setInterval(() => {
+    const loopTimer = setInterval(() => {
+        loopTime = process.uptime() * 1000;
         if (tryReportUserStatus()) {
             return;
         }
+
+        if (config.testTime) {
+            const consumeTime = loopTime - startConnectTime;
+            if (consumeTime > config.testTime) {
+                if (!isTestTimeOut) {
+                    isTestTimeOut = true;
+                    log.info(`**c:yellow|Test time (${Math.floor(config.testTime / 1000)}s) is out, waiting (${Math.floor(LISTEN_TIMEOUT / 1000)}s) for the remaining response.**`);
+                }
+                if (consumeTime > (config.testTime + LISTEN_TIMEOUT)) {
+                    clearInterval(loopTimer);
+                    createStatisticReport();
+                    log.info('**c:green|All test finished.**');
+                    console.log('Press Ctrl+C to exit');
+                }
+                return;
+            }
+        }
+
         if (!isUserConnecting && tryConnectUser()) {
             return;
         }
-        trySendMessage();
+        if (trySendMessage()) {
+            return;
+        }
+        if ((loopTime - serverOnlineInfo.updateTime) > 60 * 1000 * 2) {
+            const server = getOnlineServers(1)[0];
+            if (server) {
+                server.fetchUserList();
+            }
+        }
     }, 100);
 
-    if (config.testTime) {
-        let clearTimer = setTimeout(() => {
-            const statistic = getStatistic();
-            const usersInfo = getUsersInfo();
-            clearInterval(timer);
-            clearTimeout(clearTimer);
-            clearTimer = null;
-            makeReport(statistic, 'statistic');
-            makeReport(usersInfo, 'usersInfo');
-            log.info('Test time out.');
-        }, config.testTime);
-    }
-    log.info('Test started.');
+    log.info(`Test started at ${formatDate()}.`);
 };
 
 start();
