@@ -172,54 +172,16 @@ body[class*='dropdown-mode-'] .s-menu-tooltip, body.mute-tooltip .s-menu-tooltip
 body[class*='dropdown-mode-'] .window-active .window-cover {display: block;}
 
 /* fullscreen */
-.fullscreen {position: absolute; top: 0; left: 60px; right: 0; bottom: 36px; z-index: 10; overflow: auto; display: none;}
+.fullscreen {position: absolute; top: 0; left: 0; right: 0; bottom: 36px; z-index: 10; overflow: auto; display: none;}
 .fullscreen .page-header {margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.5)}
 .fullscreen > .actions {position: fixed; right: 40px;top: 20px;}
 .fullscreen-mode .fullscreen.fullscreen-active {display: block;}
 .fullscreen-mode #deskContainer {display: none;}
 
-/* allapps */
-#allapps {background-color: rgba(0,0,0,0.1); color: #fff;}
-#allapps > header {position: relative; padding: 20px 40px; overflow: hidden;}
-#allapps > header > .nav {position: absolute; top: 20px; left: 20px; height: 49px;}
-#allapps > header > .nav:before,
-#allapps > header > .nav:after {content: ' '; display: block; border-bottom: 1px solid #a1a1a1; border-bottom: 1px solid rgba(255,255,255,0.2); width: 9999em; bottom: 1px; left: -9999em; position: absolute;}
-#allapps > header > .nav:after {left: 100%;}
-#allapps > header .nav > li {float: left;}
-#allapps > header .nav > li > a {padding: 13px 15px; background: none; color: #fff; color: rgba(255,255,255,0.6); border: 1px solid transparent; border-bottom-color: #a1a1a1; border-bottom-color: rgba(255,255,255,0.2); border-left-width: 0; border-right-width: 0; transition-property: background;}
-#allapps > header .nav > li > a > small {display: none}
-#allapps > header .nav > li > a:hover {background-color:rgba(255,255,255,0.24);}
-#allapps > header .nav > li.active > a, #allapps > header .nav > li.active > a:hover {color: #fff; border-color: #a1a1a1; border-color: rgba(255,255,255,0.2); border-bottom-color: transparent!important; background: none!important;  border-left-width: 1px; border-right-width: 1px;}
-#allapps > header .nav > li.active > a > small {display: inline;}
-#allapps > header .nav > li.active > a > span {font-weight: bold;}
-#allapps .muted {color:rgba(255,255,255,0.6);}
-#allapps > header > .actions {position: absolute; top: 20px; right: 20px;}
-
 #search {padding: 6px 30px}
 .ie-8 #search {padding-top: 3px;}
-#allapps .search-input {position: relative; width: 300px; margin: 0 auto;}
-#allapps .search-input .icon, #cancelSearch{position: absolute; display: block; left: 9px; top: 7px; color: #f1f1f1; color: rgba(255,255,255,0.4);}
-#allapps .search-input:hover .icon, #cancelSearch:hover {color: #fff; color: rgba(255,255,255,0.6);}
 #cancelSearch {display: none; right: 3px; left: inherit; top: 3px; border-color: transparent; color: rgba(255,255,255,0.9);}
 #cancelSearch:hover {border-color: rgba(255,255,255,0.6); color: #fff}
-
-#allAppsList {padding: 20px 40px;}
-#allAppsList ul {margin: 0; padding: 0;}
-#allAppsList li {width: 18%; margin-right: 1%;  position: relative; transition: all 0.3s; overflow: hidden;}
-#allAppsList li.search-hide {width: 0; margin-right: 0;}
-#allAppsList li a {overflow: hidden; white-space: nowrap; padding: 15px 20px; font-size: 16px; text-overflow:ellipsis;}
-.ie-8 #allAppsList li a {border: 2px solid transparent;}
-.ie-8 #allAppsList li a:hover, .ie-8 #allAppsList li a.search-selected{background-color: none; border:2px solid #ccc;}
-#allAppsList li a .icon-pushpin {display: none}
-#allAppsList li a.menu-true .icon-pushpin {display: block; position: absolute; left: 12px; top: 48px; width: 20px; height: 20px;border: 1px solid #fff; border: 1px solid rgba(255,255,255,0.5); border-radius: 50%; text-align: center; line-height: 18px; background: #000; background: rgba(0,0,0,0.4); color: #fff;}
-#allAppsList li a.active:hover, #allAppsList li a.search-selected {background-color:rgba(255,255,255,0.24);}
-#allAppsList li img {width: 48px; height: 48px; margin-right: 10px; box-shadow: 0 1px 1px rgba(0,0,0,0.35); border-radius: 8px}
-#allAppsList li .app-btn > .icon {display: inline-block; width: 48px; height: 48px; line-height: 48px; text-align: center; margin-right: 10px; background-color: #555; background-color: rgba(255,255,255,.25); border-radius: 8px; color: #fff;}
-#allAppsList li .app-btn:hover > .icon {background-color: rgba(255,255,255,.35); color: #fff;}
-#allAppsList li .app-btn > .icon.icon-default {font-size: 20px; margin-right: 10px; color: #fff}
-
-@media (max-width: 1400px) {#allAppsList li {width: 24%}}
-@media (max-width: 1100px) {#allAppsList li {width: 32%}}
 
 /* home */
 #home {padding: 0; background: #fafafa; -webkit-overflow-scrolling: touch; overflow-y: scroll;}
@@ -261,11 +223,6 @@ body[class*='dropdown-mode-'] .window-active .window-cover {display: block;}
 
 /* css helper */
 .no-padding {padding: 0}
-
-/* modal */
-#modalContainer {position: absolute; left: 0; top: 0; width: 100%; height: 100%; background-color: transparent; background-color: rgba(0,0,0,0.5); z-index: 50000; display: none; filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#BF000000,endColorstr=#BF000000);}
-#modalContainer .min-win{display: none;}
-#desktop.modal-mode #modalContainer {display: block;}
 
 .progress{margin-bottom: 0; border-radius: 0;}
 .block-task .actions{display: none;}

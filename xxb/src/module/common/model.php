@@ -336,10 +336,6 @@ class commonModel extends model
         $currentMethod = $app->getMethodName();
 
         if(!isset($lang->$currentModule->menu)) return false;
-        if(isset($config->attend->noAttendUsers) and strpos(",{$config->attend->noAttendUsers},", ",{$app->user->account},") !== false and isset($lang->attend->menu->personal))
-        {
-            unset($lang->attend->menu->personal);
-        }
 
         $isMobile = $app->viewType === 'mhtml';
         $string   = !$isMobile ? "<nav id='menu'><ul class='nav'>\n" : '';
@@ -915,92 +911,12 @@ class commonModel extends model
         if(!commonModel::hasPriv($module, $method)) return false;
 
         $content  = '';
-        $canClick = commonModel::checkPrivByVars($module, $method, $vars);
-        $link     = helper::createLink($module, $method, $vars, '', $onlyBody);
-        if(!$canClick)
-        {
-            $misc = str_replace("class='", "disabled='disabled' class='disabled ", $misc);
-            $misc = str_replace("data-toggle='modal'", ' ', $misc);
-            $misc = str_replace("deleter", ' ', $misc);
-            if(strpos($misc, "class='") === false) $misc .= " class='disabled' disabled='disabled'";
-        }
-        if($type == 'li') $content .= '<li' . ($canClick ? '' : " disabled='disabled' class='disabled'") . '>';
-        $content .= html::a($canClick ? $link : 'javascript:void(0)', $label, $misc);
+        if($type == 'li') $content .= '<li>';
+        $content .= helper::createLink($module, $method, $vars, '', $onlyBody);
         if($type == 'li') $content .= '</li>';
 
         if($print !== false) echo $content;
         return $content;
-    }
-
-    /**
-     * Check privilege by vars. 
-     * 
-     * @param  string $module 
-     * @param  string $method 
-     * @param  string|array $vars 
-     * @static
-     * @access public
-     * @return void
-     */
-    public static function checkPrivByVars($module, $method, $vars)
-    {
-        global $app;
-        if(!is_array($vars)) parse_str($vars, $vars);
-        if(strpos($module, '.') !== false) $module = substr($module, strpos($module, '.') + 1);
-        $method = strtolower($method);
-
-        /* Check priv by {$moduleName}ID. */
-        $checkByID['customer'] = ',assign,edit,delete,linkcontact,';
-        $checkByID['order']    = ',assign,edit,delete,close,activate,';
-        $checkByID['contract'] = ',receive,delivery,edit,delete,finish,cancel,';
-        $checkByID['resume']   = ',edit,delete,';
-        $checkByID['address']  = ',edit,delete,';
-
-        $funcName = 'check' . ucfirst($module) . 'Priv';
-        if(method_exists('extcommonModel', $funcName)) $checkByID = extcommonModel::$funcName($checkByID);
-
-        foreach($checkByID as $moduleName => $methodName)
-        {
-            if($module == $moduleName and strpos($methodName, ",$method,") !== false)
-            {
-                $idName     = "{$moduleName}ID";
-                $idListName = 'canEdit' . ucwords($moduleName) . 'IdList';
-                if(!isset($vars[$idName])) return false;
-                $idList = isset($app->user->$idListName) ? $app->user->$idListName : '';
-                if(strpos($idList, ",{$vars[$idName]},") === false) return false;
-            }
-        }
-
-        /* Check priv by objectType and objectID. */
-        $checkByType['action']  = ',createrecord,';
-        $checkByType['address'] = ',create,';
-        foreach($checkByType as $moduleName => $methodName)
-        {
-            if($module == $moduleName and strpos($methodName, ",$method,") !== false)
-            {
-                if(!isset($vars['objectType']) or !isset($vars['objectID'])) return false;
-                $idName     = $vars['objectType'] . 'ID';
-                $idListName = 'canEdit' . ucwords($vars['objectType']) . 'IdList';
-                $idList     = isset($app->user->$idListName) ? $app->user->$idListName : '';
-                return commonModel::checkPrivByVars($vars['objectType'], 'edit', "{$idName}={$vars['objectID']}");
-            }
-        }
-
-        /* Check priv use another method. module|method */
-        $checkByGroup['resume']['create'] = 'contact|edit';
-        foreach($checkByGroup as $moduleName => $methodNames)
-        {
-            foreach($methodNames as $methodName => $settings)
-            {
-                list($newModuleName, $newMethodName) = explode('|', $settings);
-                if($module == $moduleName and $method == $methodName)
-                {
-                    return commonModel::checkPrivByVars($newModuleName, $newMethodName, $vars);
-                }
-            }
-        }
-
-        return true;
     }
 
     /**
