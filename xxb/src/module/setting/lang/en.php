@@ -22,7 +22,7 @@ $lang->setting->editxxcversion   = 'Edit xxc version';
 $lang->setting->deletexxcversion = 'Delete xxc version';
 
 $lang->setting->module = new stdClass();
-$lang->setting->module->user     = 'User role';
+$lang->setting->module->user = 'User role';
 
 $lang->setting->user = new stdClass();
 $lang->setting->user->fields['roleList'] = 'Roles';
