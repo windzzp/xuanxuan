@@ -4,11 +4,11 @@ $config->xuanxuan->version = '2.5.0';
 $config->xuanxuan->xxbLang = 'zh-cn';
 $config->xuanxuan->key     = '';       //Set a 32 byte string as your key.
 
-if(!defined('TABLE_IM_CHAT'))          define('TABLE_IM_CHAT',          '`' . $config->db->prefix . 'im_chat`');
-if(!defined('TABLE_IM_MESSAGE'))       define('TABLE_IM_MESSAGE',       '`' . $config->db->prefix . 'im_message`');
-if(!defined('TABLE_IM_CHATUSER'))      define('TABLE_IM_CHATUSER',      '`' . $config->db->prefix . 'im_chatuser`');
-if(!defined('TABLE_IM_MESSAGESTATUS')) define('TABLE_IM_MESSAGESTATUS', '`' . $config->db->prefix . 'im_messagestatus`');
-if(!defined('TABLE_IM_XXCVERSION'))    define('TABLE_IM_XXCVERSION',    '`' . $config->db->prefix . 'im_xxcversion`');
+if(!defined('TABLE_IM_CHAT'))          define('TABLE_IM_CHAT',          '`im_chat`');
+if(!defined('TABLE_IM_MESSAGE'))       define('TABLE_IM_MESSAGE',       '`im_message`');
+if(!defined('TABLE_IM_CHATUSER'))      define('TABLE_IM_CHATUSER',      '`im_chatuser`');
+if(!defined('TABLE_IM_MESSAGESTATUS')) define('TABLE_IM_MESSAGESTATUS', '`im_messagestatus`');
+if(!defined('TABLE_IM_XXCVERSION'))    define('TABLE_IM_XXCVERSION',    '`im_xxcversion`');
 
 $config->xuanxuan->enabledMethods['chat']['serverstart']        = 'serverStart';
 $config->xuanxuan->enabledMethods['chat']['login']              = 'login';

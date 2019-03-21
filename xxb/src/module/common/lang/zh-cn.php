@@ -174,7 +174,9 @@ $lang->block   = new stdclass();
 $lang->action  = new stdclass();
 $lang->setting = new stdclass();
 
-$lang->group   = new stdclass(); 
+$lang->group   = new stdclass();
+
+$lang->menuGroups = new stdclass();
 
 /* Menu entry. */
 $lang->entry       = new stdclass();
@@ -190,8 +192,6 @@ $lang->system->menu->mail   = array('link' => '发信|mail|admin|', 'alias' => '
 $lang->system->menu->trash  = array('link' => '回收站|action|trash|');
 $lang->system->menu->cron   = '计划任务|cron|index|';
 $lang->system->menu->backup = '备份|backup|index|';
-
-$lang->menuGroups = new stdclass();
 
 /* Menu of mail module. */
 $lang->mail = new stdclass();
@@ -212,6 +212,9 @@ $lang->menuGroups->cron = 'system';
 $lang->backup = new stdclass();
 $lang->backup->menu = $lang->system->menu;
 $lang->menuGroups->backup = 'system';
+
+$lang->setting->menu = $lang->system->menu;
+$lang->menuGroups->setting = 'system';
 
 /* The error messages. */
 $lang->error = new stdclass();
