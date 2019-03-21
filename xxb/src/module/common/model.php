@@ -910,9 +910,11 @@ class commonModel extends model
     {
         if(!commonModel::hasPriv($module, $method)) return false;
 
-        $content  = '';
+        $content = '';
+        $link    = helper::createLink($module, $method, $vars, '', $onlyBody);
+
         if($type == 'li') $content .= '<li>';
-        $content .= helper::createLink($module, $method, $vars, '', $onlyBody);
+        $content .= html::a($link, $label, $misc);
         if($type == 'li') $content .= '</li>';
 
         if($print !== false) echo $content;
