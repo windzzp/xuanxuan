@@ -25,8 +25,7 @@ include '../framework/helper.class.php';
 $startTime = getTime();
 
 /* Run the app. */
-$appName = 'sys';
-$app     = xuanxuan::createApp($appName, '', 'xuanxuan');
+$app = router::createApp('xxb', dirname(dirname(__FILE__)));
 
 $app->loadCommon();
 $app->parseRequest();
