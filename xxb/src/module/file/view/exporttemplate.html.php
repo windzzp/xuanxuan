@@ -10,7 +10,7 @@
  * @link        http://www.ranzhi.org
  */
 ?>
-<?php include '../../../sys/common/view/header.lite.html.php';?>
+<?php include '../../../common/view/header.lite.html.php';?>
 <script>
 function setDownloading()
 {
@@ -65,4 +65,4 @@ $().ready(function()
   </table>
 </form>
 <iframe id='hiddenwin' name='hiddenwin' class='hidden'></iframe>
-<?php include '../../../sys/common/view/footer.html.php';?>
+<?php include '../../../common/view/footer.html.php';?>

@@ -11,16 +11,9 @@
  */
 ?>
 <?php
-if(RUN_MODE == 'front')
-{
-    include $app->getModuleRoot() . 'common/view/header.html.php';
-}
-else
-{
-    include '../../common/view/header.html.php';
-}
-include '../../common/view/kindeditor.html.php';
-include '../../common/view/chosen.html.php';
+include $app->getModuleRoot() . '/common/view/header.html.php';
+include $app->getModuleRoot() . '/common/view/kindeditor.html.php';
+include $app->getModuleRoot() . '/common/view/chosen.html.php';
 js::set('root', $root);
 js::set('type', $type);
 js::set('moduleID', $moduleID);
@@ -61,13 +54,6 @@ js::set('moduleID', $moduleID);
 <?php endif;?>
 </div>
 <?php
-include '../../common/view/treeview.html.php';
-if(RUN_MODE == 'front' && strpos($app->getModuleRoot(), 'sys') == false)
-{
-    include $app->getModuleRoot() . 'common/view/footer.html.php';
-}
-else
-{
-    include '../../common/view/footer.html.php';
-}
+include $app->getModuleRoot() . '/common/view/treeview.html.php';
+include $app->getModuleRoot() . '/common/view/footer.html.php';
 ?>

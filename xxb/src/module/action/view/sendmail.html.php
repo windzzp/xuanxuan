@@ -41,4 +41,4 @@
     </fieldset>
   </td>
 </tr>
-<?php include '../../../sys/common/view/mail.footer.html.php';?>
+<?php include '../../../common/view/mail.footer.html.php';?>

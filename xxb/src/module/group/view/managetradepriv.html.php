@@ -10,7 +10,7 @@
  * @link        http://www.ranzhi.org
  */
 ?>
-<?php include $app->getModuleRoot() . 'common/view/header.html.php';?>
+<?php include $app->getModuleRoot() . '/common/view/header.html.php';?>
 <form class='form' id='ajaxForm' method='post'>
   <div class='panel'>
     <div class='panel-heading'>
@@ -24,4 +24,4 @@
     <div class='panel-footer'><?php echo html::submitButton() . html::hidden('foo'); // Just a var, to make sure $_POST is not empty.?></div>
   </div>
 </form>
-<?php include $app->getModuleRoot() . 'common/view/footer.html.php';?>
+<?php include $app->getModuleRoot() . '/common/view/footer.html.php';?>
