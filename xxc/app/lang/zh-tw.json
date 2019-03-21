@@ -128,6 +128,7 @@
     "chat.toolbor.sidebar": "打開側邊欄",
     "chat.toolbor.star": "收藏",
     "chat.toolbor.unstar": "取消收藏",
+    "chat.toolbar.scroll": "滾動到底部",
 
     "chats.chat.search.result.format": "在 “{0}” 中找到 {1} 個結果",
     "chats.chat.selectOneOnMenu": "請在左側選擇一個聊天。",

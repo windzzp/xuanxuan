@@ -10,7 +10,7 @@
  * @link        http://www.ranzhi.org
  */
 ?>
-<?php include '../../../sys/common/view/header.modal.html.php';?>
+<?php include '../../../common/view/header.modal.html.php';?>
 <form method='post' id='ajaxForm' enctype='multipart/form-data' action='<?php echo inlink('import')?>'>
   <table class='w-p100'>
     <tr>
@@ -24,4 +24,4 @@
     </tr>
   </table>
 </form>
-<?php include '../../../sys/common/view/footer.modal.html.php';?>
+<?php include '../../../common/view/footer.modal.html.php';?>

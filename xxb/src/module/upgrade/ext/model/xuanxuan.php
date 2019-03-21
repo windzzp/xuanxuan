@@ -37,7 +37,7 @@ public function upgradeXuanxuan($fromVersion)
         case '2.3.0' : $this->execSQL($this->getUpgradeFile('xuanxuan2.3.0'));
         case '2.4.0' : $this->execSQL($this->getUpgradeFile('xuanxuan2.4.0'));
             $this->changeMessageStatusTable();
-        default : $this->loadModel('setting')->setItem('system.sys.xuanxuan.global.version', $this->config->xuanxuan->version);
+        default : $this->loadModel('setting')->setItem('system.xuanxuan.global.version', $this->config->xuanxuan->version);
     }
 }
 
@@ -132,8 +132,8 @@ public function installSSOEntry()
  */
 public function processXuanxuanKey()
 {
-    $this->loadModel('setting')->setItem('system.sys.common.xuanxuan.key', $this->config->xuanxuan->key);
-    $this->setting->deleteItems('owner=system&app=sys&module=xuanxuan&key=key');
+    $this->loadModel('setting')->setItem('system.common.xuanxuan.key', $this->config->xuanxuan->key);
+    $this->setting->deleteItems('owner=system&module=xuanxuan&key=key');
     return !dao::isError();
 }
 

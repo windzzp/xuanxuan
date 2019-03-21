@@ -10,7 +10,7 @@
  * @link        http://www.ranzhi.org
  */
 ?>
-<?php include $app->getModuleRoot() . '../sys/common/view/header.modal.html.php'; ?>
+<?php include $app->getModuleRoot() . '/common/view/header.modal.html.php'; ?>
 <form method='post' id='editForm' action="<?php echo inlink('editself', "account={$user->account}");?>" class='form-condensed'>
   <fieldset>
     <legend><?php echo $lang->user->basicInfo; ?></legend>
@@ -78,4 +78,4 @@
     <?php echo html::submitButton();?> <?php echo html::a(inlink('profile'), $lang->goback, "class='btn loadInModal'");?>
   </div>
 </form>
-<?php include $app->getModuleRoot() . '../sys/common/view/footer.modal.html.php'; ?>
+<?php include $app->getModuleRoot() . '/common/view/footer.modal.html.php'; ?>

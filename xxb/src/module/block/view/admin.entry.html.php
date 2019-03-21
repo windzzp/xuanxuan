@@ -10,8 +10,8 @@
  * @link        http://www.ranzhi.org
  */
 ?>
-<?php include "../../../sys/common/view/header.modal.html.php";?>
-<?php include "../../../sys/common/view/chosen.html.php";?>
+<?php include "../../../common/view/header.modal.html.php";?>
+<?php include "../../../common/view/chosen.html.php";?>
 <?php js::set('index', $index);?>
 <table class='table table-form'>
   <th class='w-100px'><?php echo $lang->block->lblBlock?></th>
@@ -61,4 +61,4 @@
   </table>
 </form>
 <?php endif;?>
-<?php include "../../../sys/common/view/footer.modal.html.php";?>
+<?php include "../../../common/view/footer.modal.html.php";?>
