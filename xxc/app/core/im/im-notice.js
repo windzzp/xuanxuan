@@ -81,10 +81,12 @@ const updateChatNoticeTask = new DelayAction(() => {
     let lastChatMessage = null;
     let notMuteCount = 0;
     let muteCount = 0;
+    let muteNewMessageCount = 0;
     const muteOnChatNotActive = Config.ui['chat.muteOnChatNotActive'];
 
     forEachChat(chat => {
-        if (chat.noticeCount) {
+        const {noticeCount} = chat;
+        if (noticeCount) {
             const isChatActive = isActiveChat(chat.gid);
             if (!isChatActive && muteOnChatNotActive) {
                 return;
@@ -94,9 +96,10 @@ const updateChatNoticeTask = new DelayAction(() => {
                 const mutedMessages = chat.muteNotice();
                 if (mutedMessages && mutedMessages.length) {
                     saveChatMessages(chat.messages, chat);
+                    muteNewMessageCount += mutedMessages.length;
                 }
             } else {
-                total += chat.noticeCount;
+                total += noticeCount;
                 const chatLastMessage = chat.lastMessage;
                 if (chatLastMessage && (!lastChatMessage || lastChatMessage.date < chatLastMessage.date)) {
                     lastChatMessage = chatLastMessage;
@@ -105,9 +108,9 @@ const updateChatNoticeTask = new DelayAction(() => {
                     }
                 }
                 if (chat.isMuteOrHidden) {
-                    muteCount += chat.noticeCount;
+                    muteCount += noticeCount;
                 } else {
-                    notMuteCount += chat.noticeCount;
+                    notMuteCount += noticeCount;
                 }
             }
         }
@@ -138,10 +141,10 @@ const updateChatNoticeTask = new DelayAction(() => {
 
     let sound = false;
     if (
-        total
+        ((total
         && notMuteCount > 0
         && lastNoticeInfo.total < total
-        && lastNoticeInfo.notMuteCount < notMuteCount
+        && lastNoticeInfo.notMuteCount < notMuteCount) || muteNewMessageCount)
         && userConfig.enableSound
         && (!userConfig.muteOnUserIsBusy || !profile.user.isBusy)
         && isMatchWindowCondition(userConfig.playSoundCondition)) {

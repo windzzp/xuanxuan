@@ -314,7 +314,6 @@ export default class UserSetting extends Component {
                         name: 'ui.notify.flashTrayIconCondition',
                         className: 'level-2',
                         options: [
-                            {value: '', label: Lang.string('setting.notification.onNeed')},
                             {value: 'onWindowBlur', label: Lang.string('setting.notification.onWindowBlur')},
                             {value: 'onWindowHide', label: Lang.string('setting.notification.onWindowHide')},
                         ],

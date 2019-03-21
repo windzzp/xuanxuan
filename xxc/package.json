@@ -36,6 +36,7 @@
     "docs": "./node_modules/.bin/esdoc",
     "eslint": "eslint ./app",
     "test": "node --max_old_space_size=2096 -r babel-register ./test/test.js",
+    "convert-test-report": "node --max_old_space_size=2096 -r babel-register ./test/convert-report.js",
     "create": "node --max_old_space_size=2096 -r babel-register ./test/create.js"
   },
   "build": {
