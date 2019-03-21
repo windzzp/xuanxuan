@@ -164,8 +164,8 @@ body>.article {
         <h2>响应耗时</h2>
         <div id="responseInfoChart"></div>
 
-        <h2>发送聊天消息耗时</h2>
-        <div id="sendMessageInfoChart"></div>
+        <h2 class="is-sendMessageInfo">发送聊天消息耗时</h2>
+        <div id="sendMessageInfoChart" class="is-sendMessageInfo"></div>
 
         <h2>用户状态清单（共 <span class="text-user-count"></span> 个用户）</h2>
         <table class="table bordered compact">
@@ -268,9 +268,13 @@ window.CoreLib=window.jQuery||window.Zepto,!function(t){"use strict";t.callEvent
                 sendMessage: 1000,
                 response: 1000
             };
+            var hasSendMessageInfo = false;
             if (timeline.length) {
                 timeline.forEach(function (info) {
                     info.mins = Math.floor(info.mins * 10) / 10;
+                    if (!hasSendMessageInfo && info.sendMessageTimeInfo.total) {
+                        hasSendMessageInfo = true;
+                    }
                 });
                 var $timelineControl = $('#timelineControl');
                 var firstTimeItem = timeline[0];
@@ -288,6 +292,7 @@ window.CoreLib=window.jQuery||window.Zepto,!function(t){"use strict";t.callEvent
                     var timelineItem = timeline[index];
                     var timeText = $.formatDate(timelineItem.updateTime, 'yyyy-MM-dd hh:mm:ss.S');
                     $('.text-timeline-current-time').text(timeText);
+                    $('.text-timeline-current').text(timelineItem.mins.toFixed(1));
                     $timelineTable.find('.tl-closeTimes').text(timelineItem.closeTimes);
                     $timelineTable.find('.tl-time').text(timeText);
                     $timelineTable.find('.tl-mins').text(timelineItem.mins.toFixed(1) + ' 分钟');
@@ -330,6 +335,9 @@ window.CoreLib=window.jQuery||window.Zepto,!function(t){"use strict";t.callEvent
                 refreshTimeline();
             }
 
+            if (!hasSendMessageInfo) {
+                $('.is-sendMessageInfo').addClass('hidden');
+            }
             var userStatusChartData = [];
             timeline.forEach(function (info) {
                 userStatusChartData.push({
@@ -366,7 +374,7 @@ window.CoreLib=window.jQuery||window.Zepto,!function(t){"use strict";t.callEvent
                     type: 'line'
                 }
             });
-            var statusColors = ['#607d8b', '#ff5252', '#00e5ff', '#00c853'];
+            var statusColors = ['#03b8cf', '#ea644a', '#f1a325', '#38b03f'];
             userStatusChart.areaStack().position('mins*count').color('status', statusColors);
             userStatusChart.lineStack().position('mins*count').color('status', statusColors).size(2);
             userStatusChart.render();
@@ -399,12 +407,13 @@ window.CoreLib=window.jQuery||window.Zepto,!function(t){"use strict";t.callEvent
                     type: 'line'
                 }
             });
-            var statusColors = ['#546e7a', '#00c853'];
+            var statusColors = ['#03b8cf', '#38b03f'];
             serverStatusChart.areaStack().position('mins*count').color('status', statusColors);
             serverStatusChart.lineStack().position('mins*count').color('status', statusColors).size(2);
             serverStatusChart.render();
 
             $.each(['login', 'request', 'response', 'sendMessage'], function (index, name) {
+                if (!hasSendMessageInfo && name === 'sendMessage') return;
                 var infoData = [];
                 timeline.forEach(function (info) {
                     var dataItem = info[name + 'TimeInfo'];

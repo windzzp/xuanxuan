@@ -27,7 +27,7 @@ program
     .option('-g, --groups <groups>', '是否测试讨论组发送消息')
     .option('-A, --activeLevel <activeLevel>', '测试用户活跃程度', 0.5)
     .option('-n, --reportName <reportName>', '测试报告名称')
-    .option('-S, --summaryInterval <summaryInterval>', '单次汇总时间间隔，单位秒', 30)
+    .option('-S, --summaryInterval <summaryInterval>', '单次汇总时间间隔，单位秒', 20)
     .option('-U, --autoSaveReportInterval <autoSaveReportInterval>', '自动保存报告时间间隔，单位秒', 60)
     .option('-T, --logTypes <logTypes>', '日志报告文件类型', 'log,json,md,html')
     .option('-m, --multiLogin', '是否启用多用户同时登录')
