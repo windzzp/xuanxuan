@@ -37,7 +37,7 @@ class setting extends control
             if(empty($setting->server)) $errors[] = $this->lang->chat->xxdServerEmpty;
 
             if($errors) $this->send(array('result' => 'fail', 'message' => $errors));
-
+            $setting->set = time();
             $result = $this->loadModel('setting')->setItems('system.sys.common.xuanxuan', $setting);
             if(!$result) $this->send(array('result' => 'fail', 'message' => dao::getError()));
 
