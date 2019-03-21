@@ -339,7 +339,7 @@ class installModel extends model
         $xxbTables      = explode(";\n", file_get_contents($dbFile));
         $dbFile         = $this->app->getBasePath() . 'db' . DS . 'xuanxuan.sql';
         $xuanxuanTables = explode(";\n", file_get_contents($dbFile));
-        $tables         = array_merge($xuanxuanTables, $xxbTables);
+        $tables         = array_merge($xxbTables, $xuanxuanTables);
         foreach($tables as $table)
         {
             $table = trim($table);
@@ -349,8 +349,9 @@ class installModel extends model
             {
                 $table = str_replace('--', '', $table);
             }
-            $table = str_replace('xxb_', $this->config->db->name . $this->config->db->prefix, $table);
-
+            $table = str_replace('`im_',  $this->config->db->name . '.`im_', $table);
+            $table = str_replace('`xxb_', $this->config->db->name . '.`xxb_', $table);
+            $table = str_replace('xxb_', $this->config->db->prefix, $table);
             if(!$this->dbh->query($table)) return false;
         }
         return true;
