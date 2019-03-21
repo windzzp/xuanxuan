@@ -44,18 +44,6 @@ class tree extends control
                 $this->lang->menuGroups->tree = 'user';
             }
         }
-        elseif(strpos($type, 'doc') !== false)
-        {
-            if($this->session->docFrom == 'doc') $this->loadModel('doc', 'doc')->setMainMenu();
-            $this->lang->menuGroups->tree = 'doc';
-            $this->view->lib = $this->loadModel('doc', 'doc')->getLibById($root);
-            $this->view->projects = $this->loadModel('project', 'proj')->getPairs();
-        }
-        elseif(strpos($this->config->tree->menuGroup->product, ',' . $type . ',') !== false && isset($this->lang->$from->menu))
-        {
-            $this->lang->tree->menu = $this->lang->$from->menu;
-            $this->lang->menuGroups->tree = $from;
-        }
         $this->view->title    = $this->lang->category->common;
         $this->view->type     = $type;
         $this->view->root     = $root;
