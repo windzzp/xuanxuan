@@ -25,7 +25,7 @@ include '../framework/helper.class.php';
 $startTime = getTime();
 
 /* Run the app. */
-$app = router::createApp('xxb', dirname(dirname(__FILE__)));
+$app = router::createApp('xxb', dirname(dirname(__FILE__)), 'xuanxuan');
 
 $app->loadCommon();
 $app->parseRequest();
