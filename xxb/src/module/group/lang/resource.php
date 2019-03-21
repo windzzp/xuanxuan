@@ -32,6 +32,7 @@ $lang->resource = new stdclass();
 
 /* User. */
 $lang->resource->adminUser = new stdclass();
+$lang->resource->adminUser->lang   = 'lang';
 $lang->resource->adminUser->admin  = 'admin';
 $lang->resource->adminUser->create = 'create';
 $lang->resource->adminUser->edit   = 'edit';
@@ -39,6 +40,7 @@ $lang->resource->adminUser->delete = 'delete';
 $lang->resource->adminUser->forbid = 'forbid';
 $lang->resource->adminUser->active = 'active';
 
+$lang->adminUser->methodOrder[5] = 'lang';
 $lang->adminUser->methodOrder[10] = 'admin';
 $lang->adminUser->methodOrder[15] = 'create';
 $lang->adminUser->methodOrder[20] = 'edit';
