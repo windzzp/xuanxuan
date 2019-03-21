@@ -1,13 +1,13 @@
 <?php
 /**
- * The model file of common module of RanZhi.
+ * The model file of common module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     common
  * @version     $Id: model.php 4150 2016-10-17 08:06:43Z liugang $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 class commonModel extends model
 {
@@ -732,7 +732,7 @@ class commonModel extends model
         global $lang;
         $mainMenu = $moduleName;
         if(isset($lang->menuGroups->$moduleName)) $mainMenu = $lang->menuGroups->$moduleName;
-        echo html::a(helper::createLink('my', 'index'), $lang->ranzhi);
+        echo html::a(helper::createLink('my', 'index'), $lang->xxb);
         if($moduleName != 'index')
         {
             if(!isset($lang->menu->$mainMenu)) return;

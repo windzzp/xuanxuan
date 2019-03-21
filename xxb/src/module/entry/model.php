@@ -1,13 +1,13 @@
 <?php
 /**
- * The model file of entry module of RanZhi.
+ * The model file of entry module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Yidong Wang <yidong@cnezsoft.com>
  * @package     entry
  * @version     $Id: model.php 4205 2016-10-24 08:19:13Z liugang $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 class entryModel extends model
 {

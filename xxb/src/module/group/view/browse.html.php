@@ -1,13 +1,13 @@
 <?php
 /**
- * The browse view file of group module of RanZhi.
+ * The browse view file of group module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Xiying Guan <guanxiying@xirangit.com>
  * @package     group
  * @version     $Id: browse.html.php 4769 2013-05-05 07:24:21Z wwccss $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 ?>
 <?php include '../../common/view/header.html.php';?>

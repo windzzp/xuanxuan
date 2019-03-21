@@ -1,13 +1,13 @@
 <?php
 /**
- * The upgrade router file of RanZhi.
+ * The upgrade router file of XXB.
  *
  * @copyright   Copyright 2009-2015 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
- * @package     RanZhi
+ * @package     XXB
  * @version     $Id: upgrade.php 3138 2015-11-09 07:32:18Z chujilu $
- * @link        http://www.ranzhico.com
+ * @link        http://xuan.im
  */
 /* Judge my.php exists or not. */
 define('RUN_MODE', 'upgrade');
@@ -15,7 +15,7 @@ $myConfig = dirname(dirname(dirname(__FILE__))) . '/config/my.php';
 if(!file_exists($myConfig))
 {
     echo "文件" . $myConfig . "不存在！ 提示：不要重命名原来的然之安装目录，下载最新的源码包，覆盖即可。" . "<br />";
-    echo $myConfig . " doesn't exists! Please don't rename ranzhi before overriding the source code!";
+    echo $myConfig . " doesn't exists! Please don't rename xxb before overriding the source code!";
     exit;
 }
 

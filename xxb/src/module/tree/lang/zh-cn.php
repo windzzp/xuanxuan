@@ -1,13 +1,13 @@
 <?php
 /**
- * The tree module zh-cn file of RanZhi.
+ * The tree module zh-cn file of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     tree
  * @version     $Id: zh-cn.php 4103 2016-09-30 09:22:14Z daitingting $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 $lang->tree->common        = "部门";
 $lang->tree->edit          = "编辑部门";

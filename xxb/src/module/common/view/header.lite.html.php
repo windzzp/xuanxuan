@@ -1,13 +1,13 @@
 <?php
 /**
- * The header.lite view of common module of RanZhi.
+ * The header.lite view of common module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     common 
  * @version     $Id: header.lite.html.php 4041 2016-09-27 07:09:30Z liugang $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 if($extView = $this->getExtViewFile(__FILE__)){include $extView; return helper::cd();}
 $webRoot      = $config->webRoot;
@@ -27,7 +27,7 @@ $clientTheme  = $this->app->getClientTheme();
   <?php
   if(!isset($title)) $title  = '';
   if(!empty($title)) $title .= $lang->minus;
-  echo html::title($title . $lang->ranzhi);
+  echo html::title($title . $lang->xxb);
 
   js::exportConfigVars();
   if($config->debug)

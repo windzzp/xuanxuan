@@ -1,6 +1,6 @@
 <?php
 /**
- * The html template file of select version method of upgrade module of RanZhi.
+ * The html template file of select version method of upgrade module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)

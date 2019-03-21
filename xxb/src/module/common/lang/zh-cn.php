@@ -1,13 +1,13 @@
 <?php
 /**
- * The zh-cn file of common module of RanZhi.
+ * The zh-cn file of common module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     common 
  * @version     $Id: zh-cn.php 4194 2016-10-21 09:23:53Z daitingting $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 $lang->colon      = ' : ';
 $lang->ellipsis   = '…';
@@ -31,10 +31,10 @@ $lang->etc        = '等';
 $lang->importIcon = "<i class='icon-download-alt'> </i>";
 $lang->exportIcon = "<i class='icon-upload-alt'> </i>";
 
-/* Lang items for ranzhi. */
-$lang->ranzhi    = '喧喧';
+/* Lang items for xxb. */
+$lang->xxb       = '喧喧';
 $lang->agreement = "已阅读并同意<a href='http://zpl.pub/page/zplv12.html' target='_blank'>《Z PUBLIC LICENSE授权协议1.2》</a>。<span class='text-danger'>未经许可，不得去除、隐藏或遮掩喧喧系统的任何标志及链接。</span>";
-$lang->poweredBy = "<a href='http://www.xuan.im/?v=%s' data-toggle='tooltip' title='{$this->config->buildDate}' target='_blank'>{$lang->ranzhi}%s</a>";
+$lang->poweredBy = "<a href='http://www.xuan.im/?v=%s' data-toggle='tooltip' title='{$this->config->buildDate}' target='_blank'>{$lang->xxb}%s</a>";
 $lang->ipLimited = "<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8' /></head><body>抱歉，管理员限制当前IP登录，请联系管理员解除限制。</body></html>";
 
 /* IE6 alert.  */

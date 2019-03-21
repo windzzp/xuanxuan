@@ -1,6 +1,6 @@
 <?php
 /**
- * The config file of RanZhi.
+ * The config file of XXB.
  *
  * Don't modify this file directly, copy the item to my.php and change it.
  *
@@ -9,9 +9,9 @@
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     config
  * @version     $Id: config.php 4211 2017-06-20 14:30:10Z pengjx $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
-$config->version   = '2.5.0';                // 然之的版本。 The version of RanZhi. Don't change it.
+$config->version   = '2.5.0';                // 然之的版本。 The version of XXB. Don't change it.
 $config->buildDate = "build at Mon Mar 11 17:34:38 CST 2019";
 
 /* 基本设置。Rangerteam basic settings. */

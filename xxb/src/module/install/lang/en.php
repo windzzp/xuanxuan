@@ -1,6 +1,6 @@
 <?php
 /**
- * The English file of install module of RanZhi.
+ * The English file of install module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
@@ -23,7 +23,7 @@ $lang->install->license          = 'XuanXuan use license of Z PUBLIC LICENSE(ZPL
 $lang->install->welcome          = 'Welcome to use XuanXuan.';
 $lang->install->desc             = <<<EOT
 <blockquote>
-  <strong>{$lang->ranzhi}</strong>Developed by<strong><a href='http://www.cnezsoft.com' target='_blank' class='red'>QingDao Nature Easy Soft Network Technology Co,LTD</a></strong>，
+  <strong>{$lang->xxb}</strong>Developed by<strong><a href='http://www.cnezsoft.com' target='_blank' class='red'>QingDao Nature Easy Soft Network Technology Co,LTD</a></strong>，
   XuanXuan, a professional IM solution for enterprises that is safe, open source, free and cross-platform.
 
   Website:<a href='http://www.xuan.im' target='_blank'>http://www.xuan.im</a>

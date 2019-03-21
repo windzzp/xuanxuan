@@ -1,13 +1,13 @@
 <?php
 /**
- * The model file of mail module of RanZhi.
+ * The model file of mail module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     setting
  * @version     $Id: model.php 4029 2016-08-26 06:50:41Z liugang $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 ?>
 <?php
@@ -220,7 +220,7 @@ class settingModel extends model
     //-------------------------------- methods for version and sn. ----------------------------//
    
     /**
-     * Get the version of current ranzhi.
+     * Get the version of current xxb.
      * 
      * Since the version field not saved in db. So if empty, return 1.1.
      *
@@ -267,7 +267,7 @@ class settingModel extends model
     }
 
     /**
-     * Set the sn of current ranzhi.
+     * Set the sn of current xxb.
      * 
      * @access public
      * @return void
@@ -281,7 +281,7 @@ class settingModel extends model
     /**
      * Compute a SN. Use the server ip, and server software string as seed, and an rand number, two micro time
      * 
-     * Note: this sn just to unique this ranzhi. No any private info. 
+     * Note: this sn just to unique this xxb. No any private info. 
      *
      * @access public
      * @return string

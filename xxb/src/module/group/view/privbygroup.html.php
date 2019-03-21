@@ -1,13 +1,13 @@
 <?php
 /**
- * The manage privilege by group view of group module of RanZhi.
+ * The manage privilege by group view of group module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Xiying Guan <guanxiying@xirangit.com>
  * @package     group
  * @version     $Id: managepriv.html.php 1517 2011-03-07 10:02:57Z wwccss $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 ?>
 <div class='list'>

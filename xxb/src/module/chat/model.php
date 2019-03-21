@@ -1234,13 +1234,11 @@ class chatModel extends model
     public function getExtensionList($userID)
     {
         $entries    = array();
-        $fileIDs    = array();
-        $files      = array();
         $allEntries = array();
         $time       = time();
 
         $_SERVER['SCRIPT_NAME'] = str_replace('x.php', 'sys/x.php', $_SERVER['SCRIPT_NAME']);
-        $this->config->webRoot  = getRanzhiWebRoot();
+        $this->config->webRoot  = $this->app->getWebRoot();
 
         $baseURL   = commonModel::getSysURL();
         $entryList = $this->dao->select('*')->from(TABLE_ENTRY)->orderBy('`order`, id')->fetchAll();

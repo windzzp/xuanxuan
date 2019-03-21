@@ -7,7 +7,7 @@
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     action
  * @version     $Id$
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 ?>
 <?php include '../../common/view/header.html.php';?>
