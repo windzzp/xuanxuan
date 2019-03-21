@@ -65,7 +65,6 @@ class entryModel extends model
         }
 
         /* Remove entry if no rights and fix logo path. */
-        $newEntries = array();
         $this->app->loadLang('install');
         foreach($entries as $index => $entry)
         {
@@ -82,7 +81,6 @@ class entryModel extends model
 
             if($entry->logo != '' && substr($entry->logo, 0, 1) != '/') $entry->logo = $this->config->webRoot . $entry->logo;
         }
-        $entries = $newEntries;
 
         if($type == 'mobile')
         {
@@ -173,7 +171,7 @@ class entryModel extends model
      */
     public function create()
     {
-        $maxOrder = $this->dao->select('`order`')->from(TABLE_ENTRY)->orderBy('order_desc')->limit(1)->fetch('order');
+        $maxOrder = (int)$this->dao->select('`order`')->from(TABLE_ENTRY)->orderBy('order_desc')->limit(1)->fetch('order');
 
         $entry = fixer::input('post')
             ->setDefault('ip', '*')
