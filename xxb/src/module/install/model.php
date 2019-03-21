@@ -264,7 +264,7 @@ class installModel extends model
      */
     public function connectDB()
     {
-        $dsn = "mysql:dbname={$this->config->db->name};host={$this->config->db->host}; port={$this->config->db->port};charset={$this->config->db->encoding}";
+        $dsn = "mysql:host={$this->config->db->host}; port={$this->config->db->port};charset={$this->config->db->encoding}";
         try 
         {
             $dbh = new PDO($dsn, $this->config->db->user, $this->config->db->password);
@@ -349,7 +349,7 @@ class installModel extends model
             {
                 $table = str_replace('--', '', $table);
             }
-            $table = str_replace('xxb_', $this->config->db->prefix, $table);
+            $table = str_replace('xxb_', $this->config->db->name . $this->config->db->prefix, $table);
 
             if(!$this->dbh->query($table)) return false;
         }
