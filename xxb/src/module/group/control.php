@@ -211,7 +211,7 @@ class group extends control
             $apps = $this->loadModel('entry')->getEntries();
 
             $app = new stdclass();
-            $app->id = 'superadmin';
+            $app->id   = 'superadmin';
             $app->code = 'superadmin';
             $app->abbr = $this->lang->apps->superadmin;
             $app->name = $this->lang->apps->superadmin;

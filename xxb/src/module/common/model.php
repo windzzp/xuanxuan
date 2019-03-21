@@ -269,13 +269,9 @@ class commonModel extends model
      * @access public
      * @return string
      */
-    public static function createMainMenu($currentModule)
+    public static function createMainMenu($currentModule = '')
     {
         global $app, $lang, $config;
-
-        /* Set current module. */
-        if(isset($lang->menuGroups->$currentModule)) $currentModule = $lang->menuGroups->$currentModule;
-
         $isMobile = $app->viewType === 'mhtml';
         $string   = !$isMobile ? "<ul class='nav navbar-nav'>\n" : '';
 
