@@ -99,7 +99,7 @@ class blockModel extends model
         }
 
         /* Send login request. */
-        $loginObj = "<iframe src='" . helper::createLink('sys.entry', 'visit', "entryID={$entry->id}") . "' class='hidden' />";
+        $loginObj = "<iframe src='" . helper::createLink('entry', 'visit', "entryID={$entry->id}") . "' class='hidden' />";
         return $loginObj . str_replace('panel-body', '', commonModel::http($link));
     }
 

@@ -43,7 +43,6 @@
         <a class ="more-list" href="javascript:#"><?php echo $lang->group->show;?></a> 
       </td>
       <td class='text-center'>
-        <?php echo html::a(inlink('manageAppPriv', "type=byGroup&param={$group->id}"), $lang->group->manageAppPriv);?>
         <?php echo html::a(inlink('manageMember', "groupID={$group->id}"), $lang->group->manageMember);?>
         <?php echo html::a(inlink('managePriv', "type=byGroup&param={$group->id}"), $lang->group->managePriv);?>
         <?php echo html::a(inlink('edit', "groupID={$group->id}"), $lang->edit, "data-toggle='modal'");?>

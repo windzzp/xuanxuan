@@ -10,7 +10,6 @@
  * @link        http://www.ranzhi.org
  */
 $lang->user->common    = '成员';
-
 $lang->user->id        = '编号';
 $lang->user->account   = '用户名';
 $lang->user->super     = '管理员';

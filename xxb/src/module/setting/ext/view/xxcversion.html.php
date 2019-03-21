@@ -13,8 +13,8 @@
 <?php include '../../../common/view/header.html.php';?>
 <style>.page-content.with-menu{margin: 41px 0 0 0!important;}</style>
 <div id='menuActions'>
-  <a href="<?php echo helper::createLink('sys.setting', 'getXXCUpdate');?>" class="btn btn-primary" data-toggle='modal'><?php echo $lang->chat->checkUpdate?></a>
-  <a href="<?php echo helper::createLink('sys.setting', 'createXXCVersion');?>" class="btn btn-primary" data-toggle='modal'><?php echo $lang->add;?></a>
+  <a href="<?php echo helper::createLink('setting', 'getXXCUpdate');?>" class="btn btn-primary" data-toggle='modal'><?php echo $lang->chat->checkUpdate?></a>
+  <a href="<?php echo helper::createLink('setting', 'createXXCVersion');?>" class="btn btn-primary" data-toggle='modal'><?php echo $lang->add;?></a>
 </div>
 <div class='panel'>
   <table class='table table-hover table-border'>
@@ -36,8 +36,8 @@
       <td><?php echo $lang->chat->strategies[$version->strategy]?></td>
       <td>
         <?php
-        commonModel::printLink('sys.setting', 'editXXCVersion', "id={$version->id}", $lang->edit, "data-toggle='modal'");
-        commonModel::printLink('sys.setting', 'deleteXXCVersion', "id={$version->id}", $lang->delete, "class='deleter'");
+        commonModel::printLink('setting', 'editXXCVersion', "id={$version->id}", $lang->edit, "data-toggle='modal'");
+        commonModel::printLink('setting', 'deleteXXCVersion', "id={$version->id}", $lang->delete, "class='deleter'");
         ?>
       </td>
     </tr>
