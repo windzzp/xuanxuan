@@ -1,16 +1,23 @@
+/* eslint-disable no-unused-expressions */
 import chalk from 'chalk';
 import log4js from 'log4js';
-import {formatDate} from '../app/utils/date-helper';
 
-log4js.configure({
-    appenders: {
-        test: {type: 'file', filename: `./test/logs/test${formatDate(new Date(), 'yyMMddhhmmss')}.log`}
-    },
-    categories: {
-        default: {appenders: ['test'], level: 'all'}
+let testLog = null;
+
+export const initLogFile = (logFile) => {
+    if (!logFile) {
+        return;
     }
-});
-const testLog = log4js.getLogger('test');
+    log4js.configure({
+        appenders: {
+            test: {type: 'file', filename: logFile}
+        },
+        categories: {
+            default: {appenders: ['test'], level: 'all'}
+        }
+    });
+    testLog = log4js.getLogger('test');
+};
 
 const logTimeStr = () => {
     const now = new Date();
@@ -214,19 +221,19 @@ const plainArg = arg => {
 const loggerWriter = {
     log: (...args) => {
         console.log(...args.map(colorArg));
-        testLog.log('', ...args.map(plainArg));
+        testLog && testLog.log('', ...args.map(plainArg));
     },
     info: (...args) => {
         console.info(...args.map(colorArg));
-        testLog.info('', ...args.map(plainArg));
+        testLog && testLog.info('', ...args.map(plainArg));
     },
     warn: (...args) => {
         console.warn(...args.map(colorArg));
-        testLog.warn('', ...args.map(plainArg));
+        testLog && testLog.warn('', ...args.map(plainArg));
     },
     error: (...args) => {
         console.error(...args.map(colorArg));
-        testLog.error('', ...args.map(plainArg));
+        testLog && testLog.error('', ...args.map(plainArg));
     }
 };
 
@@ -234,13 +241,13 @@ export const logInfo = (...args) => {
     if (typeof args[0] === 'function') {
         const name = args[1];
         console.info(`${chalk.cyan('● Info ')}`, chalk.gray(logTimeStr()), `───────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
-        testLog.info(`┌────────────────────────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
+        testLog && testLog.info(`┌────────────────────────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
         args[0](loggerWriter);
         console.info(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
-        testLog.info(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
+        testLog && testLog.info(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
     } else {
         console.info(chalk.cyan('● Info '), chalk.gray(logTimeStr()), ...args.map(colorArg));
-        testLog.info(...args.map(plainArg));
+        testLog && testLog.info(...args.map(plainArg));
     }
 };
 
@@ -248,13 +255,13 @@ export const logWarn = (...args) => {
     if (typeof args[0] === 'function') {
         const name = args[1];
         console.warn(`${chalk.yellow('● Warn ')}`, chalk.yellow(logTimeStr()), `───────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
-        testLog.info(`┌────────────────────────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
+        testLog && testLog.info(`┌────────────────────────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
         args[0](loggerWriter);
         console.warn(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
-        testLog.warn(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
+        testLog && testLog.warn(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
     } else {
         console.warn(chalk.yellow('● Warn '), chalk.yellow(logTimeStr()), ...args.map(colorArg));
-        testLog.warn(...args.map(plainArg));
+        testLog && testLog.warn(...args.map(plainArg));
     }
 };
 
@@ -262,13 +269,13 @@ export const logError = (...args) => {
     if (typeof args[0] === 'function') {
         const name = args[1];
         console.error(`${chalk.red('● Error')}`, chalk.red(logTimeStr()), `───────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
-        testLog.error(`┌────────────────────────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
+        testLog && testLog.error(`┌────────────────────────── ${name ? `${name} ` : ''}BEGIN ────────────────────┐`);
         args[0](loggerWriter);
         console.error(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
-        testLog.error(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
+        testLog && testLog.error(`└────────────────────────── ${name ? `${name} ` : ''}END ──────────────────────┘`);
     } else {
         console.error(chalk.red('● Error'), chalk.red(logTimeStr()), ...args.map(colorArg));
-        testLog.error(...args.map(plainArg));
+        testLog && testLog.error(...args.map(plainArg));
     }
 };
 

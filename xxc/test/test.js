@@ -1,17 +1,17 @@
 import program from 'commander';
 import Md5 from 'md5';
 import {URL} from 'url';
-import {makeReport} from './report';
+import {createJSONReport, createHTMLReport} from './report';
 import pkg from '../app/package.json';
 import User from './user';
 import Server, {LISTEN_TIMEOUT, serverOnlineInfo} from './server';
-import log from './log';
+import log, {initLogFile} from './log';
 import {formatDate} from '../app/utils/date-helper';
 
 // 处理命令行参数
 program
     .version(pkg.version)
-    .alias('npm run test2 --')
+    .alias('npm run test --')
     .option('-s, --server <server>', '测试服务器地址')
     .option('-t, --time <time>', '测试持续时间，单位秒', 30 * 60)
     .option('-a, --account <account>', '测试账号，例如 `--acount=test$`', 'test$')
@@ -26,10 +26,11 @@ program
     // .option('-l, --log <log>', '日志输出等级', 2)
     .option('-o, --one2one', '是否测试大量一对一发送消息')
     .option('-g, --groups <groups>', '是否测试讨论组发送消息')
-    .option('-A, --activeLevel <activeLevel>', '测试用户活跃程度', 0.8)
+    .option('-A, --activeLevel <activeLevel>', '测试用户活跃程度', 0.5)
     .option('-n, --reportName <reportName>', '测试报告名称')
-    .option('-S, --summaryInterval <summaryInterval>', '单次汇总时间间隔，单位秒', 60)
-    // .option('-T, --logTypes <logTypes>', '日志报告文件类型', 'log,json,md,html')
+    .option('-S, --summaryInterval <summaryInterval>', '单次汇总时间间隔，单位秒', 30)
+    .option('-U, --autoSaveReportInterval <autoSaveReportInterval>', '自动保存报告时间间隔，单位秒', 60)
+    .option('-T, --logTypes <logTypes>', '日志报告文件类型', 'log,json,md,html')
     .parse(process.argv);
 
 // 测试配置
@@ -46,12 +47,14 @@ const config = {
     reconnect: program.reconnect,
     verbose: program.verbose,
     socketPort: program.port,
-    one2one: program.one2one,
-    groups: program.groups ? program.groups.split(',') : null,
-    activeLevel: program.activeLevel,
+    one2one: !!program.one2one,
+    groups: program.groups ? program.groups.split(',') : false,
+    activeLevel: typeof program.activeLevel === 'string' ? Number.parseFloat(program.activeLevel) : program.activeLevel,
     testTime: program.time * 1000,
     reportName: program.reportName,
+    autoSaveReportInterval: program.autoSaveReportInterval * 1000,
     summaryInterval: program.summaryInterval * 1000,
+    logTypes: new Set(program.logTypes.split(',')),
 };
 
 // 等待登录的用户队列
@@ -59,6 +62,9 @@ const waitUsers = [];
 
 // 用户对应的服务管理对象
 const servers = {};
+
+// 启动测试的时间
+const startTestTime = new Date().getTime();
 
 // 用户进行批量登录时的时间
 let startConnectTime = null;
@@ -95,6 +101,23 @@ let loopTime = 0;
 
 // 测试时间是否消耗完
 let isTestTimeOut = false;
+
+// 上次生成汇总报告的时间
+let lastSummaryReportTime = 0;
+
+// 汇总报告数据列表
+const summaryReportItems = [];
+
+// 上次自动保存报告时间
+let lastSaveReportTime = 0;
+
+// 服务状态
+const serverStatus = {
+    online: 0,
+    offline: 0,
+    connecting: 0,
+    wait: 0
+};
 
 // 获取指定范围内的整数
 const randomInt = (min, max) => {
@@ -141,7 +164,11 @@ const initConfig = () => {
         verbose: config.verbose,
         socketPort: config.socketPort,
         loginType: config.loginType,
-        testTime: config.testTime
+        testTime: config.testTime,
+        reportName: config.reportName,
+        summaryInterval: config.summaryInterval,
+        autoSaveReportInterval: config.autoSaveReportInterval,
+        logTypes: config.logTypes,
     }), 'Config');
     log.info('Login type is', config.loginType);
 };
@@ -274,7 +301,7 @@ const trySendOne2OneMessage = () => {
                     twoServers[0].sendChatMessage({
                         cgid,
                         contentType: 'text',
-                        content: `This is a one2one message between **${twoServers[0].user.account}** and **${twoServers[1].user.account}**.`
+                        content: `This is a one2one message between **@${twoServers[0].user.account}** and **@${twoServers[1].user.account}**.`
                     });
                     return true;
                 }
@@ -301,7 +328,7 @@ const trySendGroupMessage = () => {
                     onlineServer[0].sendChatMessage({
                         cgid: groupGid,
                         contentType: 'text',
-                        content: `This is a test message send to group#${groupGid} from ${onlineServer[0].user.account}.`
+                        content: `This is a test message send to group **#${groupGid}** from @${onlineServer[0].user.account}.`
                     });
                     return true;
                 }
@@ -348,41 +375,58 @@ const tryReportUserStatus = () => {
         });
         const waitCount = waitUsers.length;
         log.info('Status', onlineCount ? `**c:green|Online: ${onlineCount}**` : '_Online: 0_', offlineCount ? `**c:red|Offline: ${offlineCount}**` : '_Offline: 0_', connectingCount ? `**c:yellow|Connecting: ${connectingCount}**` : '_Connecting: 0_', waitCount ? `**c:blue|Wait: ${waitCount}**` : '_Wait: 0_', '_/_', `**c:green|Server Online: ${serverOnlineInfo.online}/${serverOnlineInfo.total}**`);
+        serverStatus.online = onlineCount;
+        serverStatus.offline = offlineCount;
+        serverStatus.connecting = connectingCount;
+        serverStatus.wait = waitCount;
         return true;
     }
     return false;
 };
 
 /**
- * 获取概要统计信息
+ * 获取当前统计信息
+ * @returns {Object} 统计数据对象
  */
-const getStatistic = () => {
+const getStatisticData = () => {
+    const now = new Date().getTime();
     const statistic = {
-        loginType: config.loginType, // 登录场景
         loginUserCount: 0, // 登录用户数目
         onlineUserCount: 0, // 在线用户数目
-        totalLoginTimes: 0, // 所有用户登录完成耗时（平均登录耗时，最小，最大）
         closeTimes: 0, // 断线次数
         reconnectTimes: 0, // 重连次数
-        requestTime: {
+        updateTime: now,
+        serverOnlineInfo: Object.assign({}, serverOnlineInfo),
+        serverStatus: Object.assign({}, serverStatus),
+        mins: (now - startTestTime) / (1000 * 60),
+        loginTimeInfo: {
+            all: null,
             average: 0,
-            min: 99999999,
+            min: Number.MAX_SAFE_INTEGER,
+            max: 0,
+            total: 0,
+            totalTimes: 0,
+            successTimes: 0,
+        },
+        requestTimeInfo: {
+            average: 0,
+            min: Number.MAX_SAFE_INTEGER,
             max: 0,
             total: 0,
             totalTimes: 0,
             successTimes: 0,
         }, // 请求耗时（最低值，平均值，最高值）
-        responseTime: {
+        responseTimeInfo: {
             average: 0,
-            min: 9999999,
+            min: Number.MAX_SAFE_INTEGER,
             max: 0,
             total: 0,
             totalTimes: 0,
             successTimes: 0,
         }, // 响应耗时（最低值，平均值，最高值）
-        sendMessageTime: {
+        sendMessageTimeInfo: {
             average: 0,
-            min: 99999999,
+            min: Number.MAX_SAFE_INTEGER,
             max: 0,
             total: 0,
             totalTimes: 0,
@@ -391,45 +435,32 @@ const getStatistic = () => {
     };
     Object.keys(servers).forEach(account => {
         const server = servers[account];
+        const serverStatistic = server.getStatisticInfo();
         statistic.loginUserCount++;
         if (server.isOnline) {
             statistic.onlineUserCount++;
         }
-        statistic.totalLoginTimes += server.totalLoginTimes;
-        statistic.closeTimes += server.closeTimes;
-        statistic.reconnectTimes += server.reconnectTimes;
-        handleTime(statistic, server.requestTime, 'requestTime');
-        handleTime(statistic, server.responseTime, 'responseTime');
-        handleTime(statistic, server.sendMessageTime, 'sendMessageTime');
+        statistic.closeTimes += serverStatistic.closeTimes;
+        statistic.reconnectTimes += serverStatistic.reconnectTimes;
+
+        ['loginTimeInfo', 'requestTimeInfo', 'responseTimeInfo', 'sendMessageTimeInfo'].forEach(propName => {
+            const info = statistic[propName];
+            const serverInfo = serverStatistic[propName];
+            info.min = Math.min(serverInfo.min, info.min);
+            info.max = Math.max(serverInfo.max, info.max);
+            info.total += serverInfo.total;
+            info.totalTimes += serverInfo.totalTimes;
+            info.successTimes += serverInfo.successTimes;
+            statistic[propName] = info;
+        });
     });
-    statistic.requestTime.average = statistic.requestTime.total / statistic.requestTime.successTimes;
-    statistic.responseTime.average = statistic.responseTime.total / statistic.responseTime.successTimes;
-    statistic.sendMessageTime.average = statistic.sendMessageTime.total / statistic.sendMessageTime.successTimes;
+    ['loginTimeInfo', 'requestTimeInfo', 'responseTimeInfo', 'sendMessageTimeInfo'].forEach(propName => {
+        const info = statistic[propName];
+        info.average = info.total / info.successTimes;
+        statistic[propName] = info;
+    });
 
     return statistic;
-};
-
-// 将信息汇总
-const handleTime = (statistic, obj, type) => {
-    Object.keys(obj).forEach(dataType => {
-        switch (dataType) {
-        case 'min':
-            statistic[type][dataType] = Math.min(statistic[type][dataType], obj[dataType]);
-            break;
-        case 'max':
-            statistic[type][dataType] = Math.max(statistic[type][dataType], obj[dataType]);
-            break;
-        case 'total':
-            statistic[type][dataType] += obj[dataType];
-            break;
-        case 'totalTimes':
-            statistic[type][dataType] += obj[dataType];
-            break;
-        case 'successTimes':
-            statistic[type][dataType] += obj[dataType];
-            break;
-        }
-    });
 };
 
 /**
@@ -440,20 +471,36 @@ const getUsersInfo = () => {
     const usersInfo = {};
     Object.keys(servers).forEach(account => {
         const server = servers[account];
-        usersInfo[account] = {};
-        usersInfo[account].lastLoginTime = server.lastLoginTime; // 登录时间
-        usersInfo[account].loginTimes = server.loginTimes; // 登录耗时
-        usersInfo[account].closeTimes = server.closeTimes; // 断线次数
-        usersInfo[account].reconnectTimes = server.reconnectTimes; // 重连次数
-        usersInfo[account].requestTime = server.requestTime; // 请求耗时
-        usersInfo[account].responseTime = server.responseTime; // 响应耗时
-        usersInfo[account].sendMessageTime = server.sendMessageTime; // 发送聊天消息数目
+        usersInfo[account] = server.getStatisticInfo();
     });
     return usersInfo;
 };
 
 const createStatisticReport = () => {
+    const reportTime = new Date().getTime();
+    log.info(`Create statistic report data at ${formatDate(reportTime)}.`);
+    const data = {
+        name: config.reportName || `XXC Test Report ${formatDate(reportTime)}`,
+        reportTime,
+        config,
+        startTestTime,
+        users: getUsersInfo(),
+        timeline: summaryReportItems,
+    };
 
+    const {logTypes} = config;
+
+    if (logTypes.has('json')) {
+        const reportDataPath = `./test/logs/statistic-${formatDate(startTestTime, 'yyyyMMddhhmmss')}.json`;
+        createJSONReport(data, reportDataPath);
+        log.info(`Statistic report (json) data saved to ||__${reportDataPath}__||.`);
+    }
+
+    if (logTypes.has('html')) {
+        const reportDataPath = `./test/logs/statistic-${formatDate(startTestTime, 'yyyyMMddhhmmss')}.html`;
+        createHTMLReport(data, reportDataPath);
+        log.info(`Statistic report (html) data saved to ||__${reportDataPath}__||.`);
+    }
 };
 
 /**
@@ -461,6 +508,8 @@ const createStatisticReport = () => {
  * @return {void}
  */
 const start = () => {
+    initLogFile(`./test/logs/cli-${formatDate(startTestTime, 'yyyyMMddhhmmss')}.log`);
+
     initConfig();
     initWaitUsers();
 
@@ -468,6 +517,11 @@ const start = () => {
 
     const loopTimer = setInterval(() => {
         loopTime = process.uptime() * 1000;
+        if ((loopTime - lastSummaryReportTime) > config.summaryInterval) {
+            lastSummaryReportTime = loopTime;
+            summaryReportItems.push(getStatisticData());
+        }
+
         if (tryReportUserStatus()) {
             return;
         }
@@ -487,6 +541,10 @@ const start = () => {
                 }
                 return;
             }
+            if (config.autoSaveReportInterval && (loopTime - lastSaveReportTime) > config.autoSaveReportInterval) {
+                lastSaveReportTime = loopTime;
+                createStatisticReport();
+            }
         }
 
         if (!isUserConnecting && tryConnectUser()) {
@@ -501,7 +559,7 @@ const start = () => {
                 server.fetchUserList();
             }
         }
-    }, 100);
+    }, 50);
 
     log.info(`Test started at ${formatDate()}.`);
 };
