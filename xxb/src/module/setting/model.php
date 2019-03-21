@@ -54,17 +54,17 @@ class settingModel extends model
     {
         $level   = substr_count($path, '.');
         $section = '';
-        if($level <= 2) return false;
+        if($level < 2) return false;
         if($type == 'config')
         {
-            if($level == 3) list($owner, $app, $module, $key) = explode('.', $path);
-            if($level == 4) list($owner, $app, $module, $section, $key) = explode('.', $path);
+            if($level == 2) list($owner, $module, $key) = explode('.', $path);
+            if($level == 3) list($owner, $module, $section, $key) = explode('.', $path);
         }
         elseif($type == 'lang')
         {
-            if($level == 3) return false;
-            if($level == 4) list($lang, $app, $module, $key, $system) = explode('.', $path);
-            if($level == 5) list($lang, $app, $module, $section, $key, $system) = explode('.', $path);
+            if($level == 2) return false;
+            if($level == 3) list($lang, $module, $key, $system) = explode('.', $path);
+            if($level == 4) list($lang, $module, $section, $key, $system) = explode('.', $path);
         }
 
         $item = new stdclass();
@@ -78,7 +78,6 @@ class settingModel extends model
             $item->lang   = $lang;
             $item->system = $system;
         }
-        $item->app     = $app;
         $item->module  = $module;
         $item->section = $section;
         $item->key     = $key;
@@ -140,7 +139,7 @@ class settingModel extends model
     /**
      * Parse the param string for select or delete items.
      * 
-     * @param  string    $paramString     owner=xxx&app=sys&module=common&key=sn and so on.
+     * @param  string    $paramString     owner=xxx&module=common&key=sn and so on.
      * @param  string    $type
      * @access public
      * @return array
@@ -151,7 +150,7 @@ class settingModel extends model
         parse_str($paramString, $params); 
 
         /* Init fields not set in the param string. */
-        $fields = 'owner,lang,app,module,section,key,system';
+        $fields = 'owner,lang,module,section,key,system';
         $fields = explode(',', $fields);
         foreach($fields as $field) if(!isset($params[$field])) $params[$field] = '';
 
@@ -173,7 +172,6 @@ class settingModel extends model
         return $this->dao->$method('*')->from($table)->where('1 = 1')
             ->beginIF($type == 'config' and $params['owner'])->andWhere('owner')->in($params['owner'])->fi()
             ->beginIF($type == 'lang' and $params['lang'])->andWhere('lang')->in($params['lang'])->fi()
-            ->beginIF($params['app'])->andWhere('app')->in($params['app'])->fi()
             ->beginIF($params['module'])->andWhere('module')->in($params['module'])->fi()
             ->beginIF($params['section'])->andWhere('section')->in($params['section'])->fi()
             ->beginIF($params['key'])->andWhere('`key`')->in($params['key'])->fi()
@@ -189,9 +187,7 @@ class settingModel extends model
      */
     public function getSysAndPersonalConfig($account = '')
     {
-        $owner = 'system,' . ($account ? $account : '');
-        $app   = $this->app->getAppName();
-
+        $owner   = 'system,' . ($account ? $account : '');
         $records = $this->dao->select('*')->from(TABLE_CONFIG)
             ->where('owner')->in($owner)
             ->orderBy('id')
@@ -246,7 +242,7 @@ class settingModel extends model
      */
     public function updateVersion($version)
     {
-        return $this->setItem('system.sys.common.global.version', $version);
+        return $this->setItem('system.common.global.version', $version);
     }
 
     /**
@@ -257,17 +253,14 @@ class settingModel extends model
      */
     public function getAllLang()
     {
-        $allCustomLang = $this->dao->select('*')->from(TABLE_LANG)->orderBy('app,lang,id')->fetchGroup('app', 'id');
+        $allCustomLang = $this->dao->select('*')->from(TABLE_LANG)->orderBy('lang,id')->fetchGroup('id');
 
         $currentLang   = $this->app->getClientLang();
         $processedLang = array();
-        foreach($allCustomLang as $app => $customLang)
+        foreach($allCustomLang as $id => $lang)
         {
-            foreach($customLang as $id => $lang)
-            {
-                if($lang->lang != $lang and $lang->lang != 'all') continue;
-                $processedLang[$app][$lang->module][$lang->section][$lang->key] = $lang->value;
-            }
+            if($lang->lang != $lang and $lang->lang != 'all') continue;
+            $processedLang[$lang->module][$lang->section][$lang->key] = $lang->value;
         }
 
         return $processedLang;

@@ -38,7 +38,7 @@ class setting extends control
 
             if($errors) $this->send(array('result' => 'fail', 'message' => $errors));
             $setting->set = time();
-            $result = $this->loadModel('setting')->setItems('system.sys.common.xuanxuan', $setting);
+            $result = $this->loadModel('setting')->setItems('system.common.xuanxuan', $setting);
             if(!$result) $this->send(array('result' => 'fail', 'message' => dao::getError()));
 
             $this->send(array('result' => 'success', 'message' => $this->lang->saveSuccess, 'locate' => inlink('xuanxuan', "backend=$backend")));

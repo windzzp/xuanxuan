@@ -23,7 +23,6 @@ CREATE TABLE IF NOT EXISTS `xxb_action` (
 CREATE TABLE IF NOT EXISTS `xxb_block` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `account` char(30) NOT NULL,
-  `app` varchar(20) NOT NULL,
   `title` varchar(100) NOT NULL,
   `source` varchar(20) NOT NULL,
   `block` varchar(20) NOT NULL,
@@ -33,8 +32,8 @@ CREATE TABLE IF NOT EXISTS `xxb_block` (
   `height` smallint(5) unsigned NOT NULL DEFAULT '0',
   `hidden` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `accountAppOrder` (`account`, `app`, `order`),
-  KEY `account` (`account`, `app`)
+  UNIQUE KEY `accountAppOrder` (`account`, `order`),
+  KEY `account` (`account`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 -- DROP TABLE IF EXISTS `xxb_category`;
 CREATE TABLE IF NOT EXISTS `xxb_category` (
@@ -72,13 +71,12 @@ CREATE TABLE IF NOT EXISTS `xxb_category` (
 CREATE TABLE IF NOT EXISTS `xxb_config` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `owner` char(30) NOT NULL DEFAULT '',
-  `app` varchar(30) NOT NULL DEFAULT 'sys',
   `module` varchar(30) NOT NULL,
   `section` char(30) NOT NULL DEFAULT '',
   `key` char(30) DEFAULT NULL,
   `value` text NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique` (`owner`,`app`,`module`,`section`,`key`)
+  UNIQUE KEY `unique` (`owner`,`module`,`section`,`key`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 -- DROP TABLE IF EXISTS `xxb_entry`;
 CREATE TABLE IF NOT EXISTS `xxb_entry` (
@@ -143,14 +141,13 @@ CREATE TABLE IF NOT EXISTS `xxb_history` (
 CREATE TABLE IF NOT EXISTS `xxb_lang` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `lang` varchar(30) NOT NULL,
-  `app` varchar(30) NOT NULL DEFAULT 'sys',
   `module` varchar(30) NOT NULL,
   `section` varchar(30) NOT NULL,
   `key` varchar(60) NOT NULL,
   `value` text NOT NULL,
   `system` enum('0','1') NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `lang` (`app`,`lang`,`module`,`section`,`key`)
+  UNIQUE KEY `lang` (`lang`,`module`,`section`,`key`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 -- DROP TABLE IF EXISTS `xxb_sso`;
 CREATE TABLE IF NOT EXISTS `xxb_sso` (

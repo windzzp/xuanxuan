@@ -1087,7 +1087,7 @@ class chat extends control
         $this->loadModel('setting');
 
         $settingsObj  = new stdclass();
-        $userSettings = json_decode($this->setting->getItem("owner=system&app=sys&module=chat&section=settings&key=$account"));
+        $userSettings = json_decode($this->setting->getItem("owner=system&module=chat&section=settings&key=$account"));
 
         if(is_array($settings))
         {
@@ -1097,7 +1097,7 @@ class chat extends control
         {
             $settingsObj = $settings;
             foreach($settings as $settingKey => $settingValue) $userSettings->$settingKey = $settingValue;
-            $this->setting->setItem("system.sys.chat.settings.$account", helper::jsonEncode($userSettings));
+            $this->setting->setItem("system.chat.settings.$account", helper::jsonEncode($userSettings));
         }
         else
         {

@@ -19,42 +19,41 @@ class setting extends control
      * @access public
      * @return void
      */
-    public function lang($module, $field, $appName = '')
+    public function lang($module, $field)
     {
         $clientLang = $this->app->getClientLang();
 
-        if(empty($appName)) $appName = $this->app->getAppName();
-        $this->app->loadLang($module, $appName);
+        $this->app->loadLang($module);
 
-        if($module == 'user' and $field == 'roleList' and $appName == 'sys') $this->lang->menuGroups->setting = 'user';
+        if($module == 'user' and $field == 'roleList') $this->lang->menuGroups->setting = 'user';
 
         if(!empty($_POST))
         {
             $lang = $_POST['lang'];
             $appendField = isset($this->config->setting->appendLang[$module][$field]) ? $this->config->setting->appendLang[$module][$field] : '';
 
-            $this->setting->deleteItems("lang=$lang&app=$appName&module=$module&section=$field", $type = 'lang');
-            if($appendField) $this->setting->deleteItems("lang=$lang&app=$appName&module=$module&section=$appendField", $type = 'lang');
+            $this->setting->deleteItems("lang=$lang&module=$module&section=$field", $type = 'lang');
+            if($appendField) $this->setting->deleteItems("lang=$lang&module=$module&section=$appendField", $type = 'lang');
 
             foreach($_POST['keys'] as $index => $key)
             {   
                 $value = $_POST['values'][$index];
                 if(!$value or !$key) continue;
                 $system = $_POST['systems'][$index];
-                $this->setting->setItem("{$lang}.{$appName}.{$module}.{$field}.{$key}.{$system}", $value, $type = 'lang');
+                $this->setting->setItem("{$lang}.{$module}.{$field}.{$key}.{$system}", $value, $type = 'lang');
 
                 /* Save additional item. */
                 if($appendField)
                 {
-                    $this->setting->setItem("{$lang}.{$appName}.{$module}.{$appendField}.{$key}.{$system}", $_POST[$appendField][$index], $type = 'lang');
+                    $this->setting->setItem("{$lang}.{$module}.{$appendField}.{$key}.{$system}", $_POST[$appendField][$index], $type = 'lang');
                 }
             }
 
             if(dao::isError()) $this->send(array('result' => 'fail', 'message' => dao::getError()));
-            $this->send(array('result' => 'success', 'message' => $this->lang->saveSuccess, 'locate' => inlink('lang', "module=$module&field=$field&appName=$appName")));
+            $this->send(array('result' => 'success', 'message' => $this->lang->saveSuccess, 'locate' => inlink('lang', "module=$module&field=$field")));
         }   
 
-        $dbFields    = $this->setting->getItems("lang=$clientLang,all&app=$appName&module=$module&section=$field", 'lang');
+        $dbFields    = $this->setting->getItems("lang=$clientLang,all&module=$module&section=$field", 'lang');
         $systemField = array();
         foreach($dbFields as $dbField) $systemField[$dbField->key] = $dbField->system;
 
@@ -63,7 +62,6 @@ class setting extends control
         $this->view->field       = $field;
         $this->view->clientLang  = $clientLang;
         $this->view->systemField = $systemField;
-        $this->view->appName     = $appName;
         $this->display();
     }
 
@@ -75,14 +73,13 @@ class setting extends control
      * @access public
      * @return void
      */
-    public function reset($module, $field, $appName = '')
+    public function reset($module, $field)
     {   
-        if(empty($appName)) $appName = $this->app->getAppName();
-        $this->setting->deleteItems("app=$appName&module=$module&section=$field", $type = 'lang');
+        $this->setting->deleteItems("module=$module&section=$field", $type = 'lang');
         if(isset($this->config->setting->appendLang[$module][$field]))
         {
             $appendField = $this->config->setting->appendLang[$module][$field];
-            $this->setting->deleteItems("app=$appName&module=$module&section=$appendField", $type = 'lang');
+            $this->setting->deleteItems("module=$module&section=$appendField", $type = 'lang');
         }
 
         $this->send(array('result' => 'success'));

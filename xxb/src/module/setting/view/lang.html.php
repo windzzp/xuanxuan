@@ -66,7 +66,7 @@
           <td>
           <?php
           echo html::submitButton();
-          echo html::a(inlink('reset', "module=$module&field=$field&appName=$appName"), $lang->setting->reset, "class='btn deleter'");
+          echo html::a(inlink('reset', "module=$module&field=$field"), $lang->setting->reset, "class='btn deleter'");
           ?>
           </td>
           <td></td>

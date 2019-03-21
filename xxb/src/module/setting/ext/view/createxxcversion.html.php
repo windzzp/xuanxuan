@@ -11,7 +11,7 @@
  */
 ?>
 <?php include '../../../common/view/header.modal.html.php';?>
-<form id='ajaxForm' method='post' action="<?php echo $this->createLink('sys.setting', 'createxxcversion')?>">
+<form id='ajaxForm' method='post' action="<?php echo $this->createLink('setting', 'createxxcversion')?>">
   <table class='table table-form table-condensed'>
     <tbody>
     <tr>
