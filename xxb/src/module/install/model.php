@@ -349,6 +349,7 @@ class installModel extends model
             {
                 $table = str_replace('--', '', $table);
             }
+            $table = str_replace('`im_', '`' . $this->config->db->prefix . 'im_', $table);
             $table = str_replace('`xxb_', $this->config->db->name . '.`xxb_', $table);
             $table = str_replace('xxb_', $this->config->db->prefix, $table);
             if(!$this->dbh->query($table)) return false;
