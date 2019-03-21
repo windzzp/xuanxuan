@@ -335,10 +335,11 @@ class installModel extends model
      */
     public function createTable($version)
     {
-        $dbFile  = $this->app->getBasePath() . 'db' . DS . 'xxb.sql';
-        $tables  = explode(";\n", file_get_contents($dbFile));
-        $dbFile  = $this->app->getBasePath() . 'db' . DS . 'xuanxuan.sql';
-        $tables += explode(";\n", file_get_contents($dbFile));
+        $dbFile         = $this->app->getBasePath() . 'db' . DS . 'xxb.sql';
+        $xxbTables      = explode(";\n", file_get_contents($dbFile));
+        $dbFile         = $this->app->getBasePath() . 'db' . DS . 'xuanxuan.sql';
+        $xuanxuanTables = explode(";\n", file_get_contents($dbFile));
+        $tables         = array_merge($xuanxuanTables, $xxbTables);
         foreach($tables as $table)
         {
             $table = trim($table);
