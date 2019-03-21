@@ -135,7 +135,7 @@ class upgradeModel extends model
             }
 
             /* Add table prefix. */
-            if($this->config->db->prefix) $sql = str_replace('xxb_', $this->config->db->prefix, $sql);
+            if($this->config->db->prefix) $sql = preg_replace('/`(\w+)_/', "`{$this->config->db->prefix}\${1}_", $sql);
 
             try
             {
