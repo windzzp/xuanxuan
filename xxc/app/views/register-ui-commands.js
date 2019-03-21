@@ -9,7 +9,6 @@ import {showMessager} from '../components/messager';
 import {showMemberProfileDialog} from './common/member-profile-dialog';
 import {showWebviewDialog} from './common/webview-dialog';
 
-
 export default () => {
     registerCommand('showChatSendCodeDialog', (context, chat) => {
         chat = chat || context.chat || getCurrentActiveChatGID(); // eslint-disable-line
