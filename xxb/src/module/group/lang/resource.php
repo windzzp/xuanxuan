@@ -19,15 +19,17 @@ $lang->appModule->superadmin[] = 'group';
 $lang->appModule->superadmin[] = 'tree';
 $lang->appModule->superadmin[] = 'entry';
 $lang->appModule->superadmin[] = 'setting';
+$lang->appModule->superadmin[] = 'tree';
 
 $lang->appModule->sys = array();
 
 /* Module order. */
 $lang->moduleOrder[0]  = 'adminUser';
 $lang->moduleOrder[10] = 'group';
-$lang->moduleOrder[15] = 'tree';
-$lang->moduleOrder[20] = 'entry';
-$lang->moduleOrder[25] = 'setting';
+
+$lang->moduleOrder[15] = 'entry';
+$lang->moduleOrder[20] = 'setting';
+$lang->moduleOrder[25] = 'tree';
 
 $lang->resource = new stdclass();
 
@@ -49,13 +51,19 @@ $lang->adminUser->methodOrder[35] = 'active';
 
 /* Group. */
 $lang->resource->group = new stdclass();
-$lang->resource->group->create = 'create';
-$lang->resource->group->edit   = 'edit';
-$lang->resource->group->delete = 'delete';
+$lang->resource->group->browse       = 'browse';
+$lang->resource->group->create       = 'create';
+$lang->resource->group->edit         = 'edit';
+$lang->resource->group->delete       = 'delete';
+$lang->resource->group->managemember = 'manageMember';
+$lang->resource->group->managepriv   = 'managePriv';
 
+$lang->group->methodOrder[10] = 'browse';
 $lang->group->methodOrder[15] = 'create';
 $lang->group->methodOrder[20] = 'edit';
 $lang->group->methodOrder[25] = 'delete';
+$lang->group->methodOrder[30] = 'managemember';
+$lang->group->methodOrder[35] = 'managepriv';
 
 /* Tree. */
 $lang->resource->tree = new stdclass();
@@ -87,15 +95,30 @@ $lang->entry->methodOrder[30] = 'category';
 $lang->resource->setting = new stdclass();
 $lang->resource->setting->lang             = 'lang';
 $lang->resource->setting->xuanxuan         = 'xuanxuan';
+$lang->resource->setting->lang             = 'lang';
+$lang->resource->setting->xxcversion       = 'xxcversion';
 $lang->resource->setting->createxxcversion = 'createxxcversion';
 $lang->resource->setting->editxxcversion   = 'editxxcversion';
 $lang->resource->setting->deletexxcversion = 'deletexxcversion';
 
-$lang->setting->methodOrder[0]  = 'lang';
-$lang->setting->methodOrder[5]  = 'xuanxuan';
-$lang->setting->methodOrder[10] = 'createxxcversion';
-$lang->setting->methodOrder[15] = 'editxxcversion';
-$lang->setting->methodOrder[20] = 'deletexxcversion';
+$lang->setting->methodOrder[5]  = 'lang';
+$lang->setting->methodOrder[10] = 'xuanxuan';
+$lang->setting->methodOrder[15] = 'xxcversion';
+$lang->setting->methodOrder[20] = 'createxxcversion';
+$lang->setting->methodOrder[25] = 'editxxcversion';
+$lang->setting->methodOrder[30] = 'deletexxcversion';
+
+/* Tree. */
+$lang->resource->tree = new stdclass();
+$lang->resource->tree->browse   = 'browse';
+$lang->resource->tree->edit     = 'edit';
+$lang->resource->tree->children = 'children';
+$lang->resource->tree->delete   = 'delete';
+
+$lang->tree->methodOrder[0]  = 'browse';
+$lang->tree->methodOrder[5]  = 'edit';
+$lang->tree->methodOrder[10] = 'children';
+$lang->tree->methodOrder[15] = 'delete';
 
 /* File. */
 $lang->resource->file = new stdclass();

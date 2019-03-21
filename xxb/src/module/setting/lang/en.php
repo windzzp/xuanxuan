@@ -15,10 +15,11 @@ $lang->setting->key    = 'Key';
 $lang->setting->value  = 'Value';
 
 $lang->setting->lang             = 'Roles';
-$lang->setting->xuanxuan         = 'Xuanxuan Config';
-$lang->setting->createxxcversion = 'Create XXCVersion';
-$lang->setting->editxxcversion   = 'Edit XXCVersion';
-$lang->setting->deletexxcversion = 'Delete XXCVersion';
+$lang->setting->xuanxuan         = 'Xuanxuan';
+$lang->setting->xxcversion       = 'Browse xxc version';
+$lang->setting->createxxcversion = 'Add xxc version';
+$lang->setting->editxxcversion   = 'Edit xxc version';
+$lang->setting->deletexxcversion = 'Delete xxc version';
 
 $lang->setting->module = new stdClass();
 $lang->setting->module->user = 'User role';
