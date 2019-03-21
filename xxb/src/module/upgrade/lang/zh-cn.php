@@ -1,13 +1,13 @@
 <?php
 /**
- * The upgrade module zh-cn file of RanZhi.
+ * The upgrade module zh-cn file of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     upgrade
  * @version     $$
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 $lang->upgrade = new stdclass();
 $lang->upgrade->common  = '升级';
@@ -32,7 +32,7 @@ $lang->upgrade->updateLicense = '然之协同 2. 0 已更换授权协议至 Z PU
 $lang->upgrade->backupData = <<<EOT
 <pre>
 <strong>使用phpMyAdmin或者mysqldump命令备份数据库。</strong>
-<code class='red'>$ mysqldump -u %s</span> -p%s %s > ranzhi.sql</code>
+<code class='red'>$ mysqldump -u %s</span> -p%s %s > xxb.sql</code>
 </pre>
 EOT;
 

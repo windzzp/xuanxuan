@@ -1,13 +1,13 @@
 <?php
 /**
- * The action view of common module of RanZhi.
+ * The action view of common module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     common 
  * @version     $Id: chosen.html.php 7417 2013-12-23 07:51:50Z wwccss $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 ?>
 <?php if($extView = $this->getExtViewFile(__FILE__)){include $extView; return helper::cd();}?>

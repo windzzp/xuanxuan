@@ -1,6 +1,6 @@
 <?php
 /**
- * The upgrade module English file of RanZhi.
+ * The upgrade module English file of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
@@ -32,7 +32,7 @@ $lang->upgrade->updateLicense = 'The Zdoo license has changed to Z PUBLIC LICENS
 $lang->upgrade->backupData = <<<EOT
 <pre>
 <strong>Using phpMyAdmin or mysqldump to back up the database.</strong>
-<code class='red'>$ mysqldump -u %s</span> -p%s %s > ranzhi.sql</code>
+<code class='red'>$ mysqldump -u %s</span> -p%s %s > xxb.sql</code>
 </pre>
 EOT;
 

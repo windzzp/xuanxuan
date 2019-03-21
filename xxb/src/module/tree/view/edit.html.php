@@ -1,13 +1,13 @@
 <?php
 /**
- * The edit view of tree module of RanZhi.
+ * The edit view of tree module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     tree
  * @version     $Id: edit.html.php 4110 2016-10-08 09:37:28Z daitingting $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 ?>
 <?php

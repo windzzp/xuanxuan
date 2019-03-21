@@ -1,13 +1,13 @@
 <?php
 /**
- * The loader of framework of RanZhi.
+ * The loader of framework of XXB.
  *
  * @copyright   Copyright 2009-2015 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     LGPL
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
- * @package     RanZhi
+ * @package     XXB
  * @version     $Id: loader.php 4001 2016-07-21 01:47:54Z liugang $
- * @link        http://www.ranzhico.com
+ * @link        http://xuan.im
  */
 /* Set the error reporting. */
 error_reporting(E_ALL);

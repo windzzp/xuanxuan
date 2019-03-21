@@ -1,13 +1,13 @@
 <?php
 /**
- * The configure xuanxuan view file of setting module of RanZhi.
+ * The configure xuanxuan view file of setting module of XXB.
  *
  * @copyright   Copyright 2009-2017 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Gang Liu <liugang@cnezsoft.com>
  * @package     setting
  * @version     $Id$
- * @link        http://www.ranzhico.com
+ * @link        http://xuan.im
  */
 ?>
 <?php include '../../../common/view/header.html.php';?>

@@ -1,13 +1,13 @@
 <?php
 /**
- * The zh-cn file of install module of RanZhi.
+ * The zh-cn file of install module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     install 
  * @version     $Id: zh-cn.php 4029 2016-08-26 06:50:41Z liugang $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 $lang->install = new stdclass();
 $lang->install->common  = '安装';
@@ -23,7 +23,7 @@ $lang->install->license          = '喧喧使用 Z PUBLIC LICENSE(ZPL) 1.2 授�
 $lang->install->welcome          = '欢迎使用喧喧';
 $lang->install->desc             = <<<EOT
 <blockquote>
-  <strong>{$lang->ranzhi}</strong>由<strong><a href='http://www.cnezsoft.com' target='_blank' class='red'>青岛易软天创网络科技有限公司</a>开发</strong>，
+  <strong>{$lang->xxb}</strong>由<strong><a href='http://www.cnezsoft.com' target='_blank' class='red'>青岛易软天创网络科技有限公司</a>开发</strong>，
   专为企业提供安全、开源、免费、跨平台的即时通信解决方案。
 
   官方网站：<a href='http://www.xuan.im' target='_blank'>http://www.xuan.im</a>

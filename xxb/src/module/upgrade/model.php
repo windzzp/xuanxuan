@@ -1,13 +1,13 @@
 <?php
 /**
- * The model file of upgrade module of RanZhi.
+ * The model file of upgrade module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     upgrade
  * @version     $Id: model.php 4227 2016-10-25 08:27:56Z liugang $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 ?>
 <?php

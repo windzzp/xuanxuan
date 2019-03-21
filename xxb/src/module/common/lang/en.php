@@ -1,6 +1,6 @@
 <?php
 /**
- * The English file of common module of RanZhi.
+ * The English file of common module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
@@ -31,10 +31,10 @@ $lang->etc        = 'Etc.';
 $lang->importIcon = "<i class='icon-download-alt'> </i>";
 $lang->exportIcon = "<i class='icon-upload-alt'> </i>";
 
-/* Lang items for ranzhi. */
-$lang->ranzhi    = 'Zdoo';
+/* Lang items for XXB. */
+$lang->xxb       = 'XXB';
 $lang->agreement = "I have read and agreed to  <a href='http://zpl.pub/page/zplv12.html' target='_blank'>Z PUBLIC LICENSE 1.2</a>, <span class='text-danger'>and will keep the logos and links of Zdoo.</span>";
-$lang->poweredBy = "<a href='http://www.zdoo.org/?v=%s' target='_blank'>{$lang->ranzhi} %s</a>";
+$lang->poweredBy = "<a href='http://xuan.im/?v=%s' target='_blank'>{$lang->xxb} %s</a>";
 $lang->ipLimited = "<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8' /></head><body>Sorry, your current IP is blocked. Please contact the Administrator to get privilege.</body></html>";
 
 /* IE6 alert.  */

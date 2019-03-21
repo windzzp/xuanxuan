@@ -1,13 +1,13 @@
 <?php
 /**
- * The crop avatar view file of user module of RanZhi.
+ * The crop avatar view file of user module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     user 
  * @version     $Id: profile.html.php 8669 2014-05-02 07:58:48Z guanxiying $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 ?>
 <?php include '../../common/view/header.modal.html.php';?>
