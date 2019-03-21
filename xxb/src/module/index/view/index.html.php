@@ -10,8 +10,6 @@
  * @link        http://www.ranzhi.org
  */
 include "../../common/view/header.lite.html.php";
-js::import($jsRoot . 'jquery/ips.js');
-$isSuperAdmin = $this->app->user->admin == 'super';
 ?>
 <style>#home > .navbar{left:0!important;}.fullscreen{z-index: unset;}</style>
 <!-- Desktop -->
@@ -77,74 +75,5 @@ $isSuperAdmin = $this->app->user->admin == 'super';
 </div>
 <div id='noticeBox'>
 </div>
-<div id='categoryTpl' class='hide'>
-  <ul id='categoryMenucategoryid' class='category categoryMenu dropdown-menu fade' data-id='categoryid'></ul>
-</div>
-<script>
-<?php $dashboardMenu = (isset($dashboard) and isset($dashboard->visible) and $dashboard->visible == 0) ? 'list' : 'all';?>
-var entries = [
-{
-    id        : 'dashboard',
-    code      : 'dashboard',
-    name      : '<?php echo $lang->index->dashboard;?>',
-    abbr      : '<?php echo $lang->index->dashboardAbbr;?>',
-    open      : 'iframe',
-    desc      : '<?php echo $lang->index->dashboard?>',
-    menu      : '<?php echo $dashboardMenu;?>',
-    sys       : true,
-    icon      : 'icon-home',
-    url       : '<?php echo $this->createLink('todo', 'calendar')?>',
-    order     : 0,
-},
-{
-    id        : 'allapps',
-    code      : 'allapps',
-    name      : '<?php echo $lang->index->allEntries?>',
-    display   : 'fullscreen',
-    desc      : '<?php echo $lang->index->allEntries?>',
-    menu      : 'menu',
-    icon      : 'icon-th-large',
-    sys       : true,
-    forceMenu : true,
-    order     : 9999999
-},
-{
-    id        : 'home',
-    code      : 'home',
-    name      : '<?php echo $title?>',
-    display   : 'fullscreen',
-    menu      : 'none',
-    icon      : 'icon-desktop',
-    sys       : true,
-    forceMenu : true,
-    order     : 9999998
-}];
-
-<?php if($isSuperAdmin):?>
-<?php $superadminMenu  = (isset($superadmin) and isset($superadmin->visible) and $superadmin->visible == 0) ? 'list' : 'all';?>
-
-entries.push(
-{
-    id    : 'dashboard',
-    code  : 'superadmin',
-    name  : '<?php echo $lang->index->dashboard;?>',
-    open  : 'iframe',
-    desc  : '<?php echo $lang->index->dashboard?>',
-    menu  : '<?php echo $superadminMenu;?>',
-    sys   : true,
-    icon  : 'icon-home',
-    url   : "<?php echo $this->createLink('admin')?>",
-    order : 0
-});
-<?php endif;?>
-
-var ipsLang = {};
-<?php
-foreach ($lang->index->ips as $key => $value)
-{
-    echo 'ipsLang["' . $key . '"] = "' . $value . '";';
-}
-?>
-<?php echo $allEntries;?>
 </script>
 <?php include "../../common/view/footer.html.php"; ?>

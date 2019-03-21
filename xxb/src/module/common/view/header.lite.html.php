@@ -34,7 +34,7 @@ $clientTheme  = $this->app->getClientTheme();
   {
       js::import($jsRoot . 'jquery/min.js');
       js::import($jsRoot . 'zui/min.js');
-      js::import($jsRoot . 'ranzhi.js');
+      js::import($jsRoot . 'xxb.js');
       js::import($jsRoot . 'my.js');
       css::import($themeRoot . 'zui/css/min.css');
       css::import($themeRoot . 'default/style.css');
