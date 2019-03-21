@@ -232,7 +232,7 @@ export default class ChatMessages extends Component {
 
         const font = App.profile.userConfig.chatFontSize;
         this.lastChatUpdateId = chat.updateId;
-        const {loading} = this.state;
+        const {loading, displayBtn} = this.state;
 
         let headerView = null;
         if (loading) {
@@ -274,7 +274,7 @@ export default class ChatMessages extends Component {
                         bottom: '20px',
                         right: '20px',
                         zIndex: '1030',
-                        display: this.state.displayBtn,
+                        display: displayBtn,
                     }}
                 />
             </div>
