@@ -7,6 +7,7 @@ import Spinner from '../../components/spinner';
 import Lang, {isJustLangSwitched} from '../../core/lang';
 import withReplaceView from '../with-replace-view';
 import {setChatCacheState, takeOutChatCacheState} from '../../core/im/im-ui';
+import Button from '../../components/button';
 
 /**
  * MessageList 可替换组件形式
@@ -75,7 +76,8 @@ export default class ChatMessages extends Component {
          * @type {object}
          */
         this.state = {
-            loading: !chat.isLoadingOver
+            loading: !chat.isLoadingOver,
+            displayBtn: 'none',
         };
     }
 
@@ -104,8 +106,8 @@ export default class ChatMessages extends Component {
      */
     shouldComponentUpdate(nextProps, nextState) {
         const {chat, className} = this.props;
-        const {loading} = this.state;
-        return isJustLangSwitched() || nextState.loading !== loading || className !== nextProps.className || chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId;
+        const {loading, displayBtn} = this.state;
+        return isJustLangSwitched() || nextState.loading !== loading || className !== nextProps.className || chat !== nextProps.chat || this.lastChatUpdateId !== nextProps.chat.updateId || displayBtn !== nextState.displayBtn;
     }
 
     /**
@@ -193,13 +195,23 @@ export default class ChatMessages extends Component {
      * @return {void}
      */
     handleScroll = scrollInfo => {
-        if (scrollInfo.isAtTop) {
-            this.loadChatMessages();
+        if (!scrollInfo.isAtBottom) {
+            this.setState({
+                displayBtn: 'block'
+            });
+        } else {
+            this.setState({
+                displayBtn: 'none'
+            });
         }
-
         const {chat} = this.props;
-        if (chat && chat.loadingOffset !== true) {
-            setChatCacheState(chat.gid, {loadingLimit: chat.loadingOffset});
+        if (!chat.isLoadingOver) {
+            if (scrollInfo.isAtTop) {
+                this.loadChatMessages();
+            }
+            if (chat && chat.loadingOffset !== true) {
+                setChatCacheState(chat.gid, {loadingLimit: chat.loadingOffset});
+            }
         }
     }
 
@@ -242,7 +254,29 @@ export default class ChatMessages extends Component {
                 className={classes('app-chat-messages white', className)}
                 {...other}
             >
-                <MessageList stayBottom={!inverse} inverse={inverse} ref={e => {this.messageList = e;}} header={headerView} font={font} className="dock scroll-y user-selectable" messages={inverse ? messages.reverse() : messages} onScroll={chat.isLoadingOver ? null : this.handleScroll} />
+                <MessageList
+                    stayBottom={!inverse}
+                    inverse={inverse}
+                    ref={e => {this.messageList = e;}}
+                    header={headerView}
+                    font={font}
+                    className="dock scroll-y user-selectable"
+                    messages={inverse ? messages.reverse() : messages}
+                    onScroll={this.handleScroll}
+                />
+                <Button
+                    onClick={() => this.messageList.scrollToBottom()}
+                    title={Lang.string('chat.toolbar.scroll')}
+                    icon="arrow-down-thick"
+                    className="btn iconbutton rounded primary-pale"
+                    style={{
+                        position: 'fixed',
+                        bottom: '20px',
+                        right: '20px',
+                        zIndex: '1030',
+                        display: this.state.displayBtn,
+                    }}
+                />
             </div>
         );
     }
