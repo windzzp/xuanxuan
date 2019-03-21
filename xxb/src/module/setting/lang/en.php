@@ -14,10 +14,14 @@ $lang->setting->reset  = 'Reset';
 $lang->setting->key    = 'Key';
 $lang->setting->value  = 'Value';
 
-$lang->setting->lang = 'Roles';
+$lang->setting->lang             = 'Roles';
+$lang->setting->xuanxuan         = 'Xuanxuan Config';
+$lang->setting->createxxcversion = 'Create XXCVersion';
+$lang->setting->editxxcversion   = 'Edit XXCVersion';
+$lang->setting->deletexxcversion = 'Delete XXCVersion';
 
 $lang->setting->module = new stdClass();
-$lang->setting->module->user     = 'User role';
+$lang->setting->module->user = 'User role';
 
 $lang->setting->user = new stdClass();
 $lang->setting->user->fields['roleList'] = 'Roles';
