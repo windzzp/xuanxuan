@@ -53,6 +53,7 @@ type Client struct {
     cVer        string //client version
     lang        string
     device      string
+	SessionID	[]byte
 }
 
 type ClientRegister struct {
@@ -184,14 +185,23 @@ func chatLogin(parseData api.ParseData, client *Client) error {
     }
 
     // 生成并存储文件会员
-    userFileSessionID, err := api.UserFileSessionID(client.serverName, client.userID, client.lang)
-    if err != nil {
-        util.Log("error", "Chat user create file session error: %s", err)
-        //返回给客户端登录失败的错误信息
-        return err
-    }
-    // 成功后返回userFileSessionID数据给客户端
-    client.send <- userFileSessionID
+	client.SessionID = nil
+	for _, plat := range util.Plats {
+		if platClient, ok :=client.hub.clients[client.serverName][plat][client.userID]; ok{
+			client.SessionID = platClient.SessionID
+		}
+	}
+
+	if client.SessionID == nil{
+		userFileSessionID, err := api.UserFileSessionID(client.serverName, client.userID, client.lang)
+		if err != nil {
+			util.Log("error", "Chat user create file session error: %s", err)
+			//返回给客户端登录失败的错误信息
+			return err
+		}
+		client.SessionID = userFileSessionID
+	}
+	client.send <- client.SessionID
 
     // 推送当前登录用户信息给其他在线用户
     // 因为是broadcast类型，所以不需要初始化userID
@@ -219,18 +229,27 @@ func chatLogout(userID int64, client *Client) error {
     if client.repeatLogin {
         return nil
     }
-    retMessages, err := api.ChatLogout(client.serverName, client.userID, client.lang)
-    if err != nil {
-        return err
-    }
 
-    util.DelUid(client.serverName, util.Int642String(client.userID))
+	client.hub.unregister <- client
+	//判断是否全部退出，否则不需要通知其它用户当前用户退出了.
+	var allOut bool = true
+	for _, plat := range util.Plats {
+		if _, ok :=client.hub.clients[client.serverName][plat][userID]; ok{
+			allOut = false
+		}
+	}
 
-    for key := 0; key < len(retMessages); key++ {
-        X2cSend(client.serverName, retMessages[key]["users"].([]int64), retMessages[key]["message"].([]byte), client)
-    }
+	if allOut == true {
+		retMessages, err := api.ChatLogout(client.serverName, client.userID, client.lang)
+		if err != nil {
+			return err
+		}
 
-    client.hub.unregister <- client
+		for key := 0; key < len(retMessages); key++ {
+			X2cSend(client.serverName, retMessages[key]["users"].([]int64), retMessages[key]["message"].([]byte), client)
+		}
+		util.DelUid(client.serverName, util.Int642String(client.userID))
+	}
     return nil
 }
 

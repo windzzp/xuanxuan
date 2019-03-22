@@ -27,7 +27,7 @@ func safeClose(ch chan []byte) (justClosed bool) {
 // hub maintains the set of active clients and broadcasts messages to the
 // clients.
 type Hub struct {
-    clients map[string]map[string]map[int64]*Client // Registered clients. map[ranzhiName][clientID]*Client
+    clients map[string]map[string]map[int64]*Client // Registered clients. map[backend][plat][clientID]*Client
 
     // Inbound messages from the clients.
     multicast chan SendMsg
@@ -93,8 +93,14 @@ func (h *Hub) run() {
             if _, ok := h.clients[client.serverName][client.device][client.userID]; ok {
                 safeClose(client.send)
                 delete(h.clients[client.serverName][client.device], client.userID)
-                util.DBInsertOffline(client.serverName, client.userID)
             }
+
+            //检查所有的平台，如果用户都不存在了，则告诉后台它掉线了
+			for _, plat := range util.Plats {
+				if _, ok := h.clients[client.serverName][plat][client.userID]; !ok {
+					util.DBInsertOffline(client.serverName, client.userID)
+				}
+			}
 
         case sendMsg := <-h.multicast:
             // 对指定的用户群发送消息

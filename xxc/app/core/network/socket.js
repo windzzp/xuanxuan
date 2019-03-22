@@ -376,7 +376,7 @@ export default class AppSocket extends Socket {
                 return Promise.reject(new Error('User is not defined.'));
             }
             const onConnect = () => {
-                const loginRid = `login_${user.account}`;
+                const loginRid = `login_${Config.system.device || 'desktop'}_${user.account}`;
                 listenMessage('chat', 'login', loginRid).then((result) => {
                     this.isLogging = false;
                     if (result) {

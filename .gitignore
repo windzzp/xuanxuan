@@ -62,6 +62,8 @@ xxc/.vscode/settings.json
 ranzhi/db/upgradebackyard.sql
 xxd/certificate
 xxd/log
+xxb/src/tmp
+xxb/src/config/my.php
 
 # test files
 # xxc/test

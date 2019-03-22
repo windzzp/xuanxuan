@@ -41,7 +41,6 @@ const nodeModules = {
     hotkeys,
     pinyin,
     uuid,
-    config,
     get jquery() {
         return __non_webpack_require__('jquery'); // eslint-disable-line
     }
@@ -60,4 +59,5 @@ export default {
     views,
     nodeModules,
     exts,
+    config,
 };
