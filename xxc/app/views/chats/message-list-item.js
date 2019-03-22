@@ -254,8 +254,8 @@ export default class MessageListItem extends Component {
      * @private
      * @return {void}
      */
-    handleSenderNameClick(sender, message) {
-        App.im.ui.sendContentToChat(`@${sender.displayName} `);
+    handleSenderNameClick(sender) {
+        App.im.ui.sendContentToChat(`${sender.mentionText} `);
     }
 
     /**

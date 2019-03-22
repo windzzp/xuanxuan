@@ -24,7 +24,7 @@ const MemberList = withReplaceView(_MemberList);
  * @private
  */
 const handleMemberItemClick = member => {
-    App.im.ui.sendContentToChat(`@${member.displayName} `);
+    App.im.ui.sendContentToChat(`${member.mentionText} `);
 };
 
 /**

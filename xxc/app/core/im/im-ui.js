@@ -774,7 +774,7 @@ addContextMenuCreator('chat.member', ({member, chat}) => {
         menu.push({
             label: Lang.string(`chat.atHim.${member.gender}`, Lang.string('chat.atHim')),
             click: () => {
-                sendContentToChat(`@${member.displayName} `);
+                sendContentToChat(`${member.mentionText} `);
             }
         });
 
