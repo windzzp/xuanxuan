@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../../utils/html-helper';
+import {classes} from '../../utils/html-helper';
 import _FileListItem from './file-list-item';
 import ListItem from '../../components/list-item';
 import Lang from '../../core/lang';
@@ -88,8 +88,7 @@ export default class FileList extends Component {
      * @return {void}
      */
     handleRequestMorePage = () => {
-        const {page} = this.state;
-        this.setState({page: page + 1});
+        this.setState(prevState => ({page: prevState.page + 1}));
     };
 
     /**
@@ -134,7 +133,7 @@ export default class FileList extends Component {
         return (
             <div
                 {...other}
-                className={HTML.classes('app-file-list list', className)}
+                className={classes('app-file-list list', className)}
             >
                 {listViews}
             </div>

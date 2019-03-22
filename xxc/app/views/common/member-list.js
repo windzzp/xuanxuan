@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../../utils/html-helper';
+import {classes} from '../../utils/html-helper';
 import Member from '../../core/models/member';
 import _MemberListItem from './member-list-item';
 import ListItem from '../../components/list-item';
 import Lang from '../../core/lang';
-import App from '../../core';
+import {getMember} from '../../core/members';
 import Config from '../../config';
 import withReplaceView from '../with-replace-view';
 
@@ -104,7 +104,7 @@ export default class MemberList extends Component {
      * @return {void}
      */
     handleRequestMorePage = () => {
-        this.setState({page: this.state.page + 1});
+        this.setState(prevState => ({page: prevState.page + 1}));
     };
 
     /**
@@ -117,7 +117,7 @@ export default class MemberList extends Component {
     handleOnItemClick = e => {
         const {onItemClick, eventBindObject} = this.props;
         if (onItemClick) {
-            const member = App.members.get(e.currentTarget.attributes['data-id'].value);
+            const member = getMember(e.currentTarget.attributes['data-id'].value);
             onItemClick.call(eventBindObject, member, e);
         }
     };
@@ -132,7 +132,7 @@ export default class MemberList extends Component {
     handleOnItemContextMenu = e => {
         const {onItemContextMenu, eventBindObject} = this.props;
         if (onItemContextMenu) {
-            const member = App.members.get(e.currentTarget.attributes['data-id'].value);
+            const member = getMember(e.currentTarget.attributes['data-id'].value);
             onItemContextMenu.call(eventBindObject, member, e);
         }
     };
@@ -188,7 +188,7 @@ export default class MemberList extends Component {
         return (
             <div
                 {...other}
-                className={HTML.classes('app-member-list list', className)}
+                className={classes('app-member-list list', className)}
             >
                 {heading}
                 {listViews}

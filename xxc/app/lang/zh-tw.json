@@ -64,6 +64,7 @@
     "chat.message.retract": "撤回",
     "chat.message.retracted": "{0} 撤回了一條消息",
     "chat.message.senderMe": "我",
+    "chat.message.invisible": "該消息無法被顯示，請使用複製 Markdown 複製其內容。",
     "chat.mute.label": "已開啟免打擾，在後台運行不會收到此會話的提醒",
     "chat.noMoreMessage": "沒有更多消息",
     "chat.one2one.typing": "正在輸入...",

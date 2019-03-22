@@ -237,19 +237,23 @@ class chatModel extends model
     /**
      * Get message list.
      *
-     * @param  array  $idList
+     * @param  array   $idList
+     * @param  object  $pager
+     * @param  string  $startDate
+     * @param  int     $userID
      * @access public
      * @return array
      */
-    public function getMessageList($idList = array(), $pager = null, $startDate = '')
+    public function getMessageList($idList = array(), $pager = null, $startDate = '', $userID = null)
     {
         $messages = $this->dao->select('*')
             ->from(TABLE_IM_MESSAGE)
             ->where('1')
             ->beginIF($idList)->andWhere('id')->in($idList)->fi()
             ->beginIF($startDate)->andWhere('date')->ge($startDate)->fi()
+            ->beginIF($userID != null)->andWhere('user')->eq($userID)->fi()
             ->orderBy('id_desc')
-            ->page($pager)
+            ->beginIF($pager != null)->page($pager)->fi()
             ->fetchAll();
 
         foreach($messages as $message)
@@ -267,6 +271,8 @@ class chatModel extends model
      * Get message list by cgid.
      *
      * @param  string $cgid
+     * @param  object $pager
+     * @param  string $startDate
      * @access public
      * @return array
      */
@@ -276,7 +282,7 @@ class chatModel extends model
             ->where('cgid')->eq($cgid)
             ->beginIF($startDate)->andWhere('date')->ge($startDate)->fi()
             ->orderBy('id_desc')
-            ->page($pager)
+            ->beginIF($pager != null)->page($pager)->fi()
             ->fetchAll();
 
         foreach($messages as $message)
@@ -963,6 +969,52 @@ class chatModel extends model
         return $output;
     }
 
+    /**
+     * Get history for login.
+     * @param $user
+     * @param $device
+     * @return object
+     */
+    public function getHistoryOutput($user, $device = 'desktop')
+    {
+        $output = new stdclass();
+        $output->module = 'chat';
+        $output->method = 'history';
+
+        $messages  = array();
+        $startDate = $this->loadModel('setting')->getItem("owner={$user->account}&module=common&section=lastLogin&key={$device}");
+        if(!empty($startDate))
+        {
+            $messages = $this->dao->select('*')->from(TABLE_IM_MESSAGE)
+                ->where('user')->eq($user->id)
+                ->beginIF($startDate)->andWhere('date')->ge($startDate)->fi()
+                ->orderBy('id_desc')
+                ->limit(500)
+                ->fetchAll();
+
+            foreach($messages as $message)
+            {
+                $message->id    = (int)$message->id;
+                $message->order = (int)$message->order;
+                $message->user  = (int)$message->user;
+                $message->date  = strtotime($message->date);
+            }
+        }
+        $this->loadModel('setting')->setItem($user->account . '.common.lastLogin.' . $device, date(DT_DATETIME1));
+        if(dao::isError())
+        {
+            $output->result  = 'fail';
+            $output->message = 'Get offline notify fail.';
+        }
+        else
+        {
+            $output->result = 'success';
+            $output->users  = array($user->id);
+            $output->data   = $messages;
+        }
+        return $output;
+    }
+    
     /**
      * Get notify.
      * @access public

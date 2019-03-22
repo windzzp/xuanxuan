@@ -1,7 +1,8 @@
 import Member from './models/member';
-import {getCurrentUser, onSwapUser} from './profile';
+import {getCurrentUser, onSwapUser, getCurrentUserAccount} from './profile';
 import events from './events';
 import Lang from './lang';
+import {formatString} from '../utils/string-helper';
 
 /**
  * 缓存当前用户所有用户信息
@@ -9,6 +10,18 @@ import Lang from './lang';
  * @private
  */
 let members = null;
+
+/**
+ * 用户搜索用户的表
+ * @private
+ * @type {Object<string, Member>}
+ */
+let membersMapForSearch = {};
+
+/**
+ * 用户匹配正则表达式
+ */
+let membersMatchRegex = null;
 
 /**
  * 缓存当前用户角色表
@@ -48,12 +61,17 @@ export const updateMembers = memberArr => {
     memberArr.forEach(member => {
         member = Member.create(member);
         const user = getCurrentUser();
-        const isMe = user && member.id === user.id;
+        const {id, realname} = member;
+        const isMe = user && id === user.id;
         member.isMe = isMe;
-        newMembers[member.id] = member;
+        newMembers[id] = member;
         if (isMe) {
-            user.assign({realname: member.realname, avatar: member.avatar});
+            user.assign({realname, avatar: member.avatar});
         }
+        if (realname) {
+            membersMapForSearch[member.realname] = member;
+        }
+        membersMapForSearch[`@${member.account}`] = member;
     });
 
     Object.assign(members, newMembers);
@@ -131,6 +149,8 @@ export const getDeptsTree = () => {
  * @@return {void}
  */
 export const initMembers = (memberArr, rolesMap, deptsMap) => {
+    membersMatchRegex = null;
+
     roles = rolesMap || {};
 
     Object.keys(members).forEach(membersId => {
@@ -169,6 +189,26 @@ export const forEachMember = (callback, ignoreDeleteUser = false) => {
 };
 
 /**
+ * 获取用户引用匹配正则表达式
+ * @private
+ * @return {RegExp} 用户引用匹配正则表达式
+ */
+export const getMentionsMatchRegex = () => {
+    if (!membersMatchRegex && (DEBUG || Object.keys(members) < 500)) {
+        const matchList = ['@#\\d+'];
+        forEachMember(member => {
+            matchList.push(`@${member.account}`);
+            if (member.realname) {
+                matchList.push(`@${member.realname}`);
+            }
+        });
+        matchList.sort((x, y) => (y.length - x.length));
+        membersMatchRegex = new RegExp(matchList.join('|'), 'gi');
+    }
+    return membersMatchRegex;
+};
+
+/**
  * 根据用户账号或 ID 获取缓存中的用户对象
  *
  * @param {!string} idOrAccount 账号或 ID
@@ -177,10 +217,8 @@ export const forEachMember = (callback, ignoreDeleteUser = false) => {
 export const getMember = (idOrAccount) => {
     let member = members[idOrAccount];
     if (!member) {
-        const findId = Object.keys(members).find(x => (members[x].account === idOrAccount));
-        if (findId) {
-            member = members[findId];
-        } else {
+        member = membersMapForSearch[`@${idOrAccount}`];
+        if (!member) {
             member = new Member({
                 id: idOrAccount,
                 account: idOrAccount,
@@ -200,16 +238,13 @@ export const getMember = (idOrAccount) => {
 export const guessMember = (search) => {
     let member = members[search];
     if (!member) {
-        const isMatchID = search[0] === '#';
-        const findId = Object.keys(members).find(x => {
-            const xMember = members[x];
-            if (isMatchID) {
-                return `#${xMember.id}` === search;
-            }
-            return xMember.account === search || xMember.realname === search;
-        });
-        if (findId) {
-            member = members[findId];
+        const searchType = search[0];
+        if (searchType === '#') {
+            member = members[search.substr(1)];
+        } else if (searchType === '@') {
+            member = membersMapForSearch[search];
+        } else {
+            member = membersMapForSearch[search] || membersMapForSearch[`@${search}`];
         }
     }
     return member;
@@ -272,6 +307,8 @@ export const removeMember = member => {
     const memberId = (typeof member === 'object') ? member.id : member;
     if (members[memberId]) {
         delete members[memberId];
+        delete membersMapForSearch[`@${member.account}`];
+        delete membersMapForSearch[member.realname];
         return true;
     }
     return false;
@@ -287,16 +324,48 @@ export const getRoleName = role => ((role && roles) ? (roles[role] || Lang.strin
 /**
  * 获取部门数据对象
  * @param {string} deptId 部门 ID
- * @return {Object<string, any>}
+ * @return {Object<string, any>} 部门数据对象
  */
 export const getDept = deptId => depts[deptId];
 
 // 当当前登录的用户用户名变更时清空缓存中的用户数据
-onSwapUser(user => {
+onSwapUser(() => {
     members = {};
     roles = null;
     depts = null;
+    membersMapForSearch = {};
+    membersMatchRegex = null;
 });
+
+/**
+ * 将文本中的 `@user` 转换为 HTML 链接
+ * @param {string} text 文本内容
+ * @param {{format: string}} param1 格式化选项
+ * @return {string} 转换后的文本
+ */
+export const linkMentionsInText = (text, {format = '<a class="app-link {className}" data-url="@Member/{id}">@{displayName}</a>'}) => {
+    if (text && text.indexOf('@') > -1) {
+        const langAtAll = Lang.string('chat.message.atAll');
+        const userAccount = getCurrentUserAccount();
+        text = text.replace(getMentionsMatchRegex() || /@#?\d+|[_\w\u4e00-\u9fa5]+/gi, (mention) => {
+            mention = mention.substring(1);
+            const m = guessMember(mention);
+            if (m) {
+                return formatString(format, {
+                    displayName: m.displayName,
+                    id: m.id,
+                    account: m.account,
+                    className: m.account === userAccount ? 'at-me' : '',
+                });
+            }
+            if (mention === 'all' || mention === langAtAll) {
+                return `<span class="at-all">@${langAtAll}</span>`;
+            }
+            return mention;
+        });
+    }
+    return text;
+};
 
 export default {
     update: updateMembers,
@@ -312,6 +381,7 @@ export default {
     getDeptsTree,
     deptsSorter,
     onMembersChange,
+    linkMentionsInText,
     get map() {
         return members;
     },

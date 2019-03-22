@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import HTML from '../../utils/html-helper';
+import {classes} from '../../utils/html-helper';
 import Icon from '../../components/icon';
 import Lang from '../../core/lang';
 import App from '../../core';
@@ -24,7 +24,7 @@ const MemberList = withReplaceView(_MemberList);
  * @private
  */
 const handleMemberItemClick = member => {
-    App.im.ui.sendContentToChat(`@${member.displayName} `);
+    App.im.ui.sendContentToChat(`${member.mentionText} `);
 };
 
 /**
@@ -192,7 +192,7 @@ export default class ChatSidebarPeoples extends Component {
         return (
             <div
                 {...other}
-                className={HTML.classes('app-chat-sidebar-peoples has-padding', className)}
+                className={classes('app-chat-sidebar-peoples has-padding', className)}
             >
 
                 <MemberList

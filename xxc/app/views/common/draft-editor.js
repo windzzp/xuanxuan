@@ -10,9 +10,9 @@ import {
     Modifier
 } from 'draft-js';
 import Emojione from '../../components/emojione';
-import App from '../../core';
 import timeSequence from '../../utils/time-sequence';
 import Lang from '../../core/lang';
+import {getMentionsMatchRegex, guessMember} from '../../core/members';
 
 /**
  * DraftJS Atomic 组件
@@ -104,7 +104,7 @@ const draftDecorator = new CompositeDecorator([{
     }
 }, {
     strategy: (contentBlock, callback/* , contentState */) => {
-        findWithRegex(/@[\u4e00-\u9fa5_\w]+[，。,./\s:@\n]/g, contentBlock, callback);
+        findWithRegex(getMentionsMatchRegex() || /@[\u4e00-\u9fa5_\w]+[，。,./\s:@\n]/g, contentBlock, callback);
     },
     // eslint-disable-next-line react/prop-types
     component: ({decoratedText, offsetKey, children}) => {
@@ -116,7 +116,7 @@ const draftDecorator = new CompositeDecorator([{
             if (guess === 'all' || guess === langAtAll) {
                 return <span title={langAtAll} className="at-all text-primary" data-offset-key={offsetKey}>{children}</span>;
             }
-            const member = App.members.guess(guess);
+            const member = guessMember(guess);
             if (member && member.id) {
                 return (<a className="app-link text-primary" href={`@Member/${member.id}`} title={`@${member.displayName}`} data-offset-key={offsetKey}>{children}</a>);
             }
@@ -522,46 +522,6 @@ export default class DraftEditor extends PureComponent {
         return 'handled';
     }
 
-    getSelectedBlocks = () => {
-        const {editorState} = this.state;
-        const selectionState = editorState.getSelection();
-        const contentState = editorState.getCurrentContent();
-
-        const startKey = selectionState.getStartKey();
-        const endKey = selectionState.getEndKey();
-        const isSameBlock = startKey === endKey;
-        const startingBlock = contentState.getBlockForKey(startKey);
-        const selectedBlocks = [startingBlock];
-
-        if (!isSameBlock) {
-            let blockKey = startKey;
-
-            while (blockKey !== endKey) {
-                const nextBlock = contentState.getBlockAfter(blockKey);
-                selectedBlocks.push(nextBlock);
-                blockKey = nextBlock.getKey();
-            }
-        }
-
-        return selectedBlocks;
-    };
-
-    handleCompositionStart = () => {
-        if (this.getSelectedBlocks().length > 1) {
-            const {editorState} = this.state;
-            // if multi blocks in selection, remove selection range when composition start
-            const nextEditorState = EditorState.push(
-                editorState,
-                Modifier.removeRange(editorState.getCurrentContent(), editorState.getSelection(), 'backward'),
-                'remove-range'
-            );
-
-            this.setState({
-                editorState: nextEditorState
-            });
-        }
-    };
-
     /**
      * React 组件生命周期函数：Render
      * @private
@@ -584,7 +544,7 @@ export default class DraftEditor extends PureComponent {
         const {editorState} = this.state;
 
         return (
-            <div {...other} onCompositionStart={this.handleCompositionStart} onClick={() => {this.focus(0);}}>
+            <div {...other} onClick={() => {this.focus(0);}}>
                 <Editor
                     ref={e => {this.editor = e;}}
                     placeholder={placeholder}

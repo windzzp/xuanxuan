@@ -33,6 +33,7 @@ xxb:
 	mkdir xxb/tmp/backup/
 	mkdir xxb/tmp/log/
 	mkdir xxb/tmp/model/
+	mkdir xxb/www/data
 	# Change mode.
 	chmod -R 777 xxb/config
 	chmod -R 777 xxb/tmp

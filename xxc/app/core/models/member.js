@@ -424,6 +424,17 @@ export default class Member extends Entity {
     }
 
     /**
+     * 获取 @ 此用户时的最佳可读文本
+     *
+     * @readonly
+     * @memberof Member
+     */
+    get mentionText() {
+        const {realname} = this;
+        return `@${realname || this.account}`;
+    }
+
+    /**
      * 获取用户显示名称的拼音字符串（通常用于检索和排序）
      * @readonly
      * @memberof Member

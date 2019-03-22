@@ -113,9 +113,15 @@ export const isCurrentUser = theUser => (theUser && user && user.id === theUser.
 
 /**
  * 获取当前登录的用户
- * @return {User}
+ * @return {User} 当前登录的用户
  */
 export const getCurrentUser = () => user;
+
+/**
+ * 获取当前登录的用户名
+ * @return {string} 当前登录的用户名
+ */
+export const getCurrentUserAccount = () => (user ? user.account : '');
 
 /**
  * 获取当前登录的用户状态
@@ -216,6 +222,6 @@ export default {
      * 获取当前用户用户名
      */
     get userAccount() {
-        return user ? user.account : '';
+        return getCurrentUserAccount();
     }
 };
