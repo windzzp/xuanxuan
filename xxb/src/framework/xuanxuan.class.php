@@ -185,6 +185,7 @@ class xuanxuan extends router
             {
                 $params[] = $userID;
                 $params[] = $version;
+                $params[] = $device;
             }
 
             $this->session->set('userID', $userID);
