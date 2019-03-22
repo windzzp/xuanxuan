@@ -31,10 +31,13 @@ class chat extends control
      * @param  string $account
      * @param  string $password encrypted password
      * @param  string $status   online | away | busy
+     * @param  int    $userID
+     * @param  string $version
+     * @param  string $device   desktop | mobile
      * @access public
      * @return void
      */
-    public function login($account = '', $password = '', $status = '', $userID = 0, $version = '')
+    public function login($account = '', $password = '', $status = '', $userID = 0, $version = '', $device = 'desktop')
     {
         $user = $this->loadModel('user')->identify($account, $password);
         if(!$user)
@@ -62,14 +65,16 @@ class chat extends control
 
                 $this->output->data = $user;
 
-                $userList = $this->chat->getUserListOutput($idList = array(), $user->id);
-                $chatList = $this->chat->getListOutput($user->id);
-                $messages = $this->chat->getOfflineMessagesOutput($user->id);
-                $notifies = $this->chat->getOfflineNotifyOutput($user->id);
+                $userList  = $this->chat->getUserListOutput($idList = array(), $user->id);
+                $chatList  = $this->chat->getListOutput($user->id);
+                $messages  = $this->chat->getOfflineMessagesOutput($user->id);
+                $notifies  = $this->chat->getOfflineNotifyOutput($user->id);
+                $histories = $this->chat->getHistoryOutput($user, $device);
 
                 $this->output = array($this->output, $userList, $chatList);
-                if(!empty($messages->data)) $this->output[] = $messages;
-                if(!empty($notifies->data)) $this->output[] = $notifies;
+                if(!empty($messages->data))  $this->output[] = $messages;
+                if(!empty($notifies->data))  $this->output[] = $notifies;
+                if(!empty($histories->data)) $this->output[] = $histories;
             }
             else
             {
