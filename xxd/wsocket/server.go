@@ -89,7 +89,7 @@ func cronReport(hub *Hub) {
                         getList, err := api.CheckUserChange(serverName, language)
                         if getList != nil && err == nil {
                             for _, client := range hub.clients[serverName] {
-                                client.send <- getList;
+                                client.send <- getList
                             }
                         }
                     }
