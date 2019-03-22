@@ -16,7 +16,7 @@ import (
     "bufio"
 )
 
-const Version = "v2.5.0"
+const Version = "v2.5.1"
 const Build = "BuildForXXD"
 
 var Run bool = true
