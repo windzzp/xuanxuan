@@ -382,7 +382,6 @@ export default class ChatsHistory extends Component {
                 searchProgress: 0,
                 searchResult: null,
                 searchingChat: null,
-                gotoMessage: null
             });
         }
     }
@@ -396,9 +395,11 @@ export default class ChatsHistory extends Component {
      * @private
      */
     handleRequestMorePage(group) {
-        const {groupPage} = this.state;
-        groupPage[group] += 1;
-        this.setState({groupPage});
+        this.setState(prevState => {
+            const {groupPage} = prevState;
+            groupPage[group] += 1;
+            return groupPage;
+        });
     }
 
     /**
