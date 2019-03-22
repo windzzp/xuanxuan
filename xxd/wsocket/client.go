@@ -186,8 +186,8 @@ func chatLogin(parseData api.ParseData, client *Client) error {
 
     // 生成并存储文件会员
 	for _, plat := range util.Plats {
-		if paltClient, ok :=client.hub.clients[client.serverName][plat][client.userID]; ok{
-			client.send <- paltClient.SessionID
+		if platClient, ok :=client.hub.clients[client.serverName][plat][client.userID]; ok{
+			client.send <- platClient.SessionID
 		} else {
 			userFileSessionID, err := api.UserFileSessionID(client.serverName, client.userID, client.lang)
 			if err != nil {
