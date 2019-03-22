@@ -1,13 +1,13 @@
 <?php
 /**
- * The zh-tw file of install module of RanZhi.
+ * The zh-tw file of install module of XXB.
  *
  * @copyright   Copyright 2009-2018 青島易軟天創網絡科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     install 
  * @version     $Id: zh-tw.php 4029 2016-08-26 06:50:41Z liugang $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 $lang->install = new stdclass();
 $lang->install->common  = '安裝';
@@ -19,16 +19,15 @@ $lang->install->error   = '錯誤 ';
 $lang->install->start            = '開始安裝';
 $lang->install->keepInstalling   = '繼續安裝當前版本';
 $lang->install->seeLatestRelease = '看看最新的版本';
-$lang->install->welcome          = "您睿智地選擇了$lang->ranzhi!";
-$lang->install->license          = '然之協同使用 Z PUBLIC LICENSE(ZPL) 1.2 授權協議。';
+$lang->install->license          = '喧喧使用 Z PUBLIC LICENSE(ZPL) 1.2 授權協議。';
+$lang->install->welcome          = '歡迎使用喧喧';
 $lang->install->desc             = <<<EOT
 <blockquote>
-  <strong>{$lang->ranzhi}</strong>由<strong><a href='http://www.cnezsoft.com' target='_blank' class='red'>青島易軟天創網絡科技有限公司</a>開發</strong>，
-  <!--內置項目、客戶、現金流、辦公和溝通共五大核心功能模組，-->
-  專為中小型團隊量身打造，是中小型團隊信息化的首選工具！
+  <strong>{$lang->xxb}</strong>由<strong><a href='http://www.cnezsoft.com' target='_blank' class='red'>青島易軟天創網絡科技有限公司</a>開發</strong>，
+  專為企業提供安全、開源、免費、跨平台的即時通信解決方案。
 
-  官方網站：<a href='http://www.ranzhi.org' target='_blank'>http://www.ranzhi.org</a>
-  技術支持: <a href='http://www.ranzhi.org/forum/' target='_blank'>http://www.ranzhi.org/forum/</a>
+  官方網站：<a href='http://www.xuan.im' target='_blank'>http://www.xuan.im</a>
+  技術支持: <a href='http://www.xuan.im/forum/' target='_blank'>http://www.xuan.im/forum/</a>
   您現在正在安裝的版本是 <strong class='red'>%s</strong>。
 </blockquote>
 EOT;
@@ -97,49 +96,11 @@ $lang->install->account  = '帳號';
 $lang->install->password = '密碼';
 $lang->install->errorEmptyPassword = '密碼不能為空';
 
-$lang->install->import['area']     = '導入區域數據';
-$lang->install->import['industry'] = '導入行業數據';
-
-$lang->install->buildinEntry = new stdclass();
-$lang->install->buildinEntry->crm['name']  = '客戶管理';
-$lang->install->buildinEntry->crm['abbr']  = '客戶';
-$lang->install->buildinEntry->cash['name'] = '現金記賬';
-$lang->install->buildinEntry->cash['abbr'] = '記賬';
-$lang->install->buildinEntry->oa['name']   = '日常辦公';
-$lang->install->buildinEntry->oa['abbr']   = '辦公';
-$lang->install->buildinEntry->team['name'] = '團隊';
-$lang->install->buildinEntry->team['abbr'] = '團隊';
-$lang->install->buildinEntry->doc['name']  = '文檔';
-$lang->install->buildinEntry->doc['abbr']  = '文檔';
-$lang->install->buildinEntry->proj['name'] = '項目';
-$lang->install->buildinEntry->proj['abbr'] = '項目';
-
-$lang->install->categoryList[1] = '主營業務收入';
-$lang->install->categoryList[2] = '非主營業務收入';
-$lang->install->categoryList[3] = '主營業務成本';
-$lang->install->categoryList[4] = '非主營業務成本';
-$lang->install->categoryList[5] = '理財盈利';
-$lang->install->categoryList[6] = '理財虧損';
-$lang->install->categoryList[7] = '手續費';
-$lang->install->categoryList[8] = '借貸利息';
-
-$lang->install->schemaList[1] = '支付寶';
-$lang->install->schemaList[2] = '中信銀行簡版';
-
 $lang->install->cronList[1] = '監控定時任務';
 $lang->install->cronList[2] = '定時備份任務';
 $lang->install->cronList[3] = '刪除30天前的備份';
-$lang->install->cronList[4] = '每日提醒';
-$lang->install->cronList[5] = '出隊列';
-$lang->install->cronList[6] = '檢查是否添加待辦';
 
 $lang->install->groupList[1]['name'] = '管理員';
 $lang->install->groupList[1]['desc'] = '管理員擁有前台所有權限';
-$lang->install->groupList[2]['name'] = '財務專員';
-$lang->install->groupList[2]['desc'] = '財務專員擁有現金流所有權限';
-$lang->install->groupList[3]['name'] = '銷售經理';
-$lang->install->groupList[3]['desc'] = '銷售經理擁有客戶管理所有權限';
-$lang->install->groupList[4]['name'] = '銷售人員';
-$lang->install->groupList[4]['desc'] = '預設的銷售人員權限';
-$lang->install->groupList[5]['name'] = '普通用戶';
-$lang->install->groupList[5]['desc'] = '預設的普通賬號權限';
+$lang->install->groupList[2]['name'] = '普通用戶';
+$lang->install->groupList[2]['desc'] = '預設的普通賬號權限';
