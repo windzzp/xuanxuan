@@ -179,7 +179,6 @@ export const getAllMembers = () => (members ? Object.keys(members).map(x => memb
  * @return {void}
  */
 export const forEachMember = (callback, ignoreDeleteUser = false) => {
-    console.warn('forEachMember');
     if (members) {
         Object.keys(members).forEach(memberId => {
             if (!ignoreDeleteUser || !members[memberId].isDeleted) {
