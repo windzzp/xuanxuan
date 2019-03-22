@@ -52,11 +52,13 @@ type Client struct {
     repeatLogin bool
     cVer        string //client version
     lang        string
+    device      string
 }
 
 type ClientRegister struct {
     client    *Client
     retClient chan *Client
+	device      string
 }
 
 // send message struct
@@ -102,11 +104,6 @@ func switchMethod(message []byte, parseData api.ParseData, client *Client) error
 
     case "chat.logout":
         client.conn.Close()
-        /*
-        if err := chatLogout(parseData.UserID(), client); err != nil {
-            return err
-        }
-        */
         break
 
     default:
@@ -154,11 +151,13 @@ func chatLogin(parseData api.ParseData, client *Client) error {
 
     //判断最大在线用户数
     if util.Config.MaxOnlineUser > 0 {
-        onlineUser := len(client.hub.clients[client.serverName])
-        if int64(onlineUser) >= util.Config.MaxOnlineUser {
-            client.send <- api.BlockLogin()
-            return util.Errorf("Exceeded the maximum limit.")
-        }
+    	for _, plat := range util.Plats{
+			onlineUser := len(client.hub.clients[client.serverName][plat])
+			if int64(onlineUser) >= util.Config.MaxOnlineUser {
+				client.send <- api.BlockLogin()
+				return util.Errorf("Exceeded the maximum limit.")
+			}
+		}
     }
 
     //当前用户语言
@@ -166,6 +165,8 @@ func chatLogin(parseData api.ParseData, client *Client) error {
     if _, ok := util.Languages[client.lang]; ok == false {
         util.Languages[client.lang] = client.lang
     }
+
+    client.device = parseData.Device()
 
     //map[int]map[string]interface{}
     retMessages, err := api.ChatLogin(parseData)
@@ -196,7 +197,7 @@ func chatLogin(parseData api.ParseData, client *Client) error {
     // 因为是broadcast类型，所以不需要初始化userID
     client.hub.broadcast <- SendMsg{serverName: client.serverName, message: retMessages[0]["message"].([]byte)}
 
-    cRegister := &ClientRegister{client: client, retClient: make(chan *Client)}
+    cRegister := &ClientRegister{client: client, retClient: make(chan *Client), device: client.device}
     defer close(cRegister.retClient)
 
     // 以上成功后把socket加入到管理

@@ -125,9 +125,6 @@ if(file_exists($myConfig)) include $myConfig;
 $xxbConfig = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'xxb.php';
 if(file_exists($xxbConfig)) include $xxbConfig;
 
-$xuanxuanConfig = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'xuanxuan.php';
-if(file_exists($xuanxuanConfig)) include $xuanxuanConfig;
-
 $rightsConfig = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'rights.php';
 if(file_exists($rightsConfig)) include $rightsConfig;
 

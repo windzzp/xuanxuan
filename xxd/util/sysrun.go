@@ -23,6 +23,7 @@ var Run bool = true
 var Token []byte
 var DBConn *sql.DB
 var Languages map[string]string
+var Plats = []string{"desktop", "mobile"}
 
 func init() {
     dir, _ := os.Getwd()

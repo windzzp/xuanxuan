@@ -1,13 +1,13 @@
 <?php
 /**
- * The zh-tw file of entry module of RanZhi.
+ * The zh-tw file of entry module of XXB.
  *
  * @copyright   Copyright 2009-2018 青島易軟天創網絡科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     entry
  * @version     $Id: zh-tw.php 4091 2016-09-30 07:16:50Z daitingting $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 $lang->entry->common      = '應用';
 $lang->entry->admin       = '應用列表';
