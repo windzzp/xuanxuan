@@ -102,13 +102,14 @@ class xuanxuan extends router
             $input = $this->decrypt($input);
 
             $this->input['rid']     = !empty($input->rid)    ? $input->rid    : '';
-            $this->input['version'] = !empty($input->v)      ? $input->v      : '';
             $this->input['userID']  = !empty($input->userID) ? $input->userID : '';
             $this->input['client']  = !empty($input->client) ? $input->client : '';
             $this->input['module']  = !empty($input->module) ? $input->module : '';
             $this->input['method']  = !empty($input->method) ? $input->method : '';
             $this->input['lang']    = !empty($input->lang)   ? $input->lang   : 'zh-cn';
             $this->input['params']  = !empty($input->params) ? $input->params : array();
+            $this->input['version'] = !empty($input->v)      ? $input->v      : '';
+            $this->input['device']  = !empty($input->d)      ? $input->d      : 'desktop';
         }
         else
         {
