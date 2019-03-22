@@ -53,6 +53,7 @@ type Client struct {
     cVer        string //client version
     lang        string
     device      string
+	SessionID	[]byte
 }
 
 type ClientRegister struct {
@@ -184,14 +185,23 @@ func chatLogin(parseData api.ParseData, client *Client) error {
     }
 
     // 生成并存储文件会员
-    userFileSessionID, err := api.UserFileSessionID(client.serverName, client.userID, client.lang)
-    if err != nil {
-        util.Log("error", "Chat user create file session error: %s", err)
-        //返回给客户端登录失败的错误信息
-        return err
-    }
-    // 成功后返回userFileSessionID数据给客户端
-    client.send <- userFileSessionID
+	for _, plat := range util.Plats {
+		if paltClient, ok :=client.hub.clients[client.serverName][plat][client.userID]; ok{
+			client.send <- paltClient.SessionID
+		} else {
+			userFileSessionID, err := api.UserFileSessionID(client.serverName, client.userID, client.lang)
+			if err != nil {
+				util.Log("error", "Chat user create file session error: %s", err)
+				//返回给客户端登录失败的错误信息
+				return err
+			}
+			client.SessionID = userFileSessionID
+			// 成功后返回userFileSessionID数据给客户端
+			client.send <- userFileSessionID
+		}
+	}
+
+
 
     // 推送当前登录用户信息给其他在线用户
     // 因为是broadcast类型，所以不需要初始化userID
