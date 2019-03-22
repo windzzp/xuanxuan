@@ -73,11 +73,11 @@ class chat extends control
             }
             else
             {
-                $update = $this->chat->getUpdate($version);
+                $result = $this->loadModel('client')->checkUpgrade($version);
                 $data   = array();
                 if($update !== false)
                 {
-                    $data = $update;
+                    $data = $result;
                     if(version_compare($version, '2.4.0') === -1)
                     {
                         $this->output->result = 'fail';
@@ -784,7 +784,7 @@ class chat extends control
         else
         {
             $data = new stdclass();
-            $data->gids  = $gids;
+            $data->gids     = $gids;
             $data->category = $category;
 
             $this->output->result = 'success';
@@ -1074,7 +1074,7 @@ class chat extends control
     }
 
     /**
-     * Save or get settings.
+     * Upload or download settings.
      *
      * @param  string               $account
      * @param  string|array|object  $settings
@@ -1084,23 +1084,24 @@ class chat extends control
      */
     public function settings($account = '', $settings = '', $userID = 0)
     {
-        $this->loadModel('setting');
-
         $settingsObj  = new stdclass();
-        $userSettings = json_decode($this->setting->getItem("owner=system&module=chat&section=settings&key=$account"));
+        $userSettings = json_decode($this->loadModel('setting')->getItem("owner=system&module=chat&section=settings&key=$account"));
 
-        if(is_array($settings))
+        if(is_object($settings))
         {
-            foreach($settings as $settingKey) $settingsObj->$settingKey = isset($userSettings->$settingKey) ? $userSettings->$settingKey : '';
-        }
-        elseif(is_object($settings))
-        {
+            /* Upload settings. */
             $settingsObj = $settings;
-            foreach($settings as $settingKey => $settingValue) $userSettings->$settingKey = $settingValue;
+            foreach($settings as $key => $value) $userSettings->$key = $value;
             $this->setting->setItem("system.chat.settings.$account", helper::jsonEncode($userSettings));
+        }
+        elseif(is_array($settings))
+        {
+            /* Download the specified settings. */
+            foreach($settings as $key) $settingsObj->$key = zget($userSettings, $key, '');
         }
         else
         {
+            /* Download all settings. */
             $settingsObj = $userSettings;
         }
 
@@ -1142,25 +1143,7 @@ class chat extends control
             die($this->app->encrypt($this->output));
         }
 
-        $user      = $this->chat->getUserByUserID($userID);
-        $users     = $this->chat->getUserList($status = 'online', $chat->members);
-        $extension = $this->loadModel('file')->getExtension($fileName);
-
-        $file = new stdclass();
-        $file->pathname    = $path;
-        $file->title       = rtrim($fileName, ".$extension");
-        $file->extension   = $extension;
-        $file->size        = $size;
-        $file->objectType  = 'chat';
-        $file->objectID    = $chat->id;
-        $file->createdBy   = !empty($user->account) ? $user->account : '';
-        $file->createdDate = date(DT_DATETIME1, $time);
-
-        $this->dao->insert(TABLE_FILE)->data($file)->exec();
-
-        $fileID = $this->dao->lastInsertID();
-        $path  .= md5($fileName . $fileID . $time);
-        $this->dao->update(TABLE_FILE)->set('pathname')->eq($path)->where('id')->eq($fileID)->exec();
+        $this->chat->uploadFile($fileName, $path, $size, $time, $userID, $chat);
 
         if(dao::isError())
         {
@@ -1192,7 +1175,7 @@ class chat extends control
         if(dao::isError())
         {
             $this->output->result  = 'fail';
-            $this->output->message = "Get notify fail.";
+            $this->output->message = 'Get notify fail.';
         }
         else
         {
@@ -1303,10 +1286,11 @@ class chat extends control
     }
 
     /**
-     * Get todoes list
+     * Get todo list.
      *
      * @param  string $mode
      * @param  string $orderBy
+     * @param  string $status
      * @param  int    $recTotal
      * @param  int    $recPerPage
      * @param  int    $pageID
@@ -1422,64 +1406,6 @@ class chat extends control
 
         die(json_encode($response));
     }
-
-    /**
-     * Debug xuanxuan.
-     *
-     * @access public
-     * @return void
-     */
-    public function debug()
-    {
-        if(RUN_MODE != 'front') die('Access Denied');
-
-        $this->lang->menuGroups->chat = 'system';
-        $this->lang->chat->menu       = $this->lang->system->menu;
-        $this->lang->chat->menuOrder  = $this->lang->system->menuOrder;
-
-        $this->view->title = $this->lang->chat->debug;
-        $this->display();
-    }
-
-    /**
-     * Read content of log file and display.
-     *
-     * @access public
-     * @return void
-     */
-    public function showLog()
-    {
-        $logFile = $this->app->getLogRoot() . 'xuanxuan.log.php';
-        if(!file_exists($logFile)) $this->send(array('result' => 'fail', 'message' => $this->lang->chat->noLogFile));
-
-        if(!function_exists('fopen')) $this->send(array('result' => 'fail', 'message' => $this->lang->chat->noFopen));
-
-        $line = $this->config->chat->logLine;
-        $pos  = -2;
-        $eof  = '';
-        $log  = '';
-        $fp   = fopen($logFile, 'r');
-        while($line > 0)
-        {
-            while($eof != "\n")
-            {
-                if(!fseek($fp, $pos, SEEK_END))
-                {
-                    $eof = fgetc($fp);
-                    $pos--;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            $log .= fgets($fp) . '<br>';
-            $eof  = '';
-            $line--;
-        }
-
-        $this->send(array('result' => 'success', 'logs' => $log));
-    }
     
     /**
      * Message notification api.
@@ -1543,5 +1469,63 @@ class chat extends control
         }
 
         die(json_encode($response));
+    }
+
+    /**
+     * Debug xuanxuan.
+     *
+     * @access public
+     * @return void
+     */
+    public function debug()
+    {
+        if(RUN_MODE != 'front') die('Access Denied');
+
+        $this->lang->menuGroups->chat = 'system';
+        $this->lang->chat->menu       = $this->lang->system->menu;
+        $this->lang->chat->menuOrder  = $this->lang->system->menuOrder;
+
+        $this->view->title = $this->lang->chat->debug;
+        $this->display();
+    }
+
+    /**
+     * Read content of log file and display.
+     *
+     * @access public
+     * @return void
+     */
+    public function showLog()
+    {
+        $logFile = $this->app->getLogRoot() . 'xuanxuan.log.php';
+        if(!file_exists($logFile)) $this->send(array('result' => 'fail', 'message' => $this->lang->chat->noLogFile));
+
+        if(!function_exists('fopen')) $this->send(array('result' => 'fail', 'message' => $this->lang->chat->noFopen));
+
+        $line = $this->config->chat->logLine;
+        $pos  = -2;
+        $eof  = '';
+        $log  = '';
+        $fp   = fopen($logFile, 'r');
+        while($line > 0)
+        {
+            while($eof != "\n")
+            {
+                if(!fseek($fp, $pos, SEEK_END))
+                {
+                    $eof = fgetc($fp);
+                    $pos--;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            $log .= fgets($fp) . '<br>';
+            $eof  = '';
+            $line--;
+        }
+
+        $this->send(array('result' => 'success', 'logs' => $log));
     }
 }

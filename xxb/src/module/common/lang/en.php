@@ -148,14 +148,13 @@ EOT;
 
 /* Items for javascript. */
 $lang->js = new stdclass();
-$lang->js->confirmDelete         = 'Do you want to delete it?';
-$lang->js->confirmFinish         = 'Do you want to finish it?';
-$lang->js->deleteing             = 'Deleting...';
-$lang->js->doing                 = 'Processing...';
-$lang->js->timeout               = 'Timeout';
-$lang->js->confirmDiscardChanges = 'Cancel changes?';
-$lang->js->yes                   = 'Yes';
-$lang->js->no                    = 'No';
+$lang->js->confirmDelete = 'Do you want to delete it?';
+$lang->js->confirmFinish = 'Do you want to finish it?';
+$lang->js->deleteing     = 'Deleting...';
+$lang->js->doing         = 'Processing...';
+$lang->js->timeout       = 'Timeout';
+$lang->js->yes           = 'Yes';
+$lang->js->no            = 'No';
 
 /* The main menus. */
 $lang->menu = new stdclass();
@@ -164,54 +163,24 @@ $lang->menu->group   = 'Group|group|browse|';
 $lang->menu->entry   = 'Entry|entry|admin|';
 $lang->menu->setting = 'Setting|setting|xuanxuan|';
 
-$lang->index   = new stdclass();
-$lang->user    = new stdclass();
-$lang->file    = new stdclass();
-$lang->tree    = new stdclass();
-$lang->mail    = new stdclass();
-$lang->dept    = new stdclass();
-$lang->block   = new stdclass();
-$lang->action  = new stdclass();
-$lang->setting = new stdclass();
-
-$lang->group   = new stdclass(); 
-
-/* Menu entry. */
+/* Entry menu. */
 $lang->entry       = new stdclass();
 $lang->entry->menu = new stdclass();
 $lang->entry->menu->admin    = array('link' => 'API|entry|admin|', 'alias' => 'edit, integration, style, zentaoAdmin');
 $lang->entry->menu->create   = array('link' => 'Create|entry|create|');
 $lang->entry->menu->category = 'Category|entry|category|';
 
-/* Menu system. */
-$lang->system       = new stdclass();
-$lang->system->menu = new stdclass();
-$lang->system->menu->mail   = array('link' => 'EMail|mail|admin|', 'alias' => 'detect,edit,save,test');
-$lang->system->menu->trash  = array('link' => 'Trash|action|trash|');
-$lang->system->menu->cron   = 'Cron|cron|index|';
-$lang->system->menu->backup = 'Backup|backup|index|';
+/* Setting menu. */
+$lang->setting       = new stdclass();
+$lang->setting->menu = new stdClass();
+$lang->setting->menu->xuanxuan = 'Xuanxuan|setting|xuanxuan|';
+$lang->setting->menu->client   = 'Client|client|browse|';
+
+$lang->client = new stdclass();
+$lang->client->menu = $lang->setting->menu;
 
 $lang->menuGroups = new stdclass();
-
-/* Menu of mail module. */
-$lang->mail = new stdclass();
-$lang->mail->menu = $lang->system->menu;
-$lang->menuGroups->mail = 'system';
-
-/* Menu of action module. */
-$lang->action = new stdclass();
-$lang->action->menu = $lang->system->menu;
-$lang->menuGroups->action = 'system';
-
-/* Menu of cron module. */
-$lang->cron = new stdclass();
-$lang->cron->menu = $lang->system->menu;
-$lang->menuGroups->cron = 'system';
-
-/* Menu of backup module. */
-$lang->backup = new stdclass();
-$lang->backup->menu = $lang->system->menu;
-$lang->menuGroups->backup = 'system';
+$lang->menuGroups->client = 'setting';
 
 /* The error messages. */
 $lang->error = new stdclass();

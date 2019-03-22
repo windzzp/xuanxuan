@@ -68,7 +68,7 @@ class xuanxuan extends router
      */
     public function setClientLang($lang = '')
     {
-        $row  = $this->dbh->query('SELECT `value` FROM ' . TABLE_CONFIG . " WHERE `owner`='system' AND `module`='common' AND `section`='xuanxuan' AND `key`='xxbLang'")->fetch();
+        $row  = $this->dbh->query('SELECT `value` FROM ' . TABLE_CONFIG . " WHERE `owner`='system' AND `module`='common' AND `section`='xuanxuan' AND `key`='backendLang'")->fetch();
         $lang = empty($row) ? 'zh-cn' : $row->value;
 
         parent::setClientLang($lang);

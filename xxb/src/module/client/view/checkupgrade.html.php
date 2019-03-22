@@ -10,7 +10,7 @@
  * @link        http://xuan.im
  */
 ?>
-<?php include '../../../common/view/header.modal.html.php';?>
+<?php include '../../common/view/header.modal.html.php';?>
 <div class="panel-group" id="accordionPanels" aria-multiselectable="true">
   <?php if($versions) foreach($versions as $version):?>
   <div class="panel panel-default">
@@ -22,10 +22,10 @@
     <div id="collapse_<?php echo $version->id;?>" class="panel-collapse collapse">
       <div class="panel-body">
         <div class="panel panel-default">
-          <div class="panel-heading"><?php echo $lang->chat->xxcVersion;?> <?php echo $version->xxcVersion;?></div>
+          <div class="panel-heading"><?php echo $lang->client->xxcVersion;?> <?php echo $version->xxcVersion;?></div>
           <table class="table table-form">
             <tr>
-              <th class="w-100px"><?php echo $lang->chat->xxcReadme;?>：</th>
+              <th class="w-100px"><?php echo $lang->client->changeLog;?>：</th>
               <td><?php echo $version->xxcDesc;?></td>
             </tr>
             <?php if($version->xxcDownload) foreach($version->xxcDownload as $system => $link):?>
@@ -37,10 +37,10 @@
           </table>
         </div>
         <div class="panel panel-default">
-          <div class="panel-heading"><?php echo $lang->chat->xxdVersion;?> <?php echo $version->xxdVersion;?></div>
+          <div class="panel-heading"><?php echo $lang->client->xxdVersion;?> <?php echo $version->xxdVersion;?></div>
           <table class="table table-form">
             <tr>
-              <th class="w-100px"><?php echo $lang->chat->xxcReadme;?>：</th>
+              <th class="w-100px"><?php echo $lang->client->changeLog;?>：</th>
               <td><?php echo $version->xxdDesc;?></td>
             </tr>
               <?php if($version->xxdDownload) foreach($version->xxdDownload as $system => $link):?>
@@ -52,10 +52,10 @@
           </table>
         </div>
         <div class="panel panel-default">
-          <div class="panel-heading"><?php echo $lang->chat->xxbVersion;?> <?php echo $version->xxbVersion;?></div>
+          <div class="panel-heading"><?php echo $lang->client->xxbVersion;?> <?php echo $version->xxbVersion;?></div>
           <table class="table table-form">
             <tr>
-              <th class="w-100px"><?php echo $lang->chat->xxcReadme;?>：</th>
+              <th class="w-100px"><?php echo $lang->client->changeLog;?>：</th>
               <td><?php echo $version->xxbDesc;?></td>
             </tr>
               <?php if($version->xxbDownload) foreach($version->xxbDownload as $system => $link):?>
@@ -71,5 +71,4 @@
   </div>
   <?php endforeach;?>
 </div>
-</body>
-</html>
+<?php include '../../common/view/footer.modal.html.php';?>

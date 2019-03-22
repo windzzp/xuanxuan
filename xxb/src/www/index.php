@@ -19,10 +19,10 @@ ob_start();
 define('RUN_MODE', 'front');
 
 /* Load the framework. */
-include "../framework/router.class.php";
-include "../framework/control.class.php";
-include "../framework/model.class.php";
-include "../framework/helper.class.php";
+include '../framework/router.class.php';
+include '../framework/control.class.php';
+include '../framework/model.class.php';
+include '../framework/helper.class.php';
 
 /* Log the time and define the run mode. */
 $startTime = getTime();

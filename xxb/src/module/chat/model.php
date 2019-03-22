@@ -290,70 +290,6 @@ class chatModel extends model
         return $messages;
     }
 
-    public function getUpdate($version)
-    {
-        $lastForce = $this->dao->select('*')->from(TABLE_IM_XXCVERSION)->where('strategy')->eq('force')->orderBy('id_desc')->limit(1)->fetch();
-        if($lastForce && version_compare($version, $lastForce->version) == -1)
-        {
-            return $lastForce;
-        }
-        else
-        {
-            $last = $this->dao->select('*')->from(TABLE_IM_XXCVERSION)->where('strategy')->eq('optional')->orderBy('id_desc')->limit(1)->fetch();
-            if($last && version_compare($version, $last->version) == -1)
-            {
-                return $last;
-            }
-        }
-        return false;
-    }
-
-    public function getVersions()
-    {
-        return $this->dao->select('*')->from(TABLE_IM_XXCVERSION)->orderBy('id_desc')->fetchAll();
-    }
-
-    public function createXXCVersion()
-    {
-        $version = fixer::input('post')
-            ->add('createdBy', $this->app->user->account)
-            ->add('createdDate', helper::now())
-            ->get();
-
-        if(empty($version->version)) dao::$errors['version'][] = $this->lang->chat->notempty; 
-        if(!preg_match("/^[0-9.]*$/", $version->version)) dao::$errors['version'][] = sprintf($this->lang->chat->notVersion, $this->lang->chat->version);
-        foreach($version->downloads as $versionName => $versionUrl)
-        {
-            if(empty($versionUrl)) dao::$errors[$versionName][] = $this->lang->chat->notempty;
-        }
-        if(dao::isError()) return false;
-
-        $version->downloads = json_encode($version->downloads);
-        $this->dao->insert(TABLE_IM_XXCVERSION)->data($version)->autoCheck()->exec();
-        return !dao::isError();
-    }
-
-    public function editXXCVersion($versionID)
-    {
-        $version = fixer::input('post')
-            ->add('editedBy', $this->app->user->account)
-            ->add('editedDate', helper::now())
-            ->get();
-
-        if(empty($version->version)) dao::$errors['version'][] = $this->lang->chat->notempty; 
-        if(dao::isError()) return false;
-        if(!preg_match("/^[0-9.]*$/", $version->version)) dao::$errors['version'][] = sprintf($this->lang->chat->notVersion, $this->lang->chat->version);
-        foreach($version->downloads as $versionName => $versionUrl)
-        {
-            if(empty($versionUrl)) dao::$errors[$versionName][] = $this->lang->chat->notempty;
-        }
-        if(dao::isError()) return false;
-
-        $version->downloads = json_encode($version->downloads);
-        $this->dao->update(TABLE_IM_XXCVERSION)->data($version)->autoCheck()->where('id')->eq($versionID)->exec();
-        return !dao::isError();
-    }
-
     /**
      * Foramt chats.
      *
@@ -1374,5 +1310,42 @@ class chatModel extends model
         if(!empty($this->config->xuanxuan->server)) $server = $this->config->xuanxuan->server;
 
         return $server;
+    }
+
+    /**
+     * UploadFile a file.
+     *
+     * @param  string $fileName
+     * @param  string $path
+     * @param  int    $size
+     * @param  int    $time
+     * @param  int    $userID
+     * @param  object $chat
+     * @access public
+     * @return bool
+     */
+    public function uploadFile($fileName, $path, $size, $time, $userID, $chat)
+    {
+        $user      = $this->chat->getUserByUserID($userID);
+        $users     = $this->chat->getUserList($status = 'online', $chat->members);
+        $extension = $this->loadModel('file')->getExtension($fileName);
+
+        $file = new stdclass();
+        $file->pathname    = $path;
+        $file->title       = rtrim($fileName, ".$extension");
+        $file->extension   = $extension;
+        $file->size        = $size;
+        $file->objectType  = 'chat';
+        $file->objectID    = $chat->id;
+        $file->createdBy   = !empty($user->account) ? $user->account : '';
+        $file->createdDate = date(DT_DATETIME1, $time);
+
+        $this->dao->insert(TABLE_FILE)->data($file)->exec();
+
+        $fileID = $this->dao->lastInsertID();
+        $path  .= md5($fileName . $fileID . $time);
+        $this->dao->update(TABLE_FILE)->set('pathname')->eq($path)->where('id')->eq($fileID)->exec();
+
+        return !dao::isError();
     }
 }

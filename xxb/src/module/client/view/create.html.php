@@ -10,42 +10,42 @@
  * @link        http://xuan.im
  */
 ?>
-<?php include '../../../common/view/header.modal.html.php';?>
-<form id='ajaxForm' method='post' action="<?php echo $this->createLink('setting', 'createxxcversion')?>">
-  <table class='table table-form table-condensed'>
+<?php include '../../common/view/header.modal.html.php';?>
+<form id='ajaxForm' method='post' action='<?php echo inlink('create')?>'>
+  <table class='table table-form'>
     <tbody>
     <tr>
-      <th class='w-120px'><?php echo $lang->chat->xxcVersion?></th>
-      <td class="w-p70">
+      <th class='w-100px'><?php echo $lang->client->version?></th>
+      <td class='w-500px'>
         <div class='required required-wrapper'></div>
         <?php echo html::input('version', '', "class='form-control'")?>
       </td>
       <td></td>
     </tr>
     <tr>
-      <th><?php echo $lang->chat->xxcDesc?></th>
+      <th><?php echo $lang->client->desc?></th>
       <td><?php echo html::input('desc', '', "class='form-control'")?></td>
       <td></td>
     </tr>
     <tr>
-      <th><?php echo $lang->chat->xxcReadme?></th>
-      <td><?php echo html::textarea('readme', '', "class='form-control'")?></td>
+      <th><?php echo $lang->client->changeLog?></th>
+      <td><?php echo html::textarea('changeLog', '', "class='form-control'")?></td>
       <td></td>
     </tr>
     <tr>
-      <th><?php echo $lang->chat->strategy?></th>
-      <td><?php echo html::radio('strategy', $lang->chat->strategies, 0)?></td>
+      <th><?php echo $lang->client->strategy?></th>
+      <td><?php echo html::radio('strategy', $lang->client->strategies, 'optional')?></td>
       <td></td>
     </tr>
     <tr>
-      <th><?php echo $lang->chat->download?></th>
+      <th><?php echo $lang->client->download?></th>
       <td>
-        <?php foreach($lang->chat->osList as $system => $desc):?>
+        <?php foreach($lang->client->osList as $os => $desc):?>
         <div class="form-group">
           <div class="input-group">
-            <span class="input-group-addon w-130px"><?php echo $lang->chat->osList[$system]?>：</span>
+            <span class="input-group-addon w-130px"><?php echo $lang->client->osList[$os]?>：</span>
             <div class='required required-wrapper'></div>
-            <?php echo html::input("downloads[{$system}]", '', "id='{$system}' class='form-control'")?>
+            <?php echo html::input("downloads[{$os}]", '', "id='{$os}' class='form-control'")?>
           </div>
         </div>
         <?php endforeach;?>
@@ -60,5 +60,4 @@
     </tbody>
   </table>
 </form>
-</body>
-</html>
+<?php include '../../common/view/footer.modal.html.php';?>

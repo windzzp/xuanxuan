@@ -3,7 +3,7 @@ $lang->chat->settings = 'Xuanxuan Settings';
 $lang->chat->debug    = 'Debug';
 
 $lang->chat->version     = 'Version';
-$lang->chat->xxbLang     = 'Server Lang';
+$lang->chat->backendLang = 'Server Language';
 $lang->chat->key         = 'Key';
 $lang->chat->systemGroup = 'System';
 $lang->chat->url         = 'URL';
