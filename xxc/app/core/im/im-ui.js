@@ -3,7 +3,7 @@ import profile from '../profile';
 import chats, {getChat} from './im-chats';
 import Lang from '../lang';
 import Server, {deleteChatMessage} from './im-server';
-import members from '../members';
+import members, {linkMentionsInText} from '../members';
 import StringHelper, {formatBytes} from '../../utils/string-helper';
 import DateHelper from '../../utils/date-helper';
 import Modal from '../../components/modal';
@@ -807,35 +807,6 @@ addContextMenuCreator('chat.member', ({member, chat}) => {
 });
 
 /**
- * 将文本中的 `@member` 转换为 HTML 链接
- * @param {string} text 文本内容
- * @param {{format: string}} param1 格式化选项
- * @return {string} 转换后的文本
- */
-export const linkMembersInText = (text, {format = '<a class="app-link {className}" data-url="@Member/{id}">@{displayName}</a>'}) => {
-    if (text && text.indexOf('@') > -1) {
-        const langAtAll = Lang.string('chat.message.atAll');
-        const {userAccount} = profile;
-        text = text.replace(/@(#?\d+|[\d\w\u4e00-\u9fa5]+)/g, (mentionAt, mention) => {
-            const m = members.guess(mention);
-            if (m) {
-                return StringHelper.format(format, {
-                    displayName: m.displayName,
-                    id: m.id,
-                    account: m.account,
-                    className: m.account === userAccount ? 'at-me' : '',
-                });
-            }
-            if (mention === 'all' || mention === langAtAll) {
-                return `<span class="at-all">@${langAtAll}</span>`;
-            }
-            return mentionAt;
-        });
-    }
-    return text;
-};
-
-/**
  * 转换消息内容回调函数
  * @type {string}
  * @private
@@ -969,7 +940,7 @@ addContextMenuCreator('message.text', ({message}) => {
                     }
                 }
                 if (copyHtmlText === undefined) {
-                    copyHtmlText = message.renderedTextContent(renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : linkMembersInText);
+                    copyHtmlText = message.renderedTextContent(renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : linkMentionsInText);
                 }
                 const clipboard = platform.access('clipboard');
                 if (clipboard.write) {
@@ -1169,7 +1140,6 @@ export default {
     onActiveChat,
     isActiveChat,
     getActivedCacheChatsGID,
-    linkMembersInText,
     renderChatMessageContent,
     chatExitConfirm,
     chatRenamePrompt,

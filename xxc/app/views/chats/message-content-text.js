@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
-import App from '../../core';
 import Config from '../../config';
+import {linkMentionsInText} from '../../core/members';
+import {renderChatMessageContent} from '../../core/im/im-ui';
 
 /**
  * MessageContentText 组件 ，显示聊天消息文本内容界面
@@ -80,7 +81,7 @@ export default class MessageContentText extends Component {
             ...other
         } = this.props;
 
-        const content = message.renderedTextContent(App.im.ui.renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : App.im.ui.linkMembersInText, contentConverter);
+        const content = message.renderedTextContent(renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : linkMentionsInText, contentConverter);
 
         return (
             <div

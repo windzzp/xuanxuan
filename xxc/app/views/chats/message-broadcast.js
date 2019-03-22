@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
 import Avatar from '../../components/avatar';
-import App from '../../core';
 import StringHelper from '../../utils/string-helper';
 import Config from '../../config';
 import {formatDate} from '../../utils/date-helper';
+import members, {linkMentionsInText} from '../../core/members';
+import {renderChatMessageContent} from '../../core/im/im-ui';
 
 /**
  * MessageBroadcast 组件 ，显示广播聊天消息条目
@@ -86,9 +87,7 @@ export default class MessageBroadcast extends Component {
             ...other
         } = this.props;
 
-        let content = message.renderedTextContent(content => {
-            return content.replace(/我/g, `@${message.getSender(App.members).account}${content.substr(1)}`);
-        }, App.im.ui.renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : App.im.ui.linkMembersInText);
+        let content = message.renderedTextContent(text => text.replace(/我/g, `@${message.getSender(members).account}${text.substr(1)}`), renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : linkMentionsInText);
 
         if (StringHelper.isNotEmpty(prefix)) {
             content = prefix + content;
