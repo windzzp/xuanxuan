@@ -12,7 +12,7 @@
 <style>
 body>.article {
     margin: 0 auto;
-    max-width: 1500px;
+    max-width: 1800px;
     padding: 20px;
 }
 
@@ -93,10 +93,10 @@ body>.article {
         <h2>第 <span class="text-timeline-current">n</span> 分钟状态（<span class="text-timeline-current-time"></span>）</h2>
         <p>拖动下方的时间轴来查看状态。</p>
         <div class="row single flex-middle">
-            <div class="flex-none has-padding-sm muted">0min</div>
+            <div class="flex-none has-padding-sm muted">0 分钟/div>
             <input id="timelineControl" type="range" name="points" min="0" max="10" step="1"
                 class="control flex-auto no-margin">
-            <div class="text-timeline-end flex-none has-padding-sm muted">0min</div>
+            <div class="text-timeline-end flex-none has-padding-sm muted">0 分钟</div>
         </div>
         <table class="table bordered compact" id="timelineTable">
             <tbody>
@@ -180,27 +180,27 @@ body>.article {
                 </tr>
                 <tr>
                     <th>最后登录时间</th>
-                    <th>平均耗时<br>(参考：2000ms)</th>
+                    <th>平均耗时<br>参考:2kms</th>
                     <!-- <th>最大耗时<br>(ms)</th>
                 <th>最小耗时<br>(ms)</th>
                 <th>次数</th> -->
                     <th>重联次数</th>
 
-                    <th>平均耗时<br>(参考：10ms)</th>
-                    <th>最大耗时<br>(ms)</th>
-                    <th>最小耗时<br>(ms)</th>
+                    <th>平均耗时<br>参考:10ms</th>
+                    <th>最大耗时<br>单位:ms</th>
+                    <th>最小耗时<br>单位:ms</th>
                     <th>总次数</th>
                     <th>成功次数</th>
 
-                    <th>平均耗时<br>(参考：1000ms)</th>
-                    <th>最大耗时<br>(ms)</th>
-                    <th>最小耗时<br>(ms)</th>
+                    <th>平均耗时<br>参考:1kms</th>
+                    <th>最大耗时<br>单位:ms</th>
+                    <th>最小耗时<br>单位:ms</th>
                     <th>总次数</th>
                     <th>成功次数</th>
 
-                    <th>平均耗时<br>(参考：1000ms)</th>
-                    <th>最大耗时<br>(ms)</th>
-                    <th>最小耗时<br>(ms)</th>
+                    <th>平均耗时<br>参考:1kms</th>
+                    <th>最大耗时<br>单位:ms</th>
+                    <th>最小耗时<br>单位:ms</th>
                     <th>总次数</th>
                     <th>成功次数</th>
                 </tr>
@@ -224,7 +224,7 @@ window.CoreLib=window.jQuery||window.Zepto,!function(t){"use strict";t.callEvent
     <script>
         var reportData = {$$data};
         var initReport = function () {
-            console.log('> reportData', reportData);
+            console.log('ReportData', reportData);
 
             var $usersInfo = $('#usersInfo');
             var usersCount = 0;
@@ -284,7 +284,7 @@ window.CoreLib=window.jQuery||window.Zepto,!function(t){"use strict";t.callEvent
                     max: timeline.length - 1,
                 });
                 $timelineControl.val(timeline.length - 1);
-                $('.text-timeline-end').text(Math.floor(lastTimeItem.mins) + 'min');
+                $('.text-timeline-end').text(Math.floor(lastTimeItem.mins) + '分钟');
 
                 var $timelineTable = $('#timelineTable');
                 var refreshTimeline = function () {
