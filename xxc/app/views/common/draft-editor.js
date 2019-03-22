@@ -10,9 +10,9 @@ import {
     Modifier
 } from 'draft-js';
 import Emojione from '../../components/emojione';
-import App from '../../core';
 import timeSequence from '../../utils/time-sequence';
 import Lang from '../../core/lang';
+import {getMentionsMatchRegex, guessMember} from '../../core/members';
 
 /**
  * DraftJS Atomic 组件
@@ -104,7 +104,7 @@ const draftDecorator = new CompositeDecorator([{
     }
 }, {
     strategy: (contentBlock, callback/* , contentState */) => {
-        findWithRegex(/@[\u4e00-\u9fa5_\w]+[，。,./\s:@\n]/g, contentBlock, callback);
+        findWithRegex(getMentionsMatchRegex() || /@[\u4e00-\u9fa5_\w]+[，。,./\s:@\n]/g, contentBlock, callback);
     },
     // eslint-disable-next-line react/prop-types
     component: ({decoratedText, offsetKey, children}) => {
@@ -116,7 +116,7 @@ const draftDecorator = new CompositeDecorator([{
             if (guess === 'all' || guess === langAtAll) {
                 return <span title={langAtAll} className="at-all text-primary" data-offset-key={offsetKey}>{children}</span>;
             }
-            const member = App.members.guess(guess);
+            const member = guessMember(guess);
             if (member && member.id) {
                 return (<a className="app-link text-primary" href={`@Member/${member.id}`} title={`@${member.displayName}`} data-offset-key={offsetKey}>{children}</a>);
             }

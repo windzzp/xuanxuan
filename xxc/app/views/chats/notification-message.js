@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {classes} from '../../utils/html-helper';
-import App from '../../core';
 import Button from '../../components/button';
 import Lang, {isJustLangSwitched} from '../../core/lang';
 import Config from '../../config';
 import {isNotEmptyString} from '../../utils/string-helper';
+import {linkMentionsInText} from '../../core/members';
+import {renderChatMessageContent} from '../../core/im/im-ui';
 
 /**
  * NotificationMessage 组件 ，显示通知消息界面
@@ -80,7 +81,7 @@ export default class NotificationMessage extends Component {
             ...other
         } = this.props;
 
-        const content = message.renderedTextContent(App.im.ui.renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : App.im.ui.linkMembersInText, contentConverter);
+        const content = message.renderedTextContent(renderChatMessageContent, Config.ui['chat.denyShowMemberProfile'] ? null : linkMentionsInText, contentConverter);
         const {
             notification, actions, title, subtitle
         } = message;
