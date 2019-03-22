@@ -27,7 +27,7 @@ func safeClose(ch chan []byte) (justClosed bool) {
 // hub maintains the set of active clients and broadcasts messages to the
 // clients.
 type Hub struct {
-    clients map[string]map[string]map[int64]*Client // Registered clients. map[ranzhiName][clientID]*Client
+    clients map[string]map[string]map[int64]*Client // Registered clients. map[backend][plat][clientID]*Client
 
     // Inbound messages from the clients.
     multicast chan SendMsg

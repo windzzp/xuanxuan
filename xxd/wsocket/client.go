@@ -219,18 +219,27 @@ func chatLogout(userID int64, client *Client) error {
     if client.repeatLogin {
         return nil
     }
-    retMessages, err := api.ChatLogout(client.serverName, client.userID, client.lang)
-    if err != nil {
-        return err
-    }
 
-    util.DelUid(client.serverName, util.Int642String(client.userID))
+	client.hub.unregister <- client
+	//判断是否全部退出，否则不需要通知其它用户当前用户退出了.
+	var allOut bool = true
+	for _, plat := range util.Plats {
+		if _, ok :=client.hub.clients[client.serverName][plat][userID]; ok{
+			allOut = false
+		}
+	}
 
-    for key := 0; key < len(retMessages); key++ {
-        X2cSend(client.serverName, retMessages[key]["users"].([]int64), retMessages[key]["message"].([]byte), client)
-    }
+	if allOut == true {
+		retMessages, err := api.ChatLogout(client.serverName, client.userID, client.lang)
+		if err != nil {
+			return err
+		}
 
-    client.hub.unregister <- client
+		for key := 0; key < len(retMessages); key++ {
+			X2cSend(client.serverName, retMessages[key]["users"].([]int64), retMessages[key]["message"].([]byte), client)
+		}
+		util.DelUid(client.serverName, util.Int642String(client.userID))
+	}
     return nil
 }
 
