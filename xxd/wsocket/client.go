@@ -201,8 +201,6 @@ func chatLogin(parseData api.ParseData, client *Client) error {
 		}
 	}
 
-
-
     // 推送当前登录用户信息给其他在线用户
     // 因为是broadcast类型，所以不需要初始化userID
     client.hub.broadcast <- SendMsg{serverName: client.serverName, message: retMessages[0]["message"].([]byte)}
