@@ -1014,7 +1014,7 @@ class chatModel extends model
         }
         return $output;
     }
-    
+
     /**
      * Get notify.
      * @access public
@@ -1291,19 +1291,20 @@ class chatModel extends model
         $data->key            = $this->config->xuanxuan->key;
         $data->os             = $setting->os;
         $data->version        = $this->config->xuanxuan->version;
-        $data->xxbLang        = $this->config->xuanxuan->xxbLang;
+        $data->backendLang    = $this->config->xuanxuan->backendLang;
         $data->downloadType   = $type;
 
-        $server = $this->getServer($backend);
+        $webRoot = getWebRoot();
+        $server  = $this->getServer($backend);
         $data->server = $server;
-        $data->host   = ($backend == 'ranzhi' ? $server . '/' : trim($server, '/') . getWebRoot());
+        $data->host   = trim($server, '/') . ($backend == 'ranzhi' ? dirname($webRoot) : $webRoot);
 
         $url    = sprintf($this->config->chat->xxdDownloadUrl, $backend);
         $result = commonModel::http($url, $data);
 
         if($type == 'config')
         {
-            $this->sendDownHeader('xxd.conf', 'conf', $result, strlen($result));
+            $this->loadModel('file')->sendDownHeader('xxd.conf', 'conf', $result);
         }
         else
         {
