@@ -1,16 +1,15 @@
 <?php
 /**
- * The user module zh-tw file of RanZhi.
+ * The user module zh-tw file of XXB.
  *
  * @copyright   Copyright 2009-2018 青島易軟天創網絡科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     user
  * @version     $Id: zh-tw.php 4029 2016-08-26 06:50:41Z liugang $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 $lang->user->common    = '成員';
-
 $lang->user->id        = '編號';
 $lang->user->account   = '用戶名';
 $lang->user->super     = '管理員';
@@ -75,6 +74,7 @@ $lang->user->vcard           = '獲取二維碼名片';
 $lang->user->uploadAvatar    = '上傳頭像';
 $lang->user->cropAvatar      = '裁剪頭像';
 $lang->user->cropAvatarTip   = '拖拽選框來選擇頭像裁剪範圍';
+$lang->user->lang            = '角色';
 $lang->user->adminUser       = '組織';
 
 $lang->user->profile     = '個人信息';
@@ -84,7 +84,6 @@ $lang->user->reply       = '我的回貼';
 $lang->user->message     = '我的消息';
 
 $lang->user->inputAccount   = '請輸入用戶名';
-$lang->user->inputColleague = '請輸入同事姓名';
 $lang->user->inputPassword  = '請輸入密碼';
 $lang->user->searchUser     = '搜索';
 
@@ -116,21 +115,6 @@ $lang->user->notice->password = '字母和數字組合，最少六位';
 
 $lang->user->login  = new stdclass();
 $lang->user->login->common  = "登錄";
-$lang->user->login->welcome = '已有帳號';
-$lang->user->login->why     = '歡迎登陸，享用會員專屬服務！';
-
-$lang->user->control = new stdclass();
-$lang->user->control->common      = '成員中心';
-$lang->user->control->welcome     = '歡迎您，<strong>%s</strong>';
-$lang->user->control->lblPassword = "留空，則保持不變。";
-
-$lang->user->control->menus[10] = '<i class="icon-large icon-user"></i> 個人信息 <i class="icon-chevron-right"></i>|user|profile';
-$lang->user->control->menus[20] = '<i class="icon-large icon-edit"></i> 編輯信息 <i class="icon-chevron-right"></i>|user|edit';
-//$lang->user->control->menus[28] = '<i class="icon-large icon-comments-alt"></i> 我的消息 <i class="icon-chevron-right"></i>|user|message';
-$lang->user->control->menus[30] = '<i class="icon-large icon-share"></i> 我的主題 <i class="icon-chevron-right"></i>|user|thread';
-$lang->user->control->menus[40] = '<i class="icon-large icon-mail-reply-all"></i> 我的回帖 <i class="icon-chevron-right"></i>|user|reply';
-
-$lang->user->colleagueMenu = '同事';
 
 $lang->dept = new stdclass();  
 $lang->dept->common     = '部門結構';
@@ -160,28 +144,3 @@ $lang->user->roleList['servicemgr'] = '客服主管';
 $lang->user->roleList['supportmgr'] = '技術支持主管';
 $lang->user->roleList['top']        = '高層管理';
 $lang->user->roleList['others']     = '其他';
-
-$lang->user->mailContent = <<<EOT
-<html>
-<head>
-<style type='text/css'>
-body{margin:0;padding:0;}
-div{padding-left:30px;}
-</style>
-</head>
-<body>
-<div style='padding-top:20px;height:60px;background:#fafafa;border-bottom:1px solid #ddd;font-size:18px;font-weight:bold'> 密碼修改 </div>
-<div style='margin-top:20px;'>
-<p>尊敬的成員 %s <br />
-請點擊下面的連結，進行密碼修改: <br >
-<a href='%s' target='_blank'>%s</a>
-</p>
-<p>重置碼：%s</p>
-</div>
-<div style='height:20px;border-bottom:1px solid #ddd;'></div>
-<div style='margin:20px 0 0 0 ;'>
- 系統發信，請勿回覆
-</div>
-</body>
-</html>
-EOT;

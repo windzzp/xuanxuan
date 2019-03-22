@@ -8,23 +8,23 @@ $filter->sso     = new stdclass();
 $filter->upgrade = new stdclass();
 $filter->user    = new stdclass();
 
-$filter->rules->md5        = '/^[a-z0-9]{32}$/';
-$filter->rules->base64     = '/^[a-zA-Z0-9\+\/\=]+$/';
-$filter->rules->checked    = '/^[0-9,]+$/';
-$filter->rules->idList     = '/^[0-9\|]+$/';
-$filter->rules->lang       = '/^[a-zA-Z_\-]+$/';
 $filter->rules->any        = '/./';
+$filter->rules->base64     = '/^[a-zA-Z0-9\+\/\=]+$/';
+$filter->rules->browseType = '/^by[a-z]+$/';
+$filter->rules->callback   = '/^[a-zA-Z0-9=\&\%\.\/\-\:\?]+$/';
+$filter->rules->character  = '/^[a-zA-Z_\-]+$/';
+$filter->rules->checked    = '/^[0-9,]+$/';
+$filter->rules->common     = '/^[a-zA-Z0-9_]+$/';
+$filter->rules->idList     = '/^[0-9\|]+$/';
+$filter->rules->key        = '/^[a-z0-9]{32}+$/';
+$filter->rules->lang       = '/^[a-zA-Z_\-]+$/';
+$filter->rules->md5        = '/^[a-z0-9]{32}$/';
 $filter->rules->number     = '/^[0-9]+$/';
 $filter->rules->orderBy    = '/^\w+_(desc|asc)$/i';
-$filter->rules->word       = '/^\w+$/';
 $filter->rules->paramName  = '/^[a-zA-Z0-9_\.]+$/';
 $filter->rules->paramValue = '/^[a-zA-Z0-9=_,:\-\?\&`#+\^\/\.%\|\x7f-\xff]+$/';
-$filter->rules->common     = '/^[a-zA-Z0-9_]+$/';
-$filter->rules->character  = '/^[a-zA-Z_\-]+$/';
-$filter->rules->browseType = '/^by[a-z]+$/';
-$filter->rules->key        = '/^[a-z0-9]{32}+$/';
 $filter->rules->path       = '/(^//.|^/|^[a-zA-Z])?:?/.+(/$)?/';
-$filter->rules->callback   = '/^[a-zA-Z0-9=\&\%\.\/\-\:\?]+$/';
+$filter->rules->word       = '/^\w+$/';
 
 $filter->default->moduleName = 'code';
 $filter->default->methodName = 'code';
@@ -49,13 +49,13 @@ $filter->block->default->get['sso']             = 'reg::word';
 $filter->block->default->get['app']             = 'reg::character';
 $filter->block->default->get['param']           = 'reg::base64';
 
-$filter->entry->visit->get['referer']           = 'reg::base64';
 $filter->entry->depts->get['key']               = 'reg::key';
 $filter->entry->users->get['key']               = 'reg::key';
+$filter->entry->visit->get['referer']           = 'reg::base64';
 
-$filter->file->ajaxueditorupload->get['action'] = 'equal::config';
-$filter->file->filemanager->get['path']         = 'reg::path';
-$filter->file->filemanager->get['order']        = 'reg::common';
+$filter->file->ajaxueditorupload->get['action']      = 'equal::config';
+$filter->file->filemanager->get['path']              = 'reg::path';
+$filter->file->filemanager->get['order']             = 'reg::common';
 $filter->file->download->cookie[$config->sessionVar] = 'reg::common';
 
 $filter->sso->check->get['callback']            = 'reg::callback';
@@ -70,4 +70,4 @@ $filter->upgrade->upgradelicense->get['agree']  = 'equal::true';
 
 $filter->user->admin = new stdclass();
 $filter->user->admin->paramValue['query'] = 'reg::any';
-$filter->user->login->get['lang']               = 'reg::lang';
+$filter->user->login->get['lang']         = 'reg::lang';

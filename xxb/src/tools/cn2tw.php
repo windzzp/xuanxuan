@@ -1,38 +1,29 @@
 #!/usr/bin/env php
 <?php
-foreach(glob('../app/*') as $app)
+foreach(glob("../module/*") as $moduleName)
 {
-    echo "converting app " . basename($app) . ":\n";
-    convertTW($app);
-}
+    $moduleLangPath  = realpath($moduleName) . '/lang/';
+    $defaultLangFile = $moduleLangPath . 'zh-cn.php';
+    $targetLangFile  = $moduleLangPath . 'zh-tw.php';
 
-function convertTW($app)
-{
-    foreach(glob("$app/*") as $moduleName)
+    echo "  converting module " . basename($moduleName) . " extension,";
+    $extModuleLangPath = realpath($moduleName) . '/ext/*/lang/zh-cn/*.php';
+    foreach(glob($extModuleLangPath) as $extLangFile)
     {
-        $moduleLangPath  = realpath($moduleName) . '/lang/';
-        $defaultLangFile = $moduleLangPath . 'zh-cn.php';
-        $targetLangFile  = $moduleLangPath . 'zh-tw.php';
-
-        echo "  converting module " . basename($moduleName) . " extension,";
-        $extModuleLangPath = realpath($moduleName) . '/ext/*/lang/zh-cn/*.php';
-        foreach(glob($extModuleLangPath) as $extLangFile)
-        {
-            convExtToTW($extLangFile);
-        }
-
-        $extModuleLangPath = realpath($moduleName) . '/ext/lang/zh-cn/*.php';
-        foreach(glob($extModuleLangPath) as $extLangFile)
-        {
-            convExtToTW($extLangFile);
-        }
-        echo " ok.\n";
-        if(!file_exists($defaultLangFile)) continue;
-
-        echo "  converting module " . basename($moduleName) . ",";
-        convToTW($defaultLangFile, $targetLangFile);
-        echo " ok.\n";
+        convExtToTW($extLangFile);
     }
+
+    $extModuleLangPath = realpath($moduleName) . '/ext/lang/zh-cn/*.php';
+    foreach(glob($extModuleLangPath) as $extLangFile)
+    {
+        convExtToTW($extLangFile);
+    }
+    echo " ok.\n";
+    if(!file_exists($defaultLangFile)) continue;
+
+    echo "  converting module " . basename($moduleName) . ",";
+    convToTW($defaultLangFile, $targetLangFile);
+    echo " ok.\n";
 }
 
 function convToTW($defaultLangFile, $targetLangFile)

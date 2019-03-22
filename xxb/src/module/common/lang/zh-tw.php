@@ -1,13 +1,13 @@
 <?php
 /**
- * The zh-tw file of common module of RanZhi.
+ * The zh-tw file of common module of XXB.
  *
  * @copyright   Copyright 2009-2018 青島易軟天創網絡科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Chunsheng Wang <chunsheng@cnezsoft.com>
  * @package     common 
  * @version     $Id: zh-tw.php 4194 2016-10-21 09:23:53Z daitingting $
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 $lang->colon      = ' : ';
 $lang->ellipsis   = '…';
@@ -31,21 +31,10 @@ $lang->etc        = '等';
 $lang->importIcon = "<i class='icon-download-alt'> </i>";
 $lang->exportIcon = "<i class='icon-upload-alt'> </i>";
 
-/* Apps lang items.*/
-$lang->apps = new stdclass();
-$lang->apps->crm        = '客戶';
-$lang->apps->cash       = '財務';
-$lang->apps->oa         = '辦公';
-$lang->apps->doc        = '文檔';
-$lang->apps->proj       = '項目';
-$lang->apps->sys        = '通用';
-$lang->apps->team       = '團隊';
-$lang->apps->superadmin = '後台';
-
-/* Lang items for ranzhi. */
-$lang->ranzhi    = '然之協同';
-$lang->agreement = "已閲讀並同意<a href='http://zpl.pub/page/zplv12.html' target='_blank'>《Z PUBLIC LICENSE授權協議1.2》</a>。<span class='text-danger'>未經許可，不得去除、隱藏或遮掩然之系統的任何標誌及連結。</span>";
-$lang->poweredBy = "<a href='http://www.ranzhi.org/?v=%s' target='_blank'>{$lang->ranzhi}%s</a>";
+/* Lang items for xxb. */
+$lang->xxb       = '喧喧';
+$lang->agreement = "已閲讀並同意<a href='http://zpl.pub/page/zplv12.html' target='_blank'>《Z PUBLIC LICENSE授權協議1.2》</a>。<span class='text-danger'>未經許可，不得去除、隱藏或遮掩喧喧系統的任何標誌及連結。</span>";
+$lang->poweredBy = "<a href='http://www.xuan.im/?v=%s' data-toggle='tooltip' title='{$this->config->buildDate}' target='_blank'>{$lang->xxb}%s</a>";
 $lang->ipLimited = "<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8' /></head><body>抱歉，管理員限制當前IP登錄，請聯繫管理員解除限制。</body></html>";
 
 /* IE6 alert.  */
@@ -68,28 +57,16 @@ $lang->themes['default'] = '預設';
 $lang->themes['clear']   = '清晰';
 
 /* Global lang items. */
-$lang->home             = '首頁';
-$lang->welcome          = "%s協同管理系統";
-$lang->messages         = "<strong><i class='icon-comment-alt'></i> %s</strong>";
-$lang->todayIs          = '今天是%s，';
-$lang->today            = '今天';
-$lang->aboutUs          = '關於我們';
-$lang->about            = '關於';
-$lang->link             = '友情連結';
-$lang->frontHome        = '前台';
-$lang->forumHome        = '論壇';
-$lang->bookHome         = '手冊';
-$lang->register         = '註冊';
-$lang->logout           = '退出';
-$lang->login            = '登錄';
-$lang->account          = '帳號';
-$lang->password         = '密碼';
-$lang->all              = '全部';
-$lang->changePassword   = '修改密碼';
-$lang->currentPos       = '當前位置';
-$lang->categoryMenu     = '分類導航';
-$lang->basicInfo        = '基本信息';
-$lang->chooseUserToMail = '選擇要發送提醒的用戶...';
+$lang->home           = '首頁';
+$lang->welcome        = "喧喧後台管理系統";
+$lang->aboutUs        = '關於我們';
+$lang->about          = '關於';
+$lang->logout         = '退出';
+$lang->login          = '登錄';
+$lang->account        = '帳號';
+$lang->password       = '密碼';
+$lang->all            = '全部';
+$lang->changePassword = '修改密碼';
 
 /* Global action items. */
 $lang->reset          = '重填';
@@ -155,15 +132,6 @@ $lang->required       = '必填';
 $lang->custom         = '自定義';
 $lang->refresh        = '刷新';
 
-$lang->exportAll      = '導出全部記錄';
-$lang->exportThisPage = '導出本頁記錄';
-$lang->exportTemplate = '導出模板';
-$lang->exportExcel    = '導出Excel';
-$lang->exportWord     = '導出Word';
-$lang->importFile     = '導入檔案';
-$lang->importSuccess  = '導入成功';
-$lang->importFail     = '導入失敗';
-
 /* Items for lifetime. */
 $lang->lifetime = new stdclass();
 $lang->lifetime->createdBy    = '由誰創建';
@@ -188,59 +156,33 @@ $lang->js->timeout               = '網絡超時,請重試';
 $lang->js->confirmDiscardChanges = '表單已更改，確定關閉？';
 $lang->js->yes                   = '是';
 $lang->js->no                    = '否';
-$lang->js->installZipExtension   = "導出xlsx格式，需要安裝 php-zip 擴展，<a href='https://www.ranzhi.org/book/ranzhi/165.html' target='_blank'>安裝手冊</a>";
-
-/* Contact fields*/
-$lang->company = new stdclass();
-$lang->company->contactUs = '聯繫我們';
-$lang->company->address   = '地址';
-$lang->company->phone     = '電話';
-$lang->company->email     = 'Email';
-$lang->company->fax       = '傳真';
-$lang->company->qq        = 'QQ';
-$lang->company->weibo     = '微博';
-$lang->company->weixin    = '微信';
-$lang->company->wangwang  = '旺旺';
 
 /* The main menus. */
 $lang->menu = new stdclass();
+$lang->menu->user    = '組織|user|admin|';
+$lang->menu->group   = '權限|group|browse|';
+$lang->menu->entry   = '應用|entry|admin|';
+$lang->menu->setting = '設置|setting|xuanxuan|';
 
 $lang->index   = new stdclass();
 $lang->user    = new stdclass();
 $lang->file    = new stdclass();
-$lang->admin   = new stdclass();
 $lang->tree    = new stdclass();
 $lang->mail    = new stdclass();
 $lang->dept    = new stdclass();
-$lang->thread  = new stdclass();
 $lang->block   = new stdclass();
 $lang->action  = new stdclass();
-$lang->effort  = new stdclass();
 $lang->setting = new stdclass();
-$lang->task    = new stdclass();
-$lang->schema  = new stdclass();
-$lang->package = new stdclass();
 
-$lang->admin->common = '後台管理';
+$lang->group   = new stdclass();
 
-$lang->menu->sys = new stdclass();
-$lang->menu->sys->company = '公司|company|setbasic|';
-$lang->menu->sys->user    = '組織|user|admin|';
-$lang->menu->sys->group   = '權限|group|browse|';
-$lang->menu->sys->entry   = '應用|entry|admin|';
-$lang->menu->sys->system  = '系統|mail|admin|';
-$lang->menu->sys->package = '擴展|package|browse|';
-
-$lang->message = new stdclass(); 
-$lang->blog    = new stdclass(); 
-$lang->group   = new stdclass(); 
+$lang->menuGroups = new stdclass();
 
 /* Menu entry. */
 $lang->entry       = new stdclass();
 $lang->entry->menu = new stdclass();
 $lang->entry->menu->admin    = array('link' => '應用列表|entry|admin|', 'alias' => 'edit, integration, style, zentaoAdmin');
 $lang->entry->menu->create   = '添加應用|entry|create|';
-$lang->entry->menu->webapp   = 'WEB應用|webapp|obtain|';
 $lang->entry->menu->category = '分組|entry|category|';
 
 /* Menu system. */
@@ -250,113 +192,6 @@ $lang->system->menu->mail   = array('link' => '發信|mail|admin|', 'alias' => '
 $lang->system->menu->trash  = array('link' => '資源回收筒|action|trash|');
 $lang->system->menu->cron   = '計劃任務|cron|index|';
 $lang->system->menu->backup = '備份|backup|index|';
-
-$lang->article = new stdclass();
-$lang->article->menu = new stdclass();
-$lang->article->menu->admin  = '瀏覽|article|admin|';
-$lang->article->menu->tree   = '模組|tree|browse|type=article';
-$lang->article->menu->create = array('link' => '添加文章|article|create|type=article', 'alias' => 'edit');
-
-$lang->menuGroups = new stdclass();
-
-$lang->menu->dashboard = new stdclass();
-$lang->menu->dashboard->todo     = '待辦|todo|calendar|';
-$lang->menu->dashboard->task     = '任務|my|task|';
-$lang->menu->dashboard->project  = '項目|my|project|';
-$lang->menu->dashboard->order    = '訂單|my|order|';
-$lang->menu->dashboard->contract = '合同|my|contract|';
-$lang->menu->dashboard->review   = '審批|my|review|';
-$lang->menu->dashboard->company  = '組織|my|company|';
-$lang->menu->dashboard->dynamic  = '動態|my|dynamic|';
-$lang->menu->dashboard->contact  = '聯繫人|my|contact|';
-
-/* Menu of customer module. */
-if(!isset($lang->customer)) $lang->customer = new stdclass();
-$lang->customer->menu = new stdclass();
-$lang->customer->menu->browse      = '所有客戶|customer|browse|mode=all';
-$lang->customer->menu->assignedTo  = '指派給我|customer|browse|mode=assignedTo';
-$lang->customer->menu->contactedBy = '由我聯繫|customer|browse|mode=contactedby';
-$lang->customer->menu->past        = '亟需聯繫|customer|browse|mode=past';
-$lang->customer->menu->today       = '今天聯繫|customer|browse|mode=today';
-$lang->customer->menu->tomorrow    = '明天聯繫|customer|browse|mode=tomorrow';
-$lang->customer->menu->thisweek    = '本週內聯繫|customer|browse|mode=thisweek';
-$lang->customer->menu->thismonth   = '本月內聯繫|customer|browse|mode=thismonth';
-$lang->customer->menu->public      = '客戶池|customer|browse|mode=public';
-$lang->customer->menu->report      = '報表|report|browse|module=customer';
-
-/* Menu of provider module. */
-if(!isset($lang->provider)) $lang->provider = new stdclass();
-$lang->provider->menu = new stdclass();
-$lang->provider->menu->browse = array('link' => '供應商列表|provider|browse|', 'alias' => 'create,edit,view');
-
-/* Menu of product module. */
-if(!isset($lang->product)) $lang->product = new stdclass();
-$lang->product->menu = new stdclass();
-$lang->product->menu->browse     = '所有產品|product|browse|mode=browse&status=all';
-$lang->product->menu->normal     = '正常|product|browse|mode=browse&status=normal';
-$lang->product->menu->developing = '研發中|product|browse|mode=browse&status=developing';
-$lang->product->menu->offline    = '下線|product|browse|mode=browse&status=offline';
-$lang->product->menu->category   = '產品分類|tree|browse|type=product&startModule=&root=&from=product';
-
-$lang->todo = new stdclass();
-$lang->todo->menu = new stdclass();
-$lang->todo->menu->calendar        = '日曆|todo|calendar|';
-$lang->todo->menu->all             = '所有|todo|browse|mode=all';
-$lang->todo->menu->assignedToOther = '指派他人|todo|browse|mode=assignedtoother';
-$lang->todo->menu->assignedToMe    = '指派給我|todo|browse|mode=assignedtome';
-$lang->todo->menu->undone          = '未完成|todo|browse|mode=undone';
-$lang->todo->menu->future          = '待定|todo|browse|mode=future';
-
-$lang->my = new stdclass();
-$lang->my->review = new stdclass();
-$lang->my->review->menu = new stdclass();
-$lang->my->review->menu->all      = '所有|my|review|type=all';
-$lang->my->review->menu->attend   = '考勤|my|review|type=attend';
-$lang->my->review->menu->leave    = '請假|my|review|type=leave';
-$lang->my->review->menu->makeup   = '補班|my|review|type=makeup';
-$lang->my->review->menu->overtime = '加班|my|review|type=overtime';
-$lang->my->review->menu->lieu     = '調休|my|review|type=lieu';
-$lang->my->review->menu->refund   = '報銷|my|review|type=refund';
-
-$lang->my->order = new stdclass();
-$lang->my->order->menu = new stdclass();
-$lang->my->order->menu->past       = '亟需聯繫|my|order|type=past';
-$lang->my->order->menu->today      = '今天聯繫|my|order|type=today';
-$lang->my->order->menu->tomorrow   = '明天聯繫|my|order|type=tomorrow';
-$lang->my->order->menu->assignedTo = '指派給我|my|order|type=assignedTo';
-$lang->my->order->menu->createdBy  = '由我創建|my|order|type=createdBy';
-$lang->my->order->menu->signedBy   = '由我簽約|my|order|type=signedBy';
-$lang->my->order->menu->all        = '所有|my|order|type=all';
- 
-$lang->my->contract = new stdclass();
-$lang->my->contract->menu = new stdclass();
-$lang->my->contract->menu->unfinished  = '未完成|my|contract|type=unfinished';
-$lang->my->contract->menu->finished    = '已完成|my|contract|type=finished';
-$lang->my->contract->menu->canceled    = '已取消|my|contract|type=canceled';
-$lang->my->contract->menu->returnedBy  = '由我回款|my|contract|type=returnedBy';
-$lang->my->contract->menu->deliveredBy = '由我交付|my|contract|type=deliveredBy';
-
-$lang->my->task = new stdclass();
-$lang->my->task->menu = new stdclass();
-$lang->my->task->menu->assignedToMe = '指派給我|my|task|type=assignedTo';
-$lang->my->task->menu->createdByMe  = '由我創建|my|task|type=createdBy';
-$lang->my->task->menu->finishedByMe = '由我完成|my|task|type=finishedBy';
-$lang->my->task->menu->closedByMe   = '由我關閉|my|task|type=closedBy';
-$lang->my->task->menu->canceledByMe = '由我取消|my|task|type=canceledBy';
-$lang->my->task->menu->unclosed     = '未關閉|my|task|type=unclosed';
-
-$lang->my->dynamic = new stdclass();
-$lang->my->dynamic->menu = new stdclass();
-$lang->my->dynamic->menu->today      = '今天|my|dynamic|period=today';
-$lang->my->dynamic->menu->yesterday  = '昨天|my|dynamic|period=yesterday';
-$lang->my->dynamic->menu->twodaysago = '前天|my|dynamic|period=twodaysago';
-$lang->my->dynamic->menu->thisweek   = '本週|my|dynamic|period=thisweek';
-$lang->my->dynamic->menu->lastweek   = '上周|my|dynamic|period=lastweek';
-$lang->my->dynamic->menu->thismonth  = '本月|my|dynamic|period=thismonth';
-$lang->my->dynamic->menu->lastmonth  = '上月|my|dynamic|period=lastmonth';
-$lang->my->dynamic->menu->all        = '所有|my|dynamic|period=all';
-
-$lang->my->company = new stdclass();
 
 /* Menu of mail module. */
 $lang->mail = new stdclass();
@@ -377,6 +212,9 @@ $lang->menuGroups->cron = 'system';
 $lang->backup = new stdclass();
 $lang->backup->menu = $lang->system->menu;
 $lang->menuGroups->backup = 'system';
+
+$lang->setting->menu = $lang->system->menu;
+$lang->menuGroups->setting = 'system';
 
 /* The error messages. */
 $lang->error = new stdclass();
@@ -426,23 +264,6 @@ $lang->pager->previousPage = "上一頁";
 $lang->pager->nextPage     = "下一頁";
 $lang->pager->summery      = "第 <strong>%s-%s</strong> 項，共 <strong>%s</strong> 項";
 
-/* The excel items. */
-$lang->excel = new stdClass();
-$lang->excel->canNotRead = '不能解析該檔案';
-
-$lang->excel->error = new stdclass();
-$lang->excel->error->info   = '您輸入的值不在下拉框列表內。';
-$lang->excel->error->title  = '輸入有誤';
-$lang->excel->error->noFile = '沒有檔案';
-$lang->excel->error->noData = '沒有有效的數據';
-
-$lang->excel->title = new stdclass();
-$lang->excel->title->contact  = '聯繫人';
-$lang->excel->title->sysValue = '系統數據';
-
-$lang->excel->help = new stdclass();
-$lang->excel->help->contact = "“真實姓名“是必填欄位，如果不填導入時會忽略這條數據。";
-
 $lang->date = new stdclass();
 $lang->date->minute = '分鐘';
 $lang->date->day    = '天';
@@ -474,47 +295,6 @@ $lang->datepicker->dpText->TEXT_CHOOSE_DATE = '選擇日期';
 $lang->datepicker->dayNames     = array('星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六');
 $lang->datepicker->abbrDayNames = array('日', '一', '二', '三', '四', '五', '六');
 $lang->datepicker->monthNames   = array('一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月');
-
-/* Set currency items. */
-$lang->currencyList['rmb']  = '人民幣';
-$lang->currencyList['usd']  = '美元';
-$lang->currencyList['hkd']  = '港元';
-$lang->currencyList['twd']  = '台元';
-$lang->currencyList['euro'] = '歐元';
-$lang->currencyList['dem']  = '馬克';
-$lang->currencyList['chf']  = '瑞士法郎';
-$lang->currencyList['frf']  = '法國法郎';
-$lang->currencyList['gbp']  = '英鎊';
-$lang->currencyList['nlg']  = '荷蘭盾';
-$lang->currencyList['cad']  = '加拿大元';
-$lang->currencyList['sur']  = '盧布';
-$lang->currencyList['inr']  = '盧比';
-$lang->currencyList['aud']  = '澳大利亞元';
-$lang->currencyList['nzd']  = '新西蘭元';
-$lang->currencyList['thb']  = '泰國銖';
-$lang->currencyList['sgd']  = '新加坡元';
-
-/* Currency symbols setting. */
-$lang->currencySymbols['rmb']  = '￥';
-$lang->currencySymbols['usd']  = '$';
-$lang->currencySymbols['hkd']  = 'HK$';
-$lang->currencySymbols['twd']  = 'NT$';
-$lang->currencySymbols['euro'] = 'ECU';
-$lang->currencySymbols['dem']  = 'DM';
-$lang->currencySymbols['chf']  = 'SF';
-$lang->currencySymbols['frf']  = 'FF';
-$lang->currencySymbols['gbp']  = '￡';
-$lang->currencySymbols['nlg']  = 'F';
-$lang->currencySymbols['cad']  = 'CAN$';
-$lang->currencySymbols['sur']  = 'Rbs';
-$lang->currencySymbols['inr']  = 'Rs';
-$lang->currencySymbols['aud']  = 'A$';
-$lang->currencySymbols['nzd']  = 'NZ$';
-$lang->currencySymbols['thb']  = 'B';
-$lang->currencySymbols['sgd']  = 'S$';
-
-$lang->currencyTip['w'] = '萬';
-$lang->currencyTip['y'] = '億';
 
 /* The datetime settings. */
 if(!defined('DT_DATETIME1'))  define('DT_DATETIME1',  'Y-m-d H:i:s');
