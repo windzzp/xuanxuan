@@ -27,10 +27,10 @@ program
     .option('-g, --groups <groups>', '是否测试讨论组发送消息')
     .option('-A, --activeLevel <activeLevel>', '测试用户活跃程度', 0.5)
     .option('-n, --reportName <reportName>', '测试报告名称')
-    .option('-S, --summaryInterval <summaryInterval>', '单次汇总时间间隔，单位秒', 20)
-    .option('-U, --autoSaveReportInterval <autoSaveReportInterval>', '自动保存报告时间间隔，单位秒', 60)
-    .option('-T, --logTypes <logTypes>', '日志报告文件类型', 'log,json,md,html')
-    .option('-m, --multiLogin', '是否启用多用户同时登录')
+    .option('-S, --summaryInterval <summaryInterval>', '单次汇总时间间隔，单位秒', 10)
+    .option('-U, --autoSaveReportInterval <autoSaveReportInterval>', '自动保存报告时间间隔，单位秒', 120)
+    .option('-T, --logTypes <logTypes>', '日志报告文件类型', 'log,json,html')
+    .option('-m, --multiLogin', '是否启用多用户同时登录', false)
     .parse(process.argv);
 
 // 测试配置
@@ -44,14 +44,14 @@ const config = {
     timeForLogin1: program.login1 ? program.login1 * 1000 : null,
     timeForLogin2: program.login2 ? program.login2 * 1000 : null,
     timeForLogin3: program.login3 ? program.login3 * 1000 : null,
-    reconnect: program.reconnect,
-    verbose: program.verbose,
+    reconnect: !!program.reconnect,
+    verbose: !!program.verbose,
     socketPort: program.port,
     one2one: !!program.one2one,
     groups: program.groups ? program.groups.split(',') : false,
     activeLevel: typeof program.activeLevel === 'string' ? Number.parseFloat(program.activeLevel) : program.activeLevel,
     testTime: program.time * 1000,
-    multiLogin: program.multiLogin,
+    multiLogin: !!program.multiLogin,
     reportName: program.reportName,
     autoSaveReportInterval: program.autoSaveReportInterval * 1000,
     summaryInterval: program.summaryInterval * 1000,
@@ -558,6 +558,10 @@ const start = () => {
             const server = getOnlineServers(1)[0];
             if (server) {
                 server.fetchUserList();
+            } else {
+                serverOnlineInfo.online = 0;
+                serverOnlineInfo.total = 0;
+                serverOnlineInfo.updateTime = loopTime;
             }
         }
     }, 50);
