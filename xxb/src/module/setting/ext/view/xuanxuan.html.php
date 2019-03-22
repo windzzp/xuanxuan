@@ -35,8 +35,8 @@
         <td><?php echo $type == 'edit' ? html::a('javascript:void(0)', $lang->chat->createKey, 'onclick="createKey()"') : '';?></td>
       </tr>
       <tr>
-        <th><?php echo $lang->chat->xxbLang;?></th>
-        <td><?php echo $type == 'edit' ? html::select('xxbLang', $config->langs, $config->xuanxuan->xxbLang, "class='form-control'") : zget($config->langs, $config->xuanxuan->xxbLang, '');?></td>
+        <th><?php echo $lang->chat->backendLang;?></th>
+        <td><?php echo $type == 'edit' ? html::select('backendLang', $config->langs, $config->xuanxuan->backendLang, "class='form-control'") : zget($config->langs, $config->xuanxuan->backendLang, '');?></td>
         <td></td>
       </tr>
       <tr>

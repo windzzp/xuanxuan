@@ -323,7 +323,6 @@ class groupModel extends model
         foreach($this->lang->moduleOrder as $moduleName)
         {
             $resource = $resources->$moduleName;
-            //unset($resources->$moduleName);
             $this->lang->resource->$moduleName = $resource;
         }
         foreach($resources as $key => $resource)
@@ -392,103 +391,6 @@ class groupModel extends model
             if($this->checkMenuModule($menu, $moduleName)) $modules[] = $moduleName;
         }
         return $modules;
-    }
-
-    /**
-     * Update app priv by groupID. 
-     * 
-     * @param  int   $groupID 
-     * @param  array $apps 
-     * @access public
-     * @return bool
-     */
-    public function updateAppPrivByGroup($groupID, $apps)
-    {
-        /* Delete old priv. */
-        $this->dao->delete()->from(TABLE_GROUPPRIV)->where('`module`')->eq('apppriv')->andWhere('`group`')->eq($groupID)->exec();
-
-        if(empty($apps)) return true;
-        $priv = new stdclass();
-        $priv->group = $groupID;
-        $priv->module = 'apppriv';
-        foreach($apps as $app)
-        {
-            $priv->method = $app;
-            $this->dao->replace(TABLE_GROUPPRIV)->data($priv)->exec();
-        }
-        return true;
-    }
-
-    /**
-     * Update app priv by appCode. 
-     * 
-     * @param  string $appCode 
-     * @param  array  $groups 
-     * @access public
-     * @return bool
-     */
-    public function updateAppPrivByApp($appCode, $groups)
-    {
-        /* Delete old priv. */
-        $this->dao->delete()->from(TABLE_GROUPPRIV)->where('`module`')->eq('apppriv')->andWhere('`method`')->eq($appCode)->exec();
-
-        if(empty($groups)) return true;
-        $priv = new stdclass();
-        $priv->module = 'apppriv';
-        $priv->method = $appCode;
-        foreach($groups as $group)
-        {
-            $priv->group = $group;
-            $this->dao->replace(TABLE_GROUPPRIV)->data($priv)->exec();
-        }
-        return true;
-    }
-
-    /**
-     * Update priv for expense. 
-     * 
-     * @param  array  $groups 
-     * @access public
-     * @return bool
-     */
-    public function updateTradePriv($groups)
-    {
-        /* Delete old priv. */
-        $this->dao->delete()->from(TABLE_GROUPPRIV)->where('`module`')->eq('tradebrowse')->andWhere('`method`')->eq('out')->exec();
-
-        if(empty($groups)) return true;
-        $priv = new stdclass();
-        $priv->module = 'tradebrowse';
-        $priv->method = 'out';
-        foreach($groups as $group)
-        {
-            $priv->group = $group;
-            $this->dao->replace(TABLE_GROUPPRIV)->data($priv)->exec();
-        }
-        return true;
-    }
-
-    /**
-     * get privilege by app code. 
-     * 
-     * @param  string $appCode 
-     * @access public
-     * @return array
-     */
-    public function getAppPriv($appCode)
-    {
-        return $this->dao->select('*')->from(TABLE_GROUPPRIV)->where('`module`')->eq('apppriv')->andWhere('`method`')->eq($appCode)->fetchAll('group');
-    }
-
-    /**
-     * get privilege of expense. 
-     * 
-     * @access public
-     * @return array
-     */
-    public function getTradePriv()
-    {
-        return $this->dao->select('*')->from(TABLE_GROUPPRIV)->where('`module`')->eq('tradebrowse')->andWhere('`method`')->eq('out')->fetchAll('group');
     }
 
     /**

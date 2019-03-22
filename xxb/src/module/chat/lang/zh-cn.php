@@ -3,7 +3,7 @@ $lang->chat->settings = '喧喧设置';
 $lang->chat->debug    = '调试功能';
 
 $lang->chat->version     = '版本';
-$lang->chat->xxbLang     = '服务器端语言';
+$lang->chat->backendLang = '服务器端语言';
 $lang->chat->key         = '密钥';
 $lang->chat->systemGroup = '系统';
 $lang->chat->url         = '访问地址';
@@ -11,20 +11,6 @@ $lang->chat->createKey   = '重新生成密钥';
 $lang->chat->connector   = '、';
 $lang->chat->viewDebug   = '查看调试信息';
 $lang->chat->log         = '日志';
-$lang->chat->id          = 'ID';
-$lang->chat->checkUpdate = '检查更新';
-$lang->chat->xxcVersion  = 'XXC版本';
-$lang->chat->xxdVersion  = 'XXD版本';
-$lang->chat->xxbVersion  = 'XXB版本';
-$lang->chat->xxcDesc     = '升级描述';
-$lang->chat->xxcReadme   = '更新日志';
-$lang->chat->strategy    = '升级策略';
-$lang->chat->download    = '下载地址';
-$lang->chat->notVersion  = '%s格式不正确，例如：2.5 或者 2.5.0';
-$lang->chat->notempty    = '不能为空.';
-
-$lang->chat->strategies['force']    = '强制';
-$lang->chat->strategies['optional'] = '可选';
 
 $lang->chat->debugStatus[1] = '启用';
 $lang->chat->debugStatus[0] = '不启用';
@@ -88,6 +74,12 @@ $lang->chat->xxd->max            = '最大';
 $lang->chat->httpsOptions['on']  = '启用';
 $lang->chat->httpsOptions['off'] = '不启用';
 
+$lang->chat->osList['win_i386']      = 'Windows 32位';
+$lang->chat->osList['win_x86_64']    = 'Windows 64位';
+$lang->chat->osList['linux_i386']    = 'Linux 32位';
+$lang->chat->osList['linux_x86_64']  = 'Linux 64位';
+$lang->chat->osList['darwin_x86_64'] = 'macOS';
+
 $lang->chat->placeholder = new stdclass();
 $lang->chat->placeholder->xxd = new stdclass();
 $lang->chat->placeholder->xxd->ip             = '监听的服务器ip地址，没有特殊需要直接填写0.0.0.0';
@@ -104,9 +96,3 @@ $lang->chat->notify->setReceiver = '没有设置接收者类型，只能是用�
 $lang->chat->notify->setGroup    = '应当设置接收讨论组。';
 $lang->chat->notify->setUserList = '应当设置接收者用户列表。';
 $lang->chat->notify->setSender   = '应当设置发送方信息。';
-
-$lang->chat->osList['win_i386']      = 'Windows 32位';
-$lang->chat->osList['win_x86_64']    = 'Windows 64位';
-$lang->chat->osList['linux_i386']    = 'Linux 32位';
-$lang->chat->osList['linux_x86_64']  = 'Linux 64位';
-$lang->chat->osList['darwin_x86_64'] = 'macOS';
