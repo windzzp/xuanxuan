@@ -4,7 +4,6 @@ import {classes} from '../../utils/html-helper';
 import Lang from '../../core/lang';
 import {sendFilesToChat} from '../../core/im/im-ui';
 import EmojioneIcon from '../../components/emojione-icon';
-import {showMessager} from '../../components/messager';
 
 /**
  * ChatsDndContainer 组件 ，显示聊天拖放功能交互容器
