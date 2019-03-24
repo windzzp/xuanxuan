@@ -50,6 +50,7 @@ const EVENT = {
     init: 'chats.init',
     messages: 'chats.messages',
     fetchQueueFinish: 'fetch.queue.finish.',
+    updateNextMessage: 'im.message.updateNextMessage'
 };
 
 /**
@@ -209,6 +210,7 @@ export const updateChatMessages = (messages, muted = false, skipOld = false) => 
     }
     const chatsMessages = {};
     const messagesForUpdate = messages.map(message => {
+        if (message.deleted === 1) events.emit(EVENT.updateNextMessage, message.order); 
         message = createChatMessage(message);
         if (!chatsMessages[message.cgid]) {
             chatsMessages[message.cgid] = [message];
