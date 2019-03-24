@@ -53,6 +53,11 @@
       <td></td>
     </tr>
     <tr>
+      <th><?php echo $lang->client->releaseStatus?></th>
+      <td><?php echo html::radio('status', $lang->client->status, 'notRelease')?></td>
+      <td></td>
+    </tr>
+    <tr>
       <th></th>
       <td><?php echo html::submitButton();?></td>
       <td></td>
