@@ -25,6 +25,26 @@ class client extends control
     }
 
     /**
+     * Create a client.
+     *
+     * @access public
+     * @return void
+     */
+    public function create()
+    {
+        if($_POST)
+        {
+            $this->client->create();
+            if(dao::isError()) $this->send(array('result' => 'fail', 'message' => dao::getError()));
+
+            $this->send(array('result' => 'success', 'message' => $this->lang->saveSuccess, 'locate' => 'reload'));
+        }
+
+        $this->view->title = $this->lang->client->create;
+        $this->display();
+    }
+    
+    /**
      * Download remote package.
      * @param string $version
      * @param string $link
@@ -36,7 +56,7 @@ class client extends control
         set_time_limit(0);
         $result = $this->client->downloadZipPackage($version, $link);
         if($result == false) $this->send(array('result' => 'fail', 'message' => $this->lang->client->downloadFail));
-        $this->client->create($version, $result, $os);
+        $this->client->edit($version, $result, $os);
         $this->send(array('result' => 'success', 'message' => $this->lang->saveSuccess, 'locate' => 'reload'));
     }
 

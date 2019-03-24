@@ -54,12 +54,40 @@ class clientModel extends model
 
     /**
      * Create a client.
+     *
+     * @access public
+     * @return bool
+     */
+    public function create()
+    {
+        $client = fixer::input('post')
+            ->add('createdBy', $this->app->user->account)
+            ->add('createdDate', helper::now())
+            ->get();
+
+        if(empty($client->version)) dao::$errors['version'][] = sprintf($this->lang->error->notempty, $this->lang->client->version);
+        if($client->version && !preg_match("/^[0-9.]*$/", $client->version)) dao::$errors['version'][] = $this->lang->client->wrongVersion;
+        foreach($client->downloads as $os => $url)
+        {
+            if(empty($url)) dao::$errors[$os][] = sprintf($this->lang->error->notempty, zget($this->lang->client->zipList, $os) . $this->lang->client->download);
+            if($url && !validater::checkURL($url)) dao::$errors[$os][] = sprintf($this->lang->error->URL, zget($this->lang->client->zipList, $os) . $this->lang->client->download);
+        }
+        if(dao::isError()) return false;
+
+        $client->downloads = helper::jsonEncode($client->downloads);
+        $this->dao->insert(TABLE_IM_CLIENT)->data($client)->autoCheck()->exec();
+
+        return !dao::isError();
+    }
+    
+    /**
+     * Create or edit a client by account.
      * @param $version
      * @param $link
      * @param $os
      * @return bool
      */
-    public function create($version, $link, $os)
+    public function edit($version, $link, $os)
     {
         $client = $this->getByVersion($version);
         if($client)

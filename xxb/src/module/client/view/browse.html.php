@@ -13,6 +13,7 @@
 <?php include '../../common/view/header.html.php';?>
 <div id='menuActions'>
   <?php commonModel::printLink('client', 'checkUpgrade', '', $lang->client->checkUpgrade, "class='btn btn-primary' data-toggle='modal'");?>
+  <?php commonModel::printLink('client', 'create', '', $lang->client->create, "class='btn btn-primary' data-toggle='modal'");?>
 </div>
 <div class='panel'>
   <table class='table table-hover'>

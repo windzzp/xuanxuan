@@ -1,5 +1,6 @@
 <?php
 $lang->client->common       = 'Client';
+$lang->client->create       = 'Create client';
 $lang->client->browse       = 'Browse client';
 $lang->client->edit         = 'Edit client';
 $lang->client->delete       = 'Delete client';

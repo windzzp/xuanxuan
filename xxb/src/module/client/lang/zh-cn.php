@@ -1,5 +1,6 @@
 <?php
 $lang->client->common       = '客户端';
+$lang->client->create       = '添加客户端';
 $lang->client->browse       = '浏览客户端';
 $lang->client->edit         = '编辑客户端';
 $lang->client->delete       = '删除客户端';
