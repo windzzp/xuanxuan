@@ -64,11 +64,10 @@ class clientModel extends model
         $client = $this->getByVersion($version);
         if($client)
         {
-            $downloads = json_decode($client->downloads, true);
-            $downloads[$os] = $link;
-            $client->editedBy   = $this->app->user->account;
-            $client->editedDate = helper::now();
-            $client->downloads  = helper::jsonEncode($downloads);
+            $client->downloads[$os] = $link;
+            $client->editedBy       = $this->app->user->account;
+            $client->editedDate     = helper::now();
+            $client->downloads      = helper::jsonEncode( $client->downloads);
             return $this->dao->update(TABLE_IM_CLIENT)->data($client)->where('id')->eq($client->id)->exec();
         }
         else
@@ -146,6 +145,7 @@ class clientModel extends model
      */
     public function downloadZipPackage($version, $link)
     {
+        ignore_user_abort(true);
         set_time_limit(0);
         if(empty($version) || empty($link)) return false;
         $dir  = "data/client/" . $version . '/';
@@ -161,25 +161,14 @@ class clientModel extends model
         }
         ob_clean();
         ob_end_flush();
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,$link);
-        $fp =  fopen($this->app->wwwRoot . $dir . $file, 'w+');
-        curl_setopt($ch, CURLOPT_FILE, $fp);
-        curl_exec ($ch);
-        curl_close ($ch);
-        fclose($fp);
-        return commonModel::getSysURL() . $this->config->webRoot . $dir . $file;
+        
         $local  = fopen($this->app->wwwRoot . $dir . $file, 'w');
         $remote = fopen($link, 'rb');
         if($remote === false) return false;
-        $chunkSize = 256 * 1024;
         while(!feof($remote))
         {
-            $buffer = fread($remote, $chunkSize);
+            $buffer = fread($remote, 4096);
             fwrite($local, $buffer);
-            ob_flush();
-            flush();
         }
         fclose($local);
         fclose($remote);
