@@ -161,6 +161,15 @@ class clientModel extends model
         }
         ob_clean();
         ob_end_flush();
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$link);
+        $fp =  fopen($this->app->wwwRoot . $dir . $file, 'w+');
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_exec ($ch);
+        curl_close ($ch);
+        fclose($fp);
+        return commonModel::getSysURL() . $this->config->webRoot . $dir . $file;
         $local  = fopen($this->app->wwwRoot . $dir . $file, 'w');
         $remote = fopen($link, 'rb');
         if($remote === false) return false;
