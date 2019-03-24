@@ -60,6 +60,7 @@ const EVENT = {
     suggestSendImage: 'im.chats.suggestSendImage',
     sendboxFocus: 'im.chat.sendbox.focus',
     showReeditHandle: 'im.message.showReedit',
+    updateNextMessage: 'im.message.updateNextMessage'
 };
 
 /**
@@ -1002,9 +1003,10 @@ addContextMenuCreator('message.text,message.image,message.file,message.url', con
             icon: 'undo-variant',
             click: () => {
                 const {
-                    isTextContent, content, cgid, gid
+                    isTextContent, content, cgid, gid, order
                 } = message;
                 return deleteChatMessage(message).then(() => {
+                    events.emit(EVENT.updateNextMessage, order);
                     if (isTextContent && content) {
                         sendContentToChat(content, 'text', cgid);
                         setTimeout(() => {
