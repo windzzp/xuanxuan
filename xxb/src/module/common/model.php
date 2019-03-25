@@ -272,16 +272,45 @@ class commonModel extends model
     public static function createMainMenu($currentModule = '')
     {
         global $app, $lang, $config;
+
+        /* Set current module. */
+        if(isset($lang->menuGroups->$currentModule)) $currentModule = $lang->menuGroups->$currentModule;
+
         $isMobile = $app->viewType === 'mhtml';
         $string   = !$isMobile ? "<ul class='nav navbar-nav'>\n" : '';
 
+        $menuOrder = isset($lang->menuOrder) ? $lang->menuOrder : array();
+        $allMenus  = new stdclass();
+        if(!empty($menuOrder))
+        {
+            ksort($menuOrder);
+            foreach($lang->menu as $moduleName => $moduleMenu)
+            {
+                if(!in_array($moduleName, $menuOrder)) $menuOrder[] = $moduleName;
+            }
+
+            foreach($menuOrder as $name)
+            {
+                if(isset($lang->menu->$name)) $allMenus->$name = $lang->menu->$name;
+            }
+
+            foreach($lang->menu as $key => $value)
+            {
+                if(!isset($allMenus->$key)) $allMenus->$key = $value;
+            }
+        }
+        else
+        {
+            $allMenus = $lang->menu;
+        }
+
         /* Print all main menus. */
-        foreach($lang->menu as $moduleName => $moduleMenu)
+        foreach($allMenus as $moduleName => $moduleMenu)
         {
             $class = $moduleName == $currentModule ? " class='active'" : '';
             list($label, $module, $method, $vars) = explode('|', $moduleMenu);
 
-            if(strpos(',tree,setting,', ',' . $module . ',') != false and isset($lang->setting->menu)) 
+            if(strpos(',setting,', ',' . $module . ',') != false and isset($lang->setting->menu))
             {
                 foreach($lang->setting->menu as $settingMenu)
                 {
@@ -322,11 +351,11 @@ class commonModel extends model
 
     /**
      * Create the module menu.
-     * 
-     * @param  string $currentModule 
+     *
+     * @param  string $currentModule
      * @static
      * @access public
-     * @return void
+     * @return string
      */
     public static function createModuleMenu($currentModule)
     {
@@ -337,21 +366,12 @@ class commonModel extends model
 
         if(!isset($lang->$currentModule->menu)) return false;
 
-        $isMobile = $app->viewType === 'mhtml';
-        $string   = !$isMobile ? "<nav id='menu'><ul class='nav'>\n" : '';
-        if(!$isMobile && strpos(',setting,tree,group,', ",$currentModule,") !== false) 
-        {
-            $string = "<nav class='menu leftmenu affix'><ul class='nav nav-primary'>\n";
-            if($currentModule == 'setting' && strpos(',xuanxuan,xxcversion,', ",$currentMethod,") !== false)
-            {
-                $string = "<nav id='menu'><ul class='nav'>\n";
-            }
-        }
-
-        $menuOrder = isset($lang->{$currentModule}->menuOrder) ? $lang->{$currentModule}->menuOrder : array();  
+        $isMobile  = $app->viewType === 'mhtml';
+        $string    = !$isMobile ? "<nav id='menu'><ul class='nav'>\n" : '';
+        $menuOrder = isset($lang->{$currentModule}->menuOrder) ? $lang->{$currentModule}->menuOrder : array();
 
         /* Get menus of current module. */
-        $moduleMenus = new stdclass(); 
+        $moduleMenus = new stdclass();
         if(!empty($menuOrder))
         {
             ksort($menuOrder);
@@ -367,13 +387,13 @@ class commonModel extends model
         }
         else
         {
-            $moduleMenus = $lang->$currentModule->menu;  
+            $moduleMenus = $lang->$currentModule->menu;
         }
 
         /* Cycling to print every menus of current module. */
         foreach($moduleMenus as $methodName => $methodMenu)
         {
-            if(is_array($methodMenu)) 
+            if(is_array($methodMenu))
             {
                 $methodAlias = isset($methodMenu['alias']) ? $methodMenu['alias'] : '';
                 $methodLink  = $methodMenu['link'];
@@ -410,7 +430,6 @@ class commonModel extends model
                 $link = html::a($url, $label);
                 if(strpos($string, "class='active'") != false)
                 {
-
                     $string .= !$isMobile ? ("<li>$link</li>\n") : $link;
                 }
                 else

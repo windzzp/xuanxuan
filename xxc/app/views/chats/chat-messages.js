@@ -195,7 +195,9 @@ export default class ChatMessages extends Component {
      * @return {void}
      */
     handleScroll = scrollInfo => {
-        if (!scrollInfo.isAtBottom) {
+        const {chat} = this.props;
+        const inverse = chat.isNotification;
+        if ((!scrollInfo.isAtBottom && !inverse) || (!scrollInfo.isAtTop && inverse)) {
             this.setState({
                 displayBtn: 'block'
             });
@@ -204,7 +206,6 @@ export default class ChatMessages extends Component {
                 displayBtn: 'none'
             });
         }
-        const {chat} = this.props;
         if (!chat.isLoadingOver) {
             if (scrollInfo.isAtTop) {
                 this.loadChatMessages();
@@ -261,15 +262,21 @@ export default class ChatMessages extends Component {
                     header={headerView}
                     font={font}
                     className="dock scroll-y user-selectable"
-                    messages={inverse ? messages.reverse() : messages}
+                    messages={messages}
                     onScroll={this.handleScroll}
                 />
                 <Button
-                    onClick={() => this.messageList.scrollToBottom()}
-                    title={Lang.string('chat.toolbar.scroll')}
-                    icon="arrow-down-thick"
+                    onClick={inverse ? () => this.messageList.scrollToTop() : () => this.messageList.scrollToBottom()}
+                    title={inverse ? Lang.string('chat.toolbar.scrollToTop') : Lang.string('chat.toolbar.scrollToBottom')}
+                    icon={inverse ? 'arrow-up-thick' : 'arrow-down-thick'}
                     className="btn iconbutton rounded primary-pale"
-                    style={{
+                    style={inverse ? {
+                        position: 'fixed',
+                        top: '80px',
+                        right: '20px',
+                        zIndex: '1030',
+                        display: displayBtn,
+                    } : {
                         position: 'fixed',
                         bottom: '20px',
                         right: '20px',

@@ -138,7 +138,7 @@ export const executeCommandLine = (commandLine, commandContext = null) => {
         }
         return decodeURIComponent(p);
     });
-    return executeCommandWithContext(params.shift(), commandContext, params);
+    return executeCommandWithContext(params.shift(), commandContext, ...params);
 };
 
 /**

@@ -322,7 +322,11 @@ export default class ExtsIndex extends Component {
                     redirectView = <Redirect to={ROUTES.exts.app.id(defaultAppName)} />;
                 }
             } else if (!match.params.filterType) {
-                redirectView = <Redirect to={ROUTES.exts.app.id(Exts.ui.currentOpenedApp.name)} />;
+                if (!Exts.ui.currentOpenedApp._app.pinnedOnMenu) {
+                    redirectView = <Redirect to={ROUTES.exts.app.id(Exts.ui.currentOpenedApp.name)} />;
+                } else {
+                    redirectView = <Redirect to={ROUTES.exts.app.id('home')} />;
+                }
             }
         }
 

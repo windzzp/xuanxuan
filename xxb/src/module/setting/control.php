@@ -25,7 +25,11 @@ class setting extends control
 
         $this->app->loadLang($module);
 
-        if($module == 'user' and $field == 'roleList') $this->lang->menuGroups->setting = 'user';
+        if($module == 'user' and $field == 'roleList')
+        {
+            $this->lang->menuGroups->setting = 'user';
+            unset($this->lang->setting->menu);
+        }
 
         if(!empty($_POST))
         {

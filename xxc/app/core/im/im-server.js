@@ -135,6 +135,9 @@ export const updateChatHistory = (cgid, messages, pager, socket) => {
         updateChatMessages(messages, true, true);
     }
 
+    if (!pager) {
+        return;
+    }
     const isFetchOver = pager.pageID * pager.recPerPage >= pager.recTotal;
     pager = Object.assign({}, historyFetchingPager, pager, {
         isFetchOver,
