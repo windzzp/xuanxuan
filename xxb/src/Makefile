@@ -28,6 +28,7 @@ xxb:
 	rm -rf xxb/tools
 	rm xxb/www/index.html
 	rm xxb/www/ux.php
+	sed -i '/upgradeXuanxuan/d' xxb/www/ux.php
 	# Make tmp directories.
 	mkdir xxb/tmp/
 	mkdir xxb/tmp/backup/
