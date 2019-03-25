@@ -306,8 +306,8 @@ export default class MessageList extends Component {
 
         let lastMessage = null;
         const messagesView = [];
-        if (messages) {
-            messages.forEach(message => {
+        if (messages && messages.length) {
+            const handleEachMessage = message => {
                 const messageListItem = listItemCreator ? listItemCreator(message, lastMessage) : <MessageListItem id={`message-${message.gid}`} staticUI={staticUI} font={font} showDateDivider={showDateDivider} lastMessage={lastMessage} key={message.gid} message={message} {...listItemProps} sleepUrlCard={sleepUrlCard} />;
                 lastMessage = message;
                 if (isFirefox || inverse) {
@@ -315,7 +315,16 @@ export default class MessageList extends Component {
                 } else {
                     messagesView.unshift(messageListItem);
                 }
-            });
+            };
+            if (inverse) {
+                for (let i = messages.length - 1; i >= 0; --i) {
+                    handleEachMessage(messages[i]);
+                }
+            } else {
+                for (let i = 0; i < messages.length; ++i) {
+                    handleEachMessage(messages[i]);
+                }
+            }
         }
 
         if (isFirefox) {

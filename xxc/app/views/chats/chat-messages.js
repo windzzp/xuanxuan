@@ -262,7 +262,7 @@ export default class ChatMessages extends Component {
                     header={headerView}
                     font={font}
                     className="dock scroll-y user-selectable"
-                    messages={inverse ? messages.reverse() : messages}
+                    messages={messages}
                     onScroll={this.handleScroll}
                 />
                 <Button
