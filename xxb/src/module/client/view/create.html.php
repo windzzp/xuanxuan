@@ -54,7 +54,7 @@
     </tr>
     <tr>
       <th><?php echo $lang->client->releaseStatus?></th>
-      <td><?php echo html::radio('status', $lang->client->status, 'notRelease')?></td>
+      <td><?php echo html::radio('status', $lang->client->status, 'wait')?></td>
       <td></td>
     </tr>
     <tr>
