@@ -990,27 +990,26 @@ class chatModel extends model
         $output->module = 'chat';
         $output->method = 'history';
 
+        $gids      = $this->getGidByUserID($user->id);
         $messages  = array();
         $startDate = $this->loadModel('setting')->getItem("owner={$user->account}&module=common&section=lastLogin&key={$device}");
-        if(!empty($startDate))
+        
+        if(!empty($startDate) && !empty($gids))
         {
-            $gids = $this->getGidByUserID($user->id);
-            if(!empty($gids))
+            $messages = $this->dao->select('*')->from(TABLE_IM_MESSAGE)
+                ->where('gid')->in($gids)
+                ->beginIF($startDate)->andWhere('date')->ge($startDate)->fi()
+                ->orderBy('id_desc')->limit(500)
+                ->fetchAll();
+            foreach($messages as $message)
             {
-                $messages = $this->dao->select('*')->from(TABLE_IM_MESSAGE)
-                    ->where('gid')->in($gids)
-                    ->beginIF($startDate)->andWhere('date')->ge($startDate)->fi()
-                    ->orderBy('id_desc')->limit(500)
-                    ->fetchAll();
-                foreach($messages as $message)
-                {
-                    $message->id    = (int)$message->id;
-                    $message->order = (int)$message->order;
-                    $message->user  = (int)$message->user;
-                    $message->date  = strtotime($message->date);
-                }
+                $message->id    = (int)$message->id;
+                $message->order = (int)$message->order;
+                $message->user  = (int)$message->user;
+                $message->date  = strtotime($message->date);
             }
         }
+        
         $this->loadModel('setting')->setItem($user->account . '.common.lastLogin.' . $device, date(DT_DATETIME1));
         if(dao::isError())
         {
