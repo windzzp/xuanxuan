@@ -14,7 +14,3 @@ $config->tree->require->edit = 'name';
 
 $config->tree->editor = new stdclass();
 $config->tree->editor->edit = array('id' => 'desc', 'tools' => 'simple');
-
-$config->tree->menuGroup = new stdclass();
-$config->tree->menuGroup->setting  = ',dept,';
-$config->tree->menuGroup->category = ',entry,';

@@ -25,25 +25,6 @@ class tree extends control
      */
     public function browse($type = 'article', $startModule = 0, $root = 0, $from = '')
     {
-        if(strpos($this->config->tree->menuGroup->category, ',' . $type . ',') !== false and isset($this->lang->$type->menu))
-        {
-            $this->lang->tree->menu = $this->lang->$type->menu;
-            $this->lang->menuGroups->tree = $type;
-        }
-        elseif(strpos($this->config->tree->menuGroup->setting, ',' . $type . ',') !== false)
-        {
-            if($type != 'blog')  $this->lang->category = $this->lang->$type;
-            if($type == 'forum') $this->lang->category = $this->lang->board;
-
-            $this->lang->tree->menu = isset($this->lang->setting->menu) ? $this->lang->setting->menu : '';
-            $this->lang->menuGroups->tree = 'setting';
-
-            if($type == 'dept' and !isset($this->lang->setting->menu))
-            {
-                unset($this->lang->tree->menu);
-                $this->lang->menuGroups->tree = 'user';
-            }
-        }
         $this->view->title    = $this->lang->category->common;
         $this->view->type     = $type;
         $this->view->root     = $root;

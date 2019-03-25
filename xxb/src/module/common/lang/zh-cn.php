@@ -180,6 +180,7 @@ $lang->client = new stdclass();
 $lang->client->menu = $lang->setting->menu;
 
 $lang->menuGroups = new stdclass();
+$lang->menuGroups->tree   = 'user';
 $lang->menuGroups->client = 'setting';
 
 /* The error messages. */
