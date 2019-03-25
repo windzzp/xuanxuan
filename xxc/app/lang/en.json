@@ -129,7 +129,8 @@
     "chat.toolbor.sidebar": "Sidebar",
     "chat.toolbor.star": "Star",
     "chat.toolbor.unstar": "Unstar",
-    "chat.toolbar.scroll": "Scroll to bottom",
+    "chat.toolbar.scrollToBottom": "Scroll to bottom",
+    "chat.toolbar.scrollToTop": "Scroll to top",
 
     "chats.chat.search.result.format": "In \"{0}\", {1} items found.",
     "chats.chat.selectOneOnMenu": "Choose a conversation from the left column.",
