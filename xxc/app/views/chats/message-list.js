@@ -30,15 +30,6 @@ const isBrowser = platform.isType('browser');
 const isFirefox = isBrowser && window.navigator.userAgent.includes('Firefox');
 
 /**
- * 事件表
- * @type {Object<string, string>}
- * @private
- */
-const EVENT = {
-    updateNextMessage: 'im.message.updateNextMessage'
-};
-
-/**
  * MessageList 组件 ，显示聊天消息列表界面
  * @class MessageList
  * @see https://react.docschina.org/docs/components-and-props.html
@@ -118,16 +109,6 @@ export default class MessageList extends Component {
                 this.waitNewMessage = null;
                 this.scrollToBottom(500);
             }
-        });
-
-        App.events.on(EVENT.updateNextMessage, (order) => {
-            const {messages} = this.props;
-            messages.forEach(message => {
-                if (message.order === (order + 1)) {
-                    const {content} = message;
-                    message.content = content;
-                }
-            });
         });
     }
 
