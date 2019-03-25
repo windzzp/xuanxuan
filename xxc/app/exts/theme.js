@@ -124,6 +124,15 @@ export default class Theme {
     }
 
     /**
+     * 获取主题的描述
+     * @memberof Theme
+     * @type {string}
+     */
+    get description() {
+        return this._data.description;
+    }
+
+    /**
      * 获取主题编号
      * @memberof Theme
      * @type {string}
@@ -189,7 +198,7 @@ export default class Theme {
     get preview() {
         const {preview} = this._data;
         if (preview && !this._preview) {
-            if (!preview.startsWith('https://') && !preview.startsWith('http://')) {
+            if (typeof preview === 'string' && !preview.startsWith('https://') && !preview.startsWith('http://')) {
                 this._preview = Path.join(this.extension.localPath, preview);
             } else {
                 this._preview = preview;

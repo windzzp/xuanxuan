@@ -490,7 +490,9 @@
 
     > .content {
       display: flex;
-      align-items: flex-end;
+      align-items: flex-start;
+      flex-direction: column;
+      justify-content: flex-end;
 
       > .title {
         .flex-middle;
@@ -500,6 +502,11 @@
         > .label {
           font-size: (12*@rem);
           margin-left: @space-sm;
+        }
+
+        + .subtitle {
+          margin-top: @space-xs;
+          width: 100%;
         }
       }
     }

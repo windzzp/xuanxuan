@@ -10,6 +10,7 @@ import Exts from '../../exts';
 import Skin from '../../utils/skin';
 import {showMessager} from '../../components/messager';
 import events from '../../core/events';
+import { isNotEmptyString } from '../../utils/string-helper';
 
 /**
  * AppThemes 组件 ，显示应用“主题”界面
@@ -159,15 +160,16 @@ export default class AppThemes extends PureComponent {
                 {
                     themeExt.themes.map(theme => {
                         themesCount += 1;
-                        const isCurrentTheme = Exts.themes.isCurrentTheme(theme.id);
-                        const {preview} = theme;
-                        const themeStyle = Object.assign(Skin.style(theme.color), {
+                        const {preview, description, id: themeID} = theme;
+                        const isCurrentTheme = Exts.themes.isCurrentTheme(themeID);
+                        const themeStyle = Object.assign(Skin.style(theme.color), typeof preview === 'object' ? preview : {
                             backgroundImage: preview ? `url(${preview})` : null
                         });
                         return (
-                            <a key={theme.id} className={classes('item rounded shadow-1', {active: isCurrentTheme})} style={themeStyle} onClick={this.handleThemeClick.bind(this, theme)}>
+                            <a key={themeID} className={classes('item rounded shadow-1', {active: isCurrentTheme})} style={themeStyle} onClick={this.handleThemeClick.bind(this, theme)}>
                                 <div className="content">
                                     <div className="title">{theme.displayName}{isCurrentTheme && <small className="label circle white text-black shadow-1">{Lang.string('ext.themes.current')}</small>}</div>
+                                    {isNotEmptyString(description) && <div className="subtitle text-ellipsis">{description}</div>}
                                 </div>
                                 <Icon name="check active-icon icon-2x text-shadow-white" />
                             </a>
