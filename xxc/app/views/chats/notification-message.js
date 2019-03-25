@@ -103,7 +103,7 @@ export default class NotificationMessage extends Component {
             >
                 <div className="markdown-content">
                     {isNotEmptyString(title) && <h4>{title}</h4>}
-                    {isNotEmptyString(subtitle) && <h5>{subtitle}</h5>}
+                    {isNotEmptyString(subtitle) && title !== subtitle && <h5>{subtitle}</h5>}
                     <div dangerouslySetInnerHTML={{__html: content}} />
                 </div>
                 {actionsButtons && actionsButtons.length ? <nav className="actions nav gray">{actionsButtons}</nav> : null}
