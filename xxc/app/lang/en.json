@@ -64,7 +64,6 @@
     "chat.message.retract": "Retract",
     "chat.message.retracted": "{0} retracted a message",
     "chat.message.senderMe": "Me",
-    "chat.message.invisible": "Unable to show this message, please use Copy Markdown to copy it as Markdown.",
     "chat.mute.label": "Mute is on. You will not receive notifications of this conversation.",
     "chat.noMoreMessage": "No more messages.",
     "chat.one2one.typing": "typing...",
