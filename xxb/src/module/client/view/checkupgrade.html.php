@@ -1,6 +1,6 @@
 <?php
 /**
- * The debug view file of chat module of XXB.
+ * The checkUpgrade view file of client module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
@@ -11,7 +11,11 @@
  */
 ?>
 <?php include '../../common/view/header.modal.html.php';?>
+<?php js::set('downloading', $lang->client->downloading)?>
+<?php js::set('downloadFail', $lang->client->downloadFail)?>
+<?php js::set('downloadSuccess', $lang->client->downloadSuccess)?>
 <div class="panel-group" id="accordionPanels" aria-multiselectable="true">
+  <div class="alert alert-success"><?php echo $lang->client->downloadTip;?></div>
   <?php if($versions) foreach($versions as $version):?>
   <div class="panel panel-default">
     <div class="panel-heading" id="headingOne">
@@ -21,51 +25,18 @@
     </div>
     <div id="collapse_<?php echo $version->id;?>" class="panel-collapse collapse">
       <div class="panel-body">
-        <div class="panel panel-default">
-          <div class="panel-heading"><?php echo $lang->client->xxcVersion;?> <?php echo $version->xxcVersion;?></div>
-          <table class="table table-form">
-            <tr>
-              <th class="w-100px"><?php echo $lang->client->changeLog;?>：</th>
-              <td><?php echo $version->xxcDesc;?></td>
-            </tr>
-            <?php if($version->xxcDownload) foreach($version->xxcDownload as $system => $link):?>
-            <tr>
-              <th><?php echo $system;?>：</th>
-              <td><?php echo $link;?></td>
-            </tr>
-            <?php endforeach;?>
-          </table>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading"><?php echo $lang->client->xxdVersion;?> <?php echo $version->xxdVersion;?></div>
-          <table class="table table-form">
-            <tr>
-              <th class="w-100px"><?php echo $lang->client->changeLog;?>：</th>
-              <td><?php echo $version->xxdDesc;?></td>
-            </tr>
-              <?php if($version->xxdDownload) foreach($version->xxdDownload as $system => $link):?>
-              <tr>
-                <th><?php echo $system;?>：</th>
-                <td><?php echo $link;?></td>
-              </tr>
-              <?php endforeach;?>
-          </table>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading"><?php echo $lang->client->xxbVersion;?> <?php echo $version->xxbVersion;?></div>
-          <table class="table table-form">
-            <tr>
-              <th class="w-100px"><?php echo $lang->client->changeLog;?>：</th>
-              <td><?php echo $version->xxbDesc;?></td>
-            </tr>
-              <?php if($version->xxbDownload) foreach($version->xxbDownload as $system => $link):?>
-              <tr>
-                <th><?php echo $system;?>：</th>
-                <td><?php echo $link;?></td>
-              </tr>
-              <?php endforeach;?>
-          </table>
-        </div>
+        <table class="table table-form">
+          <tr>
+            <th class="w-150px"><?php echo $lang->client->changeLog;?>：</th>
+            <td><?php echo $version->xxcDesc;?></td>
+          </tr>
+          <?php foreach($lang->client->zipList as $zip => $system):?>
+          <tr>
+            <th><?php echo $system;?>：</th>
+            <td><?php echo zget($version->xxcDownload, $zip);?> <a class="download" href="javascript:void(0);" data-link="<?php echo zget($version->xxcDownload, $zip);?>" data-version="<?php echo $version->xxcVersion?>" data-os="<?php echo $zip?>"><?php echo $lang->client->download?></a></td>
+          </tr>
+          <?php endforeach;?>
+        </table>
       </div>
     </div>
   </div>

@@ -1,13 +1,13 @@
 <?php
 /**
- * The model file of client module of RanZhi.
+ * The model file of client module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Gang Liu <liugang@cnezsoft.com>
  * @package     client
  * @version     $Id$
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 class clientModel extends model
 {
@@ -16,13 +16,28 @@ class clientModel extends model
      *
      * @param  int    $clientID
      * @access public
-     * @return object
+     * @return object | bool
      */
     public function getByID($clientID)
     {
         $client = $this->dao->select('*')->from(TABLE_IM_CLIENT)->where('id')->eq($clientID)->fetch();
+        if(empty($client)) return false;
         $client->downloads = json_decode($client->downloads, true);
+        return $client;
+    }
 
+    /**
+     * Get a client by version.
+     *
+     * @param  string $version
+     * @access public
+     * @return object | bool
+     */
+    public function getByVersion($version)
+    {
+        $client = $this->dao->select('*')->from(TABLE_IM_CLIENT)->where('version')->eq($version)->fetch();
+        if(empty($client)) return false;
+        $client->downloads = json_decode($client->downloads, true);
         return $client;
     }
 
@@ -50,12 +65,12 @@ class clientModel extends model
             ->add('createdDate', helper::now())
             ->get();
 
-        if(empty($client->version)) dao::$errors['version'][] = sprintf($this->lang->error->notempty, $this->lang->client->version); 
+        if(empty($client->version)) dao::$errors['version'][] = sprintf($this->lang->error->notempty, $this->lang->client->version);
         if($client->version && !preg_match("/^[0-9.]*$/", $client->version)) dao::$errors['version'][] = $this->lang->client->wrongVersion;
         foreach($client->downloads as $os => $url)
         {
-            if(empty($url)) dao::$errors[$os][] = sprintf($this->lang->error->notempty, zget($this->lang->client->osList, $os) . $this->lang->client->download);
-            if($url && !validater::checkURL($url)) dao::$errors[$os][] = sprintf($this->lang->error->URL, zget($this->lang->client->osList, $os) . $this->lang->client->download);
+            if(empty($url)) dao::$errors[$os][] = sprintf($this->lang->error->notempty, zget($this->lang->client->zipList, $os) . $this->lang->client->download);
+            if($url && !validater::checkURL($url)) dao::$errors[$os][] = sprintf($this->lang->error->URL, zget($this->lang->client->zipList, $os) . $this->lang->client->download);
         }
         if(dao::isError()) return false;
 
@@ -63,6 +78,37 @@ class clientModel extends model
         $this->dao->insert(TABLE_IM_CLIENT)->data($client)->autoCheck()->exec();
 
         return !dao::isError();
+    }
+    
+    /**
+     * Create or edit a client by account.
+     * @param $version
+     * @param $link
+     * @param $os
+     * @return bool
+     */
+    public function edit($version, $link, $os)
+    {
+        $client = $this->getByVersion($version);
+        if($client)
+        {
+            $client->downloads[$os] = $link;
+            $client->editedBy       = $this->app->user->account;
+            $client->editedDate     = helper::now();
+            $client->downloads      = helper::jsonEncode( $client->downloads);
+            return $this->dao->update(TABLE_IM_CLIENT)->data($client)->where('id')->eq($client->id)->exec();
+        }
+        else
+        {
+            $client = new stdClass();
+            $client->status      = 'notRelease';
+            $client->version     = $version;
+            $client->strategy    = 'optional';
+            $client->downloads   = helper::jsonEncode(array($os => $link));
+            $client->createdBy   = $this->app->user->account;
+            $client->createdDate = helper::now();
+            return $this->dao->insert(TABLE_IM_CLIENT)->data($client)->autoCheck()->exec();
+        }
     }
 
     /**
@@ -83,8 +129,8 @@ class clientModel extends model
         if($client->version && !preg_match("/^[0-9.]*$/", $client->version)) dao::$errors['version'][] = $this->lang->client->wrongVersion;
         foreach($client->downloads as $os => $url)
         {
-            if(empty($url)) dao::$errors[$os][] = sprintf($this->lang->error->notempty, zget($this->lang->client->osList, $os) . $this->lang->client->download);
-            if($url && !validater::checkURL($url)) dao::$errors[$os][] = sprintf($this->lang->error->URL, zget($this->lang->client->osList, $os) . $this->lang->client->download);
+            if(empty($url)) dao::$errors[$os][] = sprintf($this->lang->error->notempty, zget($this->lang->client->zipList, $os) . $this->lang->client->download);
+            if($url && !validater::checkURL($url)) dao::$errors[$os][] = sprintf($this->lang->error->URL, zget($this->lang->client->zipList, $os) . $this->lang->client->download);
         }
         if(dao::isError()) return false;
 
@@ -103,19 +149,57 @@ class clientModel extends model
      */
     public function checkUpgrade($version)
     {
-        $lastForce = $this->dao->select('*')->from(TABLE_IM_CLIENT)->where('strategy')->eq('force')->orderBy('id_desc')->limit(1)->fetch();
+        $lastForce = $this->dao->select('*')->from(TABLE_IM_CLIENT)->where('strategy')->eq('force')->andWhere('status')->eq('release')->orderBy('id_desc')->limit(1)->fetch();
         if($lastForce && version_compare($version, $lastForce->version) == -1)
         {
             return $lastForce;
         }
         else
         {
-            $last = $this->dao->select('*')->from(TABLE_IM_CLIENT)->where('strategy')->eq('optional')->orderBy('id_desc')->limit(1)->fetch();
+            $last = $this->dao->select('*')->from(TABLE_IM_CLIENT)->where('strategy')->eq('optional')->andWhere('status')->eq('release')->orderBy('id_desc')->limit(1)->fetch();
             if($last && version_compare($version, $last->version) == -1)
             {
                 return $last;
             }
         }
         return false;
+    }
+
+    /**
+     * Download zip package.
+     * @param $version
+     * @param $link
+     * @return bool | string
+     */
+    public function downloadZipPackage($version, $link)
+    {
+        ignore_user_abort(true);
+        set_time_limit(0);
+        if(empty($version) || empty($link)) return false;
+        $dir  = "data/client/" . $version . '/';
+        $file = basename($link);
+        if(!is_dir($this->app->wwwRoot . $dir))
+        {
+            mkdir($this->app->wwwRoot . $dir, 0755, true);
+        }
+        if(!is_dir($this->app->wwwRoot . $dir)) return false;
+        if(file_exists($this->app->wwwRoot . $dir . $file))
+        {
+            return commonModel::getSysURL() . $this->config->webRoot . $dir . $file;
+        }
+        ob_clean();
+        ob_end_flush();
+        
+        $local  = fopen($this->app->wwwRoot . $dir . $file, 'w');
+        $remote = fopen($link, 'rb');
+        if($remote === false) return false;
+        while(!feof($remote))
+        {
+            $buffer = fread($remote, 4096);
+            fwrite($local, $buffer);
+        }
+        fclose($local);
+        fclose($remote);
+        return commonModel::getSysURL() . $this->config->webRoot . $dir . $file;
     }
 }

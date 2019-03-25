@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS `im_client` (
   `createdBy` varchar(30) NOT NULL DEFAULT '',
   `editedDate` datetime NOT NULL,
   `editedBy` varchar(30) NOT NULL DEFAULT '',
+  `status` enum('release','notRelease') NOT NULL DEFAULT 'notRelease',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

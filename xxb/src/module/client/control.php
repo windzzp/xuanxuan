@@ -1,13 +1,13 @@
 <?php
 /**
- * The control file of client module of RanZhi.
+ * The control file of client module of XXB.
  *
  * @copyright   Copyright 2009-2018 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Gang Liu <liugang@cnezsoft.com>
  * @package     client
  * @version     $Id$
- * @link        http://www.ranzhi.org
+ * @link        http://xuan.im
  */
 class client extends control
 {
@@ -42,6 +42,22 @@ class client extends control
 
         $this->view->title = $this->lang->client->create;
         $this->display();
+    }
+    
+    /**
+     * Download remote package.
+     * @param string $version
+     * @param string $link
+     * @param string $os
+     * @return string
+     */
+    public function download($version = '', $link = '', $os = '')
+    {
+        set_time_limit(0);
+        $result = $this->client->downloadZipPackage($version, $link);
+        if($result == false) $this->send(array('result' => 'fail', 'message' => $this->lang->client->downloadFail));
+        $this->client->edit($version, $result, $os);
+        $this->send(array('result' => 'success', 'message' => $this->lang->saveSuccess, 'locate' => 'reload'));
     }
 
     /**
@@ -89,7 +105,7 @@ class client extends control
      */
     public function checkUpgrade()
     {
-        $jsonData = file_get_contents('https://xuan.im/xxbversion-api.json');
+        $jsonData = file_get_contents($this->config->client->upgradeApi);
 
         $this->view->title    = $this->lang->client->checkUpgrade;
         $this->view->versions = json_decode($jsonData, false);

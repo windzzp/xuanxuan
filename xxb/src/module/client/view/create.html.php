@@ -1,11 +1,11 @@
 <?php
 /**
- * The configure xxbversion view file of setting module of XXB.
+ * The create client view file of setting module of XXB.
  *
  * @copyright   Copyright 2009-2017 青岛易软天创网络科技有限公司(QingDao Nature Easy Soft Network Technology Co,LTD, www.cnezsoft.com)
  * @license     ZPL (http://zpl.pub/page/zplv12.html)
  * @author      Memory <lvtao@cnezsoft.com>
- * @package     setting
+ * @package     client
  * @version     $Id$
  * @link        http://xuan.im
  */
@@ -40,16 +40,21 @@
     <tr>
       <th><?php echo $lang->client->download?></th>
       <td>
-        <?php foreach($lang->client->osList as $os => $desc):?>
+        <?php foreach($lang->client->zipList as $os => $name):?>
         <div class="form-group">
           <div class="input-group">
-            <span class="input-group-addon w-130px"><?php echo $lang->client->osList[$os]?>：</span>
+            <span class="input-group-addon w-130px"><?php echo $name?>：</span>
             <div class='required required-wrapper'></div>
             <?php echo html::input("downloads[{$os}]", '', "id='{$os}' class='form-control'")?>
           </div>
         </div>
         <?php endforeach;?>
       </td>
+      <td></td>
+    </tr>
+    <tr>
+      <th><?php echo $lang->client->releaseStatus?></th>
+      <td><?php echo html::radio('status', $lang->client->status, 'notRelease')?></td>
       <td></td>
     </tr>
     <tr>

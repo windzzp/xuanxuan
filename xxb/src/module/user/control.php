@@ -324,12 +324,6 @@ class user extends control
     {
         if(!$account) $this->send(array('result'=>'fail', 'message' => $this->lang->user->actionFail));
 
-        $result = $this->user->inTheReviewProcess($account);
-        if($result !== false)
-        {
-            $this->send(array('result' => 'fail', 'message' => sprintf($this->lang->user->actionError, $result)));
-        }
-
         $result = $this->user->forbid($account);
         if($result) die($this->send(array('result'=>'success', 'locate' => $this->server->http_referer)));
 

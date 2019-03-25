@@ -302,11 +302,11 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
 		download  := make(map[string]interface{})
 		downloads := make(map[string]interface{})
 		json.Unmarshal([]byte(message["downloads"].(string)), &downloads)
-		download["win32"]   = downloads["win_i386"]
-		download["win64"]   = downloads["win_x86_64"]
-		download["linux32"] = downloads["linux_i386"]
-		download["linux64"] = downloads["linux_x86_64"]
-		download["mac64"]   = downloads["darwin_x86_64"]
+		download["win32"]   = downloads["win32zip"]
+		download["win64"]   = downloads["win64zip"]
+		download["linux32"] = downloads["linux32zip"]
+		download["linux64"] = downloads["linux64zip"]
+		download["mac64"]   = downloads["macOS"]
 		clientUpdate["version"]   = message["version"]
 		clientUpdate["readme"]    = message["readme"]
 		clientUpdate["strategy"]  = message["strategy"]

@@ -80,7 +80,7 @@ class chat extends control
             {
                 $result = $this->loadModel('client')->checkUpgrade($version);
                 $data   = array();
-                if($update !== false)
+                if($result !== false)
                 {
                     $data = $result;
                     if(version_compare($version, '2.4.0') === -1)

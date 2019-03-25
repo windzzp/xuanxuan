@@ -8,3 +8,4 @@ UPDATE `xxb_grouppriv` SET `module` = 'client', `method` = 'delete' WHERE `modul
 RENAME TABLE `im_xxcversion` TO `im_client`;
 
 ALTER TABLE `im_client` CHANGE `readme` `changeLog` text NOT NULL;
+ALTER TABLE `im_client` ADD `status` ENUM('release','notRelease')  NOT NULL  DEFAULT 'notRelease'  AFTER `editedBy`;
