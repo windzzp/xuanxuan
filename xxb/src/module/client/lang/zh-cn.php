@@ -24,8 +24,8 @@ $lang->client->downloadTip     = '下载后请检查压缩包完整性，如果�
 $lang->client->strategies['force']    = '强制';
 $lang->client->strategies['optional'] = '可选';
 
-$lang->client->status['release']    = '已发布';
-$lang->client->status['notRelease'] = '待发布';
+$lang->client->status['wait']     = '待发布';
+$lang->client->status['released'] = '已发布';
 
 $lang->client->zipList['win64zip']   = 'Windows 64位';
 $lang->client->zipList['win32zip']   = 'Windows 32位';

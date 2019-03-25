@@ -103,6 +103,15 @@ class chatModel extends model
         return $this->formatUsers($user);
     }
 
+    public function getGidByUserID($userID = 0)
+    {
+        return $this->dao->select('t1.gid')->from(TABLE_IM_CHAT)->alias('t1')
+            ->leftJoin(TABLE_IM_CHATUSER)->alias('t2')->on('t2.cgid=t1.gid')
+            ->where('t2.user')->eq($userID)
+            ->orWhere('t1.type')->eq('system')
+            ->fetchAll();
+    }
+    
     /**
      * Get user list.
      *
@@ -985,19 +994,21 @@ class chatModel extends model
         $startDate = $this->loadModel('setting')->getItem("owner={$user->account}&module=common&section=lastLogin&key={$device}");
         if(!empty($startDate))
         {
-            $messages = $this->dao->select('*')->from(TABLE_IM_MESSAGE)
-                ->where('user')->eq($user->id)
-                ->beginIF($startDate)->andWhere('date')->ge($startDate)->fi()
-                ->orderBy('id_desc')
-                ->limit(500)
-                ->fetchAll();
-
-            foreach($messages as $message)
+            $gids = $this->getGidByUserID($user->id);
+            if(!empty($gids))
             {
-                $message->id    = (int)$message->id;
-                $message->order = (int)$message->order;
-                $message->user  = (int)$message->user;
-                $message->date  = strtotime($message->date);
+                $messages = $this->dao->select('*')->from(TABLE_IM_MESSAGE)
+                    ->where('gid')->in($gids)
+                    ->beginIF($startDate)->andWhere('date')->ge($startDate)->fi()
+                    ->orderBy('id_desc')->limit(500)
+                    ->fetchAll();
+                foreach($messages as $message)
+                {
+                    $message->id    = (int)$message->id;
+                    $message->order = (int)$message->order;
+                    $message->user  = (int)$message->user;
+                    $message->date  = strtotime($message->date);
+                }
             }
         }
         $this->loadModel('setting')->setItem($user->account . '.common.lastLogin.' . $device, date(DT_DATETIME1));

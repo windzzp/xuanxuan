@@ -24,8 +24,8 @@ $lang->client->downloadTip     = 'Please check the integrity of the package afte
 $lang->client->strategies['force']    = 'Force';
 $lang->client->strategies['optional'] = 'Optional';
 
-$lang->client->status['release']    = 'Release';
-$lang->client->status['notRelease'] = 'Not release';
+$lang->client->status['wait']     = 'Not release';
+$lang->client->status['released'] = 'Released';
 
 $lang->client->zipList['win64zip']   = 'Windows 64';
 $lang->client->zipList['win32zip']   = 'Windows 32';

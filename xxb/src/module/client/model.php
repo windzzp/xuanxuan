@@ -101,7 +101,7 @@ class clientModel extends model
         else
         {
             $client = new stdClass();
-            $client->status      = 'notRelease';
+            $client->status      = 'wait';
             $client->version     = $version;
             $client->strategy    = 'optional';
             $client->downloads   = helper::jsonEncode(array($os => $link));
@@ -149,14 +149,14 @@ class clientModel extends model
      */
     public function checkUpgrade($version)
     {
-        $lastForce = $this->dao->select('*')->from(TABLE_IM_CLIENT)->where('strategy')->eq('force')->andWhere('status')->eq('release')->orderBy('id_desc')->limit(1)->fetch();
+        $lastForce = $this->dao->select('*')->from(TABLE_IM_CLIENT)->where('strategy')->eq('force')->andWhere('status')->eq('released')->orderBy('id_desc')->limit(1)->fetch();
         if($lastForce && version_compare($version, $lastForce->version) == -1)
         {
             return $lastForce;
         }
         else
         {
-            $last = $this->dao->select('*')->from(TABLE_IM_CLIENT)->where('strategy')->eq('optional')->andWhere('status')->eq('release')->orderBy('id_desc')->limit(1)->fetch();
+            $last = $this->dao->select('*')->from(TABLE_IM_CLIENT)->where('strategy')->eq('optional')->andWhere('status')->eq('released')->orderBy('id_desc')->limit(1)->fetch();
             if($last && version_compare($version, $last->version) == -1)
             {
                 return $last;
