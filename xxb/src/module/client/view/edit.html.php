@@ -44,7 +44,6 @@
         <div class="form-group">
           <div class="input-group">
             <span class="input-group-addon w-130px"><?php echo $name?>：</span>
-            <div class='required required-wrapper'></div>
             <?php echo html::input("downloads[{$os}]", zget($client->downloads, $os, ''), "id='{$os}' class='form-control'")?>
           </div>
         </div>

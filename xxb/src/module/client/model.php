@@ -69,8 +69,7 @@ class clientModel extends model
         if($client->version && !preg_match("/^[0-9.]*$/", $client->version)) dao::$errors['version'][] = $this->lang->client->wrongVersion;
         foreach($client->downloads as $os => $url)
         {
-            if(empty($url)) dao::$errors[$os][] = sprintf($this->lang->error->notempty, zget($this->lang->client->zipList, $os) . $this->lang->client->download);
-            if($url && !validater::checkURL($url)) dao::$errors[$os][] = sprintf($this->lang->error->URL, zget($this->lang->client->zipList, $os) . $this->lang->client->download);
+            if(!empty($url) && !validater::checkURL($url)) dao::$errors[$os][] = sprintf($this->lang->error->URL, zget($this->lang->client->zipList, $os) . $this->lang->client->downloadLink);
         }
         if(dao::isError()) return false;
 
@@ -129,8 +128,7 @@ class clientModel extends model
         if($client->version && !preg_match("/^[0-9.]*$/", $client->version)) dao::$errors['version'][] = $this->lang->client->wrongVersion;
         foreach($client->downloads as $os => $url)
         {
-            if(empty($url)) dao::$errors[$os][] = sprintf($this->lang->error->notempty, zget($this->lang->client->zipList, $os) . $this->lang->client->download);
-            if($url && !validater::checkURL($url)) dao::$errors[$os][] = sprintf($this->lang->error->URL, zget($this->lang->client->zipList, $os) . $this->lang->client->download);
+            if(!empty($url) && !validater::checkURL($url)) dao::$errors[$os][] = sprintf($this->lang->error->URL, zget($this->lang->client->zipList, $os) . $this->lang->client->downloadLink);
         }
         if(dao::isError()) return false;
 
