@@ -4,7 +4,13 @@
         {"name": "zh-tw", "label": "繁體中文"},
         {"name": "en", "label": "English"}
     ],
-    "zh-cn": {},
-    "zh-tw": {},
-    "en": {}
+    "zh-cn": {
+        "common.notification": "小喧喧"
+    },
+    "zh-tw": {
+        "common.notification": "小喧喧"
+    },
+    "en": {
+        "common.notification": "Little XuanXuan"
+    }
 }
