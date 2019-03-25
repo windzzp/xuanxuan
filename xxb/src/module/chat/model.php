@@ -109,7 +109,7 @@ class chatModel extends model
             ->leftJoin(TABLE_IM_CHATUSER)->alias('t2')->on('t2.cgid=t1.gid')
             ->where('t2.user')->eq($userID)
             ->orWhere('t1.type')->eq('system')
-            ->fetchAll();
+            ->fetchPairs('gid');
     }
     
     /**
@@ -997,7 +997,7 @@ class chatModel extends model
         if(!empty($startDate) && !empty($gids))
         {
             $messages = $this->dao->select('*')->from(TABLE_IM_MESSAGE)
-                ->where('gid')->in($gids)
+                ->where('cgid')->in($gids)
                 ->beginIF($startDate)->andWhere('date')->ge($startDate)->fi()
                 ->orderBy('id_desc')->limit(500)
                 ->fetchAll();
