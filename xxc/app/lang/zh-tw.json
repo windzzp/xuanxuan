@@ -286,7 +286,6 @@
     "error.UPDATER_UNZIP_ERROR": "讀取更新包文件出錯。",
     "error.UPLOAD_FILE_IS_TOO_LARGE": "文件上傳失敗，只支持發送小於 {0} 的文件",
     "error.UPLOAD_FILE_IS_ZEOR_SIZE": "文件上傳失敗，不支持上傳空文件（文件大小為 0）",
-    "error.UPLOAD_FILE_IS_TYPE_ERROR": "文件上傳失敗，文件類型不正確",
     "error.USER_DATA_PATH_DENY": "暫時無法使用用戶目錄，請重試。",
     "error.USER_DENY_ATTACT_UPLOAD": "你沒有權限上傳文件到服務器，請聯繫管理員。",
     "error.USER_INFO_REQUIRED": "用戶信息不可用。",
