@@ -5,7 +5,7 @@ import Member from './member';
 /**
  * 允许用户发送消息后在此时间内删除消息
  */
-const DELETE_MESSAGE_TIME = 1000*60*2;
+const DELETE_MESSAGE_TIME = 1000 * 60 * 2;
 
 /**
  * 聊天消息状态管理器
