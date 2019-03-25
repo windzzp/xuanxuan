@@ -201,6 +201,7 @@ export default class MessageListItem extends Component {
             || this.state.sharing !== nextState.sharing
             || this.props.message !== nextProps.message || nextProps.message.updateId !== this.lastMessageUpdateId
             || this.props.lastMessage !== nextProps.lastMessage
+            || (nextProps.lastMessage && nextProps.lastMessage.deleted && this.lastLastMessageUpdatedId !== nextProps.lastMessage.updateId)
             || this.props.showDateDivider !== nextProps.showDateDivider
             || this.props.hideHeader !== nextProps.hideHeader
             || this.props.ignoreStatus !== nextProps.ignoreStatus
@@ -394,6 +395,7 @@ export default class MessageListItem extends Component {
         } = this.props;
 
         this.lastMessageUpdateId = message.updateId;
+        this.lastLastMessageUpdatedId = lastMessage && lastMessage.updateId;
         this.lastFontSize = font && font.size;
 
         const basicFontStyle = font ? {
