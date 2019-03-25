@@ -193,6 +193,16 @@ export default class MessageList extends Component {
     }
 
     /**
+     * 将消息列表滚动到顶部
+     *
+     * @memberof MessageList
+     * @return {void}
+     */
+    scrollToTop = () => {
+        this.scrollTo(0);
+    }
+
+    /**
      * 检查消息列表是否有新的消息
      *
      * @param {ChatMessage[]} messages 消息列表
