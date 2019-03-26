@@ -11,7 +11,7 @@
  * @version     $Id: config.php 4211 2017-06-20 14:30:10Z pengjx $
  * @link        http://xuan.im
  */
-$config->version   = '2.5.0';                // 然之的版本。 The version of XXB. Don't change it.
+$config->version   = '2.5.0';                // 喧喧的版本。 The version of XXB. Don't change it.
 $config->buildDate = "build at Mon Mar 11 17:34:38 CST 2019";
 
 /* 基本设置。Rangerteam basic settings. */
