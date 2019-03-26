@@ -194,7 +194,7 @@ export const forEachMember = (callback, ignoreDeleteUser = false) => {
  * @return {RegExp} 用户引用匹配正则表达式
  */
 export const getMentionsMatchRegex = () => {
-    if (!membersMatchRegex && (DEBUG || Object.keys(members) < 500)) {
+    if (!membersMatchRegex && members && (Object.keys(members).length < 500)) {
         const matchList = ['@#\\d+'];
         forEachMember(member => {
             matchList.push(`@${member.account}`);
@@ -344,10 +344,11 @@ onSwapUser(() => {
  * @return {string} 转换后的文本
  */
 export const linkMentionsInText = (text, {format = '<a class="app-link {className}" data-url="@Member/{id}">@{displayName}</a>'}) => {
-    if (text && text.indexOf('@') > -1) {
+    if (text && text.length && text.includes('@')) {
         const langAtAll = Lang.string('chat.message.atAll');
         const userAccount = getCurrentUserAccount();
-        text = text.replace(getMentionsMatchRegex() || /@#?\d+|[_\w\u4e00-\u9fa5]+/gi, (mention) => {
+        const mentionsRegex = getMentionsMatchRegex() || /@(?:#?\d+|[_\w\u4e00-\u9fa5]+)/gi;
+        text = text.replace(mentionsRegex, (mention) => {
             mention = mention.substring(1);
             const m = guessMember(mention);
             if (m) {

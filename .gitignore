@@ -64,6 +64,7 @@ xxd/certificate
 xxd/log
 xxb/src/tmp
 xxb/src/config/my.php
+xxb/src/www/data
 
 # test files
 # xxc/test

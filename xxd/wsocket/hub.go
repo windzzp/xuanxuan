@@ -96,10 +96,14 @@ func (h *Hub) run() {
             }
 
             //检查所有的平台，如果用户都不存在了，则告诉后台它掉线了
+			var allOut bool = true
 			for _, plat := range util.Plats {
-				if _, ok := h.clients[client.serverName][plat][client.userID]; !ok {
-					util.DBInsertOffline(client.serverName, client.userID)
+				if _, ok := h.clients[client.serverName][plat][client.userID]; ok {
+					allOut = false
 				}
+			}
+			if allOut == true {
+				util.DBInsertOffline(client.serverName, client.userID)
 			}
 
         case sendMsg := <-h.multicast:

@@ -30,15 +30,6 @@ const isBrowser = platform.isType('browser');
 const isFirefox = isBrowser && window.navigator.userAgent.includes('Firefox');
 
 /**
- * 事件表
- * @type {Object<string, string>}
- * @private
- */
-const EVENT = {
-    updateNextMessage: 'im.message.updateNextMessage'
-};
-
-/**
  * MessageList 组件 ，显示聊天消息列表界面
  * @class MessageList
  * @see https://react.docschina.org/docs/components-and-props.html
@@ -119,16 +110,6 @@ export default class MessageList extends Component {
                 this.scrollToBottom(500);
             }
         });
-
-        App.events.on(EVENT.updateNextMessage, (order) => {
-            const {messages} = this.props;
-            messages.forEach(message => {
-                if (message.order === (order + 1)) {
-                    const {content} = message;
-                    message.content = content;
-                }
-            });
-        });
     }
 
     /**
@@ -190,6 +171,16 @@ export default class MessageList extends Component {
      */
     scrollToBottom = () => {
         this.scrollTo(this.element.scrollHeight - this.element.clientHeight);
+    }
+
+    /**
+     * 将消息列表滚动到顶部
+     *
+     * @memberof MessageList
+     * @return {void}
+     */
+    scrollToTop = () => {
+        this.scrollTo(0);
     }
 
     /**
@@ -296,8 +287,8 @@ export default class MessageList extends Component {
 
         let lastMessage = null;
         const messagesView = [];
-        if (messages) {
-            messages.forEach(message => {
+        if (messages && messages.length) {
+            const handleEachMessage = message => {
                 const messageListItem = listItemCreator ? listItemCreator(message, lastMessage) : <MessageListItem id={`message-${message.gid}`} staticUI={staticUI} font={font} showDateDivider={showDateDivider} lastMessage={lastMessage} key={message.gid} message={message} {...listItemProps} sleepUrlCard={sleepUrlCard} />;
                 lastMessage = message;
                 if (isFirefox || inverse) {
@@ -305,7 +296,16 @@ export default class MessageList extends Component {
                 } else {
                     messagesView.unshift(messageListItem);
                 }
-            });
+            };
+            if (inverse) {
+                for (let i = messages.length - 1; i >= 0; --i) {
+                    handleEachMessage(messages[i]);
+                }
+            } else {
+                for (let i = 0; i < messages.length; ++i) {
+                    handleEachMessage(messages[i]);
+                }
+            }
         }
 
         if (isFirefox) {

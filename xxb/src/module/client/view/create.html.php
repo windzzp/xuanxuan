@@ -44,7 +44,6 @@
         <div class="form-group">
           <div class="input-group">
             <span class="input-group-addon w-130px"><?php echo $name?>：</span>
-            <div class='required required-wrapper'></div>
             <?php echo html::input("downloads[{$os}]", '', "id='{$os}' class='form-control'")?>
           </div>
         </div>
@@ -54,7 +53,7 @@
     </tr>
     <tr>
       <th><?php echo $lang->client->releaseStatus?></th>
-      <td><?php echo html::radio('status', $lang->client->status, 'notRelease')?></td>
+      <td><?php echo html::radio('status', $lang->client->status, 'wait')?></td>
       <td></td>
     </tr>
     <tr>

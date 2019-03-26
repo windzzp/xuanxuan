@@ -60,7 +60,6 @@ const EVENT = {
     suggestSendImage: 'im.chats.suggestSendImage',
     sendboxFocus: 'im.chat.sendbox.focus',
     showReeditHandle: 'im.message.showReedit',
-    updateNextMessage: 'im.message.updateNextMessage'
 };
 
 /**
@@ -258,20 +257,18 @@ export const sendFilesToChat = (fileList, cgid = null) => {
     }
     let hasError = false;
     let hasEmptyFile = false;
-    let fileTypeError = false;
     let isAllImageFiles = true;
     const files = [];
     for (let i = 0; i < fileList.length; ++i) {
         const file = fileList[i];
-        if (file.type !== '' && checkUploadFileSize(file.size)) {
+        if (checkUploadFileSize(file.size)) {
             files.push(file);
             if (!file.type.startsWith('image/')) {
                 isAllImageFiles = false;
             }
         } else {
             hasError = true;
-            if (file.type === '') fileTypeError = true;
-            if (!fileTypeError && file.size <= 0) hasEmptyFile = true;
+            if (file.size <= 0) hasEmptyFile = true;
         }
     }
     if (files.length) {
@@ -282,9 +279,7 @@ export const sendFilesToChat = (fileList, cgid = null) => {
         }
     }
     if (hasError) {
-        if (fileTypeError) {
-            executeCommand('showMessager', Lang.error('UPLOAD_FILE_IS_TYPE_ERROR'), {type: 'warning'});
-        } else if (hasEmptyFile) {
+        if (hasEmptyFile) {
             executeCommand('showMessager', Lang.error('UPLOAD_FILE_IS_ZEOR_SIZE'), {type: 'warning'});
         } else {
             executeCommand('showMessager', Lang.error({code: 'UPLOAD_FILE_IS_TOO_LARGE', formats: formatBytes(profile.user.uploadFileSize)}), {type: 'warning'});
@@ -1003,10 +998,9 @@ addContextMenuCreator('message.text,message.image,message.file,message.url', con
             icon: 'undo-variant',
             click: () => {
                 const {
-                    isTextContent, content, cgid, gid, order
+                    isTextContent, content, cgid, gid
                 } = message;
                 return deleteChatMessage(message).then(() => {
-                    events.emit(EVENT.updateNextMessage, order);
                     if (isTextContent && content) {
                         sendContentToChat(content, 'text', cgid);
                         setTimeout(() => {

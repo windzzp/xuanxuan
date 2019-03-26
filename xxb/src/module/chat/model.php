@@ -103,6 +103,15 @@ class chatModel extends model
         return $this->formatUsers($user);
     }
 
+    public function getGidByUserID($userID = 0)
+    {
+        return $this->dao->select('t1.gid')->from(TABLE_IM_CHAT)->alias('t1')
+            ->leftJoin(TABLE_IM_CHATUSER)->alias('t2')->on('t2.cgid=t1.gid')
+            ->where('t2.user')->eq($userID)
+            ->orWhere('t1.type')->eq('system')
+            ->fetchPairs('gid');
+    }
+    
     /**
      * Get user list.
      *
@@ -981,17 +990,17 @@ class chatModel extends model
         $output->module = 'chat';
         $output->method = 'history';
 
+        $gids      = $this->getGidByUserID($user->id);
         $messages  = array();
         $startDate = $this->loadModel('setting')->getItem("owner={$user->account}&module=common&section=lastLogin&key={$device}");
-        if(!empty($startDate))
+        
+        if(!empty($startDate) && !empty($gids))
         {
             $messages = $this->dao->select('*')->from(TABLE_IM_MESSAGE)
-                ->where('user')->eq($user->id)
+                ->where('cgid')->in($gids)
                 ->beginIF($startDate)->andWhere('date')->ge($startDate)->fi()
-                ->orderBy('id_desc')
-                ->limit(500)
+                ->orderBy('id_desc')->limit(500)
                 ->fetchAll();
-
             foreach($messages as $message)
             {
                 $message->id    = (int)$message->id;
@@ -1000,6 +1009,7 @@ class chatModel extends model
                 $message->date  = strtotime($message->date);
             }
         }
+        
         $this->loadModel('setting')->setItem($user->account . '.common.lastLogin.' . $device, date(DT_DATETIME1));
         if(dao::isError())
         {
