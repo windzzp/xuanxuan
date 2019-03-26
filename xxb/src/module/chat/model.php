@@ -1283,11 +1283,10 @@ class chatModel extends model
      *
      * @param  int    $setting
      * @param  string $type
-     * @param  string $backend
      * @access public
      * @return void
      */
-    public function downloadXXD($backend = 'xxb', $setting, $type)
+    public function downloadXXD($setting, $type)
     {
         $data = new stdClass();
         $data->uploadFileSize = $setting->uploadFileSize;
@@ -1307,7 +1306,7 @@ class chatModel extends model
         $webRoot = getWebRoot();
         $server  = $this->getServer();
 
-        $data->host = trim($server, '/') . ($backend == 'ranzhi' ? dirname($webRoot) : $webRoot);
+        $data->host = trim($server, '/') . (zget($this->config->xuanxuan, 'backend', 'xxb') == 'ranzhi' ? dirname($webRoot) : $webRoot);
 
         $url    = $this->config->chat->xxdDownloadUrl;
         $result = commonModel::http($url, $data);

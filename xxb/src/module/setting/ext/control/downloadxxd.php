@@ -18,7 +18,7 @@ class setting extends control
 
             $setting     = $this->config->xuanxuan;
             $setting->os = $os;
-            $this->chat->downloadXXD($backend, $setting, $type);
+            $this->chat->downloadXXD($setting, $type);
         }
         die("Params error.");
     }
