@@ -42,9 +42,9 @@ $lang->chat->debugTips        = '喧喧已经可以使用。<br>使用管理员�
 $lang->chat->noLogFile        = '没有日志文件。';
 $lang->chat->noFopen          = '未启用fopen函数，请按以下路径自行查看日志文件：%s。';
 
-$lang->chat->xxdServerTip   = 'XXD服务器地址为完整的协议+地址+端口，示例：http://192.168.1.35 或 http://www.backend.com ，不能使用127.0.0.1。';
-$lang->chat->xxdServerEmpty = 'XXD服务器地址为空。';
-$lang->chat->xxdServerError = 'XXD服务器地址不能为 127.0.0.1。';
+$lang->chat->xxdServerTip   = '喧喧服务器地址为完整的协议+地址+端口，示例：http://192.168.1.35 或 http://www.xxb.com ，不能使用127.0.0.1。';
+$lang->chat->xxdServerEmpty = '喧喧服务器地址为空。';
+$lang->chat->xxdServerError = '喧喧服务器地址不能为 127.0.0.1。';
 $lang->chat->xxdSchemeError = '服务器地址应该以<strong>http://</strong>或<strong>https://</strong>开头。';
 $lang->chat->xxdPortError   = '服务器地址应该包含有效的端口号，默认为<strong>11443</strong>。';
 $lang->chat->errorSSLCrt    = 'SSL证书内容不能为空';

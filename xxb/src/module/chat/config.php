@@ -11,4 +11,4 @@ $config->chat->user->canEditFields = array('avatar', 'birthday', 'gender', 'emai
 $config->chat->retract = new stdclass();
 $config->chat->retract->validTime = 2;
 
-$config->chat->xxdDownloadUrl = "https://www.chanzhi.org/license-downloadxxd-%s.html";
+$config->chat->xxdDownloadUrl = "https://www.chanzhi.org/license-downloadxxd.html";

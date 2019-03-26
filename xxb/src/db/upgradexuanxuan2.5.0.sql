@@ -1,3 +1,4 @@
+UPDATE `xxb_config` SET `key` = 'https' WHERE `owner` = 'system' AND `module` = 'common' AND `section` = 'xuanxuan' AND `key` = 'isHttps';
 UPDATE `xxb_config` SET `key` = 'backendLang' WHERE `owner` = 'system' AND `module` = 'common' AND `section` = 'xuanxuan' AND `key` = 'xxbLang';
 
 UPDATE `xxb_grouppriv` SET `module` = 'client', `method` = 'browse' WHERE `module` = 'setting' AND `method` = 'xxcversion';

@@ -41,7 +41,7 @@
       </tr>
       <tr>
         <th><?php echo $lang->chat->xxdServer;?></th>
-        <td><?php echo $type == 'edit' ? html::input('server', $domain, "class='form-control'") : $domain;?></td>
+        <td><?php echo $type == 'edit' ? html::input('server', $server, "class='form-control'") : $server;?></td>
         <td><?php if($type == 'edit') echo $lang->chat->xxdServerTip;?></td>
       </tr>
       <tr>
@@ -74,28 +74,21 @@
         </td>
         <td></td>
       </tr>
-      <?php if($type == 'edit'):?>
       <tr>
-        <th><?php echo $lang->chat->xxd->isHttps;?></th>
+        <th><?php echo $lang->chat->xxd->https;?></th>
         <td>
-          <?php echo html::hidden('isHttps', $isHttps);?>
-          <?php echo $type ? html::radio('https', $lang->chat->httpsOptions, $isHttps, "class='checkbox'") : $lang->chat->httpsOptions[$isHttps];?>
+          <?php $https = zget($config->xuanxuan, 'https', 'off');?>
+          <?php echo html::hidden('https', $https);?>
+          <?php echo $type == 'edit' ? html::radio('https', $lang->chat->httpsOptions, $https, "class='checkbox'") : zget($lang->chat->httpsOptions, $https, '');?>
         </td>
         <td></td>
       </tr>
-      <?php else:?>
-      <tr>
-        <th><?php echo $lang->chat->xxd->isHttps;?></th>
-        <td><?php echo zget($lang->chat->httpsOptions, $isHttps, '');?> </td>
-        <td></td>
-      </tr>
-      <?php endif;?>
-      <tr class='sslTR <?php if($isHttps == 'off' || empty($type)) echo 'hide';?>'>
+      <tr class='sslTR <?php if($https == 'off' || empty($type)) echo 'hide';?>'>
         <th><?php echo $lang->chat->xxd->sslcrt;?></th>
         <td><?php echo html::textarea('sslcrt',  zget($config->xuanxuan, 'sslcrt', ''), "placeholder='{$lang->chat->placeholder->xxd->sslcrt}' class='form-control'");?></td>
         <td></td>
       </tr>
-      <tr class='sslTR <?php if($isHttps == 'off' || empty($type)) echo 'hide';?>'>
+      <tr class='sslTR <?php if($https == 'off' || empty($type)) echo 'hide';?>'>
         <th><?php echo $lang->chat->xxd->sslkey;?></th>
         <td><?php echo html::textarea('sslkey',  zget($config->xuanxuan, 'sslkey', ''), "placeholder='{$lang->chat->placeholder->xxd->sslkey}' class='form-control'");?></td>
         <td></td>
@@ -108,7 +101,7 @@
         </td>
         <td></td>
       </tr>
-      <?php if(!$type):?>
+      <?php if($type != 'edit'):?>
       <tr>
         <th><?php echo $lang->chat->xxd->os;?></th>
         <td><?php echo html::select('os', $lang->chat->osList, zget($config->xuanxuan, $os), "class='form-control chosen'");?></td>
@@ -120,13 +113,12 @@
         <td colspan='2'>
           <?php if($type == 'edit'):?>
             <?php echo html::submitButton();?>
-            <?php echo html::a(helper::createLink('setting', 'xuanxuan', "backend=$backend"), $lang->goback, 'class="btn"');?>
+            <?php echo html::a(helper::createLink('setting', 'xuanxuan'), $lang->goback, 'class="btn"');?>
           <?php else:?>
-            <?php echo html::hidden('backend', $backend);?>
-            <?php echo html::a(helper::createLink('setting', 'downloadXXD', "backend=$backend&type=package"), $lang->chat->downloadXXD, "class='btn btn-primary download download-package' target='hiddenwin'");?>
-            <?php echo html::a(helper::createLink('setting', 'downloadXXD', "backend=$backend&type=config"), $lang->chat->downloadConfig, "class='btn btn-primary download' target='hiddenwin'");?>
+            <?php echo html::a(helper::createLink('setting', 'downloadXXD', 'type=package'), $lang->chat->downloadXXD, "class='btn btn-primary download download-package' target='hiddenwin'");?>
+            <?php echo html::a(helper::createLink('setting', 'downloadXXD', 'type=config'), $lang->chat->downloadConfig, "class='btn btn-primary download' target='hiddenwin'");?>
             <?php if($debug) echo html::a(helper::createLink('chat', 'debug'), $lang->chat->viewDebug, "class='btn btn-primary viewDebug' data-toggle='modal'");?>
-            <?php echo html::a(helper::createLink('setting', 'xuanxuan', "backend=$backend&type=edit"), $lang->chat->changeSetting, "class='btn'");?>
+            <?php echo html::a(helper::createLink('setting', 'xuanxuan', 'type=edit'), $lang->chat->changeSetting, "class='btn'");?>
           <?php endif;?>
         </td>
       </tr>

@@ -1281,7 +1281,7 @@ class chatModel extends model
     {
         $data = new stdClass();
         $data->uploadFileSize = $setting->uploadFileSize;
-        $data->https          = $setting->isHttps;
+        $data->https          = $setting->https;
         $data->sslcrt         = $setting->sslcrt;
         $data->sslkey         = $setting->sslkey;
         $data->ip             = $setting->ip;
@@ -1295,11 +1295,11 @@ class chatModel extends model
         $data->downloadType   = $type;
 
         $webRoot = getWebRoot();
-        $server  = $this->getServer($backend);
-        $data->server = $server;
-        $data->host   = trim($server, '/') . ($backend == 'ranzhi' ? dirname($webRoot) : $webRoot);
+        $server  = $this->getServer();
 
-        $url    = sprintf($this->config->chat->xxdDownloadUrl, $backend);
+        $data->host = trim($server, '/') . ($backend == 'ranzhi' ? dirname($webRoot) : $webRoot);
+
+        $url    = $this->config->chat->xxdDownloadUrl;
         $result = commonModel::http($url, $data);
 
         if($type == 'config')
@@ -1315,54 +1315,16 @@ class chatModel extends model
     }
 
     /**
-     * Send down header.
-     *
-     * @param  int    $fileName
-     * @param  int    $fileType
-     * @param  int    $content
-     * @param  int    $fileSize
-     * @access public
-     * @return void
-     */
-    public function sendDownHeader($fileName, $fileType, $content, $fileSize = 0)
-    {
-        /* Set the downloading cookie, thus the export form page can use it to judge whether to close the window or not. */
-        setcookie('downloading', 1, 0, '', '', false, true);
-
-        /* Append the extension name auto. */
-        $extension = '.' . $fileType;
-        if(strpos($fileName, $extension) === false) $fileName .= $extension;
-
-        /* urlencode the fileName for ie. */
-        $isIE11 = (strpos($this->server->http_user_agent, 'Trident') !== false and strpos($this->server->http_user_agent, 'rv:11.0') !== false);
-        if(strpos($this->server->http_user_agent, 'MSIE') !== false or $isIE11) $fileName = urlencode($fileName);
-
-        /* Judge the content type. */
-        $mimes = $this->config->chat->mimes;
-        $contentType = isset($mimes[$fileType]) ? $mimes[$fileType] : $mimes['default'];
-        if(empty($fileSize) and $content) $fileSize = strlen($content);
-
-        header("Content-type: $contentType");
-        header("Content-Disposition: attachment; filename=\"$fileName\"");
-        header("Content-length: {$fileSize}");
-        header("Pragma: no-cache");
-        header("Expires: 0");
-        die($content);
-    }
-
-    /**
      * Get server.
      *
-     * @param  string $backend
      * @access public
-     * @return void
+     * @return string
      */
-    public function getServer($backend = 'xxb')
+    public function getServer()
     {
-        $server = commonModel::getSysURL();
-        if(!empty($this->config->xuanxuan->server)) $server = $this->config->xuanxuan->server;
+        if(!empty($this->config->xuanxuan->server)) return $this->config->xuanxuan->server;
 
-        return $server;
+        return commonModel::getSysURL();
     }
 
     /**
