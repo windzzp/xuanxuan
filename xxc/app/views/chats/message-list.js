@@ -240,7 +240,7 @@ export default class MessageList extends Component {
             scrollTop: target.scrollTop,
             target,
             isAtTop: target.scrollTop === 0,
-            isAtBottom: (target.scrollHeight - target.scrollTop) <= (target.clientHeight + 20)
+            isAtBottom: (target.scrollHeight - target.scrollTop) <= (target.clientHeight + 40)
         };
 
         this.scrollInfo = scrollInfo;
