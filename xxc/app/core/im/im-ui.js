@@ -257,6 +257,7 @@ export const sendFilesToChat = (fileList, cgid = null) => {
     }
     let hasError = false;
     let hasEmptyFile = false;
+    let fileTypeError = false;
     let isAllImageFiles = true;
     const files = [];
     for (let i = 0; i < fileList.length; ++i) {
@@ -268,6 +269,7 @@ export const sendFilesToChat = (fileList, cgid = null) => {
             }
         } else {
             hasError = true;
+            if (file.size <= 0 && file.type === '') fileTypeError = true;
             if (file.size <= 0) hasEmptyFile = true;
         }
     }
@@ -279,7 +281,9 @@ export const sendFilesToChat = (fileList, cgid = null) => {
         }
     }
     if (hasError) {
-        if (hasEmptyFile) {
+        if (fileTypeError) {
+            executeCommand('showMessager', Lang.error('UPLOAD_FILE_IS_TYPE_ERROR'), {type: 'warning'});
+        } else if (hasEmptyFile) {
             executeCommand('showMessager', Lang.error('UPLOAD_FILE_IS_ZEOR_SIZE'), {type: 'warning'});
         } else {
             executeCommand('showMessager', Lang.error({code: 'UPLOAD_FILE_IS_TOO_LARGE', formats: formatBytes(profile.user.uploadFileSize)}), {type: 'warning'});
