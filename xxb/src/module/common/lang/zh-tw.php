@@ -148,14 +148,13 @@ EOT;
 
 /* Items for javascript. */
 $lang->js = new stdclass();
-$lang->js->confirmDelete         = '您確定要執行刪除操作嗎？';
-$lang->js->confirmFinish         = '您確定要執行完成操作嗎？';
-$lang->js->deleteing             = '刪除中';
-$lang->js->doing                 = '處理中';
-$lang->js->timeout               = '網絡超時,請重試';
-$lang->js->confirmDiscardChanges = '表單已更改，確定關閉？';
-$lang->js->yes                   = '是';
-$lang->js->no                    = '否';
+$lang->js->confirmDelete = '您確定要執行刪除操作嗎？';
+$lang->js->confirmFinish = '您確定要執行完成操作嗎？';
+$lang->js->deleteing     = '刪除中';
+$lang->js->doing         = '處理中';
+$lang->js->timeout       = '網絡超時,請重試';
+$lang->js->yes           = '是';
+$lang->js->no            = '否';
 
 /* The main menus. */
 $lang->menu = new stdclass();
@@ -164,57 +163,25 @@ $lang->menu->group   = '權限|group|browse|';
 $lang->menu->entry   = '應用|entry|admin|';
 $lang->menu->setting = '設置|setting|xuanxuan|';
 
-$lang->index   = new stdclass();
-$lang->user    = new stdclass();
-$lang->file    = new stdclass();
-$lang->tree    = new stdclass();
-$lang->mail    = new stdclass();
-$lang->dept    = new stdclass();
-$lang->block   = new stdclass();
-$lang->action  = new stdclass();
-$lang->setting = new stdclass();
-
-$lang->group   = new stdclass();
-
-$lang->menuGroups = new stdclass();
-
-/* Menu entry. */
+/* Entry menu. */
 $lang->entry       = new stdclass();
 $lang->entry->menu = new stdclass();
 $lang->entry->menu->admin    = array('link' => '應用列表|entry|admin|', 'alias' => 'edit, integration, style, zentaoAdmin');
 $lang->entry->menu->create   = '添加應用|entry|create|';
 $lang->entry->menu->category = '分組|entry|category|';
 
-/* Menu system. */
-$lang->system       = new stdclass();
-$lang->system->menu = new stdclass();
-$lang->system->menu->mail   = array('link' => '發信|mail|admin|', 'alias' => 'detect,edit,save,test');
-$lang->system->menu->trash  = array('link' => '資源回收筒|action|trash|');
-$lang->system->menu->cron   = '計劃任務|cron|index|';
-$lang->system->menu->backup = '備份|backup|index|';
+/* Setting menu. */
+$lang->setting       = new stdclass();
+$lang->setting->menu = new stdClass();
+$lang->setting->menu->xuanxuan = '喧喧|setting|xuanxuan|';
+$lang->setting->menu->client   = '客戶端|client|browse|';
 
-/* Menu of mail module. */
-$lang->mail = new stdclass();
-$lang->mail->menu = $lang->system->menu;
-$lang->menuGroups->mail = 'system';
+$lang->client = new stdclass();
+$lang->client->menu = $lang->setting->menu;
 
-/* Menu of action module. */
-$lang->action = new stdclass();
-$lang->action->menu = $lang->system->menu;
-$lang->menuGroups->action = 'system';
-
-/* Menu of cron module. */
-$lang->cron = new stdclass();
-$lang->cron->menu = $lang->system->menu;
-$lang->menuGroups->cron = 'system';
-
-/* Menu of backup module. */
-$lang->backup = new stdclass();
-$lang->backup->menu = $lang->system->menu;
-$lang->menuGroups->backup = 'system';
-
-$lang->setting->menu = $lang->system->menu;
-$lang->menuGroups->setting = 'system';
+$lang->menuGroups = new stdclass();
+$lang->menuGroups->tree   = 'user';
+$lang->menuGroups->client = 'setting';
 
 /* The error messages. */
 $lang->error = new stdclass();
