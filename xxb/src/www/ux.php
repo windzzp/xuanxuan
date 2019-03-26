@@ -11,7 +11,7 @@
  */
 /* Judge my.php exists or not. */
 define('RUN_MODE', 'upgrade');
-$myConfig = dirname(dirname(dirname(__FILE__))) . '/config/my.php';
+$myConfig = dirname(dirname(__FILE__)) . '/config/my.php';
 if(!file_exists($myConfig))
 {
     echo "文件" . $myConfig . "不存在！ 提示：不要重命名原来的喧喧安装目录，下载最新的源码包，覆盖即可。" . "<br />";
