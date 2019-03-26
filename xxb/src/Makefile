@@ -27,7 +27,7 @@ xxb:
 	find xxb -name .git | xargs rm -fr
 	rm -rf xxb/tools
 	rm xxb/www/index.html
-	rm xxb/www/ux.php
+	#rm xxb/www/ux.php
 	sed -i '/upgradeXuanxuan/d' xxb/www/ux.php
 	# Make tmp directories.
 	mkdir xxb/tmp/
