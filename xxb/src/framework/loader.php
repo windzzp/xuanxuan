@@ -39,7 +39,10 @@ if(isset($_GET['mode']) && $_GET['mode'] == 'getconfig') die(helper::removeUTF8B
 if(RUN_MODE != 'upgrade')
 {
     $config->installedVersion = $common->loadModel('setting')->getVersion();
-    if(version_compare($config->version, $config->installedVersion, '>')) die(header('location: ux.php'));
+    if(version_compare($config->version, $config->installedVersion, '>')) 
+    {
+        die(header('location: ' . commonModel::getSysURL() . '/ux.php'));
+    }
 }
 
 $app->parseRequest();
