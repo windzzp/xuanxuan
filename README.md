@@ -11,7 +11,7 @@ http://xuan.im
 
 ## 最近更新
 
-🎉 2.4 本次更新新增消息撤销、聊天输入状态显示以及应用分享等实用功能，修复了已知问题，对接口进行了大幅优化。[查看更新详情→](https://github.com/easysoft/xuanxuan/releases/tag/v2.4.0)
+🎉 2.5.1 本次更新修复了一大波已知 bug，支持移动版和桌面端同时登录，后端服务（xxb）现在完全独立出来了。[查看更新详情→](https://github.com/easysoft/xuanxuan/releases/tag/v2.5.1)
 
 ## 特色功能
 
