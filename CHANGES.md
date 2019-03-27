@@ -1,5 +1,74 @@
 # 更新记录
 
+## v 2.5.1
+
+[2019-03-27]
+
+本次更新修复了一大波已知 bug，支持移动版和桌面端同时登录，后端服务（xxb）现在完全独立出来了。
+
+### 更新明细
+
+* 客户端新增对多设备登录的支持，配合移动版和新版后端服务器，可以实现桌面客户端和移动 App 同时登录使用，同一账号的多客户端消息会自动同步；
+* 新增 拖放文件到聊天界面发送前进行确认的功能，避免意外拖放发送不必要文件的问题；
+* 新增 消息列表滚动到底部按钮，方便查看历史消息时快速滚动到底部查看新消息；
+* 优化 了界面上所有搜索框，现在支持使用空格来拼接多个关键字进行多条件搜索；
+* 优化 了通知中心（小喧喧）界面消息排版，现在会安装时间顺序从上至下排列（[BUG #58](http://xuan.5upm.com/bug-view-58.html)）；
+* 优化 了在移动浏览器中的交互，禁用了默认页面缩放行为；
+* 优化 了 macOS 上通知栏（托盘）图标，现在使用高清单色图标，支持暗黑模式；
+* 优化 了自动更新升级提示对话框界面；
+* 优化 了内置的“暗黑”主题外观；
+* 优化 了聊天消息中链接自动识别功能，现在可以更准确的识别；
+* 优化 了导航上从被固定的应用切换到应用主页界面的有时会错乱的问题（[TASK #338](http://xuan.5upm.com/task-view-338.html)）；
+* 优化 了聊天消息列表，增加了紧贴底部容错距离；
+* 修复 了当前聊天窗口激活时，即便设置为来了新消息播放声音提醒仍然没有预期生效的问题（[BUG #65](http://xuan.5upm.com/bug-view-65.html)）；
+* 修复 了弹窗通知上无法显示表情或一些特殊字符的问题（[BUG #98](http://xuan.5upm.com/bug-view-98.html)）；
+* 修复 了向聊天输入框拖放多张图片只插入显示第一张的问题；
+* 修复 了在聊天输入框中粘贴同一路径图片，当图片发送修改时，界面上仍然显示旧的图片的问题；
+* 修复 了极端情况下，登录界面切换用户对话框上历史用户不可点的问题；
+* 修复 了从本地安装支持热加载的扩展，扩展没有自动启用的问题；
+* 修复 了切换语言后通知栏（托盘）图标右键菜单文本没有应用新语言的问题；
+* 修复 了在浏览器版本中切换界面语言失效的问题；
+* 修复 了登录界面切换语言，界面右上角显示的当前语言没有更新的问题；
+* 修复 了聊天菜单中讨论组右键菜单添加到分组失效的问题（[BUG #74](http://xuan.5upm.com/bug-view-74.html)）；
+* 修复 了在聊天输入框中 @用户 之后再使用中文输入输入文本然后回车删除可能导致界面崩溃的问题（[BUG #69](http://xuan.5upm.com/bug-view-69.html)）；
+* 修复 了在 Windows 10 上无法使用弹窗通知功能（[BUG #72](http://xuan.5upm.com/bug-view-72.html)）；
+* 修复 了在聊天输入框中选中表情再输入新的表情替换后表情不显示的问题（[BUG #95](http://xuan.5upm.com/bug-view-95.html)）；
+* 修复 了通知中心（小喧喧）无法显示接收到的通知提醒的问题；
+* 修复 了有时查询聊天消息记录出错的问题；
+* 修复 了搜索框使用拼音搜索时无法识别一些汉语拼音的问题，例如 `ting` 无法匹配 “婷”（[BUG #56](http://xuan.5upm.com/bug-view-56.html)）；
+* 修复 了 Markdown 中引号自动转换问题（[BUG #75](http://xuan.5upm.com/bug-view-75.html)）；
+* 修复 了有时激活聊天，导航栏目未读消息数目徽标没有清除的问题；
+* 修复 了在扩展被禁用时卸载后，再次安装扩展默认仍为禁用状态的问题；
+* 修复 了无法打开和保存在聊天中刚刚发送的来自剪切板的图片的问题；
+* 开发相关
+  * 客户端：
+    * 新增 了对 macOS 深色主题的支持，当深色主题开启时，页面 `<body>` 元素上有 `os-dark-mode` 类，以方便开发个性化主题；
+    * 优化 `$$version` 聊天消息命令输出内容格式，增加了更多系统相关信息；
+    * 优化 了 Socket 数据包格式，新增 `d` 字段用于标记客户端类型，设备类型支持从运行时配置 `system.device` 中定义；
+    * 优化 了打包脚本，现在可以将浏览器版本打包到单独的文件夹后再压缩为 zip；
+    * 优化 了扩展列表中对开发中扩展的显示，现在可以显示更多的错误信息方便进行调试；
+    * 优化 了调试模式窗口功能，现在 Chrome 开发者工具以独立的窗口显示；
+    * URL 执多命令拼接字符串分隔符由 `!` 改为 `|`，以避免 URL 转义问题；
+    * 主题应用支持点击主题条目来强制刷新主题，方便开发时对主题进行刷新预览；
+    * 桌面端升级到 Electron `4.1.0`；
+  * 后端处理服务器（XXB）：
+    * 新增 对同一账号多客户端同时登录的支持；
+    * 修复 了升级过程中的问题（[BUG #89](http://xuan.5upm.com/bug-view-89.html)）；
+    * 修复 了有时会向客户端发送将来日期待办通知的问题（[BUG #51](http://xuan.5upm.com/bug-view-51.html)）；
+    * 修复 了有时升级后自动修改与 XXD 通信密匙的问题（[BUG #92](http://xuan.5upm.com/bug-view-92.html)）；
+  * 消息中转服务器（XXD）：
+    * 新增 对同一账号多客户端同时登录的支持。
+
+### 下载地址
+
+* Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.debug.win64.setup.exe)；
+* macOS：[xuanxuan.2.5.1.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.mac.dmg)；
+* Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.linux.amd64.deb)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.linux.i386.deb)；
+* 浏览器端：[xuanxuan.2.5.1.browser.zip](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.browser.zip)；
+* 消息中转服务器（XXD）： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xxd.2.5.1.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xxd.2.5.1.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xxd.2.5.1.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xxd.2.5.1.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xxd.2.5.1.linux.ia32.tar.gz)；
+* 后端处理服务器（XXB）：[源码包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xxb.2.5.1.zip)、[Windows 64位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xxb.2.5.1.win64.exe)、[Windows 32位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xxb.2.5.1.win32.exe)、[Linux 64位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xxb.2.5.1.zbox_64.tar.gz)、[Linux 32位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xxb.2.5.1.zbox_32.tar.gz)、[Linux rpm安装包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xxb-2.5.1-1.noarch.rpm)、[Linux deb安装包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xxb_2.5.1_1_all.deb)、[然之扩展包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.ranzhi.2.5.1.zip)；
+
+
 ## v 2.5.0
 
 [2019-03-07]
@@ -8,7 +77,7 @@
 
 ### 更新明细
 
-* 新增 客户端自动升级功能，可以在后端设置所使用的客户端版本，并在用户登录前提供升级引导（目前仅支持 Windows 和 Mac 版本），在 Linux 客户端会提示手动进行升级；
+* 新增 客户端自动升级功能，可以在后端设置所使用的客户端版本，并在用户登录前提供升级引导（目前仅支持 Windows 和 mac 版本），在 Linux 客户端会提示手动进行升级；
 * 优化 聊天菜单搜索功能，现在点击一个搜索结果（视为搜索操作完成）后会自动情况搜索框内容；
 * 优化 了聊天界面缓存策略，提升了界面交互性能；
 * 修复 了发送空文件（大小为 `0B`）时没有提示错误的问题，实际是不支持发送空文件，新增了错误提示。
@@ -30,7 +99,7 @@
 ### 下载地址
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.debug.win64.setup.exe)；
-* MacOS：[xuanxuan.2.5.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.mac.dmg)；
+* macOS：[xuanxuan.2.5.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.mac.dmg)；
 * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.amd64.deb)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.linux.i386.deb)；
 * 浏览器端：[xuanxuan.2.5.0.browser.zip](http://dl.cnezsoft.com/xuanxuan/2.5.0/xuanxuan.2.5.0.browser.zip)；
 * XXD Server 2.5.0： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxd.2.5.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxd.2.5.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxd.2.5.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxd.2.5.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.0/xxd.2.5.0.linux.ia32.tar.gz)；
@@ -55,7 +124,7 @@
 本次 2.4.1 更新只包括客户端部分，XXD 和 XXB 仍然是 2.4.0 版本。
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.debug.win64.setup.exe)；
-* MacOS：[xuanxuan.2.4.1.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.mac.dmg)；
+* macOS：[xuanxuan.2.4.1.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.mac.dmg)；
 * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.linux.amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.linux.x86_64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.linux.i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.linux.i686.rpm)；
 * 浏览器端：[xuanxuan.2.4.1.browser.zip](http://dl.cnezsoft.com/xuanxuan/2.4.1/xuanxuan.2.4.1.browser.zip)；
 * XXD Server 2.4.0： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.linux.ia32.tar.gz)；
@@ -115,7 +184,7 @@
 ### 下载地址
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.win.debug.setup.exe)；
-* MacOS：[xuanxuan.2.4.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.mac.dmg)；
+* macOS：[xuanxuan.2.4.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.mac.dmg)；
 * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.linux.amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.linux.x86_64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.linux.i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.linux.i686.rpm)；
 * 浏览器端：[xuanxuan.2.4.0.browser.zip](http://dl.cnezsoft.com/xuanxuan/2.4.0/xuanxuan.2.4.0.browser.zip)；
 * XXD Server： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/2.4.0/xxd.2.4.0.linux.ia32.tar.gz)；
@@ -142,7 +211,7 @@
 * 修复 了退出程序时有可能出现错误对话框的问题；
 * 修复 发送大文件下载链接导致界面卡死的问题；
 * 修复 对已经过期（非当天）的网址卡片仍然会尝试渲染的问题；
-* 修复 在 Mac 上点击程序坞上的应用图标没有激活最后一个应用窗口的问题；
+* 修复 在 mac 上点击程序坞上的应用图标没有激活最后一个应用窗口的问题；
 * 修复 设置聊天白名单复选框勾选没有反应的问题（[bug #67](http://xuan.5upm.com/bug-view-67.html)）；
 * 修复 在 Windows 扩展图标有时无法正确显示的问题；
 * 修复 应用内页面有时无法激活输入框的问题（[electron issue #15318](https://github.com/electron/electron/issues/15318)、[issue #14474](https://github.com/electron/electron/issues/14474)）；
@@ -168,7 +237,7 @@
 本次 2.3.0 更新只包括客户端部分，XXD 仍然是 2.2.0 版本，XXB 版本为 2.1.0。
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.win.debug.setup.exe)；
-* MacOS：[xuanxuan.2.3.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.mac.dmg)；
+* macOS：[xuanxuan.2.3.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.mac.dmg)；
 * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.linux.amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.linux.x86_64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.linux.i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.linux.i686.rpm)；
 * 浏览器端：[xuanxuan.2.3.0.browser.zip](http://dl.cnezsoft.com/xuanxuan/2.3.0/xuanxuan.2.3.0.browser.zip)；
 * XXD Server： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.linux.ia32.tar.gz)；
@@ -190,7 +259,7 @@
 
 ![multi-windows-2.png](https://raw.githubusercontent.com/easysoft/xuanxuan/master/docs/imgs/multi-windows-2.png)
 
-在 Mac 上程序坞应用图标右键来创建一个新窗口。
+在 mac 上程序坞应用图标右键来创建一个新窗口。
 
 ![multi-windows.png](https://raw.githubusercontent.com/easysoft/xuanxuan/master/docs/imgs/multi-windows.png)
 
@@ -229,7 +298,7 @@
 ### 下载地址
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.win.debug.setup.exe)；
-* MacOS：[xuanxuan.2.2.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.mac.dmg)；
+* macOS：[xuanxuan.2.2.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.mac.dmg)；
 * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.linux.amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.linux.x86_64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.linux.i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.linux.i686.rpm)；
 * 浏览器端：[xuanxuan.2.2.0.browser.zip](http://dl.cnezsoft.com/xuanxuan/2.2.0/xuanxuan.2.2.0.browser.zip)；
 * XXD Server： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/2.2.0/xxd.2.2.0.linux.ia32.tar.gz)；
@@ -281,7 +350,7 @@
 ### 下载地址
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.2.1.0.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.2.1.0.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.2.1.0.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.2.1.0.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.2.1.0.win.debug.setup.exe)；
-* MacOS：[xuanxuan.2.1.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.2.1.0.mac.dmg)；
+* macOS：[xuanxuan.2.1.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.2.1.0.mac.dmg)；
 * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.2.1.0.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.2.1.0.linux.amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.2.1.0.linux.x86_64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.2.1.0.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.2.1.0.linux.i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.2.1.0.linux.i686.rpm)；
 * 浏览器端：[xuanxuan.2.1.0.browser.zip](http://dl.cnezsoft.com/xuanxuan/2.1.0/xuanxuan.2.1.0.browser.zip)；
 * XXD Server： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxd.2.1.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxd.2.1.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxd.2.1.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxd.2.1.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/2.1.0/xxd.2.1.0.linux.ia32.tar.gz)；
@@ -330,7 +399,7 @@
 * 优化 拖放发送文件功能，现在可以一次性拖放多个文件到聊天窗口进行发送；
 * 优化 Markdown 渲染机制，现在默认支持完整 Markdown 格式，并支持 GFM（GitHub Flavored Markdown）语法，允许使用一些简单的格式化 HTML 标签（例如 `<kbd>`、`<sub>`、`<mark>` 等）；
 * 优化 发送框中的链接显示，现在会高亮发送框中的链接；
-* 优化 Emoji 表情图像在 Mac 系统上的显示，移除了阴影效果；
+* 优化 Emoji 表情图像在 mac 系统上的显示，移除了阴影效果；
 * 优化 联系人列表排序策略，现在在线的用户会优先显示在顶部；
 * 优化 聊天发送框交互，现在会在提示中显示当前是否支持 Markdown，当激活一个刚刚收到新消息的聊天，会自动激活发送框；
 * 优化 解析链接卡片性能，现在会启用缓存，除非用户手动刷新链接卡片；
@@ -376,7 +445,7 @@
 ### 下载地址
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.0/xuanxuan.2.0.0.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.0/xuanxuan.2.0.0.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.0/xuanxuan.2.0.0.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.0/xuanxuan.2.0.0.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.0/xuanxuan.2.0.0.win64.debug.setup.exe)；
-* MacOS：[xuanxuan.2.0.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.0/xuanxuan.2.0.0.mac.dmg)；
+* macOS：[xuanxuan.2.0.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.0/xuanxuan.2.0.0.mac.dmg)；
 * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.0/xuanxuan.2.0.0.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.0/xuanxuan.2.0.0.linux.amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.0/xuanxuan.2.0.0.linux.x64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.0/xuanxuan.2.0.0.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.0/xuanxuan.2.0.0.linux.i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/2.0/xuanxuan.2.0.0.linux.ia32.rpm)；
 * 浏览器端：[xuanxuan.2.0.0.browser.zip](http://dl.cnezsoft.com/xuanxuan/2.0/xuanxuan.2.0.0.browser.zip)；
 * XXD Server： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.0/xxd.2.0.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.0/xxd.2.0.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/2.0/xxd.2.0.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.0/xxd.2.0.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/2.0/xxd.2.0.0.linux.ia32.tar.gz)；
@@ -438,7 +507,7 @@
 ### 下载地址
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.6/xuanxuan.1.6.0.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.6/xuanxuan.1.6.0.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.6/xuanxuan.1.6.0.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.6/xuanxuan.1.6.0.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.6/xuanxuan.1.6.0.win64.debug.setup.exe)；
-* MacOS：[xuanxuan.1.6.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.6/xuanxuan.1.6.0.mac.dmg)；
+* macOS：[xuanxuan.1.6.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.6/xuanxuan.1.6.0.mac.dmg)；
 * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.6/xuanxuan.1.6.0.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.6/xuanxuan.1.6.0.linux.amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.6/xuanxuan.1.6.0.linux.x64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.6/xuanxuan.1.6.0.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.6/xuanxuan.1.6.0.linux.i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.6/xuanxuan.1.6.0.linux.ia32.rpm)；
 * 浏览器端：[xuanxuan.1.6.0.browser.zip](http://dl.cnezsoft.com/xuanxuan/1.6/xuanxuan.1.6.0.browser.zip)；
 * XXD Server： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.6/xxd.1.6.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.6/xxd.1.6.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/1.6/xxd.1.6.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.6/xxd.1.6.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/1.6/xxd.1.6.0.linux.ia32.tar.gz)；
@@ -505,7 +574,7 @@
 ### 下载地址：
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.5/xuanxuan.1.5.0.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.5/xuanxuan.1.5.0.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.5/xuanxuan.1.5.0.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.5/xuanxuan.1.5.0.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.5/xuanxuan.1.5.0.win64.debug.setup.exe)；
-* MacOS：[xuanxuan.1.5.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.5/xuanxuan.1.5.0.mac.dmg)；
+* macOS：[xuanxuan.1.5.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.5/xuanxuan.1.5.0.mac.dmg)；
 * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.5/xuanxuan.1.5.0.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.5/xuanxuan.1.5.0.linux.amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.5/xuanxuan.1.5.0.linux.x64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.5/xuanxuan.1.5.0.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.5/xuanxuan.1.5.0.linux.i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.5/xuanxuan.1.5.0.linux.ia32.rpm)；
 * 浏览器端：[xuanxuan.1.5.0.browser.zip](http://dl.cnezsoft.com/xuanxuan/1.5/xuanxuan.1.5.0.browser.zip)；
 * XXD Server： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.5/xxd.1.5.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.5/xxd.1.5.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/1.5/xxd.1.5.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.5/xxd.1.5.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/1.5/xxd.1.5.0.linux.ia32.tar.gz)；
@@ -567,7 +636,7 @@
 ### 下载地址：
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.4/xuanxuan.1.4.0.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.4/xuanxuan.1.4.0.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.4/xuanxuan.1.4.0.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.4/xuanxuan.1.4.0.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.4/xuanxuan.1.4.0.win64.debug.setup.exe)；
-* MacOS：[xuanxuan.1.4.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.4/xuanxuan.1.4.0.mac.dmg)；
+* macOS：[xuanxuan.1.4.0.mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.4/xuanxuan.1.4.0.mac.dmg)；
 * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.4/xuanxuan.1.4.0.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.4/xuanxuan.1.4.0.linux.amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.4/xuanxuan.1.4.0.linux.x64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.4/xuanxuan.1.4.0.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.4/xuanxuan.1.4.0.linux.i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.4/xuanxuan.1.4.0.linux.ia32.rpm)；
 * 浏览器端：[xuanxuan.1.4.0.browser.zip](http://dl.cnezsoft.com/xuanxuan/1.4/xuanxuan.1.4.0.browser.zip)；
 * XXD Server： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.4/xxd.1.4.0.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.4/xxd.1.4.0.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/1.4/xxd.1.4.0.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.4/xxd.1.4.0.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/1.4/xxd.1.4.0.linux.ia32.tar.gz)；
@@ -650,7 +719,7 @@
 ### 下载地址：
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.3/xuanxuan-1.3.0-win64-setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.3/xuanxuan-1.3.0-win64-zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.3/xuanxuan-1.3.0-win32-setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.3/xuanxuan-1.3.0-win32-zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.3/xuanxuan-1.3.0-debug-win64-setup.exe)
-* MacOS：[xuanxuan-1.3.0-mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.3/xuanxuan-1.3.0-mac.dmg)
+* macOS：[xuanxuan-1.3.0-mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.3/xuanxuan-1.3.0-mac.dmg)
 * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.3/xuanxuan-1.3.0-linux-x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.3/xuanxuan-1.3.0-linux-amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.3/xuanxuan-1.3.0-linux-x64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.3/xuanxuan-1.3.0-linux-ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.3/xuanxuan-1.3.0-linux-i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.3/xuanxuan-1.3.0-linux-ia32.rpm)
 * 浏览器端：[xuanxuan-1.3.0-browser.zip](http://dl.cnezsoft.com/xuanxuan/1.3/xuanxuan-1.3.0-browser.zip)
 * Server: [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.3/xxd-1.3.0-win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.3/xxd-1.3.0-win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/1.3/xxd-1.3.0-mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.3/xxd-1.3.0-linux-x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/1.3/xxd-1.3.0-linux-ia32.tar.gz)；
@@ -690,7 +759,7 @@
 ### 下载地址：
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.2/xuanxuan-1.2.0-win64-setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.2/xuanxuan-1.2.0-win64-zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.2/xuanxuan-1.2.0-win32-setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.2/xuanxuan-1.2.0-win32-zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.2/xuanxuan-1.2.0-debug-win64-setup.exe)
-* MacOS：[xuanxuan-1.2.0-mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.2/xuanxuan-1.2.0-mac.dmg)
+* macOS：[xuanxuan-1.2.0-mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.2/xuanxuan-1.2.0-mac.dmg)
 * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.2/xuanxuan-1.2.0-linux-x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.2/xuanxuan-1.2.0-linux-amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.2/xuanxuan-1.2.0-linux-x64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.2/xuanxuan-1.2.0-linux-ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.2/xuanxuan-1.2.0-linux-i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.2/xuanxuan-1.2.0-linux-ia32.rpm)
 * 浏览器端：[xuanxuan-1.2.0-browser.zip](http://dl.cnezsoft.com/xuanxuan/1.2/xuanxuan-1.2.0-browser.zip)
 * Server: [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.2/xxd-1.2.0-win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.2/xxd-1.2.0-win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/1.2/xxd-1.2.0-mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.2/xxd-1.2.0-linux-x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/1.2/xxd-1.2.0-linux-ia32.tar.gz)；
@@ -755,7 +824,7 @@
 ### 下载地址：
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.1-win64-setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.1-win64-zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.1-win32-setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.1-win32-zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.1-debug-win64-setup.exe)
-* MacOS：[xuanxuan-1.1.1-mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.1-mac.dmg)
+* macOS：[xuanxuan-1.1.1-mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.1-mac.dmg)
 * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.1-linux-x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.1-linux-amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.1-linux-x64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.1-linux-ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.1-linux-i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.1-linux-ia32.rpm)
 * Server: [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.1/xxd-1.1.1-win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.1/xxd-1.1.1-win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/1.1/xxd-1.1.1-mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.1/xxd-1.1.1-linux-x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/1.1/xxd-1.1.1-linux-ia32.tar.gz)；
 * 然之：[源码包](http://dl.cnezsoft.com/ranzhi/4.2.2/ranzhi.4.2.2.zip)、[windows 一键安装包](http://dl.cnezsoft.com/ranzhi/4.2.2/ranzhi.4.2.2.exe)、[linux rpm 安装包](http://dl.cnezsoft.com/ranzhi/4.2.2/ranzhi-4.2.2-1.noarch.rpm)、[linux deb 安装包](http://dl.cnezsoft.com/ranzhi/4.2.2/ranzhi_4.2.2_1_all.deb)。
@@ -809,7 +878,7 @@
 ### 下载地址：
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.0-win64-setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.0-win64-zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.0-win32-setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.0-win32-zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.0-debug-win64-setup.exe)
-* MacOS：[xuanxuan-1.1.0-mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.0-mac.dmg)
+* macOS：[xuanxuan-1.1.0-mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.0-mac.dmg)
 * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.0-linux-x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.0-linux-amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.0-linux-x64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.0-linux-ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.0-linux-i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.0-linux-ia32.rpm)
 * Server: [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.1/xxd-1.1.0-win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.1/xxd-1.1.0-win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/1.1/xxd-1.1.0-mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.1/xxd-1.1.0-linux-x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/1.1/xxd-1.1.0-linux-ia32.tar.gz)；
 * 然之：[xuanxuan-1.1.0-server-rangerteam.zip](http://dl.cnezsoft.com/xuanxuan/1.1/xuanxuan-1.1.0-server-rangerteam.zip)。
@@ -834,7 +903,7 @@
 下载地址：
 
 * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.2-win64-setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.2-win64-zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.2-win32-setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.2-win32-zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.2-debug-win64-setup.exe)
-* MacOS：[xuanxuan-1.0.2-mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.2-mac.dmg)
+* macOS：[xuanxuan-1.0.2-mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.2-mac.dmg)
 * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.2-linux-x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.2-linux-amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.2-linux-x64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.2-linux-ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.2-linux-i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.2-linux-ia32.rpm)
 
 ## v 1.0.1
@@ -859,7 +928,7 @@
 下载地址：
 
  * Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.1-win64-setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.1-win64-zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.1-win32-setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.1-win32-zip.exe)
- * MacOS：[xuanxuan-1.0.1-mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.1-mac.dmg)
+ * macOS：[xuanxuan-1.0.1-mac.dmg](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.1-mac.dmg)
  * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.1-linux-x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.1-linux-amd64.deb)、[64 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.1-linux-x64.rpm)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.1-linux-ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.1-linux-i386.deb)、[32 位（.rpm）](http://dl.cnezsoft.com/xuanxuan/1.0/xuanxuan-1.0.1-linux-ia32.rpm)
 
 ## v 1.0.0
