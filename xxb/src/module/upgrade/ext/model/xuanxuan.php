@@ -49,6 +49,9 @@ public function upgradeXuanxuan($fromVersion)
  */
 public function processMessageStatus()
 {
+    $table = $this->dbh->query("SHOW TABLES LIKE '{$this->config->db->prefix}im_usermessage'")->fetch();
+    if(empty($table)) return false;
+
     $userMessages = array();
     $messagesList = $this->dao->select('*')->from($this->config->db->prefix . 'im_usermessage')->fetchAll();
     foreach($messagesList as $messages)
@@ -91,6 +94,18 @@ public function processXuanxuanKey()
  */
 public function changeMessageStatusTable()
 {
+    $needUpdate = false;
+    $fields = $this->dbh->query('DESC ' . TABLE_IM_MESSAGESTATUS)->fetchAll();
+    foreach($fields as $field)
+    {
+        if($field->Field == 'gid')
+        {
+            $needUpdate = true;
+            break;
+        }
+    }
+    if(!$needUpdate) return false;
+
     $gids = $this->dao->select('gid')->from(TABLE_IM_MESSAGESTATUS)->where('status')->ne('sent')->fetchPairs('gid');
     if(!empty($gids))
     {
