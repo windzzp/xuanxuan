@@ -29,6 +29,6 @@ $lang->client->status['released'] = '已发布';
 
 $lang->client->zipList['win64zip']   = 'Windows 64位';
 $lang->client->zipList['win32zip']   = 'Windows 32位';
-$lang->client->zipList['macOS']      = 'macOS';
+$lang->client->zipList['macOSzip']   = 'macOS';
 $lang->client->zipList['linux64zip'] = 'Linux 64位';
 $lang->client->zipList['linux32zip'] = 'Linux 32位';
