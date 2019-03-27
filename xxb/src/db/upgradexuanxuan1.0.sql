@@ -1,4 +1,4 @@
-ALTER TABLE `sys_file` CHANGE `pathname` `pathname` char(100) NOT NULL;
+ALTER TABLE `xxb_file` CHANGE `pathname` `pathname` char(100) NOT NULL;
 
 TRUNCATE `im_usermessage`;
 
