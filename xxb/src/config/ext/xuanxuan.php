@@ -1,6 +1,6 @@
 <?php
 $config->xuanxuan = new stdclass();
-$config->xuanxuan->version     = '2.5.0';
+$config->xuanxuan->version     = '2.5.1';
 $config->xuanxuan->backend     = 'xxb';
 $config->xuanxuan->backendLang = 'zh-cn';
 $config->xuanxuan->key         = '';       //Set a 32 byte string as your key.
