@@ -132,13 +132,14 @@ export const executeCommandLine = (commandLine, commandContext = null) => {
     if (commandLine.includes('|')) {
         return Promise.all(commandLine.split('|').map(cLine => executeCommandLine(cLine, commandContext)));
     }
-    const params = commandLine.split('/').map((p, idx) => {
+    const params = commandLine.split('/');
+    const convertedParams = params.map((p, idx) => {
         if (p[0] === '?' && idx === (params.length - 1)) {
             return getSearchParam(null, p);
         }
         return decodeURIComponent(p);
     });
-    return executeCommandWithContext(params.shift(), commandContext, ...params);
+    return executeCommandWithContext(convertedParams.shift(), commandContext, ...convertedParams);
 };
 
 /**
