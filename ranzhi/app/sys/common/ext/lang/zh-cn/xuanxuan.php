@@ -1,8 +1,8 @@
 <?php
-$lang->system->menu->xuanxuan   = '喧喧|setting|xuanxuan|';
-$lang->system->menu->xxbversion = '客户端版本|setting|xxcVersion|';
+$lang->system->menu->xuanxuan = '喧喧|setting|xuanxuan|';
+$lang->system->menu->client   = '客户端|client|browse|';
 
-$lang->system->menuOrder[4] = 'xuanxuan,';
-$lang->system->menuOrder[5] = 'xxbversion,';
+$lang->system->menuOrder[4] = 'xuanxuan';
+$lang->system->menuOrder[5] = 'client';
 
 $lang->xuanxuan = new stdclass();
