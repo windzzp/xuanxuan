@@ -1,4 +1,7 @@
 <?php
+/**
+ * Upgrade to 2.5.1 rename table.
+ */
 public function loadConfigFromDB()
 {
     if(version_compare($this->config->version, '2.5.1', '<='))
