@@ -29,6 +29,6 @@ $lang->client->status['released'] = 'Released';
 
 $lang->client->zipList['win64zip']   = 'Windows 64';
 $lang->client->zipList['win32zip']   = 'Windows 32';
-$lang->client->zipList['macOS']      = 'macOS';
+$lang->client->zipList['macOSzip']   = 'macOS';
 $lang->client->zipList['linux64zip'] = 'Linux 64';
 $lang->client->zipList['linux32zip'] = 'Linux 32';
