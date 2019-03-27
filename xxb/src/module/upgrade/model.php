@@ -56,8 +56,6 @@ class upgradeModel extends model
             case '1_2'   : $this->execSQL($this->getUpgradeFile('1.2'));
             case '2_0_0' :
             case '2_1_0' :
-            case '2_2_0' :
-            case '2_3_0' :
             case '2_4_0' : $this->execSQL($this->getUpgradeFile('2.4.0'));
             case '2_5_0' : $this->execSQL($this->getUpgradeFile('2.5.0'));
             default: if(!$this->isError()) $this->loadModel('setting')->updateVersion($this->config->version);
@@ -81,8 +79,6 @@ class upgradeModel extends model
             case '1_2'   : $confirmContent .= $this->getUpgradeFile('1.2');
             case '2_0_0' :
             case '2_1_0' :
-            case '2_2_0' :
-            case '2_3_0' :
             case '2_4_0' : $confirmContent .= $this->getUpgradeFile('2.4.0');
             case '2_5_0' : $confirmContent .= $this->getUpgradeFile('2.5.0');
         }
