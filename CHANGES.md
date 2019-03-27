@@ -57,6 +57,7 @@
     * 修复 了有时会向客户端发送将来日期待办通知的问题（[BUG #51](http://xuan.5upm.com/bug-view-51.html)）；
     * 修复 了有时升级后自动修改与 XXD 通信密匙的问题（[BUG #92](http://xuan.5upm.com/bug-view-92.html)）；
   * 消息中转服务器（XXD）：
+    * 新增 对同一账号多客户端同时登录的支持。
 
 ### 下载地址
 
