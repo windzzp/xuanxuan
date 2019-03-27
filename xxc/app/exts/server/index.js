@@ -133,10 +133,8 @@ const processExtensions = async () => {
             // load package json
             const pkgJson = await loadRemoteExtension(theExt);
             if (pkgJson && pkgJson.name) {
-                if (pkgJson.name === theExt.name) {
-                    if (DEBUG) {
-                        console.warn(`The package name(${pkgJson.name}) is not match the server name(${theExt.name})`);
-                    }
+                if (pkgJson.name !== theExt.name && DEBUG) {
+                    console.warn(`The package name(${pkgJson.name}) is not match the server name(${theExt.name})`);
                 }
                 if (onChangeListener) {
                     onChangeListener(theExt, 'remove');
