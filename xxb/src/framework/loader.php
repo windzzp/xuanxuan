@@ -41,7 +41,7 @@ if(RUN_MODE != 'upgrade')
     $config->installedVersion = $common->loadModel('setting')->getVersion();
     if(version_compare($config->version, $config->installedVersion, '>')) 
     {
-        die(header('location: ' . commonModel::getSysURL() . '/ux.php'));
+        die(header('location: ' . commonModel::getSysURL() . rtrim($config->webRoot, 'sys/') . '/ux.php'));
     }
 }
 

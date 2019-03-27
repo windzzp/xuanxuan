@@ -28,14 +28,15 @@ ranzhi:
 	cp -r $(XXB)/www/ux.php ranzhi/www/
 	cp -r $(XXB)/www/x.php ranzhi/www/
 	for sql in `ls ranzhi/db/*xuanxuan*.sql`; do sed -i 's/xxb_/sys_/g' $$sql; done
-	sed -i "/\$$config->xuanxuan->backend     = 'xxb';/c\\$$config->xuanxuan->backend     = 'ranzhi';" ranzhi/config/ext/xuanxuan.php
+	sed -i "/\$$config->xuanxuan->backend     = 'xxb';/c\\\$$config->xuanxuan->backend     = 'ranzhi';" ranzhi/config/ext/xuanxuan.php
 	sed -i "/case '2.0.0'/a\\			\$$this->installSSOEntry();" $(APP)/upgrade/ext/model/xuanxuan.php
 	sed -i "s/setItem('system.xuanxuan.global.version'/setItem('system.sys.xuanxuan.global.version'/g" $(APP)/upgrade/ext/model/xuanxuan.php
 	sed -i "s/setItem('system.common.xuanxuan.key'/setItem('system.sys.common.xuanxuan.key'/g" $(APP)/upgrade/ext/model/xuanxuan.php
 	sed -i "s/setItem(\"system.chat.settings.\$$account\"/setItem(\"system.sys.chat.settings.\$$account\"/g" $(APP)/chat/control.php
 	sed -i "s/setItem(\$$user->account . '.common.lastLogin.' . \$$device/setItem(\$$user->account . '.sys.common.lastLogin.' . \$$device/g" $(APP)/chat/model.php
 	sed -i "s/setItems('system.common.xuanxuan'/setItems('system.sys.common.xuanxuan'/g" $(APP)/setting/ext/control/xuanxuan.php
-	sed -i "/\$$myConfig = dirname(dirname(__FILE__)) . '\/config\/my.php';/c\\\$$myConfig = dirname(dirname(dirname(__FILE__))) . '\/config\/my.php';" ranzhi/www/ux.php
+	sed -i "/\$$app = router::createApp/c\\\$$app = router::createApp('sys');" ranzhi/www/ux.php
+	sed -i "/\$$app = router::createApp/c\\\$$app = router::createApp('sys', '', 'xuanxuan');" ranzhi/www/x.php
 	sed -i "s/喧喧/然之/g" ranzhi/www/ux.php
 	sed -i "s/xxb/sys/g" ranzhi/www/ux.php
 	sed -i "s/xxb/sys/g" ranzhi/www/x.php
