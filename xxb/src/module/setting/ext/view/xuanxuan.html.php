@@ -78,8 +78,7 @@
         <th><?php echo $lang->chat->xxd->https;?></th>
         <td>
           <?php $https = zget($config->xuanxuan, 'https', 'off');?>
-          <?php echo html::hidden('https', $https);?>
-          <?php echo $type == 'edit' ? html::radio('https', $lang->chat->httpsOptions, $https, "class='checkbox'") : zget($lang->chat->httpsOptions, $https, '');?>
+          <?php echo $type == 'edit' ? html::radio('https', $lang->chat->httpsOptions, $https, "class='checkbox'") : zget($lang->chat->httpsOptions, $https);?>
         </td>
         <td></td>
       </tr>

@@ -17,13 +17,13 @@ class setting extends control
         if($_POST)
         {
             $errors  = array();
-            $setting = fixer::input('post')->remove('https')->get();
+            $setting = fixer::input('post')->get();
 
             if(strlen($this->post->key) != 32 or !validater::checkREG($this->post->key, '|^[A-Za-z0-9]+$|')) $errors['key'] = $this->lang->chat->errorKey;
             if($this->post->key == str_repeat(8, 32)) $errors['key'] = $this->lang->chat->defaultKey;
             if(!is_numeric($setting->chatPort) or (int)$setting->chatPort <= 0 or (int)$setting->chatPort > 65535) $errors['chatPort'] = $this->lang->chat->xxdPortError;
             if(!is_numeric($setting->commonPort) or (int)$setting->commonPort <= 0 or (int)$setting->commonPort > 65535) $errors['commonPort'] = $this->lang->chat->xxdPortError;
-            if($setting->isHttps == 'on')
+            if($setting->https == 'on')
             {
                 if(empty($setting->sslcrt)) $errors['sslcrt'] = $this->lang->chat->errorSSLCrt;
                 if(empty($setting->sslkey)) $errors['sslkey'] = $this->lang->chat->errorSSLKey;

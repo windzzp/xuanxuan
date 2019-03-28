@@ -33,7 +33,7 @@ $(function()
     $('[name^=https]').change(function()
     {
         var value = $(this).val();
-        $('#isHttps').val(value);
+        $('#https').val(value);
         if(value == 'on')
         {
             $('.sslTR').show();
