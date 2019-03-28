@@ -47,8 +47,7 @@ $(function()
     $('#os').change(function()
     {
         var os = $(this).val();
-        var backend = $('#backend').val();
-        $('.download-package').attr('href', createLink('setting', 'downloadXXD', "backend=" + backend + "&type=package&os=" + os));
+        $('.download-package').attr('href', createLink('setting', 'downloadXXD', "type=package&os=" + os));
     });
     $('#os').change();
 });
