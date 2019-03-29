@@ -37,6 +37,19 @@ public function loadConfigFromDB()
             $this->dbh->query("DROP TABLE IF EXISTS `{$prefix}oa_holiday`");
             $this->dbh->query("DROP TABLE IF EXISTS `{$prefix}oa_leave`");
             $this->dbh->query("DROP TABLE IF EXISTS `{$prefix}oa_lieu`");
+
+            $tmpModelRoot = $this->app->tmpRoot . 'model' . DS;
+            if(is_dir($tmpModelRoot))
+            {
+                $files = helper::ls($tmpModelRoot, '.php');
+                if(!empty($files))
+                {
+                    foreach($files as $file)
+                    {
+                        if(is_file($file)) unlink($file);
+                    }
+                }
+            }
         }
     }
     parent::loadConfigFromDB();
