@@ -61,7 +61,7 @@
 
 ### 下载地址
 
-* Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.win64.zip.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.win32.zip.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.debug.win64.setup.exe)；
+* Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.win64.7z.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.win32.7z.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.debug.win64.setup.exe)；
 * macOS：[xuanxuan.2.5.1.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.mac.dmg)；
 * Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.linux.amd64.deb)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.linux.i386.deb)；
 * 浏览器端：[xuanxuan.2.5.1.browser.zip](http://dl.cnezsoft.com/xuanxuan/2.5.1/xuanxuan.2.5.1.browser.zip)；
