@@ -33,7 +33,7 @@
           <?php foreach($lang->client->zipList as $zip => $system):?>
           <tr>
             <th><?php echo $system;?>：</th>
-            <td><?php echo zget($version->xxcDownload, $zip);?> <a class="download" href="javascript:void(0);" data-link="<?php echo zget($version->xxcDownload, $zip);?>" data-version="<?php echo $version->xxcVersion?>" data-os="<?php echo $zip?>"><?php echo $lang->client->download?></a></td>
+            <td><?php echo zget($version->xxcDownload, $zip);?> <a class="download" href="javascript:void(0);" data-link="<?php echo helper::safe64Encode(zget($version->xxcDownload, $zip));?>" data-version="<?php echo $version->xxcVersion?>" data-os="<?php echo $zip?>"><?php echo $lang->client->download?></a></td>
           </tr>
           <?php endforeach;?>
         </table>
