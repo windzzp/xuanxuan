@@ -22,7 +22,6 @@ public function loadConfigFromDB()
             $this->dbh->query("RENAME TABLE `{$prefix}sys_block` TO `{$prefix}block`");
             $this->dbh->query("RENAME TABLE `{$prefix}sys_category` TO `{$prefix}category`");
             $this->dbh->query("RENAME TABLE `{$prefix}sys_config` TO `{$prefix}config`");
-            $this->dbh->query("RENAME TABLE `{$prefix}sys_entry` TO `{$prefix}entry`");
             $this->dbh->query("RENAME TABLE `{$prefix}sys_file` TO `{$prefix}file`");
             $this->dbh->query("RENAME TABLE `{$prefix}sys_group` TO `{$prefix}group`");
             $this->dbh->query("RENAME TABLE `{$prefix}sys_grouppriv` TO `{$prefix}grouppriv`");
