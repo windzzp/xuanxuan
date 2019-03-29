@@ -22,6 +22,7 @@ ranzhi:
 	cp -r $(XXB)/framework/xuanxuan.class.php ranzhi/framework/
 	cp -r $(XXB)/lib/phpaes ranzhi/lib/
 	cp -r $(MODULE)/chat $(APP)/
+	cp -r $(MODULE)/client $(APP)/
 	cp -r $(MODULE)/action/ext/* $(APP)/action/ext/
 	cp -r $(MODULE)/common/ext/* $(APP)/common/ext/
 	cp -r $(MODULE)/entry/ext/* $(APP)/entry/ext/

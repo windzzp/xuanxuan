@@ -1350,8 +1350,8 @@ class chatModel extends model
      */
     public function uploadFile($fileName, $path, $size, $time, $userID, $chat)
     {
-        $user      = $this->chat->getUserByUserID($userID);
-        $users     = $this->chat->getUserList($status = 'online', $chat->members);
+        $user      = $this->getUserByUserID($userID);
+        $users     = $this->getUserList($status = 'online', $chat->members);
         $extension = $this->loadModel('file')->getExtension($fileName);
 
         $file = new stdclass();
