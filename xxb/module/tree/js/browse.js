@@ -24,4 +24,4 @@ $(document).ready(function()
     $.setAjaxLoader('#treeMenuBox .ajax, .panel-actions .ajax', '#categoryBox');
 
     $('.tree li .hitarea').click();
-})
+});

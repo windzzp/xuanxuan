@@ -11,4 +11,4 @@ $(document).ready(function()
     });
     
     if(v.deptID) $('#category' + v.deptID).addClass('text-bold');
-})
+});

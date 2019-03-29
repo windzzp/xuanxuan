@@ -14,13 +14,13 @@ $(document).ready(function()
             $(this).children('a:first').css('margin-top', thisHeight - 18 + 'px')
             $(this).children('a:first').show();
         }
-    })
+    });
     $('.more-list').click(function()
     {
         $(this).parent().children(':first').css('height', '')
         $(this).hide();
         $(this).prev().children('a:first').show();
-    })
+    });
     $('.hide-list').click(function()
     {
         var thisHeight = $(this).parent().next().css('margin-top');
