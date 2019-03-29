@@ -6,15 +6,15 @@ VERSION	= $(shell head -n 1 $(XXB)/VERSION)
 all: ranzhi
 
 ranzhi:
-	mkdir -p $(APP)
-	mkdir -p ranzhi/config
-	mkdir -p ranzhi/db
-	mkdir -p ranzhi/framework
-	mkdir -p ranzhi/lib
-	mkdir -p ranzhi/app/sys/action/ext
-	mkdir -p ranzhi/app/sys/entry/ext
-	mkdir -p ranzhi/app/sys/setting/ext
-	mkdir -p ranzhi/app/sys/user/ext
+	mkdir ranzhi
+	mkdir ranzhi/config
+	mkdir ranzhi/db
+	mkdir ranzhi/framework
+	mkdir ranzhi/lib
+	mkdir -p $(APP)/action/ext
+	mkdir -p $(APP)/entry/ext
+	mkdir -p $(APP)/setting/ext
+	mkdir -p $(APP)/user/ext
 	cp -r app ranzhi/
 	cp -r www ranzhi/
 	cp -r $(XXB)/config/ext ranzhi/config/
@@ -22,13 +22,14 @@ ranzhi:
 	cp -r $(XXB)/framework/xuanxuan.class.php ranzhi/framework/
 	cp -r $(XXB)/lib/phpaes ranzhi/lib/
 	cp -r $(MODULE)/chat $(APP)/
+	cp -r $(MODULE)/client $(APP)/
 	cp -r $(MODULE)/action/ext/* $(APP)/action/ext/
-	cp -r $(MODULE)/entry/ext/* $(APP)/entry/ext/
-	cp -r $(MODULE)/setting/ext/* $(APP)/setting/ext/
-	cp -r $(MODULE)/user/ext/* $(APP)/user/ext/
 	cp -r $(MODULE)/common/ext/* $(APP)/common/ext/
+	cp -r $(MODULE)/entry/ext/* $(APP)/entry/ext/
 	cp -r $(MODULE)/install/ext/* $(APP)/install/ext/
+	cp -r $(MODULE)/setting/ext/* $(APP)/setting/ext/
 	cp -r $(MODULE)/upgrade/ext/* $(APP)/upgrade/ext/
+	cp -r $(MODULE)/user/ext/* $(APP)/user/ext/
 	cp -r $(XXB)/www/ux.php ranzhi/www/
 	cp -r $(XXB)/www/x.php ranzhi/www/
 	for sql in `ls ranzhi/db/*xuanxuan*.sql`; do sed -i 's/xxb_/sys_/g' $$sql; done
