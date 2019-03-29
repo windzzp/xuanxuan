@@ -31,7 +31,6 @@ ranzhi:
 	cp -r $(MODULE)/upgrade/ext/* $(APP)/upgrade/ext/
 	cp -r $(XXB)/www/ux.php ranzhi/www/
 	cp -r $(XXB)/www/x.php ranzhi/www/
-	rm -r $(APP)/common/ext/model/loadconfigfromdb.php
 	for sql in `ls ranzhi/db/*xuanxuan*.sql`; do sed -i 's/xxb_/sys_/g' $$sql; done
 	sed -i "/\$$config->xuanxuan->backend     = 'xxb';/c\\\$$config->xuanxuan->backend     = 'ranzhi';" ranzhi/config/ext/xuanxuan.php
 	sed -i "/case '2.0.0'/a\\			\$$this->installSSOEntry();" $(APP)/upgrade/ext/model/xuanxuan.php
