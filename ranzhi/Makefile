@@ -7,10 +7,14 @@ all: ranzhi
 
 ranzhi:
 	mkdir -p $(APP)
-	mkdir ranzhi/config
-	mkdir ranzhi/db
-	mkdir ranzhi/framework
-	mkdir ranzhi/lib
+	mkdir -p ranzhi/config
+	mkdir -p ranzhi/db
+	mkdir -p ranzhi/framework
+	mkdir -p ranzhi/lib
+	mkdir -p ranzhi/app/sys/action/ext
+	mkdir -p ranzhi/app/sys/entry/ext
+	mkdir -p ranzhi/app/sys/setting/ext
+	mkdir -p ranzhi/app/sys/user/ext
 	cp -r app ranzhi/
 	cp -r www ranzhi/
 	cp -r $(XXB)/config/ext ranzhi/config/
