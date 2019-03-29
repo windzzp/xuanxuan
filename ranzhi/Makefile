@@ -1,4 +1,4 @@
-XXB	= ../xxb/src
+XXB	= ../xxb
 MODULE	= $(XXB)/module
 APP	= ranzhi/app/sys
 VERSION	= $(shell head -n 1 $(XXB)/VERSION)
@@ -6,11 +6,15 @@ VERSION	= $(shell head -n 1 $(XXB)/VERSION)
 all: ranzhi
 
 ranzhi:
-	mkdir -p $(APP)
+	mkdir ranzhi
 	mkdir ranzhi/config
 	mkdir ranzhi/db
 	mkdir ranzhi/framework
 	mkdir ranzhi/lib
+	mkdir -p $(APP)/action/ext
+	mkdir -p $(APP)/entry/ext
+	mkdir -p $(APP)/setting/ext
+	mkdir -p $(APP)/user/ext
 	cp -r app ranzhi/
 	cp -r www ranzhi/
 	cp -r $(XXB)/config/ext ranzhi/config/
@@ -18,13 +22,14 @@ ranzhi:
 	cp -r $(XXB)/framework/xuanxuan.class.php ranzhi/framework/
 	cp -r $(XXB)/lib/phpaes ranzhi/lib/
 	cp -r $(MODULE)/chat $(APP)/
+	cp -r $(MODULE)/client $(APP)/
 	cp -r $(MODULE)/action/ext/* $(APP)/action/ext/
-	cp -r $(MODULE)/entry/ext/* $(APP)/entry/ext/
-	cp -r $(MODULE)/setting/ext/* $(APP)/setting/ext/
-	cp -r $(MODULE)/user/ext/* $(APP)/user/ext/
 	cp -r $(MODULE)/common/ext/* $(APP)/common/ext/
+	cp -r $(MODULE)/entry/ext/* $(APP)/entry/ext/
 	cp -r $(MODULE)/install/ext/* $(APP)/install/ext/
+	cp -r $(MODULE)/setting/ext/* $(APP)/setting/ext/
 	cp -r $(MODULE)/upgrade/ext/* $(APP)/upgrade/ext/
+	cp -r $(MODULE)/user/ext/* $(APP)/user/ext/
 	cp -r $(XXB)/www/ux.php ranzhi/www/
 	cp -r $(XXB)/www/x.php ranzhi/www/
 	for sql in `ls ranzhi/db/*xuanxuan*.sql`; do sed -i 's/xxb_/sys_/g' $$sql; done
@@ -37,11 +42,14 @@ ranzhi:
 	sed -i "s/setItems('system.common.xuanxuan'/setItems('system.sys.common.xuanxuan'/g" $(APP)/setting/ext/control/xuanxuan.php
 	sed -i "/\$$app = router::createApp/c\\\$$app = router::createApp('sys');" ranzhi/www/ux.php
 	sed -i "/\$$app = router::createApp/c\\\$$app = router::createApp('sys', '', 'xuanxuan');" ranzhi/www/x.php
+	sed -i "/\$$os = 'win';/i\\        \$$this->lang->setting->menu = \$$this->lang->system->menu;" $(APP)/setting/ext/control/xuanxuan.php
+	sed -i "/\$$os = 'win';/i\\        \$$this->lang->menuGroups->setting = 'system';" $(APP)/setting/ext/control/xuanxuan.php
+	sed -i "/\$$os = 'win';/{x;p;x}" $(APP)/setting/ext/control/xuanxuan.php
 	sed -i "s/喧喧/然之/g" ranzhi/www/ux.php
 	sed -i "s/xxb/sys/g" ranzhi/www/ux.php
 	sed -i "s/xxb/sys/g" ranzhi/www/x.php
 	# translate zh-cn files to zh-tw.
-	cp -r $(XXB)/tools ranzhi/ && cd ranzhi/tools/ && php ./cn2tw.php
+	cp -r tools ranzhi/ && cd ranzhi/tools/ && php ./cn2tw.php
 	rm -r ranzhi/tools
 	# change mode.
 	chmod -R 777 ranzhi/config

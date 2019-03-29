@@ -21,7 +21,7 @@ mkdir -p $RPM_BUILD_ROOT
 chmod 777 -R %{_builddir}/%{name}-%{version}/opt/xxb/tmp/
 chmod 777 -R %{_builddir}/%{name}-%{version}/opt/xxb/www/data
 chmod 777 -R %{_builddir}/%{name}-%{version}/opt/xxb/config
-chmod 777 %{_builddir}/%{name}-%{version}/opt/xxb/app
+chmod 777 %{_builddir}/%{name}-%{version}/opt/xxb/module
 chmod 777 %{_builddir}/%{name}-%{version}/opt/xxb/www
 find %{_builddir}/%{name}-%{version}/opt/xxb/ -name ext |xargs chmod -R 777
 cp -a %{_builddir}/%{name}-%{version}/* $RPM_BUILD_ROOT

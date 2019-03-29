@@ -1,77 +1,47 @@
 VERSION=$(shell head -n 1 VERSION)
-TIME = $(shell date)
+TIME=$(shell date)
 
 all: xxb
 
 xxb:
-	mkdir -p xxb/db
-	mkdir -p xxb/lib
-	mkdir -p xxb/app/sys
-	mkdir -p xxb/www/data
-	mkdir -p xxb/tmp/log
-	mkdir -p xxb/tmp/model
-	mkdir -p xxb/tmp/backup
-	mkdir -p xxb/tmp/extension
-	mkdir -p xxb/tmp/package
-	mkdir -p xxb/app/oa
-	cp -r ./zdoo/framework xxb/
-	cp -r ./zdoo/lib/base xxb/lib/
-	cp -r ./zdoo/lib/dao xxb/lib/
-	cp -r ./zdoo/lib/front xxb/lib/
-	cp -r ./zdoo/lib/filter xxb/lib/
-	cp -r ./zdoo/lib/pager xxb/lib/
-	cp -r ./zdoo/lib/purifier xxb/lib/
-	cp -r ./zdoo/lib/mobile xxb/lib/
-	cp -r ./zdoo/lib/pinyin xxb/lib/
-	cp -r ./zdoo/lib/snoopy xxb/lib/
-	cp -r ./zdoo/config xxb/
-	cp -r ./zdoo/www/api.php xxb/www/
-	cp -r ./zdoo/www/js xxb/www/
-	cp -r ./zdoo/www/sys xxb/www/
-	cp -r ./zdoo/www/theme xxb/www/
-	cp -r ./zdoo/app/sys/install xxb/app/sys/
-	cp -r ./zdoo/app/sys/common xxb/app/sys/
-	cp -r ./zdoo/app/sys/index xxb/app/sys/
-	cp -r ./zdoo/app/sys/user xxb/app/sys/
-	cp -r ./zdoo/app/sys/group xxb/app/sys/
-	cp -r ./zdoo/app/sys/action xxb/app/sys/
-	cp -r ./zdoo/app/sys/tree xxb/app/sys/
-	cp -r ./zdoo/app/sys/upgrade xxb/app/sys/
-	cp -r ./zdoo/app/sys/block xxb/app/sys/
-	cp -r ./zdoo/app/sys/setting xxb/app/sys/
-	cp -r ./zdoo/app/sys/setting xxb/app/sys/
-	cp -r ./zdoo/app/sys/company xxb/app/sys/
-	cp -r ./zdoo/app/sys/entry xxb/app/sys/
-	cp -r ./zdoo/app/sys/file xxb/app/sys/
-	cp -r ./zdoo/app/sys/misc xxb/app/sys/
-	#cp -r ./zdoo/app/sys/package xxb/app/sys/
-	cp -r ./zdoo/app/sys/sso xxb/app/sys/
-	cp -r ./VERSION xxb/
-	cp ./zdoo/www/index.php xxb/www/
-	cp -r ../ranzhi/* xxb/
-	cp -r ./backend/* xxb/
-	cp -r ./doc xxb/
-	php build/xxb.php
-	cat xxb/db/xuanxuan.sql >> xxb/db/xxb.sql
-	cd xxb/config/ext; echo '$$config->buildDate = "build at $(TIME)";' >> xxb.php
-	sed -i 's/ranzhi\.sql/xxb\.sql/' xxb/app/sys/install/model.php
-	sed -i '/runable/s#^#//#' xxb/app/sys/common/view/footer.html.php
-	sed -i '/checkVersion/s#^#//#' xxb/app/sys/user/view/login.html.php
-	sed -i '/Remove all entries/i\        return true;' xxb/app/sys/install/model.php
-	sed -i 's/x: 40, y: 0/x: 0,y: 0/' xxb/www/js/jquery/ips.js
-	sed -i "s/<ul><li><button class='reload-win'>.*<\/ul><\/div>//" xxb/www/js/jquery/ips.js
-	sed -i "s/fixNavbar/\/\/fixNavbar/" xxb/www/js/my.js
-	sed -i "s/'system'/'setting'/" xxb/app/sys/setting/ext/control/xuanxuan.php
-	# sed -i "/'manageAppPriv'/d" xxb/app/sys/group/view/browse.html.php
+	mkdir xxb
+	cp -r config xxb/
+	cp -r db xxb/
+	cp -r doc xxb/
+	cp -r framework xxb/
+	cp -r lib xxb/
+	cp -r module xxb/
+	cp -r tools xxb/
+	cp -r www xxb/
+	cp -r VERSION xxb/
+	echo '$$config->buildDate = "build at $(TIME)";' >> xxb/config/xxb.php
 	# combine js and css files.
-	cp -rf tools xxb/ && cd xxb/tools/ && php ./minifyfront.php && php ./cn2tw.php
+	cd xxb/tools/ && php ./minifyfront.php && php ./cn2tw.php
+	# Add ext directory to config and each module.
+	test -d xxb/config/ext || mkdir xxb/config/ext
+	for module in `ls xxb/module/`; do test -d xxb/module/$$module/ext || mkdir xxb/module/$$module/ext; done
+	find xxb -name ext | xargs chmod -R 777
+	# Add index.html to each directory.
+	for path in `find xxb -type d`; do touch "$$path/index.html"; done	
+	# Delete the useless files.
+	find xxb -name .git | xargs rm -fr
 	rm -rf xxb/tools
+	rm xxb/www/index.html
+	#rm xxb/www/ux.php
+	sed -i '/upgradeXuanxuan/d' xxb/www/ux.php
+	# Make tmp directories.
+	mkdir xxb/tmp/
+	mkdir xxb/tmp/backup/
+	mkdir xxb/tmp/log/
+	mkdir xxb/tmp/model/
+	mkdir xxb/www/data
+	mkdir xxb/www/data/client
+	# Change mode.
 	chmod -R 777 xxb/config
 	chmod -R 777 xxb/tmp
 	chmod -R 777 xxb/www/data
+	# Zip it.
 	zip -rqm -9 xxb.$(VERSION).zip xxb
-	zip -rq -9 xuanxuan.ranzhi.${VERSION}.zip ../ranzhi/*
-
 deb:
 	mkdir ~/buildroot
 	cp -r build/debian/DEBIAN ~/buildroot
