@@ -1347,7 +1347,7 @@ class chatModel extends model
      * @param  string $users
      * @param  object $chat
      * @access public
-     * @return bool
+     * @return int
      */
     public function uploadFile($fileName, $path, $size, $time, $userID, $users, $chat)
     {
@@ -1370,6 +1370,6 @@ class chatModel extends model
         $path  .= md5($fileName . $fileID . $time);
         $this->dao->update(TABLE_FILE)->set('pathname')->eq($path)->where('id')->eq($fileID)->exec();
 
-        return !dao::isError();
+        return $fileID;
     }
 }

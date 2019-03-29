@@ -1148,8 +1148,8 @@ class chat extends control
             die($this->app->encrypt($this->output));
         }
 
-        $users = $this->getUserList($status = 'online', $chat->members);
-        $this->chat->uploadFile($fileName, $path, $size, $time, $userID, $users, $chat);
+        $users  = $this->chat->getUserList($status = 'online', $chat->members);
+        $fileID = $this->chat->uploadFile($fileName, $path, $size, $time, $userID, $users, $chat);
 
         if(dao::isError())
         {
