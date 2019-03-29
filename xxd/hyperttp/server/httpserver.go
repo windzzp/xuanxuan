@@ -306,7 +306,7 @@ func serverInfo(w http.ResponseWriter, r *http.Request) {
 		download["win64"]   = downloads["win64zip"]
 		download["linux32"] = downloads["linux32zip"]
 		download["linux64"] = downloads["linux64zip"]
-		download["mac64"]   = downloads["macOS"]
+		download["mac64"]   = downloads["macOSzip"]
 		clientUpdate["version"]   = message["version"]
 		clientUpdate["readme"]    = message["readme"]
 		clientUpdate["strategy"]  = message["strategy"]

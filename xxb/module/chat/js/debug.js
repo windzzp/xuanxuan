@@ -7,7 +7,7 @@ $(document).ready(function()
     }
 
     $('#menu li').removeClass('active').find('a[href*=xuanxuan]').parent().addClass('active');
-})
+});
 
 function showLog()
 {

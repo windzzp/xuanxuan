@@ -62,4 +62,4 @@ $('#submit').click(function()
         error:function(data){bootbox.alert(data.responseText)}
     })
     return false;
-})
+});

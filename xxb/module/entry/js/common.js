@@ -34,14 +34,14 @@ $('#allip').change(function()
 
 $('#platformxuanxuan').change(function()
 {
-  if($(this).prop('checked'))
-  {
-    $('.entry-version, .entry-files').removeClass('hide');
-  }
-  else
-  {
-    $('.entry-version, .entry-files').addClass('hide');
-  }
+    if($(this).prop('checked'))
+    {
+        $('.entry-version, .entry-files').removeClass('hide');
+    }
+    else
+    {
+        $('.entry-version, .entry-files').addClass('hide');
+    }
 });
 
 
@@ -56,7 +56,7 @@ $(document).ready(function()
         }
     });
 
-   $("#fileform .w-30px").hide();
+    $("#fileform .w-30px").hide();
 });
 $("#entryForm #visible").parent().parent().addClass('hidden');
 $(".entry-version, .entry-files").show();
