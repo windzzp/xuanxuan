@@ -1,4 +1,4 @@
-XXB	= ../xxb/src
+XXB	= ../xxb
 MODULE	= $(XXB)/module
 APP	= ranzhi/app/sys
 VERSION	= $(shell head -n 1 $(XXB)/VERSION)
