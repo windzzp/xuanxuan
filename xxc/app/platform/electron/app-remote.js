@@ -607,7 +607,11 @@ class AppRemote {
             webPreferences: {
                 webSecurity: false,
                 nodeIntegration: true,
-            }
+            },
+            width: 1280,
+            height: 800,
+            titleBarStyle: IS_MAC_OSX ? 'hidden' : null,
+            frame: false,
         }, options);
 
         let browserWindow = this.windows[name];
