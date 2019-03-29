@@ -33,7 +33,7 @@ $(function()
     $('[name^=https]').change(function()
     {
         var value = $(this).val();
-        $('#isHttps').val(value);
+        $('#https').val(value);
         if(value == 'on')
         {
             $('.sslTR').show();
@@ -47,8 +47,7 @@ $(function()
     $('#os').change(function()
     {
         var os = $(this).val();
-        var backend = $('#backend').val();
-        $('.download-package').attr('href', createLink('setting', 'downloadXXD', "backend=" + backend + "&type=package&os=" + os));
+        $('.download-package').attr('href', createLink('setting', 'downloadXXD', "type=package&os=" + os));
     });
     $('#os').change();
 });
