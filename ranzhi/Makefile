@@ -18,10 +18,10 @@ ranzhi:
 	cp -r $(XXB)/framework/xuanxuan.class.php ranzhi/framework/
 	cp -r $(XXB)/lib/phpaes ranzhi/lib/
 	cp -r $(MODULE)/chat $(APP)/
-	cp -r $(MODULE)/action/ext $(APP)/action/
-	cp -r $(MODULE)/entry/ext $(APP)/entry/
-	cp -r $(MODULE)/setting/ext $(APP)/setting/
-	cp -r $(MODULE)/user/ext $(APP)/user/
+	cp -r $(MODULE)/action/ext/* $(APP)/action/ext/
+	cp -r $(MODULE)/entry/ext/* $(APP)/entry/ext/
+	cp -r $(MODULE)/setting/ext/* $(APP)/setting/ext/
+	cp -r $(MODULE)/user/ext/* $(APP)/user/ext/
 	cp -r $(MODULE)/common/ext/* $(APP)/common/ext/
 	cp -r $(MODULE)/install/ext/* $(APP)/install/ext/
 	cp -r $(MODULE)/upgrade/ext/* $(APP)/upgrade/ext/
