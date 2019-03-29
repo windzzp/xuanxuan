@@ -1487,10 +1487,6 @@ class chat extends control
     {
         if(RUN_MODE != 'front') die('Access Denied');
 
-        $this->lang->menuGroups->chat = 'system';
-        $this->lang->chat->menu       = $this->lang->system->menu;
-        $this->lang->chat->menuOrder  = $this->lang->system->menuOrder;
-
         $this->view->title = $this->lang->chat->debug;
         $this->display();
     }
