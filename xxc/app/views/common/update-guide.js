@@ -160,7 +160,8 @@ export default class UpdateGuide extends Component {
         let mainView = null;
         if (needUpdate) {
             // 需要升级
-            const updateReadme = updateInfo.readme && Markdown(updateInfo.readme);
+            const readmeText = updateInfo.readme || updateInfo.changeLog;
+            const updateReadme = readmeText && Markdown(readmeText);
             const updateReadmeView = updateReadme ? (
                 <details className="space-sm">
                     <summary className="strong space-sm text-primary state">{Lang.format('update.versionDetails', newVersion)}</summary>
