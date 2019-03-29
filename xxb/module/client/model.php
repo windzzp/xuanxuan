@@ -175,6 +175,7 @@ class clientModel extends model
         set_time_limit(0);
         if(empty($version) || empty($link)) return false;
         $dir  = "data/client/" . $version . '/';
+        $link = helper::safe64Decode($link);
         $file = basename($link);
         if(!is_dir($this->app->wwwRoot . $dir))
         {
