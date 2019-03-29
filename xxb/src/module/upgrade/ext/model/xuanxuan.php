@@ -94,6 +94,9 @@ public function processXuanxuanKey()
  */
 public function changeMessageStatusTable()
 {
+    $prefix     = $this->config->db->prefix;
+    $errorTable = $this->dbh->query("show tables like '{$prefix}im_messsagestatus'")->fetch();
+    if(!empty($errorTable)) $this->dbh->query("RENAME TABLE `{$prefix}im_messsagestatus` TO `{$prefix}im_messagestatus`");
     $needUpdate = false;
     $fields = $this->dbh->query('DESC ' . TABLE_IM_MESSAGESTATUS)->fetchAll();
     foreach($fields as $field)
