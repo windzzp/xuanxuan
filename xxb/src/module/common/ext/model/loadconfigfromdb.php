@@ -32,8 +32,10 @@ public function loadConfigFromDB()
             if(!empty($ssoTable))   $this->dbh->query("RENAME TABLE `{$prefix}sys_sso` TO `{$prefix}sso`");
             if(!empty($entryTable)) $this->dbh->query("RENAME TABLE `{$prefix}sys_entry` TO `{$prefix}entry`");
             $this->dbh->query("DROP TABLE IF EXISTS `{$prefix}sys_package`");
-            $this->dbh->query("DROP TABLE IF EXISTS `{$prefix}oa_attend`");
+            $this->dbh->query("DROP TABLE IF EXISTS `{$prefix}oa_overtime`");
             $this->dbh->query("DROP TABLE IF EXISTS `{$prefix}oa_holiday`");
+            $this->dbh->query("DROP TABLE IF EXISTS `{$prefix}oa_attend`");
+            $this->dbh->query("DROP TABLE IF EXISTS `{$prefix}oa_refund`");
             $this->dbh->query("DROP TABLE IF EXISTS `{$prefix}oa_leave`");
             $this->dbh->query("DROP TABLE IF EXISTS `{$prefix}oa_lieu`");
 
