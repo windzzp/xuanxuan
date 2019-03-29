@@ -113,6 +113,16 @@ export default class ChatListItem extends Component {
 
         this.lastChatUpdateId = chat.updateId;
 
+        const {noticeCount} = chat;
+
+        setTimeout(() => {
+            if (chat.noticeCount !== noticeCount) {
+                this.forceUpdate();
+            }
+        }, 1);
+        // hack alert: the noticeCount becomes 0 immediately after render,
+        //             but this component does not re-render
+
         const name = chat.getDisplayName(App);
         if (!subname && subname !== false) {
             if (chat.isOne2One) {
@@ -136,7 +146,6 @@ export default class ChatListItem extends Component {
         }
 
         if (!badge && badge !== false) {
-            const {noticeCount} = chat;
             if (noticeCount) {
                 badge = <div className={classes('label circle label-sm', chat.isMuteOrHidden ? 'blue' : 'red')}>{noticeCount > 99 ? '99+' : noticeCount}</div>;
             } else if (chat.mute) {

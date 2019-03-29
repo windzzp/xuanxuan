@@ -8,6 +8,7 @@ import Lang, {isJustLangSwitched} from '../../core/lang';
 import withReplaceView from '../with-replace-view';
 import {setChatCacheState, takeOutChatCacheState} from '../../core/im/im-ui';
 import Button from '../../components/button';
+import {saveChatMessages} from '../../core/im/im-chats';
 
 /**
  * MessageList 可替换组件形式
@@ -77,7 +78,7 @@ export default class ChatMessages extends Component {
          */
         this.state = {
             loading: !chat.isLoadingOver,
-            displayBtn: 'none',
+            displayBtn: false,
         };
     }
 
@@ -199,12 +200,16 @@ export default class ChatMessages extends Component {
         const inverse = chat.isNotification;
         if ((!scrollInfo.isAtBottom && !inverse) || (!scrollInfo.isAtTop && inverse)) {
             this.setState({
-                displayBtn: 'block'
+                displayBtn: true
             });
         } else {
             this.setState({
-                displayBtn: 'none'
+                displayBtn: false
             });
+        }
+        if (scrollInfo.isAtBottom && chat.noticeCount) {
+            chat.muteNotice();
+            saveChatMessages(chat.messages, chat);
         }
         if (!chat.isLoadingOver) {
             if (scrollInfo.isAtTop) {
@@ -248,7 +253,7 @@ export default class ChatMessages extends Component {
         }
 
         const inverse = chat.isNotification;
-        const {messages} = chat;
+        const {messages, noticeCount, isMuteOrHidden} = chat;
 
         return (
             <div
@@ -269,21 +274,11 @@ export default class ChatMessages extends Component {
                     onClick={inverse ? () => this.messageList.scrollToTop() : () => this.messageList.scrollToBottom()}
                     title={inverse ? Lang.string('chat.toolbar.scrollToTop') : Lang.string('chat.toolbar.scrollToBottom')}
                     icon={inverse ? 'arrow-up-thick' : 'arrow-down-thick'}
-                    className="btn iconbutton rounded primary-pale"
-                    style={inverse ? {
-                        position: 'fixed',
-                        top: '80px',
-                        right: '20px',
-                        zIndex: '1030',
-                        display: displayBtn,
-                    } : {
-                        position: 'fixed',
-                        bottom: '20px',
-                        right: '20px',
-                        zIndex: '1030',
-                        display: displayBtn,
-                    }}
-                />
+                    className={classes(`affix dock-right has-margin btn-lg circle primary-pale has-badge ${inverse ? 'dock-top' : 'dock-bottom'} ${displayBtn ? 'inline-block' : 'hidden'}`)}
+                    style={inverse ? {top: '3rem'} : {}}
+                >
+                    {noticeCount ? <span className={classes(`label badge circle shadow ${isMuteOrHidden ? 'blue' : 'red'}`)} style={{opacity: 0.95, right: '-0.25rem', top: '-0.25rem'}}>{noticeCount}</span> : <span />}
+                </Button>
             </div>
         );
     }
