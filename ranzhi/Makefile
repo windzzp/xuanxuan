@@ -42,8 +42,8 @@ ranzhi:
 	sed -i "s/setItems('system.common.xuanxuan'/setItems('system.sys.common.xuanxuan'/g" $(APP)/setting/ext/control/xuanxuan.php
 	sed -i "/\$$app = router::createApp/c\\\$$app = router::createApp('sys');" ranzhi/www/ux.php
 	sed -i "/\$$app = router::createApp/c\\\$$app = router::createApp('sys', '', 'xuanxuan');" ranzhi/www/x.php
-	sed -i "/\$$os = 'win';/i\\        \$$this->lang->setting->menu = \$$this->lang->system->menu;" $(APP)/setting/ext/control/xuanxuan.php
-	sed -i "/\$$os = 'win';/i\\        \$$this->lang->menuGroups->setting = 'system';" $(APP)/setting/ext/control/xuanxuan.php
+	sed -i "/\$$os = 'win';/i\\        \$$this->lang->setting->menu      = \$$this->lang->system->menu;" $(APP)/setting/ext/control/xuanxuan.php
+	sed -i "/\$$os = 'win';/i\\        \$$this->lang->setting->menuOrder = \$$this->lang->system->menuOrder;" $(APP)/setting/ext/control/xuanxuan.php
 	sed -i "/\$$os = 'win';/{x;p;x}" $(APP)/setting/ext/control/xuanxuan.php
 	sed -i "s/喧喧/然之/g" ranzhi/www/ux.php
 	sed -i "s/xxb/sys/g" ranzhi/www/ux.php
