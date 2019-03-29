@@ -43,7 +43,7 @@ class upgrade extends control
      */
     public function selectVersion()
     {
-        $version = str_replace(array(' ', '.'), array('', '_'), $this->config->installedVersion);
+        $version = str_replace(array(' ', '.'), array('', '_'), $this->loadModel('setting')->getVersion());
         $version = strtolower($version);
 
         $this->view->title   = $this->lang->upgrade->common . $this->lang->colon . $this->lang->upgrade->selectVersion;
