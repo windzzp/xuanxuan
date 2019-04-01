@@ -214,11 +214,16 @@ func getDebug(config *goconfig.ConfigFile) (err error) {
 
 //获取上传目录
 func getUploadPath(config *goconfig.ConfigFile) (err error) {
+    dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
     uploadPath, err := config.GetValue("server", "uploadPath")
     if err != nil {
         Exit("[config] get server upload path error,", err)
     }
-    Config.UploadPath = removeComment(uploadPath)
+    if strings.HasPrefix(uploadPath, "/") {
+        Config.UploadPath = removeComment(uploadPath)
+    } else {
+        Config.UploadPath = dir + "/" + removeComment(uploadPath)
+    }
     return
 }
 
@@ -325,6 +330,7 @@ func getRanzhi(config *goconfig.ConfigFile) {
 
 //获取日志路径
 func getLogPath(config *goconfig.ConfigFile) (err error) {
+    dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
     logPath, err := config.GetValue("server", "logPath")
     if err != nil {
         Config.LogPath, err = config.GetValue("log", "logPath")
@@ -332,13 +338,18 @@ func getLogPath(config *goconfig.ConfigFile) (err error) {
             Exit("[config] get server log path error,", err)
         }
     } else {
-        Config.LogPath = removeComment(logPath)
+        if strings.HasPrefix(logPath, "/") {
+            Config.LogPath = removeComment(logPath)
+        } else {
+            Config.LogPath = dir + "/" + removeComment(logPath)
+        }
     }
     return
 }
 
 //获取证书路径
 func getCrtPath(config *goconfig.ConfigFile) (err error) {
+    dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
     crtPath, err := config.GetValue("server", "certPath")
     if err != nil {
         Config.CrtPath, err = config.GetValue("certificate", "crtPath")
@@ -346,7 +357,11 @@ func getCrtPath(config *goconfig.ConfigFile) (err error) {
             Exit("[config] get certificate crt path error,", err)
         }
     } else {
-        crtPath = removeComment(crtPath)
+        if strings.HasPrefix(crtPath, "/") {
+            crtPath = removeComment(crtPath)
+        } else {
+            crtPath = dir + "/" + removeComment(crtPath)
+        }
         Config.CrtPath = crtPath
     }
     return
