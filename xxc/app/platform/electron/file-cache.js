@@ -30,11 +30,11 @@ export const createCachePath = (file, user, storageType = null) => {
  * 检查文件是否已经缓存
  * @param {{localPath: string, path: string, gid: string}|FileData} file 文件对象
  * @param {{identify: string}|User} user 用户实例
- * @param {string} [dirName='image'] 缓存目录
+ * @param {string} [storageType='image'] 缓存目录
  * @returns {Promise} 使用 Promise 异步返回处理结果
  * @private
  */
-export const checkFileCache = (file, user, dirName = 'images') => {
+export const checkFileCache = (file, user, storageType = 'image') => {
     if (file.path) {
         return Promise.resolve(false);
     }
@@ -47,7 +47,7 @@ export const checkFileCache = (file, user, dirName = 'images') => {
         file.localPath = cachePath;
         return Promise.resolve(cachePath);
     }
-    cachePath = createCachePath(file, user, dirName);
+    cachePath = createCachePath(file, user, storageType);
     return fse.pathExists(cachePath).then(exists => {
         if (exists) {
             filesCache[file.gid] = cachePath;
