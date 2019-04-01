@@ -71,6 +71,8 @@ class chat extends control
                 $notifies  = $this->chat->getOfflineNotifyOutput($user->id);
                 $histories = $this->chat->getHistoryOutput($user, $device);
 
+                $histories->data = array_merge(array_diff($histories->data, $messages->data));
+
                 $this->output = array($this->output, $userList, $chatList);
                 if(!empty($messages->data))  $this->output[] = $messages;
                 if(!empty($notifies->data))  $this->output[] = $notifies;
