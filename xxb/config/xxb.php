@@ -11,7 +11,7 @@
  * @version     $Id: config.php 4211 2017-06-20 14:30:10Z pengjx $
  * @link        http://xuan.im
  */
-$config->version   = '2.5.1';                // 喧喧的版本。 The version of XXB. Don't change it.
+$config->version   = '2.5.2';                // 喧喧的版本。 The version of XXB. Don't change it.
 
 /* 基本设置。Rangerteam basic settings. */
 $config->sessionVar    = 'xid';              // 请求类型为GET：session变量名。         requestType=GET: the session var name.
