@@ -1,4 +1,4 @@
-import {onChatMessages, forEachChat} from './im-chats';
+import {saveChatMessages, onChatMessages, forEachChat} from './im-chats';
 import {
     isActiveChat, renderChatMessageContent, getcurrentActiveChat, onActiveChat
 } from './im-ui';
@@ -95,18 +95,27 @@ const updateChatNoticeTask = new DelayAction(() => {
             if (!isChatActive && muteOnChatNotActive) {
                 return;
             }
-            total += noticeCount;
-            const chatLastMessage = chat.lastMessage;
-            if (chatLastMessage && (!lastChatMessage || lastChatMessage.date < chatLastMessage.date)) {
-                lastChatMessage = chatLastMessage;
-                if (!chat.isMuteOrHidden) {
-                    lastNoticeChat = chat;
+            const {isWindowFocus} = platformUI;
+            if (isWindowFocus && isChatActive) {
+                const mutedMessages = chat.muteNotice();
+                if (mutedMessages && mutedMessages.length) {
+                    saveChatMessages(chat.messages, chat);
+                    muteNewMessageCount += mutedMessages.length;
                 }
-            }
-            if (chat.isMuteOrHidden) {
-                muteCount += noticeCount;
             } else {
-                notMuteCount += noticeCount;
+                total += noticeCount;
+                const chatLastMessage = chat.lastMessage;
+                if (chatLastMessage && (!lastChatMessage || lastChatMessage.date < chatLastMessage.date)) {
+                    lastChatMessage = chatLastMessage;
+                    if (!chat.isMuteOrHidden) {
+                        lastNoticeChat = chat;
+                    }
+                }
+                if (chat.isMuteOrHidden) {
+                    muteCount += noticeCount;
+                } else {
+                    notMuteCount += noticeCount;
+                }
             }
         }
     });
@@ -187,6 +196,17 @@ onLangChange(updateChatNotice);
 
 // 监听聊天激活事件
 onActiveChat(updateChatNotice);
+
+// 监听界面窗口激活事件
+if (platformUI.onWindowFocus) {
+    platformUI.onWindowFocus(() => {
+        const activedChat = getcurrentActiveChat();
+        if (activedChat && activedChat.noticeCount) {
+            activedChat.muteNotice();
+            saveChatMessages(activedChat.messages, activedChat);
+        }
+    });
+}
 
 // 监听界面窗口还原事件
 if (platformUI.onWindowRestore) {

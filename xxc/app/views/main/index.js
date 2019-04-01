@@ -126,7 +126,7 @@ export default class MainIndex extends Component {
         return (
             <div className={classes('app-main', className)} {...other}>
                 <GlobalMessage className="dock-top" />
-                <Navbar userStatus={userStatus} className="dock-top primary shadow-2" />
+                <Navbar userStatus={userStatus} className="dock-left primary shadow-2" />
                 <Route path={ROUTES.apps.__} exact component={CacheContainer} />
                 <Route
                     path="/:app?"

@@ -141,6 +141,6 @@ export default class ExtsNavbarView extends PureComponent {
             }
             return result;
         });
-        return items.map(x => x.view).reverse();
+        return items.map(x => x.view);
     }
 }

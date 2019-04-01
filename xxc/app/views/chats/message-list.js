@@ -6,14 +6,6 @@ import _MessageListItem from './message-list-item'; // eslint-disable-line
 import App from '../../core';
 import platform from '../../platform';
 import withReplaceView from '../with-replace-view';
-import {saveChatMessages} from '../../core/im/im-chats';
-
-/**
- * 平台提供的通用界面交互访问对象
- * @type {Object}
- * @private
- */
-const platformUI = platform.access('ui');
 
 /**
  * MessageListItem 可替换组件形式
@@ -113,16 +105,11 @@ export default class MessageList extends Component {
      */
     componentDidMount() {
         this.onChatActiveHandler = App.im.ui.onActiveChat(chat => {
-            if (chat.noticeCount && this.isScrollBottom) {
-                chat.muteNotice();
-                saveChatMessages(chat.messages, chat);
-            }
             if (this.lastMessage && (this.waitNewMessage || this.isScrollBottom) && this.lastMessage.cgid === chat.gid) {
                 this.waitNewMessage = null;
                 this.scrollToBottom(500);
             }
         });
-        window.addEventListener('focus', this.onFocus);
     }
 
     /**
@@ -143,12 +130,7 @@ export default class MessageList extends Component {
             const newMessage = this.checkHasNewMessages(messages);
             if (newMessage) {
                 if (App.im.ui.isActiveChat(newMessage.cgid)) {
-                    const chat = App.im.chats.get(newMessage.cgid);
                     if (newMessage.isSender(App.profile.userId) || this.isScrollBottom) {
-                        if (platformUI.isWindowFocus) {
-                            chat.muteNotice();
-                            saveChatMessages(chat.messages, chat);
-                        }
                         this.scrollToBottom(100);
                     }
                 } else {
@@ -170,7 +152,6 @@ export default class MessageList extends Component {
      */
     componentWillUnmount() {
         App.events.off(this.onChatActiveHandler);
-        window.removeEventListener('focus', this.onFocus);
     }
 
     /**
@@ -276,25 +257,6 @@ export default class MessageList extends Component {
      */
     get isScrollBottom() {
         return this.scrollInfo ? this.scrollInfo.isAtBottom : true;
-    }
-
-    /**
-     * 处理聚焦事件
-     * @memberof MessageList
-     * @private
-     * @return {void}
-     */
-    onFocus = () => {
-        if (this.isScrollBottom) {
-            const {messages} = this.props;
-            if (messages.length) {
-                const chat = App.im.chats.get(messages[0].cgid);
-                if (chat.noticeCount && App.im.ui.isActiveChat(messages[0].cgid)) {
-                    chat.muteNotice();
-                    saveChatMessages(chat.messages, chat);
-                }
-            }
-        }
     }
 
     /**

@@ -12,11 +12,6 @@ import _UserAvatar from '../common/user-avatar';
 import _StatusDot from '../common/status-dot';
 import _UserMenu from './user-menu';
 import withReplaceView from '../with-replace-view';
-import { reduceEachLeadingCommentRange } from 'typescript';
-
-const {getCurrentWindow, process} = require('electron').remote;
-
-const IS_WINDOWS_OS = process.platform === 'win32';
 
 /**
  * UserMenu 可替换组件形式
@@ -195,26 +190,6 @@ export default class Navbar extends Component {
         }, 200);
     };
 
-    handleMinClick = () => {
-        const window = getCurrentWindow();
-        window.minimize();
-    }
-
-    handleMaxClick = () => {
-        console.log('max!');
-        const window = getCurrentWindow();
-        if (!window.isMaximized()) {
-            window.maximize();
-        } else {
-            window.unmaximize();
-        }
-    }
-
-    handleClsClick = () => {
-        const window = getCurrentWindow();
-        window.close();
-    }
-
     /**
      * React 组件生命周期函数：Render
      * @private
@@ -274,37 +249,22 @@ export default class Navbar extends Component {
         return (
             <div
                 className={classes('app-navbar', className, {
-                    'with-avatar-on-top': true
+                    'with-avatar-on-top': isAvatarOnTop
                 })}
-                style={{
-                    backgroundImage: `url(${Config.media['image.path']}navBackground.svg)`,
-                }}
                 {...other}
             >
-                <nav
-                    className="inline-block dock-left has-padding app-nav-profile"
-                >
-                    <div className="has-padding app-company-name">传说中的大测试公司</div>
-                    <div className="app-profile">
-                        <a className="inline-block relative app-profile-avatar dock-left" onClick={this.handleProfileAvatarClick}>
-                            <UserAvatar className="avatar-lg relative" style={{margin: rem((navbarWidth - 30) / 2)}} size={28} user={App.profile.user} />
-                            {/* <StatusDot status={App.profile.userStatus} /> */}
+                <nav className={`dock-${isAvatarOnTop ? 'top' : 'bottom'} app-nav-profile`}>
+                    <div className="hint--right" data-hint={App.profile.summaryText}>
+                        <a className="block relative app-profile-avatar" onClick={this.handleProfileAvatarClick}>
+                            <UserAvatar className="avatar-lg relative" style={{margin: rem((navbarWidth - 36) / 2)}} size={36} user={App.profile.user} />
+                            <StatusDot status={App.profile.userStatus} />
                         </a>
-                        <div className="inline-block relative dock-right app-profile-name">{/* App.profile.user.displayName */}TEST Toast</div>
                     </div>
-                    {/* {showUserMenu && <UserMenu className="dock-left" style={{left: rem(navbarWidth)}} onRequestClose={this.handleUserMenuRequestClose} />} */}
+                    {showUserMenu && <UserMenu className={`dock-left dock-${isAvatarOnTop ? 'top' : 'bottom'}`} style={{left: rem(navbarWidth)}} onRequestClose={this.handleUserMenuRequestClose} />}
                 </nav>
-                <nav className="inline-block dock-left app-nav-main">
+                <nav className="dock-top app-nav-main">
                     {navbarItemsView}
-                </nav>
-                {ExtsRuntime && ExtsRuntime.ExtsNavbarView && (
-                    <nav className="inline-block app-nav-exts dock-right">
-                        <ExtsRuntime.ExtsNavbarView />
-                    </nav>
-                )}
-                <nav className="inline-block app-nav-search dock-right">
-                    <i className="icon mdi mdi-magnify" />
-                    <input placeholder="搜索" />
+                    {ExtsRuntime && ExtsRuntime.ExtsNavbarView && <ExtsRuntime.ExtsNavbarView />}
                 </nav>
                 {
                     isAvatarOnTop && (
@@ -312,15 +272,6 @@ export default class Navbar extends Component {
                             <div className="hint--right" data-hint={Lang.string('common.settings')}>
                                 <a className="block" onClick={this.handleSettingBtnClick}><Avatar size={navbarWidth} icon="settings" /></a>
                             </div>
-                        </nav>
-                    )
-                }
-                {
-                    IS_WINDOWS_OS && (
-                        <nav className="inline-block app-nav-windows-control dock-right dock-top">
-                            <div id="min-window-btn" className="inline-block"><a onClick={this.handleMinClick} className="icon mdi mdi-window-minimize" /></div>
-                            <div id="max-window-btn" className="inline-block"><a onClick={this.handleMaxClick} className="icon mdi mdi-window-maximize" /></div>
-                            <div id="cls-window-btn" className="inline-block"><a onClick={this.handleClsClick} className="icon mdi mdi-window-close" /></div>
                         </nav>
                     )
                 }

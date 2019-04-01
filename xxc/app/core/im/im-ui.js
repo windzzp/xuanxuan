@@ -100,6 +100,10 @@ export const setActiveChat = (chat) => {
         } else {
             cacheInfo.active();
         }
+        if (chat.noticeCount) {
+            chat.muteNotice();
+            chats.saveChatMessages(chat.messages, chat);
+        }
         if (!activedChatId || chat.gid !== activedChatId) {
             if (activedChatId) {
                 const oldActiveChatCacheInfo = activeCaches[activedChatId];

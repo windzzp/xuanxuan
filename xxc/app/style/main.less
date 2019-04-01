@@ -2,43 +2,16 @@
   transition: all @animation-speed-normal @animation-type;
 }
 
-@app-navbar-top: (21*@rem);
-@app-navbar-padding: (63*@rem);
-@app-navbar-internal-height: (100*@rem);
-@app-navbar-height: (154*@rem);
-@app-navbar-profile-height: (@app-navbar-internal-height - @app-navbar-top);
-
-.app-company-name {
-  margin-top: 0.4rem;
-  font-size: 115%;
-  font-weight: 500;
+.app-nav-main {
+  max-height: calc(100% - (50*@rem));
 }
-
-@app-nav-profile-width: (238*@rem);
-@app-nav-profile-margin-left: 0.5rem;
-@app-nav-profile-actual-width: (@app-nav-profile-width - @app-nav-profile-margin-left);
-
 .app-nav-profile {
   z-index: 1031;
-  top: 0;
-  height: @app-navbar-internal-height;
-  margin-left: @app-nav-profile-margin-left;
-  width: @app-nav-profile-actual-width;
 }
-
-.app-nav-main {
-  height: @app-navbar-internal-height;
-  margin-left: @app-nav-profile-width;
-}
-
 .app-nav-main > div > a.active:after {
   transform: scale(1);
   opacity: 1;
-  // background-color: rgba(255,255,255,.15);
-}
-
-.app-profile {
-  margin-top: -0.8rem;
+  background-color: rgba(255,255,255,.15);
 }
 
 .app-profile-avatar {
@@ -49,71 +22,29 @@
   }
 }
 
-.app-profile-name {
-  font-size: 90%;
-}
-
-.app-nav-exts {
-  height: @app-navbar-internal-height;
-  margin-right: (273*@rem);
-}
-
-.app-nav-search {
-  height: @app-navbar-internal-height;
-  right: (20*@rem);
-  > i {
-    position: absolute;
-    margin-top: (60*@rem);
-    margin-left: (6*@rem);
-    size: (12*@rem);
-  }
-  > input {
-    margin-top: (60*@rem);
-    -webkit-app-region: no-drag;
-    width: (220*@rem);
-    height: (24*@rem);
-    border-radius: 1rem;
-    border: none;
-    padding-left: (32*@rem);
-    background-color: #835FB8;
-    color: white;
-  }
-  > input:focus { outline: none; }
-}
-
-.app-nav-windows-control {
-  top: (20*@rem);
-  right: (20*@rem);
-  > div {
-    width: (28*@rem);
-    > a {
-      width: (28*@rem);
-      height: 100%;
-    }
-  }
-}
+@app-navbar-width: (50*@rem);
 
 .app-navbar {
-  z-index: 1080;
-  height: @app-navbar-height;
-  -webkit-app-region: drag;
+  z-index: 1040;
+  width: @app-navbar-width;
+
   .nav-item {
-    -webkit-app-region: no-drag;
-    top: (50*@rem);
-    margin-right: (10*@rem);
-    > a {
-      -webkit-user-drag: none;
-    }
     > .badge {
       top: (5*@rem);
       right: (5*@rem);
     }
   }
+
+  &.with-avatar-on-top {
+    .app-nav-main {
+      max-height: calc(100% - (100*@rem));
+      top: (55*@rem);
+    }
+  }
 }
 
 .app-main-container {
-  top: @app-navbar-internal-height;
-  z-index: 1100;
+  left: @app-navbar-width;
 }
 
 .app-usermenu {
@@ -222,7 +153,6 @@
 }
 
 .app-about {
-  -webkit-app-region: no-drag;
   > section > img {
     max-width: (140*@rem);
   }
