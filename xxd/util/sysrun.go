@@ -14,6 +14,7 @@ import (
     "runtime"
     "database/sql"
     "bufio"
+    "path/filepath"
 )
 
 const Version = "v2.5.1"
@@ -26,7 +27,7 @@ var Languages map[string]string
 var Plats = []string{"desktop", "mobile"}
 
 func init() {
-    dir, _ := os.Getwd()
+    dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
     DBConn = InitDB()
 
     // xxd 启动时根据时间生成token

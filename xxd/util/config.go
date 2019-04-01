@@ -14,6 +14,7 @@ import (
     "strings"
     "os"
     "flag"
+    "path/filepath"
 )
 
 type RanzhiServer struct {
@@ -49,7 +50,7 @@ var DebugCli int64 = 0
 var IsTest bool = false
 
 func init() {
-    dir, _ := os.Getwd()
+    dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
     data, err := goconfig.LoadConfigFile(dir + "/" + configPath)
     isTest := flag.Bool("test", false, "server test model")
     debugv := flag.Bool("v", false, "Debug level 1")
@@ -104,7 +105,7 @@ func init() {
 func fixConfigFile(config *goconfig.ConfigFile) error {
     section := config.GetKeyList("certificate")
     if len(section) > 0 {
-        dir, _ := os.Getwd()
+        dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
         err := goconfig.SaveConfigFile(config, dir + "/" + configPath + ".old")
         if err != nil {
             Exit("[config] The config directory has no write permissions, %s", err)

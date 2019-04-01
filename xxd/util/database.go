@@ -15,10 +15,11 @@ import (
     "os"
     "strconv"
     "strings"
+    "path/filepath"
 )
 
 func InitDB() *sql.DB {
-    dir, _ := os.Getwd()
+    dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
     DB, err := sql.Open("sqlite3", dir+"/config/xxd.db")
     if err != nil {
         Log("error", "SQLite connect error", err)
