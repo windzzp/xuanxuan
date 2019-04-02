@@ -1,5 +1,27 @@
 # 更新记录
 
+## v 2.5.2
+
+本次更新主要修复已知问题。
+
+### 更新明细
+
+* 修复 了登录后离线消息没有未读提醒的问题；
+* 修复 有时在 Windows 上快速启动多个喧喧应用弹出出错对话框的问题；
+* 修复 了图片缓存机制失效的问题；
+* 开发相关：
+  * 消息中转服务器（XXD）：修复 xxd 在 Linux 下需要 root 权限才能运行的问题
+
+### 下载地址
+
+* Windows 7+：[64 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.2/xuanxuan.2.5.2.win64.setup.exe)、[64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.2/xuanxuan.2.5.2.win64.7z.exe)、[32 位安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.2/xuanxuan.2.5.2.win32.setup.exe)、[32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.2/xuanxuan.2.5.2.win32.7z.exe)、[64 位 Debug 安装包（.exe）](http://dl.cnezsoft.com/xuanxuan/2.5.2/xuanxuan.2.5.2.debug.win64.setup.exe)；
+* macOS：[xuanxuan.2.5.2.mac.dmg](http://dl.cnezsoft.com/xuanxuan/2.5.2/xuanxuan.2.5.2.mac.dmg)；
+* Linux：[64 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.5.2/xuanxuan.2.5.2.linux.x64.tar.gz)、[64 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.5.2/xuanxuan.2.5.2.linux.amd64.deb)、[32 位（.tar.gz）](http://dl.cnezsoft.com/xuanxuan/2.5.2/xuanxuan.2.5.2.linux.ia32.tar.gz)、[32 位（.deb）](http://dl.cnezsoft.com/xuanxuan/2.5.2/xuanxuan.2.5.2.linux.i386.deb)；
+* 浏览器端：[xuanxuan.2.5.2.browser.zip](http://dl.cnezsoft.com/xuanxuan/2.5.2/xuanxuan.2.5.2.browser.zip)；
+* 消息中转服务器（XXD）： [windows 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.2/xxd.2.5.2.win64.zip)、[windows 32 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.2/xxd.2.5.2.win32.zip)、[mac 压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.2/xxd.2.5.2.mac.tar.gz)、[linux 64 位压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.2/xxd.2.5.2.linux.x64.tar.gz)、[linux 32 位 压缩包](http://dl.cnezsoft.com/xuanxuan/2.5.2/xxd.2.5.2.linux.ia32.tar.gz)；
+* 后端处理服务器（XXB）：[源码包](http://dl.cnezsoft.com/xuanxuan/2.5.2/xxb.2.5.2.zip)、[Windows 64位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.5.2/xxb.2.5.2.win64.exe)、[Windows 32位一键安装包](http://dl.cnezsoft.com/xuanxuan/2.5.2/xxb.2.5.2.win32.exe)、[Linux 64位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.5.2/xxb.2.5.2.zbox_64.tar.gz)、[Linux 32位一键安装包（Linux一键安装包必须直接解压到/opt目录下）](http://dl.cnezsoft.com/xuanxuan/2.5.2/xxb.2.5.2.zbox_32.tar.gz)、[Linux rpm安装包](http://dl.cnezsoft.com/xuanxuan/2.5.2/xxb-2.5.2-1.noarch.rpm)、[Linux deb安装包](http://dl.cnezsoft.com/xuanxuan/2.5.2/xxb_2.5.2_1_all.deb)。
+
+
 ## v 2.5.1
 
 [2019-03-29]
