@@ -118,9 +118,10 @@ public function changeMessageStatusTable()
             $this->dao->update(TABLE_IM_MESSAGESTATUS)->set('message')->eq($message)->where('gid')->eq($gid)->exec();
         }
     }
+    $this->dao->delete()->from(TABLE_IM_MESSAGESTATUS)->where('status')->eq('sent')->exec();
+
     $this->dbh->exec('ALTER TABLE ' . TABLE_IM_MESSAGESTATUS . ' DROP INDEX `user`;');
     $this->dbh->exec('ALTER TABLE ' . TABLE_IM_MESSAGESTATUS . ' DROP `gid`;');
     $this->dbh->exec('ALTER TABLE ' . TABLE_IM_MESSAGESTATUS . ' ADD UNIQUE INDEX `user` (`user`, `message`);');
-    $this->dao->delete()->from(TABLE_IM_MESSAGESTATUS)->where('status')->eq('sent')->exec();
     return !dao::isError();
 }

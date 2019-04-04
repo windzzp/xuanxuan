@@ -88,6 +88,7 @@ CREATE TABLE IF NOT EXISTS `im_messagestatus` (
   UNIQUE KEY `user` (`user`,`message`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+ALTER TABLE `xxb_entry` ADD `sso` enum('0', '1') NOT NULL DEFAULT '0';
 ALTER TABLE `xxb_file` CHANGE `pathname` `pathname` char(100) NOT NULL;
 ALTER TABLE `xxb_user` ADD `clientStatus` enum('online', 'away', 'busy', 'offline') NOT NULL DEFAULT 'offline';
 ALTER TABLE `xxb_user` ADD `clientLang` varchar(10) NOT NULL DEFAULT 'zh-cn';

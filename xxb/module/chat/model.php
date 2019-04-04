@@ -39,6 +39,7 @@ class chatModel extends model
 
     /**
      * Get signed time.
+     * Other program can extend this function.
      *
      * @param  string $account
      * @access public
@@ -46,12 +47,6 @@ class chatModel extends model
      */
     public function getSignedTime($account = '')
     {
-        $this->app->loadModuleConfig('attend');
-        if(strpos(',all,xuanxuan,', ",{$this->config->attend->signInClient},") === false) return '';
-
-        $attend = $this->dao->select('*')->from(TABLE_ATTEND)->where('account')->eq($account)->andWhere('`date`')->eq(date('Y-m-d'))->fetch();
-        if($attend) return strtotime("$attend->date $attend->signIn");
-
         return time();
     }
 
@@ -1234,13 +1229,9 @@ class chatModel extends model
         $entries    = array();
         $allEntries = array();
         $time       = time();
-
-        $_SERVER['SCRIPT_NAME'] = str_replace('x.php', 'sys/x.php', $_SERVER['SCRIPT_NAME']);
-        $this->config->webRoot  = $this->app->getWebRoot();
-
-        $baseURL   = commonModel::getSysURL();
-        $entryList = $this->dao->select('*')->from(TABLE_ENTRY)->orderBy('`order`, id')->fetchAll();
-        $files     = $this->dao->select('id, pathname, objectID')->from(TABLE_FILE)->where('objectType')->eq('entry')->fetchAll('objectID');
+        $baseURL    = commonModel::getSysURL();
+        $entryList  = $this->dao->select('*')->from(TABLE_ENTRY)->orderBy('`order`, id')->fetchAll();
+        $files      = $this->dao->select('id, pathname, objectID')->from(TABLE_FILE)->where('objectType')->eq('entry')->fetchAll('objectID');
 
         foreach($entryList as $entry)
         {
@@ -1250,6 +1241,7 @@ class chatModel extends model
             $allEntries[] = $data;
         }
 
+        $_SERVER['SCRIPT_NAME'] = str_replace('x.php', 'index.php', $_SERVER['SCRIPT_NAME']);
         foreach($entryList as $entry)
         {
             if($entry->status != 'online') continue;
@@ -1303,10 +1295,9 @@ class chatModel extends model
         $data->backendLang    = $this->config->xuanxuan->backendLang;
         $data->downloadType   = $type;
 
-        $webRoot = getWebRoot();
-        $server  = $this->getServer();
+        $server = $this->getServer();
 
-        $data->host = trim($server, '/') . (zget($this->config->xuanxuan, 'backend', 'xxb') == 'ranzhi' ? dirname($webRoot) : $webRoot);
+        $data->host = trim($server, '/') . (zget($this->config->xuanxuan, 'backend', 'xxb') == 'ranzhi' ? dirname($this->config->webRoot) : $this->config->webRoot);
 
         $url    = $this->config->chat->xxdDownloadUrl;
         $result = commonModel::http($url, $data);

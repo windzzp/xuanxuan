@@ -37,7 +37,7 @@ class commonModel extends model
     {
         /* Upgrade to 2.5.1 rename table. */
         $version = $this->config->version;
-        $prefix = $this->config->db->prefix;
+        $prefix  = $this->config->db->prefix;
         if(version_compare($this->config->version, '2.5.1', '>'))
         {
             $row = $this->dbh->query("select `value` from `{$prefix}config` where `owner` = 'system' and `module` = 'common' and `section` = 'global' and `key` = 'version'")->fetch();
@@ -45,7 +45,7 @@ class commonModel extends model
         }
         if(version_compare($version, '2.5.1', '<='))
         {
-            $row    = $this->dbh->query("show tables like '{$prefix}sys_config'")->fetch();
+            $row = $this->dbh->query("show tables like '{$prefix}sys_config'")->fetch();
             if(!empty($row))
             {
                 $ssoTable   = $this->dbh->query("show tables like '{$prefix}sys_sso'")->fetch();

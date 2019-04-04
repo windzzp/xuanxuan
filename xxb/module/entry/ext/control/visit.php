@@ -34,11 +34,9 @@ class myEntry extends entry
         }
         if(!empty($entry->login) && strpos($entry->login, 'http') !== 0)
         {
-            $_SERVER['SCRIPT_NAME'] = str_replace('x.php', 'sys/x.php', $_SERVER['SCRIPT_NAME']);
-            $webRoot = $this->app->getWebRoot();
             $baseURL = commonModel::getSysURL();
 
-            $entry->login = str_replace('../', $baseURL . $webRoot, $entry->login);
+            $entry->login = str_replace('../', $baseURL . $this->config->webRoot, $entry->login);
         }
 
         $user   = $this->dao->select('*')->from(TABLE_USER)->where('id')->eq($this->session->userID)->fetch();

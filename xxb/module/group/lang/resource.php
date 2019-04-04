@@ -14,9 +14,10 @@
 $lang->moduleOrder[5]  = 'client';
 $lang->moduleOrder[10] = 'entry';
 $lang->moduleOrder[15] = 'group';
-$lang->moduleOrder[20] = 'setting';
-$lang->moduleOrder[25] = 'tree';
-$lang->moduleOrder[30] = 'user';
+$lang->moduleOrder[20] = 'file';
+$lang->moduleOrder[25] = 'setting';
+$lang->moduleOrder[30] = 'tree';
+$lang->moduleOrder[35] = 'user';
 
 $lang->resource = new stdclass();
 
@@ -71,6 +72,18 @@ $lang->resource->setting->xuanxuan = 'xuanxuan';
 
 $lang->setting->methodOrder[5]  = 'lang';
 $lang->setting->methodOrder[10] = 'xuanxuan';
+
+/* File. */
+$lang->resource->file = new stdclass();
+$lang->resource->file->upload   = 'upload';
+$lang->resource->file->download = 'download';
+$lang->resource->file->edit     = 'edit';
+$lang->resource->file->delete   = 'delete';
+
+$lang->file->methodOrder[5]  = 'upload';
+$lang->file->methodOrder[10] = 'download';
+$lang->file->methodOrder[15] = 'edit';
+$lang->file->methodOrder[20] = 'delete';
 
 /* Tree. */
 $lang->resource->tree = new stdclass();
