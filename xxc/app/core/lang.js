@@ -4,6 +4,9 @@ import {setStoreItem, getStoreItem} from '../utils/store';
 import LangHelper from '../utils/lang-helper';
 import events from './events';
 import Config from '../config';
+import {
+    createDate, isToday, isYestoday, formatDate, isSameYear
+} from '../utils/date-helper';
 
 /**
  * 语言变更事件名称
@@ -133,7 +136,7 @@ export const loadLanguage = (langName, notifyPlatform = true) => {
  */
 export const initLang = (extraData) => {
     // 设置额外的语言表数据对象
-    extraLangData = extraData;
+    extraLangData = Object.assign({}, Config.lang, extraData);
 
     // 获取默认语言名称
     const langName = getStoreItem('LANG_NAME') || Config.ui.defaultLang || platform.call('language.getPlatformLangName') || 'zh-cn';
@@ -150,10 +153,39 @@ export const initLang = (extraData) => {
     return loadLanguage(langName);
 };
 
+/**
+ * 基于当前时间描述一个时间
+ * @param {Date|string|number} date 要描述的日期对象
+ * @param {Date|string|number} [now] 当前日期对象
+ * @return {string} 时间描述文本
+ */
+export const describeDateFromNow = (date, now) => {
+    date = createDate(date);
+    now = now ? createDate(now) : new Date();
+    const minutes = (now.getTime() - date.getTime()) / 60000;
+    if (minutes < 2) {
+        return langHelper.string('time.justNow');
+    }
+    if (minutes < 60) {
+        return langHelper.format('time.minuteAgo', Math.floor(minutes));
+    }
+    if (isToday(date, now)) {
+        return formatDate(date, 'hh:mm');
+    }
+    if (isYestoday(date, now)) {
+        return `${langHelper.string('time.yestoday')} ${formatDate(date, 'hh:mm')}`;
+    }
+    if (isSameYear(date, now)) {
+        return formatDate(date, langHelper.string('time.format.month'));
+    }
+    return formatDate(date, langHelper.string('time.format.full'));
+};
+
 langHelper.onLangChange = onLangChange;
 langHelper.isJustLangSwitched = isJustLangSwitched;
 langHelper.getAllLangList = getAllLangList;
 langHelper.getLangDisplayName = getLangDisplayName;
+langHelper.describeDateFromNow = describeDateFromNow;
 
 if (DEBUG) {
     global.$lang = langHelper;

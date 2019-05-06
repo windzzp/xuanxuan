@@ -45,7 +45,7 @@ const sayReady = () => {
 
 const run = async () => {
     // 初始化应用
-    await initLang(config.lang);
+    await initLang();
     if (ExtsRuntime) {
         ExtsRuntime.loadModules();
         global.ExtsRuntime = ExtsRuntime;
